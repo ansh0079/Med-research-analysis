@@ -1,0 +1,1059 @@
+{
+ "version": 1,
+ "source": "evidence_mcqs input.csv citation resolution, 4 Oct 2026",
+ "topics": [
+  {
+   "topic": "Acute abdomen and common surgical emergencies",
+   "documents": [
+    {
+     "title": "Imaging strategies for detection of urgent conditions in patients with acute abdominal pain: diagnostic accuracy study",
+     "url": "https://pubmed.ncbi.nlm.nih.gov/19561056/",
+     "pmid": "19561056",
+     "pmcid": "PMC3273785",
+     "doi": "10.1136/bmj.b2431",
+     "sourceBody": "BMJ",
+     "year": 2009,
+     "type": "randomized_controlled_trial"
+    }
+   ]
+  },
+  {
+   "topic": "Acute myocarditis diagnosis and management",
+   "documents": [
+    {
+     "title": "Current state of knowledge on aetiology, diagnosis, management, and therapy of myocarditis: a position statement of the European Society of Cardiology Working Group on Myocardial and Pericardial Diseases",
+     "url": "https://pubmed.ncbi.nlm.nih.gov/23824828/",
+     "pmid": "23824828",
+     "doi": "10.1093/eurheartj/eht210",
+     "sourceBody": "Eur Heart J",
+     "year": 2013,
+     "type": "clinical_practice_guideline"
+    },
+    {
+     "title": "2021 ESC Guidelines for the diagnosis and treatment of acute and chronic heart failure",
+     "url": "https://pubmed.ncbi.nlm.nih.gov/34447992/",
+     "pmid": "34447992",
+     "doi": "10.1093/eurheartj/ehab368",
+     "sourceBody": "Eur Heart J",
+     "year": 2021,
+     "type": "clinical_practice_guideline"
+    }
+   ]
+  },
+  {
+   "topic": "Acute Phosphate Nephropathy",
+   "documents": [
+    {
+     "title": "KDIGO Clinical Practice Guideline for Acute Kidney Injury (Kidney Int Suppl 2012;2:1-138; doi:10.1038/kisup.2012.1)",
+     "url": "https://kdigo.org/guidelines/acute-kidney-injury/",
+     "sourceBody": "KDIGO",
+     "year": 2012,
+     "type": "clinical_practice_guideline"
+    }
+   ]
+  },
+  {
+   "topic": "Alzheimer's disease anti-amyloid immunotherapy",
+   "documents": [
+    {
+     "title": "Lecanemab in Early Alzheimer's Disease",
+     "url": "https://pubmed.ncbi.nlm.nih.gov/36449413/",
+     "pmid": "36449413",
+     "doi": "10.1056/NEJMoa2212948",
+     "sourceBody": "N Engl J Med",
+     "year": 2023,
+     "type": "randomized_controlled_trial"
+    }
+   ]
+  },
+  {
+   "topic": "antidepressant sequential treatment steps depressed outpatients outcomes",
+   "documents": [
+    {
+     "title": "Acute and longer-term outcomes in depressed outpatients requiring one or several treatment steps: a STAR*D report",
+     "url": "https://pubmed.ncbi.nlm.nih.gov/17074942/",
+     "pmid": "17074942",
+     "doi": "10.1176/ajp.2006.163.11.1905",
+     "sourceBody": "Am J Psychiatry",
+     "year": 2006,
+     "type": "review_article"
+    }
+   ]
+  },
+  {
+   "topic": "ARDS definition: Berlin criteria and severity classification",
+   "documents": [
+    {
+     "title": "Acute respiratory distress syndrome: the Berlin Definition",
+     "url": "https://pubmed.ncbi.nlm.nih.gov/22797452/",
+     "pmid": "22797452",
+     "doi": "10.1001/jama.2012.5669",
+     "sourceBody": "JAMA",
+     "year": 2012,
+     "type": "clinical_practice_guideline"
+    },
+    {
+     "title": "Extracorporeal carbon dioxide removal for acute respiratory failure",
+     "url": "https://www.nice.org.uk/guidance/ipg564",
+     "sourceBody": "NICE",
+     "year": 2016,
+     "type": "clinical_practice_guideline"
+    },
+    {
+     "title": "ESICM guidelines on acute respiratory distress syndrome: definition, phenotyping and respiratory support strategies",
+     "url": "https://pubmed.ncbi.nlm.nih.gov/37326646/",
+     "pmid": "37326646",
+     "pmcid": "PMC10354163",
+     "doi": "10.1007/s00134-023-07050-7",
+     "sourceBody": "Intensive Care Med",
+     "year": 2023,
+     "type": "clinical_practice_guideline"
+    },
+    {
+     "title": "Severe covid-19 pneumonia: pathogenesis and clinical management",
+     "url": "https://pubmed.ncbi.nlm.nih.gov/33692022/",
+     "pmid": "33692022",
+     "doi": "10.1136/bmj.n436",
+     "sourceBody": "BMJ",
+     "year": 2021,
+     "type": "review_article"
+    }
+   ]
+  },
+  {
+   "topic": "atrial fibrillation",
+   "documents": [
+    {
+     "title": "2020 ESC Guidelines for the diagnosis and management of atrial fibrillation developed in collaboration with the European Association for Cardio-Thoracic Surgery (EACTS): The Task Force for the diagnosis and management of atrial fibrillation of the European Society of Cardiology (ESC) Developed with the special contribution of the European Heart Rhythm Association (EHRA) of the ESC",
+     "url": "https://pubmed.ncbi.nlm.nih.gov/32860505/",
+     "pmid": "32860505",
+     "doi": "10.1093/eurheartj/ehaa612",
+     "sourceBody": "Eur Heart J",
+     "year": 2021,
+     "type": "clinical_practice_guideline"
+    },
+    {
+     "title": "2024 ESC Guidelines for the management of atrial fibrillation developed in collaboration with the European Association for Cardio-Thoracic Surgery (EACTS)",
+     "url": "https://pubmed.ncbi.nlm.nih.gov/39210723/",
+     "pmid": "39210723",
+     "doi": "10.1093/eurheartj/ehae176",
+     "sourceBody": "Eur Heart J",
+     "year": 2024,
+     "type": "clinical_practice_guideline"
+    }
+   ]
+  },
+  {
+   "topic": "Basal insulin initiation in type 2 diabetes",
+   "documents": [
+    {
+     "title": "Management of Hyperglycemia in Type 2 Diabetes, 2022. A Consensus Report by the American Diabetes Association (ADA) and the European Association for the Study of Diabetes (EASD)",
+     "url": "https://pubmed.ncbi.nlm.nih.gov/36148880/",
+     "pmid": "36148880",
+     "pmcid": "PMC10008140",
+     "doi": "10.2337/dci22-0034",
+     "sourceBody": "Diabetes Care",
+     "year": 2022,
+     "type": "clinical_practice_guideline"
+    }
+   ]
+  },
+  {
+   "topic": "Biologic switching in RA: mechanism switching vs same class after failure",
+   "documents": [
+    {
+     "title": "EULAR recommendations for the management of rheumatoid arthritis with synthetic and biological disease-modifying antirheumatic drugs: 2022 update",
+     "url": "https://pubmed.ncbi.nlm.nih.gov/36357155/",
+     "pmid": "36357155",
+     "doi": "10.1136/ard-2022-223356",
+     "sourceBody": "Ann Rheum Dis",
+     "year": 2023,
+     "type": "clinical_practice_guideline"
+    }
+   ]
+  },
+  {
+   "topic": "Calcium pyrophosphate deposition CPPD: pseudogout, chondrocalcinosis, crowned dens",
+   "documents": [
+    {
+     "title": "Gout, Hyperuricemia and Crystal-Associated Disease Network (G-CAN) consensus statement regarding labels and definitions for disease elements in calcium pyrophosphate crystal deposition (CPPD)",
+     "url": "https://pubmed.ncbi.nlm.nih.gov/42264993/",
+     "pmid": "42264993",
+     "doi": "10.1016/j.ard.2026.05.019",
+     "sourceBody": "Ann Rheum Dis",
+     "year": 2026,
+     "type": "clinical_practice_guideline"
+    },
+    {
+     "title": "European League Against Rheumatism recommendations for calcium pyrophosphate deposition. Part I: terminology and diagnosis",
+     "url": "https://pubmed.ncbi.nlm.nih.gov/21216817/",
+     "pmid": "21216817",
+     "doi": "10.1136/ard.2010.139105",
+     "sourceBody": "Ann Rheum Dis",
+     "year": 2011,
+     "type": "clinical_practice_guideline"
+    },
+    {
+     "title": "EULAR recommendations for calcium pyrophosphate deposition. Part II: management",
+     "url": "https://pubmed.ncbi.nlm.nih.gov/21257614/",
+     "pmid": "21257614",
+     "doi": "10.1136/ard.2010.139360",
+     "sourceBody": "Ann Rheum Dis",
+     "year": 2011,
+     "type": "clinical_practice_guideline"
+    }
+   ]
+  },
+  {
+   "topic": "Cardiac myosin activator therapy in HFrEF",
+   "documents": [
+    {
+     "title": "Cardiac Myosin Activation with Omecamtiv Mecarbil in Systolic Heart Failure",
+     "url": "https://pubmed.ncbi.nlm.nih.gov/33185990/",
+     "pmid": "33185990",
+     "doi": "10.1056/NEJMoa2025797",
+     "sourceBody": "N Engl J Med",
+     "year": 2021,
+     "type": "randomized_controlled_trial"
+    }
+   ]
+  },
+  {
+   "topic": "Cardiopulmonary Exercise Testing",
+   "documents": [
+    {
+     "title": "Clinician's Guide to cardiopulmonary exercise testing in adults: a scientific statement from the American Heart Association",
+     "url": "https://pubmed.ncbi.nlm.nih.gov/20585013/",
+     "pmid": "20585013",
+     "doi": "10.1161/CIR.0b013e3181e52e69",
+     "sourceBody": "Circulation",
+     "year": 2010,
+     "type": "clinical_practice_guideline"
+    },
+    {
+     "title": "2014 ACC/AHA guideline on perioperative cardiovascular evaluation and management of patients undergoing noncardiac surgery: executive summary: a report of the American College of Cardiology/American Heart Association Task Force on Practice Guidelines",
+     "url": "https://pubmed.ncbi.nlm.nih.gov/25085962/",
+     "pmid": "25085962",
+     "doi": "10.1161/CIR.0000000000000105",
+     "sourceBody": "Circulation",
+     "year": 2014,
+     "type": "clinical_practice_guideline"
+    },
+    {
+     "title": "ATS/ACCP Statement on cardiopulmonary exercise testing",
+     "url": "https://pubmed.ncbi.nlm.nih.gov/12524257/",
+     "pmid": "12524257",
+     "doi": "10.1164/rccm.167.2.211",
+     "sourceBody": "Am J Respir Crit Care Med",
+     "year": 2003,
+     "type": "clinical_practice_guideline"
+    },
+    {
+     "title": "2018 AHA/ACC Guideline for the Management of Adults With Congenital Heart Disease: A Report of the American College of Cardiology/American Heart Association Task Force on Clinical Practice Guidelines",
+     "url": "https://pubmed.ncbi.nlm.nih.gov/30121239/",
+     "pmid": "30121239",
+     "doi": "10.1016/j.jacc.2018.08.1029",
+     "sourceBody": "J Am Coll Cardiol",
+     "year": 2019,
+     "type": "clinical_practice_guideline"
+    }
+   ]
+  },
+  {
+   "topic": "Cardiorenal syndrome ultrafiltration",
+   "documents": [
+    {
+     "title": "Ultrafiltration in decompensated heart failure with cardiorenal syndrome",
+     "url": "https://pubmed.ncbi.nlm.nih.gov/23131078/",
+     "pmid": "23131078",
+     "pmcid": "PMC3690472",
+     "doi": "10.1056/NEJMoa1210357",
+     "sourceBody": "N Engl J Med",
+     "year": 2012,
+     "type": "randomized_controlled_trial"
+    }
+   ]
+  },
+  {
+   "topic": "Chikungunya and Zika Arthropathy",
+   "documents": [
+    {
+     "title": "WHO guidelines for clinical management of arboviral diseases: dengue, chikungunya, Zika and yellow fever",
+     "url": "https://www.who.int/publications/i/item/9789240111110",
+     "sourceBody": "WHO",
+     "year": 2025,
+     "type": "clinical_practice_guideline"
+    }
+   ]
+  },
+  {
+   "topic": "COVID-19 critical illness: oxygenation strategy, dexamethasone, anticoagulation",
+   "documents": [
+    {
+     "title": "Therapeutic Anticoagulation with Heparin in Critically Ill Patients with Covid-19",
+     "url": "https://pubmed.ncbi.nlm.nih.gov/34351722/",
+     "pmid": "34351722",
+     "pmcid": "PMC8362592",
+     "doi": "10.1056/NEJMoa2103417",
+     "sourceBody": "N Engl J Med",
+     "year": 2021,
+     "type": "randomized_controlled_trial"
+    }
+   ]
+  },
+  {
+   "topic": "Cushings syndrome: ACTH-dependent vs independent, screening, dexamethasone suppression",
+   "documents": [
+    {
+     "title": "The diagnosis of Cushing's syndrome: an Endocrine Society Clinical Practice Guideline",
+     "url": "https://pubmed.ncbi.nlm.nih.gov/18334580/",
+     "pmid": "18334580",
+     "pmcid": "PMC2386281",
+     "doi": "10.1210/jc.2008-0125",
+     "sourceBody": "J Clin Endocrinol Metab",
+     "year": 2008,
+     "type": "clinical_practice_guideline"
+    },
+    {
+     "title": "Treatment of Cushing's Syndrome: An Endocrine Society Clinical Practice Guideline",
+     "url": "https://pubmed.ncbi.nlm.nih.gov/26222757/",
+     "pmid": "26222757",
+     "pmcid": "PMC4525003",
+     "doi": "10.1210/jc.2015-1818",
+     "sourceBody": "J Clin Endocrinol Metab",
+     "year": 2015,
+     "type": "clinical_practice_guideline"
+    }
+   ]
+  },
+  {
+   "topic": "Dialysis initiation timing in advanced CKD",
+   "documents": [
+    {
+     "title": "A randomized, controlled trial of early versus late initiation of dialysis",
+     "url": "https://pubmed.ncbi.nlm.nih.gov/20581422/",
+     "pmid": "20581422",
+     "doi": "10.1056/NEJMoa1000552",
+     "sourceBody": "N Engl J Med",
+     "year": 2010,
+     "type": "randomized_controlled_trial"
+    }
+   ]
+  },
+  {
+   "topic": "Disseminated intravascular coagulation: diagnostic criteria and management",
+   "documents": [
+    {
+     "title": "Towards definition, clinical and laboratory criteria, and a scoring system for disseminated intravascular coagulation",
+     "url": "https://pubmed.ncbi.nlm.nih.gov/11816725/",
+     "pmid": "11816725",
+     "sourceBody": "Thromb Haemost",
+     "year": 2001,
+     "type": "clinical_practice_guideline"
+    }
+   ]
+  },
+  {
+   "topic": "ECG interpretation: common acute findings and life-threatening arrhythmias",
+   "documents": [
+    {
+     "title": "AHA/ACCF/HRS recommendations for the standardization and interpretation of the electrocardiogram: part VI: acute ischemia/infarction: a scientific statement from the American Heart Association Electrocardiography and Arrhythmias Committee, Council on Clinical Cardiology; the American College of Cardiology Foundation; and the Heart Rhythm Society. Endorsed by the International Society for Computerized Electrocardiology",
+     "url": "https://pubmed.ncbi.nlm.nih.gov/19281933/",
+     "pmid": "19281933",
+     "doi": "10.1016/j.jacc.2008.12.016",
+     "sourceBody": "J Am Coll Cardiol",
+     "year": 2009,
+     "type": "clinical_practice_guideline"
+    }
+   ]
+  },
+  {
+   "topic": "Anaemia of Chronic Disease",
+   "documents": [
+    {
+     "title": "ICSH recommendations for modified and alternate methods measuring the erythrocyte sedimentation rate",
+     "url": "https://pubmed.ncbi.nlm.nih.gov/28497537/",
+     "pmid": "28497537",
+     "doi": "10.1111/ijlh.12693",
+     "sourceBody": "Int J Lab Hematol",
+     "year": 2017,
+     "type": "clinical_practice_guideline"
+    }
+   ]
+  },
+  {
+   "topic": "ESR, Plasma Viscosity and CRP Utility",
+   "documents": [
+    {
+     "title": "ICSH recommendations for modified and alternate methods measuring the erythrocyte sedimentation rate",
+     "url": "https://pubmed.ncbi.nlm.nih.gov/28497537/",
+     "pmid": "28497537",
+     "doi": "10.1111/ijlh.12693",
+     "sourceBody": "Int J Lab Hematol",
+     "year": 2017,
+     "type": "clinical_practice_guideline"
+    }
+   ]
+  },
+  {
+   "topic": "failure to thrive",
+   "documents": [
+    {
+     "title": "Faltering growth: recognition and management of faltering growth in children",
+     "url": "https://www.nice.org.uk/guidance/ng75",
+     "sourceBody": "NICE",
+     "year": 2017,
+     "type": "clinical_practice_guideline"
+    }
+   ]
+  },
+  {
+   "topic": "H. pylori infection",
+   "documents": [
+    {
+     "title": "Management of Helicobacter pylori infection: the Maastricht VI/Florence consensus report",
+     "url": "https://pubmed.ncbi.nlm.nih.gov/35944925/",
+     "pmid": "35944925",
+     "doi": "10.1136/gutjnl-2022-327745",
+     "sourceBody": "Gut",
+     "year": 2022,
+     "type": "clinical_practice_guideline"
+    },
+    {
+     "title": "ACG Clinical Guideline: Treatment of Helicobacter pylori Infection",
+     "url": "https://pubmed.ncbi.nlm.nih.gov/28071659/",
+     "pmid": "28071659",
+     "doi": "10.1038/ajg.2016.563",
+     "sourceBody": "Am J Gastroenterol",
+     "year": 2017,
+     "type": "clinical_practice_guideline"
+    },
+    {
+     "title": "Management of Helicobacter pylori infection-the Maastricht V/Florence Consensus Report",
+     "url": "https://pubmed.ncbi.nlm.nih.gov/27707777/",
+     "pmid": "27707777",
+     "doi": "10.1136/gutjnl-2016-312288",
+     "sourceBody": "Gut",
+     "year": 2017,
+     "type": "clinical_practice_guideline"
+    }
+   ]
+  },
+  {
+   "topic": "Hemodialysis adequacy and frequency",
+   "documents": [
+    {
+     "title": "In-center hemodialysis six times per week versus three times per week",
+     "url": "https://pubmed.ncbi.nlm.nih.gov/21091062/",
+     "pmid": "21091062",
+     "pmcid": "PMC3042140",
+     "doi": "10.1056/NEJMoa1001593",
+     "sourceBody": "N Engl J Med",
+     "year": 2010,
+     "type": "randomized_controlled_trial"
+    }
+   ]
+  },
+  {
+   "topic": "Hepatic encephalopathy recurrence prevention",
+   "documents": [
+    {
+     "title": "Hepatic encephalopathy in chronic liver disease: 2014 Practice Guideline by the American Association for the Study of Liver Diseases and the European Association for the Study of the Liver",
+     "url": "https://pubmed.ncbi.nlm.nih.gov/25042402/",
+     "pmid": "25042402",
+     "doi": "10.1002/hep.27210",
+     "sourceBody": "Hepatology",
+     "year": 2014,
+     "type": "clinical_practice_guideline"
+    }
+   ]
+  },
+  {
+   "topic": "Hyperosmolar hyperglycaemic state HHS: osmolarity calculation, fluid replacement",
+   "documents": [
+    {
+     "title": "JBDS 06: Management of hyperosmolar hyperglycaemic state (HHS) in adults (2022 update; Diabet Med doi:10.1111/dme.15005)",
+     "url": "https://abcd.care/resource/current/jbds-06-management-hyperosmolar-hyperglycaemic-state-hhs-adults-diabetes",
+     "sourceBody": "JBDS-IP",
+     "year": 2022,
+     "type": "clinical_practice_guideline"
+    }
+   ]
+  },
+  {
+   "topic": "Hypersensitivity Pneumonitis",
+   "documents": [
+    {
+     "title": "ACR Appropriateness Criteria® Occupational Lung Diseases",
+     "url": "https://pubmed.ncbi.nlm.nih.gov/32370962/",
+     "pmid": "32370962",
+     "doi": "10.1016/j.jacr.2020.01.022",
+     "sourceBody": "J Am Coll Radiol",
+     "year": 2020,
+     "type": "clinical_practice_guideline"
+    }
+   ]
+  },
+  {
+   "topic": "Hypokalaemia",
+   "documents": [
+    {
+     "title": "Cardiac arrest in special circumstances",
+     "url": "https://pubmed.ncbi.nlm.nih.gov/34545030/",
+     "pmid": "34545030",
+     "doi": "10.1097/MCC.0000000000000876",
+     "sourceBody": "Curr Opin Crit Care",
+     "year": 2021,
+     "type": "review_article"
+    }
+   ]
+  },
+  {
+   "topic": "Icosapent ethyl residual cardiovascular risk",
+   "documents": [
+    {
+     "title": "Cardiovascular Risk Reduction with Icosapent Ethyl for Hypertriglyceridemia",
+     "url": "https://pubmed.ncbi.nlm.nih.gov/30415628/",
+     "pmid": "30415628",
+     "doi": "10.1056/NEJMoa1812792",
+     "sourceBody": "N Engl J Med",
+     "year": 2019,
+     "type": "randomized_controlled_trial"
+    }
+   ]
+  },
+  {
+   "topic": "ICU scoring systems: APACHE II, SOFA, SAPS — prognostication and limitations",
+   "documents": [
+    {
+     "title": "The SOFA (Sepsis-related Organ Failure Assessment) score to describe organ dysfunction/failure. On behalf of the Working Group on Sepsis-Related Problems of the European Society of Intensive Care Medicine",
+     "url": "https://pubmed.ncbi.nlm.nih.gov/8844239/",
+     "pmid": "8844239",
+     "doi": "10.1007/BF01709751",
+     "sourceBody": "Intensive Care Med",
+     "year": 1996,
+     "type": "review_article"
+    },
+    {
+     "title": "APACHE II: a severity of disease classification system",
+     "url": "https://pubmed.ncbi.nlm.nih.gov/3928249/",
+     "pmid": "3928249",
+     "sourceBody": "Crit Care Med",
+     "year": 1985,
+     "type": "clinical_practice_guideline"
+    }
+   ]
+  },
+  {
+   "topic": "Incarcerated and strangulated inguinal, femoral, and ventral hernias",
+   "documents": [
+    {
+     "title": "2017 update of the WSES guidelines for emergency repair of complicated abdominal wall hernias",
+     "url": "https://pubmed.ncbi.nlm.nih.gov/28804507/",
+     "pmid": "28804507",
+     "pmcid": "PMC5545868",
+     "doi": "10.1186/s13017-017-0149-y",
+     "sourceBody": "World J Emerg Surg",
+     "year": 2017,
+     "type": "clinical_practice_guideline"
+    },
+    {
+     "title": "Emergency repair of complicated abdominal wall hernias: WSES guidelines",
+     "url": "https://pubmed.ncbi.nlm.nih.gov/31407109/",
+     "pmid": "31407109",
+     "doi": "10.1007/s10029-019-02021-8",
+     "sourceBody": "Hernia",
+     "year": 2020,
+     "type": "clinical_practice_guideline"
+    }
+   ]
+  },
+  {
+   "topic": "Indications for Acute Dialysis",
+   "documents": [
+    {
+     "title": "KDIGO Clinical Practice Guideline for Acute Kidney Injury (Kidney Int Suppl 2012;2:1-138; doi:10.1038/kisup.2012.1)",
+     "url": "https://kdigo.org/guidelines/acute-kidney-injury/",
+     "sourceBody": "KDIGO",
+     "year": 2012,
+     "type": "clinical_practice_guideline"
+    }
+   ]
+  },
+  {
+   "topic": "Intrinsic AKI: ATN and Renal Ischaemia",
+   "documents": [
+    {
+     "title": "KDIGO Clinical Practice Guideline for Acute Kidney Injury (Kidney Int Suppl 2012;2:1-138; doi:10.1038/kisup.2012.1)",
+     "url": "https://kdigo.org/guidelines/acute-kidney-injury/",
+     "sourceBody": "KDIGO",
+     "year": 2012,
+     "type": "clinical_practice_guideline"
+    }
+   ]
+  },
+  {
+   "topic": "Key lipid-lowering trials: 4S, HPS, FOURIER, ODYSSEY interpretation",
+   "documents": [
+    {
+     "title": "MRC/BHF Heart Protection Study of cholesterol lowering with simvastatin in 20,536 high-risk individuals: a randomised placebo-controlled trial",
+     "url": "https://pubmed.ncbi.nlm.nih.gov/12114036/",
+     "pmid": "12114036",
+     "doi": "10.1016/S0140-6736(02)09327-3",
+     "sourceBody": "Lancet",
+     "year": 2002,
+     "type": "randomized_controlled_trial"
+    }
+   ]
+  },
+  {
+   "topic": "management of HF with Reduced ejection fraction",
+   "documents": [
+    {
+     "title": "2021 ESC Guidelines for the diagnosis and treatment of acute and chronic heart failure",
+     "url": "https://pubmed.ncbi.nlm.nih.gov/34447992/",
+     "pmid": "34447992",
+     "doi": "10.1093/eurheartj/ehab368",
+     "sourceBody": "Eur Heart J",
+     "year": 2021,
+     "type": "clinical_practice_guideline"
+    }
+   ]
+  },
+  {
+   "topic": "management of PRESS",
+   "documents": [
+    {
+     "title": "Posterior reversible encephalopathy syndrome: evolving insights in diagnosis, management, and outcomes",
+     "url": "https://pubmed.ncbi.nlm.nih.gov/40818477/",
+     "pmid": "40818477",
+     "doi": "10.1016/S1474-4422(25)00232-7",
+     "sourceBody": "Lancet Neurol",
+     "year": 2025,
+     "type": "review_article"
+    }
+   ]
+  },
+  {
+   "topic": "Malignant hyperthermia and neuroleptic malignant syndrome: recognition and dantrolene",
+   "documents": [
+    {
+     "title": "JSA guideline for the management of malignant hyperthermia crisis 2016",
+     "url": "https://pubmed.ncbi.nlm.nih.gov/28246924/",
+     "pmid": "28246924",
+     "doi": "10.1007/s00540-016-2305-z",
+     "sourceBody": "J Anesth",
+     "year": 2017,
+     "type": "clinical_practice_guideline"
+    }
+   ]
+  },
+  {
+   "topic": "MS initial presentation",
+   "documents": [
+    {
+     "title": "Diagnosis of multiple sclerosis: 2017 revisions of the McDonald criteria",
+     "url": "https://pubmed.ncbi.nlm.nih.gov/29275977/",
+     "pmid": "29275977",
+     "doi": "10.1016/S1474-4422(17)30470-2",
+     "sourceBody": "Lancet Neurol",
+     "year": 2018,
+     "type": "clinical_practice_guideline"
+    }
+   ]
+  },
+  {
+   "topic": "Guillain-Barre syndrome immunotherapy",
+   "documents": [
+    {
+     "title": "Diagnosis of multiple sclerosis: 2017 revisions of the McDonald criteria",
+     "url": "https://pubmed.ncbi.nlm.nih.gov/29275977/",
+     "pmid": "29275977",
+     "doi": "10.1016/S1474-4422(17)30470-2",
+     "sourceBody": "Lancet Neurol",
+     "year": 2018,
+     "type": "clinical_practice_guideline"
+    }
+   ]
+  },
+  {
+   "topic": "myocardial infarction",
+   "documents": [
+    {
+     "title": "2023 ESC Guidelines for the management of acute coronary syndromes",
+     "url": "https://pubmed.ncbi.nlm.nih.gov/37622654/",
+     "pmid": "37622654",
+     "doi": "10.1093/eurheartj/ehad191",
+     "sourceBody": "Eur Heart J",
+     "year": 2023,
+     "type": "clinical_practice_guideline"
+    }
+   ]
+  },
+  {
+   "topic": "Native joint septic arthritis antibiotic duration",
+   "documents": [
+    {
+     "title": "BSR & BHPR, BOA, RCGP and BSAC guidelines for management of the hot swollen joint in adults",
+     "url": "https://pubmed.ncbi.nlm.nih.gov/16829534/",
+     "pmid": "16829534",
+     "doi": "10.1093/rheumatology/kel163a",
+     "sourceBody": "Rheumatology (Oxford)",
+     "year": 2006,
+     "type": "clinical_practice_guideline"
+    }
+   ]
+  },
+  {
+   "topic": "Non-small cell lung cancer immunotherapy",
+   "documents": [
+    {
+     "title": "Pembrolizumab versus Chemotherapy for PD-L1-Positive Non-Small-Cell Lung Cancer",
+     "url": "https://pubmed.ncbi.nlm.nih.gov/27718847/",
+     "pmid": "27718847",
+     "doi": "10.1056/NEJMoa1606774",
+     "sourceBody": "N Engl J Med",
+     "year": 2016,
+     "type": "randomized_controlled_trial"
+    },
+    {
+     "title": "NCCN Guidelines: Non-Small Cell Lung Cancer (registration required)",
+     "url": "https://www.nccn.org/guidelines/guidelines-detail?category=1&id=1450",
+     "sourceBody": "NCCN",
+     "type": "clinical_practice_guideline"
+    }
+   ]
+  },
+  {
+   "topic": "Nonspecific Interstitial Pneumonia",
+   "documents": [
+    {
+     "title": "Diagnosis of Idiopathic Pulmonary Fibrosis. An Official ATS/ERS/JRS/ALAT Clinical Practice Guideline",
+     "url": "https://pubmed.ncbi.nlm.nih.gov/30168753/",
+     "pmid": "30168753",
+     "doi": "10.1164/rccm.201807-1255ST",
+     "sourceBody": "Am J Respir Crit Care Med",
+     "year": 2018,
+     "type": "clinical_practice_guideline"
+    }
+   ]
+  },
+  {
+   "topic": "Otitis media, otitis externa and mastoiditis",
+   "documents": [
+    {
+     "title": "Otitis media (acute): antimicrobial prescribing",
+     "url": "https://www.nice.org.uk/guidance/ng91",
+     "sourceBody": "NICE",
+     "year": 2018,
+     "type": "clinical_practice_guideline"
+    }
+   ]
+  },
+  {
+   "topic": "Palindromic Rheumatism",
+   "documents": [
+    {
+     "title": "EULAR recommendations for the management of rheumatoid arthritis with synthetic and biological disease-modifying antirheumatic drugs: 2022 update",
+     "url": "https://pubmed.ncbi.nlm.nih.gov/36357155/",
+     "pmid": "36357155",
+     "doi": "10.1136/ard-2022-223356",
+     "sourceBody": "Ann Rheum Dis",
+     "year": 2023,
+     "type": "clinical_practice_guideline"
+    },
+    {
+     "title": "2010 Rheumatoid arthritis classification criteria: an American College of Rheumatology/European League Against Rheumatism collaborative initiative",
+     "url": "https://pubmed.ncbi.nlm.nih.gov/20872595/",
+     "pmid": "20872595",
+     "doi": "10.1002/art.27584",
+     "sourceBody": "Arthritis Rheum",
+     "year": 2010,
+     "type": "clinical_practice_guideline"
+    }
+   ]
+  },
+  {
+   "topic": "Pancreatic Ductal Adenocarcinoma",
+   "documents": [
+    {
+     "title": "Borderline resectable pancreatic cancer: a consensus statement by the International Study Group of Pancreatic Surgery (ISGPS)",
+     "url": "https://pubmed.ncbi.nlm.nih.gov/24856119/",
+     "pmid": "24856119",
+     "doi": "10.1016/j.surg.2014.02.001",
+     "sourceBody": "Surgery",
+     "year": 2014,
+     "type": "clinical_practice_guideline"
+    },
+    {
+     "title": "REDISCOVER International Guidelines on the Perioperative Care of Surgical Patients With Borderline-resectable and Locally Advanced Pancreatic Cancer",
+     "url": "https://pubmed.ncbi.nlm.nih.gov/38407228/",
+     "pmid": "38407228",
+     "pmcid": "PMC11161250",
+     "doi": "10.1097/SLA.0000000000006248",
+     "sourceBody": "Ann Surg",
+     "year": 2024,
+     "type": "clinical_practice_guideline"
+    }
+   ]
+  },
+  {
+   "topic": "Beta-lactam allergy: penicillin allergy delabelling, cross-reactivity, skin testing, graded challenge",
+   "documents": [
+    {
+     "title": "Drug allergy: A 2022 practice parameter update",
+     "url": "https://pubmed.ncbi.nlm.nih.gov/36122788/",
+     "pmid": "36122788",
+     "doi": "10.1016/j.jaci.2022.08.028",
+     "sourceBody": "J Allergy Clin Immunol",
+     "year": 2022,
+     "type": "clinical_practice_guideline"
+    }
+   ]
+  },
+  {
+   "topic": "Parapneumonic Effusion and Empyema",
+   "documents": [
+    {
+     "title": "British Thoracic Society Guideline for pleural disease",
+     "url": "https://pubmed.ncbi.nlm.nih.gov/37433578/",
+     "pmid": "37433578",
+     "doi": "10.1136/thorax-2022-219784",
+     "sourceBody": "Thorax",
+     "year": 2023,
+     "type": "clinical_practice_guideline"
+    },
+    {
+     "title": "Intrapleural use of tissue plasminogen activator and DNase in pleural infection",
+     "url": "https://pubmed.ncbi.nlm.nih.gov/21830966/",
+     "pmid": "21830966",
+     "doi": "10.1056/NEJMoa1012740",
+     "sourceBody": "N Engl J Med",
+     "year": 2011,
+     "type": "review_article"
+    }
+   ]
+  },
+  {
+   "topic": "Post-intensive care syndrome and long-term ICU outcomes",
+   "documents": [
+    {
+     "title": "Improving long-term outcomes after discharge from intensive care unit: report from a stakeholders' conference",
+     "url": "https://pubmed.ncbi.nlm.nih.gov/21946660/",
+     "pmid": "21946660",
+     "doi": "10.1097/CCM.0b013e318232da75",
+     "sourceBody": "Crit Care Med",
+     "year": 2012,
+     "type": "review_article"
+    }
+   ]
+  },
+  {
+   "topic": "Post-MI beta-blocker therapy contemporary evidence",
+   "documents": [
+    {
+     "title": "Beta-Blockers after Myocardial Infarction and Preserved Ejection Fraction",
+     "url": "https://pubmed.ncbi.nlm.nih.gov/38587241/",
+     "pmid": "38587241",
+     "doi": "10.1056/NEJMoa2401479",
+     "sourceBody": "N Engl J Med",
+     "year": 2024,
+     "type": "review_article"
+    }
+   ]
+  },
+  {
+   "topic": "primary angioplasty versus thrombolytic therapy acute myocardial infarction",
+   "documents": [
+    {
+     "title": "A comparison of coronary angioplasty with fibrinolytic therapy in acute myocardial infarction",
+     "url": "https://pubmed.ncbi.nlm.nih.gov/12930925/",
+     "pmid": "12930925",
+     "doi": "10.1056/NEJMoa025142",
+     "sourceBody": "N Engl J Med",
+     "year": 2003,
+     "type": "randomized_controlled_trial"
+    },
+    {
+     "title": "2023 ESC Guidelines for the management of acute coronary syndromes",
+     "url": "https://pubmed.ncbi.nlm.nih.gov/37622654/",
+     "pmid": "37622654",
+     "doi": "10.1093/eurheartj/ehad191",
+     "sourceBody": "Eur Heart J",
+     "year": 2023,
+     "type": "clinical_practice_guideline"
+    }
+   ]
+  },
+  {
+   "topic": "Prothrombin G20210A Mutation",
+   "documents": [
+    {
+     "title": "American Society of Hematology 2023 guidelines for management of venous thromboembolism: thrombophilia testing",
+     "url": "https://pubmed.ncbi.nlm.nih.gov/37195076/",
+     "pmid": "37195076",
+     "pmcid": "PMC10709681",
+     "doi": "10.1182/bloodadvances.2023010177",
+     "sourceBody": "Blood Adv",
+     "year": 2023,
+     "type": "clinical_practice_guideline"
+    },
+    {
+     "title": "EFNS guideline on the treatment of cerebral venous and sinus thrombosis in adult patients",
+     "url": "https://pubmed.ncbi.nlm.nih.gov/20402748/",
+     "pmid": "20402748",
+     "doi": "10.1111/j.1468-1331.2010.03011.x",
+     "sourceBody": "Eur J Neurol",
+     "year": 2010,
+     "type": "clinical_practice_guideline"
+    }
+   ]
+  },
+  {
+   "topic": "respiratory tract infections",
+   "documents": [
+    {
+     "title": "Respiratory tract infections (self-limiting): prescribing antibiotics",
+     "url": "https://www.nice.org.uk/guidance/cg69",
+     "sourceBody": "NICE",
+     "year": 2008,
+     "type": "clinical_practice_guideline"
+    }
+   ]
+  },
+  {
+   "topic": "Scabies: diagnosis, treatment and outbreak management",
+   "documents": [
+    {
+     "title": "Scabies: management advice for health professionals",
+     "url": "https://www.gov.uk/government/publications/scabies-management-advice-for-health-professionals",
+     "sourceBody": "UKHSA",
+     "type": "clinical_practice_guideline"
+    }
+   ]
+  },
+  {
+   "topic": "Sickle cell disease gene editing",
+   "documents": [
+    {
+     "title": "Exagamglogene Autotemcel for Severe Sickle Cell Disease",
+     "url": "https://pubmed.ncbi.nlm.nih.gov/38661449/",
+     "pmid": "38661449",
+     "doi": "10.1056/NEJMoa2309676",
+     "sourceBody": "N Engl J Med",
+     "year": 2024,
+     "type": "review_article"
+    }
+   ]
+  },
+  {
+   "topic": "Social anxiety disorder SSRI and CBT",
+   "documents": [
+    {
+     "title": "Social anxiety disorder: recognition, assessment and treatment",
+     "url": "https://www.nice.org.uk/guidance/cg159",
+     "sourceBody": "NICE",
+     "year": 2013,
+     "type": "clinical_practice_guideline"
+    }
+   ]
+  },
+  {
+   "topic": "STEMI: electrocardiographic mimics and reperfusion decision",
+   "documents": [
+    {
+     "title": "2023 ESC Guidelines for the management of acute coronary syndromes",
+     "url": "https://pubmed.ncbi.nlm.nih.gov/37622654/",
+     "pmid": "37622654",
+     "doi": "10.1093/eurheartj/ehad191",
+     "sourceBody": "Eur Heart J",
+     "year": 2023,
+     "type": "clinical_practice_guideline"
+    }
+   ]
+  },
+  {
+   "topic": "Systemic sclerosis: limited vs diffuse, antitopoisomerase vs anticentromere antibodies",
+   "documents": [
+    {
+     "title": "2023 American College of Rheumatology (ACR)/American College of Chest Physicians (CHEST) Guideline for the Treatment of Interstitial Lung Disease in People with Systemic Autoimmune Rheumatic Diseases",
+     "url": "https://pubmed.ncbi.nlm.nih.gov/38978310/",
+     "pmid": "38978310",
+     "pmcid": "PMC12646471",
+     "doi": "10.1002/art.42861",
+     "sourceBody": "Arthritis Rheumatol",
+     "year": 2024,
+     "type": "clinical_practice_guideline"
+    }
+   ]
+  },
+  {
+   "topic": "Thrombotic Microangiopathy and the Kidney",
+   "documents": [
+    {
+     "title": "Atypical hemolytic uremic syndrome and C3 glomerulopathy: conclusions from a \"Kidney Disease: Improving Global Outcomes\" (KDIGO) Controversies Conference",
+     "url": "https://pubmed.ncbi.nlm.nih.gov/27989322/",
+     "pmid": "27989322",
+     "doi": "10.1016/j.kint.2016.10.005",
+     "sourceBody": "Kidney Int",
+     "year": 2017,
+     "type": "review_article"
+    }
+   ]
+  },
+  {
+   "topic": "Thyroiditis: Hashimotos, de Quervains, postpartum - phases, TSH trajectory, management",
+   "documents": [
+    {
+     "title": "2017 Guidelines of the American Thyroid Association for the Diagnosis and Management of Thyroid Disease During Pregnancy and the Postpartum",
+     "url": "https://pubmed.ncbi.nlm.nih.gov/28056690/",
+     "pmid": "28056690",
+     "doi": "10.1089/thy.2016.0457",
+     "sourceBody": "Thyroid",
+     "year": 2017,
+     "type": "clinical_practice_guideline"
+    }
+   ]
+  },
+  {
+   "topic": "tonsillitis",
+   "documents": [
+    {
+     "title": "SIGN 117: Management of sore throat and indications for tonsillectomy",
+     "url": "https://www.sign.ac.uk/our-guidelines/management-of-sore-throat-and-indications-for-tonsillectomy/",
+     "sourceBody": "SIGN",
+     "year": 2010,
+     "type": "clinical_practice_guideline"
+    }
+   ]
+  },
+  {
+   "topic": "viral wheeze",
+   "documents": [
+    {
+     "title": "Definition, assessment and treatment of wheezing disorders in preschool children: an evidence-based approach",
+     "url": "https://pubmed.ncbi.nlm.nih.gov/18827155/",
+     "pmid": "18827155",
+     "doi": "10.1183/09031936.00002108",
+     "sourceBody": "Eur Respir J",
+     "year": 2008,
+     "type": "clinical_practice_guideline"
+    }
+   ]
+  },
+  {
+   "topic": "Wellens syndrome and left main equivalent ECG patterns",
+   "documents": [
+    {
+     "title": "AHA/ACCF/HRS recommendations for the standardization and interpretation of the electrocardiogram: part VI: acute ischemia/infarction: a scientific statement from the American Heart Association Electrocardiography and Arrhythmias Committee, Council on Clinical Cardiology; the American College of Cardiology Foundation; and the Heart Rhythm Society. Endorsed by the International Society for Computerized Electrocardiology",
+     "url": "https://pubmed.ncbi.nlm.nih.gov/19281933/",
+     "pmid": "19281933",
+     "doi": "10.1016/j.jacc.2008.12.016",
+     "sourceBody": "J Am Coll Cardiol",
+     "year": 2009,
+     "type": "clinical_practice_guideline"
+    }
+   ]
+  }
+ ]
+}

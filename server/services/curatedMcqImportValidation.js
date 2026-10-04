@@ -5,7 +5,7 @@
  * Expected shape (per question):
  * - id: string (non-empty)
  * - question: string (non-empty)
- * - options: Record<A|B|C|D|E, string> (exactly 5 keys, non-empty)
+ * - options: Record<A|B|C|D[|E], string> (4 or 5 keys: A–D required, E optional; all non-empty)
  * - correctAnswer: string letter in A..E
  * - explanation: string (non-empty)
  * - difficulty: 'easy' | 'medium' | 'hard'
@@ -19,10 +19,12 @@ function validateCuratedQuestion(q, index, errors) {
   if (!q.question || typeof q.question !== 'string' || !q.question.trim()) addErr('question is required');
   if (!q.options || typeof q.options !== 'object') addErr('options object is required');
   else {
-    const letters = ['A', 'B', 'C', 'D', 'E'];
     const keys = Object.keys(q.options);
-    if (keys.length !== 5 || !letters.every((k) => typeof q.options[k] === 'string' && q.options[k].trim())) {
-      addErr('options must include exactly A–E with non-empty strings');
+    const letters = keys.length === 4 ? ['A', 'B', 'C', 'D'] : ['A', 'B', 'C', 'D', 'E'];
+    if ((keys.length !== 4 && keys.length !== 5) || !letters.every((k) => typeof q.options[k] === 'string' && q.options[k].trim())) {
+      addErr('options must include A–D (and optionally E) with non-empty strings');
+    } else if (!letters.includes(String(q.correctAnswer))) {
+      addErr('correctAnswer must match one of the provided options');
     }
   }
   if (!q.correctAnswer || !/^[A-E]$/.test(String(q.correctAnswer))) addErr('correctAnswer must be one of A–E');
@@ -61,7 +63,9 @@ function transformCuratedQuestionToStored(q) {
     type: 'multiple_choice',
     questionType: 'guideline',
     question: String(q.question),
-    options: letters.map((L) => `${L}: ${String(q.options?.[L] || '').trim()}`),
+    options: letters
+      .filter((L) => typeof q.options?.[L] === 'string' && q.options[L].trim())
+      .map((L) => `${L}: ${String(q.options[L]).trim()}`),
     correctAnswer: String(q.correctAnswer),
     explanation: String(q.explanation || ''),
     difficulty: (q.difficulty === 'easy' || q.difficulty === 'hard') ? q.difficulty : 'medium',
