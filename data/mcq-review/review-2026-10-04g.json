@@ -1,0 +1,294 @@
+{
+  "withdrawals": [
+    {
+      "questionId": "paper-mcq:iga-nephropathy#0",
+      "verdict": "Ambiguous",
+      "reason": "The stem says 'highest' remission, but the cited NMA ranks sibeprenlimab and tonsillectomy plus steroid pulse above STE+RASI. B is only the highest of the liste",
+      "notes": "The stem says 'highest' remission, but the cited NMA ranks sibeprenlimab and tonsillectomy plus steroid pulse above STE+RASI. B is only the highest of the listed options."
+    },
+    {
+      "questionId": "guideline-mcq:IgA-nephropathy-treatment-(sparsentan-and-targeted-therapy)#1",
+      "verdict": "Ambiguous",
+      "reason": "Sparsentan carries hepatotoxicity monitoring requirements (aminotransferases, REMS) as well as potassium and renal function, so D is also defensible.",
+      "notes": "Sparsentan carries hepatotoxicity monitoring requirements (aminotransferases, REMS) as well as potassium and renal function, so D is also defensible."
+    },
+    {
+      "questionId": "guideline-mcq:IgA-nephropathy-treatment-(sparsentan-and-targeted-therapy)#2",
+      "verdict": "Ambiguous",
+      "reason": "Complement factor B/D inhibitors act downstream on complement activation, not on abnormal IgA1 glycosylation. The stem's premise doesn't match the keyed option.",
+      "notes": "Complement factor B/D inhibitors act downstream on complement activation, not on abnormal IgA1 glycosylation. The stem's premise doesn't match the keyed option."
+    },
+    {
+      "questionId": "guideline-mcq:iga-vasculitis-henoch-schonlein-skin-joints-renal-gi-involvement-in-adults#0",
+      "verdict": "Unsupported",
+      "reason": "Keys NSAIDs in a patient with haematuria and proteinuria. NSAIDs are generally avoided with renal involvement in IgAV, and the linked statement only says manage",
+      "notes": "Keys NSAIDs in a patient with haematuria and proteinuria. NSAIDs are generally avoided with renal involvement in IgAV, and the linked statement only says management is symptomatic."
+    },
+    {
+      "questionId": "cold-start-mcq:iga-vasculitis#2",
+      "verdict": "Unsupported",
+      "reason": "Plasma exchange isn't a guideline-supported standard for paediatric IgAV RPGN. KDIGO 2025 and SHARE use high-dose steroids with cyclophosphamide or other immuno",
+      "notes": "Plasma exchange isn't a guideline-supported standard for paediatric IgAV RPGN. KDIGO 2025 and SHARE use high-dose steroids with cyclophosphamide or other immunosuppression, and PEX is at most adjunctive."
+    },
+    {
+      "questionId": "guideline-mcq:igg4-related-disease-diagnosis-and-b-cell-depletion#2",
+      "verdict": "Ambiguous",
+      "reason": "After relapse on taper, guidelines (2015 international consensus) re-induce with glucocorticoids plus a steroid-sparing agent, either conventional (e.g. methotr",
+      "notes": "After relapse on taper, guidelines (2015 international consensus) re-induce with glucocorticoids plus a steroid-sparing agent, either conventional (e.g. methotrexate, azathioprine, MMF) or rituximab. C is also defensible."
+    },
+    {
+      "questionId": "cold-start-mcq:adrenal-insufficiency#1",
+      "verdict": "Ambiguous",
+      "reason": "A cortisol of 8 mcg/dL is within the normal range and isn't diagnostic. ICI-related adrenal insufficiency can be secondary (hypophysitis) or primary (adrenaliti",
+      "notes": "A cortisol of 8 mcg/dL is within the normal range and isn't diagnostic. ICI-related adrenal insufficiency can be secondary (hypophysitis) or primary (adrenalitis), so A and B overlap."
+    },
+    {
+      "questionId": "guideline-mcq:immune-checkpoint-inhibitors#0",
+      "verdict": "Unsupported",
+      "reason": "Suspected adrenal crisis with hypotension needs IV hydrocortisone (100 mg bolus) plus IV fluids (ESE/Society for Endocrinology). The keyed high-dose oral predni",
+      "notes": "Suspected adrenal crisis with hypotension needs IV hydrocortisone (100 mg bolus) plus IV fluids (ESE/Society for Endocrinology). The keyed high-dose oral prednisone isn't the supported regimen."
+    },
+    {
+      "questionId": "guideline-mcq:immune-thrombocytopenia#3",
+      "verdict": "Ambiguous",
+      "reason": "The explanation itself lists inadequate response to therapy as an indication for marrow examination, so B is also defensible alongside D.",
+      "notes": "The explanation itself lists inadequate response to therapy as an indication for marrow examination, so B is also defensible alongside D."
+    },
+    {
+      "questionId": "guideline-mcq:immune-thrombocytopenia-thrombopoietin-receptor-agonists#0",
+      "verdict": "Ambiguous",
+      "reason": "Per the eltrombopag label, ALT of 3x ULN or more is rechecked within 3-5 days, and the drug is stopped if the rise is progressive, persistent for 4 weeks or mor",
+      "notes": "Per the eltrombopag label, ALT of 3x ULN or more is rechecked within 3-5 days, and the drug is stopped if the rise is progressive, persistent for 4 weeks or more, or accompanied by bilirubin or symptoms. Immediate discontinuation isn't uniquely correct."
+    },
+    {
+      "questionId": "guideline-mcq:immune-thrombocytopenia-thrombopoietin-receptor-agonists#1",
+      "verdict": "Ambiguous",
+      "reason": "The stem has no question. It ends with the vignette, so the item is ill-posed.",
+      "notes": "The stem has no question. It ends with the vignette, so the item is ill-posed."
+    },
+    {
+      "questionId": "guideline-mcq:immune-thrombocytopenia-thrombopoietin-receptor-agonists#2",
+      "verdict": "Ambiguous",
+      "reason": "The stem has no question. It ends with the vignette, so the item is ill-posed.",
+      "notes": "The stem has no question. It ends with the vignette, so the item is ill-posed."
+    },
+    {
+      "questionId": "guideline-mcq:immune-thrombocytopenia-thrombopoietin-receptor-agonists#3",
+      "verdict": "Ambiguous",
+      "reason": "The stem has no question. It ends with the vignette, so the item is ill-posed.",
+      "notes": "The stem has no question. It ends with the vignette, so the item is ill-posed."
+    },
+    {
+      "questionId": "guideline-mcq:immunosuppression-post-transplant#3",
+      "verdict": "Ambiguous",
+      "reason": "Ill-posed. The stem asks for a percentage but keys a non-answer ('no single number'), so the item tests nothing answerable.",
+      "notes": "Ill-posed. The stem asks for a percentage but keys a non-answer ('no single number'), so the item tests nothing answerable."
+    },
+    {
+      "questionId": "guideline-mcq:inclisiran-for-ldl-cholesterol-lowering#0",
+      "verdict": "Ambiguous",
+      "reason": "NICE NG238 advises rechallenge at a lower dose or an alternative statin after intolerance, so B is also defensible. Inclisiran (TA733) requires a prior CV event",
+      "notes": "NICE NG238 advises rechallenge at a lower dose or an alternative statin after intolerance, so B is also defensible. Inclisiran (TA733) requires a prior CV event with LDL of 2.6 or more despite maximally tolerated lipid-lowering therapy."
+    },
+    {
+      "questionId": "guideline-mcq:Inclisiran-for-LDL-cholesterol-lowering#1",
+      "verdict": "Wrong answer",
+      "reason": "Withdrawn: inclisiran is given by subcutaneous injection (initial dose, a second dose at 3 months, then every 6 months), not by IV infusion. No option is correc",
+      "notes": "Withdrawn: inclisiran is given by subcutaneous injection (initial dose, a second dose at 3 months, then every 6 months), not by IV infusion. No option is correct. Original note: Inclisiran is given by subcutaneous injection (initial dose, again at 3 months, then every 6 months), not IV infusion. No option is correct."
+    },
+    {
+      "questionId": "guideline-mcq:Inclisiran-for-LDL-cholesterol-lowering#2",
+      "verdict": "Unsupported",
+      "reason": "Inclisiran is licensed for primary hypercholesterolaemia (including HeFH) and mixed dyslipidaemia, not homozygous FH (ORION-5 showed little effect). The keyed o",
+      "notes": "Inclisiran is licensed for primary hypercholesterolaemia (including HeFH) and mixed dyslipidaemia, not homozygous FH (ORION-5 showed little effect). The keyed option is overstated."
+    },
+    {
+      "questionId": "cold-start-mcq:post-renal-acute-kidney-injury#3",
+      "verdict": "Unsupported",
+      "reason": "In kidney transplant recipients, BK polyomavirus is the classic infectious cause of ureteric stenosis. CMV ureteritis is rare, so the claim that CMV is the most",
+      "notes": "In kidney transplant recipients, BK polyomavirus is the classic infectious cause of ureteric stenosis. CMV ureteritis is rare, so the claim that CMV is the most likely cause is unsupported."
+    },
+    {
+      "questionId": "paper-mcq:infection-prevention-and-control-standard-precautions-contact-isolation-hand-hygiene-evidence#3",
+      "verdict": "Unsupported",
+      "reason": "The item tests the appraisal note ('no abstract available'), not clinical content. Placeholder source.",
+      "notes": "The item tests the appraisal note ('no abstract available'), not clinical content. Placeholder source."
+    },
+    {
+      "questionId": "guideline-mcq:infection-prevention-and-control-standard-precautions-contact-isolation-hand-hygiene-evidence#2",
+      "verdict": "Ambiguous",
+      "reason": "Options A and B describe overlapping pitfalls. Glove and gown use for all contact with MRSA-colonised patients also varies by guidance (CDC contact precautions ",
+      "notes": "Options A and B describe overlapping pitfalls. Glove and gown use for all contact with MRSA-colonised patients also varies by guidance (CDC contact precautions vs UK practice)."
+    },
+    {
+      "questionId": "guideline-mcq:infectious-causes-of-lymphadenopathy-ebv-cmv-toxoplasmosis-tb-lymphoma-mimics#2",
+      "verdict": "Ambiguous",
+      "reason": "Delaying excisional biopsy when FNAC is inconclusive (B) is an equally recognised pitfall in suspected TB or lymphoma, so A isn't uniquely correct.",
+      "notes": "Delaying excisional biopsy when FNAC is inconclusive (B) is an equally recognised pitfall in suspected TB or lymphoma, so A isn't uniquely correct."
+    },
+    {
+      "questionId": "guideline-mcq:Infective-endocarditis-antibiotic-duration-and-surgery#1",
+      "verdict": "Unsupported",
+      "reason": "'Surgery after 2-3 days of antibiotics' isn't a guideline rule. ESC 2023 times surgery by indication: emergency (within 24 h) for heart failure or shock, urgent",
+      "notes": "'Surgery after 2-3 days of antibiotics' isn't a guideline rule. ESC 2023 times surgery by indication: emergency (within 24 h) for heart failure or shock, urgent (3-5 days) for uncontrolled infection."
+    },
+    {
+      "questionId": "guideline-mcq:Infective-endocarditis-antibiotic-duration-and-surgery#2",
+      "verdict": "Ambiguous",
+      "reason": "ESC/AHA give 4-6 weeks for E. faecalis NVE, with 4 weeks acceptable for uncomplicated NVE and short symptom duration. 6 weeks is for PVE or symptoms over 3 mont",
+      "notes": "ESC/AHA give 4-6 weeks for E. faecalis NVE, with 4 weeks acceptable for uncomplicated NVE and short symptom duration. 6 weeks is for PVE or symptoms over 3 months, so B is also defensible."
+    },
+    {
+      "questionId": "cold-start-mcq:infective-endocarditis-antimicrobial-and-oral-step-down-strategy#1",
+      "verdict": "Unsupported",
+      "reason": "Oral step-down in POET and ESC 2023 uses two-drug combinations for E. faecalis (e.g. amoxicillin plus moxifloxacin or linezolid). Amoxicillin monotherapy isn't ",
+      "notes": "Oral step-down in POET and ESC 2023 uses two-drug combinations for E. faecalis (e.g. amoxicillin plus moxifloxacin or linezolid). Amoxicillin monotherapy isn't supported."
+    },
+    {
+      "questionId": "cold-start-mcq:infective-endocarditis-antimicrobial-and-oral-step-down-strategy#2",
+      "verdict": "Wrong answer",
+      "reason": "Withdrawn: POET included prosthetic valve endocarditis, and ESC 2023 supports partial oral therapy for stable left-sided IE including PVE, so a mechanical valve",
+      "notes": "Withdrawn: POET included prosthetic valve endocarditis, and ESC 2023 supports partial oral therapy for stable left-sided IE including PVE, so a mechanical valve isn't a contraindication. No option is correct. Original note: POET included prosthetic valve endocarditis, and ESC 2023 supports partial oral therapy in stable left-sided IE including PVE, so a mechanical valve isn't a contraindication. No other option is one either."
+    },
+    {
+      "questionId": "cold-start-mcq:infective-endocarditis-antimicrobial-and-oral-step-down-strategy#3",
+      "verdict": "Unsupported",
+      "reason": "The explanation wrongly says POET focused on streptococci and enterococci (it included S. aureus). Oral options exist for right-sided MSSA IE, and the vancomyci",
+      "notes": "The explanation wrongly says POET focused on streptococci and enterococci (it included S. aureus). Oral options exist for right-sided MSSA IE, and the vancomycin-MRSA framing makes the key contestable."
+    },
+    {
+      "questionId": "paper-mcq:endocarditis-and-prophylaxis#0",
+      "verdict": "Unsupported",
+      "reason": "Tests the wording of a paper's appraisal summary, not clinical content. Placeholder source.",
+      "notes": "Tests the wording of a paper's appraisal summary, not clinical content. Placeholder source."
+    },
+    {
+      "questionId": "paper-mcq:endocarditis-and-prophylaxis#1",
+      "verdict": "Unsupported",
+      "reason": "Tests the wording of a paper's appraisal summary, not clinical content. Placeholder source.",
+      "notes": "Tests the wording of a paper's appraisal summary, not clinical content. Placeholder source."
+    },
+    {
+      "questionId": "paper-mcq:endocarditis-and-prophylaxis#2",
+      "verdict": "Unsupported",
+      "reason": "Tests the wording of a paper's appraisal summary, not clinical content. Placeholder source.",
+      "notes": "Tests the wording of a paper's appraisal summary, not clinical content. Placeholder source."
+    },
+    {
+      "questionId": "paper-mcq:endocarditis-and-prophylaxis#3",
+      "verdict": "Unsupported",
+      "reason": "Tests the wording of a paper's appraisal summary, not clinical content. Placeholder source.",
+      "notes": "Tests the wording of a paper's appraisal summary, not clinical content. Placeholder source."
+    },
+    {
+      "questionId": "paper-mcq:endocarditis-and-prophylaxis#4",
+      "verdict": "Unsupported",
+      "reason": "Tests the wording of a paper's appraisal summary, not clinical content. Placeholder source.",
+      "notes": "Tests the wording of a paper's appraisal summary, not clinical content. Placeholder source."
+    },
+    {
+      "questionId": "guideline-mcq:infective-endocarditis-duke-criteria-empiric-antibiotics-surgical-indications#0",
+      "verdict": "Ambiguous",
+      "reason": "The stem has no question. It ends with the vignette, so the item is ill-posed.",
+      "notes": "The stem has no question. It ends with the vignette, so the item is ill-posed."
+    },
+    {
+      "questionId": "guideline-mcq:infective-endocarditis-duke-criteria-empiric-antibiotics-surgical-indications#1",
+      "verdict": "Ambiguous",
+      "reason": "The stem has no question. ESC 2023 empiric PVE therapy also adds rifampicin to vancomycin plus gentamicin.",
+      "notes": "The stem has no question. ESC 2023 empiric PVE therapy also adds rifampicin to vancomycin plus gentamicin."
+    },
+    {
+      "questionId": "guideline-mcq:infective-endocarditis-duke-criteria-empiric-antibiotics-surgical-indications#2",
+      "verdict": "Ambiguous",
+      "reason": "The stem has no question. It ends with the vignette, so the item is ill-posed.",
+      "notes": "The stem has no question. It ends with the vignette, so the item is ill-posed."
+    },
+    {
+      "questionId": "guideline-mcq:device-related-infections#2",
+      "verdict": "Unsupported",
+      "reason": "Extrapolated from a device-related statement. For suspected PVE, TEE is first-line and 18F-FDG PET/CT is the preferred nuclear adjunct (ESC 2023), so 'SPECT has",
+      "notes": "Extrapolated from a device-related statement. For suspected PVE, TEE is first-line and 18F-FDG PET/CT is the preferred nuclear adjunct (ESC 2023), so 'SPECT has high diagnostic accuracy' isn't the supported answer."
+    },
+    {
+      "questionId": "paper-mcq:infective-endocarditis-duke-criteria-blood-cultures-echocardiography-surgical-indications#0",
+      "verdict": "Unsupported",
+      "reason": "Tests the guideline's generic 'not prescriptive' disclaimer, not clinical content. Placeholder source.",
+      "notes": "Tests the guideline's generic 'not prescriptive' disclaimer, not clinical content. Placeholder source."
+    },
+    {
+      "questionId": "paper-mcq:infective-endocarditis-duke-criteria-blood-cultures-echocardiography-surgical-indications#1",
+      "verdict": "Unsupported",
+      "reason": "Tests a description of the AHA statement, not clinical content. Placeholder source.",
+      "notes": "Tests a description of the AHA statement, not clinical content. Placeholder source."
+    },
+    {
+      "questionId": "paper-mcq:infective-endocarditis-duke-criteria-blood-cultures-echocardiography-surgical-indications#2",
+      "verdict": "Unsupported",
+      "reason": "Tests the guideline's generic disclaimer, not clinical content. Placeholder source.",
+      "notes": "Tests the guideline's generic disclaimer, not clinical content. Placeholder source."
+    },
+    {
+      "questionId": "paper-mcq:infective-endocarditis-duke-criteria-blood-cultures-echocardiography-surgical-indications#4",
+      "verdict": "Unsupported",
+      "reason": "Tests the guideline's generic disclaimer, not clinical content. Placeholder source.",
+      "notes": "Tests the guideline's generic disclaimer, not clinical content. Placeholder source."
+    },
+    {
+      "questionId": "guideline-mcq:infective-endocarditis-duke-criteria-blood-cultures-echocardiography-surgical-indications#0",
+      "verdict": "Unsupported",
+      "reason": "In an acutely ill patient with pulmonary oedema, guidelines (ESC 2023) advise three sets drawn about 30 minutes apart, then prompt empiric therapy. The keyed 24",
+      "notes": "In an acutely ill patient with pulmonary oedema, guidelines (ESC 2023) advise three sets drawn about 30 minutes apart, then prompt empiric therapy. The keyed 24-hour sampling before antibiotics would delay treatment."
+    },
+    {
+      "questionId": "cold-start-mcq:crohn-disease-biologics#3",
+      "verdict": "Ambiguous",
+      "reason": "NICE advises against biologics after complete resection, but ECCO 2024 and AGA recommend anti-TNF prophylaxis for patients at high risk of postoperative recurre",
+      "notes": "NICE advises against biologics after complete resection, but ECCO 2024 and AGA recommend anti-TNF prophylaxis for patients at high risk of postoperative recurrence. Risk isn't given, so A is defensible."
+    },
+    {
+      "questionId": "cold-start-mcq:crohn-s-disease-biologics#4",
+      "verdict": "Ambiguous",
+      "reason": "NICE advises against biologics after complete resection, but ECCO 2024 and AGA recommend anti-TNF prophylaxis for patients at high risk of postoperative recurre",
+      "notes": "NICE advises against biologics after complete resection, but ECCO 2024 and AGA recommend anti-TNF prophylaxis for patients at high risk of postoperative recurrence. Risk isn't given, so A is defensible."
+    },
+    {
+      "questionId": "paper-mcq:inflammatory-bowel-disease#2",
+      "verdict": "Ambiguous",
+      "reason": "ECCO puts extensive colitis with mild ongoing activity at intermediate risk, with surveillance every 2-3 years. Annual surveillance is for high risk, so no opti",
+      "notes": "ECCO puts extensive colitis with mild ongoing activity at intermediate risk, with surveillance every 2-3 years. Annual surveillance is for high risk, so no option matches exactly."
+    },
+    {
+      "questionId": "cold-start-mcq:inflammatory-bowel-disease-biologic-therapy#3",
+      "verdict": "Ambiguous",
+      "reason": "NICE advises against biologics after complete resection, but ECCO 2024 and AGA recommend anti-TNF prophylaxis for patients at high risk of postoperative recurre",
+      "notes": "NICE advises against biologics after complete resection, but ECCO 2024 and AGA recommend anti-TNF prophylaxis for patients at high risk of postoperative recurrence. Risk isn't given, so A is defensible."
+    },
+    {
+      "questionId": "guideline-mcq:Inflammatory-bowel-disease-biologic-therapy#0",
+      "verdict": "Ambiguous",
+      "reason": "AGA 2025 lists several first-line advanced therapies for moderate-to-severe Crohn's disease (anti-TNF, ustekinumab, risankizumab, vedolizumab, upadacitinib), so",
+      "notes": "AGA 2025 lists several first-line advanced therapies for moderate-to-severe Crohn's disease (anti-TNF, ustekinumab, risankizumab, vedolizumab, upadacitinib), so B and C are also defensible."
+    }
+  ],
+  "corrections": [
+    {
+      "questionId": "guideline-mcq:immune-thrombocytopenia#1",
+      "verdict": "Wrong answer",
+      "notes": "ASH 2019 suggests corticosteroids over observation for adults with newly diagnosed ITP and a platelet count below 30 x 10^9/L, even with minor bleeding. Observation is for counts of at least 30.",
+      "suggestedAnswer": "C",
+      "source": "American Society of Hematology 2019 guidelines for immune thrombocytopenia (Neunert et al, Blood Adv 2019)",
+      "stemFix": null,
+      "newExplanation": "In adults with newly diagnosed ITP and a platelet count below 30 x 10^9/L, ASH 2019 suggests corticosteroids rather than observation, even if bleeding is absent or minor. A short course of prednisone (no more than 6 weeks, including taper) or dexamethasone is preferred. Observation is suggested for asymptomatic adults with counts of 30 x 10^9/L or more. Patient anxiety alone isn't a reason to aim for a specific target, and platelet transfusion is reserved for serious bleeding. Source: American Society of Hematology 2019 guidelines for immune thrombocytopenia (Neunert et al, Blood Adv 2019)"
+    },
+    {
+      "questionId": "guideline-mcq:immune-thrombocytopenia#2",
+      "verdict": "Wrong answer",
+      "notes": "For adults with newly diagnosed ITP and platelets below 30 x 10^9/L, ASH 2019 suggests corticosteroids over observation. A count of 10 x 10^9/L in a 68-year-old warrants treatment.",
+      "suggestedAnswer": "A",
+      "source": "American Society of Hematology 2019 guidelines for immune thrombocytopenia (Neunert et al, Blood Adv 2019)",
+      "stemFix": null,
+      "newExplanation": "ASH 2019 suggests corticosteroids over observation for adults with newly diagnosed ITP and a platelet count below 30 x 10^9/L, whatever the bleeding symptoms. At 10 x 10^9/L this patient should start prednisone (no more than 6 weeks including taper) or dexamethasone. IVIG is added when a rapid rise is needed, for example with significant bleeding. Bone marrow examination isn't routinely needed when the presentation is typical. Source: American Society of Hematology 2019 guidelines for immune thrombocytopenia (Neunert et al, Blood Adv 2019)"
+    }
+  ]
+}
