@@ -114,9 +114,8 @@ async function reviewQuestionAssignment(db, { objectKey, questionIndex, decision
         ? (secondaryTopicId ? 'dual_linked' : 'aligned')
         : (decision === 'retired' ? 'unassignable' : current.category);
     const now = new Date().toISOString();
-    // Record audit with before/after snapshot
-    try {
-        await db.createAuditLog({
+    // Record audit with before/after snapshot (best-effort)
+    await db.createAuditLog({
             userId: userId || null,
             sessionId: requestMeta?.sessionId || null,
             action: removeTopicId ? 'question_topic_link_remove' : (confirmBoth ? 'question_topic_dual_confirm' : 'question_topic_review_update'),
@@ -148,8 +147,7 @@ async function reviewQuestionAssignment(db, { objectKey, questionIndex, decision
             },
             ipAddress: requestMeta?.ip || null,
             userAgent: requestMeta?.ua || null,
-        }).catch(() => null);
-    } catch {}
+    }).catch(() => null);
     await db.run(
         `UPDATE question_topic_index SET review_state = ?, reviewed_by = ?, reviewed_at = ?, review_notes = ?,
          assigned_curriculum_topic_id = ?, assigned_topic_name = ?, assigned_cluster_id = ?, category = ?,

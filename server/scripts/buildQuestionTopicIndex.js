@@ -134,6 +134,17 @@ function examples(questions, category, n = 8) {
         guidelineSupport: distribution(built.questions.map((q) => q.guidelineSupport)),
         paperSupport: distribution(built.questions.map((q) => q.paperSupport || 0)),
         byEvidenceSupport: built.questions.reduce((acc, q) => { acc[q.evidenceSupport] = (acc[q.evidenceSupport] || 0) + 1; return acc; }, {}),
+        byCategory: built.questions.reduce((acc, q) => { acc[q.category] = (acc[q.category] || 0) + 1; return acc; }, {}),
+        byCategoryAndEvidenceSupport: (() => {
+            const map = {};
+            for (const q of built.questions) {
+                const c = q.category || 'unknown';
+                const e = q.evidenceSupport || 'none';
+                map[c] = map[c] || {};
+                map[c][e] = (map[c][e] || 0) + 1;
+            }
+            return map;
+        })(),
         margin: distribution(built.questions.map((q) => q.topicSimilarity - q.runnerUpSimilarity)),
         dualLinked: {
             total: built.questions.filter((q) => q.category === 'dual_linked').length,
