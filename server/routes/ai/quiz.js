@@ -7,6 +7,7 @@ const { canonicalQuestionType } = require('../../utils/questionType');
 const { computeMcqClaimKey, hasSuspectFutureCitation } = require('../../utils/mcqClaimKey');
 const { isIssuingBodyValue } = require('../../utils/guidelineAttribution');
 const questionIndex = require('../../services/questionIndex/questionIndexReader');
+const { loadWithdrawnOverrides } = require('../../services/mcqReviewOverrideService');
 const { attachQuizGradingTokens, verifyQuizGradingToken, commitQuizAnswer } = require('../../services/quizGradingToken');
 
 function sendServiceResponse(res, result) {
@@ -125,8 +126,10 @@ function registerQuizRoutes(app, {
             const difficulty = req.query.difficulty || 'all';
             const questionType = req.query.type || 'all';
 
+            const withdrawn = await loadWithdrawnOverrides(db);
+
             const rows = await db.all(
-                `SELECT topic, object_type, object_payload FROM teaching_objects
+                `SELECT object_key, topic, object_type, object_payload FROM teaching_objects
                  WHERE object_type IN ('cold_start_mcq', 'guideline_mcq', 'paper_mcq')
                    AND review_state != 'withdrawn'
                  ORDER BY RANDOM()`
@@ -144,8 +147,16 @@ function registerQuizRoutes(app, {
                 let payload;
                 try { payload = JSON.parse(row.object_payload || '{}'); } catch { continue; }
                 const mcqs = payload.mcqs || [];
-                for (const q of mcqs) {
+                for (let i = 0; i < mcqs.length; i++) {
+                    const q = mcqs[i];
                     if (!q.question || !q.options || !q.correctAnswer) continue;
+                    // Object-index based block list
+                    if (withdrawn.byObjectIndex.has(`${row.object_key}#${i}`)) continue;
+                    // Per-question withdrawals applied by the review workflow: filter even when the index is off.
+                    try {
+                        const h = questionIndex.questionHash(q);
+                        if (withdrawn.byHash.has(h)) continue;
+                    } catch { /* ignore */ }
                     // Defense in depth: 1,085 stored MCQs cited a fabricated future-dated
                     // guideline ("NICE 2026", "WHO 2026", a "2025 Dutch cohort study" that
                     // does not exist) and were removed by tools/data-hygiene/remove-fabricated-

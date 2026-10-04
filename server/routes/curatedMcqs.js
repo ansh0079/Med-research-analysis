@@ -7,8 +7,8 @@ const { questionHash } = require('../services/questionIndex/questionIndexService
 const { attachQuizGradingTokens } = require('../services/quizGradingToken');
 const { canonicalQuestionType } = require('../utils/questionType');
 const { expandNormalizedTopicKeys } = require('../utils/topicSynonyms');
-const { isIssuingBodyValue } = require('../utils/guidelineAttribution');
 const { normalizeTopic } = require('../utils/topicKey');
+const { loadWithdrawnOverrides } = require('../services/mcqReviewOverrideService');
 
 /**
  * Curated MCQs API:
@@ -57,6 +57,7 @@ function registerCuratedMcqRoutes(app, deps) {
     try {
       const raw = String(req.params.topic || '').trim();
       if (!raw) return res.status(400).json({ error: 'topic is required' });
+      const withdrawn = await loadWithdrawnOverrides(db);
 
       // Try exact curated key first
       const objectKey = raw.startsWith('curated-mcq:') ? raw : `curated-mcq:${raw.toLowerCase()}`;
@@ -105,9 +106,21 @@ function registerCuratedMcqRoutes(app, deps) {
       // Clinical audit: hold out questions both AI reviewers flagged as serious, or a clinician retired.
       const stored = (Array.isArray(payload.mcqs) ? payload.mcqs : []);
       const held = await loadAuditHolds(db, stored.map((q) => questionHash(q || {})));
+      // Combine: per-question withdrawal overrides (by object index and by hash) AND clinical audit holds.
       const questions = stored
-        .filter((q) => q && q.question && q.correctAnswer && Array.isArray(q.options))
-        .filter((q) => !held.has(questionHash(q)))
+        .filter((q, i) => {
+          if (!q || !q.question || !q.correctAnswer || !Array.isArray(q.options)) return false;
+          // Withdrawn via explicit override for this object slot
+          if (withdrawn.byObjectIndex.has(`${row.object_key}#${i}`)) return false;
+          try {
+            const h = questionHash(q);
+            if (withdrawn.byHash.has(h)) return false;
+            if (held.has(h)) return false;
+          } catch {
+            // If hashing fails, fall through — only objectIndex-based withdrawal applies
+          }
+          return true;
+        })
         .map((q, i) => ({
           id: q.id || `curated_${row.object_key}_${i}`,
           type: 'multiple_choice',
