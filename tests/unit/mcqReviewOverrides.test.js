@@ -38,5 +38,22 @@ describe('per-question withdrawals via overrides', () => {
         const added = await reader.loadAlignedForCluster(db, 'C1');
         expect(added).toEqual([]);
     });
+
+    test('object-index override still blocks if the question text changes (hash changes)', async () => {
+        const db = makeDb();
+        put(db, 'b2', 'guideline_mcq', [q('Original?')]);
+        index(db, 'b2', 0, q('Original?'), 'aligned', 'C1');
+        // Insert override row WITHOUT hash (future-proof against stem tweaks)
+        db.sqlite.prepare(
+            `INSERT INTO mcq_review_overrides (question_id, object_key, question_index, action, applied_at)
+             VALUES ('guideline-mcq:other#0', 'b2', 0, 'withdraw', 'now')`
+        ).run();
+        // Change the stored question wording (simulate regeneration)
+        db.sqlite.prepare(
+            `UPDATE teaching_objects SET object_payload = ? WHERE object_key = 'b2'`
+        ).run(JSON.stringify({ mcqs: [q('Paraphrased original?')] }));
+        const added = await reader.loadAlignedForCluster(db, 'C1');
+        expect(added).toEqual([]);
+    });
 });
 
