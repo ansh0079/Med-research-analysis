@@ -209,7 +209,7 @@ async function loadQuestion(db, objectKey, questionIndex) {
 
 /**
  * Run one stage over the questions waiting for it, topic by topic, within `budgetUsd` of today's spend.
- * `ai.callStructured(prompt, provider, model, opts)` returns the reviewer's parsed JSON.
+ * The configured AI client returns the reviewer's parsed JSON.
  */
 async function runStage(db, ai, {
     stage = 1,
@@ -252,12 +252,16 @@ async function runStage(db, ai, {
             const prior = stage === 2 ? { issues: parse(row.stage1_issues, []) } : null;
             let verdict;
             try {
-                const raw = await ai.callStructured(buildAuditPrompt({ topic: row.topic, question, evidence, priorReview: prior }), config.provider(), config.model(), {
-                    temperature: 0,
-                    jsonMode: true,
-                    maxOutputTokens: 900,
-                    usage: { operation: config.operation, topic: row.topic },
-                });
+                const prompt = buildAuditPrompt({ topic: row.topic, question, evidence, priorReview: prior });
+                const raw = stage === 1
+                    ? await ai.callStructured(prompt, config.provider(), config.model(), {
+                        temperature: 0, jsonMode: true, maxOutputTokens: 900,
+                        usage: { operation: 'question_audit_stage1', topic: row.topic },
+                    })
+                    : await ai.callStructured(prompt, config.provider(), config.model(), {
+                        temperature: 0, jsonMode: true, maxOutputTokens: 900,
+                        usage: { operation: 'question_audit_stage2', topic: row.topic },
+                    });
                 verdict = normaliseVerdict(raw);
             } catch (err) {
                 summary.errors += 1;
