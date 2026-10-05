@@ -26,7 +26,7 @@ jobs:
           host: 178.105.155.246
           username: root
           key: ${{ secrets.HETZNER_SSH_KEY }}
-          command_timeout: 5m
+          command_timeout: 3m
           script: |
             set -e
             echo '=== QUESTION INDEX SERVING CONFIG ==='
