@@ -16,6 +16,7 @@ CREATE INDEX ON audit_questions(object_key, question_index);
 
 CREATE TEMP TABLE guideline_status AS
 SELECT i.object_key, i.question_index, COUNT(*) AS ref_count,
+       BOOL_OR(g.id IS NOT NULL) AS stored_guideline,
        BOOL_OR(NULLIF(BTRIM(d.full_text),'') IS NOT NULL) AS stored_document,
        BOOL_OR(NULLIF(BTRIM(d.full_text),'') IS NOT NULL AND COALESCE(d.full_text_source,'') IN ('jats','manual','nice_html')) AS stored_fulltext
 FROM question_topic_index i
@@ -35,6 +36,7 @@ GROUP BY i.object_key,i.question_index;
 CREATE TEMP TABLE audit_catalog AS
 SELECT q.*, i.category, i.assigned_curriculum_topic_id, i.assigned_cluster_id, i.review_state, i.evidence_support,
        COALESCE(g.ref_count,0) AS guideline_ref_count, COALESCE(p.ref_count,0) AS paper_ref_count,
+       COALESCE(g.stored_guideline,false) AS stored_guideline,
        COALESCE(g.stored_document,false) AS stored_guideline_document,
        COALESCE(g.stored_fulltext,false) AS stored_guideline_fulltext,
        COALESCE(p.stored_abstract,false) AS stored_paper_abstract,
@@ -50,7 +52,7 @@ WITH flags AS (
  SELECT *,
    (question_text IS NOT NULL AND correct_answer IS NOT NULL AND jsonb_typeof(mcq->'options') IN ('array','object')) AS structurally_complete,
    (guideline_ref_count+paper_ref_count+inline_ref_count>0) AS has_evidence_link,
-   (stored_guideline_document OR stored_paper_abstract OR usable_inline_evidence) AS has_retrievable_evidence,
+   (stored_guideline OR stored_paper_abstract OR usable_inline_evidence) AS has_retrievable_evidence,
    COALESCE(audit_status='needs_human' AND human_decision IS NULL,false) AS on_audit_hold,
    (COALESCE(human_decision='retired',false) OR COALESCE(review_state='retired',false) OR COALESCE(category='unassignable',false)) AS retired_or_unassignable,
    ((category='aligned' AND assigned_curriculum_topic_id IS NOT NULL AND assigned_cluster_id IS NOT NULL)
@@ -64,6 +66,7 @@ SELECT COUNT(*) AS total_questions,
  COUNT(*) FILTER (WHERE properly_topic_catalogued) AS properly_topic_catalogued,
  COUNT(*) FILTER (WHERE has_evidence_link) AS with_evidence_link,
  COUNT(*) FILTER (WHERE has_retrievable_evidence) AS with_retrievable_stored_evidence,
+ COUNT(*) FILTER (WHERE stored_guideline) AS with_stored_guideline_row,
  COUNT(*) FILTER (WHERE stored_guideline_fulltext) AS with_guideline_fulltext,
  COUNT(*) FILTER (WHERE stored_paper_abstract) AS with_paper_abstract,
  COUNT(*) FILTER (WHERE usable_inline_evidence) AS with_inline_evidence,
