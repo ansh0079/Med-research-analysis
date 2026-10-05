@@ -1,0 +1,35 @@
+name: Audit production question catalog
+
+on:
+  workflow_dispatch:
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Upload audit query
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: 178.105.155.246
+          username: root
+          key: ${{ secrets.HETZNER_SSH_KEY }}
+          source: scripts/auditProductionQuestionCatalog.sql
+          target: /tmp/signal-md-question-audit
+          strip_components: 1
+
+      - name: Run read-only production audit
+        uses: appleboy/ssh-action@v1
+        with:
+          host: 178.105.155.246
+          username: root
+          key: ${{ secrets.HETZNER_SSH_KEY }}
+          command_timeout: 5m
+          script: |
+            set -e
+            echo '=== QUESTION INDEX SERVING CONFIG ==='
+            docker exec medsearch-web printenv QUESTION_INDEX_SERVING || true
+            docker cp /tmp/signal-md-question-audit/auditProductionQuestionCatalog.sql medsearch-pg:/tmp/auditProductionQuestionCatalog.sql
+            docker exec medsearch-pg psql -v ON_ERROR_STOP=1 -U medsearch -d medsearch -f /tmp/auditProductionQuestionCatalog.sql
