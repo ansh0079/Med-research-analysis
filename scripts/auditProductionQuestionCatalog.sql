@@ -51,8 +51,8 @@ WITH flags AS (
    (question_text IS NOT NULL AND correct_answer IS NOT NULL AND jsonb_typeof(mcq->'options') IN ('array','object')) AS structurally_complete,
    (guideline_ref_count+paper_ref_count+inline_ref_count>0) AS has_evidence_link,
    (stored_guideline_document OR stored_paper_abstract OR usable_inline_evidence) AS has_retrievable_evidence,
-   (audit_status='needs_human' AND human_decision IS NULL) AS on_audit_hold,
-   (human_decision='retired' OR review_state='retired' OR category='unassignable') AS retired_or_unassignable,
+   COALESCE(audit_status='needs_human' AND human_decision IS NULL,false) AS on_audit_hold,
+   (COALESCE(human_decision='retired',false) OR COALESCE(review_state='retired',false) OR COALESCE(category='unassignable',false)) AS retired_or_unassignable,
    ((category='aligned' AND assigned_curriculum_topic_id IS NOT NULL AND assigned_cluster_id IS NOT NULL)
      OR (object_type='curated_topic_mcq' AND object_curriculum_topic_id IS NOT NULL)) AS properly_topic_catalogued
  FROM audit_catalog
