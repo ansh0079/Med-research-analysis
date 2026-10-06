@@ -59,6 +59,11 @@ async function reviewQuestionAssignment(db, { objectKey, questionIndex, decision
          WHERE object_key = ? AND question_index = ?`,
         [decision, userId || null, now, notes || null, topicId, topicName, clusterId, category, objectKey, questionIndex],
     );
+    await db.run(
+        `UPDATE question_work_queue SET status = ?, completed_at = ?, updated_at = ?
+         WHERE object_key = ? AND question_index = ? AND cohort = 'topic_repair'`,
+        [decision === 'approved' ? 'repaired' : decision, now, now, objectKey, questionIndex],
+    ).catch(() => {});
     return db.get('SELECT * FROM question_topic_index WHERE object_key = ? AND question_index = ?', [objectKey, questionIndex]);
 }
 
@@ -86,4 +91,25 @@ async function reviewGuidelineAssignment(db, { guidelineId, decision, notes, use
     return db.get('SELECT * FROM guideline_topic_index WHERE guideline_id = ?', [String(guidelineId)]);
 }
 
-module.exports = { listQuestionReviewQueue, reviewQuestionAssignment, listGuidelineReviewQueue, reviewGuidelineAssignment, REVIEW_STATES };
+async function listQuestionWorkQueue(db, { cohort = 'topic_repair', status = 'queued', topic = '', limit = 40, offset = 0 } = {}) {
+    if (!new Set(['factual_review', 'topic_repair']).has(cohort)) throw new Error('Invalid question work cohort');
+    const where = ['w.cohort = ?', 'w.status = ?'];
+    const params = [cohort, status];
+    if (topic) { where.push('w.topic LIKE ?'); params.push(`%${topic}%`); }
+    const items = await db.all(
+        `SELECT w.*, q.category, q.assigned_topic_name, q.topic_similarity, q.evidence_support,
+                q.evidence_guideline_ids, q.evidence_paper_uids
+         FROM question_work_queue w
+         LEFT JOIN question_topic_index q ON q.object_key=w.object_key AND q.question_index=w.question_index
+         WHERE ${where.join(' AND ')} ORDER BY w.topic,w.object_key,w.question_index LIMIT ? OFFSET ?`,
+        [...params, limit, offset],
+    );
+    for (const item of items) {
+        const object = await db.get('SELECT object_payload FROM teaching_objects WHERE object_key = ?', [item.object_key]);
+        item.question = parseJson(object?.object_payload, {})?.mcqs?.[item.question_index] || null;
+    }
+    const counts = await db.all('SELECT cohort,status,COUNT(*) AS count FROM question_work_queue GROUP BY cohort,status ORDER BY cohort,status', []);
+    return { items, counts };
+}
+
+module.exports = { listQuestionReviewQueue, reviewQuestionAssignment, listGuidelineReviewQueue, reviewGuidelineAssignment, listQuestionWorkQueue, REVIEW_STATES };

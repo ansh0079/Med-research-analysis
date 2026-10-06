@@ -1,0 +1,31 @@
+name: Populate production question work queues
+
+on:
+  workflow_dispatch:
+
+jobs:
+  populate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - name: Upload queue query
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: 178.105.155.246
+          username: root
+          key: ${{ secrets.HETZNER_SSH_KEY }}
+          source: scripts/populateQuestionWorkQueues.sql
+          target: /tmp/signal-md-question-queues
+          strip_components: 1
+      - name: Populate production queues
+        uses: appleboy/ssh-action@v1
+        with:
+          host: 178.105.155.246
+          username: root
+          key: ${{ secrets.HETZNER_SSH_KEY }}
+          command_timeout: 5m
+          script: |
+            set -e
+            docker cp /tmp/signal-md-question-queues/populateQuestionWorkQueues.sql medsearch-pg:/tmp/populateQuestionWorkQueues.sql
+            docker exec medsearch-pg psql -v ON_ERROR_STOP=1 -U medsearch -d medsearch -f /tmp/populateQuestionWorkQueues.sql
