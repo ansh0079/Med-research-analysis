@@ -26,6 +26,9 @@
  * Optional correction fields: newExplanation (up to 1500 chars), fullOptions (["A: ...", ...] replaces all options).
  * Optional "topicAssignments": [{ questionId, topicName, reviewState, notes }] sets question_topic_index topic by
  * exact curriculum_topics.display_name (case-insensitive); unresolved names are reported, never guessed.
+ * Optional "catalogAlignments": [{ questionId, expectedTopicName, notes }] changes category from unclear to aligned
+ * only when the assigned topic exactly matches the stored/original topic after punctuation normalization. It preserves
+ * review_state and does not create a human approval.
  * --dry-run performs no writes.
  *
  * Idempotent: running --apply twice makes no further changes.
@@ -59,6 +62,10 @@ function parseQuestionId(id) {
     const objectKey = `${m[1]}:${m[2]}`;
     const index = m[3] == null ? null : parseInt(m[3], 10);
     return { objectKey, index };
+}
+
+function normalizeComparableTopic(value) {
+    return String(value || '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
 }
 
 async function findTeachingObjectForId(objectKey, index) {
@@ -362,12 +369,50 @@ async function applyTopicAssignment(parsed, topicName, reviewState, notes, { app
     return { resolved: true, details: created ? 'topic_created' : 'ok', created };
 }
 
+async function applyCatalogAlignment(parsed, expectedTopicName, notes, { apply }) {
+    const row = await db.get(
+        `SELECT i.category, i.review_state, i.assigned_curriculum_topic_id, i.assigned_topic_name,
+                i.assigned_cluster_id, i.original_topic, t.topic AS stored_topic
+         FROM question_topic_index i
+         JOIN teaching_objects t ON t.object_key = i.object_key
+         WHERE i.object_key = ? AND i.question_index = ?`,
+        [parsed.objectKey, parsed.index]
+    ).catch(() => null);
+    if (!row) return { resolved: false, details: 'index_row_not_found' };
+    if (row.review_state === 'retired' || row.category === 'unassignable') return { resolved: false, details: 'retired_or_unassignable' };
+    if (!row.assigned_curriculum_topic_id || !row.assigned_cluster_id) return { resolved: false, details: 'assignment_incomplete' };
+    const assigned = normalizeComparableTopic(row.assigned_topic_name);
+    const expected = normalizeComparableTopic(expectedTopicName);
+    const original = normalizeComparableTopic(row.original_topic);
+    const stored = normalizeComparableTopic(row.stored_topic);
+    if (!assigned || assigned !== expected || (assigned !== original && assigned !== stored)) {
+        return { resolved: false, details: 'exact_topic_guard_failed' };
+    }
+    if (row.category === 'aligned') return { resolved: true, details: 'already_aligned' };
+    if (row.category !== 'unclear') return { resolved: false, details: 'category_not_unclear' };
+    if (apply) {
+        const now = new Date().toISOString();
+        await db.run(
+            `UPDATE question_topic_index SET category = 'aligned', review_notes = ?, reviewed_at = ?
+             WHERE object_key = ? AND question_index = ? AND category = 'unclear'`,
+            [notes || 'Exact assigned topic matches the stored/original topic.', now, parsed.objectKey, parsed.index]
+        );
+        await db.run(
+            `UPDATE question_work_queue SET status = 'repaired', completed_at = ?, updated_at = ?
+             WHERE object_key = ? AND question_index = ? AND cohort = 'topic_repair'`,
+            [now, now, parsed.objectKey, parsed.index]
+        ).catch(() => null);
+    }
+    return { resolved: true, details: 'aligned' };
+}
+
 async function run() {
     const { dataPath, apply } = parseArgs();
     const raw = JSON.parse(fs.readFileSync(path.resolve(dataPath), 'utf8'));
     const withdrawals = Array.isArray(raw.withdrawals) ? raw.withdrawals : [];
     const corrections = Array.isArray(raw.corrections) ? raw.corrections : [];
     const topicAssignments = Array.isArray(raw.topicAssignments) ? raw.topicAssignments : [];
+    const catalogAlignments = Array.isArray(raw.catalogAlignments) ? raw.catalogAlignments : [];
 
     await db.connect();
     await db.runMigrations();
@@ -416,19 +461,30 @@ async function run() {
         else topicUnresolved.push({ questionId: t.questionId, topic: t.topicName, why: result.details });
     }
 
+    const catalogUnresolved = [];
+    let catalogResolved = 0;
+    for (const item of catalogAlignments) {
+        const parsed = parseQuestionId(item.questionId);
+        if (!parsed) { catalogUnresolved.push({ questionId: item.questionId, why: 'bad_id' }); continue; }
+        const result = await applyCatalogAlignment(parsed, item.expectedTopicName, item.notes, { apply });
+        if (result.resolved) catalogResolved += 1;
+        else catalogUnresolved.push({ questionId: item.questionId, why: result.details });
+    }
+
     const summary = {
         ok: true,
         mode: apply ? 'apply' : 'dry-run',
         withdrawals: { requested: withdrawals.length, matched: wMatched, missing: wMissing },
         corrections: { requested: corrections.length, matched: cMatched, missing: cMissing, optionAdjusted },
         topicAssignments: { requested: topicAssignments.length, resolved: tResolved, created: tCreated, unresolved: topicUnresolved },
+        catalogAlignments: { requested: catalogAlignments.length, resolved: catalogResolved, unresolved: catalogUnresolved },
         missingIds,
     };
     console.log(JSON.stringify(summary, null, 2));
 
     await db.close();
-    if (missingIds.length || topicUnresolved.length) {
-        throw new Error(`Review import incomplete: ${missingIds.length} missing question(s), ${topicUnresolved.length} unresolved topic assignment(s)`);
+    if (missingIds.length || topicUnresolved.length || catalogUnresolved.length) {
+        throw new Error(`Review import incomplete: ${missingIds.length} missing question(s), ${topicUnresolved.length} unresolved topic assignment(s), ${catalogUnresolved.length} unresolved catalogue alignment(s)`);
     }
     return summary;
 }

@@ -85,6 +85,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("input_csv")
     parser.add_argument("output_json")
+    parser.add_argument("--catalog-alignments")
     args = parser.parse_args()
     rows = list(csv.DictReader(open(args.input_csv, encoding="utf-8-sig", newline="")))
     ids = set()
@@ -135,6 +136,26 @@ def main():
     }
     Path(args.output_json).write_text(json.dumps(output, ensure_ascii=False, indent=2), encoding="utf-8")
     print(json.dumps(output["retrieval_summary"], indent=2))
+    if args.catalog_alignments:
+        def comparable(value):
+            return re.sub(r"[^a-z0-9]+", " ", str(value or "").lower()).strip()
+        alignments = []
+        for row in rows:
+            if "TOPIC_CATALOGUE" not in row.get("repair_requirements", "") or row.get("object_type") == "curated_topic_mcq":
+                continue
+            assigned = comparable(row.get("assigned_topic_name"))
+            if assigned and assigned in {comparable(row.get("original_topic")), comparable(row.get("stored_topic"))}:
+                alignments.append({
+                    "questionId": f"{row['object_key']}#{row['question_index']}",
+                    "expectedTopicName": row["assigned_topic_name"],
+                    "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved.",
+                })
+        review = {
+            "version": 1, "reviewed_at": "2026-10-10", "withdrawals": [], "corrections": [],
+            "topicAssignments": [], "catalogAlignments": alignments,
+        }
+        Path(args.catalog_alignments).write_text(json.dumps(review, ensure_ascii=False, indent=2), encoding="utf-8")
+        print(json.dumps({"catalog_alignments": len(alignments)}, indent=2))
 
 
 if __name__ == "__main__":

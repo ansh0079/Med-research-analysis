@@ -259,5 +259,41 @@ describe('applyMcqReviewEdits script', () => {
     const audit = await db.get('SELECT human_decision, status FROM question_audit WHERE object_key = ? AND question_index = 0', [objectKey]);
     expect(audit).toMatchObject({ human_decision: 'approved', status: 'human_approved' });
   });
+
+  test('(f) exact catalogue alignment preserves review state and does not invent human approval', async () => {
+    const db = require('../../database');
+    await setupDb(db);
+    const objectKey = 'guideline-mcq:exact-topic';
+    const q0 = makeQuestion('Exact topic question?');
+    await db.run(
+      `INSERT INTO teaching_objects (object_key, object_type, topic, review_state, object_payload)
+       VALUES (?, 'guideline_mcq', 'Acute kidney injury', 'unreviewed', ?)`,
+      [objectKey, JSON.stringify({ mcqs: [q0] })]
+    );
+    const topic = await db.upsertCurriculumSeedTopic({
+      displayName: 'Acute kidney injury', suggestedQuery: 'Acute kidney injury', block: 'General Medicine', seedStatus: 'not_seeded',
+    });
+    const hash = require('../../server/services/questionIndex/questionIndexService').questionHash(q0);
+    await db.run(
+      `INSERT INTO question_topic_index
+       (object_key, question_index, question_hash, object_type, original_topic, assigned_curriculum_topic_id,
+        assigned_topic_name, assigned_cluster_id, category, classifier_version, classified_at, review_state)
+       VALUES (?, 0, ?, 'guideline_mcq', 'acute kidney injury', ?, 'Acute kidney injury', ?, 'unclear', 'v', 'now', 'unreviewed')`,
+      [objectKey, hash, String(topic.id), String(topic.id)]
+    );
+    const dataPath = writeJsonTmp({
+      withdrawals: [], corrections: [], topicAssignments: [],
+      catalogAlignments: [{ questionId: `${objectKey}#0`, expectedTopicName: 'Acute kidney injury' }],
+    });
+    process.argv = ['node', 'apply', '--data', dataPath, '--apply'];
+    const script = require('../../server/scripts/applyMcqReviewEdits.js');
+    const summary = await script.run();
+    expect(summary.catalogAlignments.resolved).toBe(1);
+    await db.connect();
+    const idx = await db.get('SELECT category, review_state FROM question_topic_index WHERE object_key = ? AND question_index = 0', [objectKey]);
+    expect(idx).toMatchObject({ category: 'aligned', review_state: 'unreviewed' });
+    const audit = await db.get('SELECT human_decision FROM question_audit WHERE object_key = ? AND question_index = 0', [objectKey]);
+    expect(audit).toBeUndefined();
+  });
 });
 
