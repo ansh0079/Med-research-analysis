@@ -1,0 +1,35 @@
+name: Export eligible incomplete questions
+
+on:
+    workflow_dispatch:
+
+jobs:
+    export:
+        runs-on: ubuntu-latest
+        timeout-minutes: 10
+        steps:
+            - uses: actions/checkout@v4
+            - name: Configure production SSH
+              env:
+                  SSH_KEY: ${{ secrets.HETZNER_SSH_KEY }}
+              run: |
+                  install -m 700 -d ~/.ssh
+                  printf '%s\n' "$SSH_KEY" > ~/.ssh/id_ed25519
+                  sed -i 's/\r$//' ~/.ssh/id_ed25519
+                  chmod 600 ~/.ssh/id_ed25519
+                  ssh-keyscan -H 178.105.155.246 >> ~/.ssh/known_hosts
+            - name: Export read-only repair cohort
+              run: |
+                  scp scripts/exportEligibleIncompleteQuestions.sql root@178.105.155.246:/tmp/exportEligibleIncompleteQuestions.sql
+                  ssh root@178.105.155.246 'bash -s' <<'REMOTE'
+                  set -euo pipefail
+                  docker cp /tmp/exportEligibleIncompleteQuestions.sql medsearch-pg:/tmp/exportEligibleIncompleteQuestions.sql
+                  docker exec medsearch-pg psql -U medsearch -d medsearch -v ON_ERROR_STOP=1 -f /tmp/exportEligibleIncompleteQuestions.sql
+                  docker cp medsearch-pg:/tmp/signal-md-eligible-incomplete-questions.csv /tmp/signal-md-eligible-incomplete-questions.csv
+                  REMOTE
+                  scp root@178.105.155.246:/tmp/signal-md-eligible-incomplete-questions.csv ./signal-md-eligible-incomplete-questions.csv
+            - uses: actions/upload-artifact@v4
+              with:
+                  name: signal-md-eligible-incomplete-questions
+                  path: signal-md-eligible-incomplete-questions.csv
+                  retention-days: 14
