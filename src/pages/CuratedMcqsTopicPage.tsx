@@ -28,7 +28,8 @@ export const CuratedMcqsTopicPage: React.FC = () => {
         if (cancelled) return;
         setDisplayName(r.displayName || r.topicKey);
         setCoverageNote(r.coverageNote ?? null);
-        setQuestions(r.questions || []);
+        // This page grades one letter per question; select-all-that-apply items are served by the main quiz.
+        setQuestions((r.questions || []).filter((q) => !q.multiAnswer));
       })
       .catch((e) => { if (!cancelled) setError(e instanceof Error ? e.message : 'Failed to load MCQs'); })
       .finally(() => { if (!cancelled) setLoading(false); });

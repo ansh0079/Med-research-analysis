@@ -8,7 +8,9 @@ const { computeMcqClaimKey, hasSuspectFutureCitation } = require('../../utils/mc
 const { isIssuingBodyValue } = require('../../utils/guidelineAttribution');
 const questionIndex = require('../../services/questionIndex/questionIndexReader');
 const { loadWithdrawnOverrides } = require('../../services/mcqReviewOverrideService');
+const { answersMatch } = require('../../utils/answerSet');
 const { attachQuizGradingTokens, verifyQuizGradingToken, commitQuizAnswer } = require('../../services/quizGradingToken');
+const { recordLearnerReport } = require('../../services/questionLearnerReportService');
 
 function sendServiceResponse(res, result) {
     return res.status(result.status || 200).json(attachQuizGradingTokens(result.body));
@@ -45,6 +47,26 @@ function registerQuizRoutes(app, {
     // out without `correctAnswer` (see attachQuizGradingTokens), so this is what
     // the UI calls to show immediate feedback. The signed token is the authority
     // here -- the client cannot assert its own correctness.
+    app.post('/api/quiz/question-report', requireAuthJwt, requireJson, async (req, res) => {
+        try {
+            const saved = await recordLearnerReport(db, {
+                userId: req.user?.id || null,
+                questionId: req.body?.questionId,
+                kind: req.body?.kind,
+                currentTopic: req.body?.currentTopic,
+                suggestedTopic: req.body?.suggestedTopic,
+                suggestedAnswer: req.body?.suggestedAnswer,
+                evidenceText: req.body?.evidenceText,
+                evidenceUrl: req.body?.evidenceUrl,
+            });
+            res.status(201).json(saved);
+        } catch (err) {
+            if (err.status === 400) return res.status(400).json({ error: err.message });
+            logger?.error?.({ err }, 'question report failed');
+            res.status(500).json({ error: 'Could not save that report' });
+        }
+    });
+
     app.post(
         '/api/quiz/grade',
         requireJson,
@@ -70,8 +92,7 @@ function registerQuizRoutes(app, {
                     });
                 }
                 const correctAnswer = verification.correctAnswer;
-                const isCorrect = String(userAnswer || '').trim().toLowerCase()
-                    === String(correctAnswer).trim().toLowerCase();
+                const isCorrect = answersMatch(userAnswer, correctAnswer);
                 return res.json({ isCorrect, correctAnswer });
             } catch (error) {
                 req.log?.error?.({ err: error }, 'Quiz grade error');

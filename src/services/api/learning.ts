@@ -304,6 +304,26 @@ export class LearningApi extends BaseApiClient {
     return response.json();
   }
 
+  async postQuestionReport(payload: {
+    questionId: string;
+    kind: 'topic_suggestion' | 'answer_challenge';
+    currentTopic?: string;
+    suggestedTopic?: string;
+    suggestedAnswer?: string;
+    evidenceText?: string;
+    evidenceUrl?: string;
+  }): Promise<void> {
+    const response = await this.fetchWithSession(`${API_BASE}/api/quiz/question-report`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+    if (!response.ok) {
+      const body = await response.json().catch(() => ({}));
+      throw new Error(body.error || 'Could not save that report');
+    }
+  }
+
   async postQuizFeedback(payload: { topic: string; outlineNodeId: string; feedbackType: 'confusing' | 'clear' }): Promise<void> {
     const response = await this.fetchWithSession(`${API_BASE}/api/learning/quiz-feedback`, {
       method: 'POST',

@@ -22,6 +22,12 @@
  *   }, ...]
  * }
  *
+
+ * Optional correction fields: newExplanation (up to 1500 chars), fullOptions (["A: ...", ...] replaces all options).
+ * Optional "topicAssignments": [{ questionId, topicName, reviewState, notes }] sets question_topic_index topic by
+ * exact curriculum_topics.display_name (case-insensitive); unresolved names are reported, never guessed.
+ * --dry-run performs no writes.
+ *
  * Idempotent: running --apply twice makes no further changes.
  * Writes are strictly per-question; batches are never withdrawn wholesale.
  */
@@ -90,6 +96,11 @@ function sanitizeExplanation(notes, source) {
 function coerceLetter(value) {
     const v = String(value || '').trim();
     if (/^[A-E]$/i.test(v)) return v.toUpperCase();
+    // Select-all-that-apply: "A,C" (any order/spacing) becomes the canonical sorted list.
+    const parts = v.split(/[\s,;&]+/).filter(Boolean);
+    if (parts.length > 1 && parts.every((p) => /^[A-E]$/i.test(p))) {
+        return [...new Set(parts.map((p) => p.toUpperCase()))].sort().join(',');
+    }
     return null;
 }
 
@@ -97,6 +108,11 @@ function ensureOptionContainsCorrectAnswer(options, suggestedAnswer) {
     const letters = ['A', 'B', 'C', 'D', 'E'];
     const opts = Array.isArray(options) ? options.slice() : [];
     const letter = coerceLetter(suggestedAnswer);
+    if (letter && letter.includes(',')) {
+        // Every keyed letter must exist as an option; nothing is invented for a multi-answer key.
+        const missing = letter.split(',').filter((l) => !opts[letters.indexOf(l)] || !String(opts[letters.indexOf(l)]).startsWith(`${l}:`));
+        return { options: opts, changed: false, note: missing.length ? `Multi-answer key references missing options: ${missing.join(',')}` : null };
+    }
     if (letter && letters.includes(letter)) {
         // Ensure "L: ..." exists and keep other options intact.
         const idx = letters.indexOf(letter);
@@ -131,8 +147,8 @@ async function applyWithdraw(objectKey, index, questionId, verdict, reason, note
     const q = mcqs[index];
     if (!q?.question) return { matched: false, details: 'question_missing' };
     const qhash = questionHash(q);
-    // Idempotent insert ignore
-    await db.run(
+    // Idempotent insert ignore. Writes happen only with --apply.
+    if (apply) await db.run(
         `INSERT INTO mcq_review_overrides
             (question_id, object_key, question_index, action, verdict, reason, notes, question_hash, applied_at, applied_by)
          VALUES (?, ?, ?, 'withdraw', ?, ?, ?, ?, ?, ?)
@@ -140,7 +156,7 @@ async function applyWithdraw(objectKey, index, questionId, verdict, reason, note
         [questionId, found.objectKey, index, verdict || null, reason || null, notes || null, qhash || null, new Date().toISOString(), 'workflow:apply-mcq-review']
     ).catch(() => null);
     // Mark the specific assignment as retired when present
-    await db.run(
+    if (apply) await db.run(
         `UPDATE question_topic_index SET review_state = 'retired', category = 'unassignable'
          WHERE object_key = ? AND question_index = ?`,
         [found.objectKey, index]
@@ -159,7 +175,7 @@ async function applyWithdraw(objectKey, index, questionId, verdict, reason, note
     return { matched: true, details: 'ok' };
 }
 
-async function applyCorrection(objectKey, index, questionId, verdict, notes, suggestedAnswer, source, stemFix, { apply, newExplanation = null, optionReplacement = null, optionEdits = [] }) {
+async function applyCorrection(objectKey, index, questionId, verdict, notes, suggestedAnswer, source, stemFix, { apply, newExplanation = null, optionReplacement = null, optionEdits = [], fullOptions = null }) {
     const found = await findTeachingObjectForId(objectKey, index);
     if (!found) return { matched: false, details: 'object_not_found' };
     const mcqs = Array.isArray(found.payload?.mcqs) ? found.payload.mcqs : [];
@@ -169,12 +185,12 @@ async function applyCorrection(objectKey, index, questionId, verdict, notes, sug
 
     // New explanation
     const computedExplanation = newExplanation && String(newExplanation).trim()
-        ? String(newExplanation).trim().slice(0, 700)
+        ? String(newExplanation).trim().slice(0, 1500)
         : sanitizeExplanation(notes, source);
     // Ensure options carry the suggested answer; coerce non-letter to a letter slot when needed.
     // Apply explicit option edits first, then ensure the suggested answer exists.
     const letters = ['A', 'B', 'C', 'D', 'E'];
-    const workingOptions = Array.isArray(before.options) ? before.options.slice() : [];
+    const workingOptions = Array.isArray(fullOptions) && fullOptions.length ? fullOptions.map((o) => String(o)) : (Array.isArray(before.options) ? before.options.slice() : []);
     if (Array.isArray(optionEdits) && optionEdits.length) {
         for (const edit of optionEdits) {
             const L = coerceLetter(edit?.letter);
@@ -207,6 +223,8 @@ async function applyCorrection(objectKey, index, questionId, verdict, notes, sug
         correctAnswer: correctLetter,
         explanation: computedExplanation || before.explanation || '',
     };
+    if (correctLetter.includes(',')) after.multiAnswer = true;
+    else delete after.multiAnswer;
 
     const qhash = questionHash(before);
     const newQhash = questionHash(after);
@@ -253,11 +271,43 @@ async function applyCorrection(objectKey, index, questionId, verdict, notes, sug
     return { matched: true, details: optionsChanged ? 'option_adjusted' : 'ok' };
 }
 
+async function applyTopicAssignment(objectKeyParsed, questionId, topicName, reviewState, notes, { apply }) {
+    const found = await findTeachingObjectForId(objectKeyParsed.objectKey, objectKeyParsed.index);
+    if (!found) return { matched: false, details: 'object_not_found' };
+    const row = await db.get('SELECT 1 AS ok FROM question_topic_index WHERE object_key = ? AND question_index = ?', [found.objectKey, objectKeyParsed.index]).catch(() => null);
+    if (!row) return { matched: true, resolved: false, details: 'index_row_not_found' };
+    // No topic name: record the review state only and leave the stored topic assignment as it is.
+    if (!String(topicName || '').trim()) {
+        if (apply) {
+            await db.run(
+                `UPDATE question_topic_index SET review_state = ?, reviewed_by = ?, reviewed_at = ?, review_notes = ?
+                 WHERE object_key = ? AND question_index = ?`,
+                [reviewState || 'approved', 'workflow:apply-mcq-review', new Date().toISOString(), notes || null, found.objectKey, objectKeyParsed.index]
+            );
+        }
+        return { matched: true, resolved: true, details: 'ok' };
+    }
+    const topic = await db.get('SELECT id, display_name FROM curriculum_topics WHERE LOWER(display_name) = LOWER(?)', [String(topicName || '').trim()]).catch(() => null);
+    if (!topic) return { matched: true, resolved: false, details: 'topic_not_found' };
+    if (apply) {
+        const cluster = await db.get('SELECT cluster_id FROM topic_cluster_index WHERE curriculum_topic_id = ?', [String(topic.id)]).catch(() => null);
+        const now = new Date().toISOString();
+        await db.run(
+            `UPDATE question_topic_index SET review_state = ?, reviewed_by = ?, reviewed_at = ?, review_notes = ?,
+             assigned_curriculum_topic_id = ?, assigned_topic_name = ?, assigned_cluster_id = ?, category = 'aligned'
+             WHERE object_key = ? AND question_index = ?`,
+            [reviewState || 'approved', 'workflow:apply-mcq-review', now, notes || null, String(topic.id), topic.display_name, cluster?.cluster_id || String(topic.id), found.objectKey, objectKeyParsed.index]
+        );
+    }
+    return { matched: true, resolved: true, details: 'ok' };
+}
+
 async function run() {
     const { dataPath, apply } = parseArgs();
     const raw = JSON.parse(fs.readFileSync(path.resolve(dataPath), 'utf8'));
     const withdrawals = Array.isArray(raw.withdrawals) ? raw.withdrawals : [];
     const corrections = Array.isArray(raw.corrections) ? raw.corrections : [];
+    const topicAssignments = Array.isArray(raw.topicAssignments) ? raw.topicAssignments : [];
 
     await db.connect();
     await db.runMigrations();
@@ -277,11 +327,20 @@ async function run() {
     for (const c of corrections) {
         const parsed = parseQuestionId(c.questionId);
         if (!parsed) { cMissing++; missingIds.push(c.questionId); continue; }
-        const r = await applyCorrection(parsed.objectKey, parsed.index, c.questionId, c.verdict, c.notes, c.suggestedAnswer, c.source, c.stemFix, { apply });
+        const r = await applyCorrection(parsed.objectKey, parsed.index, c.questionId, c.verdict, c.notes, c.suggestedAnswer, c.source, c.stemFix, { apply, newExplanation: c.newExplanation, optionEdits: c.optionEdits, fullOptions: c.fullOptions });
         if (r.matched) {
             cMatched++;
             if (r.details === 'option_adjusted') optionAdjusted.push(c.questionId);
         } else { cMissing++; missingIds.push(c.questionId); }
+    }
+
+    const topicUnresolved = [];
+    let tResolved = 0;
+    for (const t of topicAssignments) {
+        const parsed = parseQuestionId(t.questionId);
+        if (!parsed) { topicUnresolved.push({ questionId: t.questionId, why: 'bad_id' }); continue; }
+        const r = await applyTopicAssignment(parsed, t.questionId, t.topicName, t.reviewState, t.notes, { apply });
+        if (r.resolved) tResolved++; else topicUnresolved.push({ questionId: t.questionId, topic: t.topicName, why: r.details });
     }
 
     const summary = {
@@ -289,6 +348,7 @@ async function run() {
         mode: apply ? 'apply' : 'dry-run',
         withdrawals: { requested: withdrawals.length, matched: wMatched, missing: wMissing },
         corrections: { requested: corrections.length, matched: cMatched, missing: cMissing, optionAdjusted },
+        topicAssignments: { requested: topicAssignments.length, resolved: tResolved, unresolved: topicUnresolved },
         missingIds,
     };
     console.log(JSON.stringify(summary, null, 2));

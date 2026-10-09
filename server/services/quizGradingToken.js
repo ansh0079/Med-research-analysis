@@ -1,6 +1,7 @@
 'use strict';
 
 const crypto = require('crypto');
+const { normalizeAnswerSet, isMultiAnswer } = require('../utils/answerSet');
 
 const TOKEN_VERSION = 3;
 const DEFAULT_TTL_SECONDS = 24 * 60 * 60;
@@ -68,7 +69,7 @@ function commitmentKey(token) {
 }
 
 async function commitQuizAnswer(cache, token, userAnswer) {
-    const answer = String(userAnswer || '').trim().toLowerCase();
+    const answer = normalizeAnswerSet(userAnswer);
     if (!cache?.setIfAbsent || !cache?.getAsync || !answer) return { valid: false, reason: 'commitment_unavailable' };
     const key = commitmentKey(token);
     const created = await cache.setIfAbsent(key, { answer }, DEFAULT_TTL_SECONDS);
@@ -81,7 +82,7 @@ async function commitQuizAnswer(cache, token, userAnswer) {
 async function verifyQuizAnswerCommitment(cache, token, userAnswer) {
     if (!cache?.getAsync) return { valid: false, reason: 'commitment_unavailable' };
     const committed = await cache.getAsync(commitmentKey(token));
-    const answer = String(userAnswer || '').trim().toLowerCase();
+    const answer = normalizeAnswerSet(userAnswer);
     if (!committed?.answer) return { valid: false, reason: 'answer_not_committed' };
     return committed.answer === answer
         ? { valid: true }
@@ -169,7 +170,9 @@ function attachQuizGradingTokens(body) {
         ...body,
         questions: body.questions.map((question) => {
             const { correctAnswer: _withheld, ...rest } = question;
-            return { ...rest, gradingToken: createQuizGradingToken(question) };
+            // Whether to render checkboxes is not secret; how many are right and which are is.
+            const multiAnswer = question.multiAnswer === true || isMultiAnswer(question.correctAnswer);
+            return { ...rest, ...(multiAnswer ? { multiAnswer: true } : {}), gradingToken: createQuizGradingToken(question) };
         }),
     };
 }

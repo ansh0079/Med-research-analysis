@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
+import { answersMatch } from '../utils/answerSet';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { useSearchContext } from '@contexts/SearchContext';
 import { generateQuiz, generateQuizFromEvidence, QuizGenerationError, type QuizArticle } from '@services/quizService';
@@ -327,7 +328,7 @@ export function useQuizPage() {
 
   const currentQ: QuizQuestion | undefined = quiz.questions[quiz.currentIndex];
   const isAnswered = currentQ ? quiz.answers[currentQ.id] !== undefined : false;
-  const isCorrect = currentQ && quiz.answers[currentQ.id]?.toLowerCase() === answerFor(currentQ).toLowerCase();
+  const isCorrect = currentQ && answersMatch(quiz.answers[currentQ.id], answerFor(currentQ));
 
   const resolveSourceArticle = useCallback((q: QuizQuestion): QuizArticle | null => {
     const idx = q.sourceIndices?.[0];
@@ -359,7 +360,7 @@ export function useQuizPage() {
           userAnswer: answers[q.id] || '',
           correctAnswer: answerFor(q),
           gradingToken: q.gradingToken || '',
-          isCorrect: (answers[q.id] || '').toLowerCase() === answerFor(q).toLowerCase(),
+          isCorrect: answersMatch(answers[q.id], answerFor(q)),
           sourceArticleUid: uid,
           sourceArticleTitle: resolvedSrc?.title || q.sourceArticle || undefined,
           decisionId: resolvedSrc?._decisionId ?? attribution?.decisionId,
@@ -460,6 +461,21 @@ export function useQuizPage() {
     }));
   };
 
+  const handleQuestionReport = useCallback(async (report: {
+    kind: 'topic_suggestion' | 'answer_challenge';
+    suggestedTopic?: string;
+    suggestedAnswer?: string;
+    evidenceText?: string;
+    evidenceUrl?: string;
+  }) => {
+    if (!currentQ || !isAuthenticated) return;
+    await api.learning.postQuestionReport({
+      questionId: currentQ.id,
+      currentTopic: activeTopic || manualTopic.trim() || undefined,
+      ...report,
+    });
+  }, [currentQ, isAuthenticated, activeTopic, manualTopic]);
+
   const handleExplanationFeedback = useCallback((feedbackType: 'confusing' | 'clear') => {
     if (!currentQ || !isAuthenticated) return;
     const qid = currentQ.id;
@@ -478,7 +494,7 @@ export function useQuizPage() {
       setQuiz((prev) => ({ ...prev, complete: true }));
       try {
         const weakTypes = quiz.questions
-          .filter((q) => quiz.answers[q.id]?.toLowerCase() !== answerFor(q).toLowerCase())
+          .filter((q) => !answersMatch(quiz.answers[q.id], answerFor(q)))
           .map((q) => q.questionType || 'recall');
         sessionStorage.setItem('med_agent_session_feedback', JSON.stringify({
           topic: activeTopic,
@@ -669,6 +685,7 @@ export function useQuizPage() {
     gradeError,
     retryGrade: () => { if (pendingAnswer) void handleAnswer(pendingAnswer); },
     handleExplanationFeedback,
+    handleQuestionReport,
     handleNext,
     exportQuizReflection,
     saveQuizReflectionDraft,

@@ -15,6 +15,7 @@ const {
     attributeRecommendationFollowThrough,
 } = require('../../services/searchLearningOutcomeService');
 const { LEARNING_SIGNAL_TYPES, recordLearningSignal } = require('../../services/learningSignalService');
+const { answersMatch } = require('../../utils/answerSet');
 const { verifyQuizGradingToken, verifyQuizAnswerCommitment } = require('../../services/quizGradingToken');
 const { getEvidenceSnapshot } = require('../../services/search/searchEvidenceSnapshot');
 const {
@@ -41,8 +42,7 @@ function gradeQuizAttempts(attempts = []) {
         };
         const claimKey = normalizeAttemptClaimKey(signedAttempt);
         const correctAnswer = verification.correctAnswer;
-        const computedIsCorrect = String(attempt.userAnswer || '').trim().toLowerCase()
-            === String(correctAnswer || '').trim().toLowerCase();
+        const computedIsCorrect = answersMatch(attempt.userAnswer, correctAnswer);
         gradedAttempts.push({
             ...signedAttempt,
             correctAnswer,
