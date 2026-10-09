@@ -44,12 +44,12 @@ export const QuestionLearnerActions: React.FC<QuestionLearnerActionsProps> = ({ 
     setBusy(true);
     try {
       if (mode === 'topic') await onSubmit({ kind: 'topic_suggestion', suggestedTopic: topic.trim() });
-      else await onSubmit({
+      else {await onSubmit({
         kind: 'answer_challenge',
         suggestedAnswer: answer,
         evidenceText: evidenceText.trim(),
         evidenceUrl: evidenceUrl.trim(),
-      });
+      });}
       setSent(true);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Could not save that.');
