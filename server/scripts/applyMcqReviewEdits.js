@@ -39,6 +39,7 @@ loadEnv();
 const db = require('../../database');
 const { logAudit, AUDIT_ACTIONS } = require('../services/auditLogService');
 const { questionHash } = require('../services/questionIndex/questionIndexService');
+const { contentHash } = require('../services/questionAudit/questionAuditService');
 
 function parseArgs(argv = process.argv.slice(2)) {
     const args = new Set(argv);
@@ -147,21 +148,33 @@ async function applyWithdraw(objectKey, index, questionId, verdict, reason, note
     const q = mcqs[index];
     if (!q?.question) return { matched: false, details: 'question_missing' };
     const qhash = questionHash(q);
-    // Idempotent insert ignore. Writes happen only with --apply.
-    if (apply) await db.run(
-        `INSERT INTO mcq_review_overrides
-            (question_id, object_key, question_index, action, verdict, reason, notes, question_hash, applied_at, applied_by)
-         VALUES (?, ?, ?, 'withdraw', ?, ?, ?, ?, ?, ?)
-         ON CONFLICT(question_id) DO NOTHING`,
-        [questionId, found.objectKey, index, verdict || null, reason || null, notes || null, qhash || null, new Date().toISOString(), 'workflow:apply-mcq-review']
-    ).catch(() => null);
-    // Mark the specific assignment as retired when present
-    if (apply) await db.run(
-        `UPDATE question_topic_index SET review_state = 'retired', category = 'unassignable'
-         WHERE object_key = ? AND question_index = ?`,
-        [found.objectKey, index]
-    ).catch(() => null);
     if (apply) {
+        // Idempotent insert ignore
+        await db.run(
+            `INSERT INTO mcq_review_overrides
+                (question_id, object_key, question_index, action, verdict, reason, notes, question_hash, applied_at, applied_by)
+             VALUES (?, ?, ?, 'withdraw', ?, ?, ?, ?, ?, ?)
+             ON CONFLICT(question_id) DO NOTHING`,
+            [questionId, found.objectKey, index, verdict || null, reason || null, notes || null, qhash || null, new Date().toISOString(), 'workflow:apply-mcq-review']
+        ).catch(() => null);
+        // Mark the specific assignment as retired when present
+        await db.run(
+            `UPDATE question_topic_index SET review_state = 'retired', category = 'unassignable'
+             WHERE object_key = ? AND question_index = ?`,
+            [found.objectKey, index]
+        ).catch(() => null);
+        const now = new Date().toISOString();
+        await db.run(
+            `UPDATE question_work_queue SET status = 'retired', completed_at = ?, updated_at = ?
+             WHERE object_key = ? AND question_index = ? AND cohort = 'topic_repair'`,
+            [now, now, found.objectKey, index]
+        ).catch(() => null);
+        await db.run(
+            `UPDATE question_audit SET human_decision = 'retired', human_notes = ?, reviewed_by = ?, reviewed_at = ?,
+             status = 'human_retired', question_hash = ?, content_hash = ?, updated_at = ?
+             WHERE object_key = ? AND question_index = ?`,
+            [notes || reason || verdict || null, 'workflow:apply-mcq-review', now, qhash, contentHash(q), now, found.objectKey, index]
+        ).catch(() => null);
         await logAudit(db, {
             userId: null,
             action: AUDIT_ACTIONS.DATA_IMPORTED,
@@ -196,8 +209,11 @@ async function applyCorrection(objectKey, index, questionId, verdict, notes, sug
             const L = coerceLetter(edit?.letter);
             const text = String(edit?.after || '').trim();
             if (!L || !text) continue;
-            while (workingOptions.length < 5) workingOptions.push(`${letters[workingOptions.length]}: `);
             const idx = letters.indexOf(L);
+            // Pad only up to the edited index when the slot does not exist; do not append extra options.
+            while (workingOptions.length <= idx) {
+                workingOptions.push(`${letters[workingOptions.length]}: `);
+            }
             workingOptions[idx] = `${L}: ${text}`;
         }
     }
@@ -207,8 +223,11 @@ async function applyCorrection(objectKey, index, questionId, verdict, notes, sug
         const L = coerceLetter(optionReplacement.letter);
         const letters = ['A', 'B', 'C', 'D', 'E'];
         const opts = Array.isArray(before.options) ? before.options.slice() : [];
-        while (opts.length < 5) opts.push(`${letters[opts.length]}: `);
         const idx = letters.indexOf(L);
+        // Pad only up to the replacement index when needed.
+        while (opts.length <= idx) {
+            opts.push(`${letters[opts.length]}: `);
+        }
         opts[idx] = `${L}: ${String(optionReplacement.text).trim()}`;
         fixed = { options: opts, changed: true, note: `Replaced option ${L} to add suggested answer text`, coercedLetter: L };
     }
@@ -238,6 +257,10 @@ async function applyCorrection(objectKey, index, questionId, verdict, notes, sug
             `UPDATE teaching_objects SET object_payload = ?, updated_at = ? WHERE object_key = ?`,
             [JSON.stringify(newPayload), new Date().toISOString(), found.objectKey]
         );
+        await db.run(
+            `UPDATE question_topic_index SET question_hash = ? WHERE object_key = ? AND question_index = ?`,
+            [newQhash, found.objectKey, index]
+        ).catch(() => null);
         // Record override/audit snapshot
         await db.run(
             `INSERT INTO mcq_review_overrides
@@ -271,35 +294,72 @@ async function applyCorrection(objectKey, index, questionId, verdict, notes, sug
     return { matched: true, details: optionsChanged ? 'option_adjusted' : 'ok' };
 }
 
-async function applyTopicAssignment(objectKeyParsed, questionId, topicName, reviewState, notes, { apply }) {
-    const found = await findTeachingObjectForId(objectKeyParsed.objectKey, objectKeyParsed.index);
-    if (!found) return { matched: false, details: 'object_not_found' };
-    const row = await db.get('SELECT 1 AS ok FROM question_topic_index WHERE object_key = ? AND question_index = ?', [found.objectKey, objectKeyParsed.index]).catch(() => null);
-    if (!row) return { matched: true, resolved: false, details: 'index_row_not_found' };
-    // No topic name: record the review state only and leave the stored topic assignment as it is.
-    if (!String(topicName || '').trim()) {
-        if (apply) {
-            await db.run(
-                `UPDATE question_topic_index SET review_state = ?, reviewed_by = ?, reviewed_at = ?, review_notes = ?
-                 WHERE object_key = ? AND question_index = ?`,
-                [reviewState || 'approved', 'workflow:apply-mcq-review', new Date().toISOString(), notes || null, found.objectKey, objectKeyParsed.index]
-            );
+async function applyTopicAssignment(parsed, topicName, reviewState, notes, { apply, createIfMissing = false, block = null }) {
+    const found = await findTeachingObjectForId(parsed.objectKey, parsed.index);
+    if (!found) return { resolved: false, details: 'object_not_found' };
+    const indexRow = await db.get(
+        'SELECT assigned_curriculum_topic_id FROM question_topic_index WHERE object_key = ? AND question_index = ?',
+        [found.objectKey, parsed.index]
+    ).catch(() => null);
+    if (!indexRow) return { resolved: false, details: 'index_row_not_found' };
+
+    let topic = await db.get(
+        'SELECT id, display_name FROM curriculum_topics WHERE LOWER(display_name) = LOWER(?)',
+        [String(topicName || '').trim()]
+    ).catch(() => null);
+    let created = false;
+    if (!topic && createIfMissing) {
+        if (!apply) return { resolved: true, details: 'would_create_topic', created: true };
+        let blockName = String(block || '').trim();
+        if (!blockName) {
+            const current = await db.get(
+                `SELECT b.name AS block_name FROM curriculum_topics t
+                 LEFT JOIN curriculum_blocks b ON b.id = t.block_id
+                 WHERE CAST(t.id AS TEXT) = ?`,
+                [String(indexRow.assigned_curriculum_topic_id || '')]
+            ).catch(() => null);
+            blockName = current?.block_name || 'General Medicine';
         }
-        return { matched: true, resolved: true, details: 'ok' };
+        if (typeof db.upsertCurriculumSeedTopic !== 'function') return { resolved: false, details: 'topic_create_unavailable' };
+        await db.upsertCurriculumSeedTopic({
+            displayName: String(topicName).trim(), suggestedQuery: String(topicName).trim(), block: blockName,
+            sortOrder: 3000, priority: 'medium', volatility: 'moderate', seedStatus: 'not_seeded',
+        });
+        topic = await db.get(
+            'SELECT id, display_name FROM curriculum_topics WHERE LOWER(display_name) = LOWER(?)',
+            [String(topicName || '').trim()]
+        ).catch(() => null);
+        created = Boolean(topic);
     }
-    const topic = await db.get('SELECT id, display_name FROM curriculum_topics WHERE LOWER(display_name) = LOWER(?)', [String(topicName || '').trim()]).catch(() => null);
-    if (!topic) return { matched: true, resolved: false, details: 'topic_not_found' };
+    if (!topic) return { resolved: false, details: 'topic_not_found' };
+
     if (apply) {
-        const cluster = await db.get('SELECT cluster_id FROM topic_cluster_index WHERE curriculum_topic_id = ?', [String(topic.id)]).catch(() => null);
         const now = new Date().toISOString();
+        const cluster = await db.get('SELECT cluster_id FROM topic_cluster_index WHERE curriculum_topic_id = ?', [String(topic.id)]).catch(() => null);
         await db.run(
             `UPDATE question_topic_index SET review_state = ?, reviewed_by = ?, reviewed_at = ?, review_notes = ?,
              assigned_curriculum_topic_id = ?, assigned_topic_name = ?, assigned_cluster_id = ?, category = 'aligned'
              WHERE object_key = ? AND question_index = ?`,
-            [reviewState || 'approved', 'workflow:apply-mcq-review', now, notes || null, String(topic.id), topic.display_name, cluster?.cluster_id || String(topic.id), found.objectKey, objectKeyParsed.index]
+            [reviewState || 'approved', 'workflow:apply-mcq-review', now, notes || null,
+                String(topic.id), topic.display_name, cluster?.cluster_id || String(topic.id), found.objectKey, parsed.index]
         );
+        await db.run(
+            `UPDATE question_work_queue SET status = 'repaired', completed_at = ?, updated_at = ?
+             WHERE object_key = ? AND question_index = ? AND cohort = 'topic_repair'`,
+            [now, now, found.objectKey, parsed.index]
+        ).catch(() => null);
+        const currentQuestion = found.payload?.mcqs?.[parsed.index];
+        if (currentQuestion?.question) {
+            await db.run(
+                `UPDATE question_audit SET human_decision = 'approved', human_notes = ?, reviewed_by = ?, reviewed_at = ?,
+                 status = 'human_approved', topic = ?, question_hash = ?, content_hash = ?, updated_at = ?
+                 WHERE object_key = ? AND question_index = ?`,
+                [notes || null, 'workflow:apply-mcq-review', now, topic.display_name,
+                    questionHash(currentQuestion), contentHash(currentQuestion), now, found.objectKey, parsed.index]
+            ).catch(() => null);
+        }
     }
-    return { matched: true, resolved: true, details: 'ok' };
+    return { resolved: true, details: created ? 'topic_created' : 'ok', created };
 }
 
 async function run() {
@@ -327,7 +387,17 @@ async function run() {
     for (const c of corrections) {
         const parsed = parseQuestionId(c.questionId);
         if (!parsed) { cMissing++; missingIds.push(c.questionId); continue; }
-        const r = await applyCorrection(parsed.objectKey, parsed.index, c.questionId, c.verdict, c.notes, c.suggestedAnswer, c.source, c.stemFix, { apply, newExplanation: c.newExplanation, optionEdits: c.optionEdits, fullOptions: c.fullOptions });
+        const r = await applyCorrection(
+            parsed.objectKey,
+            parsed.index,
+            c.questionId,
+            c.verdict,
+            c.notes,
+            c.suggestedAnswer,
+            c.source,
+            c.stemFix,
+            { apply, newExplanation: c.newExplanation, optionEdits: c.optionEdits, fullOptions: c.fullOptions }
+        );
         if (r.matched) {
             cMatched++;
             if (r.details === 'option_adjusted') optionAdjusted.push(c.questionId);
@@ -335,12 +405,15 @@ async function run() {
     }
 
     const topicUnresolved = [];
-    let tResolved = 0;
+    let tResolved = 0, tCreated = 0;
     for (const t of topicAssignments) {
         const parsed = parseQuestionId(t.questionId);
         if (!parsed) { topicUnresolved.push({ questionId: t.questionId, why: 'bad_id' }); continue; }
-        const r = await applyTopicAssignment(parsed, t.questionId, t.topicName, t.reviewState, t.notes, { apply });
-        if (r.resolved) tResolved++; else topicUnresolved.push({ questionId: t.questionId, topic: t.topicName, why: r.details });
+        const result = await applyTopicAssignment(parsed, t.topicName, t.reviewState, t.notes, {
+            apply, createIfMissing: Boolean(t.createIfMissing), block: t.block,
+        });
+        if (result.resolved) { tResolved += 1; if (result.created) tCreated += 1; }
+        else topicUnresolved.push({ questionId: t.questionId, topic: t.topicName, why: result.details });
     }
 
     const summary = {
@@ -348,12 +421,15 @@ async function run() {
         mode: apply ? 'apply' : 'dry-run',
         withdrawals: { requested: withdrawals.length, matched: wMatched, missing: wMissing },
         corrections: { requested: corrections.length, matched: cMatched, missing: cMissing, optionAdjusted },
-        topicAssignments: { requested: topicAssignments.length, resolved: tResolved, unresolved: topicUnresolved },
+        topicAssignments: { requested: topicAssignments.length, resolved: tResolved, created: tCreated, unresolved: topicUnresolved },
         missingIds,
     };
     console.log(JSON.stringify(summary, null, 2));
 
     await db.close();
+    if (missingIds.length || topicUnresolved.length) {
+        throw new Error(`Review import incomplete: ${missingIds.length} missing question(s), ${topicUnresolved.length} unresolved topic assignment(s)`);
+    }
     return summary;
 }
 
