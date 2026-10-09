@@ -42,19 +42,23 @@ WITH questions AS (
   SELECT q.*, i.category, i.assigned_curriculum_topic_id, i.assigned_topic_name,
          i.assigned_cluster_id, i.review_state, i.evidence_support,
          i.evidence_guideline_ids, i.evidence_paper_uids,
+         i.original_topic, i.runner_up_curriculum_topic_id, i.topic_similarity,
+         i.runner_up_similarity, i.guideline_support, i.paper_support, i.reasons,
          COALESCE(g.ref_count,0) AS guideline_ref_count,
          COALESCE(p.ref_count,0) AS paper_ref_count,
          COALESCE(g.stored_guideline,false) AS stored_guideline,
          COALESCE(g.stored_fulltext,false) AS stored_guideline_fulltext,
          COALESCE(p.stored_abstract,false) AS stored_paper_abstract,
          a.status AS audit_status, a.human_decision,
-         ct.display_name AS object_curriculum_topic
+         ct.display_name AS object_curriculum_topic,
+         runner.display_name AS runner_up_topic
   FROM questions q
   LEFT JOIN question_topic_index i USING (object_key, question_index)
   LEFT JOIN guideline_status g USING (object_key, question_index)
   LEFT JOIN paper_status p USING (object_key, question_index)
   LEFT JOIN question_audit a USING (object_key, question_index)
   LEFT JOIN curriculum_topics ct ON ct.id::text=q.object_curriculum_topic_id
+  LEFT JOIN curriculum_topics runner ON runner.id::text=i.runner_up_curriculum_topic_id
 ), flags AS (
   SELECT *,
     (question_text IS NOT NULL AND correct_answer IS NOT NULL AND jsonb_typeof(mcq->'options') IN ('array','object')) AS structurally_complete,
@@ -88,6 +92,8 @@ COPY (
          ) AS repair_requirements,
          e.category, e.review_state, e.stored_topic, e.assigned_topic_name, e.object_curriculum_topic,
          e.assigned_curriculum_topic_id, e.assigned_cluster_id, e.evidence_support,
+         e.original_topic, e.runner_up_topic, e.topic_similarity, e.runner_up_similarity,
+         e.guideline_support, e.paper_support, e.reasons,
          e.question_text AS question, e.mcq->'options' AS options, e.correct_answer,
          e.mcq->>'explanation' AS explanation, e.mcq->'sourceRefs' AS inline_source_refs,
          e.evidence_guideline_ids, e.evidence_paper_uids,
