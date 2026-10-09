@@ -217,6 +217,32 @@ describe('the whole pipeline, with fake embeddings', () => {
         expect(g1).toMatchObject({ originalTopic: 'vte prophylaxis', assignedCurriculumTopicId: 'T-anticoag', category: 'aligned' });
     });
 
+    test('close-call unclear with adequate support becomes dual_linked with primary by support', async () => {
+        const near = (w0, w1) => unit(w0, w1, 0, 0.01);
+        const embedDual = async (texts, label) => texts.map((t) => {
+            if (label === 'questions') return near(1.0, 0.98); // small margin
+            if (String(t).toLowerCase().includes('dialysis')) return unit(1, 0, 0, 0.01);
+            if (String(t).toLowerCase().includes('anticoag')) return unit(0, 1, 0, 0.01);
+            return unit(0, 0, 1, 0.01);
+        });
+        const dualTopics = [
+            { id: 'T-dialysis', display_name: 'Dialysis timing', suggested_query: 'dialysis', specialty: 'renal' },
+            { id: 'T-anticoag', display_name: 'Anticoagulation', suggested_query: 'anticoagulation', specialty: 'cardiology' },
+        ];
+        const recs2 = [
+            { id: 'g1', normalized_topic: 'dialysis', source_body: 'KDIGO', recommendation_text: 'Delay dialysis unless urgent indications develop.' },
+            { id: 'g2', normalized_topic: 'vte prophylaxis', source_body: 'NICE', recommendation_text: 'Offer anticoagulation to prevent clots.' },
+        ];
+        const sources2 = {
+            questions: service.flattenQuestions([ { object_key: 'kb', object_type: 'guideline_mcq', normalized_topic: 'dialysis', curriculum_topic_id: 'T-dialysis', object_payload: JSON.stringify({ mcqs: [ { question: 'Which to choose?', options: ['A: x', 'B: y'], correctAnswer: 'A', explanation: 'Offer anticoagulation after hip replacement.' } ] }) } ]),
+            topics: dualTopics, recs: recs2, papers: [],
+        };
+        const built2 = await service.buildIndex({ sources: sources2, embed: embedDual, thresholds: { ...T, alignedTopicSimilarity: 0.85, alignedMargin: 0.2, dualLinkMargin: 0.2, alignedSupport: 0.7, minSupport: 0.5 } });
+        const row = built2.questions[0];
+        expect(row.category).toBe('dual_linked');
+        expect(new Set([row.assignedCurriculumTopicId, row.secondaryCurriculumTopicId])).toEqual(new Set(['T-dialysis', 'T-anticoag']));
+        expect(row.dualLinkReason).toBe('close_runner_up');
+    });
     test('the same question in two batches is embedded once but indexed in both places', async () => {
         const embedSpy = jest.fn(embed);
         const dup = question('Delay dialysis unless urgent.', 'When should dialysis start?');
@@ -233,13 +259,15 @@ describe('writing the index', () => {
         const sqlite = new Sqlite(':memory:');
         sqlite.exec(fs.readFileSync(path.join(__dirname, '../../database/migrations/109_question_topic_index.sql'), 'utf8'));
         sqlite.exec(fs.readFileSync(path.join(__dirname, '../../database/migrations/110_question_topic_review.sql'), 'utf8'));
+        sqlite.exec(fs.readFileSync(path.join(__dirname, '../../database/migrations/111_question_topic_dual_link.sql'), 'utf8'));
         return { sqlite, async run(sql, p = []) { return { changes: sqlite.prepare(sql).run(...p).changes }; } };
     }
     const built = () => ({
         questions: [{
             objectKey: 'k', questionIndex: 0, questionHash: 'h', objectType: 'guideline_mcq', originalTopic: 'a', originalCurriculumTopicId: '1',
-            assignedCurriculumTopicId: '2', assignedTopicName: 'B', topicSimilarity: 0.9, runnerUpCurriculumTopicId: '3', runnerUpSimilarity: 0.4,
-            guidelineSupport: 0.8, paperSupport: 0.7, topicCategory: 'aligned', evidenceSupport: 'both', category: 'aligned', reasons: ['moved_to_better_topic'], evidenceGuidelineIds: ['g1'], evidencePaperUids: ['p1'],
+            assignedCurriculumTopicId: '2', assignedTopicName: 'B', assignedClusterId: 'C2', topicSimilarity: 0.9, runnerUpCurriculumTopicId: '3', runnerUpSimilarity: 0.4,
+            guidelineSupport: 0.8, paperSupport: 0.7, topicCategory: 'aligned', evidenceSupport: 'both', category: 'dual_linked', reasons: ['dual_link_close_call'], evidenceGuidelineIds: ['g1'], evidencePaperUids: ['p1'],
+            secondaryCurriculumTopicId: '3', secondaryTopicName: 'C', secondaryClusterId: 'C3', secondarySimilarity: 0.4, secondaryGuidelineSupport: 0.7, dualLinkReason: 'close_runner_up',
         }],
         guidelines: [{ guidelineId: 'g1', originalTopic: 'a', assignedCurriculumTopicId: '2', assignedTopicName: 'B', topicSimilarity: 0.8, runnerUpSimilarity: 0.3, category: 'aligned' }],
     });
@@ -248,11 +276,18 @@ describe('writing the index', () => {
         const db = makeDb();
         await service.writeIndex(db, built());
         const changed = built();
-        changed.questions[0].category = 'unclear';
+        changed.questions[0].category = 'aligned';
         await service.writeIndex(db, changed);
         const rows = db.sqlite.prepare('SELECT * FROM question_topic_index').all();
         expect(rows).toHaveLength(1);
-        expect(rows[0]).toMatchObject({ category: 'unclear', assigned_curriculum_topic_id: '2', classifier_version: service.CLASSIFIER_VERSION });
+        expect(rows[0]).toMatchObject({
+            category: 'aligned',
+            assigned_curriculum_topic_id: '2',
+            secondary_curriculum_topic_id: '3',
+            secondary_cluster_id: 'C3',
+            dual_link_reason: 'close_runner_up',
+            classifier_version: service.CLASSIFIER_VERSION,
+        });
         expect(JSON.parse(rows[0].evidence_guideline_ids)).toEqual(['g1']);
         expect(db.sqlite.prepare('SELECT COUNT(*) n FROM guideline_topic_index').get().n).toBe(1);
     });

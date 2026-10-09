@@ -168,6 +168,24 @@ function createAiRouteHelpers({ db, ai, serverConfig, logger }) {
                     });
                 }
             }
+            // Always include dual-linked questions for this topic's cluster as additive coverage,
+            // even when QUESTION_INDEX_SERVING is off. Before the write, the index has no such rows.
+            {
+                const topicId = await database.resolveCurriculumTopicId(topic).catch(() => null);
+                const clusterId = await questionIndex.getTopicClusterId(database, topicId);
+                if (clusterId) {
+                    const everything = [...liveMcqs, ...coldMcqs, ...guidelineMcqs];
+                    const have = new Set(everything.map((m) => questionIndex.questionHash(m)));
+                    const dual = await questionIndex.loadDualLinkedForCluster(database, clusterId);
+                    dual.forEach((entry, i) => {
+                        const hash = questionIndex.questionHash(entry.question);
+                        if (have.has(hash) || !notFabricated(entry.question)) return;
+                        have.add(hash);
+                        const mapped = mapColdStartMcq(entry.question, i, 'indexed', entry.objectType, claimTopicKey);
+                        (entry.objectType === 'guideline_mcq' ? guidelineMcqs : coldMcqs).push(mapped);
+                    });
+                }
+            }
 
             if (userId) {
                 const normalizedTopic = database.normalizeTopic(topic);

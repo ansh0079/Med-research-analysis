@@ -3,13 +3,19 @@ name: Refresh Question Topic Index
 on:
   workflow_dispatch:
     inputs:
+      mode:
+        description: Mode: report (default) or write (apply dual links)
+        required: false
+        default: report
+        type: choice
+        options:
+          - report
+          - write
       force:
-        description: Rebuild even when no source rows are marked dirty
+        description: Rebuild even when no source rows are marked dirty (only for write)
         required: false
         default: false
         type: boolean
-  schedule:
-    - cron: '20 3 * * *'
 
 # Share the deploy's group so a deploy never recreates the web container underneath a rebuild (a manual
 # run on 2026-10-03 was killed that way, exit 137), and the two queue instead of overlapping.
@@ -22,7 +28,10 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 45
     steps:
-      - name: Rebuild changed question-topic assignments
+      - name: Prepare report directory
+        run: mkdir -p artifacts
+
+      - name: Refresh (report/write) via SSH
         uses: appleboy/ssh-action@v1
         with:
           host: 178.105.155.246
@@ -32,15 +41,74 @@ jobs:
           script: |
             set -e
             cd /opt/medsearch
-            EXTRA="--if-dirty"
-            if [ "${{ inputs.force }}" = "true" ]; then EXTRA=""; fi
-            # A throwaway container, not the live web container: a rebuild embeds ~35k texts, and the host
-            # has 7.7 GB and no swap, shared with Grobid. The Node heap is capped so a fault cannot take
-            # the host down.
-            docker compose -f docker-compose.hetzner.yml run --rm --no-deps -T \
-              -e NODE_OPTIONS=--max-old-space-size=1536 web \
-              node server/scripts/buildQuestionTopicIndex.js \
-              --write $EXTRA --cache /app/data/question-index-cache \
-              --report /app/data/question-topic-index-report.json
-            docker exec medsearch-pg psql -U medsearch -d medsearch -v ON_ERROR_STOP=1 -c \
-              "SELECT classifier_version, category, evidence_support, COUNT(*) FROM question_topic_index GROUP BY 1,2,3 ORDER BY 1,2,3;"
+            REPORT=/app/data/question-topic-index-report.json
+            CACHE=/app/data/question-index-cache
+            if [ "${{ inputs.mode }}" = "write" ]; then
+              echo "Mode: write"
+              BEFORE=$(docker exec medsearch-pg psql -U medsearch -d medsearch -At -c "SELECT category, COUNT(*) FROM question_topic_index GROUP BY 1 ORDER BY 1;")
+              echo "Before counts:"
+              echo "$BEFORE"
+              EXTRA="--if-dirty"
+              if [ "${{ inputs.force }}" = "true" ]; then EXTRA=""; fi
+              # Throwaway container for embed/write workload.
+              docker compose -f docker-compose.hetzner.yml run --rm --no-deps -T \
+                -e NODE_OPTIONS=--max-old-space-size=1536 web \
+                node -e "require('./database').connect().then(async (db)=>{await db.runMigrations(); process.exit(0);}).catch((e)=>{console.error(e);process.exit(1);});"
+              docker compose -f docker-compose.hetzner.yml run --rm --no-deps -T \
+                -e NODE_OPTIONS=--max-old-space-size=1536 web \
+                node server/scripts/buildQuestionTopicIndex.js \
+                --write $EXTRA --cache $CACHE --report $REPORT
+              AFTER=$(docker exec medsearch-pg psql -U medsearch -d medsearch -At -c "SELECT category, COUNT(*) FROM question_topic_index GROUP BY 1 ORDER BY 1;")
+              echo "After counts:"
+              echo "$AFTER"
+            else
+              echo "Mode: report (no writes)"
+              docker compose -f docker-compose.hetzner.yml run --rm --no-deps -T \
+                -e NODE_OPTIONS=--max-old-space-size=1536 web \
+                node server/scripts/buildQuestionTopicIndex.js \
+                --cache $CACHE --report $REPORT
+            fi
+
+      - name: Copy report artifact from server
+        if: always()
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: 178.105.155.246
+          username: root
+          key: ${{ secrets.HETZNER_SSH_KEY }}
+          source: "/opt/medsearch/data/question-topic-index-report.json"
+          target: "artifacts/"
+          overwrite: true
+
+      - name: Upload report artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: question-topic-index-report
+          path: artifacts/question-topic-index-report.json
+
+      - name: Summarize report
+        if: always()
+        run: |
+          if [ -f artifacts/question-topic-index-report.json ]; then
+            echo "## Question Topic Index Report" >> $GITHUB_STEP_SUMMARY
+            DL_TOTAL=$(jq -r '.dualLinked.total' artifacts/question-topic-index-report.json)
+            BYCAT=$(jq -r '.byCategory' artifacts/question-topic-index-report.json)
+            UNASSIGN=$(jq -r '.byCategory.unassignable // 0' artifacts/question-topic-index-report.json)
+            ALIGNED=$(jq -r '.byCategory.aligned // 0' artifacts/question-topic-index-report.json)
+            UNCLEAR=$(jq -r '.byCategory.unclear // 0' artifacts/question-topic-index-report.json)
+            WEAK_UNCLEAR=$(jq -r '.byCategoryAndEvidenceSupport.unclear.weak_evidence_support // 0' artifacts/question-topic-index-report.json)
+            NONE_UNCLEAR=$(jq -r '.byCategoryAndEvidenceSupport.unclear.no_evidence_support // 0' artifacts/question-topic-index-report.json)
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "- Dual-linked total: $DL_TOTAL" >> $GITHUB_STEP_SUMMARY
+            echo "- Aligned: $ALIGNED" >> $GITHUB_STEP_SUMMARY
+            echo "- Unclear (remaining): $UNCLEAR" >> $GITHUB_STEP_SUMMARY
+            echo "- Unassignable: $UNASSIGN" >> $GITHUB_STEP_SUMMARY
+            echo "- Unclear with weak evidence: $WEAK_UNCLEAR" >> $GITHUB_STEP_SUMMARY
+            echo "- Unclear with no evidence: $NONE_UNCLEAR" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "### Top 50 topic pairs (dual-linked)" >> $GITHUB_STEP_SUMMARY
+            jq -r '.dualLinked.byPair[] | "- \(.pair): \(.count)"' artifacts/question-topic-index-report.json >> $GITHUB_STEP_SUMMARY
+          else
+            echo "No report available" >> $GITHUB_STEP_SUMMARY
+          fi
