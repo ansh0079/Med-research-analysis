@@ -1,4 +1,5 @@
 import type { QuizQuestion } from '@types';
+import { answersMatch } from '../../utils/answerSet';
 import type { QuizArticle } from '@services/quizService';
 import { lookupArticleAttribution } from '@utils/searchAttribution';
 
@@ -26,7 +27,7 @@ export function buildQuizAttempts({
       userAnswer: answers[q.id] || '',
       correctAnswer: q.correctAnswer,
       gradingToken: q.gradingToken || '',
-      isCorrect: (answers[q.id] || '').toLowerCase() === q.correctAnswer.toLowerCase(),
+      isCorrect: answersMatch(answers[q.id], q.correctAnswer),
       sourceArticleUid: uid,
       sourceArticleTitle: resolvedSrc?.title || q.sourceArticle || undefined,
       decisionId: attribution?.decisionId,

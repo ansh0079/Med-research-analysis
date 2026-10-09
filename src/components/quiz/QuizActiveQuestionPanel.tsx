@@ -2,12 +2,15 @@ import React from 'react';
 import { EvidenceAuditPanel, type EvidenceAuditSnapshot } from '@components/search/EvidenceAuditPanel';
 import { QuestionTypeBadge } from '@components/quiz/QuestionTypeBadge';
 import { QuizOptionButton } from '@components/quiz/QuizOptionButton';
+import { QuizMultiAnswerOptions } from '@components/quiz/QuizMultiAnswerOptions';
+import { answerLetters, isMultiAnswerQuestion } from '../../utils/answerSet';
 import { QuizSourceBadge } from '@components/quiz/QuizSourceBadge';
 import { VisualExplanation } from '@components/quiz/VisualExplanation';
 import { DIFFICULTY_COLORS, parseSourceLabel } from '../../utils/quizPageHelpers';
 import { VerificationBadge } from '@components/ui/VerificationBadge';
 import type { QuizArticle } from '@services/quizService';
 import type { QuizQuestion, QuizState } from '@types';
+import { QuestionLearnerActions, type QuestionReport } from '@components/quiz/QuestionLearnerActions';
 
 interface QuizActiveQuestionPanelProps {
   quiz: QuizState;
@@ -28,6 +31,7 @@ interface QuizActiveQuestionPanelProps {
   onAnswer: (answer: string) => void;
   onNext: () => void;
   onExplanationFeedback: (feedbackType: 'confusing' | 'clear') => void;
+  onQuestionReport: (report: QuestionReport) => Promise<void>;
   resolveSourceArticle: (q: QuizQuestion) => QuizArticle | null;
 }
 
@@ -50,6 +54,7 @@ export const QuizActiveQuestionPanel: React.FC<QuizActiveQuestionPanelProps> = (
   onAnswer,
   onNext,
   onExplanationFeedback,
+  onQuestionReport,
   resolveSourceArticle,
 }) => (
   <>
@@ -91,6 +96,11 @@ export const QuizActiveQuestionPanel: React.FC<QuizActiveQuestionPanelProps> = (
       <p className="text-base font-semibold text-slate-900 dark:text-white leading-relaxed mb-4">
         {currentQ.question}
       </p>
+      {(currentQ.applicableTopics?.length ?? 0) > 1 && (
+        <p className="text-xs text-slate-500 dark:text-slate-400 mb-4">
+          Listed under {currentQ.applicableTopics!.join(' and ')}
+        </p>
+      )}
 
       {!isAnswered && (
         <div className="mb-5 rounded-xl border border-slate-100 dark:border-slate-700 bg-slate-50/80 dark:bg-slate-900/40 px-4 py-3">
@@ -130,7 +140,16 @@ export const QuizActiveQuestionPanel: React.FC<QuizActiveQuestionPanelProps> = (
         </div>
       )}
 
-      {currentQ.type === 'multiple_choice' && currentQ.options ? (
+      {currentQ.type === 'multiple_choice' && currentQ.options && isMultiAnswerQuestion(currentQ) ? (
+        <QuizMultiAnswerOptions
+          key={currentQ.id}
+          options={currentQ.options}
+          isAnswered={isAnswered}
+          submitted={selected}
+          correctAnswer={currentQ.correctAnswer}
+          onSubmit={onAnswer}
+        />
+      ) : currentQ.type === 'multiple_choice' && currentQ.options ? (
         <div className="space-y-3">
           {currentQ.options.map((opt) => {
             const letter = opt.split(':')[0].trim();
@@ -173,7 +192,9 @@ export const QuizActiveQuestionPanel: React.FC<QuizActiveQuestionPanelProps> = (
         <div className="flex flex-wrap items-center gap-2 mb-2">
           <i className={`fas fa-${isCorrect ? 'check-circle text-emerald-600' : 'lightbulb text-amber-600'}`} />
           <span className={`text-sm font-bold ${isCorrect ? 'text-emerald-800 dark:text-emerald-300' : 'text-amber-800 dark:text-amber-300'}`}>
-            {isCorrect ? 'Correct!' : `Correct answer: ${currentQ.correctAnswer}`}
+            {isCorrect
+              ? 'Correct!'
+              : `Correct answer${answerLetters(currentQ.correctAnswer).length > 1 ? 's' : ''}: ${answerLetters(currentQ.correctAnswer).map((l) => l.toUpperCase()).join(', ')}`}
           </span>
           <VerificationBadge status={(currentQ as { verificationStatus?: string }).verificationStatus || 'synthesis_inferred'} />
         </div>
@@ -281,6 +302,10 @@ export const QuizActiveQuestionPanel: React.FC<QuizActiveQuestionPanelProps> = (
           </>
         )}
       </div>
+    )}
+
+    {isAnswered && isAuthenticated && (
+      <QuestionLearnerActions options={currentQ.options || []} onSubmit={onQuestionReport} />
     )}
 
     {isAnswered && (

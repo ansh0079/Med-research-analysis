@@ -1,7 +1,7 @@
 'use strict';
 
 const { response } = require('./mcqFormatting');
-const { mcqFormFindings } = require('../../utils/evidenceSupport');
+const { mcqFormFindings, stemQualityFindings } = require('../../utils/evidenceSupport');
 
 /**
  * Drops questions whose answer can be picked from the shape of the options.
@@ -42,7 +42,10 @@ function flagCuedQuestions(raw, logger) {
     return { kept: flagged, cuedCount: 0, cueSignals: cuedCount };
 }
 
-function dropCuedQuestions(raw, logger) {
+function dropCuedQuestions(rawIn, logger) {
+    const raw = rawIn.filter((mcq) => stemQualityFindings(mcq).length === 0);
+    if (raw.length < rawIn.length) logger.warn({ dropped: rawIn.length - raw.length, of: rawIn.length }, 'mcq stem quality: questions dropped');
+    if (raw.length === 0 && rawIn.length > 0) return { kept: [], cuedCount: 0 };
     if (cueHandling() === 'flag') return flagCuedQuestions(raw, logger);
     const verdicts = raw.map((mcq) => ({
         mcq,

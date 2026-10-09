@@ -63,6 +63,7 @@ function renderPanel(over: Partial<React.ComponentProps<typeof QuizActiveQuestio
             onAnswer={onAnswer}
             onNext={jest.fn()}
             onExplanationFeedback={jest.fn()}
+            onQuestionReport={jest.fn()}
             resolveSourceArticle={() => null}
             {...over}
         />,
@@ -97,5 +98,24 @@ describe('QuizActiveQuestionPanel grading failure', () => {
         const { onAnswer } = renderPanel({ gradeError: 'nope' });
         fireEvent.click(screen.getByRole('button', { name: /Norepinephrine/i }));
         expect(onAnswer).toHaveBeenCalledWith('B');
+    });
+});
+
+describe('question reports', () => {
+    it('asks for a source before an answer challenge can be saved', () => {
+        const onQuestionReport = jest.fn();
+        renderPanel({ isAnswered: true, isAuthenticated: true, isCorrect: false, onQuestionReport });
+        fireEvent.click(screen.getByRole('button', { name: /another answer is right/i }));
+        fireEvent.change(screen.getByRole('combobox'), { target: { value: 'A' } });
+        fireEvent.click(screen.getByRole('button', { name: 'Submit' }));
+        expect(onQuestionReport).not.toHaveBeenCalled();
+        expect(screen.getByRole('alert')).toHaveTextContent(/link or a short quotation/i);
+    });
+
+    it('names both topics when a question is listed under two', () => {
+        renderPanel({
+            currentQ: { ...QUESTION, applicableTopics: ['Heart failure', 'Cardiomyopathy'] },
+        });
+        expect(screen.getByText(/Listed under Heart failure and Cardiomyopathy/)).toBeInTheDocument();
     });
 });

@@ -24,6 +24,7 @@ export interface CuratedQuestion {
   question: string;
   options: string[];
   gradingToken: string;
+  multiAnswer?: boolean;
   correctAnswer?: string;
   explanation: string;
   difficulty: 'easy' | 'medium' | 'hard';

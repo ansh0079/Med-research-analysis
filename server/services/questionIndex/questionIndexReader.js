@@ -140,4 +140,95 @@ async function loadAlignedForCluster(db, clusterId, { limit = 60 } = {}) {
     }
 }
 
-module.exports = { servingEnabled, getTopicClusterId, loadAssignments, belongsHere, loadAlignedForCluster, questionHash };
+/**
+ * Unclear questions with a real second topic are listed under both.
+ * The assigned cluster and the runner-up's cluster each receive the question.
+ * Aligned questions stay on the one topic they already cleared.
+ */
+async function loadAlsoApplicableForCluster(db, clusterId, { limit = 40 } = {}) {
+    if (!clusterId) return [];
+    try {
+        const withdrawn = await loadWithdrawnOverrides(db);
+        const rows = await db.all(
+            `SELECT q.*
+             FROM question_topic_index q
+             LEFT JOIN topic_cluster_index rc ON rc.curriculum_topic_id = q.runner_up_curriculum_topic_id
+             WHERE q.category = 'unclear'
+               AND q.runner_up_curriculum_topic_id IS NOT NULL
+               AND TRIM(q.runner_up_curriculum_topic_id) != ''
+               AND (q.assigned_cluster_id = ? OR rc.cluster_id = ?)
+             LIMIT ?`,
+            [clusterId, clusterId, limit],
+        );
+        const names = new Map();
+        const ids = [...new Set(rows.map((r) => r.runner_up_curriculum_topic_id).filter(Boolean))];
+        if (ids.length) {
+            try {
+                const named = await db.all(
+                    `SELECT CAST(id AS TEXT) AS id, display_name FROM curriculum_topics WHERE CAST(id AS TEXT) IN (${ids.map(() => '?').join(',')})`,
+                    ids,
+                );
+                for (const n of named) names.set(String(n.id), n.display_name);
+            } catch { /* topic names are optional; the question still lists under both clusters */ }
+        }
+        const byObject = new Map();
+        for (const r of rows) {
+            if (r.review_state === 'retired') continue;
+            if (!byObject.has(r.object_key)) byObject.set(r.object_key, []);
+            byObject.get(r.object_key).push(r);
+        }
+        const out = [];
+        const candidateHashes = [];
+        const candidates = [];
+        for (const [objectKey, wanted] of byObject) {
+            const object = await db.get("SELECT object_payload, review_state FROM teaching_objects WHERE object_key = ?", [objectKey]);
+            if (!object || object.review_state === 'withdrawn') continue;
+            let mcqs;
+            try { mcqs = JSON.parse(object.object_payload || '{}').mcqs; } catch { continue; }
+            if (!Array.isArray(mcqs)) continue;
+            for (const r of wanted) {
+                const q = mcqs[r.question_index];
+                if (!q?.question) continue;
+                if (withdrawn.byObjectIndex.has(`${objectKey}#${r.question_index}`)) continue;
+                let hash;
+                try { hash = questionHash(q); } catch { continue; }
+                if (!hash || withdrawn.byHash.has(hash)) continue;
+                const runnerName = names.get(String(r.runner_up_curriculum_topic_id)) || null;
+                const applicableTopics = [r.assigned_topic_name, runnerName].filter(Boolean);
+                candidateHashes.push(hash);
+                candidates.push({
+                    question: q,
+                    objectType: r.evidence_support === 'paper' ? 'paper_mcq' : r.object_type,
+                    objectKey,
+                    hash,
+                    applicableTopics,
+                });
+            }
+        }
+        const { loadAuditHolds } = require('../questionAudit/questionAuditService');
+        const held = await loadAuditHolds(db, candidateHashes);
+        for (const candidate of candidates) {
+            if (!held.has(candidate.hash)) {
+                out.push({
+                    question: candidate.question,
+                    objectType: candidate.objectType,
+                    objectKey: candidate.objectKey,
+                    applicableTopics: candidate.applicableTopics,
+                });
+            }
+        }
+        return out;
+    } catch {
+        return [];
+    }
+}
+
+module.exports = {
+    servingEnabled,
+    getTopicClusterId,
+    loadAssignments,
+    belongsHere,
+    loadAlignedForCluster,
+    loadAlsoApplicableForCluster,
+    questionHash,
+};

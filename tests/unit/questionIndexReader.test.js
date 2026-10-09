@@ -128,5 +128,26 @@ describe('reading the index', () => {
         expect(await reader.getTopicClusterId(broken, 't1')).toBeNull();
         expect((await reader.loadAssignments(broken, ['h'])).size).toBe(0);
         expect(await reader.loadAlignedForCluster(broken, 'C1')).toEqual([]);
+        expect(await reader.loadAlsoApplicableForCluster(broken, 'C1')).toEqual([]);
+    });
+
+    test('an unclear question with a second topic is served on both clusters', async () => {
+        const db = makeDb();
+        const question = q('Fits two subjects?');
+        put(db, 'b1', 'guideline_mcq', [question]);
+        db.sqlite.prepare(
+            `INSERT INTO question_topic_index (object_key, question_index, question_hash, object_type,
+                assigned_curriculum_topic_id, assigned_topic_name, assigned_cluster_id,
+                runner_up_curriculum_topic_id, category, classifier_version, classified_at)
+             VALUES ('b1', 0, ?, 'guideline_mcq', 't1', 'Heart failure', 'C1', 't2', 'unclear', 'v', 'now')`,
+        ).run(reader.questionHash(question));
+        db.sqlite.prepare("INSERT INTO topic_cluster_index VALUES ('t2', 'C2', 'v', 'now')").run();
+        db.sqlite.exec('CREATE TABLE curriculum_topics (id TEXT, display_name TEXT)');
+        db.sqlite.prepare("INSERT INTO curriculum_topics VALUES ('t2', 'Cardiomyopathy')").run();
+        const onFirst = await reader.loadAlsoApplicableForCluster(db, 'C1');
+        const onSecond = await reader.loadAlsoApplicableForCluster(db, 'C2');
+        expect(onFirst.map((a) => a.question.question)).toEqual(['Fits two subjects?']);
+        expect(onSecond.map((a) => a.question.question)).toEqual(['Fits two subjects?']);
+        expect(onFirst[0].applicableTopics).toEqual(['Heart failure', 'Cardiomyopathy']);
     });
 });

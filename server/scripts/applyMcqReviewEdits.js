@@ -22,6 +22,12 @@
  *   }, ...]
  * }
  *
+
+ * Optional correction fields: newExplanation (up to 1500 chars), fullOptions (["A: ...", ...] replaces all options).
+ * Optional "topicAssignments": [{ questionId, topicName, reviewState, notes }] sets question_topic_index topic by
+ * exact curriculum_topics.display_name (case-insensitive); unresolved names are reported, never guessed.
+ * --dry-run performs no writes.
+ *
  * Idempotent: running --apply twice makes no further changes.
  * Writes are strictly per-question; batches are never withdrawn wholesale.
  */
@@ -91,6 +97,11 @@ function sanitizeExplanation(notes, source) {
 function coerceLetter(value) {
     const v = String(value || '').trim();
     if (/^[A-E]$/i.test(v)) return v.toUpperCase();
+    // Select-all-that-apply: "A,C" (any order/spacing) becomes the canonical sorted list.
+    const parts = v.split(/[\s,;&]+/).filter(Boolean);
+    if (parts.length > 1 && parts.every((p) => /^[A-E]$/i.test(p))) {
+        return [...new Set(parts.map((p) => p.toUpperCase()))].sort().join(',');
+    }
     return null;
 }
 
@@ -98,6 +109,11 @@ function ensureOptionContainsCorrectAnswer(options, suggestedAnswer) {
     const letters = ['A', 'B', 'C', 'D', 'E'];
     const opts = Array.isArray(options) ? options.slice() : [];
     const letter = coerceLetter(suggestedAnswer);
+    if (letter && letter.includes(',')) {
+        // Every keyed letter must exist as an option; nothing is invented for a multi-answer key.
+        const missing = letter.split(',').filter((l) => !opts[letters.indexOf(l)] || !String(opts[letters.indexOf(l)]).startsWith(`${l}:`));
+        return { options: opts, changed: false, note: missing.length ? `Multi-answer key references missing options: ${missing.join(',')}` : null };
+    }
     if (letter && letters.includes(letter)) {
         // Ensure "L: ..." exists and keep other options intact.
         const idx = letters.indexOf(letter);
@@ -172,7 +188,7 @@ async function applyWithdraw(objectKey, index, questionId, verdict, reason, note
     return { matched: true, details: 'ok' };
 }
 
-async function applyCorrection(objectKey, index, questionId, verdict, notes, suggestedAnswer, source, stemFix, { apply, newExplanation = null, optionReplacement = null, optionEdits = [] }) {
+async function applyCorrection(objectKey, index, questionId, verdict, notes, suggestedAnswer, source, stemFix, { apply, newExplanation = null, optionReplacement = null, optionEdits = [], fullOptions = null }) {
     const found = await findTeachingObjectForId(objectKey, index);
     if (!found) return { matched: false, details: 'object_not_found' };
     const mcqs = Array.isArray(found.payload?.mcqs) ? found.payload.mcqs : [];
@@ -187,7 +203,7 @@ async function applyCorrection(objectKey, index, questionId, verdict, notes, sug
     // Ensure options carry the suggested answer; coerce non-letter to a letter slot when needed.
     // Apply explicit option edits first, then ensure the suggested answer exists.
     const letters = ['A', 'B', 'C', 'D', 'E'];
-    const workingOptions = Array.isArray(before.options) ? before.options.slice() : [];
+    const workingOptions = Array.isArray(fullOptions) && fullOptions.length ? fullOptions.map((o) => String(o)) : (Array.isArray(before.options) ? before.options.slice() : []);
     if (Array.isArray(optionEdits) && optionEdits.length) {
         for (const edit of optionEdits) {
             const L = coerceLetter(edit?.letter);
@@ -226,6 +242,8 @@ async function applyCorrection(objectKey, index, questionId, verdict, notes, sug
         correctAnswer: correctLetter,
         explanation: computedExplanation || before.explanation || '',
     };
+    if (correctLetter.includes(',')) after.multiAnswer = true;
+    else delete after.multiAnswer;
 
     const qhash = questionHash(before);
     const newQhash = questionHash(after);
@@ -378,7 +396,7 @@ async function run() {
             c.suggestedAnswer,
             c.source,
             c.stemFix,
-            { apply, newExplanation: c.newExplanation, optionEdits: c.optionEdits }
+            { apply, newExplanation: c.newExplanation, optionEdits: c.optionEdits, fullOptions: c.fullOptions }
         );
         if (r.matched) {
             cMatched++;
