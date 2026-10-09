@@ -51,15 +51,17 @@ jobs:
               apply) FLAG=--apply ;;
               *) echo "bad mode $MODE"; exit 1 ;;
             esac
+            HOST_FILE="/opt/medsearch/data/mcq-review/${DATA}"
             FILE="/review/${DATA}"
-            if [ ! -f "$FILE" ]; then
-              echo "Data file not found: $FILE"
+            if [ ! -f "$HOST_FILE" ]; then
+              echo "Data file not found: $HOST_FILE"
               exit 2
             fi
             if [ "$MODE" = "apply" ] && [ -n "$SOURCE_DATA" ]; then
+              SOURCE_HOST_FILE="/opt/medsearch/data/mcq-review/${SOURCE_DATA}"
               SOURCE_FILE="/review/${SOURCE_DATA}"
-              if [ ! -f "$SOURCE_FILE" ]; then
-                echo "Source data file not found: $SOURCE_FILE"
+              if [ ! -f "$SOURCE_HOST_FILE" ]; then
+                echo "Source data file not found: $SOURCE_HOST_FILE"
                 exit 2
               fi
               docker compose -f docker-compose.hetzner.yml run --rm --no-deps -T -e USE_POSTGRES_MAIN=true \
