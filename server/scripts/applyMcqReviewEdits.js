@@ -33,6 +33,7 @@ loadEnv();
 const db = require('../../database');
 const { logAudit, AUDIT_ACTIONS } = require('../services/auditLogService');
 const { questionHash } = require('../services/questionIndex/questionIndexService');
+const { contentHash } = require('../services/questionAudit/questionAuditService');
 
 function parseArgs(argv = process.argv.slice(2)) {
     const args = new Set(argv);
@@ -146,6 +147,18 @@ async function applyWithdraw(objectKey, index, questionId, verdict, reason, note
              WHERE object_key = ? AND question_index = ?`,
             [found.objectKey, index]
         ).catch(() => null);
+        const now = new Date().toISOString();
+        await db.run(
+            `UPDATE question_work_queue SET status = 'retired', completed_at = ?, updated_at = ?
+             WHERE object_key = ? AND question_index = ? AND cohort = 'topic_repair'`,
+            [now, now, found.objectKey, index]
+        ).catch(() => null);
+        await db.run(
+            `UPDATE question_audit SET human_decision = 'retired', human_notes = ?, reviewed_by = ?, reviewed_at = ?,
+             status = 'human_retired', question_hash = ?, content_hash = ?, updated_at = ?
+             WHERE object_key = ? AND question_index = ?`,
+            [notes || reason || verdict || null, 'workflow:apply-mcq-review', now, qhash, contentHash(q), now, found.objectKey, index]
+        ).catch(() => null);
         await logAudit(db, {
             userId: null,
             action: AUDIT_ACTIONS.DATA_IMPORTED,
@@ -169,7 +182,7 @@ async function applyCorrection(objectKey, index, questionId, verdict, notes, sug
 
     // New explanation
     const computedExplanation = newExplanation && String(newExplanation).trim()
-        ? String(newExplanation).trim().slice(0, 700)
+        ? String(newExplanation).trim().slice(0, 1500)
         : sanitizeExplanation(notes, source);
     // Ensure options carry the suggested answer; coerce non-letter to a letter slot when needed.
     // Apply explicit option edits first, then ensure the suggested answer exists.
@@ -226,6 +239,10 @@ async function applyCorrection(objectKey, index, questionId, verdict, notes, sug
             `UPDATE teaching_objects SET object_payload = ?, updated_at = ? WHERE object_key = ?`,
             [JSON.stringify(newPayload), new Date().toISOString(), found.objectKey]
         );
+        await db.run(
+            `UPDATE question_topic_index SET question_hash = ? WHERE object_key = ? AND question_index = ?`,
+            [newQhash, found.objectKey, index]
+        ).catch(() => null);
         // Record override/audit snapshot
         await db.run(
             `INSERT INTO mcq_review_overrides
@@ -259,11 +276,80 @@ async function applyCorrection(objectKey, index, questionId, verdict, notes, sug
     return { matched: true, details: optionsChanged ? 'option_adjusted' : 'ok' };
 }
 
+async function applyTopicAssignment(parsed, topicName, reviewState, notes, { apply, createIfMissing = false, block = null }) {
+    const found = await findTeachingObjectForId(parsed.objectKey, parsed.index);
+    if (!found) return { resolved: false, details: 'object_not_found' };
+    const indexRow = await db.get(
+        'SELECT assigned_curriculum_topic_id FROM question_topic_index WHERE object_key = ? AND question_index = ?',
+        [found.objectKey, parsed.index]
+    ).catch(() => null);
+    if (!indexRow) return { resolved: false, details: 'index_row_not_found' };
+
+    let topic = await db.get(
+        'SELECT id, display_name FROM curriculum_topics WHERE LOWER(display_name) = LOWER(?)',
+        [String(topicName || '').trim()]
+    ).catch(() => null);
+    let created = false;
+    if (!topic && createIfMissing) {
+        if (!apply) return { resolved: true, details: 'would_create_topic', created: true };
+        let blockName = String(block || '').trim();
+        if (!blockName) {
+            const current = await db.get(
+                `SELECT b.name AS block_name FROM curriculum_topics t
+                 LEFT JOIN curriculum_blocks b ON b.id = t.block_id
+                 WHERE CAST(t.id AS TEXT) = ?`,
+                [String(indexRow.assigned_curriculum_topic_id || '')]
+            ).catch(() => null);
+            blockName = current?.block_name || 'General Medicine';
+        }
+        if (typeof db.upsertCurriculumSeedTopic !== 'function') return { resolved: false, details: 'topic_create_unavailable' };
+        await db.upsertCurriculumSeedTopic({
+            displayName: String(topicName).trim(), suggestedQuery: String(topicName).trim(), block: blockName,
+            sortOrder: 3000, priority: 'medium', volatility: 'moderate', seedStatus: 'not_seeded',
+        });
+        topic = await db.get(
+            'SELECT id, display_name FROM curriculum_topics WHERE LOWER(display_name) = LOWER(?)',
+            [String(topicName || '').trim()]
+        ).catch(() => null);
+        created = Boolean(topic);
+    }
+    if (!topic) return { resolved: false, details: 'topic_not_found' };
+
+    if (apply) {
+        const now = new Date().toISOString();
+        const cluster = await db.get('SELECT cluster_id FROM topic_cluster_index WHERE curriculum_topic_id = ?', [String(topic.id)]).catch(() => null);
+        await db.run(
+            `UPDATE question_topic_index SET review_state = ?, reviewed_by = ?, reviewed_at = ?, review_notes = ?,
+             assigned_curriculum_topic_id = ?, assigned_topic_name = ?, assigned_cluster_id = ?, category = 'aligned'
+             WHERE object_key = ? AND question_index = ?`,
+            [reviewState || 'approved', 'workflow:apply-mcq-review', now, notes || null,
+                String(topic.id), topic.display_name, cluster?.cluster_id || String(topic.id), found.objectKey, parsed.index]
+        );
+        await db.run(
+            `UPDATE question_work_queue SET status = 'repaired', completed_at = ?, updated_at = ?
+             WHERE object_key = ? AND question_index = ? AND cohort = 'topic_repair'`,
+            [now, now, found.objectKey, parsed.index]
+        ).catch(() => null);
+        const currentQuestion = found.payload?.mcqs?.[parsed.index];
+        if (currentQuestion?.question) {
+            await db.run(
+                `UPDATE question_audit SET human_decision = 'approved', human_notes = ?, reviewed_by = ?, reviewed_at = ?,
+                 status = 'human_approved', topic = ?, question_hash = ?, content_hash = ?, updated_at = ?
+                 WHERE object_key = ? AND question_index = ?`,
+                [notes || null, 'workflow:apply-mcq-review', now, topic.display_name,
+                    questionHash(currentQuestion), contentHash(currentQuestion), now, found.objectKey, parsed.index]
+            ).catch(() => null);
+        }
+    }
+    return { resolved: true, details: created ? 'topic_created' : 'ok', created };
+}
+
 async function run() {
     const { dataPath, apply } = parseArgs();
     const raw = JSON.parse(fs.readFileSync(path.resolve(dataPath), 'utf8'));
     const withdrawals = Array.isArray(raw.withdrawals) ? raw.withdrawals : [];
     const corrections = Array.isArray(raw.corrections) ? raw.corrections : [];
+    const topicAssignments = Array.isArray(raw.topicAssignments) ? raw.topicAssignments : [];
 
     await db.connect();
     await db.runMigrations();
@@ -300,16 +386,32 @@ async function run() {
         } else { cMissing++; missingIds.push(c.questionId); }
     }
 
+    const topicUnresolved = [];
+    let tResolved = 0, tCreated = 0;
+    for (const t of topicAssignments) {
+        const parsed = parseQuestionId(t.questionId);
+        if (!parsed) { topicUnresolved.push({ questionId: t.questionId, why: 'bad_id' }); continue; }
+        const result = await applyTopicAssignment(parsed, t.topicName, t.reviewState, t.notes, {
+            apply, createIfMissing: Boolean(t.createIfMissing), block: t.block,
+        });
+        if (result.resolved) { tResolved += 1; if (result.created) tCreated += 1; }
+        else topicUnresolved.push({ questionId: t.questionId, topic: t.topicName, why: result.details });
+    }
+
     const summary = {
         ok: true,
         mode: apply ? 'apply' : 'dry-run',
         withdrawals: { requested: withdrawals.length, matched: wMatched, missing: wMissing },
         corrections: { requested: corrections.length, matched: cMatched, missing: cMissing, optionAdjusted },
+        topicAssignments: { requested: topicAssignments.length, resolved: tResolved, created: tCreated, unresolved: topicUnresolved },
         missingIds,
     };
     console.log(JSON.stringify(summary, null, 2));
 
     await db.close();
+    if (missingIds.length || topicUnresolved.length) {
+        throw new Error(`Review import incomplete: ${missingIds.length} missing question(s), ${topicUnresolved.length} unresolved topic assignment(s)`);
+    }
     return summary;
 }
 

@@ -211,5 +211,53 @@ describe('applyMcqReviewEdits script', () => {
     expect(ovr.verdict).toBe('Outdated');
     expect(ovr.question_hash).toBe(hash);
   });
+
+  test('(e) approved topic assignments clear audit holds and complete the repair queue', async () => {
+    const db = require('../../database');
+    await setupDb(db);
+    const objectKey = 'guideline-mcq:repair-topic';
+    const q0 = makeQuestion('Repair topic question?', ['A: a', 'B: b', 'C: c', 'D: d'], 'A', 'supported explanation');
+    await db.run(
+      `INSERT INTO teaching_objects (object_key, object_type, review_state, object_payload)
+       VALUES (?, 'guideline_mcq', 'unreviewed', ?)`,
+      [objectKey, JSON.stringify({ mcqs: [q0] })]
+    );
+    const topic = await db.upsertCurriculumSeedTopic({
+      displayName: 'Repaired Topic', suggestedQuery: 'Repaired Topic', block: 'General Medicine', seedStatus: 'not_seeded',
+    });
+    const hash = require('../../server/services/questionIndex/questionIndexService').questionHash(q0);
+    const content = require('../../server/services/questionAudit/questionAuditService').contentHash(q0);
+    await db.run(
+      `INSERT INTO question_topic_index
+       (object_key, question_index, question_hash, object_type, assigned_curriculum_topic_id, assigned_topic_name,
+        assigned_cluster_id, category, classifier_version, classified_at, review_state)
+       VALUES (?, 0, ?, 'guideline_mcq', ?, 'Old Topic', ?, 'unclear', 'v', 'now', 'unreviewed')`,
+      [objectKey, hash, String(topic.id), String(topic.id)]
+    );
+    await db.run(
+      `INSERT INTO question_work_queue (object_key, question_index, cohort, status, topic, created_at, updated_at)
+       VALUES (?, 0, 'topic_repair', 'queued', 'Old Topic', 'now', 'now')`, [objectKey]
+    );
+    await db.run(
+      `INSERT INTO question_audit
+       (object_key, question_index, question_hash, object_type, topic, content_hash, status, updated_at)
+       VALUES (?, 0, ?, 'guideline_mcq', 'Old Topic', ?, 'needs_human', 'now')`, [objectKey, hash, content]
+    );
+    const dataPath = writeJsonTmp({
+      withdrawals: [], corrections: [],
+      topicAssignments: [{ questionId: `${objectKey}#0`, topicName: 'Repaired Topic', reviewState: 'approved', notes: 'reviewed' }],
+    });
+    process.argv = ['node', 'apply', '--data', dataPath, '--apply'];
+    const script = require('../../server/scripts/applyMcqReviewEdits.js');
+    const summary = await script.run();
+    expect(summary.topicAssignments.resolved).toBe(1);
+    await db.connect();
+    const idx = await db.get('SELECT review_state, category, assigned_topic_name FROM question_topic_index WHERE object_key = ? AND question_index = 0', [objectKey]);
+    expect(idx).toMatchObject({ review_state: 'approved', category: 'aligned', assigned_topic_name: 'Repaired Topic' });
+    const queue = await db.get("SELECT status FROM question_work_queue WHERE object_key = ? AND question_index = 0 AND cohort = 'topic_repair'", [objectKey]);
+    expect(queue.status).toBe('repaired');
+    const audit = await db.get('SELECT human_decision, status FROM question_audit WHERE object_key = ? AND question_index = 0', [objectKey]);
+    expect(audit).toMatchObject({ human_decision: 'approved', status: 'human_approved' });
+  });
 });
 

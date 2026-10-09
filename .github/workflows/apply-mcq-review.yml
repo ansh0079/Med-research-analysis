@@ -16,6 +16,11 @@ on:
         required: true
         default: 'review-2026-10-04.json'
         type: string
+      source_data_filename:
+        description: 'Optional companion evidence file under /opt/medsearch/data/mcq-review'
+        required: false
+        default: ''
+        type: string
 
 jobs:
   apply:
@@ -30,12 +35,13 @@ jobs:
         env:
           MODE: ${{ inputs.mode }}
           DATA: ${{ inputs.data_filename }}
+          SOURCE_DATA: ${{ inputs.source_data_filename }}
         with:
           host: ${{ secrets.HETZNER_HOST || '178.105.155.246' }}
           username: root
           key: ${{ secrets.HETZNER_SSH_KEY }}
           command_timeout: 10m
-          envs: MODE,DATA
+          envs: MODE,DATA,SOURCE_DATA
           script: |
             set -euo pipefail
             cd /opt/medsearch
@@ -50,6 +56,22 @@ jobs:
               echo "Data file not found: $FILE"
               exit 2
             fi
+            if [ "$MODE" = "apply" ] && [ -n "$SOURCE_DATA" ]; then
+              SOURCE_FILE="/review/${SOURCE_DATA}"
+              if [ ! -f "$SOURCE_FILE" ]; then
+                echo "Source data file not found: $SOURCE_FILE"
+                exit 2
+              fi
+              docker compose -f docker-compose.hetzner.yml run --rm --no-deps -T -e USE_POSTGRES_MAIN=true \
+                -v /opt/medsearch/data/mcq-review:/review:ro web \
+                node server/scripts/importQuestionRepairSources.js "$SOURCE_FILE"
+            fi
             docker compose -f docker-compose.hetzner.yml run --rm --no-deps -T -e USE_POSTGRES_MAIN=true \
               -v /opt/medsearch/data/mcq-review:/review:ro web \
               node server/scripts/applyMcqReviewEdits.js --data "$FILE" "$FLAG"
+            if [ "$MODE" = "apply" ]; then
+              docker exec medsearch-pg psql -U medsearch -d medsearch -v ON_ERROR_STOP=1 -c \
+                "SELECT status, COUNT(*) FROM question_work_queue WHERE cohort='topic_repair' GROUP BY status ORDER BY status;"
+              docker exec medsearch-pg psql -U medsearch -d medsearch -v ON_ERROR_STOP=1 -c \
+                "SELECT human_decision, COUNT(*) FROM question_audit WHERE reviewed_by='workflow:apply-mcq-review' GROUP BY human_decision ORDER BY human_decision;"
+            fi
