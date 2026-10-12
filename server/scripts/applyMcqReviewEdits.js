@@ -29,6 +29,8 @@
  * Optional "catalogAlignments": [{ questionId, expectedTopicName, notes }] changes category from unclear to aligned
  * only when the assigned topic exactly matches the stored/original topic after punctuation normalization. It preserves
  * review_state and does not create a human approval.
+ * Optional "curatedTopicMappings": [{ storedTopic, canonicalTopicName, notes }] links all matching curated_topic_mcq
+ * objects to an existing canonical topic and records the stored wording as an alias. It preserves review state.
  * --dry-run performs no writes.
  *
  * Idempotent: running --apply twice makes no further changes.
@@ -37,6 +39,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const crypto = require('crypto');
 const { loadEnv } = require('../../config');
 loadEnv();
 const db = require('../../database');
@@ -406,6 +409,68 @@ async function applyCatalogAlignment(parsed, expectedTopicName, notes, { apply }
     return { resolved: true, details: 'aligned' };
 }
 
+async function applyCuratedTopicMapping(storedTopic, canonicalTopicName, notes, { apply }) {
+    const source = String(storedTopic || '').trim();
+    const canonical = String(canonicalTopicName || '').trim();
+    if (!source || !canonical) return { resolved: false, details: 'missing_topic_name' };
+    const topic = await db.get(
+        'SELECT id, display_name FROM curriculum_topics WHERE LOWER(display_name) = LOWER(?)',
+        [canonical]
+    ).catch(() => null);
+    if (!topic) return { resolved: false, details: 'canonical_topic_not_found' };
+    const objects = await db.all(
+        `SELECT object_key, object_payload, curriculum_topic_id
+         FROM teaching_objects
+         WHERE object_type = 'curated_topic_mcq' AND LOWER(topic) = LOWER(?)`,
+        [source]
+    ).catch(() => []);
+    if (!objects.length) return { resolved: false, details: 'curated_objects_not_found' };
+    const aliasNorm = typeof db.normalizeTopic === 'function'
+        ? db.normalizeTopic(source)
+        : normalizeComparableTopic(source);
+    const conflictingAlias = aliasNorm ? await db.get(
+        `SELECT curriculum_topic_id FROM topic_aliases
+         WHERE alias_norm = ? AND CAST(curriculum_topic_id AS TEXT) <> ?`,
+        [aliasNorm, String(topic.id)]
+    ).catch(() => null) : null;
+    if (conflictingAlias) return { resolved: false, details: 'conflicting_topic_alias' };
+    let questions = 0;
+    for (const object of objects) {
+        try {
+            const payload = typeof object.object_payload === 'string' ? JSON.parse(object.object_payload) : object.object_payload;
+            questions += Array.isArray(payload?.mcqs) ? payload.mcqs.length : 0;
+        } catch { /* count remains conservative */ }
+    }
+    if (apply) {
+        await db.run(
+            `UPDATE teaching_objects SET curriculum_topic_id = ?
+             WHERE object_type = 'curated_topic_mcq' AND LOWER(topic) = LOWER(?)`,
+            [String(topic.id), source]
+        );
+        if (aliasNorm) {
+            await db.run(
+                `INSERT INTO topic_aliases (id, alias_norm, curriculum_topic_id, resolution, confidence)
+                 VALUES (?, ?, ?, 'curated_catalog_repair', 1.0)
+                 ON CONFLICT (alias_norm) DO UPDATE SET
+                    curriculum_topic_id = excluded.curriculum_topic_id,
+                    resolution = excluded.resolution,
+                    confidence = excluded.confidence
+                 WHERE CAST(topic_aliases.curriculum_topic_id AS TEXT) = CAST(excluded.curriculum_topic_id AS TEXT)`,
+                [crypto.randomUUID(), aliasNorm, String(topic.id)]
+            );
+        }
+        const now = new Date().toISOString();
+        for (const object of objects) {
+            await db.run(
+                `UPDATE question_work_queue SET status = 'repaired', completed_at = ?, updated_at = ?
+                 WHERE object_key = ? AND cohort = 'topic_repair'`,
+                [now, now, object.object_key]
+            ).catch(() => null);
+        }
+    }
+    return { resolved: true, details: 'mapped', objects: objects.length, questions, notes: notes || null };
+}
+
 async function run() {
     const { dataPath, apply } = parseArgs();
     const raw = JSON.parse(fs.readFileSync(path.resolve(dataPath), 'utf8'));
@@ -413,6 +478,7 @@ async function run() {
     const corrections = Array.isArray(raw.corrections) ? raw.corrections : [];
     const topicAssignments = Array.isArray(raw.topicAssignments) ? raw.topicAssignments : [];
     const catalogAlignments = Array.isArray(raw.catalogAlignments) ? raw.catalogAlignments : [];
+    const curatedTopicMappings = Array.isArray(raw.curatedTopicMappings) ? raw.curatedTopicMappings : [];
 
     await db.connect();
     await db.runMigrations();
@@ -471,6 +537,19 @@ async function run() {
         else catalogUnresolved.push({ questionId: item.questionId, why: result.details });
     }
 
+    const curatedUnresolved = [];
+    let curatedResolved = 0, curatedObjects = 0, curatedQuestions = 0;
+    for (const item of curatedTopicMappings) {
+        const result = await applyCuratedTopicMapping(
+            item.storedTopic, item.canonicalTopicName, item.notes, { apply }
+        );
+        if (result.resolved) {
+            curatedResolved += 1;
+            curatedObjects += result.objects || 0;
+            curatedQuestions += result.questions || 0;
+        } else curatedUnresolved.push({ storedTopic: item.storedTopic, canonicalTopicName: item.canonicalTopicName, why: result.details });
+    }
+
     const summary = {
         ok: true,
         mode: apply ? 'apply' : 'dry-run',
@@ -478,13 +557,14 @@ async function run() {
         corrections: { requested: corrections.length, matched: cMatched, missing: cMissing, optionAdjusted },
         topicAssignments: { requested: topicAssignments.length, resolved: tResolved, created: tCreated, unresolved: topicUnresolved },
         catalogAlignments: { requested: catalogAlignments.length, resolved: catalogResolved, unresolved: catalogUnresolved },
+        curatedTopicMappings: { requested: curatedTopicMappings.length, resolved: curatedResolved, objects: curatedObjects, questions: curatedQuestions, unresolved: curatedUnresolved },
         missingIds,
     };
     console.log(JSON.stringify(summary, null, 2));
 
     await db.close();
-    if (missingIds.length || topicUnresolved.length || catalogUnresolved.length) {
-        throw new Error(`Review import incomplete: ${missingIds.length} missing question(s), ${topicUnresolved.length} unresolved topic assignment(s), ${catalogUnresolved.length} unresolved catalogue alignment(s)`);
+    if (missingIds.length || topicUnresolved.length || catalogUnresolved.length || curatedUnresolved.length) {
+        throw new Error(`Review import incomplete: ${missingIds.length} missing question(s), ${topicUnresolved.length} unresolved topic assignment(s), ${catalogUnresolved.length} unresolved catalogue alignment(s), ${curatedUnresolved.length} unresolved curated topic mapping(s)`);
     }
     return summary;
 }

@@ -1,0 +1,73 @@
+{
+  "withdrawals": [],
+  "corrections": [],
+  "topicAssignments": [],
+  "catalogAlignments": [],
+  "curatedTopicMappings": [
+    {
+      "storedTopic": "Antimicrobial stewardship: IV to oral switch, duration of therapy, procalcitonin-guided therapy",
+      "canonicalTopicName": "Antimicrobial stewardship: IV to oral switch, duration of therapy, procalcitonin-guided therapy",
+      "notes": "Exact existing curriculum topic; links 18 curated questions without changing clinical review state."
+    },
+    {
+      "storedTopic": "Brain metastases: stereotactic radiosurgery vs whole-brain radiation vs resection",
+      "canonicalTopicName": "Brain metastases: stereotactic radiosurgery vs whole-brain radiation vs resection",
+      "notes": "Exact existing curriculum topic; links 20 curated questions without changing clinical review state."
+    },
+    {
+      "storedTopic": "Cluster headache: high-flow oxygen, triptan rescue, verapamil prophylaxis",
+      "canonicalTopicName": "Cluster headache: high-flow oxygen, triptan rescue, verapamil prophylaxis",
+      "notes": "Exact existing curriculum topic; links 14 curated questions without changing clinical review state."
+    },
+    {
+      "storedTopic": "Congenital adrenal hyperplasia: 21-hydroxylase deficiency, glucocorticoid replacement",
+      "canonicalTopicName": "Congenital adrenal hyperplasia: 21-hydroxylase deficiency, glucocorticoid replacement",
+      "notes": "Exact existing curriculum topic; links 16 curated questions without changing clinical review state."
+    },
+    {
+      "storedTopic": "Diabetic retinopathy: screening intervals, laser photocoagulation, anti-VEGF therapy",
+      "canonicalTopicName": "Diabetic retinopathy: screening intervals, laser photocoagulation, anti-VEGF therapy",
+      "notes": "Exact existing curriculum topic; links 20 curated questions without changing clinical review state."
+    },
+    {
+      "storedTopic": "Familial hypercholesterolaemia: LDL-C targets, statins, PCSK9 inhibitors, cascade testing",
+      "canonicalTopicName": "Familial hypercholesterolaemia: LDL-C targets, statins, PCSK9 inhibitors, cascade testing",
+      "notes": "Exact existing curriculum topic; links 20 curated questions without changing clinical review state."
+    },
+    {
+      "storedTopic": "Hospital-acquired and ventilator-associated pneumonia: MDR pathogens, diagnostic criteria, treatment",
+      "canonicalTopicName": "Hospital-acquired and ventilator-associated pneumonia: MDR pathogens, diagnostic criteria, treatment",
+      "notes": "Exact existing curriculum topic; links 12 curated questions without changing clinical review state."
+    },
+    {
+      "storedTopic": "Hypertensive emergency: end-organ damage, IV agents, blood pressure targets",
+      "canonicalTopicName": "Hypertensive emergency: end-organ damage, IV agents, blood pressure targets",
+      "notes": "Exact existing curriculum topic; links 13 curated questions without changing clinical review state."
+    },
+    {
+      "storedTopic": "ICU-acquired delirium: prevention, assessment, and treatment",
+      "canonicalTopicName": "ICU-acquired delirium: prevention, assessment, and treatment",
+      "notes": "Exact existing curriculum topic; links 12 curated questions without changing clinical review state."
+    },
+    {
+      "storedTopic": "Influenza: neuraminidase inhibitors, oseltamivir timing, high-risk groups, vaccination",
+      "canonicalTopicName": "Influenza: neuraminidase inhibitors, oseltamivir timing, high-risk groups, vaccination",
+      "notes": "Exact existing curriculum topic; links 20 curated questions without changing clinical review state."
+    },
+    {
+      "storedTopic": "Tension-type headache: tricyclic antidepressants, lifestyle interventions",
+      "canonicalTopicName": "Tension-type headache: tricyclic antidepressants, lifestyle interventions",
+      "notes": "Exact existing curriculum topic; links 20 curated questions without changing clinical review state."
+    },
+    {
+      "storedTopic": "Urinary tract infections: uncomplicated vs complicated, catheter-associated, treatment duration",
+      "canonicalTopicName": "Urinary tract infections: uncomplicated vs complicated, catheter-associated, treatment duration",
+      "notes": "Exact existing curriculum topic; links 15 curated questions without changing clinical review state."
+    },
+    {
+      "storedTopic": "Veno-arterial ECMO: indications, circuit management, weaning",
+      "canonicalTopicName": "Veno-arterial ECMO: indications, circuit management, weaning",
+      "notes": "Exact existing curriculum topic; links 17 curated questions without changing clinical review state."
+    }
+  ]
+}

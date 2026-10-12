@@ -295,5 +295,38 @@ describe('applyMcqReviewEdits script', () => {
     const audit = await db.get('SELECT human_decision FROM question_audit WHERE object_key = ? AND question_index = 0', [objectKey]);
     expect(audit).toBeUndefined();
   });
+
+  test('(g) curated topic mapping links the object and alias without approving its questions', async () => {
+    const db = require('../../database');
+    await setupDb(db);
+    const storedTopic = 'TBI: severe brain injury management';
+    const objectKey = 'curated-topic-mcq:tbi';
+    const q0 = makeQuestion('Which intervention is indicated?');
+    await db.run(
+      `INSERT INTO teaching_objects (object_key, object_type, topic, review_state, object_payload)
+       VALUES (?, 'curated_topic_mcq', ?, 'unreviewed', ?)`,
+      [objectKey, storedTopic, JSON.stringify({ mcqs: [q0] })]
+    );
+    const topic = await db.upsertCurriculumSeedTopic({
+      displayName: 'Traumatic brain injury', suggestedQuery: 'Traumatic brain injury', block: 'General Medicine', seedStatus: 'not_seeded',
+    });
+    const dataPath = writeJsonTmp({
+      withdrawals: [], corrections: [], topicAssignments: [], catalogAlignments: [],
+      curatedTopicMappings: [{ storedTopic, canonicalTopicName: 'Traumatic brain injury' }],
+    });
+    process.argv = ['node', 'apply', '--data', dataPath, '--apply'];
+    const script = require('../../server/scripts/applyMcqReviewEdits.js');
+    const summary = await script.run();
+    expect(summary.curatedTopicMappings).toMatchObject({ requested: 1, resolved: 1, objects: 1, questions: 1, unresolved: [] });
+    await db.connect();
+    const object = await db.get('SELECT curriculum_topic_id, review_state FROM teaching_objects WHERE object_key = ?', [objectKey]);
+    expect(String(object.curriculum_topic_id)).toBe(String(topic.id));
+    expect(object.review_state).toBe('unreviewed');
+    const alias = await db.get('SELECT curriculum_topic_id, resolution FROM topic_aliases WHERE alias_norm = ?', [db.normalizeTopic(storedTopic)]);
+    expect(String(alias.curriculum_topic_id)).toBe(String(topic.id));
+    expect(alias.resolution).toBe('curated_catalog_repair');
+    const audit = await db.get('SELECT human_decision FROM question_audit WHERE object_key = ?', [objectKey]);
+    expect(audit).toBeUndefined();
+  });
 });
 
