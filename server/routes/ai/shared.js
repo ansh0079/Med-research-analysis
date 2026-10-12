@@ -176,7 +176,10 @@ function createAiRouteHelpers({ db, ai, serverConfig, logger }) {
             // Always include dual-linked questions for this topic's cluster as additive coverage,
             // even when QUESTION_INDEX_SERVING is off. Before the write, the index has no such rows.
             {
-                const topicId = await database.resolveCurriculumTopicId(topic).catch(() => null);
+                let topicId = null;
+                if (typeof database.resolveCurriculumTopicId === 'function') {
+                    try { topicId = await database.resolveCurriculumTopicId(topic); } catch { topicId = null; }
+                }
                 const clusterId = await questionIndex.getTopicClusterId(database, topicId);
                 if (clusterId) {
                     const everything = [...liveMcqs, ...coldMcqs, ...guidelineMcqs];
