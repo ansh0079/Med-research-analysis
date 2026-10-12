@@ -120,7 +120,7 @@ COPY (
                    FROM topic_aliases a WHERE a.curriculum_topic_id=t.id), '') AS aliases
   FROM curriculum_topics t
   LEFT JOIN curriculum_blocks b ON b.id=t.block_id
-  LEFT JOIN topic_cluster_index c ON c.curriculum_topic_id=t.id
+  LEFT JOIN topic_cluster_index c ON c.curriculum_topic_id::text=t.id::text
   WHERE COALESCE(t.seed_status, '') <> 'archived'
   ORDER BY t.display_name
 ) TO '/tmp/signal-md-curriculum-topic-catalog.csv' WITH CSV HEADER;
