@@ -1,0 +1,39 @@
+name: Export clinical review backlog
+
+on:
+    workflow_dispatch:
+
+jobs:
+    export:
+        runs-on: ubuntu-latest
+        timeout-minutes: 15
+        steps:
+            - uses: actions/checkout@v4
+            - name: Configure production SSH
+              env:
+                  SSH_KEY: ${{ secrets.HETZNER_SSH_KEY }}
+              run: |
+                  install -m 700 -d ~/.ssh
+                  printf '%s\n' "$SSH_KEY" > ~/.ssh/id_ed25519
+                  sed -i 's/\r$//' ~/.ssh/id_ed25519
+                  chmod 600 ~/.ssh/id_ed25519
+                  ssh-keyscan -H 178.105.155.246 >> ~/.ssh/known_hosts
+            - name: Export read-only clinical review cohorts
+              run: |
+                  scp scripts/exportClinicalReviewBacklog.sql root@178.105.155.246:/tmp/exportClinicalReviewBacklog.sql
+                  ssh root@178.105.155.246 'bash -s' <<'REMOTE'
+                  set -euo pipefail
+                  docker cp /tmp/exportClinicalReviewBacklog.sql medsearch-pg:/tmp/exportClinicalReviewBacklog.sql
+                  docker exec medsearch-pg psql -U medsearch -d medsearch -v ON_ERROR_STOP=1 -f /tmp/exportClinicalReviewBacklog.sql
+                  for f in /tmp/signal-md-clinical-review-master.csv /tmp/signal-md-clinical-review-batch-001.csv /tmp/signal-md-clinical-review-evidence-groups.csv /tmp/signal-md-approval-provenance-exceptions.csv; do
+                    docker cp "medsearch-pg:$f" "$f"
+                  done
+                  REMOTE
+                  for f in signal-md-clinical-review-master.csv signal-md-clinical-review-batch-001.csv signal-md-clinical-review-evidence-groups.csv signal-md-approval-provenance-exceptions.csv; do
+                    scp "root@178.105.155.246:/tmp/$f" "./$f"
+                  done
+            - uses: actions/upload-artifact@v4
+              with:
+                  name: signal-md-clinical-review-backlog
+                  path: signal-md-*.csv
+                  retention-days: 30
