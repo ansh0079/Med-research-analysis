@@ -26,10 +26,14 @@ jobs:
                   docker cp /tmp/exportEligibleIncompleteQuestions.sql medsearch-pg:/tmp/exportEligibleIncompleteQuestions.sql
                   docker exec medsearch-pg psql -U medsearch -d medsearch -v ON_ERROR_STOP=1 -f /tmp/exportEligibleIncompleteQuestions.sql
                   docker cp medsearch-pg:/tmp/signal-md-eligible-incomplete-questions.csv /tmp/signal-md-eligible-incomplete-questions.csv
+                  docker cp medsearch-pg:/tmp/signal-md-curriculum-topic-catalog.csv /tmp/signal-md-curriculum-topic-catalog.csv
                   REMOTE
                   scp root@178.105.155.246:/tmp/signal-md-eligible-incomplete-questions.csv ./signal-md-eligible-incomplete-questions.csv
+                  scp root@178.105.155.246:/tmp/signal-md-curriculum-topic-catalog.csv ./signal-md-curriculum-topic-catalog.csv
             - uses: actions/upload-artifact@v4
               with:
                   name: signal-md-eligible-incomplete-questions
-                  path: signal-md-eligible-incomplete-questions.csv
+                  path: |
+                      signal-md-eligible-incomplete-questions.csv
+                      signal-md-curriculum-topic-catalog.csv
                   retention-days: 14

@@ -113,3 +113,15 @@ COPY (
   ORDER BY repair_requirements, object_type, object_key, question_index
 ) TO '/tmp/signal-md-eligible-incomplete-questions.csv' WITH CSV HEADER;
 
+COPY (
+  SELECT t.id, t.display_name, t.suggested_query, t.specialty, b.name AS block_name,
+         COALESCE(c.cluster_id::text, t.id::text) AS cluster_id,
+         COALESCE((SELECT string_agg(a.alias_norm, ' | ' ORDER BY a.alias_norm)
+                   FROM topic_aliases a WHERE a.curriculum_topic_id=t.id), '') AS aliases
+  FROM curriculum_topics t
+  LEFT JOIN curriculum_blocks b ON b.id=t.block_id
+  LEFT JOIN topic_cluster_index c ON c.curriculum_topic_id=t.id
+  WHERE COALESCE(t.seed_status, '') <> 'archived'
+  ORDER BY t.display_name
+) TO '/tmp/signal-md-curriculum-topic-catalog.csv' WITH CSV HEADER;
+
