@@ -1,0 +1,418 @@
+{
+  "withdrawals": [
+    {
+      "questionId": "cold-start-mcq:acute-respiratory-failure#3",
+      "verdict": "Retired by product owner",
+      "reason": "Linked evidence could not be retrieved",
+      "notes": "Removed from learner use on 2026-10-12 because reliable supporting evidence was unavailable."
+    },
+    {
+      "questionId": "cold-start-mcq:acute-respiratory-failure#4",
+      "verdict": "Retired by product owner",
+      "reason": "Linked evidence could not be retrieved",
+      "notes": "Removed from learner use on 2026-10-12 because reliable supporting evidence was unavailable."
+    },
+    {
+      "questionId": "guideline-mcq:Disseminated-intravascular-coagulation:-diagnostic-criteria-#0",
+      "verdict": "Retired by product owner",
+      "reason": "Linked evidence could not be retrieved",
+      "notes": "Removed from learner use on 2026-10-12 because reliable supporting evidence was unavailable."
+    },
+    {
+      "questionId": "guideline-mcq:Disseminated-intravascular-coagulation:-diagnostic-criteria-#1",
+      "verdict": "Retired by product owner",
+      "reason": "Linked evidence could not be retrieved",
+      "notes": "Removed from learner use on 2026-10-12 because reliable supporting evidence was unavailable."
+    },
+    {
+      "questionId": "guideline-mcq:incarcerated-and-strangulated-inguinal-femoral-and-ventral-hernias#0",
+      "verdict": "Retired by product owner",
+      "reason": "Linked evidence could not be retrieved",
+      "notes": "Removed from learner use on 2026-10-12 because reliable supporting evidence was unavailable."
+    },
+    {
+      "questionId": "guideline-mcq:incarcerated-and-strangulated-inguinal-femoral-and-ventral-hernias#1",
+      "verdict": "Retired by product owner",
+      "reason": "Linked evidence could not be retrieved",
+      "notes": "Removed from learner use on 2026-10-12 because reliable supporting evidence was unavailable."
+    },
+    {
+      "questionId": "guideline-mcq:incarcerated-and-strangulated-inguinal-femoral-and-ventral-hernias#2",
+      "verdict": "Retired by product owner",
+      "reason": "Linked evidence could not be retrieved",
+      "notes": "Removed from learner use on 2026-10-12 because reliable supporting evidence was unavailable."
+    },
+    {
+      "questionId": "guideline-mcq:incarcerated-and-strangulated-inguinal-femoral-and-ventral-hernias#3",
+      "verdict": "Retired by product owner",
+      "reason": "Linked evidence could not be retrieved",
+      "notes": "Removed from learner use on 2026-10-12 because reliable supporting evidence was unavailable."
+    },
+    {
+      "questionId": "paper-mcq:incarcerated-hernias#3",
+      "verdict": "Retired by product owner",
+      "reason": "Linked evidence could not be retrieved",
+      "notes": "Removed from learner use on 2026-10-12 because reliable supporting evidence was unavailable."
+    },
+    {
+      "questionId": "paper-mcq:silo-filler-s-disease#0",
+      "verdict": "Retired by product owner",
+      "reason": "Linked evidence could not be retrieved",
+      "notes": "Removed from learner use on 2026-10-12 because reliable supporting evidence was unavailable."
+    },
+    {
+      "questionId": "paper-mcq:silo-filler-s-disease#1",
+      "verdict": "Retired by product owner",
+      "reason": "Linked evidence could not be retrieved",
+      "notes": "Removed from learner use on 2026-10-12 because reliable supporting evidence was unavailable."
+    },
+    {
+      "questionId": "paper-mcq:silo-filler-s-disease#2",
+      "verdict": "Retired by product owner",
+      "reason": "Linked evidence could not be retrieved",
+      "notes": "Removed from learner use on 2026-10-12 because reliable supporting evidence was unavailable."
+    },
+    {
+      "questionId": "paper-mcq:silo-filler-s-disease#3",
+      "verdict": "Retired by product owner",
+      "reason": "Linked evidence could not be retrieved",
+      "notes": "Removed from learner use on 2026-10-12 because reliable supporting evidence was unavailable."
+    },
+    {
+      "questionId": "paper-mcq:silo-filler-s-disease#4",
+      "verdict": "Retired by product owner",
+      "reason": "Linked evidence could not be retrieved",
+      "notes": "Removed from learner use on 2026-10-12 because reliable supporting evidence was unavailable."
+    },
+    {
+      "questionId": "cold-start-mcq:atrial-fibrillation#4",
+      "verdict": "Retired by product owner",
+      "reason": "Missing evidence link",
+      "notes": "Removed from learner use on 2026-10-12 because reliable supporting evidence was unavailable."
+    },
+    {
+      "questionId": "cold-start-mcq:cardiac-arrhythmias#1",
+      "verdict": "Retired by product owner",
+      "reason": "Missing evidence link",
+      "notes": "Removed from learner use on 2026-10-12 because reliable supporting evidence was unavailable."
+    },
+    {
+      "questionId": "cold-start-mcq:cardiovascular-risk-modification#3",
+      "verdict": "Retired by product owner",
+      "reason": "Missing evidence link",
+      "notes": "Removed from learner use on 2026-10-12 because reliable supporting evidence was unavailable."
+    },
+    {
+      "questionId": "cold-start-mcq:chronic-abdominal-pain#3",
+      "verdict": "Retired by product owner",
+      "reason": "Missing evidence link",
+      "notes": "Removed from learner use on 2026-10-12 because reliable supporting evidence was unavailable."
+    },
+    {
+      "questionId": "cold-start-mcq:early-pregnancy-bleeding#1",
+      "verdict": "Retired by product owner",
+      "reason": "Missing evidence link",
+      "notes": "Removed from learner use on 2026-10-12 because reliable supporting evidence was unavailable."
+    },
+    {
+      "questionId": "cold-start-mcq:early-pregnancy-bleeding#3",
+      "verdict": "Retired by product owner",
+      "reason": "Missing evidence link",
+      "notes": "Removed from learner use on 2026-10-12 because reliable supporting evidence was unavailable."
+    },
+    {
+      "questionId": "cold-start-mcq:failure-to-thrive#0",
+      "verdict": "Retired by product owner",
+      "reason": "Missing evidence link",
+      "notes": "Removed from learner use on 2026-10-12 because reliable supporting evidence was unavailable."
+    },
+    {
+      "questionId": "cold-start-mcq:failure-to-thrive#1",
+      "verdict": "Retired by product owner",
+      "reason": "Missing evidence link",
+      "notes": "Removed from learner use on 2026-10-12 because reliable supporting evidence was unavailable."
+    },
+    {
+      "questionId": "cold-start-mcq:failure-to-thrive#4",
+      "verdict": "Retired by product owner",
+      "reason": "Missing evidence link",
+      "notes": "Removed from learner use on 2026-10-12 because reliable supporting evidence was unavailable."
+    },
+    {
+      "questionId": "cold-start-mcq:hepatitis-management#1",
+      "verdict": "Retired by product owner",
+      "reason": "Missing evidence link",
+      "notes": "Removed from learner use on 2026-10-12 because reliable supporting evidence was unavailable."
+    },
+    {
+      "questionId": "cold-start-mcq:h-pylori-infection#2",
+      "verdict": "Retired by product owner",
+      "reason": "Missing evidence link",
+      "notes": "Removed from learner use on 2026-10-12 because reliable supporting evidence was unavailable."
+    },
+    {
+      "questionId": "cold-start-mcq:management-of-atrial-fibrillation-with-rapid-ventricular-response-in-the-ed#1",
+      "verdict": "Retired by product owner",
+      "reason": "Missing evidence link",
+      "notes": "Removed from learner use on 2026-10-12 because reliable supporting evidence was unavailable."
+    },
+    {
+      "questionId": "cold-start-mcq:ms-initial-presentation#0",
+      "verdict": "Retired by product owner",
+      "reason": "Missing evidence link",
+      "notes": "Removed from learner use on 2026-10-12 because reliable supporting evidence was unavailable."
+    },
+    {
+      "questionId": "cold-start-mcq:ms-initial-presentation#3",
+      "verdict": "Retired by product owner",
+      "reason": "Missing evidence link",
+      "notes": "Removed from learner use on 2026-10-12 because reliable supporting evidence was unavailable."
+    },
+    {
+      "questionId": "cold-start-mcq:ms-initial-presentation#4",
+      "verdict": "Retired by product owner",
+      "reason": "Missing evidence link",
+      "notes": "Removed from learner use on 2026-10-12 because reliable supporting evidence was unavailable."
+    },
+    {
+      "questionId": "cold-start-mcq:multiple-sclerosis#0",
+      "verdict": "Retired by product owner",
+      "reason": "Missing evidence link",
+      "notes": "Removed from learner use on 2026-10-12 because reliable supporting evidence was unavailable."
+    },
+    {
+      "questionId": "cold-start-mcq:myocardial-infarction#0",
+      "verdict": "Retired by product owner",
+      "reason": "Missing evidence link",
+      "notes": "Removed from learner use on 2026-10-12 because reliable supporting evidence was unavailable."
+    },
+    {
+      "questionId": "cold-start-mcq:portal-hypertension#0",
+      "verdict": "Retired by product owner",
+      "reason": "Missing evidence link",
+      "notes": "Removed from learner use on 2026-10-12 because reliable supporting evidence was unavailable."
+    },
+    {
+      "questionId": "cold-start-mcq:respiratory-tract-infections#0",
+      "verdict": "Retired by product owner",
+      "reason": "Missing evidence link",
+      "notes": "Removed from learner use on 2026-10-12 because reliable supporting evidence was unavailable."
+    },
+    {
+      "questionId": "cold-start-mcq:respiratory-tract-infections#4",
+      "verdict": "Retired by product owner",
+      "reason": "Missing evidence link",
+      "notes": "Removed from learner use on 2026-10-12 because reliable supporting evidence was unavailable."
+    },
+    {
+      "questionId": "cold-start-mcq:tb-screening#0",
+      "verdict": "Retired by product owner",
+      "reason": "Missing evidence link",
+      "notes": "Removed from learner use on 2026-10-12 because reliable supporting evidence was unavailable."
+    },
+    {
+      "questionId": "cold-start-mcq:tb-screening#1",
+      "verdict": "Retired by product owner",
+      "reason": "Missing evidence link",
+      "notes": "Removed from learner use on 2026-10-12 because reliable supporting evidence was unavailable."
+    },
+    {
+      "questionId": "cold-start-mcq:tonsillitis#0",
+      "verdict": "Retired by product owner",
+      "reason": "Missing evidence link",
+      "notes": "Removed from learner use on 2026-10-12 because reliable supporting evidence was unavailable."
+    },
+    {
+      "questionId": "cold-start-mcq:tonsillitis#1",
+      "verdict": "Retired by product owner",
+      "reason": "Missing evidence link",
+      "notes": "Removed from learner use on 2026-10-12 because reliable supporting evidence was unavailable."
+    },
+    {
+      "questionId": "cold-start-mcq:tonsillitis#2",
+      "verdict": "Retired by product owner",
+      "reason": "Missing evidence link",
+      "notes": "Removed from learner use on 2026-10-12 because reliable supporting evidence was unavailable."
+    },
+    {
+      "questionId": "cold-start-mcq:tonsillitis#3",
+      "verdict": "Retired by product owner",
+      "reason": "Missing evidence link",
+      "notes": "Removed from learner use on 2026-10-12 because reliable supporting evidence was unavailable."
+    },
+    {
+      "questionId": "cold-start-mcq:typhoid#0",
+      "verdict": "Retired by product owner",
+      "reason": "Missing evidence link",
+      "notes": "Removed from learner use on 2026-10-12 because reliable supporting evidence was unavailable."
+    },
+    {
+      "questionId": "cold-start-mcq:typhoid#3",
+      "verdict": "Retired by product owner",
+      "reason": "Missing evidence link",
+      "notes": "Removed from learner use on 2026-10-12 because reliable supporting evidence was unavailable."
+    },
+    {
+      "questionId": "cold-start-mcq:viral-wheeze#0",
+      "verdict": "Retired by product owner",
+      "reason": "Missing evidence link",
+      "notes": "Removed from learner use on 2026-10-12 because reliable supporting evidence was unavailable."
+    },
+    {
+      "questionId": "cold-start-mcq:viral-wheeze#4",
+      "verdict": "Retired by product owner",
+      "reason": "Missing evidence link",
+      "notes": "Removed from learner use on 2026-10-12 because reliable supporting evidence was unavailable."
+    },
+    {
+      "questionId": "guideline-mcq:acute-necrotising-pancreatitis-and-step-up-management-approach#0",
+      "verdict": "Retired by product owner",
+      "reason": "Missing evidence link",
+      "notes": "Removed from learner use on 2026-10-12 because reliable supporting evidence was unavailable."
+    },
+    {
+      "questionId": "guideline-mcq:acute-necrotising-pancreatitis-and-step-up-management-approach#1",
+      "verdict": "Retired by product owner",
+      "reason": "Missing evidence link",
+      "notes": "Removed from learner use on 2026-10-12 because reliable supporting evidence was unavailable."
+    },
+    {
+      "questionId": "guideline-mcq:acute-necrotising-pancreatitis-and-step-up-management-approach#3",
+      "verdict": "Retired by product owner",
+      "reason": "Missing evidence link",
+      "notes": "Removed from learner use on 2026-10-12 because reliable supporting evidence was unavailable."
+    },
+    {
+      "questionId": "guideline-mcq:acute-necrotising-pancreatitis-step-up-approach-debridement-timing#1",
+      "verdict": "Retired by product owner",
+      "reason": "Missing evidence link",
+      "notes": "Removed from learner use on 2026-10-12 because reliable supporting evidence was unavailable."
+    },
+    {
+      "questionId": "guideline-mcq:acute-necrotising-pancreatitis-step-up-approach-debridement-timing#2",
+      "verdict": "Retired by product owner",
+      "reason": "Missing evidence link",
+      "notes": "Removed from learner use on 2026-10-12 because reliable supporting evidence was unavailable."
+    },
+    {
+      "questionId": "guideline-mcq:calcium-pyrophosphate-deposition-cppd-pseudogout-chondrocalcinosis-crowned-dens#0",
+      "verdict": "Retired by product owner",
+      "reason": "Missing evidence link",
+      "notes": "Removed from learner use on 2026-10-12 because reliable supporting evidence was unavailable."
+    },
+    {
+      "questionId": "guideline-mcq:calcium-pyrophosphate-deposition-cppd-pseudogout-chondrocalcinosis-crowned-dens#2",
+      "verdict": "Retired by product owner",
+      "reason": "Missing evidence link",
+      "notes": "Removed from learner use on 2026-10-12 because reliable supporting evidence was unavailable."
+    },
+    {
+      "questionId": "guideline-mcq:calcium-pyrophosphate-deposition-cppd-pseudogout-chondrocalcinosis-crowned-dens#3",
+      "verdict": "Retired by product owner",
+      "reason": "Missing evidence link",
+      "notes": "Removed from learner use on 2026-10-12 because reliable supporting evidence was unavailable."
+    },
+    {
+      "questionId": "guideline-mcq:failure-to-thrive#0",
+      "verdict": "Retired by product owner",
+      "reason": "Missing evidence link",
+      "notes": "Removed from learner use on 2026-10-12 because reliable supporting evidence was unavailable."
+    },
+    {
+      "questionId": "guideline-mcq:failure-to-thrive#1",
+      "verdict": "Retired by product owner",
+      "reason": "Missing evidence link",
+      "notes": "Removed from learner use on 2026-10-12 because reliable supporting evidence was unavailable."
+    },
+    {
+      "questionId": "guideline-mcq:h-pylori-infection#2",
+      "verdict": "Retired by product owner",
+      "reason": "Missing evidence link",
+      "notes": "Removed from learner use on 2026-10-12 because reliable supporting evidence was unavailable."
+    },
+    {
+      "questionId": "guideline-mcq:landmark-structural-cardiology-trials-partner-coapt-triluminate-milestones#2",
+      "verdict": "Retired by product owner",
+      "reason": "Missing evidence link",
+      "notes": "Removed from learner use on 2026-10-12 because reliable supporting evidence was unavailable."
+    },
+    {
+      "questionId": "guideline-mcq:recurrent-disease-in-the-transplant#2",
+      "verdict": "Retired by product owner",
+      "reason": "Missing evidence link",
+      "notes": "Removed from learner use on 2026-10-12 because reliable supporting evidence was unavailable."
+    },
+    {
+      "questionId": "guideline-mcq:tonsillitis#0",
+      "verdict": "Retired by product owner",
+      "reason": "Missing evidence link",
+      "notes": "Removed from learner use on 2026-10-12 because reliable supporting evidence was unavailable."
+    },
+    {
+      "questionId": "guideline-mcq:viral-wheeze#3",
+      "verdict": "Retired by product owner",
+      "reason": "Missing evidence link",
+      "notes": "Removed from learner use on 2026-10-12 because reliable supporting evidence was unavailable."
+    },
+    {
+      "questionId": "paper-mcq:calcium-pyrophosphate-deposition-cppd-pseudogout-chondrocalcinosis-crowned-dens#1",
+      "verdict": "Retired by product owner",
+      "reason": "Missing evidence link",
+      "notes": "Removed from learner use on 2026-10-12 because reliable supporting evidence was unavailable."
+    },
+    {
+      "questionId": "paper-mcq:calcium-pyrophosphate-deposition-cppd-pseudogout-chondrocalcinosis-crowned-dens#3",
+      "verdict": "Retired by product owner",
+      "reason": "Missing evidence link",
+      "notes": "Removed from learner use on 2026-10-12 because reliable supporting evidence was unavailable."
+    },
+    {
+      "questionId": "paper-mcq:calcium-pyrophosphate-deposition-cppd-pseudogout-chondrocalcinosis-crowned-dens#4",
+      "verdict": "Retired by product owner",
+      "reason": "Missing evidence link",
+      "notes": "Removed from learner use on 2026-10-12 because reliable supporting evidence was unavailable."
+    },
+    {
+      "questionId": "paper-mcq:ecg-interpretation-common-acute-findings-and-life-threatening-arrhythmias#3",
+      "verdict": "Retired by product owner",
+      "reason": "Missing evidence link",
+      "notes": "Removed from learner use on 2026-10-12 because reliable supporting evidence was unavailable."
+    },
+    {
+      "questionId": "paper-mcq:orbital-and-periorbital-cellulitis-classification-and-management#1",
+      "verdict": "Retired by product owner",
+      "reason": "Missing evidence link",
+      "notes": "Removed from learner use on 2026-10-12 because reliable supporting evidence was unavailable."
+    },
+    {
+      "questionId": "paper-mcq:scabies-diagnosis-treatment-and-outbreak-management#0",
+      "verdict": "Retired by product owner",
+      "reason": "Missing evidence link",
+      "notes": "Removed from learner use on 2026-10-12 because reliable supporting evidence was unavailable."
+    },
+    {
+      "questionId": "paper-mcq:scabies-diagnosis-treatment-and-outbreak-management#1",
+      "verdict": "Retired by product owner",
+      "reason": "Missing evidence link",
+      "notes": "Removed from learner use on 2026-10-12 because reliable supporting evidence was unavailable."
+    },
+    {
+      "questionId": "paper-mcq:scabies-diagnosis-treatment-and-outbreak-management#2",
+      "verdict": "Retired by product owner",
+      "reason": "Missing evidence link",
+      "notes": "Removed from learner use on 2026-10-12 because reliable supporting evidence was unavailable."
+    },
+    {
+      "questionId": "paper-mcq:scabies-diagnosis-treatment-and-outbreak-management#3",
+      "verdict": "Retired by product owner",
+      "reason": "Missing evidence link",
+      "notes": "Removed from learner use on 2026-10-12 because reliable supporting evidence was unavailable."
+    }
+  ],
+  "corrections": [],
+  "topicAssignments": [],
+  "catalogAlignments": [],
+  "curatedTopicMappings": [],
+  "canonicalTopicAssignments": [],
+  "contextualTopicAssignments": []
+}
