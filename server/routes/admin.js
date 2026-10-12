@@ -9,9 +9,24 @@ const { aggregateCollectiveMemory } = require('../services/collectiveMemoryServi
 const { QUALITY_QUEUES } = require('../services/clinicalQualityReviewService');
 const { writeThroughTeachingVerification } = require('../services/claimTrustOverlayService');
 const { evaluateSearchRankerPromotionGate } = require('../services/searchRankerPromotionGateService');
-const { listQuestionReviewQueue, reviewQuestionAssignment, listGuidelineReviewQueue, reviewGuidelineAssignment } = require('../services/questionIndex/questionIndexReviewService');
+const { listQuestionReviewQueue, reviewQuestionAssignment, listGuidelineReviewQueue, reviewGuidelineAssignment, listQuestionWorkQueue } = require('../services/questionIndex/questionIndexReviewService');
 
 function registerAdminRoutes(app, { db, cache, requireAuthJwt, requireRole }) {
+    app.get('/api/admin/question-work-queue', requireAuthJwt, requireRole('admin', 'curator'), async (req, res) => {
+        try {
+            const limit = Math.min(Math.max(parseInt(String(req.query.limit || '40'), 10) || 40, 1), 100);
+            const offset = Math.max(parseInt(String(req.query.offset || '0'), 10) || 0, 0);
+            const result = await listQuestionWorkQueue(db, {
+                cohort: String(req.query.cohort || 'topic_repair'), status: String(req.query.status || 'queued'),
+                topic: String(req.query.topic || ''), limit, offset,
+            });
+            res.json({ ...result, limit, offset });
+        } catch (error) {
+            const status = /Invalid/.test(error.message) ? 400 : 500;
+            res.status(status).json({ error: status === 400 ? error.message : 'Internal server error' });
+        }
+    });
+
     app.get('/api/admin/question-topic-review', requireAuthJwt, requireRole('admin', 'curator'), async (req, res) => {
         try {
             const limit = Math.min(Math.max(parseInt(String(req.query.limit || '40'), 10) || 40, 1), 100);

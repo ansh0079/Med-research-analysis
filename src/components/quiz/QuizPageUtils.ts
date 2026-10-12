@@ -1,4 +1,5 @@
 import { api } from '@services/api';
+import { answersMatch } from '../../utils/answerSet';
 import { downloadText } from '@services/exportArticles';
 import { QuizGenerationError } from '@services/quizService';
 import type { QuestionType, QuizQuestion, QuizState } from '@types';
@@ -122,7 +123,7 @@ export function buildQuizReflectionSections({
 }) {
   const stamp = new Date().toISOString().split('T')[0];
   const weakTypes = quiz.questions
-    .filter((q) => quiz.answers[q.id]?.toLowerCase() !== q.correctAnswer.toLowerCase())
+    .filter((q) => !answersMatch(quiz.answers[q.id], q.correctAnswer))
     .map((q) => q.questionType || 'recall');
   const uniqueWeakTypes = [...new Set(weakTypes)];
   const evidenceTitles = evidenceSnippets

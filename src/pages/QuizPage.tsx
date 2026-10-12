@@ -57,6 +57,7 @@ export const QuizPage: React.FC = () => {
     gradeError,
     retryGrade,
     handleExplanationFeedback,
+    handleQuestionReport,
     handleNext,
     exportQuizReflection,
     saveQuizReflectionDraft,
@@ -154,6 +155,7 @@ export const QuizPage: React.FC = () => {
             onRetryGrade={retryGrade}
             onNext={handleNext}
             onExplanationFeedback={handleExplanationFeedback}
+            onQuestionReport={handleQuestionReport}
             resolveSourceArticle={resolveSourceArticle}
           />
         )}

@@ -1,0 +1,675 @@
+{
+  "withdrawals": [
+    {
+      "questionId": "guideline-mcq:gi-bleeding-in-anticoagulated-patients#3",
+      "verdict": "Ambiguous",
+      "reason": "The explanation itself says platelet correction is recommended below 50 x10^9/L in active bleeding, which contradicts the key ('not indicated'). Guidance on pla",
+      "notes": "The explanation itself says platelet correction is recommended below 50 x10^9/L in active bleeding, which contradicts the key ('not indicated'). Guidance on platelet transfusion in cirrhotic variceal bleeding varies (BSG/Baveno/AASLD), so A or C is defensible."
+    },
+    {
+      "questionId": "guideline-mcq:endoscopy-in-the-anticoagulated-patient#1",
+      "verdict": "Ambiguous",
+      "reason": "The stem has a patient on rivaroxaban for a 'prosthetic mitral valve'. DOACs are contraindicated with mechanical valves (RE-ALIGN), so the vignette is unsafe or",
+      "notes": "The stem has a patient on rivaroxaban for a 'prosthetic mitral valve'. DOACs are contraindicated with mechanical valves (RE-ALIGN), so the vignette is unsafe or ambiguous as written."
+    },
+    {
+      "questionId": "guideline-mcq:gi-endoscopy-quality-indicators#2",
+      "verdict": "Wrong answer",
+      "reason": "Withdrawn: the keyed '4 biopsies per cm of Barrett's' misstates the Seattle protocol (four-quadrant biopsies every 2 cm). The scenario has no Barrett's, and no ",
+      "notes": "Withdrawn: the keyed '4 biopsies per cm of Barrett's' misstates the Seattle protocol (four-quadrant biopsies every 2 cm). The scenario has no Barrett's, and no option gives a recognised ESGE quality-indicator threshold. Original note: The Seattle protocol/ESGE QI is four-quadrant biopsies every 2 cm (1 cm in selected cases), not '4 biopsies per cm'. The scenario has reflux oesophagitis with no Barrett's, and no other option states a recognised QI threshold (ESGE: >=7 minutes inspection)."
+    },
+    {
+      "questionId": "guideline-mcq:gi-endoscopy-sedation-and-monitoring#2",
+      "verdict": "Unsupported",
+      "reason": "Extrapolates bronchoscopy recovery-time evidence to upper GI endoscopy under moderate sedation. The cited evidence doesn't address endoscopy discharge criteria.",
+      "notes": "Extrapolates bronchoscopy recovery-time evidence to upper GI endoscopy under moderate sedation. The cited evidence doesn't address endoscopy discharge criteria."
+    },
+    {
+      "questionId": "guideline-mcq:gastrointestinal-stromal-tumour#2",
+      "verdict": "Ambiguous",
+      "reason": "After imatinib alone, standard second-line is sunitinib (A). INTRIGUE showed ripretinib not superior overall, with benefit in KIT exon 11+17/18 only exploratory",
+      "notes": "After imatinib alone, standard second-line is sunitinib (A). INTRIGUE showed ripretinib not superior overall, with benefit in KIT exon 11+17/18 only exploratory. The explanation assumes prior sunitinib, which the stem doesn't state."
+    },
+    {
+      "questionId": "guideline-mcq:gi-stromal-tumours#2",
+      "verdict": "Ambiguous",
+      "reason": "ESMO requires KIT/PDGFRA mutational analysis before adjuvant imatinib (B), and MDT discussion (C) is also mandatory. Both are guideline-required steps.",
+      "notes": "ESMO requires KIT/PDGFRA mutational analysis before adjuvant imatinib (B), and MDT discussion (C) is also mandatory. Both are guideline-required steps."
+    },
+    {
+      "questionId": "guideline-mcq:giant-cell-arteritis-glucocorticoid-sparing-therapy#3",
+      "verdict": "Unsupported",
+      "reason": "The 6-12 month methotrexate time-to-effect claim isn't supported by the linked evidence or by EULAR/ACR.",
+      "notes": "The 6-12 month methotrexate time-to-effect claim isn't supported by the linked evidence or by EULAR/ACR."
+    },
+    {
+      "questionId": "guideline-mcq:giant-cell-arteritis-jaw-claudication-vision-loss-esr-crp-temporal-artery-biopsy#3",
+      "verdict": "Ambiguous",
+      "reason": "The explanation admits the ESR >50 claim isn't in the guidelines. Option D (normal markers in a minority of biopsy-proven GCA) is also defensible.",
+      "notes": "The explanation admits the ESR >50 claim isn't in the guidelines. Option D (normal markers in a minority of biopsy-proven GCA) is also defensible."
+    },
+    {
+      "questionId": "guideline-mcq:musculoskeletal-ultrasound-in-rheumatology-synovitis-power-doppler-guided-injection#1",
+      "verdict": "Wrong answer",
+      "reason": "Withdrawn: temporal artery wall-thickness cut-offs are branch-specific (about 0.42 mm common superficial, 0.34 mm frontal, 0.29 mm parietal; OMERACT/Schafer 201",
+      "notes": "Withdrawn: temporal artery wall-thickness cut-offs are branch-specific (about 0.42 mm common superficial, 0.34 mm frontal, 0.29 mm parietal; OMERACT/Schafer 2017). The keyed >0.6 mm is wrong, and no single option is correct. Original note: OMERACT/Schafer 2017 IMT cut-offs are about 0.42 mm (common superficial temporal), 0.34 mm (frontal), 0.29 mm (parietal) and 1.0 mm (axillary). The keyed >0.6 mm is wrong, and branch-dependent cut-offs make no single option clearly correct."
+    },
+    {
+      "questionId": "guideline-mcq:glioblastoma-multiforme#0",
+      "verdict": "Ambiguous",
+      "reason": "For a 3 cm distinct progressive lesion with KPS 80, repeat resection (D) and second-line systemic therapy such as lomustine (A) are equally standard. Re-irradia",
+      "notes": "For a 3 cm distinct progressive lesion with KPS 80, repeat resection (D) and second-line systemic therapy such as lomustine (A) are equally standard. Re-irradiation isn't uniquely preferred."
+    },
+    {
+      "questionId": "guideline-mcq:glioblastoma-temozolomide-and-radiotherapy#0",
+      "verdict": "Ambiguous",
+      "reason": "NICE NG99 offers 60 Gy/30# for people aged about 70 or under with good performance status, and 40 Gy/15# for those around 70 or over. A fit 68-year-old (ECOG 1)",
+      "notes": "NICE NG99 offers 60 Gy/30# for people aged about 70 or under with good performance status, and 40 Gy/15# for those around 70 or over. A fit 68-year-old (ECOG 1) fits A at least as well as the keyed B."
+    },
+    {
+      "questionId": "guideline-mcq:glioblastoma-temozolomide-and-radiotherapy#3",
+      "verdict": "Ambiguous",
+      "reason": "With ECOG 3 after a stroke, offering 40 Gy chemoradiation (C) is also a pitfall. NICE suggests considering supportive care or single-modality treatment for poor",
+      "notes": "With ECOG 3 after a stroke, offering 40 Gy chemoradiation (C) is also a pitfall. NICE suggests considering supportive care or single-modality treatment for poor performance status, so more than one option is a 'pitfall'."
+    },
+    {
+      "questionId": "paper-mcq:glp-1-receptor-agonists-weight-loss-cardiovascular-outcomes-gi-tolerability#0",
+      "verdict": "Ambiguous",
+      "reason": "Liraglutide 3.0 mg is also licensed and reviewed for adults with obesity. The item tests which drug a specific paper covers, and that paper has no abstract or f",
+      "notes": "Liraglutide 3.0 mg is also licensed and reviewed for adults with obesity. The item tests which drug a specific paper covers, and that paper has no abstract or findings."
+    },
+    {
+      "questionId": "paper-mcq:glp-1-receptor-agonists-weight-loss-cardiovascular-outcomes-gi-tolerability#3",
+      "verdict": "Unsupported",
+      "reason": "Placeholder source. The linked paper has no abstract or findings, so the item tests only the absence of data and has no clinical content.",
+      "notes": "Placeholder source. The linked paper has no abstract or findings, so the item tests only the absence of data and has no clinical content."
+    },
+    {
+      "questionId": "guideline-mcq:glp-1-receptor-agonists-weight-loss-cardiovascular-outcomes-gi-tolerability#3",
+      "verdict": "Ambiguous",
+      "reason": "The linked BMJ 2024 evidence also cites lipid improvement (B), and meta-analyses show reduced all-cause mortality (A). This NAFLD patient has no stated CVD, so ",
+      "notes": "The linked BMJ 2024 evidence also cites lipid improvement (B), and meta-analyses show reduced all-cause mortality (A). This NAFLD patient has no stated CVD, so MACE isn't uniquely correct."
+    },
+    {
+      "questionId": "guideline-mcq:glucocorticoid-tapering-adrenal-suppression-disease-flare-prevention-steroid-sparing-agents#1",
+      "verdict": "Ambiguous",
+      "reason": "After a 7-day course for a gout flare, stopping without a taper (B) is standard. ACR/EULAR don't require a taper for short courses, so B and C are both defensib",
+      "notes": "After a 7-day course for a gout flare, stopping without a taper (B) is standard. ACR/EULAR don't require a taper for short courses, so B and C are both defensible."
+    },
+    {
+      "questionId": "guideline-mcq:glucocorticoid-tapering-adrenal-suppression-disease-flare-prevention-steroid-sparing-agents#2",
+      "verdict": "Ambiguous",
+      "reason": "Ill-posed. Adrenal suppression risk rises with doses above physiological replacement. Slowing the taper below about 5 mg (NICE) is about unmasking insufficiency",
+      "notes": "Ill-posed. Adrenal suppression risk rises with doses above physiological replacement. Slowing the taper below about 5 mg (NICE) is about unmasking insufficiency, not a threshold 'below which suppression increases'."
+    },
+    {
+      "questionId": "guideline-mcq:glucocorticoid-induced-osteoporosis-prevention-bisphosphonate-indications-fracture-risk#0",
+      "verdict": "Ambiguous",
+      "reason": "NOGG advises considering bone-protective therapy in men aged 50 or over on >=7.5 mg/day prednisolone for >=3 months without further assessment, so A is defensib",
+      "notes": "NOGG advises considering bone-protective therapy in men aged 50 or over on >=7.5 mg/day prednisolone for >=3 months without further assessment, so A is defensible. 'NOGG 2025' isn't verifiable."
+    },
+    {
+      "questionId": "cold-start-mcq:prostate-cancer#1",
+      "verdict": "Unsupported",
+      "reason": "Linked evidence is NICE glioma supportive care, misattributed for prostate ADT. In metastatic disease ADT is usually continued, so the discontinuation framing i",
+      "notes": "Linked evidence is NICE glioma supportive care, misattributed for prostate ADT. In metastatic disease ADT is usually continued, so the discontinuation framing isn't supported."
+    },
+    {
+      "questionId": "guideline-mcq:sexually-transmitted-infections-gonorrhoea-chlamydia-syphilis-diagnostic-tests-and-treatment#3",
+      "verdict": "Unsupported",
+      "reason": "The keyed answer is a placeholder statement ('updated recommendations are provided by the CDC') with no clinical content. It doesn't test chlamydia treatment.",
+      "notes": "The keyed answer is a placeholder statement ('updated recommendations are provided by the CDC') with no clinical content. It doesn't test chlamydia treatment."
+    },
+    {
+      "questionId": "cold-start-mcq:gonorrhea-and-chlamydia-treatment#0",
+      "verdict": "Outdated",
+      "reason": "Withdrawn: the premise is superseded. CDC (2020/2021) and BASHH (2019) dropped dual ceftriaxone-azithromycin therapy for gonorrhoea in favour of ceftriaxone mon",
+      "notes": "Withdrawn: the premise is superseded. CDC (2020/2021) and BASHH (2019) dropped dual ceftriaxone-azithromycin therapy for gonorrhoea in favour of ceftriaxone monotherapy. Original note: Dual therapy (ceftriaxone + azithromycin) for gonorrhoea was dropped by CDC (2020) and BASHH (2019) in favour of ceftriaxone monotherapy. The premise is superseded."
+    },
+    {
+      "questionId": "cold-start-mcq:gonorrhea-and-chlamydia-treatment#3",
+      "verdict": "Ambiguous",
+      "reason": "Doxycycline (D) and azithromycin 2 g monotherapy (C) are also regimens to avoid for gonorrhoea, owing to inefficacy and resistance. Cross-reactivity with third-",
+      "notes": "Doxycycline (D) and azithromycin 2 g monotherapy (C) are also regimens to avoid for gonorrhoea, owing to inefficacy and resistance. Cross-reactivity with third-generation cephalosporins is low, so more than one option fits."
+    },
+    {
+      "questionId": "cold-start-mcq:hyperuricaemia#4",
+      "verdict": "Unsupported",
+      "reason": "Attributing persistent hand/wrist symptoms to gut microbiota changes is speculative. The linked evidence doesn't support it, and the differential (RA, OA, CPPD)",
+      "notes": "Attributing persistent hand/wrist symptoms to gut microbiota changes is speculative. The linked evidence doesn't support it, and the differential (RA, OA, CPPD) is ignored."
+    },
+    {
+      "questionId": "paper-mcq:pegloticase-and-lesinurad-in-refractory-gout-indications-infusion-reactions#0",
+      "verdict": "Unsupported",
+      "reason": "Misattributed. The quoted Chinese consensus definition isn't among the linked sources, which are a colchicine mechanism paper and NICE.",
+      "notes": "Misattributed. The quoted Chinese consensus definition isn't among the linked sources, which are a colchicine mechanism paper and NICE."
+    },
+    {
+      "questionId": "paper-mcq:gout-hyperuricaemia-pathophysiology-acute-attack-management-colchicine-dosing#1",
+      "verdict": "Ambiguous",
+      "reason": "EULAR 2016 lists NSAID, colchicine, oral corticosteroid or intra-articular corticosteroid as first-line for a flare. D (and arguably B) are equally guideline-co",
+      "notes": "EULAR 2016 lists NSAID, colchicine, oral corticosteroid or intra-articular corticosteroid as first-line for a flare. D (and arguably B) are equally guideline-concordant."
+    },
+    {
+      "questionId": "guideline-mcq:gout-hyperuricaemia-pathophysiology-acute-attack-management-colchicine-dosing#3",
+      "verdict": "Ambiguous",
+      "reason": "ACR 2020 equally recommends colchicine, NSAIDs or glucocorticoids, including intra-articular for a single large joint. Intra-articular injection (D) is as appro",
+      "notes": "ACR 2020 equally recommends colchicine, NSAIDs or glucocorticoids, including intra-articular for a single large joint. Intra-articular injection (D) is as appropriate as colchicine."
+    },
+    {
+      "questionId": "guideline-mcq:graft-versus-host-disease#1",
+      "verdict": "Unsupported",
+      "reason": "The >30% mortality figure for cGVHD isn't supported by the linked evidence. The explanation admits figures vary with severity.",
+      "notes": "The >30% mortality figure for cGVHD isn't supported by the linked evidence. The explanation admits figures vary with severity."
+    },
+    {
+      "questionId": "guideline-mcq:graft-versus-host-disease#2",
+      "verdict": "Ambiguous",
+      "reason": "CMV reactivation (B) is at least as likely as invasive aspergillosis around day 90 in high-dose steroid-treated grade III aGVHD. Both are major recognised risks",
+      "notes": "CMV reactivation (B) is at least as likely as invasive aspergillosis around day 90 in high-dose steroid-treated grade III aGVHD. Both are major recognised risks."
+    },
+    {
+      "questionId": "cold-start-mcq:hyperthyroidism#3",
+      "verdict": "Ambiguous",
+      "reason": "Ill-posed. Hyperthyroid labs in a patient on levothyroxine after RAI-induced hypothyroidism suggest over-replacement first. The key also plans repeat RAI despit",
+      "notes": "Ill-posed. Hyperthyroid labs in a patient on levothyroxine after RAI-induced hypothyroidism suggest over-replacement first. The key also plans repeat RAI despite her stated wish to avoid radiation."
+    },
+    {
+      "questionId": "paper-mcq:graves-disease-antithyroid-drugs-radioiodine-thyroidectomy---comparative-outcomes#2",
+      "verdict": "Unsupported",
+      "reason": "Placeholder source. The linked review has no available findings, so the item tests only the absence of data.",
+      "notes": "Placeholder source. The linked review has no available findings, so the item tests only the absence of data."
+    },
+    {
+      "questionId": "guideline-mcq:Graves-disease-antithyroid-and-radioiodine-therapy#0",
+      "verdict": "Wrong answer",
+      "reason": "Withdrawn: routine FBC/LFT surveillance on antithyroid drugs isn't recommended (ATA 2016, NICE NG145). Baseline tests plus urgent FBC for fever or sore throat i",
+      "notes": "Withdrawn: routine FBC/LFT surveillance on antithyroid drugs isn't recommended (ATA 2016, NICE NG145). Baseline tests plus urgent FBC for fever or sore throat is standard. All other options are also false. Original note: Routine FBC/LFT surveillance on ATDs isn't recommended (ATA 2016, NICE NG145). Baseline tests plus urgent FBC if fever or sore throat is the standard. The other options are also false, so no option is correct."
+    },
+    {
+      "questionId": "guideline-mcq:post-operative-respiratory-failure#3",
+      "verdict": "Unsupported",
+      "reason": "The claim that guidelines recommend IVIG/PLEX plus thiamine/B12 for 'post-bariatric GBS' isn't supported by the linked AAN evidence. Nutritional neuropathy is t",
+      "notes": "The claim that guidelines recommend IVIG/PLEX plus thiamine/B12 for 'post-bariatric GBS' isn't supported by the linked AAN evidence. Nutritional neuropathy is the key differential."
+    },
+    {
+      "questionId": "guideline-mcq:Guillain-Barre-syndrome-immunotherapy#2",
+      "verdict": "Ambiguous",
+      "reason": "Worsening within 8 weeks of starting treatment is a treatment-related fluctuation, not GBS relapse. The keyed label is incorrect, though repeat treatment is com",
+      "notes": "Worsening within 8 weeks of starting treatment is a treatment-related fluctuation, not GBS relapse. The keyed label is incorrect, though repeat treatment is commonly considered."
+    },
+    {
+      "questionId": "guideline-mcq:haematuria-evaluation-and-causes#0",
+      "verdict": "Ambiguous",
+      "reason": "Visible haematuria needs both cystoscopy and upper-tract imaging (NICE NG12 / AUA). B includes cystoscopy and the keyed C omits it, so both are defensible.",
+      "notes": "Visible haematuria needs both cystoscopy and upper-tract imaging (NICE NG12 / AUA). B includes cystoscopy and the keyed C omits it, so both are defensible."
+    },
+    {
+      "questionId": "guideline-mcq:haemodialysis-complications#1",
+      "verdict": "Unsupported",
+      "reason": "Internally inconsistent: dialysis via a tunnelled CVAD but fear of AVF needling. Aromatherapy evidence is low quality and extrapolated to a child.",
+      "notes": "Internally inconsistent: dialysis via a tunnelled CVAD but fear of AVF needling. Aromatherapy evidence is low quality and extrapolated to a child."
+    },
+    {
+      "questionId": "guideline-mcq:haemolytic-uraemic-syndrome#0",
+      "verdict": "Ambiguous",
+      "reason": "Ill-posed. Most children with STEC-HUS recover renal function after acute dialysis, so 'no long-term RRT indicated at this stage' (D) is as defensible as planni",
+      "notes": "Ill-posed. Most children with STEC-HUS recover renal function after acute dialysis, so 'no long-term RRT indicated at this stage' (D) is as defensible as planning transplantation."
+    },
+    {
+      "questionId": "guideline-mcq:haemolytic-uraemic-syndrome#1",
+      "verdict": "Ambiguous",
+      "reason": "With TTP not yet excluded, urgent plasma exchange (D) is standard alongside transfer to a specialist centre. The key relies on a TTP service statement, and both",
+      "notes": "With TTP not yet excluded, urgent plasma exchange (D) is standard alongside transfer to a specialist centre. The key relies on a TTP service statement, and both are defensible."
+    },
+    {
+      "questionId": "cold-start-mcq:coagulation-disorders#2",
+      "verdict": "Ambiguous",
+      "reason": "ITI is regular high-dose FVIII. Rituximab is an adjunct mainly after ITI failure, and bypassing-agent or emicizumab prophylaxis during ITI (A) is equally a key ",
+      "notes": "ITI is regular high-dose FVIII. Rituximab is an adjunct mainly after ITI failure, and bypassing-agent or emicizumab prophylaxis during ITI (A) is equally a key consideration."
+    },
+    {
+      "questionId": "guideline-mcq:haemophilia-a-and-b#2",
+      "verdict": "Unsupported",
+      "reason": "The keyed answer is a vague guideline-scope statement with no clinical content.",
+      "notes": "The keyed answer is a vague guideline-scope statement with no clinical content."
+    },
+    {
+      "questionId": "guideline-mcq:haemophilia-a-and-b#3",
+      "verdict": "Unsupported",
+      "reason": "Tests the provenance of a 2015 national guideline (based on WFH 2013, since superseded by WFH 2020). No clinical content.",
+      "notes": "Tests the provenance of a 2015 national guideline (based on WFH 2013, since superseded by WFH 2020). No clinical content."
+    },
+    {
+      "questionId": "guideline-mcq:Haemophilia-A:-factor-VIII-prophylaxis-and-emicizumab-for-in#1",
+      "verdict": "Ambiguous",
+      "reason": "Weekly (1.5 mg/kg), every-2-week (3 mg/kg) and every-4-week (6 mg/kg) maintenance are all licensed, so A is also correct. The explanation's '1.5 mg/kg monthly' ",
+      "notes": "Weekly (1.5 mg/kg), every-2-week (3 mg/kg) and every-4-week (6 mg/kg) maintenance are all licensed, so A is also correct. The explanation's '1.5 mg/kg monthly' is wrong."
+    },
+    {
+      "questionId": "guideline-mcq:Haemophilia-A:-factor-VIII-prophylaxis-and-emicizumab-for-in#2",
+      "verdict": "Unsafe",
+      "reason": "Presents aPCC as equivalent to rFVIIa for breakthrough bleeds on emicizumab. rFVIIa is preferred, and aPCC should be avoided or limited (<=50 U/kg, max 100 U/kg",
+      "notes": "Presents aPCC as equivalent to rFVIIa for breakthrough bleeds on emicizumab. rFVIIa is preferred, and aPCC should be avoided or limited (<=50 U/kg, max 100 U/kg/24 h) because of TMA and thrombosis risk (HAVEN 1)."
+    },
+    {
+      "questionId": "guideline-mcq:hard-metal-lung-disease#2",
+      "verdict": "Unsupported",
+      "reason": "The upper-lobe predominance claim for hard metal lung disease isn't supported. Distribution is variable and often lower-zone or diffuse.",
+      "notes": "The upper-lobe predominance claim for hard metal lung disease isn't supported. Distribution is variable and often lower-zone or diffuse."
+    },
+    {
+      "questionId": "guideline-mcq:heart-failure-landmark-trials-paradigm-hf-dapa-hf-emperor-reduced-insights#0",
+      "verdict": "Ambiguous",
+      "reason": "Adding an SGLT2 inhibitor (B) is equally recommended GDMT (DAPA-HF; ESC 2021/AHA 2022) alongside switching to ARNI. Both are appropriate next steps.",
+      "notes": "Adding an SGLT2 inhibitor (B) is equally recommended GDMT (DAPA-HF; ESC 2021/AHA 2022) alongside switching to ARNI. Both are appropriate next steps."
+    },
+    {
+      "questionId": "guideline-mcq:heart-failure-remote-monitoring-biomarkers-implantable-sensors-telemonitoring#1",
+      "verdict": "Ambiguous",
+      "reason": "Intermittent fluid retention despite reported adherence fits dietary sodium indiscretion with daily weights (C) at least as well as covert non-adherence. Both a",
+      "notes": "Intermittent fluid retention despite reported adherence fits dietary sodium indiscretion with daily weights (C) at least as well as covert non-adherence. Both are defensible."
+    },
+    {
+      "questionId": "cold-start-mcq:heart-failure-with-preserved-ejection-fraction#4",
+      "verdict": "Ambiguous",
+      "reason": "ESC/NICE workups equally require excluding anaemia and thyroid dysfunction (B) as non-cardiac causes of breathlessness. More than one option is an important alt",
+      "notes": "ESC/NICE workups equally require excluding anaemia and thyroid dysfunction (B) as non-cardiac causes of breathlessness. More than one option is an important alternative."
+    },
+    {
+      "questionId": "cold-start-mcq:heart-failure-with-preserved-ejection-fraction-hfpef-diagnosis-and-emerging-therapies#3",
+      "verdict": "Wrong answer",
+      "reason": "Withdrawn: anti-inflammatory agents aren't evidence-based HFpEF therapy. The proven therapies (SGLT2 inhibitors, finerenone, semaglutide in obesity) don't appea",
+      "notes": "Withdrawn: anti-inflammatory agents aren't evidence-based HFpEF therapy. The proven therapies (SGLT2 inhibitors, finerenone, semaglutide in obesity) don't appear in any option. Original note: Anti-inflammatory agents aren't evidence-based HFpEF therapy. The proven options are SGLT2 inhibitors (EMPEROR-Preserved, DELIVER), finerenone (FINEARTS-HF) and, in obesity, semaglutide (STEP-HFpEF), and none of these appears in the options."
+    },
+    {
+      "questionId": "guideline-mcq:hemothorax#0",
+      "verdict": "Ambiguous",
+      "reason": "Six hours with minimal drainage is too early to define retained haemothorax. EAST 2021 favours early VATS (within 3-5 days) for retained haemothorax, so observa",
+      "notes": "Six hours with minimal drainage is too early to define retained haemothorax. EAST 2021 favours early VATS (within 3-5 days) for retained haemothorax, so observation (A) or VATS (B) is also defensible."
+    },
+    {
+      "questionId": "guideline-mcq:heparin-induced-thrombocytopenia#2",
+      "verdict": "Ambiguous",
+      "reason": "Without recent heparin exposure, the 24-hour count doesn't specifically apply. BSH 2012 advises monitoring every 2-3 days from day 4 to 14 for UFH, which is clo",
+      "notes": "Without recent heparin exposure, the 24-hour count doesn't specifically apply. BSH 2012 advises monitoring every 2-3 days from day 4 to 14 for UFH, which is closer to B."
+    },
+    {
+      "questionId": "guideline-mcq:heparin-induced-thrombocytopenia#3",
+      "verdict": "Ambiguous",
+      "reason": "Options A ('baseline only') and B ('on the day of starting') describe the same requirement, so two options are correct.",
+      "notes": "Options A ('baseline only') and B ('on the day of starting') describe the same requirement, so two options are correct."
+    },
+    {
+      "questionId": "paper-mcq:heparin-induced-thrombocytopenia-alternatives-argatroban-fondaparinux-bivalirudin#2",
+      "verdict": "Wrong answer",
+      "reason": "Withdrawn: ASH 2018 conditionally accepts DOACs such as apixaban in acute HIT, so the keyed 'insufficient evidence' pitfall is incorrect. No other option is cor",
+      "notes": "Withdrawn: ASH 2018 conditionally accepts DOACs such as apixaban in acute HIT, so the keyed 'insufficient evidence' pitfall is incorrect. No other option is correct. Original note: ASH 2018 conditionally lists DOACs among acceptable options in acute HIT, so calling apixaban a pitfall due to 'insufficient evidence' is wrong as current evidence. None of the other options is correct either."
+    },
+    {
+      "questionId": "paper-mcq:heparin-induced-thrombocytopenia-alternatives-argatroban-fondaparinux-bivalirudin#3",
+      "verdict": "Unsupported",
+      "reason": "Placeholder source. Only metadata is available, so the item tests the absence of data.",
+      "notes": "Placeholder source. Only metadata is available, so the item tests the absence of data."
+    },
+    {
+      "questionId": "curated-mcq:hepatitis b natural history hbeag hbsag hbv dna antiviral indications tenofovir#18",
+      "verdict": "Outdated",
+      "reason": "Withdrawn: peginterferon plus ribavirin for HBV/HCV co-infection (NICE CG165, 2013) has been replaced by DAA therapy for HCV with nucleos(t)ide cover for HBV as",
+      "notes": "Withdrawn: peginterferon plus ribavirin for HBV/HCV co-infection (NICE CG165, 2013) has been replaced by DAA therapy for HCV with nucleos(t)ide cover for HBV as indicated. No option reflects current practice. Original note: Superseded. Peginterferon plus ribavirin for HBV/HCV co-infection (NICE CG165, 2013) has been replaced by DAA therapy for HCV, with nucleos(t)ide cover for HBV as indicated. No option reflects current practice."
+    },
+    {
+      "questionId": "cold-start-mcq:hepatitis-management#3",
+      "verdict": "Ambiguous",
+      "reason": "Preventing mother-to-child transmission, guided by HBV DNA, is arguably the primary consideration. Antiviral safety (A) is one factor, so the stem is vague and ",
+      "notes": "Preventing mother-to-child transmission, guided by HBV DNA, is arguably the primary consideration. Antiviral safety (A) is one factor, so the stem is vague and more than one option is defensible."
+    },
+    {
+      "questionId": "guideline-mcq:viral-hepatitis-c#1",
+      "verdict": "Unsupported",
+      "reason": "Misattributed threshold. WHO 2024 criteria are HBV DNA >2000 IU/mL with raised ALT, significant fibrosis, coinfection or other risk factors, not '>20,000 IU/mL ",
+      "notes": "Misattributed threshold. WHO 2024 criteria are HBV DNA >2000 IU/mL with raised ALT, significant fibrosis, coinfection or other risk factors, not '>20,000 IU/mL in high-risk' patients. Also ALT isn't given."
+    },
+    {
+      "questionId": "cold-start-mcq:hepatitis-b-natural-history-hbeag-hbsag-hbv-dna-antiviral-indications-tenofovir#2",
+      "verdict": "Wrong answer",
+      "reason": "Withdrawn: NICE and EASL allow stopping nucleos(t)ide therapy about 12 months after HBeAg seroconversion in non-cirrhotic patients, so 'continue indefinitely' i",
+      "notes": "Withdrawn: NICE and EASL allow stopping nucleos(t)ide therapy about 12 months after HBeAg seroconversion in non-cirrhotic patients, so 'continue indefinitely' isn't the guideline answer. The other options are also incorrect. Original note: NICE and EASL allow stopping NAs 12 months after HBeAg seroconversion in non-cirrhotic patients (consolidation), so 'continue indefinitely' is not the guideline answer. The other options are also incorrect."
+    },
+    {
+      "questionId": "guideline-mcq:Hepatitis-C-virus-direct-acting-antiviral-therapy#2",
+      "verdict": "Ambiguous",
+      "reason": "For GT1a after PegIFN/RBV without cirrhosis, sofosbuvir/velpatasvir for 12 weeks (B) and ledipasvir/sofosbuvir for 12 weeks (A) are also recommended. Glecaprevi",
+      "notes": "For GT1a after PegIFN/RBV without cirrhosis, sofosbuvir/velpatasvir for 12 weeks (B) and ledipasvir/sofosbuvir for 12 weeks (A) are also recommended. Glecaprevir/pibrentasvir isn't uniquely correct."
+    },
+    {
+      "questionId": "paper-mcq:covid-19-critical-illness-oxygenation-strategy-dexamethasone-anticoagulation#1",
+      "verdict": "Unsupported",
+      "reason": "Misattributed. The linked evidence is NICE/EASL hepatitis D material, not the cited 2021 BMJ remdesivir review.",
+      "notes": "Misattributed. The linked evidence is NICE/EASL hepatitis D material, not the cited 2021 BMJ remdesivir review."
+    },
+    {
+      "questionId": "guideline-mcq:hepatopulmonary-syndrome#2",
+      "verdict": "Wrong answer",
+      "reason": "Withdrawn: intrapulmonary shunting with an A-a gradient of 18 mmHg (>=15) in a 58-year-old meets the criteria for mild HPS, so the key is wrong. Mild HPS isn't ",
+      "notes": "Withdrawn: intrapulmonary shunting with an A-a gradient of 18 mmHg (>=15) in a 58-year-old meets the criteria for mild HPS, so the key is wrong. Mild HPS isn't prioritised for transplant, so no option is correct. Original note: A 58-year-old with intrapulmonary shunting and an A-a gradient of 18 mmHg (>=15) meets HPS criteria (mild HPS), so C is wrong. Mild HPS isn't prioritised for transplant, so A is also wrong, and no option is correct."
+    },
+    {
+      "questionId": "cold-start-mcq:terlipressin-hepatorenal-syndrome#1",
+      "verdict": "Ambiguous",
+      "reason": "Variceal haemorrhage is also a primary licensed indication for terlipressin (Baveno VII), so D is equally correct.",
+      "notes": "Variceal haemorrhage is also a primary licensed indication for terlipressin (Baveno VII), so D is equally correct."
+    },
+    {
+      "questionId": "cold-start-mcq:hepatorenal-syndrome-management-guidelines#1",
+      "verdict": "Ambiguous",
+      "reason": "Ill-posed. HRS-AKI requires cirrhosis with ascites, but the patient is described as compensated and euvolaemic, and vasoconstrictors are indicated only for AKI ",
+      "notes": "Ill-posed. HRS-AKI requires cirrhosis with ascites, but the patient is described as compensated and euvolaemic, and vasoconstrictors are indicated only for AKI beyond stage 1A."
+    },
+    {
+      "questionId": "guideline-mcq:hepatorenal-syndrome#0",
+      "verdict": "Ambiguous",
+      "reason": "Ill-posed. Initial management is diuretic withdrawal, infection screening and a 2-day albumin challenge before vasoconstrictors. Terlipressin before HRS-AKI cri",
+      "notes": "Ill-posed. Initial management is diuretic withdrawal, infection screening and a 2-day albumin challenge before vasoconstrictors. Terlipressin before HRS-AKI criteria are met isn't the initial step, and no option describes the albumin challenge alone."
+    },
+    {
+      "questionId": "paper-mcq:trastuzumab-adjuvant-her2-positive-breast-cancer-bcirg-006#0",
+      "verdict": "Unsupported",
+      "reason": "Empty explanation: it states the item 'cannot be accurately grounded' because the source content is empty. Not learner-facing.",
+      "notes": "Empty explanation: it states the item 'cannot be accurately grounded' because the source content is empty. Not learner-facing."
+    },
+    {
+      "questionId": "paper-mcq:trastuzumab-adjuvant-her2-positive-breast-cancer-bcirg-006#1",
+      "verdict": "Unsupported",
+      "reason": "Empty explanation: it states the item 'cannot be accurately grounded' because the source content is empty. Not learner-facing.",
+      "notes": "Empty explanation: it states the item 'cannot be accurately grounded' because the source content is empty. Not learner-facing."
+    },
+    {
+      "questionId": "paper-mcq:trastuzumab-adjuvant-her2-positive-breast-cancer-bcirg-006#2",
+      "verdict": "Unsupported",
+      "reason": "Empty explanation: it states the item 'cannot be accurately grounded' because the source content is empty. Not learner-facing.",
+      "notes": "Empty explanation: it states the item 'cannot be accurately grounded' because the source content is empty. Not learner-facing."
+    },
+    {
+      "questionId": "paper-mcq:trastuzumab-adjuvant-her2-positive-breast-cancer-bcirg-006#3",
+      "verdict": "Unsupported",
+      "reason": "Empty explanation: it states the item 'cannot be accurately grounded' because the source content is empty. BCIRG 006 wasn't powered to compare TCH with AC-TH, s",
+      "notes": "Empty explanation: it states the item 'cannot be accurately grounded' because the source content is empty. BCIRG 006 wasn't powered to compare TCH with AC-TH, so A is also arguable."
+    },
+    {
+      "questionId": "paper-mcq:trastuzumab-adjuvant-her2-positive-breast-cancer-bcirg-006#4",
+      "verdict": "Unsupported",
+      "reason": "Empty explanation: it states the item 'cannot be accurately grounded' because the source content is empty. Not learner-facing.",
+      "notes": "Empty explanation: it states the item 'cannot be accurately grounded' because the source content is empty. Not learner-facing."
+    },
+    {
+      "questionId": "cold-start-mcq:her2-positive-breast-cancer-adjuvant-trastuzumab#0",
+      "verdict": "Unsupported",
+      "reason": "The explanation wrongly says 6 months hasn't been shown non-inferior. PERSEPHONE showed 6 months non-inferior to 12 months, although 12 months remains standard.",
+      "notes": "The explanation wrongly says 6 months hasn't been shown non-inferior. PERSEPHONE showed 6 months non-inferior to 12 months, although 12 months remains standard."
+    },
+    {
+      "questionId": "cold-start-mcq:her2-positive-breast-cancer-adjuvant-trastuzumab#2",
+      "verdict": "Ambiguous",
+      "reason": "NCCTG N9831 favoured concurrent over sequential trastuzumab (HR 0.77), and guidelines prefer concurrent with taxanes. 'No clear superiority' is contestable, mak",
+      "notes": "NCCTG N9831 favoured concurrent over sequential trastuzumab (HR 0.77), and guidelines prefer concurrent with taxanes. 'No clear superiority' is contestable, making A defensible."
+    },
+    {
+      "questionId": "cold-start-mcq:her2-positive-breast-cancer-adjuvant-trastuzumab#3",
+      "verdict": "Unsupported",
+      "reason": "Describes benefit in low-risk node-negative disease as investigational. That conflicts with the APT trial and NCCN, which support paclitaxel-trastuzumab for sma",
+      "notes": "Describes benefit in low-risk node-negative disease as investigational. That conflicts with the APT trial and NCCN, which support paclitaxel-trastuzumab for small node-negative tumours."
+    },
+    {
+      "questionId": "guideline-mcq:hereditary-spherocytosis-and-elliptocytosis#0",
+      "verdict": "Ambiguous",
+      "reason": "BSH 2011 prefers EMA binding over osmotic fragility, and typical cases with a family history need no further test. B is the best available option but outdated.",
+      "notes": "BSH 2011 prefers EMA binding over osmotic fragility, and typical cases with a family history need no further test. B is the best available option but outdated."
+    },
+    {
+      "questionId": "guideline-mcq:hereditary-spherocytosis-and-elliptocytosis#1",
+      "verdict": "Unsupported",
+      "reason": "Generic 'underdiagnosis' placeholder answer. Severe elliptocytic haemolysis in a child of consanguineous parents suggests HPP, which isn't addressed.",
+      "notes": "Generic 'underdiagnosis' placeholder answer. Severe elliptocytic haemolysis in a child of consanguineous parents suggests HPP, which isn't addressed."
+    },
+    {
+      "questionId": "guideline-mcq:herpes-zoster-dermatomal-distribution-antivirals-post-herpetic-neuralgia-vaccination-in-elderly#1",
+      "verdict": "Ambiguous",
+      "reason": "PHN is most commonly defined as pain persisting >=90 days (3 months) after rash onset. The 1-month threshold is one of several definitions, so the keyed 'thresh",
+      "notes": "PHN is most commonly defined as pain persisting >=90 days (3 months) after rash onset. The 1-month threshold is one of several definitions, so the keyed 'threshold' statement is contestable."
+    },
+    {
+      "questionId": "paper-mcq:herpes-simplex-impetigo-and-common-skin-infections#0",
+      "verdict": "Ambiguous",
+      "reason": "Aciclovir 400 mg five times daily for 7-10 days (D) is also standard for primary oral HSV. Valaciclovir 1 g bd for 10 days is the genital regimen. The linked ev",
+      "notes": "Aciclovir 400 mg five times daily for 7-10 days (D) is also standard for primary oral HSV. Valaciclovir 1 g bd for 10 days is the genital regimen. The linked evidence is zoster material."
+    },
+    {
+      "questionId": "guideline-mcq:hiatal-hernia#1",
+      "verdict": "Ambiguous",
+      "reason": "Without obesity, redo repair with fundoplication (A/B) is standard. SAGES 2024 suggests RYGB mainly for patients with obesity, so the keyed RYGB isn't uniquely ",
+      "notes": "Without obesity, redo repair with fundoplication (A/B) is standard. SAGES 2024 suggests RYGB mainly for patients with obesity, so the keyed RYGB isn't uniquely correct."
+    },
+    {
+      "questionId": "guideline-mcq:hiatal-hernia#3",
+      "verdict": "Unsupported",
+      "reason": "Overstates the mesh evidence. SAGES 2024 makes only a conditional suggestion for either mesh or no mesh, and long-term recurrence isn't reduced (Oelschlager 201",
+      "notes": "Overstates the mesh evidence. SAGES 2024 makes only a conditional suggestion for either mesh or no mesh, and long-term recurrence isn't reduced (Oelschlager 2011)."
+    },
+    {
+      "questionId": "paper-mcq:hidradenitis-suppurativa-assessment-and-treatment#2",
+      "verdict": "Unsupported",
+      "reason": "IHS4 isn't a TA392 criterion. TA392 uses Hurley II-III disease with inadequate response to conventional systemic therapy, and the response-rule threshold in the",
+      "notes": "IHS4 isn't a TA392 criterion. TA392 uses Hurley II-III disease with inadequate response to conventional systemic therapy, and the response-rule threshold in the explanation is misstated."
+    },
+    {
+      "questionId": "guideline-mcq:high-altitude-pulmonary-edema#3",
+      "verdict": "Wrong answer",
+      "reason": "Withdrawn: WMS guidelines don't recommend dexamethasone for treating HAPE unless HACE coexists, and none of the other adjuncts is recommended. No option is corr",
+      "notes": "Withdrawn: WMS guidelines don't recommend dexamethasone for treating HAPE unless HACE coexists, and none of the other adjuncts is recommended. No option is correct. Original note: WMS doesn't recommend dexamethasone for treating HAPE, except when HACE coexists. None of the options is a recommended adjunct."
+    },
+    {
+      "questionId": "guideline-mcq:high-flow-nasal-oxygen-and-non-invasive-ventilation-in-acute-hypoxaemic-failure#3",
+      "verdict": "Unsupported",
+      "reason": "The evidence on harm from delay is about delayed intubation, not delayed transition to NIV. The keyed claim is unsupported.",
+      "notes": "The evidence on harm from delay is about delayed intubation, not delayed transition to NIV. The keyed claim is unsupported."
+    },
+    {
+      "questionId": "guideline-mcq:high-flow-nasal-oxygen-in-acute-hypoxemic-respiratory-failure#1",
+      "verdict": "Ambiguous",
+      "reason": "The stem has no question. It ends with the vignette, so the item is ill-posed.",
+      "notes": "The stem has no question. It ends with the vignette, so the item is ill-posed."
+    },
+    {
+      "questionId": "guideline-mcq:high-flow-nasal-oxygen-in-acute-hypoxemic-respiratory-failure#2",
+      "verdict": "Ambiguous",
+      "reason": "The stem has no question. It ends with the vignette, so the item is ill-posed.",
+      "notes": "The stem has no question. It ends with the vignette, so the item is ill-posed."
+    },
+    {
+      "questionId": "guideline-mcq:high-flow-nasal-oxygen-in-acute-hypoxemic-respiratory-failure#3",
+      "verdict": "Ambiguous",
+      "reason": "The stem has no question. It ends with the vignette, so the item is ill-posed.",
+      "notes": "The stem has no question. It ends with the vignette, so the item is ill-posed."
+    },
+    {
+      "questionId": "guideline-mcq:high-frequency-oscillatory-ventilation-and-lung-recruitment-in-severe-ards#1",
+      "verdict": "Ambiguous",
+      "reason": "The stem has no question, and the key is the harmful option, so the item is ill-posed.",
+      "notes": "The stem has no question, and the key is the harmful option, so the item is ill-posed."
+    },
+    {
+      "questionId": "guideline-mcq:high-frequency-oscillatory-ventilation-and-lung-recruitment-in-severe-ards#3",
+      "verdict": "Ambiguous",
+      "reason": "The stem has no question. It ends with the vignette, so the item is ill-posed.",
+      "notes": "The stem has no question. It ends with the vignette, so the item is ill-posed."
+    },
+    {
+      "questionId": "cold-start-mcq:sexually-transmitted-infections#2",
+      "verdict": "Unsupported",
+      "reason": "Opinion-based answer. The linked evidence (NICE HBV lamivudine statements) doesn't address LA-ART implementation.",
+      "notes": "Opinion-based answer. The linked evidence (NICE HBV lamivudine statements) doesn't address LA-ART implementation."
+    },
+    {
+      "questionId": "guideline-mcq:capacity-assessment#0",
+      "verdict": "Unsupported",
+      "reason": "The attributed WHO 2017 recommendation to use simulation modelling isn't supported by the linked evidence, which is unrelated.",
+      "notes": "The attributed WHO 2017 recommendation to use simulation modelling isn't supported by the linked evidence, which is unrelated."
+    },
+    {
+      "questionId": "guideline-mcq:capacity-assessment#4",
+      "verdict": "Unsupported",
+      "reason": "The attributed WHO 2017 recommendation to use simulation modelling isn't supported by the linked evidence, which is unrelated.",
+      "notes": "The attributed WHO 2017 recommendation to use simulation modelling isn't supported by the linked evidence, which is unrelated."
+    },
+    {
+      "questionId": "cold-start-mcq:hiv-antiretroviral-therapy-initiation#0",
+      "verdict": "Ambiguous",
+      "reason": "The stem asks for the 'backbone', which conventionally means the NRTI pair. INSTI is the anchor agent, so the stem is ill-posed.",
+      "notes": "The stem asks for the 'backbone', which conventionally means the NRTI pair. INSTI is the anchor agent, so the stem is ill-posed."
+    },
+    {
+      "questionId": "cold-start-mcq:hiv-antiretroviral-therapy-initiation#2",
+      "verdict": "Unsupported",
+      "reason": "The explanation contradicts itself (RNA <100,000 required, then says 250,000 meets the criteria). Eligibility for DTG/3TC with CD4 <200 differs between DHHS and",
+      "notes": "The explanation contradicts itself (RNA <100,000 required, then says 250,000 meets the criteria). Eligibility for DTG/3TC with CD4 <200 differs between DHHS and EACS."
+    },
+    {
+      "questionId": "guideline-mcq:antiretroviral-therapy-regimens-insti-based-first-line-drug-interactions-resistance-testing#0",
+      "verdict": "Outdated",
+      "reason": "Withdrawn: efavirenz-based ART is no longer a preferred regimen in pregnancy. Current perinatal guidance prefers dolutegravir-based regimens, and more than one ",
+      "notes": "Withdrawn: efavirenz-based ART is no longer a preferred regimen in pregnancy. Current perinatal guidance prefers dolutegravir-based regimens, and more than one option could now be keyed. Original note: Efavirenz-based ART is no longer a preferred regimen in pregnancy. Current perinatal guidance prefers dolutegravir-based regimens, and more than one option could now be keyed."
+    },
+    {
+      "questionId": "guideline-mcq:hiv-opportunistic-infections-pcp-prophylaxis-thresholds-mac-cmv-retinitis-toxoplasmosis#0",
+      "verdict": "Ambiguous",
+      "reason": "The vignette describes likely active PCP (3 weeks of dyspnoea, cough and fever with CD4 180), so a prophylaxis question is ill-posed.",
+      "notes": "The vignette describes likely active PCP (3 weeks of dyspnoea, cough and fever with CD4 180), so a prophylaxis question is ill-posed."
+    }
+  ],
+  "corrections": [
+    {
+      "questionId": "guideline-mcq:tocilizumab-in-giant-cell-arteritis-giacta-trial-steroid-sparing-remission#1",
+      "verdict": "Wrong answer",
+      "notes": "No guideline sets an 18-month minimum. GiACTA treated for 52 weeks, and NICE TA518 limits tocilizumab to 1 year, so 12 months (C) is the evidence-based answer.",
+      "suggestedAnswer": "C",
+      "source": "GiACTA trial (Stone et al, NEJM 2017); NICE TA518 Tocilizumab for treating giant cell arteritis (2018)",
+      "stemFix": null,
+      "newExplanation": "In the GiACTA trial, tocilizumab combined with a 26-week prednisone taper was given for 52 weeks and achieved higher sustained remission than prednisone alone. NICE TA518 recommends tocilizumab for up to 1 year of uninterrupted treatment. No guideline sets an 18-month minimum, so 12 months is the evidence-based duration. Longer use is individualised, for example for relapse. Source: GiACTA trial (Stone et al, NEJM 2017); NICE TA518 Tocilizumab for treating giant cell arteritis (2018)"
+    },
+    {
+      "questionId": "cold-start-mcq:gonorrhea-and-chlamydia-treatment#2",
+      "verdict": "Outdated",
+      "notes": "Superseded. CDC 2021 recommends ceftriaxone 500 mg IM alone for uncomplicated gonorrhoea (1 g if >=150 kg), adding doxycycline only if chlamydia isn't excluded. Dual therapy with azithromycin is no longer recommended.",
+      "suggestedAnswer": "B",
+      "source": "CDC Sexually Transmitted Infections Treatment Guidelines 2021 (Workowski et al, MMWR 2021;70(4)); BASHH UK national guideline for the management of gonorrhoea in adults (2019)",
+      "stemFix": null,
+      "newExplanation": "Uncomplicated urogenital gonorrhoea is now treated with ceftriaxone monotherapy: 500 mg IM as a single dose in the USA (1 g if 150 kg or more), or 1 g IM in UK BASHH guidance. Routine dual therapy with azithromycin has been dropped because of antimicrobial stewardship and rising azithromycin resistance. If chlamydia hasn't been excluded, doxycycline 100 mg twice daily for 7 days is added. Source: CDC Sexually Transmitted Infections Treatment Guidelines 2021 (Workowski et al, MMWR 2021;70(4)); BASHH UK national guideline for the management of gonorrhoea in adults (2019)"
+    },
+    {
+      "questionId": "guideline-mcq:group-1-pulmonary-arterial-hypertension-era-pde5i-prostacyclin-combination-therapy#3",
+      "verdict": "Outdated",
+      "notes": "Superseded. ESC/ERS 2022 recommends initial triple combination including IV/SC prostacyclin for high-risk PAH (WHO FC IV with right heart failure). The keyed prostanoid monotherapy reflects an older expert survey.",
+      "suggestedAnswer": "D",
+      "source": "2022 ESC/ERS Guidelines for the diagnosis and treatment of pulmonary hypertension (Humbert et al, Eur Heart J 2022)",
+      "stemFix": null,
+      "newExplanation": "This patient has high-risk PAH: WHO functional class IV with right heart failure and markedly raised PVR. ESC/ERS 2022 recommends initial triple combination therapy including an IV or SC prostacyclin analogue, together with an endothelin receptor antagonist and a PDE5 inhibitor, plus early referral for lung transplant assessment. Monotherapy, including prostanoid monotherapy, is no longer recommended for high-risk patients. Source: 2022 ESC/ERS Guidelines for the diagnosis and treatment of pulmonary hypertension (Humbert et al, Eur Heart J 2022)"
+    },
+    {
+      "questionId": "guideline-mcq:haemophilia-a-and-b#0",
+      "verdict": "Wrong answer",
+      "notes": "In severe haemophilia with suspected head bleeding, factor VIII replacement must be given immediately, before imaging (WFH 2020). Delaying for CT is a recognised error.",
+      "suggestedAnswer": "A",
+      "source": "WFH Guidelines for the Management of Hemophilia, 3rd edition (Srivastava et al, Haemophilia 2020)",
+      "stemFix": null,
+      "newExplanation": "In severe haemophilia A (factor VIII <1%) with suspected head or significant bleeding, factor VIII concentrate should be given immediately, aiming for 80-100% activity. Treatment must not wait for imaging or other investigations. Imaging such as CT, plus haematology input, follow once replacement has started. Delaying factor replacement for a scan is a recognised and potentially fatal error. Source: WFH Guidelines for the Management of Hemophilia, 3rd edition (Srivastava et al, Haemophilia 2020)"
+    },
+    {
+      "questionId": "guideline-mcq:head-and-neck-squamous-cell-chemoradiation#1",
+      "verdict": "Wrong answer",
+      "notes": "T2N1M0 laryngeal SCC is stage III (locoregionally advanced), not localised. Combined modality such as concurrent chemoradiation is indicated, and single-modality surgery or RT is for T1-2N0.",
+      "suggestedAnswer": "A",
+      "source": "NCCN Guidelines: Head and Neck Cancers; AJCC Cancer Staging Manual, 8th edition",
+      "stemFix": null,
+      "newExplanation": "T2N1M0 squamous cell carcinoma of the larynx is stage III, locoregionally advanced disease. In a fit patient who wants larynx preservation, concurrent chemoradiation with cisplatin is a standard initial approach. Total laryngectomy with neck dissection is the alternative for selected cases. Single-modality surgery or radiotherapy is reserved for early-stage (T1-2N0) laryngeal cancer. Source: NCCN Guidelines: Head and Neck Cancers; AJCC Cancer Staging Manual, 8th edition"
+    },
+    {
+      "questionId": "guideline-mcq:heparin-induced-thrombocytopenia#1",
+      "verdict": "Wrong answer",
+      "notes": "The keyed option (a platelet count on post-operative day 1) is impossible on day 3. A modest fall by day 3 after surgery is expected, and BSH advises continuing LMWH with platelet monitoring every 2-3 days from day 4 to 14.",
+      "suggestedAnswer": "A",
+      "source": "BCSH guidelines on the diagnosis and management of heparin-induced thrombocytopenia, 2nd edition (Watson et al, Br J Haematol 2012)",
+      "stemFix": null,
+      "newExplanation": "A modest platelet fall in the first few days after major surgery is expected from haemodilution and consumption. HIT typically causes a fall of more than 50% starting 5-10 days after heparin begins. Here the count is still normal on day 3, so LMWH should continue with ongoing platelet monitoring. BSH advises counts every 2-3 days from day 4 to day 14 in post-operative patients on LMWH, and a 4Ts assessment if the count falls further. Source: BCSH guidelines on the diagnosis and management of heparin-induced thrombocytopenia, 2nd edition (Watson et al, Br J Haematol 2012)"
+    },
+    {
+      "questionId": "guideline-mcq:heparin-induced-thrombocytopenia#0",
+      "verdict": "Wrong answer",
+      "notes": "Recent heparin exposure without HIT doesn't require a non-heparin anticoagulant. BSH/ACCP advise heparin with baseline and 24-hour platelet counts, and bivalirudin is reserved for suspected or confirmed HIT.",
+      "suggestedAnswer": "B",
+      "source": "BCSH guidelines on HIT (Watson et al, Br J Haematol 2012); ACCP Antithrombotic Therapy guidelines: HIT (Linkins et al, Chest 2012)",
+      "stemFix": null,
+      "newExplanation": "Previous heparin exposure without HIT doesn't preclude heparin. If exposure was within the last 100 days, circulating antibodies could cause rapid-onset HIT. Guidelines therefore advise a baseline platelet count and a repeat count 24 hours after starting heparin. Non-heparin anticoagulants such as bivalirudin are reserved for suspected or confirmed HIT. Source: BCSH guidelines on HIT (Watson et al, Br J Haematol 2012); ACCP Antithrombotic Therapy guidelines: HIT (Linkins et al, Chest 2012)"
+    },
+    {
+      "questionId": "guideline-mcq:viral-hepatitis-c#0",
+      "verdict": "Wrong answer",
+      "notes": "HBV/HCV co-infection is itself a WHO 2024 treatment criterion, and WHO 2024 uses >2000 IU/mL (not 20,000). HBsAg-positive patients starting DAAs need HBV antiviral therapy or prophylaxis because of the reactivation risk (FDA boxed warning).",
+      "suggestedAnswer": "B",
+      "source": "WHO Guidelines for the prevention, diagnosis, care and treatment of people with chronic hepatitis B infection (2024); AASLD-IDSA HCV Guidance; FDA Drug Safety Communication on HBV reactivation with DAAs (2016)",
+      "stemFix": null,
+      "newExplanation": "HBV can reactivate when HCV is cleared with direct-acting antivirals. HBsAg-positive patients who meet HBV treatment criteria should start nucleos(t)ide therapy before or with the DAAs. Here HBV DNA is above 2,000 IU/mL, the WHO 2024 threshold, and HBV/HCV co-infection is itself a WHO 2024 treatment criterion. Tenofovir or entecavir alongside the DAAs is appropriate. Source: WHO Guidelines for the prevention, diagnosis, care and treatment of people with chronic hepatitis B infection (2024); AASLD-IDSA HCV Guidance; FDA Drug Safety Communication on HBV reactivation with DAAs (2016)"
+    },
+    {
+      "questionId": "guideline-mcq:Hepatitis-C-virus-direct-acting-antiviral-therapy#0",
+      "verdict": "Wrong answer",
+      "notes": "For treatment-naive GT1b with compensated cirrhosis, glecaprevir/pibrentasvir for 8 weeks is a recommended regimen (EXPEDITION-8). Sofosbuvir/velpatasvir/voxilaprevir is reserved for DAA-experienced patients, and the stem doesn't state prior treatment.",
+      "suggestedAnswer": "D",
+      "source": "EASL Recommendations on Treatment of Hepatitis C, final update 2020; AASLD-IDSA HCV Guidance; EXPEDITION-8 (Brown et al, J Hepatol 2020)",
+      "stemFix": null,
+      "newExplanation": "For treatment-naive genotype 1b HCV with compensated cirrhosis, glecaprevir/pibrentasvir for 8 weeks is recommended, supported by the EXPEDITION-8 trial with SVR12 above 97%. Sofosbuvir/velpatasvir for 12 weeks is an alternative. Sofosbuvir/velpatasvir/voxilaprevir is reserved for DAA-experienced patients, and the 8-week ledipasvir/sofosbuvir course isn't recommended in cirrhosis. Source: EASL Recommendations on Treatment of Hepatitis C, final update 2020; AASLD-IDSA HCV Guidance; EXPEDITION-8 (Brown et al, J Hepatol 2020)"
+    },
+    {
+      "questionId": "guideline-mcq:hepatopulmonary-syndrome#1",
+      "verdict": "Wrong answer",
+      "notes": "The ERS/ILTS HPS oxygenation criterion is an A-a gradient >=15 mmHg (>=20 if over 64) or PaO2 <80 mmHg. That matches B, not the keyed 'PaO2 <70 and A-a >20'.",
+      "suggestedAnswer": "B",
+      "source": "ILTS Practice Guidelines: Hepatopulmonary syndrome and portopulmonary hypertension (Krowka et al, Transplantation 2016); ERS Task Force on pulmonary-hepatic vascular disorders (Rodriguez-Roisin et al, Eur Respir J 2004)",
+      "stemFix": null,
+      "newExplanation": "HPS requires liver disease or portal hypertension, intrapulmonary vascular dilatation on contrast echocardiography, and impaired oxygenation. The oxygenation criterion is an A-a gradient of at least 15 mmHg (at least 20 mmHg if over 64) or PaO2 below 80 mmHg on room air. A normal A-a gradient below 15 mmHg in this 48-year-old would rule out HPS. Severity is then graded by PaO2. Source: ILTS Practice Guidelines: Hepatopulmonary syndrome and portopulmonary hypertension (Krowka et al, Transplantation 2016); ERS Task Force on pulmonary-hepatic vascular disorders (Rodriguez-Roisin et al, Eur Respir J 2004)"
+    },
+    {
+      "questionId": "guideline-mcq:hepatorenal-syndrome#3",
+      "verdict": "Outdated",
+      "notes": "The 'HRS type 2' terminology is superseded. ICA/ADQI now classify this as HRS-NAKI (HRS-AKD or HRS-CKD), so the keyed option should be relabelled.",
+      "suggestedAnswer": "B",
+      "source": "ICA-ADQI consensus on acute kidney injury in cirrhosis (Nadim et al, J Hepatol 2024); Angeli et al, News in pathophysiology, definition and classification of HRS (J Hepatol 2019)",
+      "stemFix": null,
+      "newExplanation": "A gradual creatinine rise over weeks in cirrhosis with ascites, low urine sodium, no shock, infection or nephrotoxins, and no response to stopping diuretics fits functional hepatorenal physiology with a subacute course. This was formerly called HRS type 2. Current ICA/ADQI terminology classifies it as HRS-NAKI: HRS-AKD if under 3 months, or HRS-CKD if longer. HRS-AKI, formerly type 1, is a rapid rise meeting AKI criteria. Source: ICA-ADQI consensus on acute kidney injury in cirrhosis (Nadim et al, J Hepatol 2024); Angeli et al, News in pathophysiology, definition and classification of HRS (J Hepatol 2019)",
+      "optionEdits": [
+        {
+          "letter": "B",
+          "after": "Hepatorenal syndrome-non-AKI (HRS-NAKI; HRS-AKD/HRS-CKD), formerly HRS type 2."
+        }
+      ]
+    },
+    {
+      "questionId": "guideline-mcq:HER2-positive-breast-cancer-adjuvant-trastuzumab#1",
+      "verdict": "Wrong answer",
+      "notes": "Standard monitoring during adjuvant trastuzumab is LVEF assessment at baseline and every 3 months during treatment (ESMO, ESC cardio-oncology, product labelling), not annually.",
+      "suggestedAnswer": "C",
+      "source": "ESC 2022 Guidelines on cardio-oncology (Lyon et al, Eur Heart J 2022); ESMO consensus recommendations on cardiac toxicity (Curigliano et al, Ann Oncol 2020)",
+      "stemFix": null,
+      "newExplanation": "Trastuzumab can cause left ventricular dysfunction, which is usually reversible if detected early. Guidelines recommend LVEF assessment by echocardiography or MUGA at baseline and every 3 months during adjuvant trastuzumab, plus at completion and when symptoms develop. Annual monitoring during treatment is too infrequent. Treatment is held if LVEF falls significantly, for example by 10 or more points to below 50%. Source: ESC 2022 Guidelines on cardio-oncology (Lyon et al, Eur Heart J 2022); ESMO consensus recommendations on cardiac toxicity (Curigliano et al, Ann Oncol 2020)"
+    },
+    {
+      "questionId": "paper-mcq:hidradenitis-suppurativa-assessment-and-treatment#1",
+      "verdict": "Wrong answer",
+      "notes": "BAD 2018 makes a 12-week tetracycline course first-line for mild-moderate HS and clindamycin-rifampicin second-line. The cited NICE NG73 is the endometriosis guideline, not HS.",
+      "suggestedAnswer": "D",
+      "source": "British Association of Dermatologists guidelines for the management of hidradenitis suppurativa 2018 (Ingram et al, Br J Dermatol 2019); European S2k guideline for HS (Zouboulis et al, JEADV 2024)",
+      "stemFix": null,
+      "newExplanation": "BAD guidance recommends a 12-week course of an oral tetracycline, such as doxycycline 100 mg daily or lymecycline 408 mg daily, as first-line systemic treatment for mild to moderate HS. Clindamycin 300 mg plus rifampicin 300 mg twice daily for 10-12 weeks is second-line, or used for more severe disease. Adalimumab is considered if conventional systemic therapy fails. Source: British Association of Dermatologists guidelines for the management of hidradenitis suppurativa 2018 (Ingram et al, Br J Dermatol 2019); European S2k guideline for HS (Zouboulis et al, JEADV 2024)"
+    }
+  ]
+}

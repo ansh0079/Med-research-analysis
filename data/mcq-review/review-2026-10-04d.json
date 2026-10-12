@@ -1,0 +1,480 @@
+{
+  "withdrawals": [
+    {
+      "questionId": "guideline-mcq:donor-specific-antibodies-and-sensitisation#0",
+      "verdict": "Unsupported",
+      "reason": "Key is just 'the role is unclear' from one JPRAS 2020 review; niche VCA content with no actionable teaching point.",
+      "notes": "Key is just 'the role is unclear' from one JPRAS 2020 review; niche VCA content with no actionable teaching point."
+    },
+    {
+      "questionId": "guideline-mcq:donor-specific-antibodies-and-sensitisation#1",
+      "verdict": "Unsupported",
+      "reason": "Key is just 'the role is unclear' from one JPRAS 2020 review; niche VCA content with no actionable teaching point.",
+      "notes": "Key is just 'the role is unclear' from one JPRAS 2020 review; niche VCA content with no actionable teaching point."
+    },
+    {
+      "questionId": "guideline-mcq:donor-specific-antibodies-and-sensitisation#2",
+      "verdict": "Unsupported",
+      "reason": "Key is just 'the role is unclear' from one JPRAS 2020 review; niche VCA content with no actionable teaching point.",
+      "notes": "Key is just 'the role is unclear' from one JPRAS 2020 review; niche VCA content with no actionable teaching point."
+    },
+    {
+      "questionId": "guideline-mcq:donor-specific-antibodies-and-sensitisation#3",
+      "verdict": "Unsupported",
+      "reason": "Key is just 'the role is unclear' from one JPRAS 2020 review; niche VCA content with no actionable teaching point.",
+      "notes": "Key is just 'the role is unclear' from one JPRAS 2020 review; niche VCA content with no actionable teaching point."
+    },
+    {
+      "questionId": "paper-mcq:donor-specific-antibodies-and-sensitisation#0",
+      "verdict": "Unsupported",
+      "reason": "Recall of HR/p-values from a single-centre lung-transplant study; not generalisable teaching.",
+      "notes": "Recall of HR/p-values from a single-centre lung-transplant study; not generalisable teaching."
+    },
+    {
+      "questionId": "paper-mcq:donor-specific-antibodies-and-sensitisation#1",
+      "verdict": "Unsupported",
+      "reason": "Recall of p-values from a single-centre lung-transplant study; not generalisable teaching.",
+      "notes": "Recall of p-values from a single-centre lung-transplant study; not generalisable teaching."
+    },
+    {
+      "questionId": "cold-start-mcq:dress-syndrome#1",
+      "verdict": "Ambiguous",
+      "reason": "Stem says the culprit is 'a new medication for gout', so D ('the new gout medication') and C (allopurinol) overlap; blistering is also atypical. Flawed options.",
+      "notes": "Stem says the culprit is 'a new medication for gout', so D ('the new gout medication') and C (allopurinol) overlap; blistering is also atypical. Flawed options."
+    },
+    {
+      "questionId": "guideline-mcq:dress-syndrome#0",
+      "verdict": "Unsupported",
+      "reason": "Key is 'criteria may differ' with no content; the stem's 'key difference' isn't supported by the linked statement.",
+      "notes": "Key is 'criteria may differ' with no content; the stem's 'key difference' isn't supported by the linked statement."
+    },
+    {
+      "questionId": "guideline-mcq:dress-syndrome#4",
+      "verdict": "Unsupported",
+      "reason": "Trivia about the scope of a WHO COVID-19 guideline; not DRESS teaching.",
+      "notes": "Trivia about the scope of a WHO COVID-19 guideline; not DRESS teaching."
+    },
+    {
+      "questionId": "cold-start-mcq:morbilliform-rash#2",
+      "verdict": "Unsupported",
+      "reason": "Topical steroids are right, but 'dupilumab after 1-2 weeks' isn't in ESMO/ASCO irAE guidance; the keyed option builds in an unsupported step.",
+      "notes": "Topical steroids are right, but 'dupilumab after 1-2 weeks' isn't in ESMO/ASCO irAE guidance; the keyed option builds in an unsupported step."
+    },
+    {
+      "questionId": "guideline-mcq:morbilliform-rash#1",
+      "verdict": "Unsupported",
+      "reason": "Claims NICE 2025 recommends dupilumab for checkpoint-inhibitor rash; no such NICE recommendation exists, and the linked evidence doesn't support it.",
+      "notes": "Claims NICE 2025 recommends dupilumab for checkpoint-inhibitor rash; no such NICE recommendation exists, and the linked evidence doesn't support it."
+    },
+    {
+      "questionId": "guideline-mcq:morbilliform-rash#4",
+      "verdict": "Unsupported",
+      "reason": "'About 6.5%' incidence attributed to 'NICE 2022' isn't verifiable NICE guidance; a recall figure from an unverifiable source.",
+      "notes": "'About 6.5%' incidence attributed to 'NICE 2022' isn't verifiable NICE guidance; a recall figure from an unverifiable source."
+    },
+    {
+      "questionId": "paper-mcq:interstitial-nephritis-acute-and-chronic#1",
+      "verdict": "Unsupported",
+      "reason": "Recall of a single case series' p-value; not generalisable teaching.",
+      "notes": "Recall of a single case series' p-value; not generalisable teaching."
+    },
+    {
+      "questionId": "guideline-mcq:drug-induced-lupus-erythematosus#1",
+      "verdict": "Ambiguous",
+      "reason": "A, B, C and D are all genuine pitfalls (drug toxicity, infection, escalating without investigation); rising dsDNA also suggests a true flare. No single best ans",
+      "notes": "A, B, C and D are all genuine pitfalls (drug toxicity, infection, escalating without investigation); rising dsDNA also suggests a true flare. No single best answer."
+    },
+    {
+      "questionId": "guideline-mcq:drug-induced-lupus-erythematosus#3",
+      "verdict": "Unsupported",
+      "reason": "Asks for a statin autoimmune-reaction incidence (0.1-1%) that the linked evidence doesn't provide and that isn't established.",
+      "notes": "Asks for a statin autoimmune-reaction incidence (0.1-1%) that the linked evidence doesn't provide and that isn't established."
+    },
+    {
+      "questionId": "guideline-mcq:drug-induced-qt-prolongation-risk-stratification-offending-drugs-monitoring#1",
+      "verdict": "Ambiguous",
+      "reason": "Repleting electrolytes is right, but delaying sepsis antibiotics until repletion is complete is inappropriate; choosing a non-QT-prolonging antibiotic isn't off",
+      "notes": "Repleting electrolytes is right, but delaying sepsis antibiotics until repletion is complete is inappropriate; choosing a non-QT-prolonging antibiotic isn't offered. Abrupt amiodarone withdrawal is also debatable."
+    },
+    {
+      "questionId": "guideline-mcq:drug-induced-qt-prolongation-risk-stratification-offending-drugs-monitoring#3",
+      "verdict": "Unsupported",
+      "reason": "Rests on one RISQ-PATH validation study; no guideline endorses dropping QTc follow-up on that basis.",
+      "notes": "Rests on one RISQ-PATH validation study; no guideline endorses dropping QTc follow-up on that basis."
+    },
+    {
+      "questionId": "guideline-mcq:drug-resistant-epilepsy-epilepsy-surgery-workup-vagus-nerve-stimulation-vns#2",
+      "verdict": "Outdated",
+      "reason": "Withdrawn: the key calls cardiac-based seizure-detection VNS (AspireSR) investigational, but it has been approved since 2015 (FDA) and is in routine use. None o",
+      "notes": "Withdrawn: the key calls cardiac-based seizure-detection VNS (AspireSR) investigational, but it has been approved since 2015 (FDA) and is in routine use. None of the other options is correct. Original note: Cardiac-based seizure detection VNS (AspireSR, now SenTiva) has been FDA/CE approved since 2015 and is in routine use; 'under investigation in trials' is outdated. Correcting it needs the stem and options rewritten. Withdraw."
+    },
+    {
+      "questionId": "cold-start-mcq:tb-screening#2",
+      "verdict": "Unsupported",
+      "reason": "Trial-protocol trivia (Decide TB); no clinical content.",
+      "notes": "Trial-protocol trivia (Decide TB); no clinical content."
+    },
+    {
+      "questionId": "guideline-mcq:Dual-antiplatelet-therapy-duration-after-PCI#1",
+      "verdict": "Ambiguous",
+      "reason": "HAS-BLED is an AF score, not a PCI bleeding-risk tool (ARC-HBR/PRECISE-DAPT). ESC 2023 allows 1-3 or 3-6 months in high bleeding risk; '3 months minimum' vs '6 ",
+      "notes": "HAS-BLED is an AF score, not a PCI bleeding-risk tool (ARC-HBR/PRECISE-DAPT). ESC 2023 allows 1-3 or 3-6 months in high bleeding risk; '3 months minimum' vs '6 months' isn't clearly separable."
+    },
+    {
+      "questionId": "guideline-mcq:duodenal-pathology#1",
+      "verdict": "Ambiguous",
+      "reason": "For a resected duodenal adenoma, margin status (C) and dysplasia grade (B) drive management at least as much as the surrounding mucosa; the key rests on one his",
+      "notes": "For a resected duodenal adenoma, margin status (C) and dysplasia grade (B) drive management at least as much as the surrounding mucosa; the key rests on one histopathology statement."
+    },
+    {
+      "questionId": "guideline-mcq:dupilumab-il-4il-13-inhibitor-biologic-therapy#0",
+      "verdict": "Unsupported",
+      "reason": "Dose-tapering timing (42 weeks) from a single 2025 regional source; not established guidance. Stem lacks a question lead-in.",
+      "notes": "Dose-tapering timing (42 weeks) from a single 2025 regional source; not established guidance. Stem lacks a question lead-in."
+    },
+    {
+      "questionId": "guideline-mcq:dupilumab-il-4il-13-inhibitor-biologic-therapy#1",
+      "verdict": "Unsupported",
+      "reason": "'<40 days' interval threshold from a single 2025 regional source; not established guidance. Stem lacks a question lead-in.",
+      "notes": "'<40 days' interval threshold from a single 2025 regional source; not established guidance. Stem lacks a question lead-in."
+    },
+    {
+      "questionId": "guideline-mcq:dupilumab-il-4il-13-inhibitor-biologic-therapy#2",
+      "verdict": "Wrong answer",
+      "reason": "Withdrawn: the linked evidence advises avoiding live vaccines during dupilumab treatment, and no option says so, so changing the key alone cannot fix the questi",
+      "notes": "Withdrawn: the linked evidence advises avoiding live vaccines during dupilumab treatment, and no option says so, so changing the key alone cannot fix the question. Original note: Linked evidence (Am J Clin Dermatol 2021) and labelling say live attenuated vaccines (e.g. yellow fever) should be avoided on dupilumab; the keyed vague 'careful consideration' contradicts this, and no option states it. Withdraw."
+    },
+    {
+      "questionId": "guideline-mcq:dupilumab-il-4il-13-inhibitor-biologic-therapy#3",
+      "verdict": "Unsupported",
+      "reason": "BMI/EASI/IgE tapering criteria from one regional source; recall of unvalidated thresholds.",
+      "notes": "BMI/EASI/IgE tapering criteria from one regional source; recall of unvalidated thresholds."
+    },
+    {
+      "questionId": "guideline-mcq:early-stage-nsclc-surgery-versus-sbrt#2",
+      "verdict": "Unsupported",
+      "reason": "Explanation admits the cited guideline is about stroke rehabilitation; extrapolated to post-lobectomy fatigue without supporting evidence.",
+      "notes": "Explanation admits the cited guideline is about stroke rehabilitation; extrapolated to post-lobectomy fatigue without supporting evidence."
+    },
+    {
+      "questionId": "paper-mcq:dyspnoea-and-breathlessness-in-advanced-cancer#0",
+      "verdict": "Unsupported",
+      "reason": "'Level 1a evidence' overstates the case: Cochrane rates the opioid-for-breathlessness evidence low quality, and BEAMS (JAMA 2022) and MORDYC found no benefit of",
+      "notes": "'Level 1a evidence' overstates the case: Cochrane rates the opioid-for-breathlessness evidence low quality, and BEAMS (JAMA 2022) and MORDYC found no benefit of sustained-release morphine. One review's grading isn't reliable teaching."
+    },
+    {
+      "questionId": "guideline-mcq:dystonia-classification-focal-blepharospasm-torticollis-and-botulinum-toxin-therapy#0",
+      "verdict": "Ambiguous",
+      "reason": "Stem describes focal dystonia; NICE CG145 BoNT criteria for dystonia require serious postural/functional problems or pain (favouring B). The keyed 'cosmetic con",
+      "notes": "Stem describes focal dystonia; NICE CG145 BoNT criteria for dystonia require serious postural/functional problems or pain (favouring B). The keyed 'cosmetic concerns' criterion applies to focal spasticity. Stem lacks a question lead-in."
+    },
+    {
+      "questionId": "guideline-mcq:early-breast-cancer#2",
+      "verdict": "Ambiguous",
+      "reason": "Positive margins exclude APBI, but multifocality (D) is also an exclusion in DEGRO/ESTRO low-risk criteria, so two options are defensible.",
+      "notes": "Positive margins exclude APBI, but multifocality (D) is also an exclusion in DEGRO/ESTRO low-risk criteria, so two options are defensible."
+    },
+    {
+      "questionId": "cold-start-mcq:early-breast-cancer#1",
+      "verdict": "Ambiguous",
+      "reason": "ER/PR/HER2 are core, but the keyed statement says 'other biomarkers are investigational', which is false: genomic assays, Ki-67 and germline BRCA testing are no",
+      "notes": "ER/PR/HER2 are core, but the keyed statement says 'other biomarkers are investigational', which is false: genomic assays, Ki-67 and germline BRCA testing are now standard in defined groups."
+    },
+    {
+      "questionId": "guideline-mcq:Protocol-based-versus-goal-directed-resuscitation-in-septic-#0",
+      "verdict": "Wrong answer",
+      "reason": "Withdrawn: the key says protocol-based EGDT improves outcomes, but ProCESS, ARISE and ProMISe (including the linked ARISE paper) found no benefit, and the other",
+      "notes": "Withdrawn: the key says protocol-based EGDT improves outcomes, but ProCESS, ARISE and ProMISe (including the linked ARISE paper) found no benefit, and the other options are also wrong. Original note: Keyed claim that protocol-based EGDT improves outcomes is contradicted by ProCESS, ARISE and ProMISe (including the linked ARISE 2014 paper) and by Surviving Sepsis 2021. No option is correct."
+    },
+    {
+      "questionId": "guideline-mcq:Protocol-based-versus-goal-directed-resuscitation-in-septic-#2",
+      "verdict": "Wrong answer",
+      "reason": "Withdrawn: the key says goal-directed resuscitation reduces mortality, which ARISE, ProCESS, ProMISe and the PRISM meta-analysis refute. No option is correct. O",
+      "notes": "Withdrawn: the key says goal-directed resuscitation reduces mortality, which ARISE, ProCESS, ProMISe and the PRISM meta-analysis refute. No option is correct. Original note: Keyed claim that goal-directed resuscitation reduces mortality versus standard care is refuted by ARISE/ProCESS/ProMISe and the 2017 PRISM meta-analysis. No option is correct."
+    },
+    {
+      "questionId": "guideline-mcq:early-mobilisation-and-physiotherapy-in-the-icu#3",
+      "verdict": "Ambiguous",
+      "reason": "Delaying until sedation-free (D) and overestimating the risk of adverse events (B) are both well-documented misconceptions.",
+      "notes": "Delaying until sedation-free (D) and overestimating the risk of adverse events (B) are both well-documented misconceptions."
+    },
+    {
+      "questionId": "cold-start-mcq:early-mobilization-and-physical-rehabilitation-in-icu#1",
+      "verdict": "Unsupported",
+      "reason": "Mobilising is reasonable, but the keyed rationale says active mobilisation has 'no increased adverse events'. The linked TEAM trial (NEJM 2022) found more adver",
+      "notes": "Mobilising is reasonable, but the keyed rationale says active mobilisation has 'no increased adverse events'. The linked TEAM trial (NEJM 2022) found more adverse events (9.3% vs 4.2%) and no functional benefit."
+    },
+    {
+      "questionId": "cold-start-mcq:early-mobilization-and-physical-rehabilitation-in-icu#2",
+      "verdict": "Unsupported",
+      "reason": "Keyed claim that evidence defines no safety thresholds is false: expert consensus criteria exist (Hodgson 2014). The linked TEAM trial reported excess adverse e",
+      "notes": "Keyed claim that evidence defines no safety thresholds is false: expert consensus criteria exist (Hodgson 2014). The linked TEAM trial reported excess adverse events with early active mobilisation. No option is accurate."
+    },
+    {
+      "questionId": "paper-mcq:eating-disorders-and-refeeding-syndrome#2",
+      "verdict": "Outdated",
+      "reason": "Withdrawn: the keyed 5-10 kcal/kg/day regimen reflects generic NICE CG32 advice. For anorexia nervosa, NICE NG69 defers to RCPsych MEED (2022), which advises hi",
+      "notes": "Withdrawn: the keyed 5-10 kcal/kg/day regimen reflects generic NICE CG32 advice. For anorexia nervosa, NICE NG69 defers to RCPsych MEED (2022), which advises higher starting intakes, and no option reflects this. Original note: 5-10 kcal/kg/day reflects NICE CG32 generic nutrition support. For anorexia nervosa, NICE NG69 defers to RCPsych MEED (2022), which advises higher starting intakes (typically 1400-2000 kcal/day) to avoid underfeeding. The keyed starting regimen is outdated."
+    },
+    {
+      "questionId": "guideline-mcq:Eating-disorders-and-refeeding-syndrome#1",
+      "verdict": "Outdated",
+      "reason": "Withdrawn: the keyed 10-20 kcal/kg/day low-calorie start is outdated. RCPsych MEED (2022) recommends starting most young people at about 1400-2000 kcal/day with",
+      "notes": "Withdrawn: the keyed 10-20 kcal/kg/day low-calorie start is outdated. RCPsych MEED (2022) recommends starting most young people at about 1400-2000 kcal/day with monitoring, and no option reflects this. Original note: 10-20 kcal/kg/day is the old low-calorie approach. RCPsych MEED (2022) recommends starting most young people at 1400-2000 kcal/day with monitoring; very low-calorie refeeding risks underfeeding syndrome."
+    },
+    {
+      "questionId": "paper-mcq:ectopic-acth-syndrome-small-cell-lung-cancer-crh-stimulation-metyrapone-treatment#4",
+      "verdict": "Unsupported",
+      "reason": "Asks about the 'implication' of a centre publishing a case series; not a testable clinical fact, and the key is speculative.",
+      "notes": "Asks about the 'implication' of a centre publishing a case series; not a testable clinical fact, and the key is speculative."
+    },
+    {
+      "questionId": "cold-start-mcq:ectopic-pregnancy#3",
+      "verdict": "Unsafe",
+      "reason": "Methotrexate is contraindicated with a viable intrauterine pregnancy (teratogenic, can end the IUP). Heterotopic ectopics are managed surgically (laparoscopic s",
+      "notes": "Methotrexate is contraindicated with a viable intrauterine pregnancy (teratogenic, can end the IUP). Heterotopic ectopics are managed surgically (laparoscopic salpingectomy) or with local KCl, never systemic methotrexate."
+    },
+    {
+      "questionId": "paper-mcq:ectopic-pregnancy-diagnosis-and-management#3",
+      "verdict": "Ambiguous",
+      "reason": "Keyed 'require hysterotomy or cornual resection' overstates it: methotrexate and laparoscopic cornuostomy (B) are accepted conservative options, as the linked N",
+      "notes": "Keyed 'require hysterotomy or cornual resection' overstates it: methotrexate and laparoscopic cornuostomy (B) are accepted conservative options, as the linked NICE 2026 evidence says."
+    },
+    {
+      "questionId": "cold-start-mcq:eczema#0",
+      "verdict": "Unsupported",
+      "reason": "Stem asks about infant supplementation, but the linked evidence is maternal probiotics; evidence for infant probiotics is low-certainty and EAACI doesn't recomm",
+      "notes": "Stem asks about infant supplementation, but the linked evidence is maternal probiotics; evidence for infant probiotics is low-certainty and EAACI doesn't recommend them. 'Strongest evidence' isn't supported."
+    },
+    {
+      "questionId": "guideline-mcq:onco-nephrology-cancer-treatment-and-the-kidney#0",
+      "verdict": "Ambiguous",
+      "reason": "Capecitabine labelling doses by Cockcroft-Gault CrCl (A). KDIGO 2024/ASON favour combined creatinine-cystatin eGFR, not cystatin C alone. Several options are de",
+      "notes": "Capecitabine labelling doses by Cockcroft-Gault CrCl (A). KDIGO 2024/ASON favour combined creatinine-cystatin eGFR, not cystatin C alone. Several options are defensible."
+    },
+    {
+      "questionId": "guideline-mcq:egfr-estimation-and-limitations#1",
+      "verdict": "Ambiguous",
+      "reason": "eGFR 42 is well above the 30 threshold, so proceeding at standard dose (A) is defensible; mGFR is reserved for eGFR near thresholds or when it's unreliable.",
+      "notes": "eGFR 42 is well above the 30 threshold, so proceeding at standard dose (A) is defensible; mGFR is reserved for eGFR near thresholds or when it's unreliable."
+    },
+    {
+      "questionId": "guideline-mcq:life-threatening-arrhythmias-in-the-icu-vf-vt-storm-advanced-acls#0",
+      "verdict": "Ambiguous",
+      "reason": "ESC 2022 recommends urgent coronary angiography for polymorphic VT storm (B) before sympathetic denervation, which is a later option. Two defensible answers.",
+      "notes": "ESC 2022 recommends urgent coronary angiography for polymorphic VT storm (B) before sympathetic denervation, which is a later option. Two defensible answers."
+    },
+    {
+      "questionId": "guideline-mcq:pelvic-inflammatory-disease#3",
+      "verdict": "Unsafe",
+      "reason": "WHO MEC/UKMEC don't link COCs to PID risk in hypertension. The real issue is cardiovascular: combined hormonal contraception is UKMEC 3 even in controlled hyper",
+      "notes": "WHO MEC/UKMEC don't link COCs to PID risk in hypertension. The real issue is cardiovascular: combined hormonal contraception is UKMEC 3 even in controlled hypertension, and progestogen-only or IUD methods are preferred. The key endorses COCs with a fabricated rationale."
+    },
+    {
+      "questionId": "guideline-mcq:lower-urinary-tract-symptoms#0",
+      "verdict": "Unsupported",
+      "reason": "'WHO guideline G4' recommending empagliflozin or sitagliptin isn't a verifiable WHO recommendation (WHO 2018 recommends sulfonylurea add-on), and the LUTS frami",
+      "notes": "'WHO guideline G4' recommending empagliflozin or sitagliptin isn't a verifiable WHO recommendation (WHO 2018 recommends sulfonylurea add-on), and the LUTS framing isn't supported."
+    },
+    {
+      "questionId": "cold-start-mcq:heart-failure-with-reduced-ejection-fraction#3",
+      "verdict": "Wrong answer",
+      "reason": "Withdrawn: no option explains heart failure developing on semaglutide. The keyed option can't cause HF, and the explanation's own answer (pre-existing undiagnos",
+      "notes": "Withdrawn: no option explains heart failure developing on semaglutide. The keyed option can't cause HF, and the explanation's own answer (pre-existing undiagnosed HFrEF) isn't offered. Original note: No option explains HFrEF developing on semaglutide: the keyed 'improved glycaemic control reducing metabolic stress' can't cause heart failure, and the explanation itself argues for pre-existing undiagnosed HF, which isn't offered."
+    },
+    {
+      "questionId": "guideline-mcq:empirical-antibiotic-selection-in-sepsis-source-control-cultures-before-antibiotics-de-escalation#3",
+      "verdict": "Ambiguous",
+      "reason": "Not improving at 48 h on pip-tazo in intra-abdominal septic shock calls first for source control; switching to a carbapenem (C) is at least as standard as addin",
+      "notes": "Not improving at 48 h on pip-tazo in intra-abdominal septic shock calls first for source control; switching to a carbapenem (C) is at least as standard as adding a quinolone. Key rests on a single source."
+    },
+    {
+      "questionId": "guideline-mcq:endobronchial-ultrasound-guided-transbronchial-needle-aspiration#1",
+      "verdict": "Ambiguous",
+      "reason": "Real-time needle visualisation (D) is right, but CHEST 2016 also suggests at least three passes per site without ROSE, so A is also defensible.",
+      "notes": "Real-time needle visualisation (D) is right, but CHEST 2016 also suggests at least three passes per site without ROSE, so A is also defensible."
+    },
+    {
+      "questionId": "guideline-mcq:endocrine-causes-of-amenorrhoea-hypothalamic-pituitary-ovarian-thyroid---diagnostic-workup#1",
+      "verdict": "Ambiguous",
+      "reason": "Stem is internally inconsistent: normal breasts with absent pubic hair suggests androgen insensitivity (46,XY), not POI, and normal breast development conflicts",
+      "notes": "Stem is internally inconsistent: normal breasts with absent pubic hair suggests androgen insensitivity (46,XY), not POI, and normal breast development conflicts with low oestradiol. The key just restates the labs."
+    },
+    {
+      "questionId": "paper-mcq:endocrine-causes-of-amenorrhoea-hypothalamic-pituitary-ovarian-thyroid---diagnostic-workup#3",
+      "verdict": "Unsupported",
+      "reason": "Delayed puberty with low oestradiol in 46,XX fits inactivating FSH-receptor mutation, which isn't offered. Inactivating LH-receptor mutations in women usually a",
+      "notes": "Delayed puberty with low oestradiol in 46,XX fits inactivating FSH-receptor mutation, which isn't offered. Inactivating LH-receptor mutations in women usually allow normal pubertal development. Key not supported."
+    },
+    {
+      "questionId": "guideline-mcq:endoscopic-mucosal-resection-and-submucosal-dissection#3",
+      "verdict": "Unsupported",
+      "reason": "Generalises a single Khirurgiia report. ESGE 2022 recommends EMR for most colorectal LSTs and reserves ESD for suspected superficial submucosal invasion, so 'ES",
+      "notes": "Generalises a single Khirurgiia report. ESGE 2022 recommends EMR for most colorectal LSTs and reserves ESD for suspected superficial submucosal invasion, so 'ESD more advisable' isn't the standard of care for this lesion."
+    },
+    {
+      "questionId": "paper-mcq:endovascular-thrombectomy-time-to-treatment-ischemic-stroke-meta-analysis#2",
+      "verdict": "Unsupported",
+      "reason": "Keyed answer describes a limitation of 'the supplied abstracts' (a content-generation artefact), not of the evidence. The JAMA 2016 meta-analysis did report tim",
+      "notes": "Keyed answer describes a limitation of 'the supplied abstracts' (a content-generation artefact), not of the evidence. The JAMA 2016 meta-analysis did report time thresholds (benefit lost beyond ~7.3 h)."
+    },
+    {
+      "questionId": "paper-mcq:endovascular-thrombectomy-time-to-treatment-ischemic-stroke-meta-analysis#4",
+      "verdict": "Unsupported",
+      "reason": "Keyed answer rests on 'thresholds cannot be extracted from the supplied abstracts', a generation artefact. The JAMA 2016 meta-analysis did report time-dependenc",
+      "notes": "Keyed answer rests on 'thresholds cannot be extracted from the supplied abstracts', a generation artefact. The JAMA 2016 meta-analysis did report time-dependence (benefit to ~7.3 h), and DAWN/DEFUSE-3 extended windows."
+    },
+    {
+      "questionId": "guideline-mcq:enteral-nutrition-in-clinical-practice#3",
+      "verdict": "Ambiguous",
+      "reason": "Routine gastric residual monitoring (E) is also discouraged by ASPEN/SCCM 2016, so two options are pitfalls.",
+      "notes": "Routine gastric residual monitoring (E) is also discouraged by ASPEN/SCCM 2016, so two options are pitfalls."
+    },
+    {
+      "questionId": "guideline-mcq:enteropathic-arthritis-ibd-associated-joint-disease-axial-vs-peripheral-patterns#0",
+      "verdict": "Unsupported",
+      "reason": "Tofacitinib isn't effective or licensed for Crohn's disease (trials failed); upadacitinib, which covers both CD and axSpA, isn't offered. Recommendation rests o",
+      "notes": "Tofacitinib isn't effective or licensed for Crohn's disease (trials failed); upadacitinib, which covers both CD and axSpA, isn't offered. Recommendation rests on a weak source."
+    },
+    {
+      "questionId": "guideline-mcq:enteropathic-arthritis-ibd-associated-joint-disease-axial-vs-peripheral-patterns#2",
+      "verdict": "Unsupported",
+      "reason": "PDE4 inhibition isn't an established axSpA strategy (apremilast failed in AS). NSAIDs short-term and TNF inhibitors (without prior csDMARD failure) are standard",
+      "notes": "PDE4 inhibition isn't an established axSpA strategy (apremilast failed in AS). NSAIDs short-term and TNF inhibitors (without prior csDMARD failure) are standard. Key is speculative."
+    },
+    {
+      "questionId": "guideline-mcq:enteropathic-arthritis#0",
+      "verdict": "Ambiguous",
+      "reason": "Rapidly progressing pyoderma gangrenosum is managed with systemic steroids/ciclosporin (C) per ECCO EIM guidance, and tofacitinib has no Crohn's efficacy. Key i",
+      "notes": "Rapidly progressing pyoderma gangrenosum is managed with systemic steroids/ciclosporin (C) per ECCO EIM guidance, and tofacitinib has no Crohn's efficacy. Key is contestable."
+    },
+    {
+      "questionId": "guideline-mcq:enteropathic-arthritis#1",
+      "verdict": "Ambiguous",
+      "reason": "JAK1 inhibition (A; upadacitinib/filgotinib) is proven in UC and SpA, whereas PDE4 inhibition remains speculative. A is at least as defensible.",
+      "notes": "JAK1 inhibition (A; upadacitinib/filgotinib) is proven in UC and SpA, whereas PDE4 inhibition remains speculative. A is at least as defensible."
+    },
+    {
+      "questionId": "guideline-mcq:gi-manifestations-of-systemic-disease#1",
+      "verdict": "Unsupported",
+      "reason": "For Crohn's-like ileocolitis with oral ulcers and arthralgia, the key differentials are Beh\u00e7et's disease and intestinal TB, not sJIA/AOSD. Key not supported by ",
+      "notes": "For Crohn's-like ileocolitis with oral ulcers and arthralgia, the key differentials are Beh\u00e7et's disease and intestinal TB, not sJIA/AOSD. Key not supported by the linked evidence."
+    },
+    {
+      "questionId": "guideline-mcq:Eosinophilic-esophagitis-topical-steroid-and-elimination-die#0",
+      "verdict": "Ambiguous",
+      "reason": "BSG/BSPGHAN 2022 (Gut 2022) list high-dose PPI (C), topical steroids and diet as first-line options, so C is equally correct.",
+      "notes": "BSG/BSPGHAN 2022 (Gut 2022) list high-dose PPI (C), topical steroids and diet as first-line options, so C is equally correct."
+    },
+    {
+      "questionId": "guideline-mcq:eosinophilic-oesophagitis#2",
+      "verdict": "Ambiguous",
+      "reason": "EoE is non-IgE-mediated and soy co-reactivity is common. Extensively hydrolysed or amino acid formula is usually preferred in infant EoE; the soy rationale come",
+      "notes": "EoE is non-IgE-mediated and soy co-reactivity is common. Extensively hydrolysed or amino acid formula is usually preferred in infant EoE; the soy rationale comes from generic IgE-CMPA advice."
+    },
+    {
+      "questionId": "paper-mcq:eosinophilic-esophagitis-targeted-therapy#1",
+      "verdict": "Unsupported",
+      "reason": "Stem and key rest on 'hypothetical findings from a study', a generation artefact. Administration advice should cite the product label, not invented data.",
+      "notes": "Stem and key rest on 'hypothetical findings from a study', a generation artefact. Administration advice should cite the product label, not invented data."
+    },
+    {
+      "questionId": "paper-mcq:eosinophilic-esophagitis-targeted-therapy#2",
+      "verdict": "Unsupported",
+      "reason": "Built on a 'hypothetical' trial result (generation artefact). The reasoning tests the scenario, not the evidence.",
+      "notes": "Built on a 'hypothetical' trial result (generation artefact). The reasoning tests the scenario, not the evidence."
+    },
+    {
+      "questionId": "paper-mcq:eosinophilic-esophagitis-targeted-therapy#3",
+      "verdict": "Unsupported",
+      "reason": "Rests on 'hypothetical findings' (generation artefact), not real evidence.",
+      "notes": "Rests on 'hypothetical findings' (generation artefact), not real evidence."
+    },
+    {
+      "questionId": "paper-mcq:eosinophilic-esophagitis-targeted-therapy#4",
+      "verdict": "Unsupported",
+      "reason": "Rests on 'hypothetical long-term extension study findings' (generation artefact), and the linked dupilumab paper is an IL-4R\u03b1 blocker, not anti-IL-13.",
+      "notes": "Rests on 'hypothetical long-term extension study findings' (generation artefact), and the linked dupilumab paper is an IL-4R\u03b1 blocker, not anti-IL-13."
+    }
+  ],
+  "corrections": [
+    {
+      "questionId": "guideline-mcq:drug-resistant-tb#1",
+      "verdict": "Outdated",
+      "notes": "'Multiple drugs for a prolonged period' is outdated: WHO 2022 recommends the 6-month all-oral BPaLM regimen for most RR/MDR-TB. Update option B.",
+      "suggestedAnswer": "B",
+      "source": "WHO consolidated guidelines on tuberculosis, Module 4: treatment, drug-resistant TB (2022 update); TB-PRACTECAL (Nyang'wa et al, NEJM 2022); NICE NG33",
+      "stemFix": "A 45-year-old female is diagnosed with rifampicin-resistant TB based on a rapid molecular assay. She has no known history of isoniazid exposure or treatment. According to current WHO guidance, which of the following statements regarding her treatment is most accurate?",
+      "newExplanation": "Rifampicin-resistant TB needs a multidrug regimen without rifampicin; standard first-line therapy and monotherapy are inappropriate. Since 2022, WHO has recommended a 6-month all-oral BPaLM regimen (bedaquiline, pretomanid, linezolid and moxifloxacin, the latter omitted if fluoroquinolone-resistant) for most patients aged 14 and over, based on TB-PRACTECAL. Longer individualised regimens of 18-20 months are now reserved for patients not eligible for the shorter options. Source: WHO consolidated guidelines on tuberculosis, Module 4: treatment, drug-resistant TB (2022 update); TB-PRACTECAL (Nyang'wa et al, NEJM 2022); NICE NG33",
+      "optionEdits": [
+        {
+          "letter": "B",
+          "after": "She should receive a multidrug, all-oral regimen without rifampicin, such as the 6-month BPaLM regimen (bedaquiline, pretomanid, linezolid, moxifloxacin) where eligible."
+        }
+      ]
+    },
+    {
+      "questionId": "guideline-mcq:Dual-antiplatelet-therapy-duration-after-PCI#2",
+      "verdict": "Wrong answer",
+      "notes": "After STEMI/ACS, DAPT is recommended for 12 months regardless of stent type (shortened only for high bleeding risk). One month is the stable-CAD BMS minimum, which the explanation itself contradicts.",
+      "suggestedAnswer": "D",
+      "source": "2017 ESC focused update on DAPT in coronary artery disease (Valgimigli et al); 2016 ACC/AHA DAPT focused update",
+      "stemFix": null,
+      "newExplanation": "After an acute coronary syndrome such as STEMI, the default DAPT duration is 12 months whatever the stent type, bare-metal or drug-eluting. The short 1-month minimum for bare-metal stents applies only to stable coronary disease. Shorter courses (for example 6 months) are reserved for patients at high bleeding risk, and the decision is driven by the ACS presentation rather than the stent. Source: 2017 ESC focused update on DAPT in coronary artery disease (Valgimigli et al); 2016 ACC/AHA DAPT focused update"
+    },
+    {
+      "questionId": "guideline-mcq:functional-dyspepsia#3",
+      "verdict": "Wrong answer",
+      "notes": "ACG/CAG 2017 reserve endoscopy for age >=60; under 60, the recommended step is H. pylori test-and-treat, which hasn't been done. The keyed endoscopy contradicts the cited guideline.",
+      "suggestedAnswer": "B",
+      "source": "ACG/CAG Clinical Guideline: Management of Dyspepsia (Moayyedi et al, Am J Gastroenterol 2017); NICE CG184",
+      "stemFix": null,
+      "newExplanation": "ACG/CAG 2017 recommends endoscopy for dyspepsia only in patients aged 60 or over, or for selected younger patients with alarm features. Under 60, the recommended non-invasive strategy is to test for Helicobacter pylori and treat if positive. She is 58, has no alarm features and has not yet been tested, so test-and-treat is the next step. Endoscopy is not routinely needed. Source: ACG/CAG Clinical Guideline: Management of Dyspepsia (Moayyedi et al, Am J Gastroenterol 2017); NICE CG184"
+    },
+    {
+      "questionId": "guideline-mcq:dystonia-classification-focal-blepharospasm-torticollis-and-botulinum-toxin-therapy#1",
+      "verdict": "Wrong answer",
+      "notes": "NICE CG145 doesn't contraindicate BoNT-A under 2: licensed products cover age >=2, and younger use is off-label with informed consent. 'Contraindicated' is wrong. Stem lacks a question lead-in.",
+      "suggestedAnswer": "D",
+      "source": "NICE CG145 Spasticity in under 19s: management (2012), botulinum toxin type A recommendations and licensing note",
+      "stemFix": null,
+      "newExplanation": "NICE CG145 does not set a lower age limit for botulinum toxin type A. It notes that the licensed products for dynamic equinus in ambulant children with cerebral palsy cover age 2 and over, so treating a younger child is off-label and needs informed consent from the parents. The drug is not contraindicated because of age, and it is not first-line regardless of age; it is used within a goal-directed programme with physiotherapy and orthoses. Source: NICE CG145 Spasticity in under 19s: management (2012), botulinum toxin type A recommendations and licensing note"
+    },
+    {
+      "questionId": "guideline-mcq:environmental-emergencies-heat-stroke-severe-hypothermia-drowning#3",
+      "verdict": "Wrong answer",
+      "notes": "ERC 2021/2025 and Wilderness Medical Society staging: mild 32-35 \u00b0C, moderate 28-32 \u00b0C, severe below 28 \u00b0C. Below 32 \u00b0C marks moderate, not severe, hypothermia.",
+      "suggestedAnswer": "D",
+      "source": "European Resuscitation Council Guidelines 2021 (Special circumstances: accidental hypothermia); Wilderness Medical Society hypothermia guideline 2019",
+      "stemFix": null,
+      "newExplanation": "ERC and Wilderness Medical Society staging defines mild hypothermia as 32-35 \u00b0C, moderate as 28-32 \u00b0C and severe as below 28 \u00b0C. The risk of ventricular fibrillation and cardiac arrest rises steeply below 28 \u00b0C, which calls for minimal handling, active (often extracorporeal) rewarming and transfer to a centre with ECLS. At 30 \u00b0C this patient has moderate hypothermia and needs active rewarming and cardiac monitoring. Source: European Resuscitation Council Guidelines 2021 (Special circumstances: accidental hypothermia); Wilderness Medical Society hypothermia guideline 2019"
+    },
+    {
+      "questionId": "guideline-mcq:granulomatosis-with-polyangiitis#2",
+      "verdict": "Wrong answer",
+      "notes": "New cardiac involvement makes this an organ-threatening relapse. EULAR 2022 recommends rituximab or cyclophosphamide for severe relapse; mepolizumab is for relapsing or refractory non-severe EGPA (ACR/VF 2021).",
+      "suggestedAnswer": "A",
+      "source": "EULAR 2022 recommendations for ANCA-associated vasculitis (Hellmich et al, Ann Rheum Dis 2024); ACR/VF 2021 vasculitis guideline",
+      "stemFix": null,
+      "newExplanation": "New cardiac involvement plus worsening neuropathy is an organ- or life-threatening relapse of EGPA. EULAR 2022 recommends cyclophosphamide or rituximab, with glucocorticoids, for severe new or relapsing EGPA. Mepolizumab is recommended for relapsing or refractory non-severe EGPA (ACR/VF 2021; MIRRA excluded organ-threatening disease). Of the biologics listed, rituximab is the appropriate choice here. Source: EULAR 2022 recommendations for ANCA-associated vasculitis (Hellmich et al, Ann Rheum Dis 2024); ACR/VF 2021 vasculitis guideline"
+    },
+    {
+      "questionId": "guideline-mcq:eosinophilic-granulomatosis-with-polyangiitis#2",
+      "verdict": "Wrong answer",
+      "notes": "New mononeuritis multiplex is an organ-threatening (severe) flare. EULAR 2022 recommends cyclophosphamide or rituximab for severe relapse; mepolizumab is for non-severe relapsing or refractory disease (ACR/VF 2021).",
+      "suggestedAnswer": "C",
+      "source": "EULAR 2022 recommendations for ANCA-associated vasculitis (Hellmich et al, Ann Rheum Dis 2024); ACR/VF 2021 vasculitis guideline",
+      "stemFix": null,
+      "newExplanation": "New mononeuritis multiplex is an organ-threatening (severe) EGPA flare. EULAR 2022 recommends remission re-induction with cyclophosphamide (or rituximab) plus glucocorticoids for severe relapse, replacing the failed azathioprine. Mepolizumab is recommended for relapsing or refractory non-severe EGPA, such as asthma and sinonasal disease, and was not tested in organ-threatening disease in MIRRA. Source: EULAR 2022 recommendations for ANCA-associated vasculitis (Hellmich et al, Ann Rheum Dis 2024); ACR/VF 2021 vasculitis guideline"
+    },
+    {
+      "questionId": "guideline-mcq:eosinophilic-oesophagitis#1",
+      "verdict": "Outdated",
+      "notes": "'PPI-responsive oesophageal eosinophilia' was dropped by the AGREE consensus (2018) and BSG/BSPGHAN 2022. PPI-responsive cases are classified as EoE, and PPI is a first-line EoE treatment, as the linked BMC 2024 evidence says. Correct answer is A.",
+      "suggestedAnswer": "A",
+      "source": "AGREE international consensus on EoE diagnosis (Dellon et al, Gastroenterology 2018); BSG/BSPGHAN joint consensus guidelines (Gut 2022)",
+      "stemFix": null,
+      "newExplanation": "The term 'PPI-responsive oesophageal eosinophilia' was abandoned by the AGREE consensus (2018) because these patients are clinically, histologically and molecularly indistinguishable from EoE. A child with symptoms and 15 or more eosinophils per high-power field who responds to PPI therapy has EoE that is PPI-responsive. BSG/BSPGHAN 2022 lists PPIs as a first-line treatment, continued at the lowest effective dose for maintenance. Source: AGREE international consensus on EoE diagnosis (Dellon et al, Gastroenterology 2018); BSG/BSPGHAN joint consensus guidelines (Gut 2022)"
+    }
+  ]
+}

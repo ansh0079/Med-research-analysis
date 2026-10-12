@@ -189,12 +189,38 @@ function expectedLongestIsKeyRate(optionCounts) {
     return counts.reduce((sum, n) => sum + 1 / n, 0) / counts.length;
 }
 
+/**
+ * Stem and explanation defects found by the 2026-10 physical review of 2,728 stored questions
+ * (about 20% retired, mostly for these shapes): a scenario with no question, questions about
+ * "Paper N" or what a source says instead of a clinical decision, generator notes leaked into
+ * the explanation, and text with letters stripped. Deterministic, so it runs before any reviewer.
+ */
+function stemQualityFindings(mcq = {}) {
+    const findings = [];
+    const stem = String(mcq.question || mcq.stem || '').trim();
+    const explanation = String(mcq.explanation || '');
+    if (stem.length > 80 && !stem.includes('?')) {
+        const last = stem.split(/(?<=[.!])\s+/).pop() || '';
+        if (!/^(which|what|how|when|why|who|identify|select|choose|name|state|list|determine|calculate|compare|explain|describe)\b/i.test(last)
+            && !/\b(which|what|how)\b[^.]*$/i.test(last)) findings.push({ code: 'no_question_sentence' });
+    }
+    if (/\bpaper\s*\d\b|paperIndex|\[Author\]|\b(supplied|provided) (papers?|documents?|source)/i.test(stem + ' ' + explanation)) {
+        findings.push({ code: 'refers_to_paper_not_clinical' });
+    }
+    if (/placeholder|cannot be grounded|illustratively referred|mainFindings|vignette has been corrected/i.test(explanation)) {
+        findings.push({ code: 'generator_note_leaked' });
+    }
+    if ((stem.match(/\S {2,}\S/g) || []).length >= 3) findings.push({ code: 'corrupted_text' });
+    return findings;
+}
+
 module.exports = {
     claimKind,
     ASSERTION_SOURCE_PATHS,
     NON_ASSERTION_SOURCE_PATHS,
     claimStructureFindings,
     mcqFormFindings,
+    stemQualityFindings,
     lexicalOverlap,
     expectedLongestIsKeyRate,
     FAILURE_PHRASES,

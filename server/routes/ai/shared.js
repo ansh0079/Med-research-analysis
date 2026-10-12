@@ -75,6 +75,7 @@ function createAiRouteHelpers({ db, ai, serverConfig, logger }) {
                     sourceReference: q.sourceReference || q.guidelineRef || null,
                     sourceIndices: q.sourceIndices || [],
                     outlineNodeId: q.outlineNodeId || `claim:${claimKey}`,
+                    applicableTopics: Array.isArray(q.applicableTopics) ? q.applicableTopics : null,
                     claimKey,
                     promptVariant: q.promptVariant || null,
         };
@@ -159,11 +160,15 @@ function createAiRouteHelpers({ db, ai, serverConfig, logger }) {
                     guidelineMcqs = guidelineMcqs.filter(belongs);
                     const have = new Set(everything.map((m) => questionIndex.questionHash(m)));
                     const added = await questionIndex.loadAlignedForCluster(database, clusterId);
-                    added.forEach((entry, i) => {
+                    const also = await questionIndex.loadAlsoApplicableForCluster(database, clusterId);
+                    [...added, ...also].forEach((entry, i) => {
                         const hash = questionIndex.questionHash(entry.question);
                         if (have.has(hash) || !notFabricated(entry.question)) return;
                         have.add(hash);
-                        const mapped = mapColdStartMcq(entry.question, i, 'indexed', entry.objectType, claimTopicKey);
+                        const question = entry.applicableTopics
+                            ? { ...entry.question, applicableTopics: entry.applicableTopics }
+                            : entry.question;
+                        const mapped = mapColdStartMcq(question, i, 'indexed', entry.objectType, claimTopicKey);
                         (entry.objectType === 'guideline_mcq' ? guidelineMcqs : coldMcqs).push(mapped);
                     });
                 }

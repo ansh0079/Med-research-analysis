@@ -89,7 +89,8 @@ export function PracticePoolPage() {
         setLoading(false);
         return;
       }
-      setQuestions(data.questions);
+      // One letter per question on this page; select-all-that-apply items are served by the main quiz.
+      setQuestions(data.questions.filter((q) => !(q as { multiAnswer?: boolean }).multiAnswer));
       setTotal(data.total);
       setAnswers({});
       setRevealedAnswers({});

@@ -1,0 +1,330 @@
+{
+  "withdrawals": [],
+  "corrections": [],
+  "topicAssignments": [],
+  "catalogAlignments": [],
+  "curatedTopicMappings": [],
+  "canonicalTopicAssignments": [],
+  "contextualTopicAssignments": [
+    {
+      "questionId": "cold-start-mcq:acute-bacterial-meningitis-adjunctive-dexamethasone-neurologic-outcomes#3",
+      "expectedStoredTopic": "acute bacterial meningitis adjunctive dexamethasone neurologic outcomes",
+      "canonicalTopicName": "Acute bacterial meningitis adjunctive dexamethasone",
+      "notes": "Question stem and linked evidence were reviewed for catalogue placement; clinical content review state is unchanged."
+    },
+    {
+      "questionId": "cold-start-mcq:anticoagulation-in-atrial-fibrillation-cha2ds2-vasc-scoring-and-doac-selection#0",
+      "expectedStoredTopic": "anticoagulation in atrial fibrillation cha2ds2-vasc scoring and doac selection",
+      "canonicalTopicName": "Left atrial appendage occlusion for AF stroke prevention",
+      "notes": "Question stem and linked evidence were reviewed for catalogue placement; clinical content review state is unchanged."
+    },
+    {
+      "questionId": "cold-start-mcq:anticoagulation-in-pregnancy#2",
+      "expectedStoredTopic": "anticoagulation in pregnancy",
+      "canonicalTopicName": "Leflunomide in RA: mechanism, dosing, washout procedure, hepatotoxicity monitoring",
+      "notes": "Question stem and linked evidence were reviewed for catalogue placement; clinical content review state is unchanged."
+    },
+    {
+      "questionId": "cold-start-mcq:diabetes-insipidus-management#0",
+      "expectedStoredTopic": "diabetes insipidus management",
+      "canonicalTopicName": "Nephrogenic Diabetes Insipidus",
+      "notes": "Question stem and linked evidence were reviewed for catalogue placement; clinical content review state is unchanged."
+    },
+    {
+      "questionId": "cold-start-mcq:diabetic-ketoacidosis-management#2",
+      "expectedStoredTopic": "diabetic ketoacidosis management",
+      "canonicalTopicName": "Diabetic ketoacidosis and hyperosmolar hyperglycaemic state: ICU management",
+      "notes": "Question stem and linked evidence were reviewed for catalogue placement; clinical content review state is unchanged."
+    },
+    {
+      "questionId": "cold-start-mcq:diagnosing-appendicitis-in-children#4",
+      "expectedStoredTopic": "diagnosing appendicitis in children",
+      "canonicalTopicName": "Appendicitis",
+      "notes": "Question stem and linked evidence were reviewed for catalogue placement; clinical content review state is unchanged."
+    },
+    {
+      "questionId": "cold-start-mcq:diagnosis-and-management-of-alcoholic-hepatitis#2",
+      "expectedStoredTopic": "diagnosis and management of alcoholic hepatitis",
+      "canonicalTopicName": "Alcohol use disorder, Wernicke encephalopathy and alcohol-related liver disease",
+      "notes": "Question stem and linked evidence were reviewed for catalogue placement; clinical content review state is unchanged."
+    },
+    {
+      "questionId": "cold-start-mcq:diagnosis-and-management-of-bacterial-meningitis#1",
+      "expectedStoredTopic": "diagnosis and management of bacterial meningitis",
+      "canonicalTopicName": "Bacterial meningitis: empirical antibiotics, dexamethasone, LP contraindications, CSF interpretation",
+      "notes": "Question stem and linked evidence were reviewed for catalogue placement; clinical content review state is unchanged."
+    },
+    {
+      "questionId": "cold-start-mcq:diagnosis-and-management-of-bacterial-meningitis#4",
+      "expectedStoredTopic": "diagnosis and management of bacterial meningitis",
+      "canonicalTopicName": "Bacterial meningitis: empirical antibiotics, dexamethasone, LP contraindications, CSF interpretation",
+      "notes": "Question stem and linked evidence were reviewed for catalogue placement; clinical content review state is unchanged."
+    },
+    {
+      "questionId": "cold-start-mcq:evidence-for-treatments-in-achalasia#0",
+      "expectedStoredTopic": "evidence for treatments in achalasia",
+      "canonicalTopicName": "Oesophageal Motility Disorders",
+      "notes": "Question stem and linked evidence were reviewed for catalogue placement; clinical content review state is unchanged."
+    },
+    {
+      "questionId": "cold-start-mcq:evidence-for-treatments-in-achalasia#1",
+      "expectedStoredTopic": "evidence for treatments in achalasia",
+      "canonicalTopicName": "Achalasia endoscopic and surgical therapy",
+      "notes": "Question stem and linked evidence were reviewed for catalogue placement; clinical content review state is unchanged."
+    },
+    {
+      "questionId": "cold-start-mcq:evidence-for-treatments-in-achalasia#3",
+      "expectedStoredTopic": "evidence for treatments in achalasia",
+      "canonicalTopicName": "Oesophageal Motility Disorders",
+      "notes": "Question stem and linked evidence were reviewed for catalogue placement; clinical content review state is unchanged."
+    },
+    {
+      "questionId": "cold-start-mcq:evidence-on-postmenopausal-hormone-therapy-and-cognition#0",
+      "expectedStoredTopic": "evidence on postmenopausal hormone therapy and cognition",
+      "canonicalTopicName": "Menopause and hormone replacement therapy: evidence and guidance",
+      "notes": "Question stem and linked evidence were reviewed for catalogue placement; clinical content review state is unchanged."
+    },
+    {
+      "questionId": "cold-start-mcq:evidence-on-postmenopausal-hormone-therapy-and-cognition#1",
+      "expectedStoredTopic": "evidence on postmenopausal hormone therapy and cognition",
+      "canonicalTopicName": "Menopause and hormone replacement therapy: evidence and guidance",
+      "notes": "Question stem and linked evidence were reviewed for catalogue placement; clinical content review state is unchanged."
+    },
+    {
+      "questionId": "cold-start-mcq:evidence-on-postmenopausal-hormone-therapy-and-cognition#2",
+      "expectedStoredTopic": "evidence on postmenopausal hormone therapy and cognition",
+      "canonicalTopicName": "Menopause and hormone replacement therapy: evidence and guidance",
+      "notes": "Question stem and linked evidence were reviewed for catalogue placement; clinical content review state is unchanged."
+    },
+    {
+      "questionId": "cold-start-mcq:evidence-on-postmenopausal-hormone-therapy-and-cognition#3",
+      "expectedStoredTopic": "evidence on postmenopausal hormone therapy and cognition",
+      "canonicalTopicName": "Menopause and hormone replacement therapy: evidence and guidance",
+      "notes": "Question stem and linked evidence were reviewed for catalogue placement; clinical content review state is unchanged."
+    },
+    {
+      "questionId": "cold-start-mcq:evidence-on-postmenopausal-hormone-therapy-and-cognition#4",
+      "expectedStoredTopic": "evidence on postmenopausal hormone therapy and cognition",
+      "canonicalTopicName": "Menopause and hormone replacement therapy: evidence and guidance",
+      "notes": "Question stem and linked evidence were reviewed for catalogue placement; clinical content review state is unchanged."
+    },
+    {
+      "questionId": "cold-start-mcq:evidence-on-salt-reduction-and-cardiovascular-outcomes#0",
+      "expectedStoredTopic": "evidence on salt reduction and cardiovascular outcomes",
+      "canonicalTopicName": "Hyperkalemia in CKD and heart failure",
+      "notes": "Question stem and linked evidence were reviewed for catalogue placement; clinical content review state is unchanged."
+    },
+    {
+      "questionId": "cold-start-mcq:evidence-summary-of-interventions-for-long-covid#1",
+      "expectedStoredTopic": "evidence summary of interventions for long covid",
+      "canonicalTopicName": "Long COVID and post-infectious syndromes: fatigue, dysautonomia, mechanism, management",
+      "notes": "Question stem and linked evidence were reviewed for catalogue placement; clinical content review state is unchanged."
+    },
+    {
+      "questionId": "cold-start-mcq:fluid-resuscitation-in-children-with-septic-shock#1",
+      "expectedStoredTopic": "fluid resuscitation in children with septic shock",
+      "canonicalTopicName": "Sepsis and septic shock",
+      "notes": "Question stem and linked evidence were reviewed for catalogue placement; clinical content review state is unchanged."
+    },
+    {
+      "questionId": "cold-start-mcq:heart-failure-with-reduced-ejection-fraction-management#1",
+      "expectedStoredTopic": "heart failure with reduced ejection fraction management",
+      "canonicalTopicName": "Heart failure with reduced ejection fraction",
+      "notes": "Question stem and linked evidence were reviewed for catalogue placement; clinical content review state is unchanged."
+    },
+    {
+      "questionId": "cold-start-mcq:hormone-therapy-for-cardiovascular-prevention-in-postmenopausal-women#1",
+      "expectedStoredTopic": "hormone therapy for cardiovascular prevention in postmenopausal women",
+      "canonicalTopicName": "Menopause and hormone replacement therapy: evidence and guidance",
+      "notes": "Question stem and linked evidence were reviewed for catalogue placement; clinical content review state is unchanged."
+    },
+    {
+      "questionId": "cold-start-mcq:hormone-therapy-for-cardiovascular-prevention-in-postmenopausal-women#2",
+      "expectedStoredTopic": "hormone therapy for cardiovascular prevention in postmenopausal women",
+      "canonicalTopicName": "Menopause and hormone replacement therapy: evidence and guidance",
+      "notes": "Question stem and linked evidence were reviewed for catalogue placement; clinical content review state is unchanged."
+    },
+    {
+      "questionId": "cold-start-mcq:hormone-therapy-for-cardiovascular-prevention-in-postmenopausal-women#4",
+      "expectedStoredTopic": "hormone therapy for cardiovascular prevention in postmenopausal women",
+      "canonicalTopicName": "Menopause and hormone replacement therapy: evidence and guidance",
+      "notes": "Question stem and linked evidence were reviewed for catalogue placement; clinical content review state is unchanged."
+    },
+    {
+      "questionId": "cold-start-mcq:hyponatraemia-correction-rate#2",
+      "expectedStoredTopic": "hyponatraemia correction rate",
+      "canonicalTopicName": "Hyponatraemia",
+      "notes": "Question stem and linked evidence were reviewed for catalogue placement; clinical content review state is unchanged."
+    },
+    {
+      "questionId": "cold-start-mcq:immune-checkpoint-inhibitor-kidney-injury#0",
+      "expectedStoredTopic": "immune checkpoint inhibitor kidney injury",
+      "canonicalTopicName": "Onco-Nephrology: Cancer Treatment and the Kidney",
+      "notes": "Question stem and linked evidence were reviewed for catalogue placement; clinical content review state is unchanged."
+    },
+    {
+      "questionId": "cold-start-mcq:immune-checkpoint-inhibitor-kidney-injury#1",
+      "expectedStoredTopic": "immune checkpoint inhibitor kidney injury",
+      "canonicalTopicName": "Onco-Nephrology: Cancer Treatment and the Kidney",
+      "notes": "Question stem and linked evidence were reviewed for catalogue placement; clinical content review state is unchanged."
+    },
+    {
+      "questionId": "cold-start-mcq:immune-checkpoint-inhibitor-kidney-injury#2",
+      "expectedStoredTopic": "immune checkpoint inhibitor kidney injury",
+      "canonicalTopicName": "Onco-Nephrology: Cancer Treatment and the Kidney",
+      "notes": "Question stem and linked evidence were reviewed for catalogue placement; clinical content review state is unchanged."
+    },
+    {
+      "questionId": "cold-start-mcq:immune-checkpoint-inhibitor-kidney-injury#4",
+      "expectedStoredTopic": "immune checkpoint inhibitor kidney injury",
+      "canonicalTopicName": "Onco-Nephrology: Cancer Treatment and the Kidney",
+      "notes": "Question stem and linked evidence were reviewed for catalogue placement; clinical content review state is unchanged."
+    },
+    {
+      "questionId": "cold-start-mcq:long-term-prognosis-of-long-covid#2",
+      "expectedStoredTopic": "long-term prognosis of long covid",
+      "canonicalTopicName": "Long COVID and post-infectious syndromes: fatigue, dysautonomia, mechanism, management",
+      "notes": "Question stem and linked evidence were reviewed for catalogue placement; clinical content review state is unchanged."
+    },
+    {
+      "questionId": "cold-start-mcq:low-tidal-volume-ventilation-acute-respiratory-distress-syndrome-ardsnet#0",
+      "expectedStoredTopic": "low tidal volume ventilation acute respiratory distress syndrome ardsnet",
+      "canonicalTopicName": "ARDS definition: Berlin criteria and severity classification",
+      "notes": "Question stem and linked evidence were reviewed for catalogue placement; clinical content review state is unchanged."
+    },
+    {
+      "questionId": "cold-start-mcq:management-of-atrial-fibrillation-with-rapid-ventricular-response-in-the-ed#2",
+      "expectedStoredTopic": "management of atrial fibrillation with rapid ventricular response in the ed",
+      "canonicalTopicName": "Wide-complex tachycardias: VT vs SVT with aberrancy, Brugada algorithm",
+      "notes": "Question stem and linked evidence were reviewed for catalogue placement; clinical content review state is unchanged."
+    },
+    {
+      "questionId": "cold-start-mcq:nonalcoholic-fatty-liver-disease-management#0",
+      "expectedStoredTopic": "nonalcoholic fatty liver disease management",
+      "canonicalTopicName": "Non-alcoholic fatty liver disease NAFLD: insulin resistance link, FIB-4 score, management",
+      "notes": "Question stem and linked evidence were reviewed for catalogue placement; clinical content review state is unchanged."
+    },
+    {
+      "questionId": "cold-start-mcq:nonalcoholic-fatty-liver-disease-management#1",
+      "expectedStoredTopic": "nonalcoholic fatty liver disease management",
+      "canonicalTopicName": "Non-alcoholic fatty liver disease NAFLD: insulin resistance link, FIB-4 score, management",
+      "notes": "Question stem and linked evidence were reviewed for catalogue placement; clinical content review state is unchanged."
+    },
+    {
+      "questionId": "cold-start-mcq:nonalcoholic-fatty-liver-disease-management#2",
+      "expectedStoredTopic": "nonalcoholic fatty liver disease management",
+      "canonicalTopicName": "Non-alcoholic fatty liver disease NAFLD: insulin resistance link, FIB-4 score, management",
+      "notes": "Question stem and linked evidence were reviewed for catalogue placement; clinical content review state is unchanged."
+    },
+    {
+      "questionId": "cold-start-mcq:nonalcoholic-fatty-liver-disease-management#3",
+      "expectedStoredTopic": "nonalcoholic fatty liver disease management",
+      "canonicalTopicName": "Non-alcoholic fatty liver disease NAFLD: insulin resistance link, FIB-4 score, management",
+      "notes": "Question stem and linked evidence were reviewed for catalogue placement; clinical content review state is unchanged."
+    },
+    {
+      "questionId": "cold-start-mcq:nonalcoholic-fatty-liver-disease-management#4",
+      "expectedStoredTopic": "nonalcoholic fatty liver disease management",
+      "canonicalTopicName": "Non-alcoholic fatty liver disease NAFLD: insulin resistance link, FIB-4 score, management",
+      "notes": "Question stem and linked evidence were reviewed for catalogue placement; clinical content review state is unchanged."
+    },
+    {
+      "questionId": "cold-start-mcq:perioperative-beta-blocker-continuation-versus-withdrawal#0",
+      "expectedStoredTopic": "perioperative beta-blocker continuation versus withdrawal",
+      "canonicalTopicName": "Perioperative management of common comorbidities",
+      "notes": "Question stem and linked evidence were reviewed for catalogue placement; clinical content review state is unchanged."
+    },
+    {
+      "questionId": "cold-start-mcq:pertussis-clinical-stages-macrolide-treatment-post-exposure-prophylaxis-vaccination#4",
+      "expectedStoredTopic": "pertussis clinical stages macrolide treatment post-exposure prophylaxis vaccination",
+      "canonicalTopicName": "Meningococcal disease: purpuric rash, IV benzylpenicillin, chemoprophylaxis, vaccination",
+      "notes": "Question stem and linked evidence were reviewed for catalogue placement; clinical content review state is unchanged."
+    },
+    {
+      "questionId": "cold-start-mcq:postpartum-haemorrhage-tranexamic-acid-maternal-mortality#2",
+      "expectedStoredTopic": "postpartum haemorrhage tranexamic acid maternal mortality",
+      "canonicalTopicName": "Postpartum haemorrhage: prevention, risk assessment and treatment",
+      "notes": "Question stem and linked evidence were reviewed for catalogue placement; clinical content review state is unchanged.",
+      "createIfMissing": true,
+      "block": "Obstetrics and Gynaecology"
+    },
+    {
+      "questionId": "cold-start-mcq:prognosis-of-idiopathic-pulmonary-fibrosis#3",
+      "expectedStoredTopic": "prognosis of idiopathic pulmonary fibrosis",
+      "canonicalTopicName": "Idiopathic Pulmonary Fibrosis",
+      "notes": "Question stem and linked evidence were reviewed for catalogue placement; clinical content review state is unchanged."
+    },
+    {
+      "questionId": "cold-start-mcq:pulmonary-embolism-anticoagulation-duration#2",
+      "expectedStoredTopic": "pulmonary embolism anticoagulation duration",
+      "canonicalTopicName": "Massive pulmonary embolism: thrombolysis, catheter-directed therapy, ECMO",
+      "notes": "Question stem and linked evidence were reviewed for catalogue placement; clinical content review state is unchanged."
+    },
+    {
+      "questionId": "cold-start-mcq:pulmonary-embolism-thrombolysis#4",
+      "expectedStoredTopic": "pulmonary embolism thrombolysis",
+      "canonicalTopicName": "Massive pulmonary embolism: thrombolysis, catheter-directed therapy, ECMO",
+      "notes": "Question stem and linked evidence were reviewed for catalogue placement; clinical content review state is unchanged."
+    },
+    {
+      "questionId": "cold-start-mcq:stroke-prevention-in-atrial-fibrillation#1",
+      "expectedStoredTopic": "stroke prevention in atrial fibrillation",
+      "canonicalTopicName": "Anticoagulation for mechanical heart valves: INR targets, bridging strategies",
+      "notes": "Question stem and linked evidence were reviewed for catalogue placement; clinical content review state is unchanged."
+    },
+    {
+      "questionId": "cold-start-mcq:treatment-of-post-exertional-malaise-in-me-cfs#1",
+      "expectedStoredTopic": "treatment of post-exertional malaise in me cfs",
+      "canonicalTopicName": "ME/CFS and post-exertional malaise management",
+      "notes": "Question stem and linked evidence were reviewed for catalogue placement; clinical content review state is unchanged.",
+      "createIfMissing": true,
+      "block": "General Medicine"
+    },
+    {
+      "questionId": "cold-start-mcq:treatment-of-post-exertional-malaise-in-me-cfs#2",
+      "expectedStoredTopic": "treatment of post-exertional malaise in me cfs",
+      "canonicalTopicName": "ME/CFS and post-exertional malaise management",
+      "notes": "Question stem and linked evidence were reviewed for catalogue placement; clinical content review state is unchanged.",
+      "createIfMissing": true,
+      "block": "General Medicine"
+    },
+    {
+      "questionId": "cold-start-mcq:treatment-of-post-exertional-malaise-in-me-cfs#4",
+      "expectedStoredTopic": "treatment of post-exertional malaise in me cfs",
+      "canonicalTopicName": "ME/CFS and post-exertional malaise management",
+      "notes": "Question stem and linked evidence were reviewed for catalogue placement; clinical content review state is unchanged.",
+      "createIfMissing": true,
+      "block": "General Medicine"
+    },
+    {
+      "questionId": "cold-start-mcq:workup-for-new-heart-failure-with-reduced-ejection-fraction#0",
+      "expectedStoredTopic": "workup for new heart failure with reduced ejection fraction",
+      "canonicalTopicName": "Heart failure with reduced ejection fraction",
+      "notes": "Question stem and linked evidence were reviewed for catalogue placement; clinical content review state is unchanged."
+    },
+    {
+      "questionId": "cold-start-mcq:workup-for-new-heart-failure-with-reduced-ejection-fraction#3",
+      "expectedStoredTopic": "workup for new heart failure with reduced ejection fraction",
+      "canonicalTopicName": "Heart failure with reduced ejection fraction",
+      "notes": "Question stem and linked evidence were reviewed for catalogue placement; clinical content review state is unchanged."
+    },
+    {
+      "questionId": "guideline-mcq:Protocol-based-versus-goal-directed-resuscitation-in-septic-#1",
+      "expectedStoredTopic": "Protocol-based versus goal-directed resuscitation in septic shock",
+      "canonicalTopicName": "Mean arterial pressure targets in septic shock",
+      "notes": "Question stem and linked evidence were reviewed for catalogue placement; clinical content review state is unchanged."
+    },
+    {
+      "questionId": "cold-start-mcq:management-of-atrial-fibrillation-with-rapid-ventricular-response-in-the-ed#1",
+      "expectedStoredTopic": "management of atrial fibrillation with rapid ventricular response in the ed",
+      "canonicalTopicName": "Rate versus rhythm control in atrial fibrillation",
+      "notes": "Question stem and linked evidence were reviewed for catalogue placement; clinical content review state is unchanged."
+    },
+    {
+      "questionId": "guideline-mcq:landmark-structural-cardiology-trials-partner-coapt-triluminate-milestones#2",
+      "expectedStoredTopic": "Landmark structural cardiology trials: PARTNER, COAPT, TRILUMINATE milestones",
+      "canonicalTopicName": "myocardial infarction",
+      "notes": "Question stem and linked evidence were reviewed for catalogue placement; clinical content review state is unchanged."
+    }
+  ]
+}

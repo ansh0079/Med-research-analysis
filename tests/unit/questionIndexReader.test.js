@@ -14,6 +14,7 @@ const reader = require('../../server/services/questionIndex/questionIndexReader'
 function makeDb() {
     const sqlite = new Sqlite(':memory:');
     sqlite.exec(fs.readFileSync(path.join(__dirname, '../../database/migrations/109_question_topic_index.sql'), 'utf8'));
+    sqlite.exec(fs.readFileSync(path.join(__dirname, '../../database/migrations/111_question_audit.sql'), 'utf8'));
     sqlite.exec('CREATE TABLE teaching_objects (object_key TEXT PRIMARY KEY, object_type TEXT, review_state TEXT, object_payload TEXT)');
     return {
         sqlite,
@@ -28,6 +29,10 @@ const index = (db, key, i, question, category, cluster, topicId = 'T', name = 'T
     `INSERT INTO question_topic_index (object_key, question_index, question_hash, object_type, assigned_curriculum_topic_id, assigned_topic_name,
         assigned_cluster_id, category, classifier_version, classified_at) VALUES (?, ?, ?, 'guideline_mcq', ?, ?, ?, ?, 'v', 'now')`,
 ).run(key, i, reader.questionHash(question), topicId, name, cluster, category);
+const hold = (db, key, i, question) => db.sqlite.prepare(
+    `INSERT INTO question_audit (object_key, question_index, question_hash, object_type, topic, content_hash,
+        pre_flag_reason, status, updated_at) VALUES (?, ?, ?, 'guideline_mcq', 'Topic', 'content', 'evidence review', 'needs_human', 'now')`,
+).run(key, i, reader.questionHash(question));
 
 describe('the serving switch', () => {
     test('off unless explicitly on', () => {
@@ -51,6 +56,10 @@ describe('which questions stay on a topic', () => {
     test('not about any topic is removed everywhere', () => {
         expect(reader.belongsHere({ category: 'unassignable', clusterId: null }, 'C1')).toBe(false);
     });
+
+    test('a question awaiting clinical review is removed everywhere', () => {
+        expect(reader.belongsHere({ category: 'aligned', clusterId: 'C1', auditHold: true }, 'C1')).toBe(false);
+    });
 });
 
 describe('reading the index', () => {
@@ -71,6 +80,15 @@ describe('reading the index', () => {
             .toMatchObject({ category: 'aligned', clusterId: 'C1' });
     });
 
+    test('an evidence-consistency hold is attached to an indexed question', async () => {
+        const db = makeDb();
+        const question = q('Needs evidence review?');
+        index(db, 'b1', 0, question, 'aligned', 'C1');
+        hold(db, 'b1', 0, question);
+        const found = await reader.loadAssignments(db, [reader.questionHash(question)]);
+        expect(found.get(reader.questionHash(question))).toMatchObject({ auditHold: true });
+    });
+
     test('the aligned questions of a cluster are read from the batches they were filed in', async () => {
         const db = makeDb();
         put(db, 'b1', 'guideline_mcq', [q('Filed under another topic?'), q('Other?')]);
@@ -88,6 +106,15 @@ describe('reading the index', () => {
         expect(await reader.loadAlignedForCluster(db, 'C1')).toEqual([]);
     });
 
+    test('a held aligned question is not added from another topic batch', async () => {
+        const db = makeDb();
+        const question = q('Held elsewhere?');
+        put(db, 'b1', 'guideline_mcq', [question]);
+        index(db, 'b1', 0, question, 'aligned', 'C1');
+        hold(db, 'b1', 0, question);
+        expect(await reader.loadAlignedForCluster(db, 'C1')).toEqual([]);
+    });
+
     test('only aligned questions are added, never unclear or unassignable', async () => {
         const db = makeDb();
         put(db, 'b1', 'guideline_mcq', [q('A?'), q('B?')]);
@@ -101,5 +128,26 @@ describe('reading the index', () => {
         expect(await reader.getTopicClusterId(broken, 't1')).toBeNull();
         expect((await reader.loadAssignments(broken, ['h'])).size).toBe(0);
         expect(await reader.loadAlignedForCluster(broken, 'C1')).toEqual([]);
+        expect(await reader.loadAlsoApplicableForCluster(broken, 'C1')).toEqual([]);
+    });
+
+    test('an unclear question with a second topic is served on both clusters', async () => {
+        const db = makeDb();
+        const question = q('Fits two subjects?');
+        put(db, 'b1', 'guideline_mcq', [question]);
+        db.sqlite.prepare(
+            `INSERT INTO question_topic_index (object_key, question_index, question_hash, object_type,
+                assigned_curriculum_topic_id, assigned_topic_name, assigned_cluster_id,
+                runner_up_curriculum_topic_id, category, classifier_version, classified_at)
+             VALUES ('b1', 0, ?, 'guideline_mcq', 't1', 'Heart failure', 'C1', 't2', 'unclear', 'v', 'now')`,
+        ).run(reader.questionHash(question));
+        db.sqlite.prepare("INSERT INTO topic_cluster_index VALUES ('t2', 'C2', 'v', 'now')").run();
+        db.sqlite.exec('CREATE TABLE curriculum_topics (id TEXT, display_name TEXT)');
+        db.sqlite.prepare("INSERT INTO curriculum_topics VALUES ('t2', 'Cardiomyopathy')").run();
+        const onFirst = await reader.loadAlsoApplicableForCluster(db, 'C1');
+        const onSecond = await reader.loadAlsoApplicableForCluster(db, 'C2');
+        expect(onFirst.map((a) => a.question.question)).toEqual(['Fits two subjects?']);
+        expect(onSecond.map((a) => a.question.question)).toEqual(['Fits two subjects?']);
+        expect(onFirst[0].applicableTopics).toEqual(['Heart failure', 'Cardiomyopathy']);
     });
 });

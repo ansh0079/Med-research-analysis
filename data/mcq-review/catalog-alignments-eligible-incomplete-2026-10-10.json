@@ -1,0 +1,874 @@
+{
+  "version": 1,
+  "reviewed_at": "2026-10-10",
+  "withdrawals": [],
+  "corrections": [],
+  "topicAssignments": [],
+  "catalogAlignments": [
+    {
+      "questionId": "cold-start-mcq:acute-confusion#1",
+      "expectedTopicName": "acute confusion",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:acute-confusion#3",
+      "expectedTopicName": "acute confusion",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:anxiety-disorder#1",
+      "expectedTopicName": "anxiety disorder",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:anxiety-disorder#4",
+      "expectedTopicName": "anxiety disorder",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:ascites#0",
+      "expectedTopicName": "ascites",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:bowel-cancer#2",
+      "expectedTopicName": "bowel cancer",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:bowel-obstruction#3",
+      "expectedTopicName": "bowel obstruction",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:claudication#1",
+      "expectedTopicName": "claudication",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:drug-rash#1",
+      "expectedTopicName": "drug rash",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:epilepsy#0",
+      "expectedTopicName": "epilepsy",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:epilepsy#1",
+      "expectedTopicName": "epilepsy",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:erysipelas#1",
+      "expectedTopicName": "erysipelas",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:erysipelas#2",
+      "expectedTopicName": "erysipelas",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:erysipelas#3",
+      "expectedTopicName": "erysipelas",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:erysipelas#4",
+      "expectedTopicName": "erysipelas",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:fever-in-children#1",
+      "expectedTopicName": "fever in children",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:hiv-initial-work-up#0",
+      "expectedTopicName": "HIV initial work-up",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:hiv-initial-work-up#2",
+      "expectedTopicName": "HIV initial work-up",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:hiv-initial-work-up#4",
+      "expectedTopicName": "HIV initial work-up",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:infection-prevention-and-control-standard-precautions-contact-isolation-hand-hygiene-evidence#0",
+      "expectedTopicName": "Infection prevention and control: standard precautions, contact isolation, hand hygiene evidence",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:intrinsic-acute-kidney-injury#4",
+      "expectedTopicName": "intrinsic acute kidney injury",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:low-back-pain#0",
+      "expectedTopicName": "low back pain",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:low-back-pain#2",
+      "expectedTopicName": "low back pain",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:lung-cancer#1",
+      "expectedTopicName": "lung cancer",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:lymphoma#2",
+      "expectedTopicName": "lymphoma",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:masld#2",
+      "expectedTopicName": "MASLD",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:masld#3",
+      "expectedTopicName": "MASLD",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:melanoma#3",
+      "expectedTopicName": "Melanoma",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:migraine#3",
+      "expectedTopicName": "migraine",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:obstructive-uropathy#0",
+      "expectedTopicName": "obstructive uropathy",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:obstructive-uropathy#1",
+      "expectedTopicName": "obstructive uropathy",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:obstructive-uropathy#2",
+      "expectedTopicName": "obstructive uropathy",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:outpatient-diabetes-control#3",
+      "expectedTopicName": "outpatient diabetes control",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:parkinsonism#0",
+      "expectedTopicName": "parkinsonism",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:parkinsonism#1",
+      "expectedTopicName": "parkinsonism",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:parkinsonism#2",
+      "expectedTopicName": "parkinsonism",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:parkinsons-disease#1",
+      "expectedTopicName": "Parkinson's disease",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:parkinsons-disease#3",
+      "expectedTopicName": "Parkinson's disease",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:post-operative-respiratory-failure#3",
+      "expectedTopicName": "post-operative respiratory failure",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:primary-care-mental-health#0",
+      "expectedTopicName": "primary care mental health",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:primary-care-mental-health#3",
+      "expectedTopicName": "primary care mental health",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:radiculopathy#0",
+      "expectedTopicName": "radiculopathy",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:radiculopathy#1",
+      "expectedTopicName": "radiculopathy",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:radiculopathy#3",
+      "expectedTopicName": "radiculopathy",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:recurrent-utis#0",
+      "expectedTopicName": "recurrent UTIs",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:recurrent-utis#1",
+      "expectedTopicName": "recurrent UTIs",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:safeguarding#4",
+      "expectedTopicName": "safeguarding",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:sciatica#0",
+      "expectedTopicName": "sciatica",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:sciatica#2",
+      "expectedTopicName": "sciatica",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:sciatica#4",
+      "expectedTopicName": "sciatica",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:shortness-of-breath#2",
+      "expectedTopicName": "shortness of breath",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:squamous-cell-carcinoma#0",
+      "expectedTopicName": "squamous cell carcinoma",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:substance-use-disorder#1",
+      "expectedTopicName": "substance use disorder",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:substance-use-disorder#2",
+      "expectedTopicName": "substance use disorder",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:suicide-risk-assessment#2",
+      "expectedTopicName": "suicide risk assessment",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:temporal-arteritis#0",
+      "expectedTopicName": "temporal arteritis",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:uterine-fibroids#2",
+      "expectedTopicName": "uterine fibroids",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:uterine-fibroids#3",
+      "expectedTopicName": "uterine fibroids",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:5q-minus-syndrome#2",
+      "expectedTopicName": "5q-minus Syndrome",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:advanced-melanoma-immunotherapy#2",
+      "expectedTopicName": "Advanced melanoma immunotherapy",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:antimicrobial-resistance-mechanisms-beta-lactamases-efflux-pumps-porins-target-modification#2",
+      "expectedTopicName": "Antimicrobial resistance mechanisms: beta-lactamases, efflux pumps, porins, target modification",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:erysipelas#0",
+      "expectedTopicName": "erysipelas",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:erysipelas#1",
+      "expectedTopicName": "erysipelas",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:ethics-in-the-icu-goals-of-care-withholding-and-withdrawing-treatment#2",
+      "expectedTopicName": "Ethics in the ICU: goals of care, withholding and withdrawing treatment",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:immunocompromised-patient-in-the-icu-neutropenic-sepsis-pcp-invasive-fungal#3",
+      "expectedTopicName": "Immunocompromised patient in the ICU: neutropenic sepsis, PCP, invasive fungal",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:intrinsic-acute-kidney-injury#2",
+      "expectedTopicName": "intrinsic acute kidney injury",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:intrinsic-acute-kidney-injury#4",
+      "expectedTopicName": "intrinsic acute kidney injury",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:juvenile-idiopathic-arthritis-jia-ilar-categories-oligoarticular-polyarticular-systemic#1",
+      "expectedTopicName": "Juvenile idiopathic arthritis JIA: ILAR categories, oligoarticular, polyarticular, systemic",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:lyme-disease-borrelia-tick-bite-erythema-migrans-disseminated-disease-doxycycline#1",
+      "expectedTopicName": "Lyme disease: Borrelia, tick bite, erythema migrans, disseminated disease, doxycycline",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:lyme-disease-borrelia-tick-bite-erythema-migrans-disseminated-disease-doxycycline#2",
+      "expectedTopicName": "Lyme disease: Borrelia, tick bite, erythema migrans, disseminated disease, doxycycline",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:obstructive-uropathy#0",
+      "expectedTopicName": "obstructive uropathy",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:oxygen-therapy-targets-in-copd#3",
+      "expectedTopicName": "Oxygen therapy targets in COPD",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:pandemic-preparedness-lessons-from-covid-19-surveillance-stockpiling-one-health-approach#1",
+      "expectedTopicName": "Pandemic preparedness: lessons from COVID-19, surveillance, stockpiling, One Health approach",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:plasma-cell-leukaemia#1",
+      "expectedTopicName": "Plasma Cell Leukaemia",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:pleural-effusion-workup#3",
+      "expectedTopicName": "Pleural Effusion workup",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:sciatica#0",
+      "expectedTopicName": "sciatica",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:acute-red-eye-differential-diagnosis-and-emergency-management#1",
+      "expectedTopicName": "Acute red eye: differential diagnosis and emergency management",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:acute-red-eye-differential-diagnosis-and-emergency-management#3",
+      "expectedTopicName": "Acute red eye: differential diagnosis and emergency management",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:ct-head-and-ct-pulmonary-angiography-common-acute-findings#0",
+      "expectedTopicName": "CT head and CT pulmonary angiography: common acute findings",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:herpes-simplex-impetigo-and-common-skin-infections#0",
+      "expectedTopicName": "Herpes simplex, impetigo and common skin infections",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:intensive-ldl-cholesterol-lowering-statin-meta-analysis#3",
+      "expectedTopicName": "intensive LDL cholesterol lowering statin meta-analysis",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:juvenile-idiopathic-arthritis-jia-ilar-categories-oligoarticular-polyarticular-systemic#1",
+      "expectedTopicName": "Juvenile idiopathic arthritis JIA: ILAR categories, oligoarticular, polyarticular, systemic",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:management-of-press#0",
+      "expectedTopicName": "management of PRESS",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:metabolic-syndrome-diagnostic-criteria-cardiovascular-risk-lifestyle-and-pharmacological-management#1",
+      "expectedTopicName": "Metabolic syndrome: diagnostic criteria, cardiovascular risk, lifestyle and pharmacological management",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:mpox-monkeypox-transmission-clinical-features-tecovirimat-vaccination-public-health-response#1",
+      "expectedTopicName": "Mpox (monkeypox): transmission, clinical features, tecovirimat, vaccination, public health response",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:obesity-management#1",
+      "expectedTopicName": "Obesity pharmacotherapy",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:pelvic-inflammatory-disease-diagnosis-and-treatment#1",
+      "expectedTopicName": "Pelvic inflammatory disease: diagnosis and treatment",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:pelvic-inflammatory-disease-diagnosis-and-treatment#3",
+      "expectedTopicName": "Pelvic inflammatory disease: diagnosis and treatment",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:precision-oncology-msi-h#0",
+      "expectedTopicName": "Precision Oncology and Molecular Profiling",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:pressure-ulcers-staging-prevention-and-wound-management#0",
+      "expectedTopicName": "Pressure ulcers: staging, prevention and wound management",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:psoriatic-arthritis#0",
+      "expectedTopicName": "Psoriatic arthritis: CASPAR criteria, peripheral and axial patterns, enthesitis, dactylitis",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:psoriatic-arthritis#3",
+      "expectedTopicName": "Psoriatic arthritis: CASPAR criteria, peripheral and axial patterns, enthesitis, dactylitis",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:tonsillitis-peritonsillar-abscess-and-deep-neck-infection#0",
+      "expectedTopicName": "Tonsillitis, peritonsillar abscess and deep neck infection",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:tonsillitis-peritonsillar-abscess-and-deep-neck-infection#2",
+      "expectedTopicName": "Tonsillitis, peritonsillar abscess and deep neck infection",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:tonsillitis-peritonsillar-abscess-and-deep-neck-infection#3",
+      "expectedTopicName": "Tonsillitis, peritonsillar abscess and deep neck infection",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:uveitis-in-jia-silent-inflammation-slit-lamp-screening-methotrexate-adalimumab#4",
+      "expectedTopicName": "Uveitis in JIA: silent inflammation, slit-lamp screening, methotrexate, adalimumab",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:acute-respiratory-failure#4",
+      "expectedTopicName": "acute respiratory failure",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:source-control-in-sepsis-timing-and-surgical-indications#1",
+      "expectedTopicName": "Source control in sepsis: timing and surgical indications",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:symptomatic-bradycardia-atropine-temporary-pacing-transcutaneous-pacing#0",
+      "expectedTopicName": "Symptomatic bradycardia: atropine, temporary pacing, transcutaneous pacing",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:benign-lung-tumors#0",
+      "expectedTopicName": "Benign lung tumors",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:covid-19-critical-illness-oxygenation-strategy-dexamethasone-anticoagulation#2",
+      "expectedTopicName": "COVID-19 critical illness: oxygenation strategy, dexamethasone, anticoagulation",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:gi-manifestations-of-systemic-disease#0",
+      "expectedTopicName": "GI Manifestations of Systemic Disease",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:haematological-emergencies-in-the-icu-hyperleucocytosis-tumour-lysis-hlh#0",
+      "expectedTopicName": "Haematological emergencies in the ICU: hyperleucocytosis, tumour lysis, HLH",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:hyperosmolar-hyperglycaemic-state-hhs-osmolarity-calculation-fluid-replacement#0",
+      "expectedTopicName": "Hyperosmolar hyperglycaemic state HHS: osmolarity calculation, fluid replacement",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:hyperosmolar-hyperglycaemic-state-hhs-osmolarity-calculation-fluid-replacement#1",
+      "expectedTopicName": "Hyperosmolar hyperglycaemic state HHS: osmolarity calculation, fluid replacement",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:hyperosmolar-hyperglycaemic-state-hhs-osmolarity-calculation-fluid-replacement#2",
+      "expectedTopicName": "Hyperosmolar hyperglycaemic state HHS: osmolarity calculation, fluid replacement",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:hyperosmolar-hyperglycaemic-state-hhs-osmolarity-calculation-fluid-replacement#3",
+      "expectedTopicName": "Hyperosmolar hyperglycaemic state HHS: osmolarity calculation, fluid replacement",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:incarcerated-and-strangulated-inguinal-femoral-and-ventral-hernias#1",
+      "expectedTopicName": "Incarcerated and strangulated inguinal, femoral, and ventral hernias",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:indications-for-acute-dialysis#3",
+      "expectedTopicName": "Indications for Acute Dialysis",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:inflammatory-vs-mechanical-back-pain-red-flags-mri-indications-as-vs-degenerative#0",
+      "expectedTopicName": "Inflammatory vs mechanical back pain: red flags, MRI indications, AS vs degenerative",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:inflammatory-vs-mechanical-back-pain-red-flags-mri-indications-as-vs-degenerative#1",
+      "expectedTopicName": "Inflammatory vs mechanical back pain: red flags, MRI indications, AS vs degenerative",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:inflammatory-vs-mechanical-back-pain-red-flags-mri-indications-as-vs-degenerative#2",
+      "expectedTopicName": "Inflammatory vs mechanical back pain: red flags, MRI indications, AS vs degenerative",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:key-lipid-lowering-trials-4s-hps-fourier-odyssey-interpretation#2",
+      "expectedTopicName": "Key lipid-lowering trials: 4S, HPS, FOURIER, ODYSSEY interpretation",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:lactose-intolerance#0",
+      "expectedTopicName": "Lactose Intolerance",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:lactose-intolerance#2",
+      "expectedTopicName": "Lactose Intolerance",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:source-control-in-sepsis-timing-and-surgical-indications#0",
+      "expectedTopicName": "Source control in sepsis: timing and surgical indications",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:source-control-in-sepsis-timing-and-surgical-indications#1",
+      "expectedTopicName": "Source control in sepsis: timing and surgical indications",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:source-control-in-sepsis-timing-and-surgical-indications#2",
+      "expectedTopicName": "Source control in sepsis: timing and surgical indications",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:source-control-in-sepsis-timing-and-surgical-indications#3",
+      "expectedTopicName": "Source control in sepsis: timing and surgical indications",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:streptococcal-infections-group-a-strep-scarlet-fever-rheumatic-fever-toxic-shock-syndrome#2",
+      "expectedTopicName": "Streptococcal infections: Group A Strep, scarlet fever, rheumatic fever, toxic shock syndrome",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:vasopressor-and-inotrope-pharmacology-noradrenaline-vasopressin-dobutamine-milrinone#2",
+      "expectedTopicName": "Vasopressor and inotrope pharmacology: noradrenaline, vasopressin, dobutamine, milrinone",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:acute-abdomen-and-common-surgical-emergencies#4",
+      "expectedTopicName": "Acute abdomen and common surgical emergencies",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:cirt-and-cantos-trials-methotrexate-and-canakinumab-for-cardiovascular-inflammation#0",
+      "expectedTopicName": "CIRT and CANTOS trials: methotrexate and canakinumab for cardiovascular inflammation",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:cirt-and-cantos-trials-methotrexate-and-canakinumab-for-cardiovascular-inflammation#4",
+      "expectedTopicName": "CIRT and CANTOS trials: methotrexate and canakinumab for cardiovascular inflammation",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:hyperosmolar-hyperglycaemic-state-hhs-osmolarity-calculation-fluid-replacement#0",
+      "expectedTopicName": "Hyperosmolar hyperglycaemic state HHS: osmolarity calculation, fluid replacement",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:hyperosmolar-hyperglycaemic-state-hhs-osmolarity-calculation-fluid-replacement#4",
+      "expectedTopicName": "Hyperosmolar hyperglycaemic state HHS: osmolarity calculation, fluid replacement",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:orbital-and-periorbital-cellulitis-classification-and-management#0",
+      "expectedTopicName": "Orbital and periorbital cellulitis: classification and management",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:orbital-and-periorbital-cellulitis-classification-and-management#2",
+      "expectedTopicName": "Orbital and periorbital cellulitis: classification and management",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:otitis-media-otitis-externa-and-mastoiditis#3",
+      "expectedTopicName": "Otitis media, otitis externa and mastoiditis",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:atrial-fibrillation#4",
+      "expectedTopicName": "atrial fibrillation",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:early-pregnancy-bleeding#1",
+      "expectedTopicName": "early pregnancy bleeding",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:early-pregnancy-bleeding#3",
+      "expectedTopicName": "early pregnancy bleeding",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:failure-to-thrive#0",
+      "expectedTopicName": "failure to thrive",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:failure-to-thrive#1",
+      "expectedTopicName": "failure to thrive",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:failure-to-thrive#4",
+      "expectedTopicName": "failure to thrive",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:h-pylori-infection#2",
+      "expectedTopicName": "H. pylori infection",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:ms-initial-presentation#0",
+      "expectedTopicName": "MS initial presentation",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:ms-initial-presentation#3",
+      "expectedTopicName": "MS initial presentation",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:ms-initial-presentation#4",
+      "expectedTopicName": "MS initial presentation",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:myocardial-infarction#0",
+      "expectedTopicName": "myocardial infarction",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:portal-hypertension#0",
+      "expectedTopicName": "portal hypertension",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:respiratory-tract-infections#0",
+      "expectedTopicName": "respiratory tract infections",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:respiratory-tract-infections#4",
+      "expectedTopicName": "respiratory tract infections",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:tb-screening#0",
+      "expectedTopicName": "TB screening",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:tb-screening#1",
+      "expectedTopicName": "TB screening",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:tonsillitis#0",
+      "expectedTopicName": "tonsillitis",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:tonsillitis#1",
+      "expectedTopicName": "tonsillitis",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:tonsillitis#2",
+      "expectedTopicName": "tonsillitis",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:tonsillitis#3",
+      "expectedTopicName": "tonsillitis",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:typhoid#0",
+      "expectedTopicName": "typhoid",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:typhoid#3",
+      "expectedTopicName": "typhoid",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:viral-wheeze#0",
+      "expectedTopicName": "viral wheeze",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:viral-wheeze#4",
+      "expectedTopicName": "viral wheeze",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:acute-necrotising-pancreatitis-and-step-up-management-approach#0",
+      "expectedTopicName": "Acute necrotising pancreatitis and step-up management approach",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:acute-necrotising-pancreatitis-and-step-up-management-approach#1",
+      "expectedTopicName": "Acute necrotising pancreatitis and step-up management approach",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:acute-necrotising-pancreatitis-and-step-up-management-approach#3",
+      "expectedTopicName": "Acute necrotising pancreatitis and step-up management approach",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:calcium-pyrophosphate-deposition-cppd-pseudogout-chondrocalcinosis-crowned-dens#0",
+      "expectedTopicName": "Calcium pyrophosphate deposition CPPD: pseudogout, chondrocalcinosis, crowned dens",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:calcium-pyrophosphate-deposition-cppd-pseudogout-chondrocalcinosis-crowned-dens#2",
+      "expectedTopicName": "Calcium pyrophosphate deposition CPPD: pseudogout, chondrocalcinosis, crowned dens",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:calcium-pyrophosphate-deposition-cppd-pseudogout-chondrocalcinosis-crowned-dens#3",
+      "expectedTopicName": "Calcium pyrophosphate deposition CPPD: pseudogout, chondrocalcinosis, crowned dens",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:failure-to-thrive#0",
+      "expectedTopicName": "failure to thrive",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:failure-to-thrive#1",
+      "expectedTopicName": "failure to thrive",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:h-pylori-infection#2",
+      "expectedTopicName": "H. pylori infection",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:tonsillitis#0",
+      "expectedTopicName": "tonsillitis",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:viral-wheeze#3",
+      "expectedTopicName": "viral wheeze",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:calcium-pyrophosphate-deposition-cppd-pseudogout-chondrocalcinosis-crowned-dens#1",
+      "expectedTopicName": "Calcium pyrophosphate deposition CPPD: pseudogout, chondrocalcinosis, crowned dens",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:calcium-pyrophosphate-deposition-cppd-pseudogout-chondrocalcinosis-crowned-dens#3",
+      "expectedTopicName": "Calcium pyrophosphate deposition CPPD: pseudogout, chondrocalcinosis, crowned dens",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:calcium-pyrophosphate-deposition-cppd-pseudogout-chondrocalcinosis-crowned-dens#4",
+      "expectedTopicName": "Calcium pyrophosphate deposition CPPD: pseudogout, chondrocalcinosis, crowned dens",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:ecg-interpretation-common-acute-findings-and-life-threatening-arrhythmias#3",
+      "expectedTopicName": "ECG interpretation: common acute findings and life-threatening arrhythmias",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:orbital-and-periorbital-cellulitis-classification-and-management#1",
+      "expectedTopicName": "Orbital and periorbital cellulitis: classification and management",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:scabies-diagnosis-treatment-and-outbreak-management#0",
+      "expectedTopicName": "Scabies: diagnosis, treatment and outbreak management",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:scabies-diagnosis-treatment-and-outbreak-management#1",
+      "expectedTopicName": "Scabies: diagnosis, treatment and outbreak management",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:scabies-diagnosis-treatment-and-outbreak-management#2",
+      "expectedTopicName": "Scabies: diagnosis, treatment and outbreak management",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:scabies-diagnosis-treatment-and-outbreak-management#3",
+      "expectedTopicName": "Scabies: diagnosis, treatment and outbreak management",
+      "notes": "Exact assigned topic matches the stored/original topic; category alignment only, clinical review state preserved."
+    }
+  ]
+}

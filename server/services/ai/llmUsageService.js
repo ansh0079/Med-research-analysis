@@ -7,6 +7,7 @@ const MODEL_COST_PER_MTOK = {
     'gemini-2.0-flash': { in: 0.1, out: 0.4 },
     'gemini-2.5-flash-lite': { in: 0.1, out: 0.4 },
     'gemini-2.5-flash': { in: 0.3, out: 2.5 },
+    'gemini-2.5-pro': { in: 1.25, out: 10.0 },
     'mistral-small-2603': { in: 0.15, out: 0.6 },
     'claude-haiku-4-5': { in: 1.0, out: 5.0 },
     'claude-sonnet-4-6': { in: 3.0, out: 15.0 },
@@ -23,8 +24,14 @@ function estimateTokensFromChars(chars = 0) {
 
 function estimateCostUsd(model, inputTokens, outputTokens) {
     const key = String(model || '').toLowerCase();
+    // Exact name, else the longest listed name the model starts with (a dated id such as
+    // claude-haiku-4-5-20251001 takes claude-haiku-4-5's price). Matching on the vendor word alone priced any
+    // unlisted model at that vendor's first entry: gemini-2.5-pro at Flash-2.0 rates, about 25x too low.
+    const prefix = Object.keys(MODEL_COST_PER_MTOK)
+        .filter((k) => k !== 'default' && key.startsWith(k))
+        .sort((a, b) => b.length - a.length)[0];
     const rates = MODEL_COST_PER_MTOK[key]
-        || MODEL_COST_PER_MTOK[Object.keys(MODEL_COST_PER_MTOK).find((k) => key.includes(k.split('-')[0])) || '']
+        || (prefix ? MODEL_COST_PER_MTOK[prefix] : null)
         || MODEL_COST_PER_MTOK.default;
     return (inputTokens / 1e6) * rates.in + (outputTokens / 1e6) * rates.out;
 }

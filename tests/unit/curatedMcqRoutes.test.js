@@ -82,7 +82,10 @@ describe('curatedMcqRoutes', () => {
   test('GET /api/topics/:topic/mcqs resolves via aliases', async () => {
     mockDb.get.mockResolvedValueOnce(null);
     mockDb.resolveCurriculumTopicId.mockResolvedValueOnce(null);
-    mockDb.all.mockResolvedValueOnce([
+    // First call: loadWithdrawnOverrides (none); Second: candidate curated rows
+    mockDb.all
+      .mockResolvedValueOnce([]) // overrides
+      .mockResolvedValueOnce([
       {
         object_key: 'curated-mcq:tuberculosis',
         topic: 'Tuberculosis',
@@ -95,8 +98,7 @@ describe('curatedMcqRoutes', () => {
             correctAnswer: 'A', explanation: 'x', difficulty: 'easy'
           }],
         }),
-      },
-    ]);
+      }]);
     const res = await request(app)
       .get('/api/topics/tb/mcqs')
       .set('Authorization', `Bearer ${authToken()}`);
@@ -151,6 +153,28 @@ describe('curatedMcqRoutes', () => {
       .get('/api/topics/no-quiz/mcqs')
       .set('Authorization', `Bearer ${authToken()}`);
     expect(res.status).toBe(404);
+  });
+
+  test('GET /api/topics/:topic/mcqs filters withdrawn overrides by object index and hash', async () => {
+    // Insert a curated topic with one MCQ
+    const payload = {
+      topicKey: 'tb',
+      topicDisplayName: 'Tuberculosis',
+      mcqs: [{ question: 'LTBI treatment?', options: ['A: a','B: b','C: c','D: d','E: e'], correctAnswer: 'A', explanation: 'x', difficulty: 'easy' }],
+    };
+    mockDb.get.mockResolvedValueOnce({
+      object_key: 'curated-mcq:tb',
+      topic: 'Tuberculosis',
+      object_payload: JSON.stringify(payload),
+    });
+    // Mock withdrawn override via db.all call in route loader (loadWithdrawnOverrides)
+    mockDb.all = jest.fn().mockResolvedValueOnce([
+      { question_id: 'curated-mcq:tb#0', question_hash: null, object_key: 'curated-mcq:tb', question_index: 0 }
+    ]);
+    const res = await request(app)
+      .get('/api/topics/tb/mcqs')
+      .set('Authorization', `Bearer ${authToken()}`);
+    expect(res.status).toBe(404); // all questions filtered => treated as no quiz
   });
 });
 

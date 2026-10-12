@@ -1,0 +1,739 @@
+{
+  "version": 1,
+  "generated_at": "2026-10-09T00:00:00Z",
+  "guideline_documents": [],
+  "guideline_links": [],
+  "paper_articles": [
+    {
+      "uid": "pubmed-36036431",
+      "title": "Risk factors for acute kidney injury after Stanford type A aortic dissection repair surgery: a systematic review and meta-analysis",
+      "abstract": "Cardiopulmonary bypass time longer than 180 minutes was associated with postoperative AKI (OR 4.89, 95% CI 2.06–11.61).",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/36036431/",
+      "doi": "",
+      "source": "pubmed_repair"
+    },
+    {
+      "uid": "pubmed-37159031",
+      "title": "Diagnosis and Management of Cirrhosis and Its Complications: A Review.",
+      "abstract": "Importance Cirrhosis affects approximately 2.2 million adults in the US. From 2010 to 2021, the annual age-adjusted mortality of cirrhosis increased from 14.9 per 100 000 to 21.9 per 100 000 people. Observations The most common causes of cirrhosis in the US, which can overlap, include alcohol use disorder (approximately 45% of all cases of cirrhosis), nonalcoholic fatty liver disease (26%), and hepatitis C (41%). Patients with cirrhosis experience symptoms including muscle cramps (approximately 64% prevalence), pruritus (39%), poor-quality sleep (63%), and sexual dysfunction (53%). Cirrhosis can be diagnosed by liver biopsy but may also be diagnosed noninvasively. Elastography, a noninvasive assessment of liver stiffness measured in kilopascals, can typically confirm cirrhosis at levels of 15 kPa or greater. Approximately 40% of people with cirrhosis are diagnosed when they present with",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/37159031/",
+      "doi": "",
+      "source": "pubmed_repair"
+    },
+    {
+      "uid": "pubmed-41815556",
+      "title": "Overcoming resistance to immune checkpoint inhibitor therapy in acute myeloid leukemia.",
+      "abstract": "Acute myeloid leukemia (AML) is characterized by molecular, immunological, and clinical heterogeneity and this has been reflected with changing paradigms in the treatment landscape of AML in recent years. Despite high remission rates with conventional chemotherapy regimens, most patients eventually relapse and have disappointing outcomes in the relapsed setting, with estimated 5-year overall survival rates ranging from 10-15%. Immune checkpoint inhibitors (ICIs) restrain T-cell suppressive signals delivered through cytotoxic T-lymphocyte-associated protein 4 (CTLA-4) or programmed cell death protein 1 (PD-1)/programmed death-ligand 1 (PD-L1) pathways and promote antitumor immune responses and these agents have been explored successfully in the treatment of many malignancies. Although ICIs have demonstrated long-term clinical benefit in solid tumors such as melanoma or lung cancer, AML ha",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/41815556/",
+      "doi": "",
+      "source": "pubmed_repair"
+    },
+    {
+      "uid": "pubmed-42693602",
+      "title": "Interleukin-1α Mediates Pancreatic Fibroblast Activation, Regulates Immune Cell Recruitment and Fibrosis in Acute and Chronic Pancreatitis.",
+      "abstract": "Pancreatitis is a life-threatening inflammatory disease of the pancreas. The cytokine interleukin-1α has been demonstrated to act as an alarmin released by necrotic cells. In the present study, we investigated the influence of IL-1α on the immune response during acute and chronic pancreatitis. Following tissue injury, pancreatic acinar cells released IL-1α, which activates tissue-resident fibroblasts to differentiate toward a pro-inflammatory phenotype. By secreting chemokines and cytokines such as CXCL5, CCL2, and IL-6, these fibroblasts recruit immune cells to the pancreas. The absence of IL-1α reduces disease severity in acute pancreatitis and chemokine release. Furthermore, IL-1α primes fibroblasts to enhance the production of extracellular matrix-components by the up-regulation of pro-fibrotic receptors such as Il4ra, Il13ra1, and Tgfbr3. Therefore, the deletion of IL-1α significant",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/42693602/",
+      "doi": "",
+      "source": "pubmed_repair"
+    },
+    {
+      "uid": "pubmed-31479658",
+      "title": "American Gastroenterological Association Clinical Practice Update: Management of Pancreatic Necrosis",
+      "abstract": "Enteral feeding should be initiated early in pancreatic necrosis; if oral intake is not feasible, nasogastric, duodenal or nasojejunal feeding should begin as soon as possible.",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/31479658/",
+      "doi": "",
+      "source": "pubmed_guideline"
+    },
+    {
+      "uid": "pubmed-21873705",
+      "title": "Colchicine for recurrent pericarditis (CORP): a randomized trial",
+      "abstract": "At 18 months recurrence was 24% with colchicine versus 55% with placebo; colchicine also reduced persistent symptoms at 72 hours.",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/21873705/",
+      "doi": "",
+      "source": "pubmed_repair"
+    },
+    {
+      "uid": "pubmed-38890097",
+      "title": "Diagnosis and management of acute promyelocytic leukemia: Brazilian consensus guidelines 2024",
+      "abstract": "The consensus addresses urgent management of APL coagulopathy to prevent early hemorrhagic mortality.",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/38890097/",
+      "doi": "",
+      "source": "pubmed_guideline"
+    },
+    {
+      "uid": "pubmed-38162575",
+      "title": "COVID-19 vaccination and corneal allograft rejection: a review",
+      "abstract": "The review identified reported corneal allograft rejection after COVID-19 vaccination as rare, most often in higher-risk grafts; compatible symptoms warrant prompt assessment, while causality remains uncertain.",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/38162575/",
+      "doi": "",
+      "source": "pubmed_repair"
+    },
+    {
+      "uid": "pubmed-42154076",
+      "title": "Inhibition of MyD88 in Tubular Epithelial Cells Alleviates the Cellular Senescence in Sepsis-Associated Acute Kidney Injury.",
+      "abstract": "Cellular senescence has emerged as an important contributor to acute kidney injury (AKI); however, its role in sepsis-associated acute kidney injury (SA-AKI) remains insufficiently characterized. This study aimed to investigate the involvement of cellular senescence in SA-AKI and to determine the contribution of the Toll-like receptor (TLR)/MyD88 signaling pathway. A cecal ligation and puncture (CLP) mouse model was established to induce SA-AKI. Cellular senescence markers and inflammatory indices were evaluated at 24, 48, and 72 h after injury using senescence-associated β-galactosidase (SA-β-Gal) staining, immunofluorescence, and quantitative real-time PCR (qPCR). Integrated transcriptomic and proteomic analyses were performed to identify candidate hub genes involved in SA-AKI. Human Kidney-2 (HK-2) cells were used to assess the role of MyD88 in tubular epithelial cell senescence, and",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/42154076/",
+      "doi": "",
+      "source": "pubmed_repair"
+    },
+    {
+      "uid": "pubmed-31080948",
+      "title": "Understanding the Harms of HES: A Review of the Evidence to Date.",
+      "abstract": "Intravenous (IV) fluid resuscitation is one of the most common interventions in intensive care medicine. Despite clear guidelines, the choice of IV fluid is largely dependent on physician preference instead of high-quality evidence of efficacy and safety. This is particularly the case for synthetic colloids, such as hydroxyethyl starch (HES). The use of HES in critical care has been associated with increased rates of acute kidney injury (AKI), renal replacement therapy and mortality. In light of this, current guidelines and scientific and regulatory bodies do not recommend the use of HES for fluid therapy in critical illness and caution against its use in many other settings. Despite this, HES products are still debated and used. Awareness of the indications, contraindications, doses, benefits and adverse effects for IV fluids, as well as recommendations from scientific and regulatory bo",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/31080948/",
+      "doi": "",
+      "source": "pubmed_repair"
+    },
+    {
+      "uid": "pubmed-36687118",
+      "title": "Acute-on-chronic liver failure: Controversies and consensus.",
+      "abstract": "Acute-on-chronic liver failure (ACLF) is a poorly defined syndrome characterised by rapid clinical deterioration in patients with chronic liver disease. Consequences include high short-term morbidity, mortality, and healthcare resource utilisation. ACLF encompasses a dysregulated, systemic inflammatory response, which can precipitate extra hepatic organ failures. Common precipitants include infection, alcoholic hepatitis, and reactivation of viral hepatitis although frequently no cause is identified. Heterogenous definitions, diagnostic criteria, and treatment guidelines, have been proposed by international hepatology societies. This can result in delayed or missed diagnoses of ACLF, significant variability in clinical management, and under-estimation of disease burden. Liver transplantation may be considered but the mainstay of treatment is organ support, often in the intensive care uni",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/36687118/",
+      "doi": "",
+      "source": "pubmed_guideline"
+    },
+    {
+      "uid": "pubmed-35316496",
+      "title": "Is There Still a Role of Plasma Exchange in the Current Management of ANCA-Associated Vasculitides?",
+      "abstract": "Purpose of review Plasma exchange (PLEX) is often recommended as an adjunctive therapy for patients with ANCA-associated vasculitis (AAV) in the setting of rapidly progressive glomerulonephritis or diffuse alveolar haemorrhage. Since ANCAs are pathogenic, it seems a reasonable and justified approach to remove them through therapeutic PLEX, as despite advances in immunosuppressive therapy regimens, AAV is associated with significant morbidity and death. However, the association between ANCA levels and mortality or disease activity is uncertain. In addition, any treatment must be judged on the potential risks and benefits of its use. Here, we summarise the current data on PLEX usage in patients with AAV. Recent findings The largest randomised trial to date the Plasma Exchange and Glucocorticoids in Severe ANCA-Associated Vasculitis (PEXIVAS) study failed to show added benefit for PLEX on t",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/35316496/",
+      "doi": "",
+      "source": "pubmed_repair"
+    },
+    {
+      "uid": "pubmed-40562372",
+      "title": "Delayed cerebral ischemia after aneurysmal subarachnoid hemorrhage: a narrative review.",
+      "abstract": "Aneurismal subarachnoid hemorrhage (aSAH) is a condition with elevated mortality and morbidity, which usually affects a working-age population, leading to a high socioeconomic burden. Among those who survive the initial bleeding, approximately 30% will experience delayed cerebral ischemia (DCI), which is a significant factor in poor outcomes. However, it is potentially reversible if appropriate treatment is promptly initiated. The amount of blood present on the initial computed tomography (CT) scan, assessed through the modified Fisher scale (mFisher), and the patient's neurological status upon admission, are the strongest predictors of DCI. Early prevention is essential and typically involves administration of enteral nimodipine and the maintenance of euvolemia, while other treatment options have limited supporting evidence. Diagnosing remains a challenge, primarily due to its reliance",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/40562372/",
+      "doi": "",
+      "source": "pubmed_repair"
+    },
+    {
+      "uid": "pubmed-41550678",
+      "title": "Efficacy and acceptability of lanadelumab for long-term prophylaxis in hereditary angioedema: A Chinese multicenter real-world analysis.",
+      "abstract": "Background Hereditary angioedema (HAE) is a rare and potentially life-threatening genetic disorder. Lanadelumab, a monoclonal antibody inhibiting plasma kallikrein, has been approved for long-term prophylaxis (LTP) in HAE patients aged ≥12 years since 2020 in China, but real-world evidence in Chinese populations is insufficient. Here, we assessed the real-world effectiveness, safety, and treatment acceptability of lanadelumab for LTP in Chinese HAE patients. Methods This multicenter observational study enrolled type I/II HAE patients ≥12 years who initiated lanadelumab for LTP between June 2022 and December 2024 across 5 tertiary medical centers in China, with a minimum follow-up time of 6 months. Attack frequency, emergency interventions, patient-reported outcome measures (PROMs), dosing interval extension and acceptability were described and if feasible, compared pair-wise before and a",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/41550678/",
+      "doi": "",
+      "source": "pubmed_repair"
+    },
+    {
+      "uid": "pubmed-32499784",
+      "title": "Spine and Sacroiliac Joints Lesions on Magnetic Resonance Imaging in Early Axial-Spondyloarthritis During 24-Months Follow-Up (Italian Arm of SPACE Study).",
+      "abstract": "Objectives: Our study aimed to identify: (1) the prevalence of spine and pelvis magnetic resonance imaging (MRI-spine and MRI-SIJ) inflammatory and structural lesions in patients (pts) with a diagnosis of axial spondyloarthritis (axSpA); (2) the predictive factors for a severe disease pattern with a higher probability of radiographic progression. Materials and Methods: Seventy-five pts with low back pain (LBP) (≥3 months, ≤2 years, onset ≤45 years) underwent physical examination, questionnaires, laboratory tests, X-rays, MRI-spine, and MRI-SIJ at baseline (T0) and during a 24-months follow-up. Two expert rheumatologists made axSpA diagnosis and classification (according ASAS criteria). MRI-spine, MRI-SIJ and X-rays were scored independently by 2 readers following the SPARCC, mSASSS, and mNY-criteria. According to ASAS criteria, 21 pts fulfilled imaging arm only and 29 clinical arm with/w",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/32499784/",
+      "doi": "",
+      "source": "pubmed_repair"
+    },
+    {
+      "uid": "pubmed-38033089",
+      "title": "2023 ACC/AHA/ACCP/HRS Guideline for the Diagnosis and Management of Atrial Fibrillation",
+      "abstract": "The guideline addresses anticoagulant selection and renal-function-based dosing for stroke prevention in atrial fibrillation.",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/38033089/",
+      "doi": "",
+      "source": "pubmed_guideline"
+    },
+    {
+      "uid": "pubmed-31092409",
+      "title": "EULAR recommendations for the management of antiphospholipid syndrome in adults",
+      "abstract": "Patients with APS and a first unprovoked venous thrombosis should receive long-term vitamin K antagonist therapy with a target INR of 2–3.",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/31092409/",
+      "doi": "",
+      "source": "pubmed_guideline"
+    },
+    {
+      "uid": "pubmed-37653443",
+      "title": "British Society of Echocardiography guideline for the transthoracic echocardiographic assessment of cardiac amyloidosis.",
+      "abstract": "These guidelines form an update of the BSE guideline protocol for the assessment of restrictive cardiomyopathy (Knight et al. in Echo Res Prac, 2013). Since the original recommendations were conceived in 2013, there has been an exponential rise in the diagnosis of cardiac amyloidosis fuelled by increased clinician awareness, improvements in cardiovascular imaging as well as the availability of new and effective disease modifying therapies. The initial diagnosis of cardiac amyloidosis can be challenging and is often not clear-cut on the basis of echocardiography, which for most patients presenting with heart failure symptoms remains the first-line imaging test. The role of a specialist echocardiographer will be to raise the suspicion of cardiac amyloidosis when appropriate, but the formal diagnosis of amyloid sub-type invariably requires further downstream testing. This document seeks to",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/37653443/",
+      "doi": "",
+      "source": "pubmed_guideline"
+    },
+    {
+      "uid": "pubmed-40670934",
+      "title": "Effect of pulmonary hypertension on the prognosis of patients with severe aortic stenosis after transcatheter aortic valve replacement: a systematic review and meta-analysis",
+      "abstract": "Across seven cohorts, pulmonary hypertension was associated with higher 30-day and 1-year all-cause mortality after TAVR, supporting pulmonary hypertension as an adverse prognostic factor.",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/40670934/",
+      "doi": "",
+      "source": "pubmed_repair"
+    },
+    {
+      "uid": "pubmed-34640608",
+      "title": "Prevention of Cirrhosis Complications: Looking for Potential Disease Modifying Agents.",
+      "abstract": "The current therapeutic strategies for the management of patients with cirrhosis rely on the prevention or treatment of specific complications. The removal of the causative agents (i.e., viruses or alcohol) prevents decompensation in the vast majority of patients with compensated cirrhosis. In contrast, even when etiological treatment has been effective, a significant proportion of patients with decompensated cirrhosis remains at risk of further disease progression. Therefore, therapies targeting specific key points in the complex pathophysiological cascade of decompensated cirrhosis could represent a new approach for the management of these severely ill patients. Some of the interventions currently employed for treating or preventing specific complications of cirrhosis or used in other diseases (i.e., poorly absorbable oral antibiotics, statins, albumin) have been proposed as potential",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/34640608/",
+      "doi": "",
+      "source": "pubmed_repair"
+    },
+    {
+      "uid": "pubmed-42689939",
+      "title": "Pulmonary vein isolation durability in a randomized trial comparing fluoroscopy-only vs. electroanatomic mapping strategies for pulmonary vein isolation with balloon-in-basket pulsed-field ablation.",
+      "abstract": "Aims Data on long-term durability of pulmonary vein isolation (PVI) with newer pulsed field ablation (PFA) platforms and incremental value of electroanatomic mapping (EAM) guidance remain limited. This study evaluated chronic PVI durability following ablation with a balloon-in-basket PFA catheter and compared outcomes of fluoroscopy-only vs. fluoroscopy plus EAM workflows. Methods and results In this prospective, single-centre trial, consecutive patients with paroxysmal or persistent atrial fibrillation (AF) underwent de novo PVI with a balloon-in-basket PFA catheter. Patients were randomized 1:1 to fluoroscopy-only or fluoroscopy plus EAM workflow. Systematic invasive remapping was planned >30 days after the index procedure. The dual primary efficacy endpoint was the proportion of pulmonary veins (PVs) and of patients with all PVs durably isolated. The prespecified secondary endpoint wa",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/42689939/",
+      "doi": "",
+      "source": "pubmed_repair"
+    },
+    {
+      "uid": "pubmed-40481686",
+      "title": "Clarithromycin Versus Azithromycin for Community-Acquired Pneumonia and the Risk of Major Adverse Cardiovascular Events: A Multicentre Cohort Study Using Data From Canada and Denmark.",
+      "abstract": "Background Studies suggest that clarithromycin is associated with an increased risk of major adverse cardiovascular events (MACE) among adults with coronary artery disease. However, data comparing clarithromycin to other macrolides, such as azithromycin, in a broader population are lacking. Methods A multicenter study was conducted in 33 hospitals in Ontario, Canada, and Copenhagen, Denmark, using the Target Trial framework. Adults hospitalized with community-acquired pneumonia (CAP) who received either clarithromycin or azithromycin were included. The primary outcome was MACE, defined as the one-year risk of nonfatal myocardial infarction, nonfatal stroke, or all-cause mortality. Propensity score matching and Cox proportional hazards models were used for analysis. Results In Ontario, we identified 23 081 patients with CAP, and 11 164 received oral macrolides. After propensity score matc",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/40481686/",
+      "doi": "",
+      "source": "pubmed_repair"
+    },
+    {
+      "uid": "pubmed-34795496",
+      "title": "Could Mesna and Celery Seed Cotherapy Modulate Oxidative Stress and Inflammation of the Urinary Bladder Induced by Ifosfamide in Rabbits?",
+      "abstract": "Background Ifosfamide (IFS) has potential complications such as nephropathy and hemorrhagic cystitis (HC). Although mesna can prevent IFS-induced cystitis by direct binding and neutralization of acrolein, HC symptoms have still been observed clinically in most of these cases. Celery is a powerful healing vegetable that has antioxidant, anti-inflammatory, and anticancer effects. The current study evaluated the synergistic effects of mesna and celery seed on IFS-induced HC in rabbits. Methods Twenty male rabbits (four groups) were administered distilled water, IFS, mesna, and mesna+celery seed cotherapy (MCC) for three weeks. The serum and urinary bladder of experimental rabbits underwent biochemical (TNF-α, MDA, iNOS, SOD, GPx, and CAT), histopathological and ultrastructural investigations to evaluate the structural changes of the urinary bladder (UB). Results IFS injection resulted in se",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/34795496/",
+      "doi": "",
+      "source": "pubmed_repair"
+    },
+    {
+      "uid": "pubmed-42516846",
+      "title": "Carcinoid syndrome revealed by chronic diarrhea and isolated severe tricuspid regurgitation.",
+      "abstract": "Carcinoid syndrome is an uncommon manifestation of metastatic neuroendocrine tumor (NET) and may present without classic flushing or bronchospasm. We describe a woman in her 50s with hypertension treated with hydrochlorothiazide who presented with confusion, severe hyponatremia with a serum sodium concentration of 114 mmol/L (reference range, 135-145 mmol/L), chronic watery diarrhea, bilateral leg edema, and 40-lb weight loss. Computed tomography (CT) revealed a calcified mesenteric mass and multiple hepatic lesions. Serum chromogranin A was 1434 ng/mL (SI: 1434 µg/L) (reference range, <100 ng/mL [SI: <100 µg/L]), and 24-hour urinary 5-hydroxyindoleacetic acid (5-HIAA) was 108 mg/24 hours (SI: 565 µmol/24 hours) (reference range, <6 mg/24 hours [SI: <31 µmol/24 hours])-well above the threshold associated with carcinoid heart disease (CHD). Transthoracic echocardiography demonstrated seve",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/42516846/",
+      "doi": "",
+      "source": "pubmed_repair"
+    },
+    {
+      "uid": "pubmed-40166066",
+      "title": "Cracking the code of HBV persistence: cutting-edge approaches to targeting cccDNA in chronic hepatitis B with or without pyogenic liver Abscesses.",
+      "abstract": "Chronic Hepatitis B Virus (HBV) infection remains a formidable global health challenge, driving severe liver complications such as hepatocellular carcinoma (HCC) and pyogenic liver abscesses (PLA). At the core of HBV persistence lies covalently closed circular DNA (cccDNA), a viral reservoir that fuels ongoing infection despite antiviral treatments. This review highlights molecular mechanisms governing cccDNA formation, maintenance, and clearance, spotlighting innovative therapeutic strategies to disrupt this key viral element. We explore cutting-edge approaches, including epigenetic modulation to silence cccDNA, RNA interference (RNAi) for viral RNA degradation, and CRISPR/Cas genome editing to excise cccDNA directly. Additionally, emerging antiviral therapies and immunotherapies, such as therapeutic vaccines and immune checkpoint inhibitors, offer new avenues for enhanced treatment eff",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/40166066/",
+      "doi": "",
+      "source": "pubmed_repair"
+    },
+    {
+      "uid": "pubmed-42299777",
+      "title": "European Interdisciplinary Guidelines on Pain Management in Acute Pancreatitis: UEG, EPC, EDS, ESDO, EAGEN, ESPGHAN, ESGAR, and ESPCG Evidence-Based Recommendations.",
+      "abstract": "Pain is often the presenting symptom of acute pancreatitis (AP) and has a prognostic significance, with poorly treated pain affecting patient outcomes. Despite this, there are currently no international recommendations for pain management in patients admitted with AP. This current guideline was developed following the United European Gastroenterology framework for the development of high-quality clinical guidelines. Nine working groups were formed to develop statements on pain management in AP from admission to discharge. After systematic literature reviews, the evidence was evaluated according to the Grading of Recommendations Assessment, Development, and Evaluation methodology, as appropriate. Statements and comments were developed by the working groups and voted using three rounds of Delphi method. The guidelines concluded that acute postoperative pain management guidelines are applic",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/42299777/",
+      "doi": "",
+      "source": "pubmed_guideline"
+    },
+    {
+      "uid": "pubmed-32653044",
+      "title": "Initiating guideline-concordant gout treatment improves arterial endothelial function and reduces intercritical inflammation: a prospective observational study",
+      "abstract": "Patients with gout had systemic inflammation during intercritical periods; guideline-concordant colchicine plus urate-lowering therapy reduced hsCRP, ESR, IL-1beta and IL-6.",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/32653044/",
+      "doi": "",
+      "source": "pubmed_guideline"
+    },
+    {
+      "uid": "pubmed-38439165",
+      "title": "Epidemiology and risk factors for hyperkalaemia in heart failure.",
+      "abstract": "Patients with heart failure (HF), particularly those with impaired renal function receiving renin-angiotensin-aldosterone system inhibitors (RAASis), are at risk of hyperkalaemia; when hyperkalaemia is severe, this can have serious clinical consequences. The incidence, prevalence, and risk factors for hyperkalaemia reported in randomized trials of RAASis may not reflect clinical practice due to exclusion of patients with elevated serum potassium (sK + ) or severe renal impairment: information on patients managed in routine clinical care is important to understanding the actual burden of hyperkalaemia. This paper reviews the available clinical epidemiology data on hyperkalaemia in HF and considers areas requiring further research. Observational studies published since 2017 that focused on hyperkalaemia, included patients with HF, and had ≥1000 participants were considered. Hyperkalaemia o",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/38439165/",
+      "doi": "",
+      "source": "pubmed_repair"
+    },
+    {
+      "uid": "pubmed-40617246",
+      "title": "Absolute neutrophil count and adverse drug reaction monitoring during clozapine treatment: consensus guidelines",
+      "abstract": "The consensus provides ANC monitoring protocols and thresholds for considering clozapine cessation.",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/40617246/",
+      "doi": "",
+      "source": "pubmed_guideline"
+    },
+    {
+      "uid": "pubmed-31330830",
+      "title": "The Molecular Hallmarks of the Serrated Pathway in Colorectal Cancer.",
+      "abstract": "Colorectal cancer (CRC) is a leading cause of cancer death worldwide. It includes different subtypes that differ in their clinical and prognostic features. In the past decade, in addition to the conventional adenoma-carcinoma model, an alternative multistep mechanism of carcinogenesis, namely the \"serrated pathway\", has been described. Approximately, 15 to 30% of all CRCs arise from neoplastic serrated polyps, a heterogeneous group of lesions that are histologically classified into three morphologic categories: hyperplastic polyps, sessile serrated adenomas/polyps, and the traditional serrated adenomas/polyps. Serrated polyps are characterized by genetic ( BRAF or KRAS mutations) and epigenetic (CpG island methylator phenotype (CIMP)) alterations that cooperate to initiate and drive malignant transformation from normal colon mucosa to polyps, and then to CRC. The high heterogeneity of th",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/31330830/",
+      "doi": "",
+      "source": "pubmed_repair"
+    },
+    {
+      "uid": "pubmed-41133074",
+      "title": "Evolving Clinical Management of Postoperative Delirium: A Narrative Review.",
+      "abstract": "Postoperative delirium (POD) is the most common neurologic complication after surgery, affecting 15-50% of adults ≥65 years and up to 80% of those admitted to intensive care units. Clinically, POD is characterized by an acute, fluctuating disturbance in attention, awareness, and cognition that typically arises within 72 hours of anesthesia. Its occurrence is associated with a threefold rise in 30-day mortality, prolonged mechanical ventilation, increased institutionalization, and long-term cognitive decline, underscoring its substantial human and financial burden. POD arises through a multifactorial pathogenesis that includes neuroinflammation, blood-brain‑barrier disruption, neurotransmitter imbalance, sleep fragmentation, and perioperative cerebral hypoperfusion. Patient-related risk factors (advanced age, pre-existing cognitive impairment, frailty, sensory deficits, alcohol misuse, an",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/41133074/",
+      "doi": "",
+      "source": "pubmed_repair"
+    },
+    {
+      "uid": "pubmed-42078262",
+      "title": "Biomarkers in the Early Detection of Dementia: A Systematic Review.",
+      "abstract": "Early detection of Alzheimer's disease (AD) and related dementias is critical for timely intervention and disease management. Mild cognitive impairment represents a transitional state between normal aging and dementia, but diagnosis remains challenging. Biomarkers offer promising tools for identifying early neurodegenerative changes, potentially years before clinical symptoms appear. This systematic review examined studies published between 2012 and 2025 from PubMed and Ovid MEDLINE, focusing on the role of biomarkers in the early diagnosis of AD. Search terms included \"biomarkers,\" \"Alzheimer's disease,\" \"early diagnosis,\" and \"early detection.\" Included studies were systematic reviews that had been peer-reviewed and emphasized early-stage diagnostic utility. Observational studies, meta-analyses, and systematic reviews were included and screened using a Preferred Reporting Items for Sys",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/42078262/",
+      "doi": "",
+      "source": "pubmed_repair"
+    },
+    {
+      "uid": "pubmed-41769900",
+      "title": "Central Diabetes Insipidus as a Rare Cause of Polyuria.",
+      "abstract": "Abstract Central diabetes insipidus (CDI) is a rare condition characterized by arginine vasopressin deficiency, leading to persistent polyuria and polydipsia. Although it can present at any age, idiopathic CDI in young adults is uncommon and diagnostically challenging. Inflammatory conditions such as infundibuloneurohypophysitis must be considered, particularly when magnetic resonance imaging (MRI) reveals a thickened pituitary stalk and absence of the posterior pituitary bright spot. Early recognition and differentiation from diabetes mellitus, nephrogenic diabetes insipidus, and primary polydipsia are crucial for effective management. We report the case of a 20-year-old male who presented with excessive urination and thirst for 6 weeks. Physical examination was unremarkable, and the patient had no history of trauma or systemic illness. Urine osmolality was markedly low, and MRI of the",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/41769900/",
+      "doi": "",
+      "source": "pubmed_repair"
+    },
+    {
+      "uid": "pubmed-37622654",
+      "title": "2023 ESC Guidelines for the management of acute coronary syndromes",
+      "abstract": "The guideline covers antithrombotic therapy and PCI across the acute coronary syndrome spectrum.",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/37622654/",
+      "doi": "",
+      "source": "pubmed_guideline"
+    },
+    {
+      "uid": "pubmed-37275804",
+      "title": "Biologics-Induced Immunophenotypic Cross-Switching in Patients with Psoriasis and Atopic Dermatitis.",
+      "abstract": "Antibody-based therapies that inhibit pro-inflammatory cytokine signalling are commonly used in dermatology. Paradoxically, these biological agents may induce or exacerbate paradoxical reactions. Recently, it has been reported that the treatment of eczema with dupilumab can lead to the development of psoriasiform eruptions, which we called psoriasiform paradoxical reactions (P-PRs). Conversely, cases of eczematous paradoxical reactions (E-PRs) have also been described in patients with psoriasis treated with biologics. To summarise the case characteristics and disease features of phenotypic transition between psoriasis and eczematoid dermatitis, and to explore the mechanism or connection related to biological agents or patients' genetic characteristics, a systematic review was conducted for P-PRs in atopic dermatitis and E-PRs in patients with psoriasis treated with corresponding biologic",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/37275804/",
+      "doi": "",
+      "source": "pubmed_repair"
+    },
+    {
+      "uid": "pubmed-41272457",
+      "title": "A narrative review of the diabetic ketoacidosis and hyperosmolar hyperglycemic state overlap syndrome.",
+      "abstract": "Background Diabetic ketoacidosis (DKA) and hyperosmolar hyperglycemic state (HHS) are life-threatening acute complications of diabetes. Up to one-third of patients present with overlapping features of both syndromes, complicating diagnosis and management. This overlap is associated with higher mortality than isolated DKA or HHS. Objective This narrative review synthesizes current evidence on the epidemiology, pathophysiology, and management of DKA-HHS overlap in both adult and pediatric populations with either type 1 or type 2 diabetes, highlighting the distinct challenges in recognition, treatment, and outcomes across these groups. Findings While DKA is defined by ketosis and metabolic acidosis, and HHS by profound hyperglycemia and hyperosmolality, overlap presentations combine both abnormalities. These patients face increased risks of cerebral edema, thromboembolism, and acute kidney",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/41272457/",
+      "doi": "",
+      "source": "pubmed_repair"
+    },
+    {
+      "uid": "pubmed-31890370",
+      "title": "A Case of Severe Psychosis Due to Cushing's Syndrome Secondary to Primary Bilateral Macronodular Adrenal Hyperplasia.",
+      "abstract": "Hypercortisolism is a multisystem disorder that results from inappropriate and excessive glucocorticoid secretion and loss of normal feedback mechanisms of the hypothalamic-pituitary axis. It is broadly divided into adrenocorticotropic hormone (ACTH) dependent and ACTH-independent categories. Primary bilateral macronodular adrenal hyperplasia (PBMAH) is a rare cause of ACTH-independent hypercortisolism, accounting for less than 2% of cases. It usually presents as hypertension, metabolic abnormalities, thromboembolic, cardiovascular, or endocrine disorders but rarely as a neuropsychiatric illness. Therefore, a delay in the diagnosis and management of cognitive illnesses substantially increases morbidity in these patients. Herein, we report a case of severe psychosis due to Cushing's syndrome with PBMAH. A 49-year-old male with a past medical history of diabetes and hypertension presented",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/31890370/",
+      "doi": "",
+      "source": "pubmed_repair"
+    },
+    {
+      "uid": "pubmed-41266090",
+      "title": "Coronary vasospasms and other cardiac manifestations in Eosinophilic Granulomatosis with Polyangiitis: Clinical impact and frequency in a monocentre study of 103 patients.",
+      "abstract": "Background Eosinophilic granulomatosis with polyangiitis (EGPA) is a systemic necrotising vasculitis characterised by tissue and blood hypereosinophilia. Cardiac involvement has previously been identified as the most significant predictor of mortality. Objective To identify and characterise previously untreated patients with EGPA and their cardiac manifestations at disease onset. Methods A retrospective monocentre study was conducted on 103 patients. Upon patient presentation, detailed multidisciplinary physical evaluations and laboratory diagnostics were performed. Cardiac events were defined as EGPA-related abnormalities in ECG, echocardiography, cardiac MRI, invasive coronary angiography or cardiac histopathology. Results Cardiac manifestations were diagnosed in 36 of 103 patients with EGPA (35%). Patients with EGPA with cardiac involvement (EGPA-CI) exhibited typical symptoms of EGPA",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/41266090/",
+      "doi": "",
+      "source": "pubmed_repair"
+    }
+  ],
+  "question_papers": [
+    {
+      "object_key": "cold-start-mcq:acute-kidney-injury",
+      "question_index": 3,
+      "article_uid": "pubmed-36036431"
+    },
+    {
+      "object_key": "paper-mcq:hepatorenal-syndrome",
+      "question_index": 2,
+      "article_uid": "pubmed-37159031"
+    },
+    {
+      "object_key": "cold-start-mcq:haematological-malignancy",
+      "question_index": 0,
+      "article_uid": "pubmed-41815556"
+    },
+    {
+      "object_key": "cold-start-mcq:pancreatitis-complications",
+      "question_index": 1,
+      "article_uid": "pubmed-42693602"
+    },
+    {
+      "object_key": "guideline-mcq:enteral-nutrition-in-clinical-practice",
+      "question_index": 2,
+      "article_uid": "pubmed-31479658"
+    },
+    {
+      "object_key": "guideline-mcq:Acute-and-recurrent-pericarditis-colchicine",
+      "question_index": 1,
+      "article_uid": "pubmed-21873705"
+    },
+    {
+      "object_key": "guideline-mcq:anticoagulation-in-malignancy",
+      "question_index": 1,
+      "article_uid": "pubmed-38890097"
+    },
+    {
+      "object_key": "guideline-mcq:acute-transplant-rejection",
+      "question_index": 3,
+      "article_uid": "pubmed-38162575"
+    },
+    {
+      "object_key": "cold-start-mcq:acute-kidney-injury",
+      "question_index": 0,
+      "article_uid": "pubmed-42154076"
+    },
+    {
+      "object_key": "cold-start-mcq:sepsis-bundle",
+      "question_index": 0,
+      "article_uid": "pubmed-42154076"
+    },
+    {
+      "object_key": "guideline-mcq:fluid-assessment-and-management-in-renal-disease",
+      "question_index": 2,
+      "article_uid": "pubmed-31080948"
+    },
+    {
+      "object_key": "cold-start-mcq:diagnosis-and-management-of-alcoholic-hepatitis",
+      "question_index": 3,
+      "article_uid": "pubmed-36687118"
+    },
+    {
+      "object_key": "paper-mcq:rapidly-progressive-glomerulonephritis",
+      "question_index": 3,
+      "article_uid": "pubmed-35316496"
+    },
+    {
+      "object_key": "guideline-mcq:Subarachnoid-hemorrhage-ICU-management",
+      "question_index": 2,
+      "article_uid": "pubmed-40562372"
+    },
+    {
+      "object_key": "cold-start-mcq:angioedema",
+      "question_index": 2,
+      "article_uid": "pubmed-41550678"
+    },
+    {
+      "object_key": "paper-mcq:inflammatory-vs-mechanical-back-pain-red-flags-mri-indications-as-vs-degenerative",
+      "question_index": 4,
+      "article_uid": "pubmed-32499784"
+    },
+    {
+      "object_key": "cold-start-mcq:atrial-fibrillation-anticoagulation-chronic-kidney-disease-stroke-prevention",
+      "question_index": 1,
+      "article_uid": "pubmed-38033089"
+    },
+    {
+      "object_key": "cold-start-mcq:atrial-fibrillation-anticoagulation-chronic-kidney-disease-stroke-prevention",
+      "question_index": 3,
+      "article_uid": "pubmed-38033089"
+    },
+    {
+      "object_key": "guideline-mcq:venous-thromboembolism-direct-oral-anticoagulant-therapy",
+      "question_index": 2,
+      "article_uid": "pubmed-31092409"
+    },
+    {
+      "object_key": "cold-start-mcq:prognosis-of-aortic-stenosis",
+      "question_index": 2,
+      "article_uid": "pubmed-37653443"
+    },
+    {
+      "object_key": "cold-start-mcq:prognosis-of-aortic-stenosis",
+      "question_index": 0,
+      "article_uid": "pubmed-40670934"
+    },
+    {
+      "object_key": "paper-mcq:cirrhosis-and-portal-hypertension",
+      "question_index": 3,
+      "article_uid": "pubmed-34640608"
+    },
+    {
+      "object_key": "cold-start-mcq:atrial-fibrillation",
+      "question_index": 1,
+      "article_uid": "pubmed-42689939"
+    },
+    {
+      "object_key": "paper-mcq:community--and-hospital-acquired-pneumonia",
+      "question_index": 1,
+      "article_uid": "pubmed-40481686"
+    },
+    {
+      "object_key": "guideline-mcq:thrombotic-microangiopathy-and-the-kidney",
+      "question_index": 3,
+      "article_uid": "pubmed-34795496"
+    },
+    {
+      "object_key": "guideline-mcq:gastroenteropancreatic-neuroendocrine-tumours",
+      "question_index": 3,
+      "article_uid": "pubmed-42516846"
+    },
+    {
+      "object_key": "cold-start-mcq:viral-hepatitis-b",
+      "question_index": 0,
+      "article_uid": "pubmed-40166066"
+    },
+    {
+      "object_key": "cold-start-mcq:acute-pancreatitis",
+      "question_index": 1,
+      "article_uid": "pubmed-42299777"
+    },
+    {
+      "object_key": "cold-start-mcq:hyperuricaemia",
+      "question_index": 3,
+      "article_uid": "pubmed-32653044"
+    },
+    {
+      "object_key": "cold-start-mcq:hyperkalaemia-emergency-treatment",
+      "question_index": 3,
+      "article_uid": "pubmed-38439165"
+    },
+    {
+      "object_key": "guideline-mcq:Schizophrenia-antipsychotic-treatment-strategies",
+      "question_index": 2,
+      "article_uid": "pubmed-40617246"
+    },
+    {
+      "object_key": "cold-start-mcq:colorectal-cancer",
+      "question_index": 4,
+      "article_uid": "pubmed-31330830"
+    },
+    {
+      "object_key": "cold-start-mcq:acute-confusional-states",
+      "question_index": 0,
+      "article_uid": "pubmed-41133074"
+    },
+    {
+      "object_key": "cold-start-mcq:dementia",
+      "question_index": 1,
+      "article_uid": "pubmed-42078262"
+    },
+    {
+      "object_key": "cold-start-mcq:hypernatraemia",
+      "question_index": 2,
+      "article_uid": "pubmed-41769900"
+    },
+    {
+      "object_key": "guideline-mcq:STEMI-primary-PCI-reperfusion",
+      "question_index": 1,
+      "article_uid": "pubmed-37622654"
+    },
+    {
+      "object_key": "cold-start-mcq:dermatitis",
+      "question_index": 2,
+      "article_uid": "pubmed-37275804"
+    },
+    {
+      "object_key": "cold-start-mcq:hyperglycaemic-hyperosmolar-state",
+      "question_index": 0,
+      "article_uid": "pubmed-41272457"
+    },
+    {
+      "object_key": "cold-start-mcq:secondary-hypertension",
+      "question_index": 0,
+      "article_uid": "pubmed-31890370"
+    },
+    {
+      "object_key": "cold-start-mcq:chronic-asthma",
+      "question_index": 2,
+      "article_uid": "pubmed-41266090"
+    }
+  ],
+  "topic_articles": [
+    {
+      "topic": "AKI in Critical Illness and Sepsis",
+      "article_uids": [
+        "pubmed-42154076"
+      ]
+    },
+    {
+      "topic": "Acute Myeloid Leukaemia",
+      "article_uids": [
+        "pubmed-41815556"
+      ]
+    },
+    {
+      "topic": "Acute Pancreatitis",
+      "article_uids": [
+        "pubmed-42693602"
+      ]
+    },
+    {
+      "topic": "Acute Promyelocytic Leukaemia",
+      "article_uids": [
+        "pubmed-38890097"
+      ]
+    },
+    {
+      "topic": "Acute and recurrent pericarditis colchicine",
+      "article_uids": [
+        "pubmed-21873705"
+      ]
+    },
+    {
+      "topic": "Acute kidney injury prevention management",
+      "article_uids": [
+        "pubmed-36036431"
+      ]
+    },
+    {
+      "topic": "Acute pancreatitis fluid and nutrition strategy",
+      "article_uids": [
+        "pubmed-31479658",
+        "pubmed-42299777"
+      ]
+    },
+    {
+      "topic": "Acute red eye: differential diagnosis and emergency management",
+      "article_uids": [
+        "pubmed-38162575"
+      ]
+    },
+    {
+      "topic": "Alcohol-associated hepatitis corticosteroids",
+      "article_uids": [
+        "pubmed-36687118"
+      ]
+    },
+    {
+      "topic": "Anticoagulation in atrial fibrillation: CHA2DS2-VASc scoring and DOAC selection",
+      "article_uids": [
+        "pubmed-38033089"
+      ]
+    },
+    {
+      "topic": "Antiphospholipid syndrome anticoagulation strategy",
+      "article_uids": [
+        "pubmed-31092409"
+      ]
+    },
+    {
+      "topic": "Aortic stenosis TAVR",
+      "article_uids": [
+        "pubmed-40670934"
+      ]
+    },
+    {
+      "topic": "Aortic stenosis: grading severity, low-flow low-gradient, intervention timing",
+      "article_uids": [
+        "pubmed-37653443"
+      ]
+    },
+    {
+      "topic": "Atrial fibrillation catheter ablation and early rhythm control",
+      "article_uids": [
+        "pubmed-42689939"
+      ]
+    },
+    {
+      "topic": "Biologic-Induced Psoriasis and Paradoxical Reactions",
+      "article_uids": [
+        "pubmed-37275804"
+      ]
+    },
+    {
+      "topic": "Bladder Cancer",
+      "article_uids": [
+        "pubmed-34795496"
+      ]
+    },
+    {
+      "topic": "CKD Cardiovascular Risk Management",
+      "article_uids": [
+        "pubmed-38439165"
+      ]
+    },
+    {
+      "topic": "Carcinoid Tumours and Small Bowel Neuroendocrine Tumours",
+      "article_uids": [
+        "pubmed-42516846"
+      ]
+    },
+    {
+      "topic": "Chronic Tophaceous Gout",
+      "article_uids": [
+        "pubmed-32653044"
+      ]
+    },
+    {
+      "topic": "Chronic hepatitis B antiviral therapy",
+      "article_uids": [
+        "pubmed-40166066"
+      ]
+    },
+    {
+      "topic": "Clozapine for treatment-resistant schizophrenia",
+      "article_uids": [
+        "pubmed-40617246"
+      ]
+    },
+    {
+      "topic": "Colonic Polyp Management",
+      "article_uids": [
+        "pubmed-31330830"
+      ]
+    },
+    {
+      "topic": "Community-Acquired Pneumonia",
+      "article_uids": [
+        "pubmed-40481686"
+      ]
+    },
+    {
+      "topic": "Cushings syndrome: ACTH-dependent vs independent, screening, dexamethasone suppression",
+      "article_uids": [
+        "pubmed-31890370"
+      ]
+    },
+    {
+      "topic": "Delirium and acute confusional states",
+      "article_uids": [
+        "pubmed-41133074"
+      ]
+    },
+    {
+      "topic": "Diabetes insipidus: central vs nephrogenic, water deprivation test, desmopressin",
+      "article_uids": [
+        "pubmed-41769900"
+      ]
+    },
+    {
+      "topic": "Diabetic ketoacidosis and hyperosmolar hyperglycaemic state: ICU management",
+      "article_uids": [
+        "pubmed-41272457"
+      ]
+    },
+    {
+      "topic": "Dual antiplatelet therapy: duration, P2Y12 selection, and bleeding risk balancing",
+      "article_uids": [
+        "pubmed-37622654"
+      ]
+    },
+    {
+      "topic": "Eosinophilic Granulomatosis with Polyangiitis",
+      "article_uids": [
+        "pubmed-41266090"
+      ]
+    },
+    {
+      "topic": "Fluid resuscitation type in sepsis and critical illness",
+      "article_uids": [
+        "pubmed-31080948"
+      ]
+    },
+    {
+      "topic": "Hepatic encephalopathy recurrence prevention",
+      "article_uids": [
+        "pubmed-37159031"
+      ]
+    },
+    {
+      "topic": "Induction therapy in AAV: rituximab vs cyclophosphamide, RITUXVAS, RAVE trials",
+      "article_uids": [
+        "pubmed-35316496"
+      ]
+    },
+    {
+      "topic": "Inflammatory vs mechanical back pain: red flags, MRI indications, AS vs degenerative",
+      "article_uids": [
+        "pubmed-32499784"
+      ]
+    },
+    {
+      "topic": "Mild cognitive impairment (MCI): amnestic vs non-amnestic progression tracking",
+      "article_uids": [
+        "pubmed-42078262"
+      ]
+    },
+    {
+      "topic": "Subarachnoid haemorrhage (SAH): vasospasm monitoring, nimodipine protocol, triple-H therapy",
+      "article_uids": [
+        "pubmed-40562372"
+      ]
+    },
+    {
+      "topic": "angioedema",
+      "article_uids": [
+        "pubmed-41550678"
+      ]
+    },
+    {
+      "topic": "ascites",
+      "article_uids": [
+        "pubmed-34640608"
+      ]
+    }
+  ]
+}

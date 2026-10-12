@@ -7,7 +7,10 @@ const { canonicalQuestionType } = require('../../utils/questionType');
 const { computeMcqClaimKey, hasSuspectFutureCitation } = require('../../utils/mcqClaimKey');
 const { isIssuingBodyValue } = require('../../utils/guidelineAttribution');
 const questionIndex = require('../../services/questionIndex/questionIndexReader');
+const { loadWithdrawnOverrides } = require('../../services/mcqReviewOverrideService');
+const { answersMatch } = require('../../utils/answerSet');
 const { attachQuizGradingTokens, verifyQuizGradingToken, commitQuizAnswer } = require('../../services/quizGradingToken');
+const { recordLearnerReport } = require('../../services/questionLearnerReportService');
 
 function sendServiceResponse(res, result) {
     return res.status(result.status || 200).json(attachQuizGradingTokens(result.body));
@@ -44,6 +47,26 @@ function registerQuizRoutes(app, {
     // out without `correctAnswer` (see attachQuizGradingTokens), so this is what
     // the UI calls to show immediate feedback. The signed token is the authority
     // here -- the client cannot assert its own correctness.
+    app.post('/api/quiz/question-report', requireAuthJwt, requireJson, async (req, res) => {
+        try {
+            const saved = await recordLearnerReport(db, {
+                userId: req.user?.id || null,
+                questionId: req.body?.questionId,
+                kind: req.body?.kind,
+                currentTopic: req.body?.currentTopic,
+                suggestedTopic: req.body?.suggestedTopic,
+                suggestedAnswer: req.body?.suggestedAnswer,
+                evidenceText: req.body?.evidenceText,
+                evidenceUrl: req.body?.evidenceUrl,
+            });
+            res.status(201).json(saved);
+        } catch (err) {
+            if (err.status === 400) return res.status(400).json({ error: err.message });
+            logger?.error?.({ err }, 'question report failed');
+            res.status(500).json({ error: 'Could not save that report' });
+        }
+    });
+
     app.post(
         '/api/quiz/grade',
         requireJson,
@@ -69,8 +92,7 @@ function registerQuizRoutes(app, {
                     });
                 }
                 const correctAnswer = verification.correctAnswer;
-                const isCorrect = String(userAnswer || '').trim().toLowerCase()
-                    === String(correctAnswer).trim().toLowerCase();
+                const isCorrect = answersMatch(userAnswer, correctAnswer);
                 return res.json({ isCorrect, correctAnswer });
             } catch (error) {
                 req.log?.error?.({ err: error }, 'Quiz grade error');
@@ -125,8 +147,10 @@ function registerQuizRoutes(app, {
             const difficulty = req.query.difficulty || 'all';
             const questionType = req.query.type || 'all';
 
+            const withdrawn = await loadWithdrawnOverrides(db);
+
             const rows = await db.all(
-                `SELECT topic, object_type, object_payload FROM teaching_objects
+                `SELECT object_key, topic, object_type, object_payload FROM teaching_objects
                  WHERE object_type IN ('cold_start_mcq', 'guideline_mcq', 'paper_mcq')
                    AND review_state != 'withdrawn'
                  ORDER BY RANDOM()`
@@ -144,8 +168,16 @@ function registerQuizRoutes(app, {
                 let payload;
                 try { payload = JSON.parse(row.object_payload || '{}'); } catch { continue; }
                 const mcqs = payload.mcqs || [];
-                for (const q of mcqs) {
+                for (let i = 0; i < mcqs.length; i++) {
+                    const q = mcqs[i];
                     if (!q.question || !q.options || !q.correctAnswer) continue;
+                    // Object-index based block list
+                    if (withdrawn.byObjectIndex.has(`${row.object_key}#${i}`)) continue;
+                    // Per-question withdrawals applied by the review workflow: filter even when the index is off.
+                    try {
+                        const h = questionIndex.questionHash(q);
+                        if (withdrawn.byHash.has(h)) continue;
+                    } catch { /* ignore */ }
                     // Defense in depth: 1,085 stored MCQs cited a fabricated future-dated
                     // guideline ("NICE 2026", "WHO 2026", a "2025 Dutch cohort study" that
                     // does not exist) and were removed by tools/data-hygiene/remove-fabricated-
@@ -153,7 +185,7 @@ function registerQuizRoutes(app, {
                     // run reaching a user before the next cleanup pass catches them.
                     if (hasSuspectFutureCitation(q)) continue;
                     const assignment = indexed.get(questionIndex.questionHash(q));
-                    if (assignment?.category === 'unassignable') continue;
+                    if (assignment?.category === 'unassignable' || assignment?.auditHold) continue;
                     if (difficulty !== 'all' && q.difficulty !== difficulty) continue;
                     if (questionType !== 'all' && q.questionType !== questionType) continue;
                     const stableHash = crypto

@@ -1,0 +1,100 @@
+name: Split and export topic repair queue
+
+on:
+  workflow_dispatch:
+
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - name: Configure production SSH
+        env:
+          SSH_KEY: ${{ secrets.HETZNER_SSH_KEY }}
+        run: |
+          install -m 700 -d ~/.ssh
+          printf '%s\n' "$SSH_KEY" > ~/.ssh/id_ed25519
+          sed -i 's/\r$//' ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          ssh-keyscan -H 178.105.155.246 >> ~/.ssh/known_hosts
+
+      - name: Split queue and export both halves
+        run: |
+          ssh root@178.105.155.246 'bash -s' <<'REMOTE'
+          set -euo pipefail
+          rm -rf /tmp/topic-repair-halves
+          mkdir -p /tmp/topic-repair-halves
+          docker exec -i medsearch-pg psql -U medsearch -d medsearch -v ON_ERROR_STOP=1 <<'SQL'
+          CREATE TEMP TABLE repair_split AS
+          SELECT object_key,question_index,
+                 ROW_NUMBER() OVER (ORDER BY LOWER(COALESCE(topic,'')),object_key,question_index) AS row_number
+          FROM question_work_queue WHERE cohort='topic_repair' AND status='queued';
+
+          UPDATE question_work_queue w SET assigned_to=CASE WHEN s.row_number<=1533 THEN 'codex' ELSE 'clinical_owner' END,
+                 updated_at=NOW()::text
+          FROM repair_split s WHERE w.object_key=s.object_key AND w.question_index=s.question_index AND w.cohort='topic_repair';
+
+          COPY (
+            SELECT s.row_number,w.object_key,w.question_index,w.assigned_to,w.status,w.topic AS proposed_topic,
+                   q.original_topic,q.assigned_topic_name AS current_best_topic,runner.display_name AS competing_topic,
+                   q.topic_similarity,q.runner_up_similarity,(q.topic_similarity-q.runner_up_similarity) AS similarity_margin,
+                   q.guideline_support,q.paper_support,q.evidence_support,q.reasons,
+                   obj.object_type,obj.topic AS stored_topic,
+                   mcq.item->>'question' AS question,mcq.item->'options' AS options,
+                   mcq.item->>'correctAnswer' AS correct_answer,mcq.item->>'explanation' AS explanation,
+                   COALESCE((SELECT jsonb_agg(jsonb_build_object(
+                     'id',g.id,'source',g.source_body,'year',g.source_year,'url',g.source_url,
+                     'recommendation',g.recommendation_text,'status',g.status,'document_title',d.title,'full_text_source',d.full_text_source))
+                     FROM jsonb_array_elements_text(CASE WHEN COALESCE(q.evidence_guideline_ids,'') ~ '^\s*\[' THEN q.evidence_guideline_ids::jsonb ELSE '[]'::jsonb END) ids(id)
+                     JOIN topic_guidelines g ON g.id::text=ids.id LEFT JOIN guideline_documents d ON d.id=g.document_id),'[]'::jsonb) AS guidelines,
+                   COALESCE((SELECT jsonb_agg(jsonb_build_object(
+                     'id',a.id,'title',a.title,'date',a.publication_date,'journal',a.journal,'abstract',a.abstract))
+                     FROM jsonb_array_elements_text(CASE WHEN COALESCE(q.evidence_paper_uids,'') ~ '^\s*\[' THEN q.evidence_paper_uids::jsonb ELSE '[]'::jsonb END) ids(id)
+                     LEFT JOIN article_cache a ON a.id=ids.id),'[]'::jsonb) AS papers,
+                   ''::text AS reviewer_decision,''::text AS corrected_topic,''::text AS reviewer_notes
+            FROM repair_split s
+            JOIN question_work_queue w ON w.object_key=s.object_key AND w.question_index=s.question_index AND w.cohort='topic_repair'
+            JOIN question_topic_index q ON q.object_key=s.object_key AND q.question_index=s.question_index
+            JOIN teaching_objects obj ON obj.object_key=s.object_key
+            CROSS JOIN LATERAL (SELECT (obj.object_payload::jsonb->'mcqs'->s.question_index) item) mcq
+            LEFT JOIN curriculum_topics runner ON runner.id::text=q.runner_up_curriculum_topic_id
+            WHERE s.row_number<=1533 ORDER BY s.row_number
+          ) TO '/tmp/topic-repair-codex-half.csv' WITH CSV HEADER;
+
+          COPY (
+            SELECT s.row_number-1533 AS review_number,w.object_key,w.question_index,w.status,w.topic AS proposed_topic,
+                   q.original_topic,q.assigned_topic_name AS current_best_topic,runner.display_name AS competing_topic,
+                   q.topic_similarity,q.runner_up_similarity,(q.topic_similarity-q.runner_up_similarity) AS similarity_margin,
+                   q.guideline_support,q.paper_support,q.evidence_support,q.reasons,
+                   obj.object_type,obj.topic AS stored_topic,
+                   mcq.item->>'question' AS question,mcq.item->'options' AS options,
+                   mcq.item->>'correctAnswer' AS correct_answer,mcq.item->>'explanation' AS explanation,
+                   COALESCE((SELECT jsonb_agg(jsonb_build_object(
+                     'id',g.id,'source',g.source_body,'year',g.source_year,'url',g.source_url,
+                     'recommendation',g.recommendation_text,'status',g.status,'document_title',d.title,'full_text_source',d.full_text_source))
+                     FROM jsonb_array_elements_text(CASE WHEN COALESCE(q.evidence_guideline_ids,'') ~ '^\s*\[' THEN q.evidence_guideline_ids::jsonb ELSE '[]'::jsonb END) ids(id)
+                     JOIN topic_guidelines g ON g.id::text=ids.id LEFT JOIN guideline_documents d ON d.id=g.document_id),'[]'::jsonb) AS guidelines,
+                   COALESCE((SELECT jsonb_agg(jsonb_build_object(
+                     'id',a.id,'title',a.title,'date',a.publication_date,'journal',a.journal,'abstract',a.abstract))
+                     FROM jsonb_array_elements_text(CASE WHEN COALESCE(q.evidence_paper_uids,'') ~ '^\s*\[' THEN q.evidence_paper_uids::jsonb ELSE '[]'::jsonb END) ids(id)
+                     LEFT JOIN article_cache a ON a.id=ids.id),'[]'::jsonb) AS papers,
+                   ''::text AS reviewer_decision,''::text AS corrected_topic,''::text AS reviewer_notes
+            FROM repair_split s
+            JOIN question_work_queue w ON w.object_key=s.object_key AND w.question_index=s.question_index AND w.cohort='topic_repair'
+            JOIN question_topic_index q ON q.object_key=s.object_key AND q.question_index=s.question_index
+            JOIN teaching_objects obj ON obj.object_key=s.object_key
+            CROSS JOIN LATERAL (SELECT (obj.object_payload::jsonb->'mcqs'->s.question_index) item) mcq
+            LEFT JOIN curriculum_topics runner ON runner.id::text=q.runner_up_curriculum_topic_id
+            WHERE s.row_number>1533 ORDER BY s.row_number
+          ) TO '/tmp/Signal_MD_Topic_Repair_User_Half_1533.csv' WITH CSV HEADER;
+          SQL
+          docker cp medsearch-pg:/tmp/topic-repair-codex-half.csv /tmp/topic-repair-halves/
+          docker cp medsearch-pg:/tmp/Signal_MD_Topic_Repair_User_Half_1533.csv /tmp/topic-repair-halves/
+          REMOTE
+          scp -r root@178.105.155.246:/tmp/topic-repair-halves ./topic-repair-halves
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: signal-md-topic-repair-halves
+          path: topic-repair-halves/*.csv
+          retention-days: 14

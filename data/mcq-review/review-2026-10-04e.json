@@ -1,0 +1,438 @@
+{
+  "withdrawals": [
+    {
+      "questionId": "guideline-mcq:erythema-nodosum-differential-diagnosis#0",
+      "verdict": "Ambiguous",
+      "reason": "Classic EN with known Crohn's is a clinical diagnosis; biopsy is reserved for atypical presentations, and initial bloods (B) are at least as defensible as the f",
+      "notes": "Classic EN with known Crohn's is a clinical diagnosis; biopsy is reserved for atypical presentations, and initial bloods (B) are at least as defensible as the first step."
+    },
+    {
+      "questionId": "guideline-mcq:erythema-nodosum-differential-diagnosis#1",
+      "verdict": "Unsupported",
+      "reason": "Cutaneous PAN is a recognised EN mimic, and the explanation itself says it's hard to distinguish, so the key contradicts its own rationale.",
+      "notes": "Cutaneous PAN is a recognised EN mimic, and the explanation itself says it's hard to distinguish, so the key contradicts its own rationale."
+    },
+    {
+      "questionId": "cold-start-mcq:esbl-enterobacterales-bloodstream-infection-therapy#3",
+      "verdict": "Wrong answer",
+      "reason": "Withdrawn: the question assumes MERINO showed piperacillin-tazobactam non-inferior to meropenem, but it failed non-inferiority (30-day mortality 12.3% vs 3.7%),",
+      "notes": "Withdrawn: the question assumes MERINO showed piperacillin-tazobactam non-inferior to meropenem, but it failed non-inferiority (30-day mortality 12.3% vs 3.7%), and no option gives the real pitfall. Original note: Built on a false premise (MERINO showed pip-tazo non-inferior). MERINO found higher mortality with pip-tazo and did not exclude septic shock as described. No option gives the real pitfall."
+    },
+    {
+      "questionId": "cold-start-mcq:esbl-enterobacterales-bloodstream-infection-therapy#4",
+      "verdict": "Wrong answer",
+      "reason": "Withdrawn: built on the false premise that MERINO showed piperacillin-tazobactam non-inferior for 30-day mortality; it did not, and no option is correct. Origin",
+      "notes": "Withdrawn: built on the false premise that MERINO showed piperacillin-tazobactam non-inferior for 30-day mortality; it did not, and no option is correct. Original note: Built on the false premise that MERINO showed pip-tazo non-inferior for 30-day mortality; it failed non-inferiority (12.3% vs 3.7%). No option is correct."
+    },
+    {
+      "questionId": "paper-mcq:meropenem-versus-piperacillin-tazobactam-sepsis-merino-trial#0",
+      "verdict": "Wrong answer",
+      "reason": "Withdrawn: the keyed statement misstates MERINO's primary outcome (30-day all-cause mortality, which favoured meropenem), and no option is correct. Original not",
+      "notes": "Withdrawn: the keyed statement misstates MERINO's primary outcome (30-day all-cause mortality, which favoured meropenem), and no option is correct. Original note: MERINO's primary outcome was 30-day all-cause mortality (12.3% vs 3.7%), not day-28 clinical failure, so the keyed statement misstates the trial and no option is correct."
+    },
+    {
+      "questionId": "paper-mcq:meropenem-versus-piperacillin-tazobactam-sepsis-merino-trial#2",
+      "verdict": "Unsupported",
+      "reason": "MERINO's exclusions were patients not expected to survive, or palliative patients; vasopressor-requiring septic shock wasn't an exclusion as stated. Key rests o",
+      "notes": "MERINO's exclusions were patients not expected to survive, or palliative patients; vasopressor-requiring septic shock wasn't an exclusion as stated. Key rests on a misdescription."
+    },
+    {
+      "questionId": "paper-mcq:meropenem-versus-piperacillin-tazobactam-sepsis-merino-trial#4",
+      "verdict": "Unsupported",
+      "reason": "Premise that MERINO showed meropenem superior for 'clinical failure', with 90-day mortality as the secondary outcome, misstates the trial (primary outcome was 3",
+      "notes": "Premise that MERINO showed meropenem superior for 'clinical failure', with 90-day mortality as the secondary outcome, misstates the trial (primary outcome was 30-day mortality)."
+    },
+    {
+      "questionId": "guideline-mcq:esbl-enterobacterales-bloodstream-infection-therapy#0",
+      "verdict": "Ambiguous",
+      "reason": "For uncomplicated Gram-negative BSI with source control, 7 days is non-inferior to 14 (Yahav 2019; IDSA), so the 14-day key is contestable.",
+      "notes": "For uncomplicated Gram-negative BSI with source control, 7 days is non-inferior to 14 (Yahav 2019; IDSA), so the 14-day key is contestable."
+    },
+    {
+      "questionId": "guideline-mcq:esbl-enterobacterales-bloodstream-infection-therapy#3",
+      "verdict": "Unsupported",
+      "reason": "Vague 'evaluate core outcomes' stem drawn from a NICE neonatal-infection recommendation; not a testable clinical point. Stem lacks a question lead-in.",
+      "notes": "Vague 'evaluate core outcomes' stem drawn from a NICE neonatal-infection recommendation; not a testable clinical point. Stem lacks a question lead-in."
+    },
+    {
+      "questionId": "guideline-mcq:Essential-thrombocythemia:-cytoreduction-with-hydroxyurea-ve#2",
+      "verdict": "Ambiguous",
+      "reason": "Hydroxyurea intolerance can be managed with anagrelide or interferon (C); suspected MDS transformation needs marrow re-evaluation rather than a simple switch. S",
+      "notes": "Hydroxyurea intolerance can be managed with anagrelide or interferon (C); suspected MDS transformation needs marrow re-evaluation rather than a simple switch. Several options are defensible."
+    },
+    {
+      "questionId": "guideline-mcq:essential-tremor-medical-management-beta-blockers-primidone-vs-mr-guided-fus#1",
+      "verdict": "Ambiguous",
+      "reason": "ASSFN 2020 requires failure of first-line therapies without specifying two. Requiring 2 drugs is a payer/trial criterion, not the guideline's.",
+      "notes": "ASSFN 2020 requires failure of first-line therapies without specifying two. Requiring 2 drugs is a payer/trial criterion, not the guideline's."
+    },
+    {
+      "questionId": "guideline-mcq:eular-recommendations-2022-for-ra-management-updated-treat-to-target-algorithm#0",
+      "verdict": "Ambiguous",
+      "reason": "EULAR 2022: after MTX failure, add a b/tsDMARD if poor prognostic factors are present, otherwise consider another csDMARD (B). Prognostic factors aren't given.",
+      "notes": "EULAR 2022: after MTX failure, add a b/tsDMARD if poor prognostic factors are present, otherwise consider another csDMARD (B). Prognostic factors aren't given."
+    },
+    {
+      "questionId": "guideline-mcq:eular-recommendations-2022-for-ra-management-updated-treat-to-target-algorithm#1",
+      "verdict": "Unsupported",
+      "reason": "EULAR 2022 doesn't set a 12-month minimum; it allows tapering after sustained remission, with glucocorticoids stopped first. The specific number isn't supported",
+      "notes": "EULAR 2022 doesn't set a 12-month minimum; it allows tapering after sustained remission, with glucocorticoids stopped first. The specific number isn't supported."
+    },
+    {
+      "questionId": "paper-mcq:extra-articular-ra-nodules-vasculitis-ild-felty-syndrome-ocular-involvement#3",
+      "verdict": "Unsupported",
+      "reason": "Keyed answer is about 'the provided abstract' lacking details, a content-generation artefact rather than a clinical or evidence point.",
+      "notes": "Keyed answer is about 'the provided abstract' lacking details, a content-generation artefact rather than a clinical or evidence point."
+    },
+    {
+      "questionId": "paper-mcq:ezetimibe-added-to-statin-therapy-acute-coronary-syndrome#2",
+      "verdict": "Unsupported",
+      "reason": "Built on interpreting the hedge 'appears to reduce' (generation artefact). IMPROVE-IT showed a statistically significant 6.4% relative reduction, and the key te",
+      "notes": "Built on interpreting the hedge 'appears to reduce' (generation artefact). IMPROVE-IT showed a statistically significant 6.4% relative reduction, and the key teaches vague uncertainty."
+    },
+    {
+      "questionId": "paper-mcq:ezetimibe-added-to-statin-therapy-acute-coronary-syndrome#4",
+      "verdict": "Ambiguous",
+      "reason": "The student's statement contains two errors (triglyceride mechanism, A; and age/diabetes restriction, B), so both A and B are correct.",
+      "notes": "The student's statement contains two errors (triglyceride mechanism, A; and age/diabetes restriction, B), so both A and B are correct."
+    },
+    {
+      "questionId": "guideline-mcq:factor-v-leiden-and-apc-resistance#1",
+      "verdict": "Unsupported",
+      "reason": "Meta-analyses show only a weak FVL-MI association (OR ~1.2); 'significantly increased' rests on one 2004 report and overstates the evidence.",
+      "notes": "Meta-analyses show only a weak FVL-MI association (OR ~1.2); 'significantly increased' rests on one 2004 report and overstates the evidence."
+    },
+    {
+      "questionId": "guideline-mcq:faecal-incontinence#3",
+      "verdict": "Unsupported",
+      "reason": "Extrapolates urinary-incontinence advice to faecal soiling. In a 6-year-old, soiling is usually overflow from constipation, which needs assessment and laxatives",
+      "notes": "Extrapolates urinary-incontinence advice to faecal soiling. In a 6-year-old, soiling is usually overflow from constipation, which needs assessment and laxatives (NICE CG99), not a reward chart alone."
+    },
+    {
+      "questionId": "cold-start-mcq:faecal-incontinence#0",
+      "verdict": "Wrong answer",
+      "reason": "Withdrawn: the key says PTNS is supported by evidence against sham, but the CONFIDeNT trial (Lancet 2015) found PTNS not superior to sham, and no other option i",
+      "notes": "Withdrawn: the key says PTNS is supported by evidence against sham, but the CONFIDeNT trial (Lancet 2015) found PTNS not superior to sham, and no other option is correct. Original note: The CONFIDeNT trial (Lancet 2015) found PTNS was NOT superior to sham stimulation. NICE IPG395 and the trial don't support PTNS as proven against sham, so the keyed premise is false and no option fits."
+    },
+    {
+      "questionId": "guideline-mcq:familial-hypercholesterolaemia-ldl-c-targets-statins-pcsk9-inhibitors-cascade-testing#0",
+      "verdict": "Ambiguous",
+      "reason": "ERKNet/ESPN reserve apheresis for when goals aren't met despite maximal medical therapy; on statin alone, adding ezetimibe (A) is the expected next step. Erupti",
+      "notes": "ERKNet/ESPN reserve apheresis for when goals aren't met despite maximal medical therapy; on statin alone, adding ezetimibe (A) is the expected next step. Eruptive xanthomas also don't fit FH (tendon/tuberous)."
+    },
+    {
+      "questionId": "guideline-mcq:fanconi-syndrome#1",
+      "verdict": "Unsupported",
+      "reason": "The keyed 'three findings' threshold isn't supported. Published definitions of tenofovir-associated Fanconi syndrome usually require two or more markers of prox",
+      "notes": "The keyed 'three findings' threshold isn't supported. Published definitions of tenofovir-associated Fanconi syndrome usually require two or more markers of proximal tubulopathy, and the cited source gives no count."
+    },
+    {
+      "questionId": "cold-start-mcq:fever-in-returning-traveller#4",
+      "verdict": "Ambiguous",
+      "reason": "Splenomegaly with thrombocytopenia and no prophylaxis also fits P. vivax malaria, which must be excluded first. Fever, frontal headache, myalgia and thrombocyto",
+      "notes": "Splenomegaly with thrombocytopenia and no prophylaxis also fits P. vivax malaria, which must be excluded first. Fever, frontal headache, myalgia and thrombocytopenia at day 4 also fit dengue. 'Conjunctival injection' isn't the specific suffusion of leptospirosis."
+    },
+    {
+      "questionId": "guideline-mcq:renal-manifestations-of-systemic-disease#1",
+      "verdict": "Unsupported",
+      "reason": "Bartonellosis as the keyed cause of granulomatous interstitial nephritis in a transplant recipient isn't supported by the cited evidence, which is about rickett",
+      "notes": "Bartonellosis as the keyed cause of granulomatous interstitial nephritis in a transplant recipient isn't supported by the cited evidence, which is about rickettsiae and returning travellers. TB, adenovirus and drugs are more expected causes."
+    },
+    {
+      "questionId": "guideline-mcq:fever-in-returning-traveller#2",
+      "verdict": "Unsupported",
+      "reason": "The explanation attributes the claim to 'WHO 2024', but the evidence is a 2009 J Infect paper. It tests a research-gap statement, not a clinical fact.",
+      "notes": "The explanation attributes the claim to 'WHO 2024', but the evidence is a 2009 J Infect paper. It tests a research-gap statement, not a clinical fact."
+    },
+    {
+      "questionId": "guideline-mcq:fever-of-unknown-origin-fuo-classical-definition-systematic-investigation-common-causes#0",
+      "verdict": "Ambiguous",
+      "reason": "Ill-posed. The stem gives no inpatient stay or number of visits, and C is a sub-clause of D (the full criterion). Asking which criterion is 'not met' has no sin",
+      "notes": "Ill-posed. The stem gives no inpatient stay or number of visits, and C is a sub-clause of D (the full criterion). Asking which criterion is 'not met' has no single defensible answer."
+    },
+    {
+      "questionId": "guideline-mcq:fever-of-unknown-origin-fuo-classical-definition-systematic-investigation-common-causes#3",
+      "verdict": "Unsupported",
+      "reason": "The cited evidence doesn't support aortic dissection as a cause of FUO, which is mainly case reports. With back pain and fever, endocarditis or vertebral osteom",
+      "notes": "The cited evidence doesn't support aortic dissection as a cause of FUO, which is mainly case reports. With back pain and fever, endocarditis or vertebral osteomyelitis/discitis is far more expected."
+    },
+    {
+      "questionId": "guideline-mcq:aki-recovery-and-long-term-outcomes#2",
+      "verdict": "Unsupported",
+      "reason": "Extrapolates evidence for physiotherapist-delivered psychological interventions in chronic musculoskeletal pain to post-rhabdomyolysis recovery after AKI. The c",
+      "notes": "Extrapolates evidence for physiotherapist-delivered psychological interventions in chronic musculoskeletal pain to post-rhabdomyolysis recovery after AKI. The cited evidence doesn't address this."
+    },
+    {
+      "questionId": "paper-mcq:pharmacological-management-of-fibromyalgia-duloxetine-pregabalin-milnacipran#4",
+      "verdict": "Ambiguous",
+      "reason": "The duloxetine SmPC/FDA label for fibromyalgia says doses above 60 mg/day give no additional benefit and more adverse effects (item 226 keys 60 mg as the maximu",
+      "notes": "The duloxetine SmPC/FDA label for fibromyalgia says doses above 60 mg/day give no additional benefit and more adverse effects (item 226 keys 60 mg as the maximum). Adding pregabalin is an evidence-based alternative, so the keyed 'increase to 120 mg' is contestable."
+    },
+    {
+      "questionId": "guideline-mcq:fibromyalgia-syndrome#2",
+      "verdict": "Outdated",
+      "reason": "Withdrawn: the keyed answer is a 2012 research-gap statement ('drug-therapy guidelines should be developed') that does not answer the question; EULAR 2017 and t",
+      "notes": "Withdrawn: the keyed answer is a 2012 research-gap statement ('drug-therapy guidelines should be developed') that does not answer the question; EULAR 2017 and the German S3 2017 now give drug recommendations, and no option reflects them. Original note: The keyed answer ('reviews and guidelines for drug therapy should be developed') reflects a 2012 research-gap statement. It doesn't answer the question, and EULAR 2017 and the German S3 2017 now give drug recommendations (e.g. low-dose amitriptyline, duloxetine, pregabalin)."
+    },
+    {
+      "questionId": "guideline-mcq:first-seizure-work-up#0",
+      "verdict": "Ambiguous",
+      "reason": "In drug-resistant neonatal seizures, MRI is also a first-line priority alongside metabolic screening, and an afebrile neonate still needs infection excluded. Se",
+      "notes": "In drug-resistant neonatal seizures, MRI is also a first-line priority alongside metabolic screening, and an afebrile neonate still needs infection excluded. Several options are guideline-supported."
+    },
+    {
+      "questionId": "guideline-mcq:first-seizure-work-up#3",
+      "verdict": "Ambiguous",
+      "reason": "The keyed answer applies the adult EFNS first-seizure recommendation to a 6-year-old. Paediatric guidance (AAN/CNS; ILAE) says emergent or routine neuroimaging ",
+      "notes": "The keyed answer applies the adult EFNS first-seizure recommendation to a 6-year-old. Paediatric guidance (AAN/CNS; ILAE) says emergent or routine neuroimaging isn't required after a first unprovoked generalised seizure with a normal exam and recovery."
+    },
+    {
+      "questionId": "cold-start-mcq:first-seizure-work-up#1",
+      "verdict": "Ambiguous",
+      "reason": "After a new-onset seizure, IDSA advises CT before LP. All guidance says empirical antibiotics shouldn't be delayed for LP. 'LP first' is defensible under UK gui",
+      "notes": "After a new-onset seizure, IDSA advises CT before LP. All guidance says empirical antibiotics shouldn't be delayed for LP. 'LP first' is defensible under UK guidance (single seizure, now alert) but not universally."
+    },
+    {
+      "questionId": "cold-start-mcq:first-seizure-work-up#4",
+      "verdict": "Unsupported",
+      "reason": "Dravet syndrome (SCN1A) typically starts in the first year of life with fever-sensitive seizures. New-onset drug-resistant seizures at age 7 don't fit, and the ",
+      "notes": "Dravet syndrome (SCN1A) typically starts in the first year of life with fever-sensitive seizures. New-onset drug-resistant seizures at age 7 don't fit, and the 'most common' claim is unsupported by the cited evidence."
+    },
+    {
+      "questionId": "guideline-mcq:flexible-bronchoscopy#3",
+      "verdict": "Unsupported",
+      "reason": "Coagulation studies address bleeding risk, not pneumothorax. BTS guidance doesn't require routine coagulation tests without risk factors, and the cited source i",
+      "notes": "Coagulation studies address bleeding risk, not pneumothorax. BTS guidance doesn't require routine coagulation tests without risk factors, and the cited source is a paediatric review applied to an adult."
+    },
+    {
+      "questionId": "guideline-mcq:flow-cytometry-in-haematology#3",
+      "verdict": "Unsafe",
+      "reason": "The scenario treats CSF sampling as routine in newly diagnosed APL in a pregnant woman. ELN APL guidance advises against diagnostic lumbar puncture at presentat",
+      "notes": "The scenario treats CSF sampling as routine in newly diagnosed APL in a pregnant woman. ELN APL guidance advises against diagnostic lumbar puncture at presentation without CNS symptoms because of the coagulopathy and bleeding risk."
+    },
+    {
+      "questionId": "paper-mcq:intensive-care-high-yield-clinical-guidelines#2",
+      "verdict": "Unsupported",
+      "reason": "The explanation itself says it 'cannot be grounded' and is 'a placeholder'. The hypothetical trial result (more RRT with restrictive fluids) doesn't match CLASS",
+      "notes": "The explanation itself says it 'cannot be grounded' and is 'a placeholder'. The hypothetical trial result (more RRT with restrictive fluids) doesn't match CLASSIC (NEJM 2022), which found no difference."
+    },
+    {
+      "questionId": "guideline-mcq:focal-segmental-glomerulosclerosis#0",
+      "verdict": "Ambiguous",
+      "reason": "After 4 weeks of prednisolone with partial response, KDIGO 2021 and IPNA 2020 use a confirmation period (extended steroids \u00b1 IV methylprednisolone pulses, plus ",
+      "notes": "After 4 weeks of prednisolone with partial response, KDIGO 2021 and IPNA 2020 use a confirmation period (extended steroids \u00b1 IV methylprednisolone pulses, plus genetic testing) before labelling SRNS and starting a CNI. A or C is defensible."
+    },
+    {
+      "questionId": "cold-start-mcq:seizures#0",
+      "verdict": "Ambiguous",
+      "reason": "NICE NG217 (2022) names lamotrigine or levetiracetam as first-line for focal seizures, with carbamazepine/oxcarbazepine second-line. Lacosamide isn't first-line",
+      "notes": "NICE NG217 (2022) names lamotrigine or levetiracetam as first-line for focal seizures, with carbamazepine/oxcarbazepine second-line. Lacosamide isn't first-line and levetiracetam (D) is. The premise is contestable."
+    },
+    {
+      "questionId": "cold-start-mcq:folate-deficiency#1",
+      "verdict": "Ambiguous",
+      "reason": "An exclusively breastfed infant presenting at 9 months with failure to thrive, irritability and megaloblastic anaemia is the classic picture of infantile B12 de",
+      "notes": "An exclusively breastfed infant presenting at 9 months with failure to thrive, irritability and megaloblastic anaemia is the classic picture of infantile B12 deficiency from maternal deficiency. With only a 'recent' switch to goat's milk, B12 (C) is at least as likely as folate."
+    },
+    {
+      "questionId": "guideline-mcq:vitamin-b12-deficiency#2",
+      "verdict": "Unsupported",
+      "reason": "The 'WHO 2025: screen all pregnant women for B12 deficiency' claim isn't a recognised WHO recommendation. NICE NG239 (2024) recommends testing only when deficie",
+      "notes": "The 'WHO 2025: screen all pregnant women for B12 deficiency' claim isn't a recognised WHO recommendation. NICE NG239 (2024) recommends testing only when deficiency is suspected or risk factors exist, not universal antenatal screening."
+    },
+    {
+      "questionId": "guideline-mcq:vitamin-b12-and-folate-deficiency#0",
+      "verdict": "Unsupported",
+      "reason": "No recognised guideline recommends routine folate-deficiency screening of asymptomatic adolescent girls. The cited 'PloS one 2026' statement isn't a guideline.",
+      "notes": "No recognised guideline recommends routine folate-deficiency screening of asymptomatic adolescent girls. The cited 'PloS one 2026' statement isn't a guideline."
+    },
+    {
+      "questionId": "guideline-mcq:follicular-lymphoma#0",
+      "verdict": "Wrong answer",
+      "reason": "Withdrawn: CD20xCD3 bispecific antibodies are licensed only after two or more prior lines in follicular lymphoma, so they are not the answer at first relapse, a",
+      "notes": "Withdrawn: CD20xCD3 bispecific antibodies are licensed only after two or more prior lines in follicular lymphoma, so they are not the answer at first relapse, and no other option is an appropriate second-line choice. Original note: At first relapse after R-CHOP more than 24 months ago, standard second-line treatment is chemoimmunotherapy or lenalidomide-rituximab. CD20xCD3 bispecifics (mosunetuzumab, glofitamab, epcoritamab) are licensed only after 2 or more prior lines. No option is a correct second-line choice."
+    },
+    {
+      "questionId": "guideline-mcq:follicular-lymphoma-obinutuzumab-based-and-lenalidomide-rituximab-regimens#0",
+      "verdict": "Ambiguous",
+      "reason": "In a fit patient with advanced FL, both R-chemo then rituximab maintenance (A) and obinutuzumab-chemo then obinutuzumab maintenance (B; GALLIUM, NICE TA513 for ",
+      "notes": "In a fit patient with advanced FL, both R-chemo then rituximab maintenance (A) and obinutuzumab-chemo then obinutuzumab maintenance (B; GALLIUM, NICE TA513 for FLIPI >=2) are recommended first-line options."
+    },
+    {
+      "questionId": "cold-start-mcq:hyperuricaemia#2",
+      "verdict": "Unsupported",
+      "reason": "Frailty as a 'biological mediator that amplifies the hyperuricaemia-stroke association' is speculative. The cited evidence (frailty/tooth loss/CGA statements) d",
+      "notes": "Frailty as a 'biological mediator that amplifies the hyperuricaemia-stroke association' is speculative. The cited evidence (frailty/tooth loss/CGA statements) doesn't establish it."
+    },
+    {
+      "questionId": "paper-mcq:frailty-and-comprehensive-geriatric-assessment#2",
+      "verdict": "Unsupported",
+      "reason": "The explanation relies on Ellis et al (Cochrane 2017, inpatient CGA), which showed more people living at home but little or no effect on readmission. The keyed ",
+      "notes": "The explanation relies on Ellis et al (Cochrane 2017, inpatient CGA), which showed more people living at home but little or no effect on readmission. The keyed 'significant reduction in 6-month readmission' from ED CGA isn't supported."
+    },
+    {
+      "questionId": "cold-start-mcq:frontotemporal-dementia-behavioural-variant-semantic-dementia-pnfa#4",
+      "verdict": "Ambiguous",
+      "reason": "The stem asks which diagnosis to 'consider with caution', but the explanation describes PNFA as the classic fit. The intended answer and logic are unclear.",
+      "notes": "The stem asks which diagnosis to 'consider with caution', but the explanation describes PNFA as the classic fit. The intended answer and logic are unclear."
+    },
+    {
+      "questionId": "guideline-mcq:FSGS-sparsentan-and-supportive-therapy#0",
+      "verdict": "Unsupported",
+      "reason": "The key (sparsentan) is fine, but the explanation says it's used 'alongside ACE inhibitors/ARBs'. Sparsentan replaces RAAS blockade, and co-administration with ",
+      "notes": "The key (sparsentan) is fine, but the explanation says it's used 'alongside ACE inhibitors/ARBs'. Sparsentan replaces RAAS blockade, and co-administration with ACEi/ARB/aliskiren is contraindicated."
+    },
+    {
+      "questionId": "guideline-mcq:FSGS-sparsentan-and-supportive-therapy#1",
+      "verdict": "Unsafe",
+      "reason": "The keyed answer teaches ACE inhibitors/ARBs as an 'essential' add-on to sparsentan. The sparsentan SmPC/label contraindicates co-administration with ACEi, ARBs",
+      "notes": "The keyed answer teaches ACE inhibitors/ARBs as an 'essential' add-on to sparsentan. The sparsentan SmPC/label contraindicates co-administration with ACEi, ARBs or aliskiren (risk of hyperkalaemia, hypotension and AKI)."
+    },
+    {
+      "questionId": "guideline-mcq:Functional-neurological-disorder-treatment#1",
+      "verdict": "Unsafe",
+      "reason": "The keyed answer endorses benzodiazepines for acute control of functional/dissociative seizures. Guidance and expert consensus advise against benzodiazepines fo",
+      "notes": "The keyed answer endorses benzodiazepines for acute control of functional/dissociative seizures. Guidance and expert consensus advise against benzodiazepines for PNES because of iatrogenic harm (respiratory depression, dependence, reinforcement), and emergency rescue plans should avoid them once the diagnosis is secure."
+    },
+    {
+      "questionId": "guideline-mcq:g6pd-deficiency#0",
+      "verdict": "Ambiguous",
+      "reason": "During acute haemolysis, BSH and other guidance support repeating quantitative assay about 3 months later (D) or quantitative assay interpreted against the reti",
+      "notes": "During acute haemolysis, BSH and other guidance support repeating quantitative assay about 3 months later (D) or quantitative assay interpreted against the reticulocyte count. Genotyping (C) is also valid. More than one option is defensible."
+    },
+    {
+      "questionId": "guideline-mcq:gastric-and-gastroesophageal-junction-cancer#3",
+      "verdict": "Ambiguous",
+      "reason": "ASCO 2023 recommends ICI + chemotherapy for CPS >=5 and chemotherapy alone (B) is reasonable for CPS <5. Nivolumab + chemotherapy (C) is itself an ICI + fluorop",
+      "notes": "ASCO 2023 recommends ICI + chemotherapy for CPS >=5 and chemotherapy alone (B) is reasonable for CPS <5. Nivolumab + chemotherapy (C) is itself an ICI + fluoropyrimidine regimen, so C overlaps A."
+    },
+    {
+      "questionId": "guideline-mcq:mechanisms-of-chemotherapy#0",
+      "verdict": "Unsupported",
+      "reason": "No major guideline (NCCN, ESMO, NICE) recommends adding traditional Chinese medicine to chemotherapy for gastric cancer. The single 2025 review cited doesn't su",
+      "notes": "No major guideline (NCCN, ESMO, NICE) recommends adding traditional Chinese medicine to chemotherapy for gastric cancer. The single 2025 review cited doesn't support 'should be considered', and herb-drug interactions are a concern."
+    },
+    {
+      "questionId": "guideline-mcq:gastric-cancer#0",
+      "verdict": "Ambiguous",
+      "reason": "With locoregional, non-metastatic disease, MSI/dMMR status (D) is at least as decisive for initial (perioperative) systemic therapy as PD-L1 CPS. NCCN/ESMO reco",
+      "notes": "With locoregional, non-metastatic disease, MSI/dMMR status (D) is at least as decisive for initial (perioperative) systemic therapy as PD-L1 CPS. NCCN/ESMO recommend testing HER2, MSI/MMR, PD-L1 (and CLDN18.2) together."
+    },
+    {
+      "questionId": "guideline-mcq:gastroparesis#0",
+      "verdict": "Ambiguous",
+      "reason": "The keyed option says '4-hour retention of 10%', which sits exactly at the normal cut-off. Delayed emptying is defined as more than 10% retention at 4 hours, so",
+      "notes": "The keyed option says '4-hour retention of 10%', which sits exactly at the normal cut-off. Delayed emptying is defined as more than 10% retention at 4 hours, so as worded the key doesn't demonstrate gastroparesis."
+    },
+    {
+      "questionId": "cold-start-mcq:gestational-diabetes#0",
+      "verdict": "Unsupported",
+      "reason": "The explanation is empty, so there's no learner-facing rationale. The teaching point ('implementation determinants') is vague and isn't tied to the cited NICE s",
+      "notes": "The explanation is empty, so there's no learner-facing rationale. The teaching point ('implementation determinants') is vague and isn't tied to the cited NICE statements."
+    },
+    {
+      "questionId": "guideline-mcq:Gestational-diabetes-screening-and-treatment#0",
+      "verdict": "Ambiguous",
+      "reason": "The two-step 50 g GCT/100 g OGTT is one accepted US approach, but the one-step 75 g OGTT (D) is equally endorsed (ADA, IADPSG, WHO) and is the UK standard. NICE",
+      "notes": "The two-step 50 g GCT/100 g OGTT is one accepted US approach, but the one-step 75 g OGTT (D) is equally endorsed (ADA, IADPSG, WHO) and is the UK standard. NICE wouldn't screen this low-risk woman at all."
+    },
+    {
+      "questionId": "guideline-mcq:bariatric-surgery-in-type-2-diabetes#1",
+      "verdict": "Ambiguous",
+      "reason": "This woman has known type 2 diabetes, so she needs pre-existing diabetes care (booking HbA1c, glucose monitoring), not GDM testing. After Roux-en-Y bypass, an O",
+      "notes": "This woman has known type 2 diabetes, so she needs pre-existing diabetes care (booking HbA1c, glucose monitoring), not GDM testing. After Roux-en-Y bypass, an OGTT should be avoided because of dumping. The keyed answer is incomplete or contestable."
+    },
+    {
+      "questionId": "guideline-mcq:gestational-trophoblastic-neoplasia#2",
+      "verdict": "Ambiguous",
+      "reason": "Single-agent methotrexate for WHO score >=7 (B) and diagnostic D&C before chemotherapy (C) are also recognised critical pitfalls in high-risk GTN. More than one",
+      "notes": "Single-agent methotrexate for WHO score >=7 (B) and diagnostic D&C before chemotherapy (C) are also recognised critical pitfalls in high-risk GTN. More than one option is correct."
+    },
+    {
+      "questionId": "guideline-mcq:gestational-trophoblastic-neoplasia#3",
+      "verdict": "Outdated",
+      "reason": "Withdrawn: the keyed '6 months after normalisation' reflects older advice; FIGO 2021 recommends 3 monthly normal hCG values after normalisation following a comp",
+      "notes": "Withdrawn: the keyed '6 months after normalisation' reflects older advice; FIGO 2021 recommends 3 monthly normal hCG values after normalisation following a complete mole (UK practice ties duration to time to normalisation), and no option matches. Original note: FIGO 2021 shortened hCG follow-up after complete mole to 3 monthly normal values after normalisation, and UK practice ties duration to the time to normalisation. The keyed '6 months after normalisation' reflects older NCCN/ESMO advice, and no option matches current guidance."
+    }
+  ],
+  "corrections": [
+    {
+      "questionId": "cold-start-mcq:esbl-enterobacterales-bloodstream-infection-therapy#1",
+      "verdict": "Wrong answer",
+      "notes": "MERINO (JAMA 2018) did not show non-inferiority: 30-day mortality was 12.3% with pip-tazo vs 3.7% with meropenem. A carbapenem remains preferred definitive therapy for ceftriaxone-resistant E. coli/Klebsiella BSI (IDSA AMR guidance).",
+      "suggestedAnswer": "A",
+      "source": "MERINO trial (Harris et al, JAMA 2018); IDSA Guidance on treatment of antimicrobial-resistant Gram-negative infections (2024)",
+      "stemFix": null,
+      "newExplanation": "Ceftriaxone-resistant E. coli in the blood usually means an ESBL producer. In the MERINO trial, piperacillin-tazobactam failed to show non-inferiority to meropenem: 30-day mortality was 12.3% vs 3.7%. IDSA 2024 guidance therefore recommends a carbapenem, such as meropenem, as definitive therapy for ESBL bloodstream infection, even if the isolate tests susceptible to piperacillin-tazobactam. Cefepime and aztreonam are not reliable options. Source: MERINO trial (Harris et al, JAMA 2018); IDSA Guidance on treatment of antimicrobial-resistant Gram-negative infections (2024)"
+    },
+    {
+      "questionId": "guideline-mcq:factor-v-leiden-and-apc-resistance#3",
+      "verdict": "Wrong answer",
+      "notes": "RCOphth 2022 RVO guidance doesn't recommend thrombophilia screening when conventional vascular risk factors (hypertension, hyperlipidaemia) explain the occlusion in an older patient; testing is reserved for young patients without risk factors, bilateral RVO or thrombosis history.",
+      "suggestedAnswer": "A",
+      "source": "RCOphth Clinical Guidelines: Retinal Vein Occlusion (2022); BSH guideline on testing for heritable thrombophilia (Arachchillage et al, 2022)",
+      "stemFix": null,
+      "newExplanation": "In an older patient, retinal vein occlusion is mainly driven by conventional vascular risk factors such as hypertension, hyperlipidaemia, diabetes and glaucoma. RCOphth guidance does not recommend routine thrombophilia screening in this group. Testing is reserved for younger patients (under about 50), bilateral or recurrent occlusion, or a personal or family history of thrombosis. BSH 2022 also advises against untargeted heritable thrombophilia testing, because results rarely change management. Source: RCOphth Clinical Guidelines: Retinal Vein Occlusion (2022); BSH guideline on testing for heritable thrombophilia (Arachchillage et al, 2022)"
+    },
+    {
+      "questionId": "guideline-mcq:diabetes-prevention-lifestyle-and-metformin#3",
+      "verdict": "Wrong answer",
+      "notes": "NICE (2023 update) advises considering statins for primary prevention in adults aged 18-40 with type 1 diabetes, including those with diabetes for 10 years or less. 'Not indicated until 40 or 10 years' contradicts this.",
+      "suggestedAnswer": "A",
+      "source": "NICE NG238 Cardiovascular disease: risk assessment and reduction, including lipid modification (2023); NICE NG17 Type 1 diabetes in adults",
+      "stemFix": null,
+      "newExplanation": "NICE advises offering statins for primary prevention to adults with type 1 diabetes who are over 40, have had diabetes for more than 10 years, have nephropathy or have other CVD risk factors. Since the 2023 update, it also advises considering statins for people aged 18 to 40 with type 1 diabetes, including those who have had diabetes for 10 years or less. A 38-year-old with newly diagnosed type 1 diabetes should therefore have statins discussed and considered now, not deferred to age 40. Source: NICE NG238 Cardiovascular disease: risk assessment and reduction, including lipid modification (2023); NICE NG17 Type 1 diabetes in adults"
+    },
+    {
+      "questionId": "guideline-mcq:fibromyalgia-syndrome#1",
+      "verdict": "Outdated",
+      "notes": "The keyed option says 'while awaiting the development of specific guidelines' for JFMS, but the German interdisciplinary S3 guideline has included JFMS recommendations since 2012 (updated 2017). The management itself (MDT, psychological therapy, physiotherapy) is right.",
+      "suggestedAnswer": "C",
+      "source": "German interdisciplinary S3 guideline on fibromyalgia syndrome, including juvenile FMS (Draheim et al, Schmerz 2017); EULAR revised recommendations for fibromyalgia (2017)",
+      "stemFix": null,
+      "newExplanation": "Juvenile fibromyalgia syndrome is managed with a multidisciplinary approach: education, psychological therapy such as CBT, and graded exercise or physiotherapy, with the aim of restoring function and school attendance. The German interdisciplinary S3 guideline has included specific JFMS recommendations since 2012 (updated 2017). Opioids, extensive imaging and antibiotics are not indicated, and simple reassurance that she will grow out of it is not appropriate. Source: German interdisciplinary S3 guideline on fibromyalgia syndrome, including juvenile FMS (Draheim et al, Schmerz 2017); EULAR revised recommendations for fibromyalgia (2017)",
+      "optionEdits": [
+        {
+          "letter": "C",
+          "after": "Refer for multidisciplinary care, including psychological therapy (such as CBT) and physiotherapy with graded exercise, in line with guidance for juvenile fibromyalgia syndrome (JFMS)."
+        }
+      ]
+    },
+    {
+      "questionId": "guideline-mcq:uraemic-complications#1",
+      "verdict": "Wrong answer",
+      "notes": "Confusion, asterixis and myoclonus in a haemodialysis patient suggest uraemic (or drug-related) encephalopathy. The critical step is to optimise or intensify dialysis after excluding other causes, not to request a neurology consult.",
+      "suggestedAnswer": "A",
+      "source": "Brouns R, De Deyn PP. Neurological complications in renal failure: a review. Clin Neurol Neurosurg 2004; Lacerda G et al. Neurological complications of renal failure. Pract Neurol 2010",
+      "stemFix": null,
+      "newExplanation": "New confusion, asterixis and myoclonus in a patient on haemodialysis point to uraemic encephalopathy from inadequate dialysis. Accumulated renally cleared drugs, such as gabapentinoids, opioids or cefepime, can cause a similar picture. After checking for hypoglycaemia, electrolyte disturbance, infection and drug toxicity, the key step is to intensify dialysis, which usually reverses the encephalopathy. Neurology input can help if the picture is atypical, but it should not delay dialysis. Source: Brouns R, De Deyn PP. Neurological complications in renal failure: a review. Clin Neurol Neurosurg 2004; Lacerda G et al. Neurological complications of renal failure. Pract Neurol 2010"
+    },
+    {
+      "questionId": "cold-start-mcq:folate-deficiency#0",
+      "verdict": "Wrong answer",
+      "notes": "Homocysteine is raised in both folate and B12 deficiency, so it doesn't distinguish them. In megaloblastic anaemia, a normal serum cobalamin (with raised homocysteine but normal MMA) is what points to folate deficiency.",
+      "suggestedAnswer": "C",
+      "source": "BSH guideline for diagnosis and treatment of cobalamin and folate disorders (Devalia et al, Br J Haematol 2014)",
+      "stemFix": null,
+      "newExplanation": "Folate and cobalamin deficiency both cause megaloblastic anaemia and both raise homocysteine, so a raised homocysteine cannot tell them apart. Methylmalonic acid rises only in B12 deficiency, and anti-intrinsic factor antibodies point to pernicious anaemia. In a patient with megaloblastic anaemia, a normal serum cobalamin (ideally with a normal MMA) is what directs you towards folate deficiency, which is then confirmed with serum or red-cell folate. Source: BSH guideline for diagnosis and treatment of cobalamin and folate disorders (Devalia et al, Br J Haematol 2014)"
+    },
+    {
+      "questionId": "guideline-mcq:gastric-polyps#0",
+      "verdict": "Wrong answer",
+      "notes": "BSG (Gut 2010), ASGE and the AGA 2025 polyp update advise removing hyperplastic polyps over 1 cm because of dysplasia/neoplasia risk, and testing for and eradicating H. pylori. A 1.2 cm hyperplastic polyp should be resected, not left with 5-year follow-up.",
+      "suggestedAnswer": "B",
+      "source": "BSG guidelines for the management of gastric polyps (Goddard et al, Gut 2010); AGA Clinical Practice Update on management of gastric polyps (2025)",
+      "stemFix": null,
+      "newExplanation": "Gastric hyperplastic polyps carry a small risk of dysplasia and carcinoma, and the risk rises with size. BSG and AGA guidance advise endoscopic removal of hyperplastic polyps larger than 1 cm, or those that are pedunculated or symptomatic. The surrounding mucosa should be biopsied, and H. pylori should be tested for and eradicated if present. A 1.2 cm hyperplastic polyp should therefore be resected, for example by EMR or snare polypectomy, rather than left with only distant follow-up. Source: BSG guidelines for the management of gastric polyps (Goddard et al, Gut 2010); AGA Clinical Practice Update on management of gastric polyps (2025)"
+    },
+    {
+      "questionId": "guideline-mcq:gastroesophageal-reflux-disease#3",
+      "verdict": "Wrong answer",
+      "notes": "For uncomplicated GERD with sustained symptom control, AGA (2022 deprescribing update), ACG 2022 and NICE CG184 advise trying step-down or discontinuation (or on-demand use), with warning about rebound symptoms. Indefinite continuation is for complicated disease (severe oesophagitis, Barrett's).",
+      "suggestedAnswer": "B",
+      "source": "AGA Clinical Practice Update on deprescribing of proton pump inhibitors (Targownik et al, Gastroenterology 2022); NICE CG184 Dyspepsia and GORD",
+      "stemFix": null,
+      "newExplanation": "Patients with uncomplicated GERD whose symptoms are fully controlled should be offered an attempt to step down or stop PPI therapy, or to switch to on-demand use. Warn them that rebound acid hypersecretion can cause temporary symptoms, which can be managed by tapering. Long-term continuous PPI is recommended for complicated disease, such as severe (LA grade C/D) oesophagitis, Barrett's oesophagus or peptic stricture, none of which applies here. pH testing is not needed before a trial off treatment. Source: AGA Clinical Practice Update on deprescribing of proton pump inhibitors (Targownik et al, Gastroenterology 2022); NICE CG184 Dyspepsia and GORD"
+    }
+  ]
+}

@@ -45,8 +45,8 @@ describe('curated MCQ importer directory', () => {
 
     test('the repository\'s own batches all validate, so the import would accept every topic', async () => {
         const result = await run({ dir: path.join(__dirname, '../../data/curated-topic-mcqs') });
-        expect(result.files).toBe(7);
-        expect(result.topics).toBe(67);
-        expect(result.questions).toBe(1190);
+        expect(result.files).toBe(8);
+        expect(result.topics).toBe(145);
+        expect(result.questions).toBe(1435);
     });
 });

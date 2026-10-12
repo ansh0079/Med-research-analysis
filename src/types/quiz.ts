@@ -157,6 +157,8 @@ export interface QuizQuestion {
   options?: string[];
   /** Empty until the server grades a committed answer. */
   correctAnswer: string;
+  /** Select-all-that-apply: correctAnswer is a comma-joined letter set like "A,C". */
+  multiAnswer?: boolean;
   gradingToken?: string;
   explanation: string;
   explanationDeep?: string | null;
@@ -186,4 +188,6 @@ export interface QuizQuestion {
   promptVariant?: string | null;
   validationStatus?: 'llm_validated' | 'validation_skipped' | string;
   topic?: string;
+  /** Assigned topic and the close second topic, when the question is listed under both. */
+  applicableTopics?: string[] | null;
 }
