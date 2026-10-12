@@ -367,5 +367,43 @@ describe('applyMcqReviewEdits script', () => {
     const audit = await db.get('SELECT human_decision FROM question_audit WHERE object_key=?', [objectKey]);
     expect(audit).toBeUndefined();
   });
+
+  test('(i) contextual assignment can create a missing topic without clinical approval', async () => {
+    const db = require('../../database');
+    await setupDb(db);
+    const objectKey = 'cold-start-mcq:postpartum-haemorrhage';
+    const storedTopic = 'postpartum haemorrhage tranexamic acid maternal mortality';
+    const q0 = makeQuestion('Which risk factor increases postpartum haemorrhage risk?');
+    await db.run(
+      `INSERT INTO teaching_objects (object_key, object_type, topic, review_state, object_payload)
+       VALUES (?, 'cold_start_mcq', ?, 'unreviewed', ?)`,
+      [objectKey, storedTopic, JSON.stringify({ mcqs: [q0] })]
+    );
+    const hash = require('../../server/services/questionIndex/questionIndexService').questionHash(q0);
+    await db.run(
+      `INSERT INTO question_topic_index
+       (object_key, question_index, question_hash, object_type, assigned_curriculum_topic_id, assigned_topic_name,
+        assigned_cluster_id, category, classifier_version, classified_at, review_state)
+       VALUES (?, 0, ?, 'cold_start_mcq', 'old', 'Heavy menstrual bleeding', 'old', 'unclear', 'v', 'now', 'unreviewed')`,
+      [objectKey, hash]
+    );
+    const canonicalTopicName = 'Postpartum haemorrhage: prevention, risk assessment and treatment';
+    const dataPath = writeJsonTmp({
+      contextualTopicAssignments: [{
+        questionId: `${objectKey}#0`, expectedStoredTopic: storedTopic, canonicalTopicName,
+        notes: 'Question and source context support this catalogue placement.', createIfMissing: true,
+        block: 'Obstetrics and Gynaecology',
+      }],
+    });
+    process.argv = ['node', 'apply', '--data', dataPath, '--apply'];
+    const script = require('../../server/scripts/applyMcqReviewEdits.js');
+    const summary = await script.run();
+    expect(summary.contextualTopicAssignments).toMatchObject({ requested: 1, resolved: 1, created: 1, unresolved: [] });
+    await db.connect();
+    const idx = await db.get('SELECT assigned_topic_name, category, review_state FROM question_topic_index WHERE object_key=? AND question_index=0', [objectKey]);
+    expect(idx).toMatchObject({ assigned_topic_name: canonicalTopicName, category: 'aligned', review_state: 'unreviewed' });
+    const audit = await db.get('SELECT human_decision FROM question_audit WHERE object_key=?', [objectKey]);
+    expect(audit).toBeUndefined();
+  });
 });
 

@@ -33,6 +33,8 @@
  * objects to an existing canonical topic and records the stored wording as an alias. It preserves review state.
  * Optional "canonicalTopicAssignments": [{ questionId, expectedStoredTopic, canonicalTopicName, notes }] repairs an
  * indexed question only when the stored topic already resolves to that canonical topic through the topic catalogue.
+ * Optional "contextualTopicAssignments": [{ questionId, expectedStoredTopic, canonicalTopicName, notes,
+ * createIfMissing, block }] records an evidence/context-reviewed catalogue decision without changing clinical review.
  * --dry-run performs no writes.
  *
  * Idempotent: running --apply twice makes no further changes.
@@ -520,6 +522,59 @@ async function applyCanonicalTopicAssignment(parsed, expectedStoredTopic, canoni
     return { resolved: true, details: 'catalogue_resolved' };
 }
 
+async function applyContextualTopicAssignment(parsed, item, { apply }) {
+    const row = await db.get(
+        `SELECT i.category, i.review_state, t.topic AS stored_topic
+         FROM question_topic_index i JOIN teaching_objects t ON t.object_key=i.object_key
+         WHERE i.object_key=? AND i.question_index=?`,
+        [parsed.objectKey, parsed.index]
+    ).catch(() => null);
+    if (!row) return { resolved: false, details: 'index_row_not_found' };
+    if (row.review_state === 'retired' || row.category === 'unassignable') return { resolved: false, details: 'retired_or_unassignable' };
+    if (normalizeComparableTopic(row.stored_topic) !== normalizeComparableTopic(item.expectedStoredTopic)) {
+        return { resolved: false, details: 'stored_topic_guard_failed' };
+    }
+    const canonicalName = String(item.canonicalTopicName || '').trim();
+    let topic = await db.get(
+        'SELECT id, display_name FROM curriculum_topics WHERE LOWER(display_name)=LOWER(?)', [canonicalName]
+    ).catch(() => null);
+    let created = false;
+    if (!topic && item.createIfMissing) {
+        if (!apply) return { resolved: true, details: 'would_create_topic', created: true };
+        if (typeof db.upsertCurriculumSeedTopic !== 'function') return { resolved: false, details: 'topic_create_unavailable' };
+        await db.upsertCurriculumSeedTopic({
+            displayName: canonicalName, suggestedQuery: canonicalName,
+            block: String(item.block || 'General Medicine'), sortOrder: 3000,
+            priority: 'medium', volatility: 'moderate', seedStatus: 'not_seeded',
+        });
+        topic = await db.get(
+            'SELECT id, display_name FROM curriculum_topics WHERE LOWER(display_name)=LOWER(?)', [canonicalName]
+        ).catch(() => null);
+        created = Boolean(topic);
+    }
+    if (!topic) return { resolved: false, details: 'canonical_topic_not_found' };
+    if (!String(item.notes || '').trim()) return { resolved: false, details: 'review_notes_required' };
+    if (apply) {
+        const cluster = await db.get(
+            'SELECT cluster_id FROM topic_cluster_index WHERE CAST(curriculum_topic_id AS TEXT)=?', [String(topic.id)]
+        ).catch(() => null);
+        const now = new Date().toISOString();
+        await db.run(
+            `UPDATE question_topic_index SET assigned_curriculum_topic_id=?, assigned_topic_name=?,
+             assigned_cluster_id=?, category='aligned', review_notes=?, reviewed_at=?
+             WHERE object_key=? AND question_index=?`,
+            [String(topic.id), topic.display_name, cluster?.cluster_id || String(topic.id),
+                String(item.notes).trim(), now, parsed.objectKey, parsed.index]
+        );
+        await db.run(
+            `UPDATE question_work_queue SET status='repaired', completed_at=?, updated_at=?
+             WHERE object_key=? AND question_index=? AND cohort='topic_repair'`,
+            [now, now, parsed.objectKey, parsed.index]
+        ).catch(() => null);
+    }
+    return { resolved: true, details: created ? 'topic_created' : 'context_assigned', created };
+}
+
 async function run() {
     const { dataPath, apply } = parseArgs();
     const raw = JSON.parse(fs.readFileSync(path.resolve(dataPath), 'utf8'));
@@ -529,6 +584,7 @@ async function run() {
     const catalogAlignments = Array.isArray(raw.catalogAlignments) ? raw.catalogAlignments : [];
     const curatedTopicMappings = Array.isArray(raw.curatedTopicMappings) ? raw.curatedTopicMappings : [];
     const canonicalTopicAssignments = Array.isArray(raw.canonicalTopicAssignments) ? raw.canonicalTopicAssignments : [];
+    const contextualTopicAssignments = Array.isArray(raw.contextualTopicAssignments) ? raw.contextualTopicAssignments : [];
 
     await db.connect();
     await db.runMigrations();
@@ -612,6 +668,16 @@ async function run() {
         else canonicalUnresolved.push({ questionId: item.questionId, canonicalTopicName: item.canonicalTopicName, why: result.details });
     }
 
+    const contextualUnresolved = [];
+    let contextualResolved = 0, contextualCreated = 0;
+    for (const item of contextualTopicAssignments) {
+        const parsed = parseQuestionId(item.questionId);
+        if (!parsed) { contextualUnresolved.push({ questionId: item.questionId, why: 'bad_id' }); continue; }
+        const result = await applyContextualTopicAssignment(parsed, item, { apply });
+        if (result.resolved) { contextualResolved += 1; if (result.created) contextualCreated += 1; }
+        else contextualUnresolved.push({ questionId: item.questionId, canonicalTopicName: item.canonicalTopicName, why: result.details });
+    }
+
     const summary = {
         ok: true,
         mode: apply ? 'apply' : 'dry-run',
@@ -621,13 +687,14 @@ async function run() {
         catalogAlignments: { requested: catalogAlignments.length, resolved: catalogResolved, unresolved: catalogUnresolved },
         curatedTopicMappings: { requested: curatedTopicMappings.length, resolved: curatedResolved, objects: curatedObjects, questions: curatedQuestions, unresolved: curatedUnresolved },
         canonicalTopicAssignments: { requested: canonicalTopicAssignments.length, resolved: canonicalResolved, unresolved: canonicalUnresolved },
+        contextualTopicAssignments: { requested: contextualTopicAssignments.length, resolved: contextualResolved, created: contextualCreated, unresolved: contextualUnresolved },
         missingIds,
     };
     console.log(JSON.stringify(summary, null, 2));
 
     await db.close();
-    if (missingIds.length || topicUnresolved.length || catalogUnresolved.length || curatedUnresolved.length || canonicalUnresolved.length) {
-        throw new Error(`Review import incomplete: ${missingIds.length} missing question(s), ${topicUnresolved.length} unresolved topic assignment(s), ${catalogUnresolved.length} unresolved catalogue alignment(s), ${curatedUnresolved.length} unresolved curated topic mapping(s), ${canonicalUnresolved.length} unresolved canonical topic assignment(s)`);
+    if (missingIds.length || topicUnresolved.length || catalogUnresolved.length || curatedUnresolved.length || canonicalUnresolved.length || contextualUnresolved.length) {
+        throw new Error(`Review import incomplete: ${missingIds.length} missing question(s), ${topicUnresolved.length} unresolved topic assignment(s), ${catalogUnresolved.length} unresolved catalogue alignment(s), ${curatedUnresolved.length} unresolved curated topic mapping(s), ${canonicalUnresolved.length} unresolved canonical topic assignment(s), ${contextualUnresolved.length} unresolved contextual topic assignment(s)`);
     }
     return summary;
 }
