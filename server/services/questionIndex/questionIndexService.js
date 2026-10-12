@@ -359,7 +359,7 @@ async function writeIndex(db, built, { now = new Date().toISOString() } = {}) {
             evidence_guideline_ids, evidence_paper_uids, secondary_curriculum_topic_id, secondary_topic_name, secondary_cluster_id,
             secondary_similarity, secondary_guideline_support, dual_link_reason,
             classifier_version, classified_at
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         ON CONFLICT (object_key, question_index) DO UPDATE SET
             question_hash = excluded.question_hash, object_type = excluded.object_type,
             original_topic = excluded.original_topic, original_curriculum_topic_id = excluded.original_curriculum_topic_id,

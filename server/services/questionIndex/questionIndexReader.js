@@ -91,16 +91,27 @@ async function loadAlignedForCluster(db, clusterId, { limit = 60 } = {}) {
     if (!clusterId) return [];
     try {
         const withdrawn = await loadWithdrawnOverrides(db);
-        const rows = await db.all(
-            `SELECT * FROM question_topic_index
-             WHERE (
-                (assigned_cluster_id = ? AND category = 'aligned')
-                OR
-                (category = 'dual_linked' AND (assigned_cluster_id = ? OR secondary_cluster_id = ?))
-             )
-             LIMIT ?`,
-            [clusterId, clusterId, clusterId, limit],
-        );
+        let rows;
+        try {
+            rows = await db.all(
+                `SELECT * FROM question_topic_index
+                 WHERE (
+                    (assigned_cluster_id = ? AND category = 'aligned')
+                    OR
+                    (category = 'dual_linked' AND (assigned_cluster_id = ? OR secondary_cluster_id = ?))
+                 )
+                 LIMIT ?`,
+                [clusterId, clusterId, clusterId, limit],
+            );
+        } catch (err) {
+            // Backwards-compatible fallback for databases without dual-link columns (pre-migration 111).
+            rows = await db.all(
+                `SELECT * FROM question_topic_index
+                 WHERE assigned_cluster_id = ? AND category = 'aligned'
+                 LIMIT ?`,
+                [clusterId, limit],
+            );
+        }
         const byObject = new Map();
         for (const r of rows) {
             if (r.review_state === 'retired') continue;
