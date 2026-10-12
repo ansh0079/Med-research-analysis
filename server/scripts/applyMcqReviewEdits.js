@@ -31,6 +31,8 @@
  * review_state and does not create a human approval.
  * Optional "curatedTopicMappings": [{ storedTopic, canonicalTopicName, notes }] links all matching curated_topic_mcq
  * objects to an existing canonical topic and records the stored wording as an alias. It preserves review state.
+ * Optional "canonicalTopicAssignments": [{ questionId, expectedStoredTopic, canonicalTopicName, notes }] repairs an
+ * indexed question only when the stored topic already resolves to that canonical topic through the topic catalogue.
  * --dry-run performs no writes.
  *
  * Idempotent: running --apply twice makes no further changes.
@@ -471,6 +473,53 @@ async function applyCuratedTopicMapping(storedTopic, canonicalTopicName, notes, 
     return { resolved: true, details: 'mapped', objects: objects.length, questions, notes: notes || null };
 }
 
+async function applyCanonicalTopicAssignment(parsed, expectedStoredTopic, canonicalTopicName, notes, { apply }) {
+    const row = await db.get(
+        `SELECT i.category, i.review_state, t.topic AS stored_topic
+         FROM question_topic_index i
+         JOIN teaching_objects t ON t.object_key=i.object_key
+         WHERE i.object_key=? AND i.question_index=?`,
+        [parsed.objectKey, parsed.index]
+    ).catch(() => null);
+    if (!row) return { resolved: false, details: 'index_row_not_found' };
+    if (row.review_state === 'retired' || row.category === 'unassignable') return { resolved: false, details: 'retired_or_unassignable' };
+    if (normalizeComparableTopic(row.stored_topic) !== normalizeComparableTopic(expectedStoredTopic)) {
+        return { resolved: false, details: 'stored_topic_guard_failed' };
+    }
+    const topic = await db.get(
+        'SELECT id, display_name FROM curriculum_topics WHERE LOWER(display_name)=LOWER(?)',
+        [String(canonicalTopicName || '').trim()]
+    ).catch(() => null);
+    if (!topic) return { resolved: false, details: 'canonical_topic_not_found' };
+    const resolvedId = typeof db.resolveCurriculumTopicId === 'function'
+        ? await db.resolveCurriculumTopicId(row.stored_topic).catch(() => null)
+        : null;
+    const exactDisplayMatch = normalizeComparableTopic(row.stored_topic) === normalizeComparableTopic(topic.display_name);
+    if ((!resolvedId || String(resolvedId) !== String(topic.id)) && !exactDisplayMatch) {
+        return { resolved: false, details: 'catalogue_resolution_guard_failed' };
+    }
+    if (apply) {
+        const cluster = await db.get(
+            'SELECT cluster_id FROM topic_cluster_index WHERE CAST(curriculum_topic_id AS TEXT)=?',
+            [String(topic.id)]
+        ).catch(() => null);
+        const now = new Date().toISOString();
+        await db.run(
+            `UPDATE question_topic_index SET assigned_curriculum_topic_id=?, assigned_topic_name=?,
+             assigned_cluster_id=?, category='aligned', review_notes=?, reviewed_at=?
+             WHERE object_key=? AND question_index=?`,
+            [String(topic.id), topic.display_name, cluster?.cluster_id || String(topic.id),
+                notes || 'Stored topic resolved through the canonical topic catalogue.', now, parsed.objectKey, parsed.index]
+        );
+        await db.run(
+            `UPDATE question_work_queue SET status='repaired', completed_at=?, updated_at=?
+             WHERE object_key=? AND question_index=? AND cohort='topic_repair'`,
+            [now, now, parsed.objectKey, parsed.index]
+        ).catch(() => null);
+    }
+    return { resolved: true, details: 'catalogue_resolved' };
+}
+
 async function run() {
     const { dataPath, apply } = parseArgs();
     const raw = JSON.parse(fs.readFileSync(path.resolve(dataPath), 'utf8'));
@@ -479,6 +528,7 @@ async function run() {
     const topicAssignments = Array.isArray(raw.topicAssignments) ? raw.topicAssignments : [];
     const catalogAlignments = Array.isArray(raw.catalogAlignments) ? raw.catalogAlignments : [];
     const curatedTopicMappings = Array.isArray(raw.curatedTopicMappings) ? raw.curatedTopicMappings : [];
+    const canonicalTopicAssignments = Array.isArray(raw.canonicalTopicAssignments) ? raw.canonicalTopicAssignments : [];
 
     await db.connect();
     await db.runMigrations();
@@ -550,6 +600,18 @@ async function run() {
         } else curatedUnresolved.push({ storedTopic: item.storedTopic, canonicalTopicName: item.canonicalTopicName, why: result.details });
     }
 
+    const canonicalUnresolved = [];
+    let canonicalResolved = 0;
+    for (const item of canonicalTopicAssignments) {
+        const parsed = parseQuestionId(item.questionId);
+        if (!parsed) { canonicalUnresolved.push({ questionId: item.questionId, why: 'bad_id' }); continue; }
+        const result = await applyCanonicalTopicAssignment(
+            parsed, item.expectedStoredTopic, item.canonicalTopicName, item.notes, { apply }
+        );
+        if (result.resolved) canonicalResolved += 1;
+        else canonicalUnresolved.push({ questionId: item.questionId, canonicalTopicName: item.canonicalTopicName, why: result.details });
+    }
+
     const summary = {
         ok: true,
         mode: apply ? 'apply' : 'dry-run',
@@ -558,13 +620,14 @@ async function run() {
         topicAssignments: { requested: topicAssignments.length, resolved: tResolved, created: tCreated, unresolved: topicUnresolved },
         catalogAlignments: { requested: catalogAlignments.length, resolved: catalogResolved, unresolved: catalogUnresolved },
         curatedTopicMappings: { requested: curatedTopicMappings.length, resolved: curatedResolved, objects: curatedObjects, questions: curatedQuestions, unresolved: curatedUnresolved },
+        canonicalTopicAssignments: { requested: canonicalTopicAssignments.length, resolved: canonicalResolved, unresolved: canonicalUnresolved },
         missingIds,
     };
     console.log(JSON.stringify(summary, null, 2));
 
     await db.close();
-    if (missingIds.length || topicUnresolved.length || catalogUnresolved.length || curatedUnresolved.length) {
-        throw new Error(`Review import incomplete: ${missingIds.length} missing question(s), ${topicUnresolved.length} unresolved topic assignment(s), ${catalogUnresolved.length} unresolved catalogue alignment(s), ${curatedUnresolved.length} unresolved curated topic mapping(s)`);
+    if (missingIds.length || topicUnresolved.length || catalogUnresolved.length || curatedUnresolved.length || canonicalUnresolved.length) {
+        throw new Error(`Review import incomplete: ${missingIds.length} missing question(s), ${topicUnresolved.length} unresolved topic assignment(s), ${catalogUnresolved.length} unresolved catalogue alignment(s), ${curatedUnresolved.length} unresolved curated topic mapping(s), ${canonicalUnresolved.length} unresolved canonical topic assignment(s)`);
     }
     return summary;
 }

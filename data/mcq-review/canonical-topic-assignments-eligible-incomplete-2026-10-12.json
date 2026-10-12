@@ -1,0 +1,2823 @@
+{
+  "withdrawals": [],
+  "corrections": [],
+  "topicAssignments": [],
+  "catalogAlignments": [],
+  "curatedTopicMappings": [],
+  "canonicalTopicAssignments": [
+    {
+      "questionId": "cold-start-mcq:abnormal-uterine-bleeding#1",
+      "expectedStoredTopic": "abnormal uterine bleeding",
+      "canonicalTopicName": "abnormal uterine bleeding",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:abnormal-uterine-bleeding#2",
+      "expectedStoredTopic": "abnormal uterine bleeding",
+      "canonicalTopicName": "abnormal uterine bleeding",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:abnormal-uterine-bleeding#3",
+      "expectedStoredTopic": "abnormal uterine bleeding",
+      "canonicalTopicName": "abnormal uterine bleeding",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:acute-abdomen#1",
+      "expectedStoredTopic": "acute abdomen",
+      "canonicalTopicName": "acute abdomen",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:acute-asthma-exacerbation#0",
+      "expectedStoredTopic": "acute asthma exacerbation",
+      "canonicalTopicName": "acute asthma exacerbation",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:acute-asthma-exacerbation#2",
+      "expectedStoredTopic": "acute asthma exacerbation",
+      "canonicalTopicName": "acute asthma exacerbation",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:acute-behavioural-disturbance#0",
+      "expectedStoredTopic": "acute behavioural disturbance",
+      "canonicalTopicName": "acute behavioural disturbance",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:acute-behavioural-disturbance#2",
+      "expectedStoredTopic": "acute behavioural disturbance",
+      "canonicalTopicName": "acute behavioural disturbance",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:acute-confusion#4",
+      "expectedStoredTopic": "acute confusion",
+      "canonicalTopicName": "acute confusion",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:acute-confusional-states#1",
+      "expectedStoredTopic": "acute confusional states",
+      "canonicalTopicName": "acute confusional states",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:acute-confusional-states#2",
+      "expectedStoredTopic": "acute confusional states",
+      "canonicalTopicName": "acute confusional states",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:acute-confusional-states#3",
+      "expectedStoredTopic": "acute confusional states",
+      "canonicalTopicName": "acute confusional states",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:acute-ischemic-stroke-reperfusion#2",
+      "expectedStoredTopic": "acute ischemic stroke reperfusion",
+      "canonicalTopicName": "Acute ischemic stroke reperfusion",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:acute-liver-failure#3",
+      "expectedStoredTopic": "acute liver failure",
+      "canonicalTopicName": "Acute liver failure: management and prognostic criteria",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:acute-liver-failure#4",
+      "expectedStoredTopic": "acute liver failure",
+      "canonicalTopicName": "Acute liver failure: management and prognostic criteria",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:acute-thrombolysis#0",
+      "expectedStoredTopic": "acute thrombolysis",
+      "canonicalTopicName": "acute thrombolysis",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:acute-thrombolysis#3",
+      "expectedStoredTopic": "acute thrombolysis",
+      "canonicalTopicName": "acute thrombolysis",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:advanced-melanoma-immunotherapy#1",
+      "expectedStoredTopic": "advanced melanoma immunotherapy",
+      "canonicalTopicName": "Advanced melanoma immunotherapy",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:airway-management#1",
+      "expectedStoredTopic": "airway management",
+      "canonicalTopicName": "airway management",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:airway-management#4",
+      "expectedStoredTopic": "airway management",
+      "canonicalTopicName": "airway management",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:anxiety-disorder#0",
+      "expectedStoredTopic": "anxiety disorder",
+      "canonicalTopicName": "anxiety disorder",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:appendicitis#1",
+      "expectedStoredTopic": "appendicitis",
+      "canonicalTopicName": "Appendicitis",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:ascites#4",
+      "expectedStoredTopic": "ascites",
+      "canonicalTopicName": "ascites",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:atrial-fibrillation-anticoagulation#1",
+      "expectedStoredTopic": "atrial fibrillation anticoagulation",
+      "canonicalTopicName": "Atrial fibrillation anticoagulation",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:bladder-cancer#2",
+      "expectedStoredTopic": "bladder cancer",
+      "canonicalTopicName": "Bladder Cancer",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:bowel-cancer#0",
+      "expectedStoredTopic": "bowel cancer",
+      "canonicalTopicName": "bowel cancer",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:bowel-cancer#4",
+      "expectedStoredTopic": "bowel cancer",
+      "canonicalTopicName": "bowel cancer",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:bowel-obstruction#2",
+      "expectedStoredTopic": "bowel obstruction",
+      "canonicalTopicName": "bowel obstruction",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:cancer-genetics-and-hereditary-syndromes#3",
+      "expectedStoredTopic": "cancer genetics and hereditary syndromes",
+      "canonicalTopicName": "Cancer Genetics and Hereditary Syndromes",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:cardiac-arrest#3",
+      "expectedStoredTopic": "cardiac arrest",
+      "canonicalTopicName": "cardiac arrest",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:cardiovascular-risk-modification#2",
+      "expectedStoredTopic": "cardiovascular risk modification",
+      "canonicalTopicName": "cardiovascular risk modification",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:cellulitis#3",
+      "expectedStoredTopic": "cellulitis",
+      "canonicalTopicName": "Cellulitis and skin and soft tissue infections: Eron classification, MRSA risk, treatment duration",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:chest-pain-ed#2",
+      "expectedStoredTopic": "chest pain ED",
+      "canonicalTopicName": "chest pain ED",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:childhood-asthma#1",
+      "expectedStoredTopic": "childhood asthma",
+      "canonicalTopicName": "childhood asthma",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:chronic-abdominal-pain#0",
+      "expectedStoredTopic": "chronic abdominal pain",
+      "canonicalTopicName": "chronic abdominal pain",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:cluster-headache#2",
+      "expectedStoredTopic": "cluster headache",
+      "canonicalTopicName": "Cluster headache: high-flow oxygen, triptan rescue, verapamil prophylaxis",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:coagulation-disorders#0",
+      "expectedStoredTopic": "coagulation disorders",
+      "canonicalTopicName": "coagulation disorders",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:collapse#0",
+      "expectedStoredTopic": "collapse",
+      "canonicalTopicName": "collapse",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:collapse#4",
+      "expectedStoredTopic": "collapse",
+      "canonicalTopicName": "collapse",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:colorectal-cancer#1",
+      "expectedStoredTopic": "colorectal cancer",
+      "canonicalTopicName": "Colorectal cancer adjuvant chemotherapy",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:colorectal-cancer#2",
+      "expectedStoredTopic": "colorectal cancer",
+      "canonicalTopicName": "Colorectal cancer adjuvant chemotherapy",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:colorectal-cancer#3",
+      "expectedStoredTopic": "colorectal cancer",
+      "canonicalTopicName": "Colorectal cancer adjuvant chemotherapy",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:copd-management#0",
+      "expectedStoredTopic": "COPD management",
+      "canonicalTopicName": "COPD management",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:crohns-disease#4",
+      "expectedStoredTopic": "Crohn's disease",
+      "canonicalTopicName": "Inflammatory bowel disease biologic therapy",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:deep-vein-thrombosis#1",
+      "expectedStoredTopic": "deep vein thrombosis",
+      "canonicalTopicName": "deep vein thrombosis",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:dementia#2",
+      "expectedStoredTopic": "dementia",
+      "canonicalTopicName": "Dementia: behavioural and psychological symptoms management",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:dementia#4",
+      "expectedStoredTopic": "dementia",
+      "canonicalTopicName": "Dementia: behavioural and psychological symptoms management",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:depression#0",
+      "expectedStoredTopic": "depression",
+      "canonicalTopicName": "Depression: diagnosis, pharmacotherapy and monitoring",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:device-related-infections#0",
+      "expectedStoredTopic": "device-related infections",
+      "canonicalTopicName": "device-related infections",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:electrolyte-disturbances#1",
+      "expectedStoredTopic": "electrolyte disturbances",
+      "canonicalTopicName": "electrolyte disturbances",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:electrolyte-disturbances#3",
+      "expectedStoredTopic": "electrolyte disturbances",
+      "canonicalTopicName": "electrolyte disturbances",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:empirical-antibiotic-selection-in-sepsis-source-control-cultures-before-antibiotics-de-escalation#2",
+      "expectedStoredTopic": "empirical antibiotic selection in sepsis source control cultures before antibiotics de-escalation",
+      "canonicalTopicName": "Empirical antibiotic selection in sepsis: source control, cultures before antibiotics, de-escalation",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:epilepsy#2",
+      "expectedStoredTopic": "epilepsy",
+      "canonicalTopicName": "epilepsy",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:epilepsy#3",
+      "expectedStoredTopic": "epilepsy",
+      "canonicalTopicName": "epilepsy",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:fever-in-returning-traveller#0",
+      "expectedStoredTopic": "fever in returning traveller",
+      "canonicalTopicName": "fever in returning traveller",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:gastroenteritis#3",
+      "expectedStoredTopic": "gastroenteritis",
+      "canonicalTopicName": "gastroenteritis",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:gestational-diabetes#0",
+      "expectedStoredTopic": "gestational diabetes",
+      "canonicalTopicName": "gestational diabetes",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:haematological-malignancy#3",
+      "expectedStoredTopic": "haematological malignancy",
+      "canonicalTopicName": "haematological malignancy",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:heart-failure#2",
+      "expectedStoredTopic": "heart failure",
+      "canonicalTopicName": "Heart failure",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:heart-failure-with-preserved-ejection-fraction-hfpef-diagnosis-and-emerging-therapies#2",
+      "expectedStoredTopic": "heart failure with preserved ejection fraction hfpef diagnosis and emerging therapies",
+      "canonicalTopicName": "Heart failure with preserved ejection fraction",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:hepatitis-management#2",
+      "expectedStoredTopic": "hepatitis management",
+      "canonicalTopicName": "hepatitis management",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:hodgkin-lymphoma#0",
+      "expectedStoredTopic": "hodgkin lymphoma",
+      "canonicalTopicName": "Hodgkin Lymphoma",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:hormone-replacement-therapy#4",
+      "expectedStoredTopic": "hormone replacement therapy",
+      "canonicalTopicName": "hormone replacement therapy",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:hyperglycaemic-hyperosmolar-state#2",
+      "expectedStoredTopic": "hyperglycaemic hyperosmolar state",
+      "canonicalTopicName": "hyperglycaemic hyperosmolar state",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:hypertension#0",
+      "expectedStoredTopic": "hypertension",
+      "canonicalTopicName": "Hypertension",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:hyperthyroidism#1",
+      "expectedStoredTopic": "hyperthyroidism",
+      "canonicalTopicName": "Hyperthyroidism: Graves disease vs toxic nodular goitre, TSH receptor antibodies",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:hyperuricaemia#4",
+      "expectedStoredTopic": "hyperuricaemia",
+      "canonicalTopicName": "hyperuricaemia",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:hyponatraemia#3",
+      "expectedStoredTopic": "hyponatraemia",
+      "canonicalTopicName": "Hyponatraemia",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:hypothyroidism#4",
+      "expectedStoredTopic": "hypothyroidism",
+      "canonicalTopicName": "Hypothyroidism: TSH targets, levothyroxine dosing, subclinical hypothyroidism management",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:immunocompromised-patient-in-the-icu-neutropenic-sepsis-pcp-invasive-fungal#2",
+      "expectedStoredTopic": "immunocompromised patient in the icu neutropenic sepsis pcp invasive fungal",
+      "canonicalTopicName": "Immunocompromised patient in the ICU: neutropenic sepsis, PCP, invasive fungal",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:infective-endocarditis#4",
+      "expectedStoredTopic": "infective endocarditis",
+      "canonicalTopicName": "Infective endocarditis: Duke criteria, empiric antibiotics, surgical indications",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:inflammatory-bowel-disease#3",
+      "expectedStoredTopic": "inflammatory bowel disease",
+      "canonicalTopicName": "inflammatory bowel disease",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:inflammatory-bowel-disease-biologic-therapy#0",
+      "expectedStoredTopic": "inflammatory bowel disease biologic therapy",
+      "canonicalTopicName": "Inflammatory bowel disease biologic therapy",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:inotrope-use#4",
+      "expectedStoredTopic": "inotrope use",
+      "canonicalTopicName": "inotrope use",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:ischaemic-stroke#3",
+      "expectedStoredTopic": "ischaemic stroke",
+      "canonicalTopicName": "ischaemic stroke",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:low-back-pain#3",
+      "expectedStoredTopic": "low back pain",
+      "canonicalTopicName": "low back pain",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:lung-cancer#0",
+      "expectedStoredTopic": "lung cancer",
+      "canonicalTopicName": "lung cancer",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:lung-cancer#2",
+      "expectedStoredTopic": "lung cancer",
+      "canonicalTopicName": "lung cancer",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:lung-cancer#4",
+      "expectedStoredTopic": "lung cancer",
+      "canonicalTopicName": "lung cancer",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:lupus-nephritis-induction-and-maintenance-therapy#3",
+      "expectedStoredTopic": "lupus nephritis induction and maintenance therapy",
+      "canonicalTopicName": "Lupus nephritis induction and maintenance therapy",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:lymphoma#3",
+      "expectedStoredTopic": "lymphoma",
+      "canonicalTopicName": "lymphoma",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:malaria#0",
+      "expectedStoredTopic": "malaria",
+      "canonicalTopicName": "Malaria: P. falciparum vs non-falciparum, artemisinin-based therapy, severe malaria, quinine",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:malaria#1",
+      "expectedStoredTopic": "malaria",
+      "canonicalTopicName": "Malaria: P. falciparum vs non-falciparum, artemisinin-based therapy, severe malaria, quinine",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:malaria#3",
+      "expectedStoredTopic": "malaria",
+      "canonicalTopicName": "Malaria: P. falciparum vs non-falciparum, artemisinin-based therapy, severe malaria, quinine",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:masld#0",
+      "expectedStoredTopic": "MASLD",
+      "canonicalTopicName": "MASLD",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:masld#1",
+      "expectedStoredTopic": "MASLD",
+      "canonicalTopicName": "MASLD",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:masld#4",
+      "expectedStoredTopic": "MASLD",
+      "canonicalTopicName": "MASLD",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:menopause#0",
+      "expectedStoredTopic": "menopause",
+      "canonicalTopicName": "Menopause and hormone replacement therapy: evidence and guidance",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:menopause#1",
+      "expectedStoredTopic": "menopause",
+      "canonicalTopicName": "Menopause and hormone replacement therapy: evidence and guidance",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:metformin-and-glycemic-legacy-in-type-2-diabetes#2",
+      "expectedStoredTopic": "metformin and glycemic legacy in type 2 diabetes",
+      "canonicalTopicName": "Metformin and glycemic legacy in type 2 diabetes",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:ms-initial-presentation#1",
+      "expectedStoredTopic": "MS initial presentation",
+      "canonicalTopicName": "MS initial presentation",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:ms-initial-presentation#2",
+      "expectedStoredTopic": "MS initial presentation",
+      "canonicalTopicName": "MS initial presentation",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:nash#3",
+      "expectedStoredTopic": "NASH",
+      "canonicalTopicName": "NASH",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:neutropenic-sepsis#0",
+      "expectedStoredTopic": "neutropenic sepsis",
+      "canonicalTopicName": "Neutropenic Sepsis",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:new-airway-devices#2",
+      "expectedStoredTopic": "new airway devices",
+      "canonicalTopicName": "new airway devices",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:non-alcoholic-fatty-liver-disease#0",
+      "expectedStoredTopic": "non-alcoholic fatty liver disease",
+      "canonicalTopicName": "non-alcoholic fatty liver disease",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:non-alcoholic-fatty-liver-disease#1",
+      "expectedStoredTopic": "non-alcoholic fatty liver disease",
+      "canonicalTopicName": "non-alcoholic fatty liver disease",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:obstructive-sleep-apnoea#1",
+      "expectedStoredTopic": "obstructive sleep apnoea",
+      "canonicalTopicName": "obstructive sleep apnoea",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:osteoarthritis-hand#2",
+      "expectedStoredTopic": "osteoarthritis hand",
+      "canonicalTopicName": "osteoarthritis hand",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:osteoarthritis-knee#3",
+      "expectedStoredTopic": "osteoarthritis knee",
+      "canonicalTopicName": "osteoarthritis knee",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:osteoporosis#1",
+      "expectedStoredTopic": "osteoporosis",
+      "canonicalTopicName": "Osteoporosis fracture prevention pharmacotherapy",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:pancreatitis-complications#0",
+      "expectedStoredTopic": "pancreatitis complications",
+      "canonicalTopicName": "pancreatitis complications",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:pancreatitis-complications#2",
+      "expectedStoredTopic": "pancreatitis complications",
+      "canonicalTopicName": "pancreatitis complications",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:pancreatitis-complications#4",
+      "expectedStoredTopic": "pancreatitis complications",
+      "canonicalTopicName": "pancreatitis complications",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:pelvic-inflammatory-disease#0",
+      "expectedStoredTopic": "pelvic inflammatory disease",
+      "canonicalTopicName": "Pelvic inflammatory disease: diagnosis and treatment",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:pelvic-inflammatory-disease#4",
+      "expectedStoredTopic": "pelvic inflammatory disease",
+      "canonicalTopicName": "Pelvic inflammatory disease: diagnosis and treatment",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:peptic-ulcer-disease#3",
+      "expectedStoredTopic": "peptic ulcer disease",
+      "canonicalTopicName": "Peptic Ulcer Disease",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:peripheral-arterial-disease#4",
+      "expectedStoredTopic": "peripheral arterial disease",
+      "canonicalTopicName": "peripheral arterial disease",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:peripheral-neuropathy#4",
+      "expectedStoredTopic": "peripheral neuropathy",
+      "canonicalTopicName": "peripheral neuropathy",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:portal-hypertension#1",
+      "expectedStoredTopic": "portal hypertension",
+      "canonicalTopicName": "portal hypertension",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:post-operative-respiratory-failure#2",
+      "expectedStoredTopic": "post-operative respiratory failure",
+      "canonicalTopicName": "post-operative respiratory failure",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:postural-hypotension#0",
+      "expectedStoredTopic": "postural hypotension",
+      "canonicalTopicName": "postural hypotension",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:postural-hypotension#1",
+      "expectedStoredTopic": "postural hypotension",
+      "canonicalTopicName": "postural hypotension",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:postural-hypotension#2",
+      "expectedStoredTopic": "postural hypotension",
+      "canonicalTopicName": "postural hypotension",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:psoriatic-arthritis#4",
+      "expectedStoredTopic": "psoriatic arthritis",
+      "canonicalTopicName": "Psoriatic arthritis: CASPAR criteria, peripheral and axial patterns, enthesitis, dactylitis",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:pulmonary-tuberculosis#1",
+      "expectedStoredTopic": "pulmonary tuberculosis",
+      "canonicalTopicName": "Pulmonary Tuberculosis",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:radiculopathy#4",
+      "expectedStoredTopic": "radiculopathy",
+      "canonicalTopicName": "radiculopathy",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:recurrent-chest-infections#3",
+      "expectedStoredTopic": "recurrent chest infections",
+      "canonicalTopicName": "recurrent chest infections",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:red-flags-back-pain#4",
+      "expectedStoredTopic": "red flags back pain",
+      "canonicalTopicName": "red flags back pain",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:relapse-prevention#0",
+      "expectedStoredTopic": "relapse prevention",
+      "canonicalTopicName": "relapse prevention",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:respiratory-tract-infections#2",
+      "expectedStoredTopic": "respiratory tract infections",
+      "canonicalTopicName": "respiratory tract infections",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:respiratory-tract-infections#3",
+      "expectedStoredTopic": "respiratory tract infections",
+      "canonicalTopicName": "respiratory tract infections",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:safeguarding#0",
+      "expectedStoredTopic": "safeguarding",
+      "canonicalTopicName": "safeguarding",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:safeguarding#1",
+      "expectedStoredTopic": "safeguarding",
+      "canonicalTopicName": "safeguarding",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:secondary-care-mental-health#3",
+      "expectedStoredTopic": "secondary care mental health",
+      "canonicalTopicName": "secondary care mental health",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:sedation-safety#2",
+      "expectedStoredTopic": "sedation safety",
+      "canonicalTopicName": "sedation safety",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:sedation-safety#3",
+      "expectedStoredTopic": "sedation safety",
+      "canonicalTopicName": "sedation safety",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:seizures#1",
+      "expectedStoredTopic": "seizures",
+      "canonicalTopicName": "seizures",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:seizures#2",
+      "expectedStoredTopic": "seizures",
+      "canonicalTopicName": "seizures",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:sepsis-and-septic-shock#1",
+      "expectedStoredTopic": "sepsis and septic shock",
+      "canonicalTopicName": "Sepsis and septic shock",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:sepsis-bundle#3",
+      "expectedStoredTopic": "sepsis bundle",
+      "canonicalTopicName": "sepsis bundle",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:sexually-transmitted-infections#3",
+      "expectedStoredTopic": "sexually transmitted infections",
+      "canonicalTopicName": "Sexually transmitted infections: gonorrhoea, chlamydia, syphilis: diagnostic tests and treatment",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:shortness-of-breath#4",
+      "expectedStoredTopic": "shortness of breath",
+      "canonicalTopicName": "shortness of breath",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:sleep-apnoea-and-cardiovascular-disease-cpap-af-risk-hypertension-arrhythmia#4",
+      "expectedStoredTopic": "sleep apnoea and cardiovascular disease cpap af risk hypertension arrhythmia",
+      "canonicalTopicName": "Sleep apnoea and cardiovascular disease: CPAP, AF risk, hypertension, arrhythmia",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:source-control-in-sepsis-timing-and-surgical-indications#2",
+      "expectedStoredTopic": "source control in sepsis timing and surgical indications",
+      "canonicalTopicName": "Source control in sepsis: timing and surgical indications",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:stroke#1",
+      "expectedStoredTopic": "stroke",
+      "canonicalTopicName": "stroke",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:systemic-lupus-erythematosus#4",
+      "expectedStoredTopic": "systemic lupus erythematosus",
+      "canonicalTopicName": "Systemic Lupus Erythematosus",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:thrombectomy-criteria#2",
+      "expectedStoredTopic": "thrombectomy criteria",
+      "canonicalTopicName": "thrombectomy criteria",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:thrombectomy-criteria#3",
+      "expectedStoredTopic": "thrombectomy criteria",
+      "canonicalTopicName": "thrombectomy criteria",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:thrombectomy-criteria#4",
+      "expectedStoredTopic": "thrombectomy criteria",
+      "canonicalTopicName": "thrombectomy criteria",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:thyroid-disease#3",
+      "expectedStoredTopic": "thyroid disease",
+      "canonicalTopicName": "Thyroid disease and cardiovascular haemodynamics: AF in thyrotoxicosis, hypothyroid HF",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:trauma-resuscitation#0",
+      "expectedStoredTopic": "trauma resuscitation",
+      "canonicalTopicName": "trauma resuscitation",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:trauma-resuscitation#1",
+      "expectedStoredTopic": "trauma resuscitation",
+      "canonicalTopicName": "trauma resuscitation",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:tuberculosis#2",
+      "expectedStoredTopic": "tuberculosis",
+      "canonicalTopicName": "Tuberculosis: active vs latent TB, Mantoux, IGRA, NICE guidance, contact tracing",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:tuberculosis#4",
+      "expectedStoredTopic": "tuberculosis",
+      "canonicalTopicName": "Tuberculosis: active vs latent TB, Mantoux, IGRA, NICE guidance, contact tracing",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:type-1-diabetes-management#0",
+      "expectedStoredTopic": "type 1 diabetes management",
+      "canonicalTopicName": "type 1 diabetes management",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:upper-gi-bleeding#3",
+      "expectedStoredTopic": "upper GI bleeding",
+      "canonicalTopicName": "Upper gastrointestinal bleeding management",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:uterine-fibroids#0",
+      "expectedStoredTopic": "uterine fibroids",
+      "canonicalTopicName": "uterine fibroids",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:uterine-fibroids#1",
+      "expectedStoredTopic": "uterine fibroids",
+      "canonicalTopicName": "uterine fibroids",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:viral-hepatitis-b#2",
+      "expectedStoredTopic": "viral hepatitis B",
+      "canonicalTopicName": "viral hepatitis B",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:withdrawal-syndrome#0",
+      "expectedStoredTopic": "withdrawal syndrome",
+      "canonicalTopicName": "withdrawal syndrome",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:Achalasia-endoscopic-and-surgical-therapy#2",
+      "expectedStoredTopic": "Achalasia endoscopic and surgical therapy",
+      "canonicalTopicName": "Achalasia endoscopic and surgical therapy",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:acute-bacterial-meningitis-empiric-therapy-and-dexamethasone#4",
+      "expectedStoredTopic": "Acute bacterial meningitis empiric therapy and dexamethasone",
+      "canonicalTopicName": "Acute bacterial meningitis empiric therapy and dexamethasone",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:Acute-ischemic-stroke-reperfusion#1",
+      "expectedStoredTopic": "Acute ischemic stroke reperfusion",
+      "canonicalTopicName": "Acute ischemic stroke reperfusion",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:acute-myocarditis-diagnosis-and-management#2",
+      "expectedStoredTopic": "Acute myocarditis diagnosis and management",
+      "canonicalTopicName": "Acute myocarditis diagnosis and management",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:acute-severe-asthma#1",
+      "expectedStoredTopic": "Acute severe asthma",
+      "canonicalTopicName": "Acute severe asthma",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:acute-severe-asthma#3",
+      "expectedStoredTopic": "Acute severe asthma",
+      "canonicalTopicName": "Acute severe asthma",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:acute-thrombolysis#1",
+      "expectedStoredTopic": "acute thrombolysis",
+      "canonicalTopicName": "acute thrombolysis",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:acute-thrombolysis#2",
+      "expectedStoredTopic": "acute thrombolysis",
+      "canonicalTopicName": "acute thrombolysis",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:acute-thrombolysis#4",
+      "expectedStoredTopic": "acute thrombolysis",
+      "canonicalTopicName": "acute thrombolysis",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:Advanced-melanoma-immunotherapy#2",
+      "expectedStoredTopic": "Advanced melanoma immunotherapy",
+      "canonicalTopicName": "Advanced melanoma immunotherapy",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:airway-obstruction-in-malignancy#2",
+      "expectedStoredTopic": "Airway Obstruction in Malignancy",
+      "canonicalTopicName": "Airway Obstruction in Malignancy",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:allogeneic-stem-cell-transplantation#1",
+      "expectedStoredTopic": "Allogeneic Stem Cell Transplantation",
+      "canonicalTopicName": "Allogeneic Stem Cell Transplantation",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:alpha-1-antitrypsin-deficiency#1",
+      "expectedStoredTopic": "Alpha-1 Antitrypsin Deficiency",
+      "canonicalTopicName": "Alpha-1 Antitrypsin Deficiency",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:anticoagulation-reversal#0",
+      "expectedStoredTopic": "anticoagulation reversal",
+      "canonicalTopicName": "anticoagulation reversal",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:antiepileptic-drug-toxicity-cutaneous-reactions-cognitive-effects-interactions#3",
+      "expectedStoredTopic": "Antiepileptic drug toxicity: cutaneous reactions, cognitive effects, interactions",
+      "canonicalTopicName": "Antiepileptic drug toxicity: cutaneous reactions, cognitive effects, interactions",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:antifungal-agents-azoles-echinocandins-polyenes-mechanisms-spectrum-drug-interactions#3",
+      "expectedStoredTopic": "Antifungal agents: azoles, echinocandins, polyenes: mechanisms, spectrum, drug interactions",
+      "canonicalTopicName": "Antifungal agents: azoles, echinocandins, polyenes: mechanisms, spectrum, drug interactions",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:antimicrobial-stewardship-iv-to-oral-switch-duration-of-therapy-procalcitonin-guided-therapy#1",
+      "expectedStoredTopic": "Antimicrobial stewardship: IV to oral switch, duration of therapy, procalcitonin-guided therapy",
+      "canonicalTopicName": "Antimicrobial stewardship: IV to oral switch, duration of therapy, procalcitonin-guided therapy",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:ards#0",
+      "expectedStoredTopic": "ARDS",
+      "canonicalTopicName": "ARDS",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:ARDS#0",
+      "expectedStoredTopic": "ARDS",
+      "canonicalTopicName": "ARDS",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:ards-berlin-definition-lung-protective-ventilation#3",
+      "expectedStoredTopic": "ARDS: Berlin definition, lung-protective ventilation",
+      "canonicalTopicName": "ARDS",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:ards-epidemiology-and-global-burden-lung-safe-study#3",
+      "expectedStoredTopic": "ARDS epidemiology and global burden (LUNG SAFE study)",
+      "canonicalTopicName": "ARDS epidemiology and global burden (LUNG SAFE study)",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:aspiration-pneumonia#0",
+      "expectedStoredTopic": "Aspiration Pneumonia",
+      "canonicalTopicName": "Aspiration Pneumonia",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:aspiration-pneumonia#2",
+      "expectedStoredTopic": "Aspiration Pneumonia",
+      "canonicalTopicName": "Aspiration Pneumonia",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:aspirin-for-primary-cardiovascular-prevention#1",
+      "expectedStoredTopic": "Aspirin for primary cardiovascular prevention",
+      "canonicalTopicName": "Aspirin for primary cardiovascular prevention",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:aspirin-for-primary-cardiovascular-prevention#2",
+      "expectedStoredTopic": "Aspirin for primary cardiovascular prevention",
+      "canonicalTopicName": "Aspirin for primary cardiovascular prevention",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:asthma-stepwise-therapy#2",
+      "expectedStoredTopic": "asthma stepwise therapy",
+      "canonicalTopicName": "asthma stepwise therapy",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:atrial-fibrillation#1",
+      "expectedStoredTopic": "atrial fibrillation",
+      "canonicalTopicName": "atrial fibrillation",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:atrial-fibrillation-anticoagulation#1",
+      "expectedStoredTopic": "Atrial fibrillation anticoagulation",
+      "canonicalTopicName": "Atrial fibrillation anticoagulation",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:benign-lung-tumors#3",
+      "expectedStoredTopic": "Benign lung tumors",
+      "canonicalTopicName": "Benign lung tumors",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:calcium-hydroxyapatite-deposition-disease#2",
+      "expectedStoredTopic": "Calcium Hydroxyapatite Deposition Disease",
+      "canonicalTopicName": "Calcium Hydroxyapatite Deposition Disease",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:candidemia-and-invasive-fungal-infections-in-the-icu#0",
+      "expectedStoredTopic": "Candidemia and invasive fungal infections in the ICU",
+      "canonicalTopicName": "Candidemia and invasive fungal infections in the ICU",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:carcinoid-tumours-and-small-bowel-neuroendocrine-tumours#2",
+      "expectedStoredTopic": "Carcinoid Tumours and Small Bowel Neuroendocrine Tumours",
+      "canonicalTopicName": "Carcinoid Tumours and Small Bowel Neuroendocrine Tumours",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:cardiac-tamponade-becks-triad-pericardiocentesis-surgical-drainage#1",
+      "expectedStoredTopic": "Cardiac tamponade: Beck's triad, pericardiocentesis, surgical drainage",
+      "canonicalTopicName": "Cardiac tamponade: Beck's triad, pericardiocentesis, surgical drainage",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:cardiogenic-shock-intra-aortic-balloon-pump-and-revascularization#3",
+      "expectedStoredTopic": "Cardiogenic shock: intra-aortic balloon pump and revascularization",
+      "canonicalTopicName": "Cardiogenic shock: intra-aortic balloon pump and revascularization",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:cellulitis-and-skin-and-soft-tissue-infections-eron-classification-mrsa-risk-treatment-duration#3",
+      "expectedStoredTopic": "Cellulitis and skin and soft tissue infections: Eron classification, MRSA risk, treatment duration",
+      "canonicalTopicName": "Cellulitis and skin and soft tissue infections: Eron classification, MRSA risk, treatment duration",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:chronic-allograft-dysfunction#1",
+      "expectedStoredTopic": "Chronic Allograft Dysfunction",
+      "canonicalTopicName": "Chronic Allograft Dysfunction",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:ckd-cardiovascular-risk-management#3",
+      "expectedStoredTopic": "CKD Cardiovascular Risk Management",
+      "canonicalTopicName": "CKD Cardiovascular Risk Management",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:colonic-polyp-management#0",
+      "expectedStoredTopic": "Colonic Polyp Management",
+      "canonicalTopicName": "Colonic Polyp Management",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:colonic-polyp-management#2",
+      "expectedStoredTopic": "Colonic Polyp Management",
+      "canonicalTopicName": "Colonic Polyp Management",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:colorectal-cancer-screening-and-surveillance#2",
+      "expectedStoredTopic": "Colorectal Cancer screening and surveillance",
+      "canonicalTopicName": "Colorectal cancer adjuvant chemotherapy",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:colorectal-cancer-treatment#0",
+      "expectedStoredTopic": "Colorectal Cancer Treatment",
+      "canonicalTopicName": "Colorectal cancer adjuvant chemotherapy",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:common-variable-immunodeficiency-diagnosis-and-infection-prevention#2",
+      "expectedStoredTopic": "Common variable immunodeficiency diagnosis and infection prevention",
+      "canonicalTopicName": "Common variable immunodeficiency diagnosis and infection prevention",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:conservative-versus-liberal-fluid-strategy-in-ards-factt-trial#2",
+      "expectedStoredTopic": "Conservative versus liberal fluid strategy in ARDS (FACTT trial)",
+      "canonicalTopicName": "Conservative versus liberal fluid strategy in ARDS (FACTT trial)",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:constipation-and-pelvic-floor-disorders#1",
+      "expectedStoredTopic": "Constipation and Pelvic Floor Disorders",
+      "canonicalTopicName": "Constipation and Pelvic Floor Disorders",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:continuous-glucose-monitoring-in-diabetes#3",
+      "expectedStoredTopic": "Continuous glucose monitoring in diabetes",
+      "canonicalTopicName": "Continuous glucose monitoring in diabetes",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:continuous-renal-replacement-therapy#1",
+      "expectedStoredTopic": "Continuous Renal Replacement Therapy",
+      "canonicalTopicName": "Continuous Renal Replacement Therapy",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:Contrast-associated-acute-kidney-injury-prevention#2",
+      "expectedStoredTopic": "Contrast-associated acute kidney injury prevention",
+      "canonicalTopicName": "Contrast-associated acute kidney injury prevention",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:coronary-angiography-timing-after-cardiac-arrest#1",
+      "expectedStoredTopic": "Coronary angiography timing after cardiac arrest",
+      "canonicalTopicName": "Coronary angiography timing after cardiac arrest",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:dementia-with-lewy-bodies-dlb-core-features-neuroleptic-sensitivity-management#3",
+      "expectedStoredTopic": "Dementia with Lewy Bodies (DLB): core features, neuroleptic sensitivity management",
+      "canonicalTopicName": "Dementia with Lewy Bodies (DLB): core features, neuroleptic sensitivity management",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:diabetes-prevention-lifestyle-and-metformin#0",
+      "expectedStoredTopic": "Diabetes prevention lifestyle and metformin",
+      "canonicalTopicName": "Diabetes prevention lifestyle and metformin",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:diabetes-prevention-lifestyle-and-metformin#2",
+      "expectedStoredTopic": "Diabetes prevention lifestyle and metformin",
+      "canonicalTopicName": "Diabetes prevention lifestyle and metformin",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:diagnostic-colonoscopy#2",
+      "expectedStoredTopic": "Diagnostic Colonoscopy",
+      "canonicalTopicName": "Diagnostic Colonoscopy",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:diagnostic-colonoscopy#3",
+      "expectedStoredTopic": "Diagnostic Colonoscopy",
+      "canonicalTopicName": "Diagnostic Colonoscopy",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:diagnostic-upper-gi-endoscopy#2",
+      "expectedStoredTopic": "Diagnostic Upper GI Endoscopy",
+      "canonicalTopicName": "Diagnostic Upper GI Endoscopy",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:drug-dosing-in-renal-impairment#3",
+      "expectedStoredTopic": "Drug Dosing in Renal Impairment",
+      "canonicalTopicName": "Drug Dosing in Renal Impairment",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:drug-induced-acute-interstitial-nephritis#2",
+      "expectedStoredTopic": "Drug-induced acute interstitial nephritis",
+      "canonicalTopicName": "Drug-induced acute interstitial nephritis",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:drug-induced-aki-and-nephrotoxins#2",
+      "expectedStoredTopic": "Drug-Induced AKI and Nephrotoxins",
+      "canonicalTopicName": "Drug-Induced AKI and Nephrotoxins",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:duodenal-pathology#2",
+      "expectedStoredTopic": "Duodenal Pathology",
+      "canonicalTopicName": "Duodenal Pathology",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:dyslipidaemia-ldl-targets-statin-intensification-pcsk9-inhibitors#1",
+      "expectedStoredTopic": "Dyslipidaemia: LDL targets, statin intensification, PCSK9 inhibitors",
+      "canonicalTopicName": "Dyslipidaemia: LDL targets, statin intensification, PCSK9 inhibitors",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:early-mobilization-and-physical-rehabilitation-in-icu#1",
+      "expectedStoredTopic": "Early mobilization and physical rehabilitation in ICU",
+      "canonicalTopicName": "Early mobilization and physical rehabilitation in ICU",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:early-mobilization-and-physical-rehabilitation-in-icu#3",
+      "expectedStoredTopic": "Early mobilization and physical rehabilitation in ICU",
+      "canonicalTopicName": "Early mobilization and physical rehabilitation in ICU",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:early-pregnancy-bleeding#0",
+      "expectedStoredTopic": "early pregnancy bleeding",
+      "canonicalTopicName": "early pregnancy bleeding",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:empirical-antibiotic-selection-in-sepsis-source-control-cultures-before-antibiotics-de-escalation#2",
+      "expectedStoredTopic": "Empirical antibiotic selection in sepsis: source control, cultures before antibiotics, de-escalation",
+      "canonicalTopicName": "Empirical antibiotic selection in sepsis: source control, cultures before antibiotics, de-escalation",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:endemic-mycoses#0",
+      "expectedStoredTopic": "Endemic Mycoses",
+      "canonicalTopicName": "Endemic Mycoses",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:eular-recommendations-2022-for-ra-management-updated-treat-to-target-algorithm#3",
+      "expectedStoredTopic": "EULAR recommendations 2022 for RA management: updated treat-to-target algorithm",
+      "canonicalTopicName": "EULAR recommendations 2022 for RA management: updated treat-to-target algorithm",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:faecal-incontinence#1",
+      "expectedStoredTopic": "Faecal Incontinence",
+      "canonicalTopicName": "Faecal Incontinence",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:fanconi-anaemia-and-dyskeratosis-congenita#2",
+      "expectedStoredTopic": "Fanconi Anaemia and Dyskeratosis Congenita",
+      "canonicalTopicName": "Fanconi Anaemia and Dyskeratosis Congenita",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:fever-in-returning-traveller#3",
+      "expectedStoredTopic": "fever in returning traveller",
+      "canonicalTopicName": "fever in returning traveller",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:first-seizure-work-up#1",
+      "expectedStoredTopic": "first seizure work-up",
+      "canonicalTopicName": "first seizure work-up",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:focal-vs-generalised-epilepsy-syndromes-anticonvulsant-choice-optimization#3",
+      "expectedStoredTopic": "Focal vs generalised epilepsy syndromes: anticonvulsant choice optimization",
+      "canonicalTopicName": "Focal vs generalised epilepsy syndromes: anticonvulsant choice optimization",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:functional-neurological-disorder-treatment#0",
+      "expectedStoredTopic": "Functional neurological disorder treatment",
+      "canonicalTopicName": "Functional neurological disorder treatment",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:functional-neurological-disorder-treatment#1",
+      "expectedStoredTopic": "Functional neurological disorder treatment",
+      "canonicalTopicName": "Functional neurological disorder treatment",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:gastric-cancer#1",
+      "expectedStoredTopic": "Gastric Cancer",
+      "canonicalTopicName": "Gastric Cancer",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:gestational-diabetes-screening-and-treatment#3",
+      "expectedStoredTopic": "Gestational diabetes screening and treatment",
+      "canonicalTopicName": "Gestational diabetes screening and treatment",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:gold-copd-strategies#1",
+      "expectedStoredTopic": "GOLD COPD strategies",
+      "canonicalTopicName": "GOLD COPD strategies",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:gut-microbiome-in-gi-disease#1",
+      "expectedStoredTopic": "Gut Microbiome in GI Disease",
+      "canonicalTopicName": "Gut Microbiome in GI Disease",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:gut-microbiome-in-gi-disease#3",
+      "expectedStoredTopic": "Gut Microbiome in GI Disease",
+      "canonicalTopicName": "Gut Microbiome in GI Disease",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:gynaecomastia-causes-drug-induced-physiological-investigation-management#2",
+      "expectedStoredTopic": "Gynaecomastia: causes, drug-induced, physiological, investigation, management",
+      "canonicalTopicName": "Gynaecomastia: causes, drug-induced, physiological, investigation, management",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:haematuria-evaluation-and-causes#1",
+      "expectedStoredTopic": "Haematuria: Evaluation and Causes",
+      "canonicalTopicName": "Haematuria: Evaluation and Causes",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:heart-failure-with-preserved-ejection-fraction#1",
+      "expectedStoredTopic": "Heart failure with preserved ejection fraction",
+      "canonicalTopicName": "Heart failure with preserved ejection fraction",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:Hemodialysis-adequacy-and-frequency#2",
+      "expectedStoredTopic": "Hemodialysis adequacy and frequency",
+      "canonicalTopicName": "Hemodialysis adequacy and frequency",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:hepatocellular-carcinoma#3",
+      "expectedStoredTopic": "Hepatocellular Carcinoma",
+      "canonicalTopicName": "Hepatocellular Carcinoma",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:high-frequency-oscillatory-ventilation-and-lung-recruitment-in-severe-ards#2",
+      "expectedStoredTopic": "High-frequency oscillatory ventilation and lung recruitment in severe ARDS",
+      "canonicalTopicName": "High-frequency oscillatory ventilation and lung recruitment in severe ARDS",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:Hyponatremia-diagnosis-and-correction#0",
+      "expectedStoredTopic": "Hyponatremia diagnosis and correction",
+      "canonicalTopicName": "Hyponatremia diagnosis and correction",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:icu-admission-criteria-and-triage#1",
+      "expectedStoredTopic": "ICU admission criteria and triage",
+      "canonicalTopicName": "ICU admission criteria and triage",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:infectious-diarrhoea-campylobacter-salmonella-stec-o157-norovirus-antibiotic-indications#0",
+      "expectedStoredTopic": "Infectious diarrhoea: Campylobacter, Salmonella, STEC O157, norovirus, antibiotic indications",
+      "canonicalTopicName": "Infectious diarrhoea: Campylobacter, Salmonella, STEC O157, norovirus, antibiotic indications",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:inflammatory-vs-mechanical-back-pain-red-flags-mri-indications-as-vs-degenerative#3",
+      "expectedStoredTopic": "Inflammatory vs mechanical back pain: red flags, MRI indications, AS vs degenerative",
+      "canonicalTopicName": "Inflammatory vs mechanical back pain: red flags, MRI indications, AS vs degenerative",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:influenza-antiviral-treatment#3",
+      "expectedStoredTopic": "Influenza antiviral treatment",
+      "canonicalTopicName": "Influenza antiviral treatment",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:interstitial-nephritis-acute-and-chronic#0",
+      "expectedStoredTopic": "Interstitial Nephritis: Acute and Chronic",
+      "canonicalTopicName": "Interstitial Nephritis: Acute and Chronic",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:interstitial-nephritis-acute-and-chronic#2",
+      "expectedStoredTopic": "Interstitial Nephritis: Acute and Chronic",
+      "canonicalTopicName": "Interstitial Nephritis: Acute and Chronic",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:intestinal-pseudo-obstruction#2",
+      "expectedStoredTopic": "Intestinal Pseudo-obstruction",
+      "canonicalTopicName": "Intestinal Pseudo-obstruction",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:intra-articular-injections-in-oa-corticosteroids-hyaluronic-acid-prp-evidence-review#1",
+      "expectedStoredTopic": "Intra-articular injections in OA: corticosteroids, hyaluronic acid, PRP: evidence review",
+      "canonicalTopicName": "Intra-articular injections in OA: corticosteroids, hyaluronic acid, PRP: evidence review",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:intrinsic-acute-kidney-injury#3",
+      "expectedStoredTopic": "intrinsic acute kidney injury",
+      "canonicalTopicName": "intrinsic acute kidney injury",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:invasive-aspergillosis-antifungal-therapy#0",
+      "expectedStoredTopic": "Invasive aspergillosis antifungal therapy",
+      "canonicalTopicName": "Invasive aspergillosis antifungal therapy",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:invasive-aspergillosis-antifungal-therapy#2",
+      "expectedStoredTopic": "Invasive aspergillosis antifungal therapy",
+      "canonicalTopicName": "Invasive aspergillosis antifungal therapy",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:iron-deficiency-anaemia-intravenous-iron-therapy#0",
+      "expectedStoredTopic": "Iron deficiency anaemia: intravenous iron therapy",
+      "canonicalTopicName": "Iron deficiency anaemia: intravenous iron therapy",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:key-lipid-lowering-trials-4s-hps-fourier-odyssey-interpretation#3",
+      "expectedStoredTopic": "Key lipid-lowering trials: 4S, HPS, FOURIER, ODYSSEY interpretation",
+      "canonicalTopicName": "Key lipid-lowering trials: 4S, HPS, FOURIER, ODYSSEY interpretation",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:lambert-eaton-myasthenic-syndrome-lems-vgcc-antibodies-small-cell-lung-cancer-connection#1",
+      "expectedStoredTopic": "Lambert-Eaton Myasthenic Syndrome (LEMS): VGCC antibodies, small cell lung cancer connection",
+      "canonicalTopicName": "Lambert-Eaton Myasthenic Syndrome (LEMS): VGCC antibodies, small cell lung cancer connection",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:large-bowel-obstruction-volvulus-and-pseudo-obstruction-management#2",
+      "expectedStoredTopic": "Large bowel obstruction, volvulus, and pseudo-obstruction management",
+      "canonicalTopicName": "Large bowel obstruction, volvulus, and pseudo-obstruction management",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:liver-metastases-from-colorectal-cancer#1",
+      "expectedStoredTopic": "Liver Metastases from Colorectal Cancer",
+      "canonicalTopicName": "Liver Metastases from Colorectal Cancer",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:lower-urinary-tract-symptoms#1",
+      "expectedStoredTopic": "lower urinary tract symptoms",
+      "canonicalTopicName": "lower urinary tract symptoms",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:Lupus-nephritis-induction-and-maintenance-therapy#0",
+      "expectedStoredTopic": "Lupus nephritis induction and maintenance therapy",
+      "canonicalTopicName": "Lupus nephritis induction and maintenance therapy",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:Lupus-nephritis-induction-and-maintenance-therapy#2",
+      "expectedStoredTopic": "Lupus nephritis induction and maintenance therapy",
+      "canonicalTopicName": "Lupus nephritis induction and maintenance therapy",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:lyme-arthritis#1",
+      "expectedStoredTopic": "Lyme Arthritis",
+      "canonicalTopicName": "Lyme Arthritis",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:lymphoma#4",
+      "expectedStoredTopic": "lymphoma",
+      "canonicalTopicName": "lymphoma",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:massive-hemoptysis-management#1",
+      "expectedStoredTopic": "Massive Hemoptysis management",
+      "canonicalTopicName": "Massive Hemoptysis management",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:massive-transfusion-protocol-damage-control-resuscitation-ratio-driven-blood-products#3",
+      "expectedStoredTopic": "Massive transfusion protocol: damage control resuscitation, ratio-driven blood products",
+      "canonicalTopicName": "Massive transfusion protocol: damage control resuscitation, ratio-driven blood products",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:massive-upper-gi-haemorrhage-in-the-icu-resuscitation-endoscopy-timing#2",
+      "expectedStoredTopic": "Massive upper GI haemorrhage in the ICU: resuscitation, endoscopy timing",
+      "canonicalTopicName": "Massive upper GI haemorrhage in the ICU: resuscitation, endoscopy timing",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:mechanical-ventilation-modes-volume-control-pressure-control-simv-psv#1",
+      "expectedStoredTopic": "Mechanical ventilation modes: volume control, pressure control, SIMV, PSV",
+      "canonicalTopicName": "Mechanical ventilation modes: volume control, pressure control, SIMV, PSV",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:metabolic-acidosis#3",
+      "expectedStoredTopic": "Metabolic Acidosis",
+      "canonicalTopicName": "Metabolic Acidosis",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:metformin-and-glycemic-legacy-in-type-2-diabetes#2",
+      "expectedStoredTopic": "Metformin and glycemic legacy in type 2 diabetes",
+      "canonicalTopicName": "Metformin and glycemic legacy in type 2 diabetes",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:metformin-and-glycemic-legacy-in-type-2-diabetes#3",
+      "expectedStoredTopic": "Metformin and glycemic legacy in type 2 diabetes",
+      "canonicalTopicName": "Metformin and glycemic legacy in type 2 diabetes",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:Microscopic-colitis-budesonide-therapy#0",
+      "expectedStoredTopic": "Microscopic colitis budesonide therapy",
+      "canonicalTopicName": "Microscopic colitis budesonide therapy",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:monoarthritis-differential-diagnosis-crystal-septic-reactive-seronegative-trauma#2",
+      "expectedStoredTopic": "Monoarthritis differential diagnosis: crystal, septic, reactive, seronegative, trauma",
+      "canonicalTopicName": "Monoarthritis differential diagnosis: crystal, septic, reactive, seronegative, trauma",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:multiple-myeloma#2",
+      "expectedStoredTopic": "Multiple Myeloma",
+      "canonicalTopicName": "Multiple Myeloma",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:multiple-myeloma-induction-and-transplant#1",
+      "expectedStoredTopic": "Multiple Myeloma Induction and Transplant",
+      "canonicalTopicName": "Multiple Myeloma Induction and Transplant",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:myelodysplastic-syndromes#3",
+      "expectedStoredTopic": "Myelodysplastic Syndromes",
+      "canonicalTopicName": "Myelodysplastic Syndromes",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:neuromuscular-blocking-agents-in-the-icu-indications-and-monitoring#1",
+      "expectedStoredTopic": "Neuromuscular blocking agents in the ICU: indications and monitoring",
+      "canonicalTopicName": "Neuromuscular blocking agents in the ICU: indications and monitoring",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:Noninvasive-ventilation-for-acute-respiratory-failure#0",
+      "expectedStoredTopic": "Noninvasive ventilation for acute respiratory failure",
+      "canonicalTopicName": "Noninvasive ventilation for acute respiratory failure",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:nonspecific-interstitial-pneumonia#1",
+      "expectedStoredTopic": "Nonspecific Interstitial Pneumonia",
+      "canonicalTopicName": "Nonspecific Interstitial Pneumonia",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:notifiable-diseases-in-the-uk-statutory-notification-public-health-england-outbreak-investigation#0",
+      "expectedStoredTopic": "Notifiable diseases in the UK: statutory notification, Public Health England, outbreak investigation",
+      "canonicalTopicName": "Notifiable diseases in the UK: statutory notification, Public Health England, outbreak investigation",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:nutritional-support-strategy-in-critical-illness#3",
+      "expectedStoredTopic": "Nutritional support strategy in critical illness",
+      "canonicalTopicName": "Nutritional support strategy in critical illness",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:obstructive-shock-tension-pneumothorax-massive-pe-tamponade#2",
+      "expectedStoredTopic": "Obstructive shock: tension pneumothorax, massive PE, tamponade",
+      "canonicalTopicName": "Obstructive shock: tension pneumothorax, massive PE, tamponade",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:obstructive-sleep-apnea#1",
+      "expectedStoredTopic": "Obstructive Sleep Apnea",
+      "canonicalTopicName": "Obstructive Sleep Apnea",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:oesophageal-perforation#2",
+      "expectedStoredTopic": "Oesophageal Perforation",
+      "canonicalTopicName": "Oesophageal Perforation",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:osteoarthritis#1",
+      "expectedStoredTopic": "Osteoarthritis",
+      "canonicalTopicName": "Osteoarthritis",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:pagets-disease-of-bone#3",
+      "expectedStoredTopic": "Paget's Disease of Bone",
+      "canonicalTopicName": "Paget's Disease of Bone",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:PCSK9-inhibitor-cardiovascular-outcomes#1",
+      "expectedStoredTopic": "PCSK9 inhibitor cardiovascular outcomes",
+      "canonicalTopicName": "PCSK9 inhibitor cardiovascular outcomes",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:peanut-oral-immunotherapy-food-allergy#3",
+      "expectedStoredTopic": "Peanut oral immunotherapy food allergy",
+      "canonicalTopicName": "Peanut oral immunotherapy food allergy",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:pelvic-inflammatory-disease#3",
+      "expectedStoredTopic": "pelvic inflammatory disease",
+      "canonicalTopicName": "Pelvic inflammatory disease: diagnosis and treatment",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:perioperative-comorbidity-management#2",
+      "expectedStoredTopic": "perioperative comorbidity management",
+      "canonicalTopicName": "perioperative comorbidity management",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:pleurodesis-techniques#3",
+      "expectedStoredTopic": "Pleurodesis techniques",
+      "canonicalTopicName": "Pleurodesis techniques",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:pneumomediastinum#3",
+      "expectedStoredTopic": "Pneumomediastinum",
+      "canonicalTopicName": "Pneumomediastinum",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:poisoning-and-overdose-in-the-icu-toxidromes-antidotes-extracorporeal-removal#1",
+      "expectedStoredTopic": "Poisoning and overdose in the ICU: toxidromes, antidotes, extracorporeal removal",
+      "canonicalTopicName": "Poisoning and overdose in the ICU: toxidromes, antidotes, extracorporeal removal",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:poisoning-and-overdose-in-the-icu-toxidromes-antidotes-extracorporeal-removal#3",
+      "expectedStoredTopic": "Poisoning and overdose in the ICU: toxidromes, antidotes, extracorporeal removal",
+      "canonicalTopicName": "Poisoning and overdose in the ICU: toxidromes, antidotes, extracorporeal removal",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:polycystic-ovary-syndrome-metabolic-management#2",
+      "expectedStoredTopic": "Polycystic ovary syndrome metabolic management",
+      "canonicalTopicName": "Polycystic ovary syndrome metabolic management",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:polymyositis-and-dermatomyositis-muscle-biopsy-findings-extramuscular-features#2",
+      "expectedStoredTopic": "Polymyositis and Dermatomyositis: muscle biopsy findings, extramuscular features",
+      "canonicalTopicName": "Polymyositis and Dermatomyositis: muscle biopsy findings, extramuscular features",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:Portal-hypertension-and-variceal-bleeding#2",
+      "expectedStoredTopic": "Portal hypertension and variceal bleeding",
+      "canonicalTopicName": "Portal hypertension and variceal bleeding",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:post-operative-respiratory-failure#1",
+      "expectedStoredTopic": "post-operative respiratory failure",
+      "canonicalTopicName": "post-operative respiratory failure",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:post-transplant-complications#1",
+      "expectedStoredTopic": "Post-Transplant Complications",
+      "canonicalTopicName": "Post-Transplant Complications",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:post-transplant-complications#3",
+      "expectedStoredTopic": "Post-Transplant Complications",
+      "canonicalTopicName": "Post-Transplant Complications",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:principles-of-radiotherapy#2",
+      "expectedStoredTopic": "Principles of Radiotherapy",
+      "canonicalTopicName": "Principles of Radiotherapy",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:proteinuria-assessment-and-clinical-significance#1",
+      "expectedStoredTopic": "Proteinuria: Assessment and Clinical Significance",
+      "canonicalTopicName": "Proteinuria: Assessment and Clinical Significance",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:pulmonary-arterial-hypertension-targeted-therapy#2",
+      "expectedStoredTopic": "Pulmonary arterial hypertension targeted therapy",
+      "canonicalTopicName": "Pulmonary arterial hypertension targeted therapy",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:pure-autonomic-failure-and-orthostatic-hypotension-midodrine-fludrocortisone-optimization#0",
+      "expectedStoredTopic": "Pure Autonomic Failure and Orthostatic Hypotension: midodrine, fludrocortisone optimization",
+      "canonicalTopicName": "Pure Autonomic Failure and Orthostatic Hypotension: midodrine, fludrocortisone optimization",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:recurrent-chest-infections#2",
+      "expectedStoredTopic": "recurrent chest infections",
+      "canonicalTopicName": "recurrent chest infections",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:recurrent-chest-infections#3",
+      "expectedStoredTopic": "recurrent chest infections",
+      "canonicalTopicName": "recurrent chest infections",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:renal-manifestations-of-vasculitis#0",
+      "expectedStoredTopic": "Renal Manifestations of Vasculitis",
+      "canonicalTopicName": "Renal Manifestations of Vasculitis",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:renal-transplantation-workup-and-donor-selection#0",
+      "expectedStoredTopic": "Renal Transplantation: Workup and Donor Selection",
+      "canonicalTopicName": "Renal Transplantation: Workup and Donor Selection",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:renal-tubular-acidosis#0",
+      "expectedStoredTopic": "Renal Tubular Acidosis",
+      "canonicalTopicName": "Renal Tubular Acidosis",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:rheumatoid-arthritis-biologic-and-jak-inhibitor-therapy#0",
+      "expectedStoredTopic": "Rheumatoid arthritis biologic and JAK inhibitor therapy",
+      "canonicalTopicName": "Rheumatoid arthritis biologic and JAK inhibitor therapy",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:rheumatoid-arthritis-biologic-and-jak-inhibitor-therapy#3",
+      "expectedStoredTopic": "Rheumatoid arthritis biologic and JAK inhibitor therapy",
+      "canonicalTopicName": "Rheumatoid arthritis biologic and JAK inhibitor therapy",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:right-ventricular-failure-in-the-icu-management-principles#3",
+      "expectedStoredTopic": "Right ventricular failure in the ICU: management principles",
+      "canonicalTopicName": "Right ventricular failure in the ICU: management principles",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:scleroderma-ild-hrct-patterns-nintedanib-mycophenolate-cyclophosphamide#1",
+      "expectedStoredTopic": "Scleroderma ILD: HRCT patterns, nintedanib, mycophenolate, cyclophosphamide",
+      "canonicalTopicName": "Scleroderma ILD: HRCT patterns, nintedanib, mycophenolate, cyclophosphamide",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:sepsis-and-septic-shock-sepsis-3-definitions-qsofa-sofa-score-1-hour-bundle#1",
+      "expectedStoredTopic": "Sepsis and septic shock: Sepsis-3 definitions, qSOFA, SOFA score, 1-hour bundle",
+      "canonicalTopicName": "Sepsis and septic shock",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:septic-arthritis-staphylococcus-gonococcal-joint-washout-antibiotic-selection#2",
+      "expectedStoredTopic": "Septic arthritis: Staphylococcus, Gonococcal, joint washout, antibiotic selection",
+      "canonicalTopicName": "Septic arthritis: Staphylococcus, Gonococcal, joint washout, antibiotic selection",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:silicosis#1",
+      "expectedStoredTopic": "Silicosis",
+      "canonicalTopicName": "Silicosis",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:sleep-apnoea-and-cardiovascular-disease-cpap-af-risk-hypertension-arrhythmia#0",
+      "expectedStoredTopic": "Sleep apnoea and cardiovascular disease: CPAP, AF risk, hypertension, arrhythmia",
+      "canonicalTopicName": "Sleep apnoea and cardiovascular disease: CPAP, AF risk, hypertension, arrhythmia",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:spondylolysis-and-spondylolisthesis#1",
+      "expectedStoredTopic": "Spondylolysis and Spondylolisthesis",
+      "canonicalTopicName": "Spondylolysis and Spondylolisthesis",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:spontaneous-pneumothorax#1",
+      "expectedStoredTopic": "Spontaneous Pneumothorax",
+      "canonicalTopicName": "Spontaneous Pneumothorax",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:streptococcal-infections-group-a-strep-scarlet-fever-rheumatic-fever-toxic-shock-syndrome#1",
+      "expectedStoredTopic": "Streptococcal infections: Group A Strep, scarlet fever, rheumatic fever, toxic shock syndrome",
+      "canonicalTopicName": "Streptococcal infections: Group A Strep, scarlet fever, rheumatic fever, toxic shock syndrome",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:surgical-site-infection-prevention#2",
+      "expectedStoredTopic": "Surgical site infection prevention",
+      "canonicalTopicName": "Surgical site infection prevention",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:Surviving-Sepsis-Campaign-guidelines-and-care-bundles#2",
+      "expectedStoredTopic": "Surviving Sepsis Campaign guidelines and care bundles",
+      "canonicalTopicName": "Surviving Sepsis Campaign guidelines and care bundles",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:Syncope-evaluation-and-pacing-indications#1",
+      "expectedStoredTopic": "Syncope evaluation and pacing indications",
+      "canonicalTopicName": "Syncope evaluation and pacing indications",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:systemic-lupus-erythematosus#3",
+      "expectedStoredTopic": "Systemic Lupus Erythematosus",
+      "canonicalTopicName": "Systemic Lupus Erythematosus",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:targeted-therapy-principles#0",
+      "expectedStoredTopic": "Targeted Therapy Principles",
+      "canonicalTopicName": "Targeted Therapy Principles",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:targeted-therapy-principles#1",
+      "expectedStoredTopic": "Targeted Therapy Principles",
+      "canonicalTopicName": "Targeted Therapy Principles",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:temporal-lobe-epilepsy-mesial-temporal-sclerosis-anterior-temporal-lobectomy#3",
+      "expectedStoredTopic": "Temporal lobe epilepsy: mesial temporal sclerosis, anterior temporal lobectomy",
+      "canonicalTopicName": "Temporal lobe epilepsy: mesial temporal sclerosis, anterior temporal lobectomy",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:thrombotic-microangiopathy-and-the-kidney#0",
+      "expectedStoredTopic": "Thrombotic Microangiopathy and the Kidney",
+      "canonicalTopicName": "Thrombotic Microangiopathy and the Kidney",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:thrombotic-microangiopathy-and-the-kidney#1",
+      "expectedStoredTopic": "Thrombotic Microangiopathy and the Kidney",
+      "canonicalTopicName": "Thrombotic Microangiopathy and the Kidney",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:total-joint-replacement-in-oa-indications-outcomes-complications-revision-rates#3",
+      "expectedStoredTopic": "Total joint replacement in OA: indications, outcomes, complications, revision rates",
+      "canonicalTopicName": "Total joint replacement in OA: indications, outcomes, complications, revision rates",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:Tranexamic-acid-and-damage-control-resuscitation-in-trauma#2",
+      "expectedStoredTopic": "Tranexamic acid and damage control resuscitation in trauma",
+      "canonicalTopicName": "Tranexamic acid and damage control resuscitation in trauma",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:tuberculosis-active-vs-latent-tb-mantoux-igra-nice-guidance-contact-tracing#1",
+      "expectedStoredTopic": "Tuberculosis: active vs latent TB, Mantoux, IGRA, NICE guidance, contact tracing",
+      "canonicalTopicName": "Tuberculosis: active vs latent TB, Mantoux, IGRA, NICE guidance, contact tracing",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:type-2-diabetes-cardiovascular-outcomes#3",
+      "expectedStoredTopic": "Type 2 diabetes cardiovascular outcomes",
+      "canonicalTopicName": "Type 2 diabetes cardiovascular outcomes",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:urinalysis-and-urine-microscopy#0",
+      "expectedStoredTopic": "Urinalysis and Urine Microscopy",
+      "canonicalTopicName": "Urinalysis and Urine Microscopy",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:urinalysis-and-urine-microscopy#1",
+      "expectedStoredTopic": "Urinalysis and Urine Microscopy",
+      "canonicalTopicName": "Urinalysis and Urine Microscopy",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:urinalysis-and-urine-microscopy#2",
+      "expectedStoredTopic": "Urinalysis and Urine Microscopy",
+      "canonicalTopicName": "Urinalysis and Urine Microscopy",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:urinalysis-and-urine-microscopy#3",
+      "expectedStoredTopic": "Urinalysis and Urine Microscopy",
+      "canonicalTopicName": "Urinalysis and Urine Microscopy",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:variceal-gi-bleeding#0",
+      "expectedStoredTopic": "variceal GI bleeding",
+      "canonicalTopicName": "variceal GI bleeding",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:venovenous-ecmo-for-severe-ards#0",
+      "expectedStoredTopic": "Venovenous ECMO for severe ARDS",
+      "canonicalTopicName": "Venovenous ECMO for severe ARDS",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:venovenous-ecmo-for-severe-ards#1",
+      "expectedStoredTopic": "Venovenous ECMO for severe ARDS",
+      "canonicalTopicName": "Venovenous ECMO for severe ARDS",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:vitamin-d-deficiency-25-ohd-thresholds-supplementation-doses-osteomalacia#1",
+      "expectedStoredTopic": "Vitamin D deficiency: 25-OHD thresholds, supplementation doses, osteomalacia",
+      "canonicalTopicName": "Vitamin D deficiency: 25-OHD thresholds, supplementation doses, osteomalacia",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:wide-complex-tachycardias-vt-vs-svt-with-aberrancy-brugada-algorithm#3",
+      "expectedStoredTopic": "Wide-complex tachycardias: VT vs SVT with aberrancy, Brugada algorithm",
+      "canonicalTopicName": "Wide-complex tachycardias: VT vs SVT with aberrancy, Brugada algorithm",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:acute-and-chronic-pain-assessment-and-opioid-safety#1",
+      "expectedStoredTopic": "Acute and chronic pain assessment and opioid safety",
+      "canonicalTopicName": "Acute and chronic pain assessment and opioid safety",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:acute-confusion-agitation-and-capacity#4",
+      "expectedStoredTopic": "Acute confusion, agitation, and capacity",
+      "canonicalTopicName": "Acute confusion, agitation, and capacity",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:acute-psychosis-assessment-management-and-antipsychotic-therapy#3",
+      "expectedStoredTopic": "Acute psychosis: assessment, management and antipsychotic therapy",
+      "canonicalTopicName": "Acute psychosis: assessment, management and antipsychotic therapy",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:analgesia-strategies#3",
+      "expectedStoredTopic": "Analgesia strategies",
+      "canonicalTopicName": "Analgesia strategies",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:antibiotic-stewardship-for-common-infections#4",
+      "expectedStoredTopic": "Antibiotic stewardship for common infections",
+      "canonicalTopicName": "Antibiotic stewardship for common infections",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:anti-cd20-therapy-in-rheumatology#4",
+      "expectedStoredTopic": "Anti-CD20 Therapy in Rheumatology",
+      "canonicalTopicName": "Anti-CD20 Therapy in Rheumatology",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:anticoagulation-reversal-and-peri-procedural-management#3",
+      "expectedStoredTopic": "Anticoagulation reversal and peri-procedural management",
+      "canonicalTopicName": "Anticoagulation reversal and peri-procedural management",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:anxiety-disorders-and-panic-disorder-diagnosis-and-management#0",
+      "expectedStoredTopic": "Anxiety disorders and panic disorder: diagnosis and management",
+      "canonicalTopicName": "Anxiety disorders and panic disorder: diagnosis and management",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:asthma-severity-classification-and-step-care#0",
+      "expectedStoredTopic": "Asthma severity classification and step-care",
+      "canonicalTopicName": "Asthma severity classification and step-care",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:atrial-fibrillation-and-common-arrhythmias#2",
+      "expectedStoredTopic": "Atrial fibrillation and common arrhythmias",
+      "canonicalTopicName": "Atrial fibrillation and common arrhythmias",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:basic-calcium-phosphate-deposition-hydroxyapatite-milwaukee-shoulder-calcific-tendinitis#2",
+      "expectedStoredTopic": "Basic calcium phosphate deposition: hydroxyapatite, Milwaukee shoulder, calcific tendinitis",
+      "canonicalTopicName": "Basic calcium phosphate deposition: hydroxyapatite, Milwaukee shoulder, calcific tendinitis",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:calcium-pyrophosphate-deposition-cppd-pseudogout-chondrocalcinosis-crowned-dens#2",
+      "expectedStoredTopic": "Calcium pyrophosphate deposition CPPD: pseudogout, chondrocalcinosis, crowned dens",
+      "canonicalTopicName": "Calcium pyrophosphate deposition CPPD: pseudogout, chondrocalcinosis, crowned dens",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:cardiovascular-outcomes-in-diabetes-sglt2i-and-glp-1-agonist-trial-evidence#1",
+      "expectedStoredTopic": "Cardiovascular outcomes in diabetes: SGLT2i and GLP-1 agonist trial evidence",
+      "canonicalTopicName": "Cardiovascular outcomes in diabetes: SGLT2i and GLP-1 agonist trial evidence",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:cellulitis-and-skin-and-soft-tissue-infections-eron-classification-mrsa-risk-treatment-duration#0",
+      "expectedStoredTopic": "Cellulitis and skin and soft tissue infections: Eron classification, MRSA risk, treatment duration",
+      "canonicalTopicName": "Cellulitis and skin and soft tissue infections: Eron classification, MRSA risk, treatment duration",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:cellulitis-and-skin-and-soft-tissue-infections-eron-classification-mrsa-risk-treatment-duration#1",
+      "expectedStoredTopic": "Cellulitis and skin and soft tissue infections: Eron classification, MRSA risk, treatment duration",
+      "canonicalTopicName": "Cellulitis and skin and soft tissue infections: Eron classification, MRSA risk, treatment duration",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:cellulitis-and-skin-and-soft-tissue-infections-eron-classification-mrsa-risk-treatment-duration#3",
+      "expectedStoredTopic": "Cellulitis and skin and soft tissue infections: Eron classification, MRSA risk, treatment duration",
+      "canonicalTopicName": "Cellulitis and skin and soft tissue infections: Eron classification, MRSA risk, treatment duration",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:childhood-asthma-and-wheeze-phenotypes#0",
+      "expectedStoredTopic": "Childhood asthma and wheeze phenotypes",
+      "canonicalTopicName": "Childhood asthma and wheeze phenotypes",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:childhood-asthma-and-wheeze-phenotypes#3",
+      "expectedStoredTopic": "Childhood asthma and wheeze phenotypes",
+      "canonicalTopicName": "Childhood asthma and wheeze phenotypes",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:childhood-asthma-and-wheeze-phenotypes#4",
+      "expectedStoredTopic": "Childhood asthma and wheeze phenotypes",
+      "canonicalTopicName": "Childhood asthma and wheeze phenotypes",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:chronic-kidney-disease#2",
+      "expectedStoredTopic": "Metabolic acidosis in chronic kidney disease",
+      "canonicalTopicName": "Metabolic acidosis in chronic kidney disease",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:cirrhosis-and-portal-hypertension#2",
+      "expectedStoredTopic": "Cirrhosis and portal hypertension",
+      "canonicalTopicName": "Cirrhosis and portal hypertension",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:colorectal-cancer#0",
+      "expectedStoredTopic": "Colorectal cancer adjuvant chemotherapy",
+      "canonicalTopicName": "Colorectal cancer adjuvant chemotherapy",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:community-acquired-pneumonia-curb-65-psi-empirical-therapy-atypical-pathogens#0",
+      "expectedStoredTopic": "Community-Acquired Pneumonia",
+      "canonicalTopicName": "Community-Acquired Pneumonia",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:congestive-heart-failure#0",
+      "expectedStoredTopic": "Congestive Heart Failure",
+      "canonicalTopicName": "Congestive Heart Failure",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:covid#2",
+      "expectedStoredTopic": "covid",
+      "canonicalTopicName": "covid",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:ct-head-and-ct-pulmonary-angiography-common-acute-findings#1",
+      "expectedStoredTopic": "CT head and CT pulmonary angiography: common acute findings",
+      "canonicalTopicName": "CT head and CT pulmonary angiography: common acute findings",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:delayed-haemolytic-transfusion-reactions#3",
+      "expectedStoredTopic": "Delayed Haemolytic Transfusion Reactions",
+      "canonicalTopicName": "Delayed Haemolytic Transfusion Reactions",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:denosumab-romosozumab-teriparatide-anabolic-and-resorption-inhibiting-agents-in-osteoporosis#0",
+      "expectedStoredTopic": "Denosumab, romosozumab, teriparatide: anabolic and resorption-inhibiting agents in osteoporosis",
+      "canonicalTopicName": "Denosumab, romosozumab, teriparatide: anabolic and resorption-inhibiting agents in osteoporosis",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:denosumab-romosozumab-teriparatide-anabolic-and-resorption-inhibiting-agents-in-osteoporosis#2",
+      "expectedStoredTopic": "Denosumab, romosozumab, teriparatide: anabolic and resorption-inhibiting agents in osteoporosis",
+      "canonicalTopicName": "Denosumab, romosozumab, teriparatide: anabolic and resorption-inhibiting agents in osteoporosis",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:denosumab-romosozumab-teriparatide-anabolic-and-resorption-inhibiting-agents-in-osteoporosis#4",
+      "expectedStoredTopic": "Denosumab, romosozumab, teriparatide: anabolic and resorption-inhibiting agents in osteoporosis",
+      "canonicalTopicName": "Denosumab, romosozumab, teriparatide: anabolic and resorption-inhibiting agents in osteoporosis",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:depression-and-anxiety-disorders#3",
+      "expectedStoredTopic": "Depression and anxiety disorders",
+      "canonicalTopicName": "Depression and anxiety disorders",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:depression-and-anxiety-disorders#4",
+      "expectedStoredTopic": "Depression and anxiety disorders",
+      "canonicalTopicName": "Depression and anxiety disorders",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:diabetic-foot-wagner-classification-multidisciplinary-care-offloading-osteomyelitis#1",
+      "expectedStoredTopic": "Diabetic foot: Wagner classification, multidisciplinary care, offloading, osteomyelitis",
+      "canonicalTopicName": "Diabetic foot: Wagner classification, multidisciplinary care, offloading, osteomyelitis",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:diabetic-peripheral-neuropathy-screening-painful-neuropathy-pharmacotherapy#2",
+      "expectedStoredTopic": "Diabetic peripheral neuropathy: screening, painful neuropathy pharmacotherapy",
+      "canonicalTopicName": "Diabetic peripheral neuropathy: screening, painful neuropathy pharmacotherapy",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:drug-eruptions-and-severe-cutaneous-adverse-reactions-scar#1",
+      "expectedStoredTopic": "Drug eruptions and severe cutaneous adverse reactions (SCAR)",
+      "canonicalTopicName": "Drug eruptions and severe cutaneous adverse reactions (SCAR)",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:dyslipidaemia-and-cardiovascular-risk-modification#3",
+      "expectedStoredTopic": "Dyslipidaemia and cardiovascular risk modification",
+      "canonicalTopicName": "Dyslipidaemia and cardiovascular risk modification",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:dyslipidaemia-and-cardiovascular-risk-modification#4",
+      "expectedStoredTopic": "Dyslipidaemia and cardiovascular risk modification",
+      "canonicalTopicName": "Dyslipidaemia and cardiovascular risk modification",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:early-pregnancy-bleeding-and-ectopic-pregnancy#0",
+      "expectedStoredTopic": "Early pregnancy bleeding and ectopic pregnancy",
+      "canonicalTopicName": "Early pregnancy bleeding and ectopic pregnancy",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:ecg-interpretation-common-acute-findings-and-life-threatening-arrhythmias#2",
+      "expectedStoredTopic": "ECG interpretation: common acute findings and life-threatening arrhythmias",
+      "canonicalTopicName": "ECG interpretation: common acute findings and life-threatening arrhythmias",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:fever-in-children-and-sepsis-screening#1",
+      "expectedStoredTopic": "Fever in children and sepsis screening",
+      "canonicalTopicName": "Fever in children and sepsis screening",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:fever-in-children-and-sepsis-screening#2",
+      "expectedStoredTopic": "Fever in children and sepsis screening",
+      "canonicalTopicName": "Fever in children and sepsis screening",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:fever-in-children-and-sepsis-screening#4",
+      "expectedStoredTopic": "Fever in children and sepsis screening",
+      "canonicalTopicName": "Fever in children and sepsis screening",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:hba1c-interpretation-glycation-interference-factors-target-individualisation#1",
+      "expectedStoredTopic": "HbA1c interpretation: glycation, interference factors, target individualisation",
+      "canonicalTopicName": "HbA1c interpretation: glycation, interference factors, target individualisation",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:hepatorenal-syndrome#1",
+      "expectedStoredTopic": "Hepatorenal Syndrome",
+      "canonicalTopicName": "Hepatorenal Syndrome",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:herpes-simplex-impetigo-and-common-skin-infections#3",
+      "expectedStoredTopic": "Herpes simplex, impetigo and common skin infections",
+      "canonicalTopicName": "Herpes simplex, impetigo and common skin infections",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:hyperlactataemia-in-icu#3",
+      "expectedStoredTopic": "Hyperlactataemia in the ICU: differential diagnosis and management",
+      "canonicalTopicName": "Hyperlactataemia in the ICU: differential diagnosis and management",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:hyperosmolar-hyperglycaemic-state-hhs-osmolarity-calculation-fluid-replacement#2",
+      "expectedStoredTopic": "Hyperosmolar hyperglycaemic state HHS: osmolarity calculation, fluid replacement",
+      "canonicalTopicName": "Hyperosmolar hyperglycaemic state HHS: osmolarity calculation, fluid replacement",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:hyperviscosity-syndrome#1",
+      "expectedStoredTopic": "Hyperviscosity Syndrome",
+      "canonicalTopicName": "Hyperviscosity Syndrome",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:infection-risk-with-biologics-tb-hbv-reactivation-pjp-prophylaxis-thresholds#3",
+      "expectedStoredTopic": "Infection risk with biologics: TB, HBV reactivation, PJP prophylaxis thresholds",
+      "canonicalTopicName": "Infection risk with biologics: TB, HBV reactivation, PJP prophylaxis thresholds",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:intensive-blood-glucose-control-sulphonylureas-insulin-type-2-diabetes-ukpds#3",
+      "expectedStoredTopic": "intensive blood glucose control sulphonylureas insulin type 2 diabetes UKPDS",
+      "canonicalTopicName": "intensive blood glucose control sulphonylureas insulin type 2 diabetes UKPDS",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:intensive-blood-glucose-control-sulphonylureas-insulin-type-2-diabetes-ukpds#4",
+      "expectedStoredTopic": "intensive blood glucose control sulphonylureas insulin type 2 diabetes UKPDS",
+      "canonicalTopicName": "intensive blood glucose control sulphonylureas insulin type 2 diabetes UKPDS",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:intensive-care-high-yield-clinical-guidelines#1",
+      "expectedStoredTopic": "Intensive care high yield clinical guidelines",
+      "canonicalTopicName": "Intensive care high yield clinical guidelines",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:interstitial-lung-disease#2",
+      "expectedStoredTopic": "Hard Metal Lung Disease",
+      "canonicalTopicName": "Hard Metal Lung Disease",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:leukaostasis-syndrome#0",
+      "expectedStoredTopic": "Leukaostasis Syndrome",
+      "canonicalTopicName": "Leukaostasis Syndrome",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:low-back-pain-and-sciatica#0",
+      "expectedStoredTopic": "Low back pain and sciatica",
+      "canonicalTopicName": "Low back pain and sciatica",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:low-back-pain-and-sciatica#1",
+      "expectedStoredTopic": "Low back pain and sciatica",
+      "canonicalTopicName": "Low back pain and sciatica",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:low-back-pain-and-sciatica#3",
+      "expectedStoredTopic": "Low back pain and sciatica",
+      "canonicalTopicName": "Low back pain and sciatica",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:low-back-pain-and-sciatica#4",
+      "expectedStoredTopic": "Low back pain and sciatica",
+      "canonicalTopicName": "Low back pain and sciatica",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:lyme-arthritis#1",
+      "expectedStoredTopic": "Lyme Arthritis",
+      "canonicalTopicName": "Lyme Arthritis",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:lyme-arthritis#3",
+      "expectedStoredTopic": "Lyme Arthritis",
+      "canonicalTopicName": "Lyme Arthritis",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:macrophage-activation-syndrome-mas-in-rheumatic-disease-distinguishing-from-hlh#1",
+      "expectedStoredTopic": "Macrophage activation syndrome MAS in rheumatic disease: distinguishing from HLH",
+      "canonicalTopicName": "Macrophage activation syndrome MAS in rheumatic disease: distinguishing from HLH",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:management-of-press#4",
+      "expectedStoredTopic": "management of PRESS",
+      "canonicalTopicName": "management of PRESS",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:massive-pe-thrombolysis#0",
+      "expectedStoredTopic": "Massive pulmonary embolism: thrombolysis, catheter-directed therapy, ECMO",
+      "canonicalTopicName": "Massive pulmonary embolism: thrombolysis, catheter-directed therapy, ECMO",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:massive-pe-thrombolysis#1",
+      "expectedStoredTopic": "Massive pulmonary embolism: thrombolysis, catheter-directed therapy, ECMO",
+      "canonicalTopicName": "Massive pulmonary embolism: thrombolysis, catheter-directed therapy, ECMO",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:massive-pe-thrombolysis#2",
+      "expectedStoredTopic": "Massive pulmonary embolism: thrombolysis, catheter-directed therapy, ECMO",
+      "canonicalTopicName": "Massive pulmonary embolism: thrombolysis, catheter-directed therapy, ECMO",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:massive-transfusion-protocols#2",
+      "expectedStoredTopic": "Massive Transfusion Protocols",
+      "canonicalTopicName": "Massive Transfusion Protocols",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:medication-overuse-headache#3",
+      "expectedStoredTopic": "Medication overuse headache: detoxification strategies, bridging therapies",
+      "canonicalTopicName": "Medication overuse headache: detoxification strategies, bridging therapies",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:metformin-diabetes#2",
+      "expectedStoredTopic": "metformin diabetes",
+      "canonicalTopicName": "metformin diabetes",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:microangiopathic-haemolytic-anaemia#1",
+      "expectedStoredTopic": "Microangiopathic Haemolytic Anaemia",
+      "canonicalTopicName": "Microangiopathic Haemolytic Anaemia",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:microscopic-colitis#0",
+      "expectedStoredTopic": "Microscopic Colitis",
+      "canonicalTopicName": "Microscopic Colitis",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:microscopic-colitis#3",
+      "expectedStoredTopic": "Microscopic Colitis",
+      "canonicalTopicName": "Microscopic Colitis",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:minimal-change-disease#1",
+      "expectedStoredTopic": "Minimal Change Disease",
+      "canonicalTopicName": "Minimal Change Disease",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:monocytosis-and-lymphocytosis-diagnostic-algorithms#0",
+      "expectedStoredTopic": "Monocytosis and Lymphocytosis Diagnostic Algorithms",
+      "canonicalTopicName": "Monocytosis and Lymphocytosis Diagnostic Algorithms",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:monocytosis-and-lymphocytosis-diagnostic-algorithms#1",
+      "expectedStoredTopic": "Monocytosis and Lymphocytosis Diagnostic Algorithms",
+      "canonicalTopicName": "Monocytosis and Lymphocytosis Diagnostic Algorithms",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:monocytosis-and-lymphocytosis-diagnostic-algorithms#2",
+      "expectedStoredTopic": "Monocytosis and Lymphocytosis Diagnostic Algorithms",
+      "canonicalTopicName": "Monocytosis and Lymphocytosis Diagnostic Algorithms",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:monocytosis-and-lymphocytosis-diagnostic-algorithms#3",
+      "expectedStoredTopic": "Monocytosis and Lymphocytosis Diagnostic Algorithms",
+      "canonicalTopicName": "Monocytosis and Lymphocytosis Diagnostic Algorithms",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:mri-in-inflammatory-arthritis-bone-marrow-oedema-erosions-tenosynovitis-scoring#1",
+      "expectedStoredTopic": "MRI in inflammatory arthritis: bone marrow oedema, erosions, tenosynovitis scoring",
+      "canonicalTopicName": "MRI in inflammatory arthritis: bone marrow oedema, erosions, tenosynovitis scoring",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:msi-h-colorectal-cancer#0",
+      "expectedStoredTopic": "Colorectal cancer adjuvant chemotherapy",
+      "canonicalTopicName": "Colorectal cancer adjuvant chemotherapy",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:msi-h-colorectal-cancer#2",
+      "expectedStoredTopic": "Colorectal cancer adjuvant chemotherapy",
+      "canonicalTopicName": "Colorectal cancer adjuvant chemotherapy",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:msi-h-colorectal-cancer#3",
+      "expectedStoredTopic": "Colorectal cancer adjuvant chemotherapy",
+      "canonicalTopicName": "Colorectal cancer adjuvant chemotherapy",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:multiple-myeloma#2",
+      "expectedStoredTopic": "Multiple Myeloma",
+      "canonicalTopicName": "Multiple Myeloma",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:multiple-myeloma-induction-and-transplant#2",
+      "expectedStoredTopic": "Multiple Myeloma Induction and Transplant",
+      "canonicalTopicName": "Multiple Myeloma Induction and Transplant",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:myelodysplastic-syndromes#1",
+      "expectedStoredTopic": "Myelodysplastic Syndromes",
+      "canonicalTopicName": "Myelodysplastic Syndromes",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:ntm-lung-disease#0",
+      "expectedStoredTopic": "Hard Metal Lung Disease",
+      "canonicalTopicName": "Hard Metal Lung Disease",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:ntm-lung-disease#1",
+      "expectedStoredTopic": "Hard Metal Lung Disease",
+      "canonicalTopicName": "Hard Metal Lung Disease",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:ntm-lung-disease#2",
+      "expectedStoredTopic": "Hard Metal Lung Disease",
+      "canonicalTopicName": "Hard Metal Lung Disease",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:ntm-lung-disease#3",
+      "expectedStoredTopic": "Hard Metal Lung Disease",
+      "canonicalTopicName": "Hard Metal Lung Disease",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:obstructive-sleep-apnea#0",
+      "expectedStoredTopic": "Obstructive Sleep Apnea",
+      "canonicalTopicName": "Obstructive Sleep Apnea",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:obstructive-sleep-apnea#1",
+      "expectedStoredTopic": "Obstructive Sleep Apnea",
+      "canonicalTopicName": "Obstructive Sleep Apnea",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:obstructive-sleep-apnea#2",
+      "expectedStoredTopic": "Obstructive Sleep Apnea",
+      "canonicalTopicName": "Obstructive Sleep Apnea",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:obstructive-sleep-apnea#3",
+      "expectedStoredTopic": "Obstructive Sleep Apnea",
+      "canonicalTopicName": "Obstructive Sleep Apnea",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:obstructive-sleep-apnoea-and-obesity-hypoventilation#1",
+      "expectedStoredTopic": "Obstructive sleep apnoea and obesity hypoventilation",
+      "canonicalTopicName": "Obstructive sleep apnoea and obesity hypoventilation",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:oesophageal-cancer#1",
+      "expectedStoredTopic": "Oesophageal Cancer",
+      "canonicalTopicName": "Oesophageal Cancer",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:osteoporosis#2",
+      "expectedStoredTopic": "Osteoporosis: DEXA, FRAX, T-score thresholds, fracture risk assessment",
+      "canonicalTopicName": "Osteoporosis: DEXA, FRAX, T-score thresholds, fracture risk assessment",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:osteoporosis-dexa-frax-t-score-thresholds-fracture-risk-assessment#0",
+      "expectedStoredTopic": "Osteoporosis: DEXA, FRAX, T-score thresholds, fracture risk assessment",
+      "canonicalTopicName": "Osteoporosis: DEXA, FRAX, T-score thresholds, fracture risk assessment",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:osteoporosis-dexa-frax-t-score-thresholds-fracture-risk-assessment#2",
+      "expectedStoredTopic": "Osteoporosis: DEXA, FRAX, T-score thresholds, fracture risk assessment",
+      "canonicalTopicName": "Osteoporosis: DEXA, FRAX, T-score thresholds, fracture risk assessment",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:osteoporotic-fragility-fracture-and-secondary-prevention#2",
+      "expectedStoredTopic": "Osteoporotic fragility fracture and secondary prevention",
+      "canonicalTopicName": "Osteoporotic fragility fracture and secondary prevention",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:outpatient-parenteral-antibiotic-therapy-opat-eligibility-monitoring-line-care-drugs-used#4",
+      "expectedStoredTopic": "Outpatient parenteral antibiotic therapy OPAT: eligibility, monitoring, line care, drugs used",
+      "canonicalTopicName": "Outpatient parenteral antibiotic therapy OPAT: eligibility, monitoring, line care, drugs used",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:ovarian-cancer#3",
+      "expectedStoredTopic": "Ovarian Cancer",
+      "canonicalTopicName": "Ovarian Cancer",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:peripheral-artery-disease#2",
+      "expectedStoredTopic": "Peripheral artery disease: ABI interpretation, medical therapy, revascularisation",
+      "canonicalTopicName": "Peripheral artery disease: ABI interpretation, medical therapy, revascularisation",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:polymyositis-dermatomyositis#0",
+      "expectedStoredTopic": "Polymyositis and Dermatomyositis: muscle biopsy findings, extramuscular features",
+      "canonicalTopicName": "Polymyositis and Dermatomyositis: muscle biopsy findings, extramuscular features",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:pre-renal-aki-and-volume-depletion#1",
+      "expectedStoredTopic": "Pre-Renal AKI and Volume Depletion",
+      "canonicalTopicName": "Pre-Renal AKI and Volume Depletion",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:pre-renal-aki-and-volume-depletion#3",
+      "expectedStoredTopic": "Pre-Renal AKI and Volume Depletion",
+      "canonicalTopicName": "Pre-Renal AKI and Volume Depletion",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:primary-myelofibrosis#1",
+      "expectedStoredTopic": "Primary Myelofibrosis",
+      "canonicalTopicName": "Primary Myelofibrosis",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:psychosis-and-acute-behavioural-disturbance#1",
+      "expectedStoredTopic": "Psychosis and acute behavioural disturbance",
+      "canonicalTopicName": "Psychosis and acute behavioural disturbance",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:pyelonephritis-inpatient-vs-outpatient-management-gram-negative-coverage-imaging-indications#0",
+      "expectedStoredTopic": "Pyelonephritis: inpatient vs outpatient management, Gram-negative coverage, imaging indications",
+      "canonicalTopicName": "Pyelonephritis: inpatient vs outpatient management, Gram-negative coverage, imaging indications",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:ra-and-cardiovascular-risk-accelerated-atherosclerosis-nsaids-coxib-caution#0",
+      "expectedStoredTopic": "RA and cardiovascular risk: accelerated atherosclerosis, NSAIDs, coxib caution",
+      "canonicalTopicName": "RA and cardiovascular risk: accelerated atherosclerosis, NSAIDs, coxib caution",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:rheumatoid-arthritis#0",
+      "expectedStoredTopic": "Rheumatoid Arthritis",
+      "canonicalTopicName": "Rheumatoid Arthritis",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:rheumatoid-arthritis-safety#1",
+      "expectedStoredTopic": "Rheumatoid arthritis initial DMARD strategy",
+      "canonicalTopicName": "Rheumatoid arthritis initial DMARD strategy",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:rheumatoid-arthritis-safety#2",
+      "expectedStoredTopic": "Rheumatoid arthritis initial DMARD strategy",
+      "canonicalTopicName": "Rheumatoid arthritis initial DMARD strategy",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:sexually-transmitted-infections-gonorrhoea-chlamydia-syphilis-diagnostic-tests-and-treatment#3",
+      "expectedStoredTopic": "Sexually transmitted infections: gonorrhoea, chlamydia, syphilis: diagnostic tests and treatment",
+      "canonicalTopicName": "Sexually transmitted infections: gonorrhoea, chlamydia, syphilis: diagnostic tests and treatment",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:stroke-and-tia#2",
+      "expectedStoredTopic": "Stroke and TIA",
+      "canonicalTopicName": "Stroke and TIA",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:stroke-and-tia#4",
+      "expectedStoredTopic": "Stroke and TIA",
+      "canonicalTopicName": "Stroke and TIA",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:tb-treatment-ripe-regimen-hepatotoxicity-monitoring-directly-observed-therapy-drug-resistant-tb#0",
+      "expectedStoredTopic": "TB treatment: RIPE regimen, hepatotoxicity monitoring, directly observed therapy, drug-resistant TB",
+      "canonicalTopicName": "TB treatment: RIPE regimen, hepatotoxicity monitoring, directly observed therapy, drug-resistant TB",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:tb-treatment-ripe-regimen-hepatotoxicity-monitoring-directly-observed-therapy-drug-resistant-tb#2",
+      "expectedStoredTopic": "TB treatment: RIPE regimen, hepatotoxicity monitoring, directly observed therapy, drug-resistant TB",
+      "canonicalTopicName": "TB treatment: RIPE regimen, hepatotoxicity monitoring, directly observed therapy, drug-resistant TB",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:t-cell-lymphoma#0",
+      "expectedStoredTopic": "CAR-T therapy large B-cell lymphoma",
+      "canonicalTopicName": "CAR-T therapy large B-cell lymphoma",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:thyroid-cancer#3",
+      "expectedStoredTopic": "Thyroid Cancer Management",
+      "canonicalTopicName": "Thyroid Cancer Management",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:trauma-resuscitation-and-head-injury#0",
+      "expectedStoredTopic": "Trauma resuscitation and head injury",
+      "canonicalTopicName": "Trauma resuscitation and head injury",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:type-1-and-type-2-diabetes#1",
+      "expectedStoredTopic": "Type 1 and type 2 diabetes",
+      "canonicalTopicName": "Type 1 and type 2 diabetes",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:urinary-tract-infections-and-pyelonephritis#0",
+      "expectedStoredTopic": "Urinary tract infections and pyelonephritis",
+      "canonicalTopicName": "Urinary tract infections and pyelonephritis",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:urinary-tract-infections-and-pyelonephritis#1",
+      "expectedStoredTopic": "Urinary tract infections and pyelonephritis",
+      "canonicalTopicName": "Urinary tract infections and pyelonephritis",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:ventilation-strategies-in-ards-and-post-op-respiratory-failure#4",
+      "expectedStoredTopic": "ARDS",
+      "canonicalTopicName": "ARDS",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:viral-haemorrhagic-fevers-ebola-lassa-marburg-infection-control-notifiable-diseases-supportive-care#1",
+      "expectedStoredTopic": "Viral haemorrhagic fevers: Ebola, Lassa, Marburg: infection control, notifiable diseases, supportive care",
+      "canonicalTopicName": "Viral haemorrhagic fevers: Ebola, Lassa, Marburg: infection control, notifiable diseases, supportive care",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:viral-haemorrhagic-fevers-ebola-lassa-marburg-infection-control-notifiable-diseases-supportive-care#3",
+      "expectedStoredTopic": "Viral haemorrhagic fevers: Ebola, Lassa, Marburg: infection control, notifiable diseases, supportive care",
+      "canonicalTopicName": "Viral haemorrhagic fevers: Ebola, Lassa, Marburg: infection control, notifiable diseases, supportive care",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:viral-hepatitis-a-and-e-faeco-oral-transmission-self-limiting-vaccination-fulminant-hepatitis#4",
+      "expectedStoredTopic": "Viral hepatitis A and E: faeco-oral transmission, self-limiting, vaccination, fulminant hepatitis",
+      "canonicalTopicName": "Viral hepatitis A and E: faeco-oral transmission, self-limiting, vaccination, fulminant hepatitis",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:viral-induced-arthritides#2",
+      "expectedStoredTopic": "Viral-Induced Arthritides",
+      "canonicalTopicName": "Viral-Induced Arthritides",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "paper-mcq:viral-induced-arthritides#4",
+      "expectedStoredTopic": "Viral-Induced Arthritides",
+      "canonicalTopicName": "Viral-Induced Arthritides",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:cardiac-arrhythmias#1",
+      "expectedStoredTopic": "cardiac arrhythmias",
+      "canonicalTopicName": "cardiac arrhythmias",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:cardiovascular-risk-modification#3",
+      "expectedStoredTopic": "cardiovascular risk modification",
+      "canonicalTopicName": "cardiovascular risk modification",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:chronic-abdominal-pain#3",
+      "expectedStoredTopic": "chronic abdominal pain",
+      "canonicalTopicName": "chronic abdominal pain",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:hepatitis-management#1",
+      "expectedStoredTopic": "hepatitis management",
+      "canonicalTopicName": "hepatitis management",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "cold-start-mcq:multiple-sclerosis#0",
+      "expectedStoredTopic": "multiple sclerosis",
+      "canonicalTopicName": "multiple sclerosis",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:acute-necrotising-pancreatitis-step-up-approach-debridement-timing#1",
+      "expectedStoredTopic": "Acute necrotising pancreatitis: step-up approach, debridement timing",
+      "canonicalTopicName": "Acute necrotising pancreatitis: step-up approach, debridement timing",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:acute-necrotising-pancreatitis-step-up-approach-debridement-timing#2",
+      "expectedStoredTopic": "Acute necrotising pancreatitis: step-up approach, debridement timing",
+      "canonicalTopicName": "Acute necrotising pancreatitis: step-up approach, debridement timing",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    },
+    {
+      "questionId": "guideline-mcq:recurrent-disease-in-the-transplant#2",
+      "expectedStoredTopic": "Recurrent Disease in the Transplant",
+      "canonicalTopicName": "Recurrent Disease in the Transplant",
+      "notes": "Stored topic is an exact canonical display-name or registered-alias match; clinical review state preserved."
+    }
+  ]
+}
