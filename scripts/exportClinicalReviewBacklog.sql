@@ -40,7 +40,7 @@ WITH questions AS (
         i.review_notes, i.evidence_support, i.evidence_guideline_ids, i.evidence_paper_uids,
         i.topic_similarity, i.runner_up_similarity, i.runner_up_curriculum_topic_id, i.reasons,
         a.status AS audit_status, a.human_decision, a.reviewed_by AS audit_reviewed_by,
-        a.reviewed_at AS audit_reviewed_at, a.reviewer_notes AS audit_reviewer_notes,
+        a.reviewed_at AS audit_reviewed_at, a.human_notes AS audit_reviewer_notes,
         COALESCE(g.ref_count,0) AS guideline_ref_count, COALESCE(p.ref_count,0) AS paper_ref_count,
         COALESCE(g.stored_guideline,false) AS stored_guideline, COALESCE(g.stored_document,false) AS stored_guideline_document,
         COALESCE(p.stored_abstract,false) AS stored_paper_abstract,
