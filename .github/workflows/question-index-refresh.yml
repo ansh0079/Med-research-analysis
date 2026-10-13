@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       mode:
-        description: Mode: report (default) or write (apply dual links)
+        description: "Mode: report (default) or write (apply dual links)"
         required: false
         default: report
         type: choice
@@ -16,6 +16,8 @@ on:
         required: false
         default: false
         type: boolean
+  schedule:
+    - cron: '20 3 * * *'
 
 # Share the deploy's group so a deploy never recreates the web container underneath a rebuild (a manual
 # run on 2026-10-03 was killed that way, exit 137), and the two queue instead of overlapping.
@@ -76,7 +78,7 @@ jobs:
           host: 178.105.155.246
           username: root
           key: ${{ secrets.HETZNER_SSH_KEY }}
-          source: "/opt/medsearch/data/question-topic-index-report.json"
+          source: "/var/lib/docker/volumes/medsearch_data/_data/question-topic-index-report.json"
           target: "artifacts/"
           overwrite: true
 
