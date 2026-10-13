@@ -44,7 +44,7 @@ jobs:
                     -e QUESTION_AUDIT_STAGE1_MODEL=gemini-2.5-flash-lite \
                     -e QUESTION_AUDIT_STAGE2_PROVIDER=gemini \
                     -e QUESTION_AUDIT_STAGE2_MODEL=gemini-2.5-flash \
-                    -e QUESTION_AUDIT_MAX_OUTPUT_TOKENS=1600 \
+                    -e QUESTION_AUDIT_MAX_OUTPUT_TOKENS=2400 \
                     medsearch-web node server/scripts/runFullQuestionAudit.js \
                     --action '$ACTION' --budget-usd '$BUDGET_USD' --limit '$LIMIT' --concurrency 6 \
                     --report /tmp/signal-md-full-question-audit.json"
