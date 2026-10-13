@@ -7,7 +7,7 @@ on:
                 description: Audit action
                 required: true
                 type: choice
-                options: [status, sync, stage1, stage2, hold-errors]
+                options: [status, sync, stage1, stage2, hold-errors, finalize, export]
                 default: status
             budget_usd:
                 description: Maximum incremental LLM spend for this run
@@ -42,6 +42,9 @@ jobs:
                   if [ "$ACTION" = "hold-errors" ]; then
                     ssh -o ServerAliveInterval=30 -o ServerAliveCountMax=20 root@178.105.155.246 "docker exec medsearch-pg psql -U medsearch -d medsearch -v ON_ERROR_STOP=1 -c \"UPDATE question_audit SET pre_flag_reason='automated_review_unreadable_or_truncated', status='needs_human', updated_at=NOW()::text WHERE human_decision IS NULL AND pre_flag_reason IS NULL AND stage1_verdict IS NULL;\""
                   fi
+                  if [ "$ACTION" = "finalize" ]; then
+                    ssh -o ServerAliveInterval=30 -o ServerAliveCountMax=20 root@178.105.155.246 "docker exec medsearch-pg psql -U medsearch -d medsearch -v ON_ERROR_STOP=1 -c \"UPDATE question_audit SET status = CASE WHEN human_decision IS NOT NULL THEN 'human_' || human_decision WHEN pre_flag_reason IS NOT NULL THEN 'needs_human' WHEN stage1_verdict = 'pass' THEN 'passed' WHEN stage1_verdict = 'flag' AND stage2_verdict = 'pass' THEN 'cleared_by_second_review' ELSE 'needs_human' END, pre_flag_reason = CASE WHEN human_decision IS NULL AND stage1_verdict = 'flag' AND stage2_verdict IS NULL THEN COALESCE(pre_flag_reason, 'secondary_review_unreadable_or_truncated') WHEN human_decision IS NULL AND stage1_verdict IS NULL THEN COALESCE(pre_flag_reason, 'automated_review_unreadable_or_truncated') ELSE pre_flag_reason END, updated_at=NOW()::text;\""
+                  fi
                   ssh -o ServerAliveInterval=30 -o ServerAliveCountMax=20 root@178.105.155.246 "cd /opt/medsearch && docker compose -f docker-compose.hetzner.yml run --rm --no-deps -T -u 0 \
                     -e USE_POSTGRES_MAIN=true \
                     -e QUESTION_AUDIT_STAGE1_PROVIDER=gemini \
@@ -51,10 +54,15 @@ jobs:
                     -e QUESTION_AUDIT_MAX_OUTPUT_TOKENS=2400 \
                     -v /tmp:/audit web node server/scripts/runFullQuestionAudit.js \
                     --action '$ACTION' --budget-usd '$BUDGET_USD' --limit '$LIMIT' --concurrency 3 \
-                    --report /audit/signal-md-full-question-audit.json"
+                    --report /audit/signal-md-full-question-audit.json --csv /audit/signal-md-full-question-audit.csv"
                   scp root@178.105.155.246:/tmp/signal-md-full-question-audit.json ./signal-md-full-question-audit.json
+                  if [ "$ACTION" = "export" ]; then
+                    scp root@178.105.155.246:/tmp/signal-md-full-question-audit.csv ./signal-md-full-question-audit.csv
+                  fi
             - uses: actions/upload-artifact@v4
               with:
                   name: signal-md-full-question-audit-${{ inputs.action }}
-                  path: signal-md-full-question-audit.json
+                  path: |
+                      signal-md-full-question-audit.json
+                      signal-md-full-question-audit.csv
                   retention-days: 30
