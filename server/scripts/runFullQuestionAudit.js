@@ -65,11 +65,18 @@ async function preflight(targets, concurrency = 12) {
             const reason = findings.length ? `automated_preflight:${findings.join('|')}` : null;
             const retainedReason = existing?.pre_flag_reason || reason;
             if (!existing?.pre_flag_reason && reason) result.newlyHeld += 1;
-            await db.run(
-                `UPDATE question_audit SET evidence = ?, pre_flag_reason = ?, status = CASE WHEN ? IS NOT NULL THEN 'needs_human' ELSE status END,
-                    updated_at = ? WHERE object_key = ? AND question_index = ?`,
-                [JSON.stringify(evidence), retainedReason, retainedReason, new Date().toISOString(), target.objectKey, target.questionIndex],
-            );
+            if (retainedReason) {
+                await db.run(
+                    `UPDATE question_audit SET evidence = ?, pre_flag_reason = ?, status = 'needs_human', updated_at = ?
+                     WHERE object_key = ? AND question_index = ?`,
+                    [JSON.stringify(evidence), retainedReason, new Date().toISOString(), target.objectKey, target.questionIndex],
+                );
+            } else {
+                await db.run(
+                    `UPDATE question_audit SET evidence = ?, updated_at = ? WHERE object_key = ? AND question_index = ?`,
+                    [JSON.stringify(evidence), new Date().toISOString(), target.objectKey, target.questionIndex],
+                );
+            }
             result.checked += 1;
         }
     };
