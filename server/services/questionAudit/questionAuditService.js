@@ -250,7 +250,10 @@ async function runStage(db, ai, {
             const question = await loadQuestion(db, row.object_key, row.question_index);
             if (!question) continue;
             const evidence = parse(row.evidence, null) || await buildEvidence(db, row, question);
-            const prior = stage === 2 ? { issues: parse(row.stage1_issues, []) } : null;
+            const stage1Review = stage === 2 ? parse(row.stage1_issues, {}) : null;
+            const prior = stage === 2 ? {
+                issues: Array.isArray(stage1Review) ? stage1Review : (Array.isArray(stage1Review?.issues) ? stage1Review.issues : []),
+            } : null;
             let verdict;
             try {
                 const prompt = buildAuditPrompt({ topic: row.topic, question, evidence, priorReview: prior });
