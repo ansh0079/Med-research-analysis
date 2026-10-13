@@ -234,6 +234,7 @@ async function runStage(db, ai, {
     const queue = await db.all(sql, params);
     const startSpend = Number((await getSpendSnapshot().catch(() => null))?.spentUsd || 0);
     const summary = { stage, model: config.model(), waiting: queue.length, reviewed: 0, flagged: 0, passed: 0, errors: 0, spentUsd: 0, stoppedReason: null };
+    const maxOutputTokens = Math.max(900, Math.min(2400, Number(process.env.QUESTION_AUDIT_MAX_OUTPUT_TOKENS) || 1600));
 
     let cursor = 0;
     let stop = false;
@@ -255,11 +256,11 @@ async function runStage(db, ai, {
                 const prompt = buildAuditPrompt({ topic: row.topic, question, evidence, priorReview: prior });
                 const raw = stage === 1
                     ? await ai.callStructured(prompt, config.provider(), config.model(), {
-                        temperature: 0, jsonMode: true, maxOutputTokens: 900,
+                        temperature: 0, jsonMode: true, maxOutputTokens,
                         usage: { operation: 'question_audit_primary', topic: row.topic },
                     })
                     : await ai.callStructured(prompt, config.provider(), config.model(), {
-                        temperature: 0, jsonMode: true, maxOutputTokens: 900,
+                        temperature: 0, jsonMode: true, maxOutputTokens,
                         usage: { operation: 'question_audit_secondary', topic: row.topic },
                     });
                 verdict = normaliseVerdict(raw);
