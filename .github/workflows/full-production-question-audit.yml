@@ -49,7 +49,7 @@ jobs:
                     -e QUESTION_AUDIT_STAGE2_MODEL=gemini-2.5-flash \
                     -e QUESTION_AUDIT_MAX_OUTPUT_TOKENS=2400 \
                     medsearch-web node server/scripts/runFullQuestionAudit.js \
-                    --action '$ACTION' --budget-usd '$BUDGET_USD' --limit '$LIMIT' --concurrency 6 \
+                    --action '$ACTION' --budget-usd '$BUDGET_USD' --limit '$LIMIT' --concurrency 3 \
                     --report /tmp/signal-md-full-question-audit.json"
                   ssh -o ServerAliveInterval=30 -o ServerAliveCountMax=20 root@178.105.155.246 "docker cp medsearch-web:/tmp/signal-md-full-question-audit.json /tmp/signal-md-full-question-audit.json"
                   scp root@178.105.155.246:/tmp/signal-md-full-question-audit.json ./signal-md-full-question-audit.json
