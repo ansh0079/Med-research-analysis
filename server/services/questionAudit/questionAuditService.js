@@ -225,7 +225,7 @@ async function runStage(db, ai, {
     const config = STAGES[stage];
     if (!config) throw new Error(`Unknown audit stage ${stage}`);
     const where = stage === 1
-        ? 'stage1_verdict IS NULL AND human_decision IS NULL'
+        ? 'stage1_verdict IS NULL AND human_decision IS NULL AND pre_flag_reason IS NULL'
         : "stage1_verdict = 'flag' AND stage2_verdict IS NULL AND human_decision IS NULL";
     const params = [];
     let sql = `SELECT * FROM question_audit WHERE ${where}`;
