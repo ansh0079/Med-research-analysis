@@ -7,7 +7,7 @@ on:
                 description: Audit action
                 required: true
                 type: choice
-                options: [status, sync, stage1, stage2]
+                options: [status, sync, stage1, stage2, hold-errors]
                 default: status
             budget_usd:
                 description: Maximum incremental LLM spend for this run
@@ -39,6 +39,9 @@ jobs:
                   BUDGET_USD: ${{ inputs.budget_usd }}
                   LIMIT: ${{ inputs.limit }}
               run: |
+                  if [ "$ACTION" = "hold-errors" ]; then
+                    ssh root@178.105.155.246 "docker exec medsearch-pg psql -U medsearch -d medsearch -v ON_ERROR_STOP=1 -c \"UPDATE question_audit SET pre_flag_reason='automated_review_unreadable_or_truncated', status='needs_human', updated_at=NOW()::text WHERE human_decision IS NULL AND pre_flag_reason IS NULL AND stage1_verdict IS NULL;\""
+                  fi
                   ssh root@178.105.155.246 "docker exec -w /app \
                     -e QUESTION_AUDIT_STAGE1_PROVIDER=gemini \
                     -e QUESTION_AUDIT_STAGE1_MODEL=gemini-2.5-flash-lite \
