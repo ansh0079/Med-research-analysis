@@ -93,43 +93,6 @@ async function exportReport(file) {
     return payload;
 }
 
-function csvCell(value) {
-    const text = value == null ? '' : (typeof value === 'string' ? value : JSON.stringify(value));
-    return `"${String(text).replace(/"/g, '""')}"`;
-}
-
-async function exportDetailedCsv(file) {
-    const targets = await listTargets(db);
-    const targetMap = new Map(targets.map((t) => [`${t.objectKey}#${t.questionIndex}`, t.question]));
-    const rows = await db.all('SELECT * FROM question_audit ORDER BY status, topic, object_key, question_index', []);
-    const columns = [
-        'final_status', 'clinician_sample', 'topic', 'object_type', 'object_key', 'question_index',
-        'question', 'options', 'keyed_answer', 'explanation', 'evidence_sources', 'evidence_urls',
-        'evidence_excerpts', 'preflight_finding', 'stage1_verdict', 'stage1_severity', 'stage1_findings',
-        'stage1_model', 'stage2_verdict', 'stage2_severity', 'stage2_findings', 'stage2_model',
-        'human_decision', 'human_notes', 'reviewed_by', 'reviewed_at',
-    ];
-    const lines = [columns.map(csvCell).join(',')];
-    for (const row of rows) {
-        const q = targetMap.get(`${row.object_key}#${row.question_index}`) || {};
-        const evidence = parse(row.evidence, []);
-        const evidenceList = Array.isArray(evidence) ? evidence : [];
-        const values = [
-            row.status, row.in_random_sample ? 'yes' : 'no', row.topic, row.object_type, row.object_key, row.question_index,
-            q.question, q.options, q.correctAnswer ?? q.correct, q.explanation,
-            evidenceList.map((e) => [e.kind, e.source, e.year].filter(Boolean).join(' | ')).join('\n'),
-            evidenceList.map((e) => e.url).filter(Boolean).join('\n'),
-            evidenceList.map((e) => e.text).filter(Boolean).join('\n\n'),
-            row.pre_flag_reason, row.stage1_verdict, row.stage1_severity, row.stage1_issues, row.stage1_model,
-            row.stage2_verdict, row.stage2_severity, row.stage2_issues, row.stage2_model,
-            row.human_decision, row.human_notes, row.reviewed_by, row.reviewed_at,
-        ];
-        lines.push(values.map(csvCell).join(','));
-    }
-    fs.writeFileSync(file, `\uFEFF${lines.join('\n')}`);
-    return { file, rows: rows.length };
-}
-
 async function main() {
     const action = arg('--action', 'status');
     await db.connect();
@@ -155,10 +118,6 @@ async function main() {
         console.log(JSON.stringify({ review: result }));
     }
     const destination = path.resolve(arg('--report', '/tmp/signal-md-full-question-audit.json'));
-    if (action === 'export') {
-        const csvDestination = path.resolve(arg('--csv', '/tmp/signal-md-full-question-audit.csv'));
-        console.log(JSON.stringify({ detailedExport: await exportDetailedCsv(csvDestination) }));
-    }
     console.log(JSON.stringify({ report: await exportReport(destination), destination }));
 }
 
