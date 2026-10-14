@@ -65,7 +65,7 @@ jobs:
                     -v /tmp/runFullQuestionAudit.js:/app/server/scripts/runFullQuestionAudit.js:ro \
                     -v /tmp/questionAuditService.js:/app/server/services/questionAudit/questionAuditService.js:ro \
                     web node server/scripts/runFullQuestionAudit.js \
-                    --action '$RUNNER_ACTION' --budget-usd '$BUDGET_USD' --limit '$LIMIT' --concurrency 3 \
+                    --action '$RUNNER_ACTION' --budget-usd '$BUDGET_USD' --limit '$LIMIT' --concurrency 6 \
                     --report /audit/signal-md-full-question-audit.json --csv /audit/signal-md-full-question-audit.csv"
                   scp root@178.105.155.246:/tmp/signal-md-full-question-audit.json ./signal-md-full-question-audit.json
                   if [ "$ACTION" = "export" ]; then
