@@ -602,19 +602,34 @@ async function run() {
     }
 
     for (const c of corrections) {
-        const parsed = parseQuestionId(c.questionId);
-        if (!parsed) { cMissing++; missingIds.push(c.questionId); continue; }
-        const r = await applyCorrection(
-            parsed.objectKey,
-            parsed.index,
-            c.questionId,
-            c.verdict,
-            c.notes,
-            c.suggestedAnswer,
-            c.source,
-            c.stemFix,
-            { apply, newExplanation: c.newExplanation, optionEdits: c.optionEdits, fullOptions: c.fullOptions }
-        );
+        // Support two input shapes:
+        // 1) Legacy: { questionId: "type:key#idx", ... }
+        // 2) Direct: { object_key: "exact-object-key", question_index: 0, ... }
+        let directObjectKey = null;
+        let directIndex = null;
+        let questionId = c.questionId;
+        if ((!questionId || typeof questionId !== 'string') && typeof c.object_key === 'string' && Number.isInteger(c.question_index)) {
+            directObjectKey = String(c.object_key);
+            directIndex = Number(c.question_index);
+            // For logging only — not parsed later
+            questionId = `${directObjectKey}#${directIndex}`;
+        }
+        let objKey, idx;
+        if (directObjectKey != null) {
+            objKey = directObjectKey;
+            idx = directIndex;
+        } else {
+            const parsed = parseQuestionId(questionId);
+            if (!parsed) { cMissing++; missingIds.push(questionId); continue; }
+            objKey = parsed.objectKey;
+            idx = parsed.index;
+        }
+        const r = await applyCorrection(objKey, idx, questionId, c.verdict, c.notes, c.suggestedAnswer, c.source, c.stemFix, {
+            apply,
+            newExplanation: c.newExplanation,
+            optionEdits: c.optionEdits,
+            fullOptions: c.fullOptions,
+        });
         if (r.matched) {
             cMatched++;
             if (r.details === 'option_adjusted') optionAdjusted.push(c.questionId);
