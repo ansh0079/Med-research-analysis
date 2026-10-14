@@ -51,6 +51,8 @@ jobs:
                     ssh -o ServerAliveInterval=30 -o ServerAliveCountMax=20 root@178.105.155.246 "docker exec -i medsearch-pg psql -U medsearch -d medsearch -v ON_ERROR_STOP=1 < /tmp/export-full-question-audit.sql > /tmp/signal-md-full-question-audit.csv"
                     RUNNER_ACTION="status"
                   fi
+                  scp server/scripts/runFullQuestionAudit.js root@178.105.155.246:/tmp/runFullQuestionAudit.js
+                  scp server/services/questionAudit/questionAuditService.js root@178.105.155.246:/tmp/questionAuditService.js
                   ssh -o ServerAliveInterval=30 -o ServerAliveCountMax=20 root@178.105.155.246 "cd /opt/medsearch && docker compose -f docker-compose.hetzner.yml run --rm --no-deps -T -u 0 \
                     -e USE_POSTGRES_MAIN=true \
                     -e QUESTION_AUDIT_STAGE1_PROVIDER=gemini \
@@ -58,7 +60,10 @@ jobs:
                     -e QUESTION_AUDIT_STAGE2_PROVIDER=gemini \
                     -e QUESTION_AUDIT_STAGE2_MODEL=gemini-2.5-flash \
                     -e QUESTION_AUDIT_MAX_OUTPUT_TOKENS=2400 \
-                    -v /tmp:/audit web node server/scripts/runFullQuestionAudit.js \
+                    -v /tmp:/audit \
+                    -v /tmp/runFullQuestionAudit.js:/app/server/scripts/runFullQuestionAudit.js:ro \
+                    -v /tmp/questionAuditService.js:/app/server/services/questionAudit/questionAuditService.js:ro \
+                    web node server/scripts/runFullQuestionAudit.js \
                     --action '$RUNNER_ACTION' --budget-usd '$BUDGET_USD' --limit '$LIMIT' --concurrency 3 \
                     --report /audit/signal-md-full-question-audit.json --csv /audit/signal-md-full-question-audit.csv"
                   scp root@178.105.155.246:/tmp/signal-md-full-question-audit.json ./signal-md-full-question-audit.json
