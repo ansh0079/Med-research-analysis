@@ -40,6 +40,7 @@ jobs:
                   BUDGET_USD: ${{ inputs.budget_usd }}
                   LIMIT: ${{ inputs.limit }}
               run: |
+                  RUNNER_ACTION="$ACTION"
                   if [ "$ACTION" = "hold-errors" ]; then
                     ssh -o ServerAliveInterval=30 -o ServerAliveCountMax=20 root@178.105.155.246 "docker exec medsearch-pg psql -U medsearch -d medsearch -v ON_ERROR_STOP=1 -c \"UPDATE question_audit SET pre_flag_reason='automated_review_unreadable_or_truncated', status='needs_human', updated_at=NOW()::text WHERE human_decision IS NULL AND pre_flag_reason IS NULL AND stage1_verdict IS NULL;\""
                   fi
