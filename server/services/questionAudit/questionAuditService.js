@@ -52,9 +52,9 @@ function computeStatus(row) {
     if (row.human_decision) return `human_${row.human_decision}`;
     if (row.pre_flag_reason) return 'needs_human';
     if (!row.stage1_verdict) return 'pending';
+    if (row.stage2_verdict) return row.stage2_verdict === 'pass' ? 'cleared_by_second_review' : 'needs_human';
     if (row.stage1_verdict === 'pass') return 'passed';
-    if (!row.stage2_verdict) return 'awaiting_second_review';
-    return row.stage2_verdict === 'pass' ? 'cleared_by_second_review' : 'needs_human';
+    return 'awaiting_second_review';
 }
 
 /** Every question to audit, in topic order. Indexed questions use their assigned topic; curated use their own. */
@@ -218,15 +218,18 @@ async function runStage(db, ai, {
     topic = null,
     concurrency = 3,
     maxCapPctUsed = 85,
+    reviewStage1Passes = false,
+    excludeRandomSample = false,
     getSpendSnapshot = () => require('../ai/globalLlmSpendGuard').getSpendSnapshot(),
     logger = console,
     now = () => new Date().toISOString(),
 } = {}) {
     const config = STAGES[stage];
     if (!config) throw new Error(`Unknown audit stage ${stage}`);
-    const where = stage === 1
+    let where = stage === 1
         ? 'stage1_verdict IS NULL AND human_decision IS NULL AND pre_flag_reason IS NULL'
-        : "stage1_verdict = 'flag' AND stage2_verdict IS NULL AND human_decision IS NULL";
+        : `${reviewStage1Passes ? "stage1_verdict = 'pass'" : "stage1_verdict = 'flag'"} AND stage2_verdict IS NULL AND human_decision IS NULL`;
+    if (excludeRandomSample) where += ' AND in_random_sample = 0';
     const params = [];
     let sql = `SELECT * FROM question_audit WHERE ${where}`;
     if (topic) { sql += ' AND topic = ?'; params.push(topic); }

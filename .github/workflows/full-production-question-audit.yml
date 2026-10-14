@@ -7,7 +7,7 @@ on:
                 description: Audit action
                 required: true
                 type: choice
-                options: [status, sync, stage1, stage2, hold-errors, finalize, export]
+                options: [status, sync, stage1, stage2, verify-passes, hold-errors, finalize, export]
                 default: status
             budget_usd:
                 description: Maximum incremental LLM spend for this run
@@ -44,7 +44,7 @@ jobs:
                     ssh -o ServerAliveInterval=30 -o ServerAliveCountMax=20 root@178.105.155.246 "docker exec medsearch-pg psql -U medsearch -d medsearch -v ON_ERROR_STOP=1 -c \"UPDATE question_audit SET pre_flag_reason='automated_review_unreadable_or_truncated', status='needs_human', updated_at=NOW()::text WHERE human_decision IS NULL AND pre_flag_reason IS NULL AND stage1_verdict IS NULL;\""
                   fi
                   if [ "$ACTION" = "finalize" ]; then
-                    ssh -o ServerAliveInterval=30 -o ServerAliveCountMax=20 root@178.105.155.246 "docker exec medsearch-pg psql -U medsearch -d medsearch -v ON_ERROR_STOP=1 -c \"UPDATE question_audit SET status = CASE WHEN human_decision IS NOT NULL THEN 'human_' || human_decision WHEN pre_flag_reason IS NOT NULL THEN 'needs_human' WHEN stage1_verdict = 'pass' THEN 'passed' WHEN stage1_verdict = 'flag' AND stage2_verdict = 'pass' THEN 'cleared_by_second_review' ELSE 'needs_human' END, pre_flag_reason = CASE WHEN human_decision IS NULL AND stage1_verdict = 'flag' AND stage2_verdict IS NULL THEN COALESCE(pre_flag_reason, 'secondary_review_unreadable_or_truncated') WHEN human_decision IS NULL AND stage1_verdict IS NULL THEN COALESCE(pre_flag_reason, 'automated_review_unreadable_or_truncated') ELSE pre_flag_reason END, updated_at=NOW()::text;\""
+                    ssh -o ServerAliveInterval=30 -o ServerAliveCountMax=20 root@178.105.155.246 "docker exec medsearch-pg psql -U medsearch -d medsearch -v ON_ERROR_STOP=1 -c \"UPDATE question_audit SET status = CASE WHEN human_decision IS NOT NULL THEN 'human_' || human_decision WHEN pre_flag_reason IS NOT NULL THEN 'needs_human' WHEN stage2_verdict = 'pass' THEN 'cleared_by_second_review' WHEN stage2_verdict = 'flag' THEN 'needs_human' WHEN stage1_verdict = 'pass' THEN 'passed' ELSE 'needs_human' END, pre_flag_reason = CASE WHEN human_decision IS NULL AND stage1_verdict = 'flag' AND stage2_verdict IS NULL THEN COALESCE(pre_flag_reason, 'secondary_review_unreadable_or_truncated') WHEN human_decision IS NULL AND stage1_verdict IS NULL THEN COALESCE(pre_flag_reason, 'automated_review_unreadable_or_truncated') ELSE pre_flag_reason END, updated_at=NOW()::text;\""
                   fi
                   if [ "$ACTION" = "export" ]; then
                     scp server/scripts/exportFullQuestionAudit.sql root@178.105.155.246:/tmp/export-full-question-audit.sql

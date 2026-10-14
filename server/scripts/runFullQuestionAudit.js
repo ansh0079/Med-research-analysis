@@ -140,8 +140,8 @@ async function main() {
         console.log(JSON.stringify({ sample: await drawRandomSample(db, { size: Number(arg('--sample', 200)) }) }));
         console.log(JSON.stringify({ preflight: await preflight(targets, Number(arg('--concurrency', 12))) }));
     }
-    if (action === 'stage1' || action === 'stage2' || action === 'all') {
-        const stage = action === 'stage2' ? 2 : 1;
+    if (action === 'stage1' || action === 'stage2' || action === 'verify-passes' || action === 'all') {
+        const stage = action === 'stage2' || action === 'verify-passes' ? 2 : 1;
         const ai = createAiService({ serverConfig });
         const result = await runStage(db, ai, {
             stage,
@@ -149,6 +149,8 @@ async function main() {
             limit: Number(arg('--limit', 100000)),
             concurrency: Number(arg('--concurrency', 6)),
             maxCapPctUsed: Number(arg('--max-cap-pct', 85)),
+            reviewStage1Passes: action === 'verify-passes',
+            excludeRandomSample: action === 'verify-passes',
         });
         console.log(JSON.stringify({ review: result }));
     }
