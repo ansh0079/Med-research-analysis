@@ -95,6 +95,7 @@ async function exportReport(file) {
 
 async function main() {
     const action = arg('--action', 'status');
+    console.log(JSON.stringify({ action }));
     await db.connect();
     await db.runMigrations();
     if (action === 'sync' || action === 'all') {
