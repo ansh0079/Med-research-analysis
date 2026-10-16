@@ -7,7 +7,7 @@ module.exports = (Sup) => class extends Sup {
 // ==========================================
 
 async createCaseAttempt(attempt) {
-    const result = await this.run(
+    const result = await this.runInsert(
         `INSERT INTO case_attempts (user_id, topic, normalized_topic, case_text, case_type, learning_mode, user_response, ai_feedback, score, seed_article_uids, created_at)
          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, datetime('now'))`,
         [
