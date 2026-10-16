@@ -78,6 +78,11 @@ function makeDb() {
             const r = sqlite.prepare(sql).run(...(params || []));
             return { changes: r.changes, id: Number(r.lastInsertRowid) };
         }
+        async runInsert(sql, params) {
+            const row = sqlite.prepare(`${String(sql).trim().replace(/;\s*$/, '')} RETURNING id`).get(...(params || []));
+            const id = row?.id ?? null;
+            return { id, lastID: id, lastInsertRowid: id, changes: id == null ? 0 : 1 };
+        }
         async all(sql, params) { return sqlite.prepare(sql).all(...(params || [])); }
         async get(sql, params) { return sqlite.prepare(sql).get(...(params || [])); }
         async withTransaction(fn) {
