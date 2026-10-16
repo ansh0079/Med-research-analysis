@@ -46,6 +46,17 @@ describe('runInsert / insertReturningId (real database)', () => {
         expect(finished).toBeTruthy();
     });
 
+    test('creators that hand back the new row return a real row, not null (Ask the Mentor crashed on null)', async () => {
+        const email = `insert-${Date.now()}@example.test`;
+        const userId = `insert-user-${Date.now()}`;
+        await db.createUser({ id: userId, email, password: 'x' });
+        const conversation = await db.createAgentConversation(userId, 'fatty liver disease', 'fatty liver disease');
+        expect(conversation).toBeTruthy();
+        expect(conversation.id).toBeTruthy();
+        const attempt = await db.createCaseAttempt({ userId, topic: 'fatty liver disease', caseText: 'c', caseType: 't', learningMode: 'm' });
+        expect(attempt.id).toBeTruthy();
+    });
+
     test('an existing RETURNING clause is left alone', async () => {
         const id = await db.insertReturningId(
             `INSERT INTO learning_scheduler_runs (run_type, status, started_at, details) VALUES (?, 'running', ?, ?) RETURNING id`,

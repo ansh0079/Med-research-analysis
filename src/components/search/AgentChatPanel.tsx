@@ -197,9 +197,12 @@ export const AgentChatPanel: React.FC<AgentChatPanelProps> = ({
       try {
         if (isAuthenticated && !convId) {
           const { conversation } = await api.learning.createAgentSession(topic, topic);
-          convId = conversation.id;
-          setConversationId(convId);
-          setConversations((prev) => [conversation, ...prev]);
+          // A missing conversation must not block the answer; the turn just goes unsaved.
+          if (conversation?.id != null) {
+            convId = conversation.id;
+            setConversationId(convId);
+            setConversations((prev) => [conversation, ...prev]);
+          }
         }
 
         // Read session feedback from quiz results (if the learner just scored poorly)

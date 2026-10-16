@@ -9,12 +9,13 @@ module.exports = (Sup) => class extends Sup {
 async createAgentConversation(userId, topic, title) {
     const now = new Date().toISOString();
     const normalized = this.normalizeTopic(topic);
-    const result = await this.run(
+    // run() reports no id on Postgres without RETURNING; a missing id made this return null.
+    const id = await this.insertReturningId(
         `INSERT INTO agent_conversations (user_id, topic, normalized_topic, title, messages, message_count, last_message_at, created_at)
          VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
         [userId, topic, normalized, title || topic, '[]', 0, now, now]
     );
-    return this.getAgentConversation(result.id);
+    return this.getAgentConversation(id);
 }
 
 async getAgentConversation(id) {

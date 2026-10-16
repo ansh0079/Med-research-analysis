@@ -655,7 +655,7 @@ mapStudyRunRow(row) {
 async createStudyRun(userId, { topic, outlineId = null, progress = {}, nodeCoverage = {}, curriculumTopicId = null }) {
     const normalized = this.normalizeTopic(topic);
     const now = new Date().toISOString();
-    const result = await this.run(
+    const result = await this.runInsert(
         `INSERT INTO study_runs (user_id, topic, normalized_topic, outline_id, curriculum_topic_id, status, progress, node_coverage, started_at, last_active_at)
          VALUES (?, ?, ?, ?, ?, 'active', ?, ?, ?, ?)`,
         [

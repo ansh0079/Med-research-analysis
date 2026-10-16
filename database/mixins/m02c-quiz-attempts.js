@@ -27,7 +27,7 @@ async createQuizAttempt(attempt) {
     const lineageColumns = hasLineage ? ', evidence_snapshot_id, content_version' : '';
     const lineagePlaceholders = hasLineage ? ', ?, ?' : '';
     const lineageValues = hasLineage ? [attempt.evidenceSnapshotId || null, attempt.contentVersion || null] : [];
-    const result = await this.run(
+    const result = await this.runInsert(
         `INSERT INTO quiz_attempts (user_id, topic, normalized_topic, question_id, question_type, question_text, user_answer, correct_answer, is_correct, time_ms, confidence, source_article_uid, study_run_id, outline_node_id, concept_hash, claim_key, reasoning_tags, reasoning_note, prompt_variant, session_id, created_at${lineageColumns})
          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, datetime('now')${lineagePlaceholders})`,
         [
