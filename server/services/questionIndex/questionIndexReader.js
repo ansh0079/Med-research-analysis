@@ -91,11 +91,27 @@ async function loadAlignedForCluster(db, clusterId, { limit = 60 } = {}) {
     if (!clusterId) return [];
     try {
         const withdrawn = await loadWithdrawnOverrides(db);
-        const rows = await db.all(
-            `SELECT * FROM question_topic_index
-             WHERE assigned_cluster_id = ? AND category = 'aligned' LIMIT ?`,
-            [clusterId, limit],
-        );
+        let rows;
+        try {
+            rows = await db.all(
+                `SELECT * FROM question_topic_index
+                 WHERE (
+                    (assigned_cluster_id = ? AND category = 'aligned')
+                    OR
+                    (category = 'dual_linked' AND (assigned_cluster_id = ? OR secondary_cluster_id = ?))
+                 )
+                 LIMIT ?`,
+                [clusterId, clusterId, clusterId, limit],
+            );
+        } catch (err) {
+            // Backwards-compatible fallback for databases without dual-link columns (pre-migration 111).
+            rows = await db.all(
+                `SELECT * FROM question_topic_index
+                 WHERE assigned_cluster_id = ? AND category = 'aligned'
+                 LIMIT ?`,
+                [clusterId, limit],
+            );
+        }
         const byObject = new Map();
         for (const r of rows) {
             if (r.review_state === 'retired') continue;
@@ -223,6 +239,43 @@ async function loadAlsoApplicableForCluster(db, clusterId, { limit = 40 } = {}) 
     }
 }
 
+/** Only the dual-linked questions for this cluster, as { question, objectType, objectKey }. */
+async function loadDualLinkedForCluster(db, clusterId, { limit = 120 } = {}) {
+    if (!clusterId) return [];
+    try {
+        const rows = await db.all(
+            `SELECT * FROM question_topic_index
+             WHERE category = 'dual_linked' AND (assigned_cluster_id = ? OR secondary_cluster_id = ?)
+             LIMIT ?`,
+            [clusterId, clusterId, limit],
+        );
+        const byObject = new Map();
+        for (const r of rows) {
+            if (r.review_state === 'retired') continue;
+            if (!byObject.has(r.object_key)) byObject.set(r.object_key, []);
+            byObject.get(r.object_key).push(r);
+        }
+        const out = [];
+        for (const [objectKey, wanted] of byObject) {
+            const object = await db.get("SELECT object_payload, review_state FROM teaching_objects WHERE object_key = ?", [objectKey]);
+            if (!object || object.review_state === 'withdrawn') continue;
+            let mcqs;
+            try { mcqs = JSON.parse(object.object_payload || '{}').mcqs; } catch { continue; }
+            if (!Array.isArray(mcqs)) continue;
+            for (const r of wanted) {
+                const q = mcqs[r.question_index];
+                if (q?.question && questionHash(q)) {
+                    const objectType = r.evidence_support === 'paper' ? 'paper_mcq' : r.object_type;
+                    out.push({ question: q, objectType, objectKey });
+                }
+            }
+        }
+        return out;
+    } catch {
+        return [];
+    }
+}
+
 module.exports = {
     servingEnabled,
     getTopicClusterId,
@@ -230,5 +283,6 @@ module.exports = {
     belongsHere,
     loadAlignedForCluster,
     loadAlsoApplicableForCluster,
+    loadDualLinkedForCluster,
     questionHash,
 };
