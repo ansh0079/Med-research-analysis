@@ -6,7 +6,7 @@ const { safeFetch } = require('../../utils/fetch');
 const { getProviderCandidates } = require('../../utils/aiProvider');
 const { topicRefreshPriority } = require('../topicKnowledgeFreshness');
 const { AGENT_PROMPT_VERSION } = require('../agentPromptVersion');
-const { truncateAgentPrompt, getAgentOutputTokenBudget } = require('../agentPromptBudget');
+const { truncateAgentPrompt, getAgentOutputTokenBudget, getAgentPromptTokenBudget } = require('../agentPromptBudget');
 const { enqueueAgentTurnSideEffects } = require('../agentSideEffectService');
 const { getActiveLlmBudget, createBudgetForAction } = require('../llmRequestBudget');
 const { buildLearnerContext } = require('../learnerContextService');
@@ -29,6 +29,7 @@ const {
 const { POLICY_TEACHING_STRATEGY, recordBanditReward, selectTeachingStrategyArm } = require('../personalizationBanditService');
 const { agentFollowUpReward } = require('../learningLoopSignalService');
 const { getAgentMistakesForContext } = require('../agentSelfImprovementService');
+const { isTopSourcesRequest, requestedSourceCount, buildTopSourcesBlock } = require('../agentHelpers/topSources');
 
 const isDev = process.env.NODE_ENV === 'development';
 
@@ -267,9 +268,23 @@ async function executeAgentTurn(
         recentMessages.length > 0 ? `## Recent conversation\n${recentMessages.map((m) => `**${m.role}**: ${m.content}`).join('\n\n')}` : '',
     ].filter(Boolean).join('\n\n');
 
-    const fullPrompt = `${systemPrompt}${feedbackContext}\n\n${conversationContext ? conversationContext + '\n\n---\n\n' : '---\n\n'}${trimmedMessage}`;
+    // "Top 5 guidelines/reviews/meta-analyses": the usual context holds 5 guidelines and the top few
+    // search results, so give the model a wider ranked pool to choose from.
+    let topSourcesBlock = '';
+    const wantsTopSources = isTopSourcesRequest(trimmedMessage);
+    if (wantsTopSources) {
+        const count = requestedSourceCount(trimmedMessage);
+        const widerGuidelines = await db.getGuidelinesByTopic(trimmedTopic, { limit: 100 }).catch((err) => {
+            logger.warn({ err }, 'getGuidelinesByTopic (top sources) failed');
+            return guidelines || [];
+        });
+        const seminal = (topicKnowledge?.knowledge?.seminalPapers || []).map((p) => ({ title: p.title, pubdate: p.year, abstract: p.clinicalPrinciple || p.whySeminal || '' }));
+        topSourcesBlock = `\n\n${buildTopSourcesBlock({ topic: trimmedTopic, guidelines: widerGuidelines, articles: [...(currentArticles || []), ...seminal], count })}`;
+    }
 
-    const { prompt: truncatedPrompt, truncated: promptWasTruncated, originalTokens, finalTokens } = truncateAgentPrompt(fullPrompt);
+    const fullPrompt = `${systemPrompt}${feedbackContext}\n\n${conversationContext ? conversationContext + '\n\n' : ''}${topSourcesBlock ? topSourcesBlock.trim() + '\n\n' : ''}---\n\n${trimmedMessage}`;
+
+    const { prompt: truncatedPrompt, truncated: promptWasTruncated, originalTokens, finalTokens } = truncateAgentPrompt(fullPrompt, wantsTopSources ? getAgentPromptTokenBudget() + 10000 : undefined);
     if (promptWasTruncated) {
         logger.info({ topic: trimmedTopic, userId, originalTokens, finalTokens }, 'Agent prompt truncated to fit token budget');
     }
@@ -278,7 +293,8 @@ async function executeAgentTurn(
     let chunksSent = false;
     let lastStreamErr = null;
     let streamSucceeded = false;
-    const maxTokens = getAgentOutputTokenBudget(classifiedIntent, 1800);
+    // A full multi-source summary needs far more room than a chat turn.
+    const maxTokens = wantsTopSources ? getAgentOutputTokenBudget('top_sources', 7000) : getAgentOutputTokenBudget(classifiedIntent, 1800);
     const maxRetries = Math.max(0, Number(process.env.AGENT_STREAM_MAX_RETRIES_PER_PROVIDER) || 2);
     const retryDelayMs = Math.max(0, Number(process.env.AGENT_STREAM_RETRY_DELAY_MS) || 500);
     const activeBudget = getActiveLlmBudget() || createBudgetForAction('agent_turn');
