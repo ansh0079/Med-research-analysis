@@ -84,7 +84,7 @@ const schemas = {
     quiz: z.object({
         topic: z.string().max(200),
         articles: z.array(z.unknown()).optional(),
-        count: z.number().int().min(1).max(10).default(5),
+        count: z.number().int().min(1).max(30).default(5),
         difficulty: z.enum(['easy', 'medium', 'hard', 'mixed']).default('mixed'),
         studyRunId: z.number().int().optional(),
         trainingStage: TRAINING_STAGE,

@@ -2,6 +2,7 @@ import React from 'react';
 import { useQuizPage } from '@hooks/useQuizPage';
 import { QuizPageHeader } from '@components/quiz/QuizPageHeader';
 import { QuizGeneratingState, QuizErrorState, SpacedRepBanner } from '@components/quiz/QuizLoadingStates';
+import { QuizLengthPicker } from '@components/quiz/QuizLengthPicker';
 import { QuizCompletePanel } from '@components/quiz/QuizCompletePanel';
 import { QuizActiveQuestionPanel } from '@components/quiz/QuizActiveQuestionPanel';
 import type { StudyRun } from '@types';
@@ -16,6 +17,8 @@ export const QuizPage: React.FC = () => {
     urlMode,
     urlTargetNodeIds,
     urlClaimJobKey,
+    urlCount,
+    urlRoundId,
     quizPrefill,
     workflowContext,
     lockedArticles,
@@ -90,6 +93,17 @@ export const QuizPage: React.FC = () => {
       <main className="max-w-3xl mx-auto px-4 -mt-8 pb-24">
         {urlMode === 'spaced_rep' && urlTargetNodeIds && urlTargetNodeIds.length > 0 && (
           <SpacedRepBanner targetNodeCount={urlTargetNodeIds.length} />
+        )}
+
+        {!quiz.complete && Object.keys(quiz.answers).length === 0 && !urlRoundId && (
+          <QuizLengthPicker
+            value={urlCount}
+            onChange={(count) => {
+              const next = new URLSearchParams(searchParams);
+              next.set('count', String(count));
+              setSearchParams(next, { replace: true });
+            }}
+          />
         )}
 
         {generating && <QuizGeneratingState />}

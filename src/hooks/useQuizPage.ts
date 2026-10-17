@@ -37,7 +37,7 @@ export function useQuizPage() {
   }, [searchParams]);
   const urlClaimJobKey = searchParams.get('claimJob')?.trim() || undefined;
   const urlRoundId = Number(searchParams.get('roundId') || 0) || undefined;
-  const urlCount = Math.min(Math.max(Number(searchParams.get('count') || 5) || 5, 1), 10);
+  const urlCount = Math.min(Math.max(Number(searchParams.get('count') || 5) || 5, 1), 30);
 
   const [quizPrefill] = useState(() => {
     try {
@@ -644,6 +644,8 @@ export function useQuizPage() {
     urlMode,
     urlTargetNodeIds,
     urlClaimJobKey,
+    urlCount,
+    urlRoundId,
     quizPrefill,
     workflowContext,
     lockedArticles,

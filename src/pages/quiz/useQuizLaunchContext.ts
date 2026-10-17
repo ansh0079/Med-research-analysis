@@ -32,7 +32,7 @@ export function useQuizLaunchContext({
   const urlMode = searchParams.get('mode') as 'spaced_rep' | 'standard' | null;
   const urlClaimJobKey = searchParams.get('claimJob')?.trim() || undefined;
   const urlRoundId = Number(searchParams.get('roundId') || 0) || undefined;
-  const urlCount = Math.min(Math.max(Number(searchParams.get('count') || 5) || 5, 1), 10);
+  const urlCount = Math.min(Math.max(Number(searchParams.get('count') || 5) || 5, 1), 30);
 
   const urlTargetNodeIds = useMemo(() => {
     const raw = searchParams.get('targetNodes');
