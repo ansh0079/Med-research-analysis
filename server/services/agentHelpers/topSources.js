@@ -168,7 +168,7 @@ function chooseTopSources({ guidelines, articles, documents, count = 5 } = {}) {
 const FULL_TEXT_MIN_CHARS = 2000;
 
 // fullTexts: { [documentId]: { text, source } } for the chosen documents that have stored full text.
-function renderTopSourcesDocument({ topic, guidelines, articles, documents, count = 5, fullTexts = {} } = {}) {
+function renderTopSourcesDocument({ topic, guidelines, articles, documents, count = 5, fullTexts = {}, storedRecs = {} } = {}) {
     const chosen = chooseTopSources({ guidelines, articles, documents, count });
     if (!chosen.length) {
         return { chosen, markdown: `No guideline, review or meta-analysis is stored for "${topic}". Run a search for this topic to bring some in.\n` };
@@ -178,6 +178,11 @@ function renderTopSourcesDocument({ topic, guidelines, articles, documents, coun
         if (c.kind === 'guideline' && c.points.length) {
             const list = c.points.map((p, n) => `${n + 1}. ${p}`).join('\n');
             return `${head}\n${c.points.length} stored recommendation${c.points.length === 1 ? '' : 's'}:\n\n${list}`;
+        }
+        const stored = c.docId != null ? storedRecs[c.docId] : null;
+        if (stored && stored.length) {
+            c.extracted = stored;
+            return `${head}\n${stored.length} recommendation${stored.length === 1 ? '' : 's'} identified in the stored full text, quoted exactly:\n\n${stored.map((p, n) => `${n + 1}. ${p}`).join('\n')}`;
         }
         const full = c.docId != null ? fullTexts[c.docId] : null;
         if (full && String(full.text || '').length >= FULL_TEXT_MIN_CHARS) {

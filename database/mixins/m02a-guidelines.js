@@ -482,6 +482,41 @@ async getGuidelineDocumentFullTexts(ids = []) {
     return Object.fromEntries(rows.map((r) => [r.id, { text: r.full_text || '', source: r.full_text_source || null }]));
 }
 
+/** Replace the stored extracted recommendations of one document (verbatim sentences). */
+async saveDocumentRecommendations(documentId, items = [], { model = null, promptVersion = null } = {}) {
+    const id = Number(documentId);
+    if (!Number.isInteger(id) || id <= 0) return 0;
+    const now = new Date().toISOString();
+    return this.withTransaction(async () => {
+        await this.run('DELETE FROM document_recommendations WHERE document_id = ?', [id]);
+        let n = 0;
+        for (const it of items) {
+            if (!it || !it.sentence) continue;
+            await this.run(
+                `INSERT INTO document_recommendations (document_id, sentence_index, sentence, extracted_at, model, prompt_version)
+                 VALUES (?, ?, ?, ?, ?, ?)`,
+                [id, Number(it.index) || 0, String(it.sentence), now, model, promptVersion],
+            );
+            n++;
+        }
+        return n;
+    });
+}
+
+/** Extracted recommendations for the given documents: { [documentId]: [sentence, ...] } in document order. */
+async getDocumentRecommendations(ids = []) {
+    const clean = [...new Set((ids || []).map((x) => Number(x)).filter((x) => Number.isInteger(x) && x > 0))].slice(0, 50);
+    if (!clean.length) return {};
+    const rows = await this.all(
+        `SELECT document_id, sentence FROM document_recommendations
+         WHERE document_id IN (${clean.map(() => '?').join(', ')}) ORDER BY document_id, sentence_index`,
+        clean,
+    ).catch(() => []);
+    const out = {};
+    for (const r of rows) (out[r.document_id] ||= []).push(r.sentence);
+    return out;
+}
+
 /**
  * Documents stored with only an abstract and at least one identifier that can
  * be resolved through Europe PMC. Remaining abstract-only rows are an

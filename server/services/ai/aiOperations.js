@@ -46,6 +46,8 @@ const OPERATIONS = Object.freeze({
     live_clinical_answer: { kind: 'interactive', maxOutputTokens: JSON_OBJECT }, // measured 9-11k chars
     conflict_extraction: { kind: 'interactive', maxOutputTokens: 2048 }, // measured up to 7.5k chars
     guideline_synthesis: { kind: 'background', maxOutputTokens: LONG_JSON, timeoutMs: 120000 },
+    // returns sentence numbers only; the stored recommendations are the paper's own sentences
+    document_recommendation_extraction: { kind: 'background', modelTier: 'lite', maxOutputTokens: 600, timeoutMs: 90000 },
     guideline_merge: { kind: 'interactive', maxOutputTokens: 2000 },
     evidence_support_judge: { kind: 'background', maxOutputTokens: 512 },
 
