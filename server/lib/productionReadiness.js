@@ -107,21 +107,22 @@ function checkLlm(errors) {
     }
 }
 
+const STRIPE_REQUIRED_KEYS = [
+    'STRIPE_SECRET_KEY',
+    'STRIPE_WEBHOOK_SECRET',
+    'STRIPE_RESEARCHER_PRICE_ID',
+    'STRIPE_PRO_PRICE_ID',
+    'STRIPE_TEAM_PRICE_ID',
+];
+
 function checkBilling(errors, warnings) {
-    const required = [
-        'STRIPE_SECRET_KEY',
-        'STRIPE_WEBHOOK_SECRET',
-        'STRIPE_RESEARCHER_PRICE_ID',
-        'STRIPE_PRO_PRICE_ID',
-        'STRIPE_TEAM_PRICE_ID',
-    ];
     // Beta decision: paid checkout stays off. The five Stripe values are required
     // only once PAYWALL_ENABLED=true. Until then a missing key is not a cohort blocker.
     if (env('PAYWALL_ENABLED') !== 'true') {
         warnings.push('Paid billing is deferred. Stripe is unset and checkout stays unavailable until PAYWALL_ENABLED=true.');
         return;
     }
-    for (const key of required) {
+    for (const key of STRIPE_REQUIRED_KEYS) {
         if (!env(key)) errors.push(`${key} is required when PAYWALL_ENABLED=true`);
     }
 }
@@ -166,6 +167,12 @@ function checkRuntimeVectorSearch(errors) {
 }
 
 function checkRuntimeStripe(errors) {
+    if (env('PAYWALL_ENABLED').toLowerCase() === 'true') {
+        for (const key of STRIPE_REQUIRED_KEYS) {
+            if (!env(key)) errors.push(`${key} is required when PAYWALL_ENABLED=true`);
+        }
+        return;
+    }
     if (env('STRIPE_SECRET_KEY') && !env('STRIPE_WEBHOOK_SECRET')) {
         errors.push('STRIPE_WEBHOOK_SECRET must be set in production when STRIPE_SECRET_KEY is configured');
     }

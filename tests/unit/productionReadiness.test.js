@@ -84,4 +84,26 @@ describe('productionReadiness USE_SQLITE gate', () => {
         const enabled = validateProductionEnv({ mode: 'verify' });
         expect(enabled.errors.filter((e) => /STRIPE_/.test(e))).toHaveLength(5);
     });
+
+    test('runtime rejects an enabled paywall until every Stripe value is configured', () => {
+        process.env.NODE_ENV = 'production';
+        process.env.USE_SQLITE = '0';
+        process.env.DATABASE_URL = 'postgresql://user:pass@localhost:5432/medsearch';
+        process.env.JWT_SECRET = 'a'.repeat(64);
+        process.env.CORS_ORIGINS = 'https://example.com';
+        process.env.REDIS_URL = 'redis://localhost:6379';
+        process.env.PAYWALL_ENABLED = 'true';
+        delete process.env.STRIPE_SECRET_KEY;
+        delete process.env.STRIPE_WEBHOOK_SECRET;
+        delete process.env.STRIPE_RESEARCHER_PRICE_ID;
+        delete process.env.STRIPE_PRO_PRICE_ID;
+        delete process.env.STRIPE_TEAM_PRICE_ID;
+
+        const incomplete = validateProductionEnv({ mode: 'runtime' });
+        expect(incomplete.errors.filter((e) => /STRIPE_/.test(e))).toHaveLength(5);
+
+        process.env.PAYWALL_ENABLED = 'false';
+        const disabled = validateProductionEnv({ mode: 'runtime' });
+        expect(disabled.errors.some((e) => /STRIPE_/.test(e))).toBe(false);
+    });
 });
