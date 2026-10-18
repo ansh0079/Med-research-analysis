@@ -414,6 +414,61 @@ async getLocalTopicDocuments(topic, { limit = 12 } = {}) {
 }
 
 /**
+ * Topical search over guideline_documents for the mentor's "top 5 guidelines /
+ * reviews / meta-analyses" flow. getLocalTopicDocuments only resolves documents
+ * linked through topic_knowledge.sourceArticles, which leaves whole pockets of
+ * the corpus unreachable (e.g. the ALD documents were ingested without that
+ * linkage, so an alcoholic-liver-disease top-sources request saw only the few
+ * topic_guidelines rows and summarised those as generic bullet points). Probe
+ * words hit title at full weight and the stored text excerpt at half weight,
+ * mirroring guidelineTermScore's text/attribution split.
+ */
+async searchGuidelineDocumentsForTopic(topic, { limit = 25 } = {}) {
+    const words = topicContentWords(topic).slice(0, 4);
+    if (!words.length) return [];
+    const safeLimit = Math.min(Math.max(parseInt(String(limit), 10) || 25, 1), 100);
+    const haystack = `lower(coalesce(title, '') || ' ' || coalesce(document_label, ''))`;
+    const clauses = [];
+    const params = [];
+    for (const word of words) {
+        const like = word.length <= 2 ? `% ${word} %` : `%${word}%`;
+        clauses.push(`${haystack} LIKE ?`);
+        params.push(like);
+        const expansion = synonymExpansionsForToken(word)[0];
+        if (expansion) {
+            clauses.push(`${haystack} LIKE ?`);
+            params.push(`%${expansion}%`);
+        }
+    }
+    const rows = await this.all(
+        `SELECT id, title, source_body, source_year, source_url, document_label, evidence_tier,
+                SUBSTR(full_text, 1, 16000) AS text_excerpt
+         FROM guideline_documents
+         WHERE (${clauses.join(' OR ')})
+         ORDER BY source_year DESC NULLS LAST, id DESC
+         LIMIT ?`,
+        [...params, Math.max(safeLimit * 3, 60)],
+    );
+    const escapeRe = (t) => t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const termAtWordBoundary = (t, haystack) => new RegExp(`\\b${escapeRe(t)}`).test(haystack);
+    const scored = rows.map((row) => {
+        const title = String(row.title || '').toLowerCase();
+        const text = String(row.text_excerpt || '').toLowerCase();
+        let score = 0;
+        for (const word of words) {
+            const terms = [word, synonymExpansionsForToken(word)[0]].filter(Boolean);
+            if (terms.some((t) => termAtWordBoundary(t, title))) score += 1;
+            else if (terms.some((t) => termAtWordBoundary(t, text))) score += 0.5;
+        }
+        return { row, score };
+    }).filter((s) => s.score > 0);
+    scored.sort((a, b) => b.score - a.score || (b.row.source_year || 0) - (a.row.source_year || 0));
+    // Carry the topical score through so the mentor pool can prefer on-target
+    // documents over generic same-design ones of a newer year.
+    return scored.slice(0, safeLimit).map((s) => ({ ...s.row, _topicScore: s.score }));
+}
+
+/**
  * Documents stored with only an abstract and at least one identifier that can
  * be resolved through Europe PMC. Remaining abstract-only rows are an
  * external-content ceiling (no Europe PMC body for most; persistent PMC HTTP

@@ -31,6 +31,17 @@ function articleDesign(article) {
     return null;
 }
 
+// guideline_documents rows carry no publicationTypes — classify from the title
+// (and document_label), same classes the learner can ask for.
+function documentDesign(doc) {
+    const text = `${doc?.document_label || ''} ${doc?.title || ''}`.toLowerCase();
+    if (/meta-?analys/.test(text)) return 'meta-analysis';
+    if (/systematic review/.test(text)) return 'systematic review';
+    if (/\bguidelines?\b|clinical practice (update|guidelines?)|consensus/.test(text)) return 'guideline';
+    if (/\breview\b/.test(text) && !/case report/.test(text)) return 'review';
+    return null;
+}
+
 const yearOf = (v) => {
     const m = String(v ?? '').match(/(19|20)\d{2}/);
     return m ? Number(m[0]) : 0;
@@ -44,7 +55,7 @@ const MAX_POINT_CHARS = 380;
 
 // A guideline is a document, not a row: topic_guidelines stores one row per recommendation, so
 // group rows by document (or body+year) and keep every recommendation as a point.
-function collectCandidates({ guidelines = [], articles = [] } = {}) {
+function collectCandidates({ guidelines = [], articles = [], documents = [] } = {}) {
     const groups = new Map();
     for (const g of guidelines) {
         const body = g.sourceBody || g.source_body || 'Guideline';
@@ -90,34 +101,95 @@ function collectCandidates({ guidelines = [], articles = [] } = {}) {
             score: DESIGN_WEIGHT[design] + Math.max(0, year - 2000) / 5 + Math.min(cites, 500) / 100,
         });
     }
+    // Stored guideline documents (full-text or abstract-only). A document with no
+    // stored text still earns its place if the learner asked for named sources —
+    // the block then says what little is stored instead of letting the model
+    // invent content.
+    for (const d of documents) {
+        const design = documentDesign(d);
+        if (!design || !d?.title) continue;
+        const key = `d:${String(d.title).toLowerCase().slice(0, 80)}`;
+        if (seen.has(key)) continue;
+        seen.add(key);
+        const year = yearOf(d.sourceYear ?? d.source_year);
+        const text = String(d.text_excerpt ?? d.full_text ?? '').replace(/\s+/g, ' ').trim();
+        out.push({
+            kind: design,
+            label: `${d.title}${year ? ` (${year})` : ''}`,
+            abstract: text.slice(0, 1800),
+            points: [],
+            year,
+            url: d.sourceUrl || d.source_url || null,
+            docId: d.id ?? null,
+            score: DESIGN_WEIGHT[design] + Math.max(0, year - 2000) / 5 + Math.min(Number(d._topicScore) || 0, 2),
+        });
+    }
     return out.sort((x, y) => y.score - x.score);
 }
 
-function buildTopSourcesBlock({ topic, guidelines, articles, count = 5 } = {}) {
-    const chosen = collectCandidates({ guidelines, articles }).slice(0, count);
+function buildTopSourcesBlock({ topic, guidelines, articles, documents, count = 5 } = {}) {
+    const chosen = collectCandidates({ guidelines, articles, documents }).slice(0, count);
     if (!chosen.length) {
         return `## Top-sources request\nThe learner asked for the top ${count} guidelines, reviews or meta-analyses on "${topic}". `
             + 'No guideline, review or meta-analysis is stored for this topic. Say so plainly and suggest a search; do not invent sources.';
     }
     const body = chosen.map((c, i) => {
         const head = `### S${i + 1}. [${c.kind}] ${c.label}${c.url ? `\nURL: ${c.url}` : ''}`;
-        if (c.kind === 'guideline') {
+        if (c.kind === 'guideline' && c.points.length) {
             const pts = c.points.slice(0, MAX_POINTS_PER_SOURCE).map((p, n) => `${n + 1}. ${p.slice(0, MAX_POINT_CHARS)}`);
             const more = c.points.length > MAX_POINTS_PER_SOURCE ? `\n(+${c.points.length - MAX_POINTS_PER_SOURCE} further stored recommendations not shown)` : '';
             return `${head}\nStored recommendations (${c.points.length}):\n${pts.join('\n')}${more}`;
         }
-        return `${head}\nAbstract: ${c.abstract || '(no abstract stored)'}`;
+        if (c.abstract) return `${head}\nText excerpt: ${c.abstract}`;
+        return `${head}\n(no full text stored for this source — attribute the title and year only; do not infer its content)`;
     }).join('\n\n');
     return `## Top-sources request\nThe learner asked for a summary of the top ${count} guidelines, reviews or meta-analyses on "${topic}".\n`
-        + `These ${chosen.length} source${chosen.length === 1 ? ' was' : 's were'} selected from the stored evidence. `
+        + `These ${chosen.length} source${chosen.length === 1 ? ' was' : 's were'} selected from the stored guideline recommendations, evidence articles and stored guideline documents. `
         + (chosen.length < count ? `Only ${chosen.length} are stored; say so. ` : '')
         + 'Write a summary document with one section per source, in this order. '
         + 'In each section list EVERY recommendation or key point the source states, as numbered points that stay faithful to the text: '
         + 'do not merge, drop or reword away any point, and do not add anything the text does not say. '
-        + 'For a review or meta-analysis, list each recommendation or conclusion its abstract states, plus the pooled effect or main finding it reports. '
-        + 'If a source shows no stored recommendation text, say that rather than inferring one. '
+        + 'For a review or meta-analysis, list each recommendation or conclusion its text states, plus the pooled effect or main finding it reports. '
+        + 'If a source shows no stored text, say what is stored rather than inferring content. '
         + 'Cite only the sources below. Finish with a short note on where the sources agree, disagree or leave gaps.\n\n'
         + body;
 }
 
-module.exports = { isTopSourcesRequest, requestedSourceCount, articleDesign, collectCandidates, buildTopSourcesBlock };
+// The summary itself is rendered here, not by the model: a model asked to "list every point" compresses,
+// merges and drops. Stored text goes out verbatim; the model only writes the comparison afterwards.
+function renderTopSourcesDocument({ topic, guidelines, articles, documents, count = 5 } = {}) {
+    const chosen = collectCandidates({ guidelines, articles, documents }).slice(0, count);
+    if (!chosen.length) {
+        return { chosen, markdown: `No guideline, review or meta-analysis is stored for "${topic}". Run a search for this topic to bring some in.\n` };
+    }
+    const sections = chosen.map((c, i) => {
+        const head = `## ${i + 1}. ${c.label} - ${c.kind}${c.url ? `\n${c.url}` : ''}`;
+        if (c.kind === 'guideline' && c.points.length) {
+            const list = c.points.map((p, n) => `${n + 1}. ${p}`).join('\n');
+            return `${head}\n${c.points.length} stored recommendation${c.points.length === 1 ? '' : 's'}:\n\n${list}`;
+        }
+        if (c.abstract) return `${head}\nStored text:\n\n> ${c.abstract}`;
+        return `${head}\nOnly the title and year are stored for this source; no recommendations are available to list.`;
+    });
+    const intro = `### Top ${chosen.length} stored source${chosen.length === 1 ? '' : 's'} on ${topic}\n`
+        + (chosen.length < count ? `Only ${chosen.length} of the ${count} requested are stored. ` : '')
+        + 'Every stored recommendation or text for each source is listed word for word.\n';
+    return { chosen, markdown: `${intro}\n${sections.join('\n\n')}\n\n---\n### How these sources compare\n` };
+}
+
+// Short prompt block for the model after the document has been shown.
+function buildComparisonBlock({ topic, chosen } = {}) {
+    if (!chosen || chosen.length < 2) return '';
+    const digest = chosen.map((c, i) => {
+        const pts = c.kind === 'guideline' && c.points.length
+            ? c.points.slice(0, 15).map((p) => p.slice(0, 200)).join(' | ')
+            : String(c.abstract || '').slice(0, 600);
+        return `S${i + 1} ${c.label} [${c.kind}]: ${pts || '(title only)'}`;
+    }).join('\n');
+    return `## Top-sources comparison\nThe learner has just been shown the full recommendations of these sources on "${topic}" (do not repeat them).\n`
+        + 'Write only a short comparison: where the sources agree, where they differ or conflict, and what they leave unaddressed. '
+        + 'Refer to sources by S-number and name. Use only the text below; if the sources do not conflict or the text is too thin, say so.\n\n'
+        + digest;
+}
+
+module.exports = { isTopSourcesRequest, requestedSourceCount, articleDesign, documentDesign, collectCandidates, buildTopSourcesBlock, renderTopSourcesDocument, buildComparisonBlock };

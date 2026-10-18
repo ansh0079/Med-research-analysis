@@ -6,7 +6,44 @@ const {
     articleDesign,
     collectCandidates,
     buildTopSourcesBlock,
+    renderTopSourcesDocument,
+    buildComparisonBlock,
 } = require('../../server/services/agentHelpers/topSources');
+
+describe('rendered top-sources document', () => {
+    const many = Array.from({ length: 45 }, (_, i) => ({
+        sourceBody: 'EASL', sourceYear: 2018, documentId: 1, recommendationText: `Recommendation number ${i + 1} stated in full.`,
+    }));
+    const other = [{ sourceBody: 'AASLD', sourceYear: 2019, documentId: 2, recommendationText: 'Corticosteroids for severe AH.' }];
+
+    test('lists every stored recommendation verbatim with no cap', () => {
+        const { markdown } = renderTopSourcesDocument({ topic: 'ald', guidelines: [...many, ...other], articles: [], count: 5 });
+        expect(markdown).toContain('45 stored recommendations');
+        for (let i = 1; i <= 45; i++) expect(markdown).toContain(`${i}. Recommendation number ${i} stated in full.`);
+        expect(markdown).toContain('1. Corticosteroids for severe AH.');
+        expect(markdown).not.toContain('not shown');
+    });
+
+    test('reviews show their stored text word for word', () => {
+        const { markdown } = renderTopSourcesDocument({
+            topic: 'ald', guidelines: [], count: 5, documents: [],
+            articles: [{ title: 'Meta-analysis of steroids', pubdate: '2022', publicationTypes: ['Meta-Analysis'], abstract: 'Pooled mortality fell.' }],
+        });
+        expect(markdown).toContain('> Pooled mortality fell.');
+    });
+
+    test('says plainly when nothing is stored', () => {
+        const { markdown, chosen } = renderTopSourcesDocument({ topic: 'x', guidelines: [], articles: [], count: 5 });
+        expect(chosen).toHaveLength(0);
+        expect(markdown).toContain('No guideline, review or meta-analysis is stored');
+    });
+
+    test('the model is only asked for a comparison, and only with two or more sources', () => {
+        const { chosen } = renderTopSourcesDocument({ topic: 'ald', guidelines: [...many, ...other], articles: [], count: 5 });
+        expect(buildComparisonBlock({ topic: 'ald', chosen })).toContain('do not repeat them');
+        expect(buildComparisonBlock({ topic: 'ald', chosen: [chosen[0]] })).toBe('');
+    });
+});
 
 describe('top-sources requests', () => {
     test.each([
