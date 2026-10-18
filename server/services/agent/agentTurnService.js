@@ -292,7 +292,10 @@ async function executeAgentTurn(
         const fullTexts = docIds.length && typeof db.getGuidelineDocumentFullTexts === 'function'
             ? await db.getGuidelineDocumentFullTexts(docIds).catch((err) => { logger.warn({ err }, 'getGuidelineDocumentFullTexts failed'); return {}; })
             : {};
-        const rendered = renderTopSourcesDocument({ topic: trimmedTopic, ...pool, fullTexts });
+        const storedRecs = docIds.length && typeof db.getDocumentRecommendations === 'function'
+            ? await db.getDocumentRecommendations(docIds).catch((err) => { logger.warn({ err }, 'getDocumentRecommendations failed'); return {}; })
+            : {};
+        const rendered = renderTopSourcesDocument({ topic: trimmedTopic, ...pool, fullTexts, storedRecs });
         topSourcesDoc = rendered.markdown;
         topSourcesBlock = `\n\n${buildComparisonBlock({ topic: trimmedTopic, chosen: rendered.chosen })}`;
     }
