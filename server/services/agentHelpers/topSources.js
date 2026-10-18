@@ -1,5 +1,7 @@
 'use strict';
 
+const { extractRecommendationSentences } = require('./recommendationExtractor');
+
 // "Give me the top 5 guidelines / reviews / meta-analyses on X". The normal mentor turn only sees
 // 5 guidelines and the learner's top few search results, so it cannot rank across the stored
 // evidence. This builds a wider, ranked candidate pool and tells the model to summarise the best N.
@@ -121,6 +123,7 @@ function collectCandidates({ guidelines = [], articles = [], documents = [] } = 
             year,
             url: d.sourceUrl || d.source_url || null,
             docId: d.id ?? null,
+            textSource: d.full_text_source ?? d.fullTextSource ?? null,
             score: DESIGN_WEIGHT[design] + Math.max(0, year - 2000) / 5 + Math.min(Number(d._topicScore) || 0, 2),
         });
     }
@@ -157,8 +160,16 @@ function buildTopSourcesBlock({ topic, guidelines, articles, documents, count = 
 
 // The summary itself is rendered here, not by the model: a model asked to "list every point" compresses,
 // merges and drops. Stored text goes out verbatim; the model only writes the comparison afterwards.
-function renderTopSourcesDocument({ topic, guidelines, articles, documents, count = 5 } = {}) {
-    const chosen = collectCandidates({ guidelines, articles, documents }).slice(0, count);
+// Which sources a request would show, so the caller can read their full text before rendering.
+function chooseTopSources({ guidelines, articles, documents, count = 5 } = {}) {
+    return collectCandidates({ guidelines, articles, documents }).slice(0, count);
+}
+
+const FULL_TEXT_MIN_CHARS = 2000;
+
+// fullTexts: { [documentId]: { text, source } } for the chosen documents that have stored full text.
+function renderTopSourcesDocument({ topic, guidelines, articles, documents, count = 5, fullTexts = {} } = {}) {
+    const chosen = chooseTopSources({ guidelines, articles, documents, count });
     if (!chosen.length) {
         return { chosen, markdown: `No guideline, review or meta-analysis is stored for "${topic}". Run a search for this topic to bring some in.\n` };
     }
@@ -168,7 +179,19 @@ function renderTopSourcesDocument({ topic, guidelines, articles, documents, coun
             const list = c.points.map((p, n) => `${n + 1}. ${p}`).join('\n');
             return `${head}\n${c.points.length} stored recommendation${c.points.length === 1 ? '' : 's'}:\n\n${list}`;
         }
-        if (c.abstract) return `${head}\nStored text:\n\n> ${c.abstract}`;
+        const full = c.docId != null ? fullTexts[c.docId] : null;
+        if (full && String(full.text || '').length >= FULL_TEXT_MIN_CHARS) {
+            const found = extractRecommendationSentences(full.text);
+            c.extracted = found;
+            if (found.length) {
+                return `${head}\n${found.length} recommendation${found.length === 1 ? '' : 's'} and conclusion${found.length === 1 ? '' : 's'} found in the stored full text, quoted exactly:\n\n${found.map((p, n) => `${n + 1}. ${p}`).join('\n')}`;
+            }
+            return `${head}\nThe full text is stored, but no recommendation-style statements were found in it.`;
+        }
+        if (c.abstract) {
+            const note = c.docId != null ? 'Only the abstract is stored for this source (the full text is not open access or was not retrieved):' : 'Stored text:';
+            return `${head}\n${note}\n\n> ${c.abstract}`;
+        }
         return `${head}\nOnly the title and year are stored for this source; no recommendations are available to list.`;
     });
     const intro = `### Top ${chosen.length} stored source${chosen.length === 1 ? '' : 's'} on ${topic}\n`
@@ -181,7 +204,7 @@ function renderTopSourcesDocument({ topic, guidelines, articles, documents, coun
 function buildComparisonBlock({ topic, chosen } = {}) {
     if (!chosen || chosen.length < 2) return '';
     const digest = chosen.map((c, i) => {
-        const pts = c.kind === 'guideline' && c.points.length
+        const pts = c.extracted && c.extracted.length ? c.extracted.slice(0, 15).map((p) => p.slice(0, 200)).join(' | ') : c.kind === 'guideline' && c.points.length
             ? c.points.slice(0, 15).map((p) => p.slice(0, 200)).join(' | ')
             : String(c.abstract || '').slice(0, 600);
         return `S${i + 1} ${c.label} [${c.kind}]: ${pts || '(title only)'}`;
@@ -192,4 +215,4 @@ function buildComparisonBlock({ topic, chosen } = {}) {
         + digest;
 }
 
-module.exports = { isTopSourcesRequest, requestedSourceCount, articleDesign, documentDesign, collectCandidates, buildTopSourcesBlock, renderTopSourcesDocument, buildComparisonBlock };
+module.exports = { isTopSourcesRequest, requestedSourceCount, articleDesign, documentDesign, collectCandidates, buildTopSourcesBlock, chooseTopSources, renderTopSourcesDocument, buildComparisonBlock };
