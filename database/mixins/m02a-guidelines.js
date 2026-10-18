@@ -441,7 +441,7 @@ async searchGuidelineDocumentsForTopic(topic, { limit = 25 } = {}) {
         }
     }
     const rows = await this.all(
-        `SELECT id, title, source_body, source_year, source_url, document_label, evidence_tier,
+        `SELECT id, title, source_body, source_year, source_url, document_label, evidence_tier, full_text_source,
                 SUBSTR(full_text, 1, 16000) AS text_excerpt
          FROM guideline_documents
          WHERE (${clauses.join(' OR ')})
@@ -466,6 +466,20 @@ async searchGuidelineDocumentsForTopic(topic, { limit = 25 } = {}) {
     // Carry the topical score through so the mentor pool can prefer on-target
     // documents over generic same-design ones of a newer year.
     return scored.slice(0, safeLimit).map((s) => ({ ...s.row, _topicScore: s.score }));
+}
+
+/**
+ * Full stored text for the given guideline documents, keyed by id. Kept separate from the topical
+ * search so ranking never drags whole papers around; only the chosen few are read in full.
+ */
+async getGuidelineDocumentFullTexts(ids = []) {
+    const clean = [...new Set((ids || []).map((x) => Number(x)).filter((x) => Number.isInteger(x) && x > 0))].slice(0, 20);
+    if (!clean.length) return {};
+    const rows = await this.all(
+        `SELECT id, full_text, full_text_source FROM guideline_documents WHERE id IN (${clean.map(() => '?').join(', ')})`,
+        clean,
+    );
+    return Object.fromEntries(rows.map((r) => [r.id, { text: r.full_text || '', source: r.full_text_source || null }]));
 }
 
 /**
