@@ -30,17 +30,33 @@ jobs:
       GDRIVE_SERVICE_ACCOUNT_JSON: ${{ secrets.GDRIVE_SERVICE_ACCOUNT_JSON }}
       GDRIVE_FOLDER_ID: ${{ secrets.GDRIVE_FOLDER_ID }}
       # Hetzner SSH connection (required)
-      HETZNER_HOST: ${{ secrets.HETZNER_HOST }}
+      HETZNER_HOST: ${{ secrets.HETZNER_HOST || '178.105.155.246' }}
       HETZNER_SSH_KEY: ${{ secrets.HETZNER_SSH_KEY }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Install client tools (pg, awscli, rclone, jq, ssh-keyscan)
+      - name: Install client tools (pg, rclone, jq, ssh-keyscan)
         run: |
           set -euxo pipefail
           sudo apt-get update
-          sudo apt-get install -y --no-install-recommends postgresql-client awscli rclone jq openssh-client
+          sudo apt-get install -y --no-install-recommends postgresql-client rclone jq openssh-client curl unzip
+          # Ubuntu 24.04 no longer publishes the awscli apt package. GitHub's
+          # runner normally includes AWS CLI v2; install it only when S3 is the
+          # configured target and the runner image does not already provide it.
+          if [ -n "${S3_ENDPOINT:-}" ] && [ -n "${S3_BUCKET:-}" ] \
+            && [ -n "${S3_ACCESS_KEY_ID:-}" ] && [ -n "${S3_SECRET_ACCESS_KEY:-}" ] \
+            && ! command -v aws >/dev/null 2>&1; then
+            case "$(uname -m)" in
+              x86_64) aws_arch="x86_64" ;;
+              aarch64|arm64) aws_arch="aarch64" ;;
+              *) echo "Unsupported runner architecture for AWS CLI" >&2; exit 1 ;;
+            esac
+            curl -fsSLo "${RUNNER_TEMP}/awscliv2.zip" \
+              "https://awscli.amazonaws.com/awscli-exe-linux-${aws_arch}.zip"
+            unzip -q "${RUNNER_TEMP}/awscliv2.zip" -d "${RUNNER_TEMP}/awscli"
+            sudo "${RUNNER_TEMP}/awscli/aws/install"
+          fi
 
       - name: Prepare SSH key
         id: ssh
