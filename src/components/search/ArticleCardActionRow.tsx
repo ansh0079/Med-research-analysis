@@ -10,7 +10,7 @@ interface ArticleCardActionRowProps {
   article: Article;
   isSaved: boolean;
   isRct: boolean;
-  searchId?: number;
+  searchId?: string | number;
   searchCompletedAt?: number | null;
   primaryUrl: string;
   onAnalyze?: (article: Article) => void;

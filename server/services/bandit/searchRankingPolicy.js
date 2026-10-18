@@ -154,6 +154,7 @@ function immediateImpressionReward(impression = {}) {
 
 async function recordSearchRankingDecisions(db, {
     userId = null,
+    sessionId = null,
     searchId = null,
     topic = '',
     normalizedTopic = '',
@@ -179,6 +180,7 @@ async function recordSearchRankingDecisions(db, {
             context: {
                 boost,
                 position: topArticles.indexOf(article),
+                sessionId: sessionId ? String(sessionId) : null,
                 memoryTier: banditMeta.memoryTier || null,
                 propensity: banditMeta.propensity != null ? Number(banditMeta.propensity) : null,
                 propensityByArm: banditMeta.propensityByArm || null,

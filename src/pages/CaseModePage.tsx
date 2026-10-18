@@ -144,8 +144,9 @@ export const CaseModePage: React.FC = () => {
         articleUid: article.uid || null,
         decisionId: article._decisionId ?? null,
         banditArmId: article._banditArmId ?? null,
-        searchId: typeof (article as Partial<Article> & { _searchId?: number | null })._searchId === 'number'
-          ? (article as Partial<Article> & { _searchId?: number | null })._searchId ?? null
+        searchId: typeof (article as Partial<Article> & { _searchId?: string | number | null })._searchId === 'number'
+          || typeof (article as Partial<Article> & { _searchId?: string | number | null })._searchId === 'string'
+          ? (article as Partial<Article> & { _searchId?: string | number | null })._searchId ?? null
           : null,
       }))
       .filter((row) => row.articleUid || row.decisionId || row.banditArmId || row.searchId);

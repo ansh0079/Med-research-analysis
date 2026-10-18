@@ -177,6 +177,7 @@ describe('personalizationBanditService', () => {
         };
         const logged = await recordSearchRankingDecisions(db, {
             userId: null,
+            sessionId: 'session-1',
             searchId: 'search-1',
             topic: 'ARDS',
             normalizedTopic: 'ards',
@@ -189,7 +190,46 @@ describe('personalizationBanditService', () => {
         expect(db.insertPersonalizationDecision).toHaveBeenCalledWith(expect.objectContaining({
             userId: null,
             articleUid: 'pmid-1',
-            context: expect.objectContaining({ boost: 0 }),
+            context: expect.objectContaining({ boost: 0, sessionId: 'session-1' }),
+        }));
+    });
+
+    test('reconcileImpressionRewards closes anonymous UUID decisions by exact search id', async () => {
+        const searchId = '2ee45fd6-a561-4f3c-a9f9-f4442ddc4aad';
+        const decision = {
+            id: 21,
+            user_id: null,
+            policy_type: 'search_ranking',
+            arm_id: 'heuristic_default',
+            search_id: searchId,
+            article_uid: 'pmid-1',
+            normalized_topic: 'ards',
+            context_json: JSON.stringify({ sessionId: 'session-uuid' }),
+            created_at: '2026-01-01T00:00:00.000Z',
+        };
+        const db = {
+            listPersonalizationDecisionsPendingReward: jest.fn()
+                .mockResolvedValueOnce([decision])
+                .mockResolvedValueOnce([]),
+            findRecentSearchImpressionsForAttribution: jest.fn().mockResolvedValue([{
+                search_id: searchId,
+                article_uid: 'pmid-1',
+                was_clicked: 1,
+                position: 1,
+            }]),
+            updatePersonalizationDecisionReward: jest.fn().mockResolvedValue(true),
+            recordPersonalizationArmPullIdempotent: jest.fn().mockResolvedValue({ applied: true }),
+        };
+
+        const result = await reconcileImpressionRewards(db, { days: 60 });
+
+        expect(result.updated).toBe(1);
+        expect(db.findRecentSearchImpressionsForAttribution).toHaveBeenCalledWith(null, expect.objectContaining({
+            sessionId: 'session-uuid',
+            searchId,
+        }));
+        expect(db.updatePersonalizationDecisionReward).toHaveBeenCalledWith(21, expect.objectContaining({
+            totalReward: 0.02,
         }));
     });
 });

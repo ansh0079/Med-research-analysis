@@ -18,7 +18,7 @@ interface Props {
 }
 
 type ArticleWithSearchProvenance = Article & {
-  _searchId?: number | null;
+  _searchId?: string | number | null;
 };
 
 // A first quiz has five questions; each "add more" brings five more, up to twenty.

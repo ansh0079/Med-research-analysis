@@ -158,7 +158,7 @@ export interface SearchResponse {
   knowledgeAvailable?: boolean;
   topicIntelligence?: TopicIntelligence | null;
   clinicalAnswer?: ClinicalAnswer | null;
-  searchId?: number;
+  searchId?: string | number;
   learningContext?: SearchLearningContext;
   learnerContext?: LearnerContextSummary | null;
   lowRecallLearning?: LowRecallLearning | null;

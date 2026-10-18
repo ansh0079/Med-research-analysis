@@ -39,6 +39,7 @@ function registerUnifiedSearchRoutes(app, deps) {
         cache,
         serverConfig,
         rateLimit,
+        requireAuthJwt,
         requireDailySearchLimit,
         fetchImpl,
         topicHelpers,
@@ -84,7 +85,7 @@ function registerUnifiedSearchRoutes(app, deps) {
     // A reader says a topic's evidence is out of date. Its monthly review ends now, so the next search
     // fetches fresh, and the report is logged where curators see guideline watch events. Fetching again
     // costs no AI, so one report is enough; the rate limit stops it being used as a refresh loop.
-    app.post('/api/search/topic-outdated', rateLimit(5, 3600), async (req, res) => {
+    app.post('/api/search/topic-outdated', requireAuthJwt, rateLimit(5, 3600), async (req, res) => {
         const topic = String(req.body?.topic || '').trim().slice(0, 300);
         const validation = validateQuery(topic);
         if (!validation.valid) return res.status(400).json({ error: 'topic is required' });
@@ -436,6 +437,7 @@ function registerUnifiedSearchRoutes(app, deps) {
                         : { armId: 'heuristic_default', forceLog: true };
                     const logged = await recordSearchRankingDecisions(db, {
                         userId: req.user?.id ?? null,
+                        sessionId: req.sessionId ?? null,
                         searchId,
                         topic: queryValidation.sanitized,
                         normalizedTopic: db.normalizeTopic(queryValidation.sanitized),

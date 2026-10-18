@@ -9,6 +9,7 @@ const { aggregateCollectiveMemory } = require('../services/collectiveMemoryServi
 const { QUALITY_QUEUES } = require('../services/clinicalQualityReviewService');
 const { writeThroughTeachingVerification } = require('../services/claimTrustOverlayService');
 const { evaluateSearchRankerPromotionGate } = require('../services/searchRankerPromotionGateService');
+const { checkRewardLoopHealth } = require('../services/learning/rewardLoopHealth');
 const { listQuestionReviewQueue, reviewQuestionAssignment, listGuidelineReviewQueue, reviewGuidelineAssignment, listQuestionWorkQueue } = require('../services/questionIndex/questionIndexReviewService');
 
 function registerAdminRoutes(app, { db, cache, requireAuthJwt, requireRole }) {
@@ -124,6 +125,7 @@ function registerAdminRoutes(app, { db, cache, requireAuthJwt, requireRole }) {
         const missingSmtp = smtpFields.filter((k) => !process.env[k]);
         const vectorConfigured = Boolean(process.env.PG_VECTOR_URL || process.env.VECTOR_DATABASE_URL);
         const vectorAvailable = db.isVectorSearchAvailable();
+        const rewardLoop = await checkRewardLoopHealth(db);
 
         res.json({
             strictFlags: { requireSmtp: strictSmtp, requireVectorSearch: strictVector },
@@ -145,6 +147,7 @@ function registerAdminRoutes(app, { db, cache, requireAuthJwt, requireRole }) {
                     .map((r) => r.trim())
                     .filter(Boolean),
             },
+            rewardLoop,
             checkedAt: new Date().toISOString(),
         });
     });

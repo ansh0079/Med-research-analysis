@@ -19,7 +19,7 @@ const { registerSearchFeedbackRoutes } = require('../../server/routes/search/fee
 
 const KEY = 'b'.repeat(32);
 
-function makeApp({ stored = null, jobs = {} } = {}) {
+function makeApp({ stored = null, jobs = {}, requireAuthJwt = (_req, _res, next) => next() } = {}) {
     const data = new Map(stored ? [[`enrichment-request:${KEY}`, stored]] : []);
     const cache = { get: async (k) => data.get(k) ?? null, set: async (k, v) => { data.set(k, v); return true; } };
     const db = { getAiGenerationJobByKey: async (k) => jobs[k] || null };
@@ -28,6 +28,7 @@ function makeApp({ stored = null, jobs = {} } = {}) {
     const passthrough = () => (_req, _res, next) => next();
     registerUnifiedSearchRoutes(app, {
         db, cache, serverConfig: {}, rateLimit: passthrough, fetchImpl: jest.fn(),
+        requireAuthJwt,
         topicHelpers: { buildAgentGuidance: jest.fn(), buildTopicIntelligence: jest.fn() },
     });
     registerSearchFeedbackRoutes(app, { db, cache, rateLimit: passthrough, requireJson: (_q, _s, n) => n() });
@@ -86,6 +87,7 @@ describe('on-demand clinical answer', () => {
         registerUnifiedSearchRoutes(app, {
             db, cache: { get: async () => null, set: async () => true, del: async (k) => { deleted.push(k); } },
             serverConfig: {}, rateLimit: () => (_q, _s, n) => n(), fetchImpl: jest.fn(),
+            requireAuthJwt: (_q, _s, n) => n(),
             topicHelpers: { buildAgentGuidance: jest.fn(), buildTopicIntelligence: jest.fn() },
         });
 
@@ -99,6 +101,14 @@ describe('on-demand clinical answer', () => {
     test('reporting without a topic is rejected', async () => {
         const res = await request(makeApp()).post('/api/search/topic-outdated').send({});
         expect(res.status).toBe(400);
+    });
+
+    test('reporting a topic outdated requires authentication', async () => {
+        const app = makeApp({
+            requireAuthJwt: (_req, res) => res.status(401).json({ error: 'Authentication required' }),
+        });
+        const res = await request(app).post('/api/search/topic-outdated').send({ topic: 'ARDS' });
+        expect(res.status).toBe(401);
     });
 
     test('with precomputation on, a missing job still reads as pending', async () => {

@@ -21,18 +21,27 @@ async function collectDelayedSignals(db, decision, { now = Date.now() } = {}) {
     const topic = decision.normalized_topic || decision.topic;
     const createdMs = Date.parse(decision.created_at || '') || now;
 
-    if (!db?.all || !userId) return { additive: 0, sources };
+    if (!db?.all || (!userId && searchId == null)) return { additive: 0, sources };
 
     // Later saves / high dwell on same article
     if (articleUid) {
-        const impressions = await db.all(
-            `SELECT was_saved, dwell_time_ms, created_at
-             FROM search_result_impressions
-             WHERE user_id = ? AND LOWER(article_uid) = LOWER(?)
-               AND created_at > ?
-             ORDER BY created_at DESC LIMIT 20`,
-            [String(userId), String(articleUid), decision.created_at]
-        ).catch(() => []);
+        const impressions = userId
+            ? await db.all(
+                `SELECT was_saved, dwell_time_ms, created_at
+                 FROM search_result_impressions
+                 WHERE user_id = ? AND LOWER(article_uid) = LOWER(?)
+                   AND created_at > ?
+                 ORDER BY created_at DESC LIMIT 20`,
+                [String(userId), String(articleUid), decision.created_at]
+            ).catch(() => [])
+            : await db.all(
+                `SELECT was_saved, dwell_time_ms, created_at
+                 FROM search_result_impressions
+                 WHERE search_id = ? AND LOWER(article_uid) = LOWER(?)
+                   AND created_at > ?
+                 ORDER BY created_at DESC LIMIT 20`,
+                [normalizeSearchId(searchId), String(articleUid), decision.created_at]
+            ).catch(() => []);
         for (const row of impressions || []) {
             if (row.was_saved) {
                 additive += 0.35;
@@ -45,7 +54,7 @@ async function collectDelayedSignals(db, decision, { now = Date.now() } = {}) {
     }
 
     // Quiz use on same article / topic after decision
-    if (articleUid || topic) {
+    if (userId && (articleUid || topic)) {
         const quizzes = await db.all(
             `SELECT is_correct, created_at, source_article_uid
              FROM quiz_attempts
@@ -72,7 +81,7 @@ async function collectDelayedSignals(db, decision, { now = Date.now() } = {}) {
     }
 
     // Synthesis / synopsis feedback after decision on same article
-    if (articleUid && db.all) {
+    if (userId && articleUid && db.all) {
         const syn = await db.all(
             `SELECT feedback_type, created_at FROM synopsis_feedback
              WHERE user_id = ? AND LOWER(article_uid) = LOWER(?) AND created_at > ?
@@ -91,7 +100,7 @@ async function collectDelayedSignals(db, decision, { now = Date.now() } = {}) {
     }
 
     // Repeat topic searches (engagement with the clinical question)
-    if (topic) {
+    if (userId && topic) {
         const repeats = await db.get(
             `SELECT COUNT(*) AS cnt FROM searches
              WHERE user_id = ? AND normalized_topic = ? AND created_at > ?
@@ -196,6 +205,9 @@ async function backfillDecisionHorizon(db, decision, horizonDays, { now = Date.n
                 new Date(now).toISOString(),
             ]
         ).catch(() => null);
+        if (Number(horizonDays) === 7 && decision.total_reward == null) {
+            await db.markPersonalizationDecisionRewardCensored?.(decision.id).catch(() => false);
+        }
         return { updated: false, reason: 'no_signals' };
     }
 
@@ -257,17 +269,40 @@ async function backfillDecisionHorizon(db, decision, horizonDays, { now = Date.n
 async function runDelayedRewardBackfill(db, { daysLookback = 14, limit = 200 } = {}) {
     if (!db?.all) return { scanned: 0, updated: 0, horizons: HORIZONS };
     const since = new Date(Date.now() - Math.min(60, Math.max(8, daysLookback)) * 86400000).toISOString();
+    const now = Date.now();
+    const due1 = new Date(now - 86400000).toISOString();
+    const due3 = new Date(now - 3 * 86400000).toISOString();
+    const due7 = new Date(now - 7 * 86400000).toISOString();
     const rows = await db.all(
-        `SELECT * FROM personalization_decisions
-         WHERE policy_type = ?
-           AND created_at >= ?
-           AND user_id IS NOT NULL
-         ORDER BY created_at ASC
+        `SELECT pd.* FROM personalization_decisions pd
+         WHERE pd.policy_type = ?
+           AND pd.created_at >= ?
+           AND (
+                (pd.created_at <= ? AND NOT EXISTS (
+                    SELECT 1 FROM delayed_reward_backfill_log l
+                    WHERE l.decision_id = pd.id AND l.horizon_days = 1
+                ))
+                OR (pd.created_at <= ? AND NOT EXISTS (
+                    SELECT 1 FROM delayed_reward_backfill_log l
+                    WHERE l.decision_id = pd.id AND l.horizon_days = 3
+                ))
+                OR (pd.created_at <= ? AND NOT EXISTS (
+                    SELECT 1 FROM delayed_reward_backfill_log l
+                    WHERE l.decision_id = pd.id AND l.horizon_days = 7
+                ))
+           )
+         ORDER BY pd.created_at ASC
          LIMIT ?`,
-        [POLICY_SEARCH_RANKING, since, Math.min(Math.max(Number(limit) || 200, 1), 1000)]
+        [
+            POLICY_SEARCH_RANKING,
+            since,
+            due1,
+            due3,
+            due7,
+            Math.min(Math.max(Number(limit) || 200, 1), 5000),
+        ]
     ).catch(() => []);
 
-    const now = Date.now();
     let updated = 0;
     const details = [];
     for (const row of rows || []) {

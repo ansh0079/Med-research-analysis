@@ -89,6 +89,7 @@ transformers_cache/
 tmp/
 temp/
 *.tmp
+tests/tmp-*.json
 
 # Bundled Node.js runtime (local dev only — not source code)
 node22/

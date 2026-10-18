@@ -436,7 +436,7 @@ export class LearningApi extends BaseApiClient {
       uid?: string | null;
       decisionId?: number | null;
       banditArmId?: string | null;
-      searchId?: number | null;
+      searchId?: string | number | null;
     }>;
   }): Promise<{ attempt: import('@types').CaseAttempt }> {
     const response = await this.fetchWithSession(`${API_BASE}/api/learning/case-attempt`, {

@@ -26,6 +26,7 @@ import { LearningWorkspacePanel } from '@components/search/LearningWorkspacePane
 import { ResultLensToolbar } from '@components/search/ResultLensToolbar';
 import { SynthesisStatusSection } from '@components/search/SynthesisStatusSection';
 import { SearchResultsGrid } from '@components/search/SearchResultsGrid';
+import { LearningRecommendationsRail, selectLearningRecommendations } from '@components/search/LearningRecommendationsRail';
 import { SearchPageFooter } from '@components/search/SearchPageFooter';
 import { useSearchPage } from '@hooks/useSearchPage';
 import { useGuidelineWorkspaceSummary } from '@hooks/useGuidelineWorkspaceSummary';
@@ -160,6 +161,10 @@ export const SearchPage: React.FC = () => {
     handleReviewTopicKnowledge,
     handleProposeKnowledge,
   } = page;
+  const learningRecommendations = React.useMemo(
+    () => learnerContext?.hasPersonalization ? selectLearningRecommendations(results) : [],
+    [learnerContext?.hasPersonalization, results],
+  );
 
   const { activePdf, isOpen, layout, openPdf, closePdf, toggleLayout } = pdfViewer;
 
@@ -601,6 +606,28 @@ export const SearchPage: React.FC = () => {
                 {Array.from({ length: 4 }).map((_, i) => <SkeletonCard key={i} />)}
               </div>
             )}
+
+            <LearningRecommendationsRail
+              articles={learningRecommendations}
+              onOpen={(article) => {
+                if (lastSearchId) {
+                  void api.search.logSearchInteraction(
+                    lastSearchId,
+                    article.uid,
+                    'click',
+                    undefined,
+                    searchCompletedAt ? Math.max(0, Date.now() - searchCompletedAt) : undefined,
+                    article._decisionId ?? undefined,
+                  );
+                }
+                trackFeatureUsage('learning_recommendation_opened', {
+                  articleUid: article.uid,
+                  evidenceRank: article._evidenceRank,
+                  learningRank: article._learningRank,
+                });
+                setDetailArticle(article);
+              }}
+            />
 
             {results.length > 0 ? (
               <SearchResultsGrid

@@ -400,7 +400,8 @@ async getLowRecallSearchStatsWindow(days = 30, limit = 50) {
     const since = this._metricsSinceIso(days);
     const safeLimit = Math.min(Math.max(Number(limit) || 50, 1), 200);
     return this.all(
-        `SELECT display_query, normalized_topic, result_count, attempt_count, last_seen_at, sources_json
+        `SELECT display_query, normalized_topic, result_count, attempt_count, last_seen_at,
+                source_list AS sources_json
          FROM low_recall_searches
          WHERE last_seen_at >= ?
          ORDER BY attempt_count DESC, last_seen_at DESC

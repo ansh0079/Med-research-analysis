@@ -2,6 +2,7 @@
 
 const cron = require('node-cron');
 const { runDelayedRewardBackfill } = require('./learning/delayedRewardBackfillService');
+const { checkRewardLoopHealth } = require('./learning/rewardLoopHealth');
 const { withCronHeartbeat } = require('./cronHeartbeat');
 
 let task = null;
@@ -14,7 +15,9 @@ function scheduleDelayedRewardBackfill(db, logger = console) {
     }
     const expression = process.env.DELAYED_REWARD_BACKFILL_CRON || '15 4 * * *';
     task = cron.schedule(expression, withCronHeartbeat('delayed-reward-backfill', async () => {
-        const result = await runDelayedRewardBackfill(db, { daysLookback: 14, limit: 300 });
+        const result = await runDelayedRewardBackfill(db, { daysLookback: 60, limit: 1000 });
+        const rewardLoop = await checkRewardLoopHealth(db);
+        if (!rewardLoop.ok) logger.error?.({ rewardLoop }, 'Reward loop has stalled decisions');
         logger.info?.({ result }, 'Delayed reward backfill complete');
     }, { db, logger }), {
         timezone: process.env.TZ || 'UTC',

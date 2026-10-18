@@ -18,7 +18,7 @@ export interface QuizArticle {
   pubtype?: string[];
   _decisionId?: number | null;
   _banditArmId?: string | null;
-  _searchId?: number | null;
+  _searchId?: string | number | null;
   _evidenceRank?: number | null;
   _learningRank?: number | null;
 }

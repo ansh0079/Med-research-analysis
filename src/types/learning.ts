@@ -420,7 +420,7 @@ export interface QuizAttemptSubmission {
     sourceArticleTitle?: string | null;
     decisionId?: number;
     banditArmId?: string | null;
-    searchId?: number;
+    searchId?: string | number;
     outlineNodeId?: string | null;
     outlineLabel?: string | null;
     claimKey?: string | null;

@@ -42,6 +42,10 @@ describe('Low recall learning DB (real SQLite)', () => {
         expect(second.attemptCount).toBe(2);
         expect(second.resultCount).toBe(1);
         expect(second.expandedAliases).toContain('rare heart muscle disease');
+
+        const rows = await db.getLowRecallSearchStatsWindow(30, 10);
+        expect(rows).toHaveLength(1);
+        expect(JSON.parse(rows[0].sources_json)).toEqual(['pubmed', 'openalex']);
     });
 
     test('mergeTopicKnowledgeAliases updates existing aliases', async () => {

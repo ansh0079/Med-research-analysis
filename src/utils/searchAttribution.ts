@@ -14,7 +14,7 @@ const STORAGE_KEY = 'med_search_attribution';
 const MAX_AGE_MS = 7 * 24 * 60 * 60 * 1000;
 
 interface StoredAttribution {
-  searchId: number;
+  searchId: string | number;
   entries: SearchAttributionEntry[];
   storedAt: number;
 }
@@ -36,7 +36,7 @@ function entryKeys(entry: SearchAttributionEntry): string[] {
   return [...new Set(keys)];
 }
 
-export function storeSearchAttribution(searchId: number, entries: SearchAttributionEntry[]): void {
+export function storeSearchAttribution(searchId: string | number, entries: SearchAttributionEntry[]): void {
   if (!searchId || !entries.length) return;
   try {
     const payload: StoredAttribution = {
@@ -58,7 +58,7 @@ export function storeSearchAttribution(searchId: number, entries: SearchAttribut
 }
 
 export function storeSearchAttributionFromArticles(
-  searchId: number,
+  searchId: string | number,
   articles: Array<{
     uid?: string;
     pmid?: string | null;
@@ -103,7 +103,7 @@ function readStoredAttribution(): StoredAttribution | null {
 }
 
 export function lookupArticleAttribution(articleUid: string): {
-  searchId?: number;
+  searchId?: string | number;
   decisionId?: number;
   banditArmId?: string;
 } | null {
