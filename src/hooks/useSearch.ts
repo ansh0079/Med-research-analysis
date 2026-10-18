@@ -54,7 +54,7 @@ export function useSearch() {
     await api.knowledge.markEvidenceAlertRead(id);
     setKnowledgeDriftAlerts((prev) => prev.filter((a) => a.id !== id));
   }, []);
-  const [lastSearchId, setLastSearchId] = useState<number | null>(null);
+  const [lastSearchId, setLastSearchId] = useState<string | number | null>(null);
   const [searchCompletedAt, setSearchCompletedAt] = useState<number | null>(null);
   const [proactiveAlert, setProactiveAlert] = useState<ProactiveAlert | null>(null);
   const [learnerContext, setLearnerContext] = useState<LearnerContextSummary | null>(null);
@@ -223,7 +223,7 @@ export function useSearch() {
     guidelinePollRef.current.start();
   }, []);
 
-  const recordSearchView = useCallback((searchId: number | null | undefined, articles: Article[]) => {
+  const recordSearchView = useCallback((searchId: string | number | null | undefined, articles: Article[]) => {
     if (!searchId || articles.length === 0) return;
     void api.search.logSearchImpressions(
       searchId,

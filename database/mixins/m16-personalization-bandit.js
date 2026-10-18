@@ -224,13 +224,14 @@ module.exports = (Sup) => class extends Sup {
 
     async findRecentSearchImpressionsForAttribution(userId, {
         sessionId = null,
+        searchId = null,
         topic = '',
         normalizedTopic = '',
         articleUid = null,
         days = 7,
         limit = 15,
     } = {}) {
-        if (!this.kysely || (!userId && !sessionId)) return [];
+        if (!this.kysely || (!userId && !sessionId && searchId == null)) return [];
         const since = new Date(Date.now() - Math.min(Math.max(Number(days) || 7, 1), 30) * 86400000).toISOString();
         const normalized = normalizedTopic || (typeof this.normalizeTopic === 'function' ? this.normalizeTopic(topic) : '');
         const params = [since];
@@ -243,7 +244,12 @@ module.exports = (Sup) => class extends Sup {
             actorParts.push('sri.session_id = ?');
             params.push(String(sessionId));
         }
-        const actorClause = ` AND (${actorParts.join(' OR ')})`;
+        const actorClause = actorParts.length ? ` AND (${actorParts.join(' OR ')})` : '';
+        let searchClause = '';
+        if (searchId != null) {
+            searchClause = ' AND sri.search_id = ?';
+            params.push(normalizeSearchId(searchId));
+        }
         let topicClause = '';
         if (normalized) {
             topicClause = ' AND (s.normalized_topic = ? OR LOWER(s.query) LIKE ?)';
@@ -263,6 +269,7 @@ module.exports = (Sup) => class extends Sup {
              JOIN searches s ON s.id = sri.search_id
              WHERE sri.created_at >= ?
                ${actorClause}
+               ${searchClause}
                ${topicClause}
                ${articleClause}
              ORDER BY sri.created_at DESC
@@ -286,17 +293,30 @@ module.exports = (Sup) => class extends Sup {
         return Number(row?.count || 0);
     }
 
-    async listPersonalizationDecisionsPendingReward({ days = 14, limit = 500 } = {}) {
+    async listPersonalizationDecisionsPendingReward({ days = 14, limit = 500, afterId = 0 } = {}) {
         if (!this.kysely) return [];
         const since = new Date(Date.now() - Math.min(Math.max(Number(days) || 14, 1), 60) * 86400000).toISOString();
         return this.all(
             `SELECT * FROM personalization_decisions
-             WHERE delayed_reward IS NULL
+             WHERE total_reward IS NULL
+               AND reward_computed_at IS NULL
                AND created_at >= ?
-             ORDER BY created_at ASC
+               AND id > ?
+             ORDER BY id ASC
              LIMIT ?`,
-            [since, Math.min(Math.max(Number(limit) || 500, 1), 2000)]
+            [since, Math.max(Number(afterId) || 0, 0), Math.min(Math.max(Number(limit) || 500, 1), 2000)]
         );
+    }
+
+    async markPersonalizationDecisionRewardCensored(decisionId) {
+        if (!this.kysely || !decisionId) return false;
+        const result = await this.run(
+            `UPDATE personalization_decisions
+             SET reward_computed_at = ?
+             WHERE id = ? AND total_reward IS NULL AND reward_computed_at IS NULL`,
+            [new Date().toISOString(), Number(decisionId)]
+        );
+        return Number(result?.changes ?? result?.rowCount ?? 0) > 0;
     }
 
     async updatePersonalizationDecisionReward(decisionId, { immediateReward, delayedReward, totalReward }) {

@@ -68,50 +68,94 @@ async function recordBanditReward(db, policyType, armId, reward, userId = null, 
     return { applied: true, armId: normalizedArmId, legacy: true };
 }
 
-async function reconcileImpressionRewards(db, { days = 7 } = {}) {
+function decisionContext(row) {
+    try {
+        return row?.context_json ? JSON.parse(row.context_json) : {};
+    } catch {
+        return {};
+    }
+}
+
+function sameId(left, right) {
+    return left != null && right != null && String(left) === String(right);
+}
+
+async function reconcileImpressionRewards(db, {
+    days = 60,
+    pageSize = 500,
+    noEngagementGraceHours = 24,
+    censorAfterDays = 7,
+    maxPages = 20,
+} = {}) {
     if (!db?.listPersonalizationDecisionsPendingReward || !db?.updatePersonalizationDecisionReward) {
         return { updated: 0 };
     }
     const { reconcileQuizOutcomeDecisionReward } = require('./quizClaimPolicy');
     const { immediateImpressionReward } = require('./searchRankingPolicy');
-    const pending = await db.listPersonalizationDecisionsPendingReward({ days, limit: 300 });
     let updated = 0;
-    for (const row of pending) {
-        if (row.policy_type === POLICY_SYNOPSIS_STYLE || row.policy_type === POLICY_TEACHING_STRATEGY) {
-            const didUpdate = await reconcileQuizOutcomeDecisionReward(db, row, { days });
-            if (didUpdate) updated += 1;
-            continue;
-        }
-        if (row.policy_type !== POLICY_SEARCH_RANKING || !row.article_uid || !db?.findRecentSearchImpressionsForAttribution) continue;
-        const impressions = row.user_id
-            ? await db.findRecentSearchImpressionsForAttribution(row.user_id, {
+    let censored = 0;
+    let scanned = 0;
+    let afterId = 0;
+    const now = Date.now();
+    const zeroCutoff = now - Math.max(Number(noEngagementGraceHours) || 24, 1) * 3600000;
+    const censorCutoff = now - Math.max(Number(censorAfterDays) || 7, 1) * 86400000;
+
+    for (let page = 0; page < Math.max(Number(maxPages) || 20, 1); page += 1) {
+        const pending = await db.listPersonalizationDecisionsPendingReward({
+            days,
+            limit: pageSize,
+            afterId,
+        });
+        if (!pending.length) break;
+        afterId = Math.max(afterId, ...pending.map((row) => Number(row.id) || 0));
+        scanned += pending.length;
+
+        for (const row of pending) {
+            if (row.policy_type === POLICY_SYNOPSIS_STYLE || row.policy_type === POLICY_TEACHING_STRATEGY) {
+                const didUpdate = await reconcileQuizOutcomeDecisionReward(db, row, { days });
+                if (didUpdate) updated += 1;
+                continue;
+            }
+            if (row.policy_type !== POLICY_SEARCH_RANKING || !row.article_uid || !db?.findRecentSearchImpressionsForAttribution) continue;
+            const context = decisionContext(row);
+            const impressions = await db.findRecentSearchImpressionsForAttribution(row.user_id || null, {
+                sessionId: context.sessionId || null,
+                searchId: row.search_id,
                 normalizedTopic: row.normalized_topic,
                 articleUid: row.article_uid,
                 days,
                 limit: 5,
-            })
-            : [];
-        const impression = impressions.find((i) => Number(i.search_id) === Number(row.search_id));
-        // Do not fall back to impressions[0] — mismatched attribution injects noise into the posterior.
-        if (!impression) continue;
-        const immediate = immediateImpressionReward(impression);
-        if (immediate <= 0 && row.delayed_reward == null) continue;
-        const total = Math.min(1, immediate + Number(row.delayed_reward || 0));
-        await db.updatePersonalizationDecisionReward(row.id, {
-            immediateReward: immediate,
-            delayedReward: row.delayed_reward,
-            totalReward: total,
-        });
-        if (row.delayed_reward != null && total !== 0) {
+            }).catch(() => []);
+            const impression = impressions.find((item) => sameId(item.search_id, row.search_id));
+            const createdAt = Date.parse(row.created_at || '');
+            if (!impression) {
+                if (Number.isFinite(createdAt) && createdAt <= censorCutoff
+                    && db.markPersonalizationDecisionRewardCensored) {
+                    const didCensor = await db.markPersonalizationDecisionRewardCensored(row.id);
+                    if (didCensor) censored += 1;
+                }
+                continue;
+            }
+
+            const immediate = immediateImpressionReward(impression);
+            if (immediate <= 0 && (!Number.isFinite(createdAt) || createdAt > zeroCutoff)) continue;
+            const delayed = Number(row.delayed_reward || 0);
+            const total = Math.max(-1, Math.min(1, immediate + delayed));
+            await db.updatePersonalizationDecisionReward(row.id, {
+                immediateReward: immediate,
+                delayedReward: delayed,
+                totalReward: total,
+            });
             await recordBanditReward(db, POLICY_SEARCH_RANKING, row.arm_id, total, row.user_id, {
-                applicationKey: `decision:${row.id}:reconcile_impression`,
+                applicationKey: `decision:${row.id}:total:${Number(total).toFixed(4)}`,
                 decisionId: row.id,
                 source: 'reconcile_impression',
             });
+            updated += 1;
         }
-        updated += 1;
+        if (pending.length < pageSize) break;
     }
-    return { updated };
+    return { scanned, updated, censored };
 }
 
 module.exports = {

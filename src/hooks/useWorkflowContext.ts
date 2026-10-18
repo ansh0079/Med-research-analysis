@@ -29,7 +29,7 @@ function saveWorkflowContext(update: Record<string, unknown>): void {
 }
 
 /** Minimal article payload for quiz/case prefill (matches server sanitize + dedupe). */
-function articleRowForTopicActions(a: Article, searchId?: number | null, position?: number | null) {
+function articleRowForTopicActions(a: Article, searchId?: string | number | null, position?: number | null) {
   return {
     uid: a.uid,
     title: a.title,
@@ -59,7 +59,7 @@ export interface WorkflowContextDeps {
   isAuthenticated: boolean;
   betaOpenAccess?: boolean;
   results: Article[];
-  searchId?: number | null;
+  searchId?: string | number | null;
   handleSearch: (q: string) => Promise<Article[]>;
   trackFeatureUsage: (event: string, props?: Record<string, unknown>) => void;
 }

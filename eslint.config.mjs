@@ -27,6 +27,12 @@ export default [
       // `npm run lint` (--max-warnings=0) fail on artefacts, not source.
       'playwright-report/**',
       'test-results/**',
+      '.topic-repair-export-worktree/**',
+      'test-worktree-link-*/**',
+      'scratch/**',
+      'work-*/**',
+      '.docx-render/**',
+      'tests/tmp-*.json',
       '**/*.d.ts',
     ],
   },

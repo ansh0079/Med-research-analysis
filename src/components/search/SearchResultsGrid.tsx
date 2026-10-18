@@ -56,7 +56,7 @@ interface SearchResultsGridProps {
   onOpenTopic: (query: string) => void;
   onOpenInWorkspace: (url: string) => void;
   onViewDetails: (article: Article) => void;
-  searchId?: number;
+  searchId?: string | number;
   searchCompletedAt?: number | null;
 }
 
@@ -90,7 +90,7 @@ function ArticleGrid({
   onOpenTopic: (query: string) => void;
   onOpenInWorkspace: (url: string) => void;
   onViewDetails: (article: Article) => void;
-  searchId?: number;
+  searchId?: string | number;
   searchCompletedAt?: number | null;
 }) {
   return (

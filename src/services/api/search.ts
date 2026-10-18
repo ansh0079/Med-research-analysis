@@ -220,7 +220,7 @@ export class SearchApi extends BaseApiClient {
     articleUid: string,
     feedbackType: 'helpful' | 'not_helpful',
     reason?: string,
-    searchId?: number,
+    searchId?: string | number,
     decisionId?: number
   ): Promise<void> {
     const response = await this.fetchWithSession(`${API_BASE}/api/search/feedback`, {
@@ -232,7 +232,7 @@ export class SearchApi extends BaseApiClient {
   }
 
   async logSearchImpressions(
-    searchId: number,
+    searchId: string | number,
     impressions: { articleUid: string; position: number }[]
   ): Promise<void> {
     try {
@@ -247,7 +247,7 @@ export class SearchApi extends BaseApiClient {
   }
 
   async logSearchInteraction(
-    searchId: number,
+    searchId: string | number,
     articleUid: string,
     interactionType: 'click' | 'save' | 'dwell',
     dwellMs?: number,

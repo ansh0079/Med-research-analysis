@@ -85,7 +85,7 @@ interface AttemptRecord {
   sourceArticleUid?: string;
   decisionId?: number;
   banditArmId?: string | null;
-  searchId?: number;
+  searchId?: string | number;
   claimKey?: string | null;
   claimDecisionId?: number;
 }

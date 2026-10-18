@@ -43,6 +43,7 @@ function registerSearchRoutes(app, deps) {
         cache,
         serverConfig,
         rateLimit,
+        requireAuthJwt,
         requireDailySearchLimit,
         fetchImpl: f,
         enqueuePdfPreindex,

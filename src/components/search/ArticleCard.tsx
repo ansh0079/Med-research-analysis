@@ -27,7 +27,7 @@ interface ArticleCardProps {
   onOpenInWorkspace?: (url: string) => void;
   onViewDetails?: (article: Article) => void;
   onFeedback?: (article: Article, type: 'helpful' | 'not_helpful') => void;
-  searchId?: number;
+  searchId?: string | number;
   searchCompletedAt?: number | null;
 }
 

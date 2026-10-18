@@ -71,7 +71,7 @@ export function useQuizPage() {
         pubtype: a.pubtype as string[] | undefined,
         _decisionId: typeof a._decisionId === 'number' ? a._decisionId : null,
         _banditArmId: typeof a._banditArmId === 'string' ? a._banditArmId : null,
-        _searchId: typeof a._searchId === 'number' ? a._searchId : null,
+        _searchId: typeof a._searchId === 'number' || typeof a._searchId === 'string' ? a._searchId : null,
         _evidenceRank: typeof a._evidenceRank === 'number' ? a._evidenceRank : null,
         _learningRank: typeof a._learningRank === 'number' ? a._learningRank : null,
       }))
