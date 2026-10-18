@@ -116,17 +116,20 @@ jobs:
           test -s "${ARCHIVE}" || (echo "Backup is empty" >&2; exit 1)
           # gzip integrity check
           gzip -t "${ARCHIVE}"
-          # Read the complete archive before counting its table of contents. Writing
-          # the list to a file avoids a broken pipe when GitHub truncates log output.
+          # pg_restore only reads the catalogue from stdin and closes the pipe early,
+          # which makes gunzip fail with SIGPIPE under pipefail. Fully decompress to
+          # a temporary custom-format dump, validate it, then remove both temp files.
+          DUMP="${OUTDIR}/${FILE%.gz}"
           LIST="${OUTDIR}/${FILE}.toc"
-          gunzip -c "${ARCHIVE}" | pg_restore --list > "${LIST}"
+          gunzip -c "${ARCHIVE}" > "${DUMP}"
+          pg_restore --list "${DUMP}" > "${LIST}"
           COUNT="$(wc -l < "${LIST}" | tr -d ' ')"
           if [ "${COUNT}" -le 0 ]; then
             echo "pg_restore --list produced no entries; backup appears empty" >&2
             exit 1
           fi
           echo "entries=${COUNT}" >> "$GITHUB_OUTPUT"
-          rm -f "${LIST}"
+          rm -f "${DUMP}" "${LIST}"
 
       - name: Decide storage target (S3 preferred, then Google Drive, else artifact)
         id: storage
