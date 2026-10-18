@@ -116,13 +116,17 @@ jobs:
           test -s "${ARCHIVE}" || (echo "Backup is empty" >&2; exit 1)
           # gzip integrity check
           gzip -t "${ARCHIVE}"
-          # pg_restore should be able to list contents; also ensure it's non-empty
-          COUNT="$(gunzip -c "${ARCHIVE}" | pg_restore --list | tee /dev/stderr | wc -l | tr -d ' ')"
+          # Read the complete archive before counting its table of contents. Writing
+          # the list to a file avoids a broken pipe when GitHub truncates log output.
+          LIST="${OUTDIR}/${FILE}.toc"
+          gunzip -c "${ARCHIVE}" | pg_restore --list > "${LIST}"
+          COUNT="$(wc -l < "${LIST}" | tr -d ' ')"
           if [ "${COUNT}" -le 0 ]; then
             echo "pg_restore --list produced no entries; backup appears empty" >&2
             exit 1
           fi
           echo "entries=${COUNT}" >> "$GITHUB_OUTPUT"
+          rm -f "${LIST}"
 
       - name: Decide storage target (S3 preferred, then Google Drive, else artifact)
         id: storage
