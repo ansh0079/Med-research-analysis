@@ -1,0 +1,237 @@
+name: Nightly Postgres Backup (Hetzner)
+
+on:
+  schedule:
+    # About 02:40 UK local time during DST (runs 01:40 UTC). Adjust if you prefer exact UK time in winter.
+    - cron: '40 1 * * *'
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+  actions: write
+
+concurrency:
+  group: nightly-postgres-backup
+  cancel-in-progress: false
+
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      # Storage auto-detection inputs (set these repository/environment secrets to enable durable storage)
+      S3_ENDPOINT: ${{ secrets.HETZNER_S3_ENDPOINT }}
+      S3_BUCKET: ${{ secrets.HETZNER_S3_BUCKET }}
+      S3_ACCESS_KEY_ID: ${{ secrets.HETZNER_S3_ACCESS_KEY_ID }}
+      S3_SECRET_ACCESS_KEY: ${{ secrets.HETZNER_S3_SECRET_ACCESS_KEY }}
+      # Optional path prefix within the bucket (no leading or trailing slash)
+      S3_PREFIX: signal-md/postgres
+      # Optional Google Drive (service account) upload. Provide both to enable Drive uploads.
+      GDRIVE_SERVICE_ACCOUNT_JSON: ${{ secrets.GDRIVE_SERVICE_ACCOUNT_JSON }}
+      GDRIVE_FOLDER_ID: ${{ secrets.GDRIVE_FOLDER_ID }}
+      # Hetzner SSH connection (required)
+      HETZNER_HOST: ${{ secrets.HETZNER_HOST }}
+      HETZNER_SSH_KEY: ${{ secrets.HETZNER_SSH_KEY }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install client tools (pg, awscli, rclone, jq, ssh-keyscan)
+        run: |
+          set -euxo pipefail
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends postgresql-client awscli rclone jq openssh-client
+
+      - name: Prepare SSH key
+        id: ssh
+        run: |
+          set -euxo pipefail
+          mkdir -p ~/.ssh
+          echo "${HETZNER_SSH_KEY}" > ~/.ssh/hetzner_key
+          chmod 600 ~/.ssh/hetzner_key
+          # Preload host key to avoid StrictHostKeyChecking prompts
+          if [ -n "${HETZNER_HOST:-}" ]; then
+            ssh-keyscan -H "${HETZNER_HOST}" >> ~/.ssh/known_hosts 2>/dev/null || true
+          fi
+
+      - name: Compute timestamps and filenames
+        id: vars
+        run: |
+          set -euo pipefail
+          STAMP="$(date -u +%Y%m%d-%H%M%SZ)"
+          DATE="$(date -u +%Y-%m-%d)"
+          DOW="$(date -u +%u)" # 1..7, Monday=1
+          FILE="signalmd-postgres-${STAMP}.dump.gz"
+          OUTDIR="${GITHUB_WORKSPACE}/backups"
+          mkdir -p "${OUTDIR}"
+          echo "stamp=${STAMP}" >> "$GITHUB_OUTPUT"
+          echo "date=${DATE}" >> "$GITHUB_OUTPUT"
+          echo "dow=${DOW}" >> "$GITHUB_OUTPUT"
+          echo "file=${FILE}" >> "$GITHUB_OUTPUT"
+          echo "outdir=${OUTDIR}" >> "$GITHUB_OUTPUT"
+
+      - name: Stream pg_dump from Hetzner (no files left on server)
+        id: dump
+        env:
+          FILE: ${{ steps.vars.outputs.file }}
+          OUTDIR: ${{ steps.vars.outputs.outdir }}
+        run: |
+          set -euxo pipefail
+          test -n "${HETZNER_HOST:-}" || (echo "HETZNER_HOST secret is required" >&2; exit 1)
+          test -s ~/.ssh/hetzner_key || (echo "HETZNER_SSH_KEY secret is required" >&2; exit 1)
+          DEST="${OUTDIR}/${FILE}"
+          # Explanation:
+          # - Run pg_dump inside the postgres container and stream to stdout (custom format, uncompressed)
+          # - Use the container's POSTGRES_PASSWORD env for PGPASSWORD to avoid prompting
+          # - Stream over SSH into gzip on the runner; nothing is written on the server
+          ssh -i ~/.ssh/hetzner_key -o StrictHostKeyChecking=yes "root@${HETZNER_HOST}" \
+            'docker exec -i medsearch-pg bash -lc '\''PGPASSWORD="$POSTGRES_PASSWORD" pg_dump -U medsearch -d medsearch --format=custom --compress=0 --no-owner --no-privileges'\''' \
+            | gzip -9c > "${DEST}"
+          ls -lh "${DEST}"
+
+      - name: Verify dump integrity (pg_restore --list)
+        id: verify
+        env:
+          FILE: ${{ steps.vars.outputs.file }}
+          OUTDIR: ${{ steps.vars.outputs.outdir }}
+        run: |
+          set -euxo pipefail
+          ARCHIVE="${OUTDIR}/${FILE}"
+          test -s "${ARCHIVE}" || (echo "Backup is empty" >&2; exit 1)
+          # gzip integrity check
+          gzip -t "${ARCHIVE}"
+          # pg_restore should be able to list contents; also ensure it's non-empty
+          COUNT="$(gunzip -c "${ARCHIVE}" | pg_restore --list | tee /dev/stderr | wc -l | tr -d ' ')"
+          if [ "${COUNT}" -le 0 ]; then
+            echo "pg_restore --list produced no entries; backup appears empty" >&2
+            exit 1
+          fi
+          echo "entries=${COUNT}" >> "$GITHUB_OUTPUT"
+
+      - name: Decide storage target (S3 preferred, then Google Drive, else artifact)
+        id: storage
+        run: |
+          set -euo pipefail
+          target="artifact"
+          if [ -n "${S3_ENDPOINT:-}" ] && [ -n "${S3_BUCKET:-}" ] && [ -n "${S3_ACCESS_KEY_ID:-}" ] && [ -n "${S3_SECRET_ACCESS_KEY:-}" ]; then
+            target="s3"
+          elif [ -n "${GDRIVE_SERVICE_ACCOUNT_JSON:-}" ] && [ -n "${GDRIVE_FOLDER_ID:-}" ]; then
+            target="gdrive"
+          fi
+          echo "target=${target}" | tee -a "$GITHUB_OUTPUT"
+
+      - name: Upload to Hetzner Object Storage (S3) with retention
+        if: steps.storage.outputs.target == 's3'
+        env:
+          FILE: ${{ steps.vars.outputs.file }}
+          OUTDIR: ${{ steps.vars.outputs.outdir }}
+          STAMP: ${{ steps.vars.outputs.stamp }}
+          DOW: ${{ steps.vars.outputs.dow }}
+          AWS_ACCESS_KEY_ID: ${{ env.S3_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ env.S3_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: us-east-1
+          AWS_ENDPOINT_URL_S3: ${{ env.S3_ENDPOINT }}
+        run: |
+          set -euxo pipefail
+          ARCHIVE="${OUTDIR}/${FILE}"
+          BASE="s3://${S3_BUCKET}/${S3_PREFIX}"
+          DAILY_PREFIX="${BASE}/daily"
+          WEEKLY_PREFIX="${BASE}/weekly"
+          # Upload daily
+          aws s3 cp "${ARCHIVE}" "${DAILY_PREFIX}/${FILE}"
+          # If Monday (1), also copy to weekly
+          if [ "${DOW}" = "1" ]; then
+            aws s3 cp "${ARCHIVE}" "${WEEKLY_PREFIX}/${FILE}"
+          fi
+          # Retention: keep ~14 daily
+          DAILY_KEYS="$(aws s3 ls "${DAILY_PREFIX}/" | awk '{print $4}' | sort)"
+          if [ -n "${DAILY_KEYS}" ]; then
+            # Delete all but the 14 most recent by name (timestamps in the filename sort chronologically)
+            TO_DELETE="$(printf "%s\n" "${DAILY_KEYS}" | tac | tail -n +15 || true)"
+            if [ -n "${TO_DELETE}" ]; then
+              printf "%s\n" "${TO_DELETE}" | while read -r key; do
+                aws s3 rm "${DAILY_PREFIX}/${key}"
+              done
+            fi
+          fi
+          # Retention: keep ~8 weekly
+          WEEKLY_KEYS="$(aws s3 ls "${WEEKLY_PREFIX}/" | awk '{print $4}' | sort)"
+          if [ -n "${WEEKLY_KEYS}" ]; then
+            TO_DELETE_WEEKLY="$(printf "%s\n" "${WEEKLY_KEYS}" | tac | tail -n +9 || true)"
+            if [ -n "${TO_DELETE_WEEKLY}" ]; then
+              printf "%s\n" "${TO_DELETE_WEEKLY}" | while read -r key; do
+                aws s3 rm "${WEEKLY_PREFIX}/${key}"
+              done
+            fi
+          fi
+
+      - name: Upload to Google Drive (service account) with retention
+        if: steps.storage.outputs.target == 'gdrive'
+        env:
+          FILE: ${{ steps.vars.outputs.file }}
+          OUTDIR: ${{ steps.vars.outputs.outdir }}
+          DOW: ${{ steps.vars.outputs.dow }}
+          GDRIVE_SERVICE_ACCOUNT_JSON: ${{ env.GDRIVE_SERVICE_ACCOUNT_JSON }}
+          GDRIVE_FOLDER_ID: ${{ env.GDRIVE_FOLDER_ID }}
+        run: |
+          set -euxo pipefail
+          ARCHIVE="${OUTDIR}/${FILE}"
+          # Configure rclone for Google Drive service account
+          SA_JSON="${RUNNER_TEMP}/sa.json"
+          echo "${GDRIVE_SERVICE_ACCOUNT_JSON}" > "${SA_JSON}"
+          chmod 600 "${SA_JSON}"
+          RCONF="${RUNNER_TEMP}/rclone.conf"
+          cat > "${RCONF}" <<EOF
+[gdrive]
+type = drive
+scope = drive
+service_account_file = ${SA_JSON}
+root_folder_id = ${GDRIVE_FOLDER_ID}
+EOF
+          export RCLONE_CONFIG="${RCONF}"
+          # Create subfolders (idempotent)
+          rclone mkdir "gdrive:daily" || true
+          rclone mkdir "gdrive:weekly" || true
+          # Upload daily
+          rclone copyto "${ARCHIVE}" "gdrive:daily/${FILE}" --transfers=1 --checkers=2
+          # Weekly on Monday
+          if [ "${DOW}" = "1" ]; then
+            rclone copyto "${ARCHIVE}" "gdrive:weekly/${FILE}" --transfers=1 --checkers=2
+          fi
+          # Retention: keep ~14 daily
+          DAILY_LIST="$(rclone lsjson gdrive:daily | jq -r '.[].Name' | sort -r)"
+          if [ -n "${DAILY_LIST}" ]; then
+            TO_DELETE="$(printf "%s\n" "${DAILY_LIST}" | tail -n +15 || true)"
+            if [ -n "${TO_DELETE}" ]; then
+              printf "%s\n" "${TO_DELETE}" | while read -r name; do
+                rclone deletefile "gdrive:daily/${name}" || true
+              done
+            fi
+          fi
+          # Retention: keep ~8 weekly
+          WEEKLY_LIST="$(rclone lsjson gdrive:weekly | jq -r '.[].Name' | sort -r)"
+          if [ -n "${WEEKLY_LIST}" ]; then
+            TO_DELETE_WEEKLY="$(printf "%s\n" "${WEEKLY_LIST}" | tail -n +9 || true)"
+            if [ -n "${TO_DELETE_WEEKLY}" ]; then
+              printf "%s\n" "${TO_DELETE_WEEKLY}" | while read -r name; do
+                rclone deletefile "gdrive:weekly/${name}" || true
+              done
+            fi
+          fi
+
+      - name: Upload as GitHub Actions artifact (14-day retention fallback)
+        if: steps.storage.outputs.target == 'artifact'
+        uses: actions/upload-artifact@v4
+        with:
+          name: postgres-backup-${{ steps.vars.outputs.stamp }}
+          path: ${{ steps.vars.outputs.outdir }}/${{ steps.vars.outputs.file }}
+          retention-days: 14
+
+      - name: Summarize
+        if: always()
+        run: |
+          set -euo pipefail
+          echo "Backup entries listed: ${{ steps.verify.outputs.entries || 'n/a' }}"
+          echo "Storage target: ${{ steps.storage.outputs.target }}"
+          echo "File: ${{ steps.vars.outputs.file }}"
+
