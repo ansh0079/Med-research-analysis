@@ -182,12 +182,12 @@ jobs:
           chmod 600 "${SA_JSON}"
           RCONF="${RUNNER_TEMP}/rclone.conf"
           cat > "${RCONF}" <<EOF
-[gdrive]
-type = drive
-scope = drive
-service_account_file = ${SA_JSON}
-root_folder_id = ${GDRIVE_FOLDER_ID}
-EOF
+          [gdrive]
+          type = drive
+          scope = drive
+          service_account_file = ${SA_JSON}
+          root_folder_id = ${GDRIVE_FOLDER_ID}
+          EOF
           export RCLONE_CONFIG="${RCONF}"
           # Create subfolders (idempotent)
           rclone mkdir "gdrive:daily" || true
