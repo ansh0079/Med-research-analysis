@@ -1,0 +1,125 @@
+name: Server disk report & cleanup
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'report or clean'
+        required: false
+        default: report
+
+concurrency:
+  group: medsearch-production-deploy
+  cancel-in-progress: false
+
+jobs:
+  disk:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Run disk report/cleanup on Hetzner
+        uses: appleboy/ssh-action@v1
+        env:
+          MODE: ${{ inputs.mode }}
+        with:
+          host: ${{ secrets.HETZNER_HOST || '178.105.155.246' }}
+          username: root
+          key: ${{ secrets.HETZNER_SSH_KEY }}
+          command_timeout: 20m
+          envs: MODE
+          script: |
+            set -Eeuo pipefail
+
+            mode="${MODE:-report}"
+            echo "=== Mode: ${mode} ==="
+
+            report() {
+              echo "===== DISK REPORT: $(date -Is) ====="
+              echo "--- df -h (all filesystems) ---"
+              df -h
+
+              if command -v docker >/dev/null 2>&1; then
+                echo "--- docker system df -v ---"
+                docker system df -v || true
+
+                if [ -d /var/lib/docker ]; then
+                  echo "--- /var/lib/docker top-level sizes ---"
+                  du -sh /var/lib/docker/* 2>/dev/null | sort -h || true
+
+                  echo "--- Known docker subdirs (images/build cache/containers/logs/volumes) ---"
+                  for d in image buildkit overlay2 containers volumes; do
+                    [ -d "/var/lib/docker/$d" ] && du -sh "/var/lib/docker/$d" 2>/dev/null || true
+                  done
+
+                  echo "--- Largest container json logs ---"
+                  find /var/lib/docker/containers -type f -name "*-json.log" -printf "%10s  %p\n" 2>/dev/null | sort -nr | head -n 20 || true
+
+                  echo "--- Top 30 entries under /var/lib/docker (shallow) ---"
+                  du -xh -d1 /var/lib/docker 2>/dev/null | sort -h | tail -n 30 || true
+                fi
+              else
+                echo "docker not installed"
+              fi
+
+              echo "--- /var/log usage (shallow) ---"
+              du -h -d1 /var/log 2>/dev/null | sort -h || true
+
+              if command -v journalctl >/dev/null 2>&1; then
+                echo "--- journalctl --disk-usage ---"
+                journalctl --disk-usage || true
+              fi
+
+              echo "--- Top 20 largest files on / (single filesystem) ---"
+              # Show size(bytes) and path for the largest files, avoid other mounts with -xdev
+              find / -xdev -type f -printf "%s\t%p\n" 2>/dev/null | sort -nr | head -n 20 | awk '{ printf("%10.0f  %s\n", $1, $2) }' || true
+              echo "===== END REPORT ====="
+            }
+
+            clean() {
+              echo "===== CLEAN START: $(date -Is) ====="
+              echo "--- BEFORE: df -h ---"
+              df -h
+
+              echo "--- Full report before cleanup ---"
+              report
+
+              if command -v docker >/dev/null 2>&1; then
+                echo "--- docker image prune -a -f ---"
+                docker image prune -a -f || true
+
+                echo "--- docker builder prune -a -f ---"
+                docker builder prune -a -f || true
+
+                echo "--- Truncate oversized container json logs (>50M) ---"
+                if [ -d /var/lib/docker/containers ]; then
+                  find /var/lib/docker/containers -type f -name "*-json.log" -size +50M -print -exec truncate -s 0 {} \; 2>/dev/null || true
+                fi
+              fi
+
+              if command -v journalctl >/dev/null 2>&1; then
+                echo "--- journalctl --vacuum-size=200M ---"
+                journalctl --vacuum-size=200M || true
+              fi
+
+              if command -v apt-get >/dev/null 2>&1; then
+                echo "--- apt-get clean ---"
+                apt-get clean || true
+              fi
+
+              echo "--- AFTER: df -h ---"
+              df -h
+              echo "===== CLEAN END: $(date -Is) ====="
+            }
+
+            case "$mode" in
+              report|"")
+                report
+                ;;
+              clean)
+                clean
+                ;;
+              *)
+                echo "Unknown mode: $mode (expected 'report' or 'clean')" >&2
+                exit 2
+                ;;
+            esac
