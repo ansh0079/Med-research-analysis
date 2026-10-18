@@ -7,7 +7,7 @@
 
 const { splitSentences } = require('../agentHelpers/recommendationExtractor');
 
-const PROMPT_VERSION = 'v1-index-only';
+const PROMPT_VERSION = 'v2-index-only';
 const BATCH_CHARS = 14000;
 const MAX_SENTENCE_CHARS = 700;
 const MIN_SENTENCE_CHARS = 30;
@@ -41,7 +41,7 @@ function buildPrompt(kind, title, batch) {
     return `You are selecting recommendations from the text of a ${kind}${title ? ` titled "${String(title).slice(0, 160)}"` : ''}.
 Below are numbered sentences. Return the numbers of every sentence that states a clinical recommendation or an actionable conclusion: what clinicians should or should not do to diagnose, treat, monitor, prevent, refer or counsel, including conclusions that clearly imply a practice choice (for example "X reduced mortality and is a reasonable option for Y").
 
-Do NOT select: background, definitions, methods, statistics without an action, descriptions of other studies, limitations, or calls for future research.
+Do NOT select: background or motivation, definitions, methods, sentences describing what this paper searched, included or did, statistics without an action, descriptions of other studies, limitations, or calls for future research.
 Select sentences exactly as numbered; do not rewrite anything. If a sentence is only part of a recommendation, still select it.
 
 Return ONLY a JSON array of numbers, for example [12, 14, 40]. Return [] if none qualify.
