@@ -63,11 +63,13 @@ const OPERATIONS = Object.freeze({
     cold_start_mcq: { kind: 'background', maxOutputTokens: 3000 },
     quiz_validation: { kind: 'background', modelTier: 'lite', maxOutputTokens: 1600 },
     quiz_safety_classifier: { kind: 'background', modelTier: 'lite', maxOutputTokens: 1600 },
-    question_audit_primary: { kind: 'background', maxOutputTokens: 900, timeoutMs: 60000 },
-    question_audit_secondary: { kind: 'background', maxOutputTokens: 900, timeoutMs: 60000 },
+    // Both audit passes are classification/verification; use lite-tier on Gemini.
+    question_audit_primary: { kind: 'background', modelTier: 'lite', maxOutputTokens: 900, timeoutMs: 60000 },
+    question_audit_secondary: { kind: 'background', modelTier: 'lite', maxOutputTokens: 900, timeoutMs: 60000 },
     case_generation: { kind: 'interactive', maxOutputTokens: 3500 },
     case_to_evidence: { kind: 'interactive', maxOutputTokens: 3000 },
-    reflection_draft: { kind: 'interactive', maxOutputTokens: 1500 },
+    // Drafts can use lite-tier unless a higher tier is explicitly selected.
+    reflection_draft: { kind: 'interactive', modelTier: 'lite', maxOutputTokens: 1500 },
 
     // --- topic knowledge (same prompt family: mentor message, seminal papers, teaching points) ---
     topic_knowledge_extraction: { kind: 'background', maxOutputTokens: LONG_JSON, timeoutMs: 120000 },
