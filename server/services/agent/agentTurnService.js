@@ -29,7 +29,7 @@ const {
 const { POLICY_TEACHING_STRATEGY, recordBanditReward, selectTeachingStrategyArm } = require('../personalizationBanditService');
 const { agentFollowUpReward } = require('../learningLoopSignalService');
 const { getAgentMistakesForContext } = require('../agentSelfImprovementService');
-const { isTopSourcesRequest, requestedSourceCount, buildTopSourcesBlock } = require('../agentHelpers/topSources');
+const { isTopSourcesRequest, requestedSourceCount, renderTopSourcesDocument, buildComparisonBlock } = require('../agentHelpers/topSources');
 
 const isDev = process.env.NODE_ENV === 'development';
 
@@ -269,8 +269,11 @@ async function executeAgentTurn(
     ].filter(Boolean).join('\n\n');
 
     // "Top 5 guidelines/reviews/meta-analyses": the usual context holds 5 guidelines and the top few
-    // search results, so give the model a wider ranked pool to choose from.
+    // search results, so give the model a wider ranked pool to choose from — stored recommendation
+    // rows, evidence articles, and stored guideline documents (full-text corpus, not just the
+    // topic_knowledge-linked ones, or ALD-style topics collapse to their few recommendation rows).
     let topSourcesBlock = '';
+    let topSourcesDoc = '';
     const wantsTopSources = isTopSourcesRequest(trimmedMessage);
     if (wantsTopSources) {
         const count = requestedSourceCount(trimmedMessage);
@@ -278,8 +281,14 @@ async function executeAgentTurn(
             logger.warn({ err }, 'getGuidelinesByTopic (top sources) failed');
             return guidelines || [];
         });
+        const widerDocuments = await db.searchGuidelineDocumentsForTopic(trimmedTopic, { limit: 25 }).catch((err) => {
+            logger.warn({ err }, 'searchGuidelineDocumentsForTopic (top sources) failed');
+            return [];
+        });
         const seminal = (topicKnowledge?.knowledge?.seminalPapers || []).map((p) => ({ title: p.title, pubdate: p.year, abstract: p.clinicalPrinciple || p.whySeminal || '' }));
-        topSourcesBlock = `\n\n${buildTopSourcesBlock({ topic: trimmedTopic, guidelines: widerGuidelines, articles: [...(currentArticles || []), ...seminal], count })}`;
+        const rendered = renderTopSourcesDocument({ topic: trimmedTopic, guidelines: widerGuidelines, articles: [...(currentArticles || []), ...seminal], documents: widerDocuments, count });
+        topSourcesDoc = rendered.markdown;
+        topSourcesBlock = `\n\n${buildComparisonBlock({ topic: trimmedTopic, chosen: rendered.chosen })}`;
     }
 
     const fullPrompt = `${systemPrompt}${feedbackContext}\n\n${conversationContext ? conversationContext + '\n\n' : ''}${topSourcesBlock ? topSourcesBlock.trim() + '\n\n' : ''}---\n\n${trimmedMessage}`;
@@ -293,8 +302,12 @@ async function executeAgentTurn(
     let chunksSent = false;
     let lastStreamErr = null;
     let streamSucceeded = false;
-    // A full multi-source summary needs far more room than a chat turn.
-    const maxTokens = wantsTopSources ? getAgentOutputTokenBudget('top_sources', 7000) : getAgentOutputTokenBudget(classifiedIntent, 1800);
+    // The full source list is rendered from stored text; the model only adds a short comparison.
+    const maxTokens = wantsTopSources ? getAgentOutputTokenBudget('top_sources', 1200) : getAgentOutputTokenBudget(classifiedIntent, 1800);
+    if (topSourcesDoc) {
+        reply += topSourcesDoc;
+        onChunk(topSourcesDoc);
+    }
     const maxRetries = Math.max(0, Number(process.env.AGENT_STREAM_MAX_RETRIES_PER_PROVIDER) || 2);
     const retryDelayMs = Math.max(0, Number(process.env.AGENT_STREAM_RETRY_DELAY_MS) || 500);
     const activeBudget = getActiveLlmBudget() || createBudgetForAction('agent_turn');
