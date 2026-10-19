@@ -1,0 +1,2256 @@
+{
+  "sheet": "Topics 0251-0500",
+  "count": 250,
+  "topics": [
+    {
+      "no": 251,
+      "topic": "Biofilm-associated infections: chronic wounds, prosthetics, catheters, rifampicin strategies",
+      "normalizedTopic": "biofilm-associated infections chronic wounds prosthetics catheters rifampicin strategies",
+      "linkedPapers": 1,
+      "linkedGuidelines": 4,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 252,
+      "topic": "biological therapy for asthma",
+      "normalizedTopic": "biological therapy for asthma",
+      "linkedPapers": 8,
+      "linkedGuidelines": 3,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 253,
+      "topic": "Biologics and malignancy risk: lymphoma, solid tumours, non-melanoma skin cancer",
+      "normalizedTopic": "biologics and malignancy risk lymphoma solid tumours non-melanoma skin cancer",
+      "linkedPapers": 2,
+      "linkedGuidelines": 11,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 254,
+      "topic": "Biologic switching in RA: mechanism switching vs same class after failure",
+      "normalizedTopic": "biologic switching in ra mechanism switching vs same class after failure",
+      "linkedPapers": 5,
+      "linkedGuidelines": 6,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 255,
+      "topic": "Biologic therapies in severe eosinophilic asthma",
+      "normalizedTopic": "biologic therapies in severe eosinophilic asthma",
+      "linkedPapers": 5,
+      "linkedGuidelines": 7,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 256,
+      "topic": "biologic therapy pre treatment infection screening",
+      "normalizedTopic": "biologic therapy pre treatment infection screening",
+      "linkedPapers": 3,
+      "linkedGuidelines": 4,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 257,
+      "topic": "Biologic therapy pre-treatment infection screening",
+      "normalizedTopic": "biologic therapy pre-treatment infection screening",
+      "linkedPapers": 10,
+      "linkedGuidelines": 0,
+      "mentorPresent": "Yes",
+      "mentorState": "Seed/placeholder"
+    },
+    {
+      "no": 258,
+      "topic": "Bipolar depression pharmacotherapy",
+      "normalizedTopic": "bipolar depression pharmacotherapy",
+      "linkedPapers": 10,
+      "linkedGuidelines": 0,
+      "mentorPresent": "Yes",
+      "mentorState": "Seed/placeholder"
+    },
+    {
+      "no": 259,
+      "topic": "Bipolar disorder maintenance mood stabilizer therapy",
+      "normalizedTopic": "bipolar disorder maintenance mood stabilizer therapy",
+      "linkedPapers": 10,
+      "linkedGuidelines": 0,
+      "mentorPresent": "Yes",
+      "mentorState": "Seed/placeholder"
+    },
+    {
+      "no": 260,
+      "topic": "Bipolar mania acute pharmacotherapy",
+      "normalizedTopic": "bipolar mania acute pharmacotherapy",
+      "linkedPapers": 11,
+      "linkedGuidelines": 0,
+      "mentorPresent": "Yes",
+      "mentorState": "Seed/placeholder"
+    },
+    {
+      "no": 261,
+      "topic": "Bisphosphonates in osteoporosis: alendronate, zoledronate, drug holidays, atypical fractures",
+      "normalizedTopic": "bisphosphonates in osteoporosis alendronate zoledronate drug holidays atypical fractures",
+      "linkedPapers": 5,
+      "linkedGuidelines": 13,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 262,
+      "topic": "BK polyomavirus nephropathy in kidney transplant",
+      "normalizedTopic": "bk polyomavirus nephropathy in kidney transplant",
+      "linkedPapers": 3,
+      "linkedGuidelines": 3,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 263,
+      "topic": "BK Virus Nephropathy Post-Transplant",
+      "normalizedTopic": "bk virus nephropathy post-transplant",
+      "linkedPapers": 3,
+      "linkedGuidelines": 1,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 264,
+      "topic": "Bladder Cancer",
+      "normalizedTopic": "bladder cancer",
+      "linkedPapers": 5,
+      "linkedGuidelines": 68,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 265,
+      "topic": "Blood culture technique: timing, volume, number of sets, contamination rates",
+      "normalizedTopic": "blood culture technique timing volume number of sets contamination rates",
+      "linkedPapers": 8,
+      "linkedGuidelines": 26,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 266,
+      "topic": "Bone and joint infection oral step-down therapy",
+      "normalizedTopic": "bone and joint infection oral step-down therapy",
+      "linkedPapers": 3,
+      "linkedGuidelines": 1,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 267,
+      "topic": "Bone Marrow Biopsy Indications and Interpretation",
+      "normalizedTopic": "bone marrow biopsy indications and interpretation",
+      "linkedPapers": 1,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 268,
+      "topic": "Bone Marrow Fibrosis Grading",
+      "normalizedTopic": "bone marrow fibrosis grading",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 269,
+      "topic": "Bone Metastases and Palliative Radiotherapy",
+      "normalizedTopic": "bone metastases and palliative radiotherapy",
+      "linkedPapers": 5,
+      "linkedGuidelines": 77,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 270,
+      "topic": "Bone metastases denosumab and zoledronic acid",
+      "normalizedTopic": "bone metastases denosumab and zoledronic acid",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 271,
+      "topic": "Borderline personality disorder dialectical behavior therapy",
+      "normalizedTopic": "borderline personality disorder dialectical behavior therapy",
+      "linkedPapers": 3,
+      "linkedGuidelines": 5,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 272,
+      "topic": "Botulism: foodborne vs wound vs infantile, antitoxin, ICU respiratory support",
+      "normalizedTopic": "botulism foodborne vs wound vs infantile antitoxin icu respiratory support",
+      "linkedPapers": 2,
+      "linkedGuidelines": 8,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 273,
+      "topic": "bowel cancer",
+      "normalizedTopic": "bowel cancer",
+      "linkedPapers": 8,
+      "linkedGuidelines": 11,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 274,
+      "topic": "bowel obstruction",
+      "normalizedTopic": "bowel obstruction",
+      "linkedPapers": 8,
+      "linkedGuidelines": 3,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 275,
+      "topic": "Brain Metastases",
+      "normalizedTopic": "brain metastases",
+      "linkedPapers": 5,
+      "linkedGuidelines": 46,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 276,
+      "topic": "Brain metastases: stereotactic radiosurgery vs whole-brain radiation vs resection",
+      "normalizedTopic": "brain metastases stereotactic radiosurgery vs whole-brain radiation vs resection",
+      "linkedPapers": 5,
+      "linkedGuidelines": 52,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 277,
+      "topic": "breast cancer",
+      "normalizedTopic": "breast cancer",
+      "linkedPapers": 8,
+      "linkedGuidelines": 6,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 278,
+      "topic": "Breast cancer adjuvant endocrine therapy",
+      "normalizedTopic": "breast cancer adjuvant endocrine therapy",
+      "linkedPapers": 5,
+      "linkedGuidelines": 0,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 279,
+      "topic": "breast cancer prognosis in pregnancy",
+      "normalizedTopic": "breast cancer prognosis in pregnancy",
+      "linkedPapers": 8,
+      "linkedGuidelines": 5,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 280,
+      "topic": "Bronchial Provocation Testing",
+      "normalizedTopic": "bronchial provocation testing",
+      "linkedPapers": 1,
+      "linkedGuidelines": 2,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 281,
+      "topic": "bronchiectasis",
+      "normalizedTopic": "bronchiectasis",
+      "linkedPapers": 5,
+      "linkedGuidelines": 12,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 282,
+      "topic": "Bronchiectasis and recurrent chest infections",
+      "normalizedTopic": "bronchiectasis and recurrent chest infections",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 283,
+      "topic": "bronchiolitis",
+      "normalizedTopic": "bronchiolitis",
+      "linkedPapers": 8,
+      "linkedGuidelines": 5,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 284,
+      "topic": "Bronchiolitis and viral wheeze",
+      "normalizedTopic": "bronchiolitis and viral wheeze",
+      "linkedPapers": 3,
+      "linkedGuidelines": 1,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 285,
+      "topic": "Bronchiolitis: assessment, risk stratification and management",
+      "normalizedTopic": "bronchiolitis assessment risk stratification and management",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 286,
+      "topic": "Bronchoscopic Lung Volume Reduction",
+      "normalizedTopic": "bronchoscopic lung volume reduction",
+      "linkedPapers": 5,
+      "linkedGuidelines": 4,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 287,
+      "topic": "Brucellosis: occupational exposure, serology, doxycycline-rifampicin combination, relapse",
+      "normalizedTopic": "brucellosis occupational exposure serology doxycycline-rifampicin combination relapse",
+      "linkedPapers": 1,
+      "linkedGuidelines": 5,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 288,
+      "topic": "Burkitt Lymphoma",
+      "normalizedTopic": "burkitt lymphoma",
+      "linkedPapers": 5,
+      "linkedGuidelines": 61,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 289,
+      "topic": "C3 glomerulopathy and complement inhibition",
+      "normalizedTopic": "c3 glomerulopathy and complement inhibition",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 290,
+      "topic": "CABG versus PCI multivessel coronary disease",
+      "normalizedTopic": "cabg versus pci multivessel coronary disease",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 291,
+      "topic": "CADASIL: genetic features, MRI findings, clinical course",
+      "normalizedTopic": "cadasil genetic features mri findings clinical course",
+      "linkedPapers": 2,
+      "linkedGuidelines": 3,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 292,
+      "topic": "Calcium Hydroxyapatite Deposition Disease",
+      "normalizedTopic": "calcium hydroxyapatite deposition disease",
+      "linkedPapers": 1,
+      "linkedGuidelines": 3,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 293,
+      "topic": "Calcium pyrophosphate deposition CPPD: pseudogout, chondrocalcinosis, crowned dens",
+      "normalizedTopic": "calcium pyrophosphate deposition cppd pseudogout chondrocalcinosis crowned dens",
+      "linkedPapers": 4,
+      "linkedGuidelines": 7,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 294,
+      "topic": "Calcium Pyrophosphate Deposition Disease",
+      "normalizedTopic": "calcium pyrophosphate deposition disease",
+      "linkedPapers": 2,
+      "linkedGuidelines": 2,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 295,
+      "topic": "canagliflozin chronic kidney disease CREDENCE trial",
+      "normalizedTopic": "canagliflozin chronic kidney disease credence trial",
+      "linkedPapers": 8,
+      "linkedGuidelines": 4,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 296,
+      "topic": "canagliflozin renal outcomes type 2 diabetes nephropathy",
+      "normalizedTopic": "canagliflozin renal outcomes type 2 diabetes nephropathy",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 297,
+      "topic": "canakinumab anti-inflammatory therapy atherosclerotic disease",
+      "normalizedTopic": "canakinumab anti-inflammatory therapy atherosclerotic disease",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 298,
+      "topic": "cancer-associated thrombosis",
+      "normalizedTopic": "cancer-associated thrombosis",
+      "linkedPapers": 8,
+      "linkedGuidelines": 3,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 299,
+      "topic": "Cancer Cachexia",
+      "normalizedTopic": "cancer cachexia",
+      "linkedPapers": 5,
+      "linkedGuidelines": 37,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 300,
+      "topic": "Cancer Genetics and Hereditary Syndromes",
+      "normalizedTopic": "cancer genetics and hereditary syndromes",
+      "linkedPapers": 5,
+      "linkedGuidelines": 104,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 301,
+      "topic": "Candida bloodstream infection: echocardiography, ophthalmology review, echinocandin, catheter removal",
+      "normalizedTopic": "candida bloodstream infection echocardiography ophthalmology review echinocandin catheter removal",
+      "linkedPapers": 3,
+      "linkedGuidelines": 6,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 302,
+      "topic": "Candidaemia and invasive candidiasis in the ICU",
+      "normalizedTopic": "candidaemia and invasive candidiasis in the icu",
+      "linkedPapers": 5,
+      "linkedGuidelines": 9,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 303,
+      "topic": "Candidemia and invasive fungal infections in the ICU",
+      "normalizedTopic": "candidemia and invasive fungal infections in the icu",
+      "linkedPapers": 3,
+      "linkedGuidelines": 4,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 304,
+      "topic": "capacity assessment",
+      "normalizedTopic": "capacity assessment",
+      "linkedPapers": 8,
+      "linkedGuidelines": 2,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 305,
+      "topic": "Capsule Endoscopy",
+      "normalizedTopic": "capsule endoscopy",
+      "linkedPapers": 5,
+      "linkedGuidelines": 8,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 306,
+      "topic": "Carbapenem-resistant Enterobacterales treatment",
+      "normalizedTopic": "carbapenem-resistant enterobacterales treatment",
+      "linkedPapers": 12,
+      "linkedGuidelines": 5,
+      "mentorPresent": "Yes",
+      "mentorState": "Seed/placeholder"
+    },
+    {
+      "no": 307,
+      "topic": "Cardiac amyloidosis: TTR vs AL, tafamidis, diagnosis with bone scintigraphy",
+      "normalizedTopic": "cardiac amyloidosis ttr vs al tafamidis diagnosis with bone scintigraphy",
+      "linkedPapers": 5,
+      "linkedGuidelines": 24,
+      "mentorPresent": "Yes",
+      "mentorState": "Seed/placeholder"
+    },
+    {
+      "no": 308,
+      "topic": "cardiac arrest",
+      "normalizedTopic": "cardiac arrest",
+      "linkedPapers": 8,
+      "linkedGuidelines": 8,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 309,
+      "topic": "Cardiac arrest in special circumstances: pregnancy, drowning, hypothermia, PE",
+      "normalizedTopic": "cardiac arrest in special circumstances pregnancy drowning hypothermia pe",
+      "linkedPapers": 5,
+      "linkedGuidelines": 43,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 310,
+      "topic": "cardiac arrhythmias",
+      "normalizedTopic": "cardiac arrhythmias",
+      "linkedPapers": 8,
+      "linkedGuidelines": 0,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 311,
+      "topic": "Cardiac device malfunctions: pacemaker failure, ICD inappropriate shocks, troubleshooting",
+      "normalizedTopic": "cardiac device malfunctions pacemaker failure icd inappropriate shocks troubleshooting",
+      "linkedPapers": 2,
+      "linkedGuidelines": 6,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 312,
+      "topic": "Cardiac implantable electronic device infection",
+      "normalizedTopic": "cardiac implantable electronic device infection",
+      "linkedPapers": 2,
+      "linkedGuidelines": 12,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 313,
+      "topic": "Cardiac myxoma: clinical features, embolism risk, surgical excision",
+      "normalizedTopic": "cardiac myxoma clinical features embolism risk surgical excision",
+      "linkedPapers": 5,
+      "linkedGuidelines": 11,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 314,
+      "topic": "Cardiac rehabilitation after myocardial infarction",
+      "normalizedTopic": "cardiac rehabilitation after myocardial infarction",
+      "linkedPapers": 4,
+      "linkedGuidelines": 4,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 315,
+      "topic": "Cardiac resynchronisation therapy: patient selection, QRS criteria, response predictors",
+      "normalizedTopic": "cardiac resynchronisation therapy patient selection qrs criteria response predictors",
+      "linkedPapers": 5,
+      "linkedGuidelines": 8,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 316,
+      "topic": "cardiac resynchronization therapy heart failure COMPANION trial",
+      "normalizedTopic": "cardiac resynchronization therapy heart failure companion trial",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 317,
+      "topic": "Cardiac resynchronization therapy in heart failure",
+      "normalizedTopic": "cardiac resynchronization therapy in heart failure",
+      "linkedPapers": 5,
+      "linkedGuidelines": 7,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 318,
+      "topic": "Cardiac tamponade: Beck's triad, pericardiocentesis, surgical drainage",
+      "normalizedTopic": "cardiac tamponade beck s triad pericardiocentesis surgical drainage",
+      "linkedPapers": 2,
+      "linkedGuidelines": 4,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 319,
+      "topic": "Cardiogenic shock: aetiology, diagnosis, and mechanical circulatory support",
+      "normalizedTopic": "cardiogenic shock aetiology diagnosis and mechanical circulatory support",
+      "linkedPapers": 5,
+      "linkedGuidelines": 11,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 320,
+      "topic": "Cardiogenic shock: classification and early mechanical circulatory support",
+      "normalizedTopic": "cardiogenic shock classification and early mechanical circulatory support",
+      "linkedPapers": 5,
+      "linkedGuidelines": 14,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 321,
+      "topic": "cardiogenic shock intra aortic balloon pump and revascularization",
+      "normalizedTopic": "cardiogenic shock intra aortic balloon pump and revascularization",
+      "linkedPapers": 3,
+      "linkedGuidelines": 4,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 322,
+      "topic": "Cardiogenic shock: intra-aortic balloon pump and revascularization",
+      "normalizedTopic": "cardiogenic shock intra-aortic balloon pump and revascularization",
+      "linkedPapers": 5,
+      "linkedGuidelines": 10,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 323,
+      "topic": "Cardio-oncology: chemotherapy cardiotoxicity, checkpoint inhibitor myocarditis, surveillance",
+      "normalizedTopic": "cardio-oncology chemotherapy cardiotoxicity checkpoint inhibitor myocarditis surveillance",
+      "linkedPapers": 5,
+      "linkedGuidelines": 6,
+      "mentorPresent": "Yes",
+      "mentorState": "Seed/placeholder"
+    },
+    {
+      "no": 324,
+      "topic": "cardiopulmonary exercise testing",
+      "normalizedTopic": "cardiopulmonary exercise testing",
+      "linkedPapers": 5,
+      "linkedGuidelines": 8,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 325,
+      "topic": "Cardiopulmonary resuscitation in the ICU: post-cardiac arrest care, targeted temperature management",
+      "normalizedTopic": "cardiopulmonary resuscitation in the icu post-cardiac arrest care targeted temperature management",
+      "linkedPapers": 1,
+      "linkedGuidelines": 7,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 326,
+      "topic": "Cardiorenal Syndrome",
+      "normalizedTopic": "cardiorenal syndrome",
+      "linkedPapers": 5,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 327,
+      "topic": "Cardiorenal syndrome ultrafiltration",
+      "normalizedTopic": "cardiorenal syndrome ultrafiltration",
+      "linkedPapers": 3,
+      "linkedGuidelines": 13,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 328,
+      "topic": "Cardiovascular magnetic resonance: viability, myocarditis, cardiomyopathy assessment",
+      "normalizedTopic": "cardiovascular magnetic resonance viability myocarditis cardiomyopathy assessment",
+      "linkedPapers": 1,
+      "linkedGuidelines": 9,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 329,
+      "topic": "Cardiovascular outcomes in diabetes: SGLT2i and GLP-1 agonist trial evidence",
+      "normalizedTopic": "cardiovascular outcomes in diabetes sglt2i and glp-1 agonist trial evidence",
+      "linkedPapers": 5,
+      "linkedGuidelines": 8,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 330,
+      "topic": "cardiovascular risk modification",
+      "normalizedTopic": "cardiovascular risk modification",
+      "linkedPapers": 8,
+      "linkedGuidelines": 2,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 331,
+      "topic": "Carotid and vertebral artery dissection: antiplatelets vs anticoagulation paradigms",
+      "normalizedTopic": "carotid and vertebral artery dissection antiplatelets vs anticoagulation paradigms",
+      "linkedPapers": 5,
+      "linkedGuidelines": 7,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 332,
+      "topic": "Carpal tunnel syndrome: diagnosis and management",
+      "normalizedTopic": "carpal tunnel syndrome diagnosis and management",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 333,
+      "topic": "Carpal tunnel syndrome: median nerve compression, Phalen, EMG, conservative vs surgical",
+      "normalizedTopic": "carpal tunnel syndrome median nerve compression phalen emg conservative vs surgical",
+      "linkedPapers": 5,
+      "linkedGuidelines": 8,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 334,
+      "topic": "CAR-T Cell Therapy in Relapsed Leukaemia",
+      "normalizedTopic": "car-t cell therapy in relapsed leukaemia",
+      "linkedPapers": 5,
+      "linkedGuidelines": 8,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 335,
+      "topic": "CAR-T cell therapy refractory large B-cell lymphoma axicabtagene",
+      "normalizedTopic": "car-t cell therapy refractory large b-cell lymphoma axicabtagene",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 336,
+      "topic": "car t therapy large b cell lymphoma",
+      "normalizedTopic": "car t therapy large b cell lymphoma",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 337,
+      "topic": "CAR-T therapy large B-cell lymphoma",
+      "normalizedTopic": "car-t therapy large b-cell lymphoma",
+      "linkedPapers": 3,
+      "linkedGuidelines": 57,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 338,
+      "topic": "Castration-Resistant Prostate Cancer",
+      "normalizedTopic": "castration-resistant prostate cancer",
+      "linkedPapers": 5,
+      "linkedGuidelines": 10,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 339,
+      "topic": "Catatonia benzodiazepines and ECT",
+      "normalizedTopic": "catatonia benzodiazepines and ect",
+      "linkedPapers": 3,
+      "linkedGuidelines": 5,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 340,
+      "topic": "Catheter-Associated Thrombosis",
+      "normalizedTopic": "catheter-associated thrombosis",
+      "linkedPapers": 1,
+      "linkedGuidelines": 5,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 341,
+      "topic": "Cauda equina syndrome: surgical emergency signs, post-void residual volumes",
+      "normalizedTopic": "cauda equina syndrome surgical emergency signs post-void residual volumes",
+      "linkedPapers": 1,
+      "linkedGuidelines": 17,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 342,
+      "topic": "Celiac disease diagnosis and monitoring",
+      "normalizedTopic": "celiac disease diagnosis and monitoring",
+      "linkedPapers": 3,
+      "linkedGuidelines": 12,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 343,
+      "topic": "cellulitis",
+      "normalizedTopic": "cellulitis",
+      "linkedPapers": 8,
+      "linkedGuidelines": 4,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 344,
+      "topic": "Cellulitis and skin and soft tissue infections: Eron classification, MRSA risk, treatment duration",
+      "normalizedTopic": "cellulitis and skin and soft tissue infections eron classification mrsa risk treatment duration",
+      "linkedPapers": 2,
+      "linkedGuidelines": 11,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 345,
+      "topic": "Cellulitis, erysipelas, and mimics",
+      "normalizedTopic": "cellulitis erysipelas and mimics",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 346,
+      "topic": "Central line-associated bloodstream infection (CLABSI): prevention and management",
+      "normalizedTopic": "central line-associated bloodstream infection clabsi prevention and management",
+      "linkedPapers": 5,
+      "linkedGuidelines": 8,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 347,
+      "topic": "Central line-associated bloodstream infection CLABSI: prevention bundles, diagnosis, treatment",
+      "normalizedTopic": "central line-associated bloodstream infection clabsi prevention bundles diagnosis treatment",
+      "linkedPapers": 5,
+      "linkedGuidelines": 5,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 348,
+      "topic": "Central line-associated bloodstream infection prevention in ICU",
+      "normalizedTopic": "central line-associated bloodstream infection prevention in icu",
+      "linkedPapers": 3,
+      "linkedGuidelines": 17,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 349,
+      "topic": "Central Nervous System Vasculitis (PACNS): digital subtraction angiography, cyclophosphamide regimens",
+      "normalizedTopic": "central nervous system vasculitis pacns digital subtraction angiography cyclophosphamide regimens",
+      "linkedPapers": 5,
+      "linkedGuidelines": 7,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 350,
+      "topic": "Central Sleep Apnea and Cheyne-Stokes respiration",
+      "normalizedTopic": "central sleep apnea and cheyne-stokes respiration",
+      "linkedPapers": 5,
+      "linkedGuidelines": 7,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 351,
+      "topic": "Cerebral amyloid angiopathy (CAA): microbleeds, lobar haemorrhages, diagnostic criteria",
+      "normalizedTopic": "cerebral amyloid angiopathy caa microbleeds lobar haemorrhages diagnostic criteria",
+      "linkedPapers": 5,
+      "linkedGuidelines": 6,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 352,
+      "topic": "Cerebral venous sinus thrombosis (CVST): risk factors, anticoagulation choices",
+      "normalizedTopic": "cerebral venous sinus thrombosis cvst risk factors anticoagulation choices",
+      "linkedPapers": 2,
+      "linkedGuidelines": 5,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 353,
+      "topic": "Cerebral venous thrombosis anticoagulation",
+      "normalizedTopic": "cerebral venous thrombosis anticoagulation",
+      "linkedPapers": 3,
+      "linkedGuidelines": 9,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 354,
+      "topic": "Cervical Cancer",
+      "normalizedTopic": "cervical cancer",
+      "linkedPapers": 2,
+      "linkedGuidelines": 29,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 355,
+      "topic": "Cervical spondylotic myelopathy: clinical signs, surgical decompression indications",
+      "normalizedTopic": "cervical spondylotic myelopathy clinical signs surgical decompression indications",
+      "linkedPapers": 5,
+      "linkedGuidelines": 13,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 356,
+      "topic": "Charcot-Marie-Tooth disease: CMT1A duplication, nerve conduction patterns",
+      "normalizedTopic": "charcot-marie-tooth disease cmt1a duplication nerve conduction patterns",
+      "linkedPapers": 5,
+      "linkedGuidelines": 8,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 357,
+      "topic": "Checkpoint Inhibitor Myocarditis",
+      "normalizedTopic": "checkpoint inhibitor myocarditis",
+      "linkedPapers": 4,
+      "linkedGuidelines": 7,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 358,
+      "topic": "Chemotherapy Extravasation",
+      "normalizedTopic": "chemotherapy extravasation",
+      "linkedPapers": 2,
+      "linkedGuidelines": 3,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 359,
+      "topic": "Chemotherapy-Induced Nausea and Vomiting",
+      "normalizedTopic": "chemotherapy-induced nausea and vomiting",
+      "linkedPapers": 5,
+      "linkedGuidelines": 5,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 360,
+      "topic": "chemotherapy induced nausea antiemetic prophylaxis",
+      "normalizedTopic": "chemotherapy induced nausea antiemetic prophylaxis",
+      "linkedPapers": 3,
+      "linkedGuidelines": 6,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 361,
+      "topic": "Chemotherapy-induced nausea antiemetic prophylaxis",
+      "normalizedTopic": "chemotherapy-induced nausea antiemetic prophylaxis",
+      "linkedPapers": 15,
+      "linkedGuidelines": 0,
+      "mentorPresent": "Yes",
+      "mentorState": "Seed/placeholder"
+    },
+    {
+      "no": 362,
+      "topic": "Chest pain assessment in the ED",
+      "normalizedTopic": "chest pain assessment in the ed",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 363,
+      "topic": "chest pain ED",
+      "normalizedTopic": "chest pain ed",
+      "linkedPapers": 8,
+      "linkedGuidelines": 0,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 364,
+      "topic": "Chikungunya and Zika Arthropathy",
+      "normalizedTopic": "chikungunya and zika arthropathy",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 365,
+      "topic": "childhood asthma",
+      "normalizedTopic": "childhood asthma",
+      "linkedPapers": 8,
+      "linkedGuidelines": 4,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 366,
+      "topic": "Childhood asthma and wheeze phenotypes",
+      "normalizedTopic": "childhood asthma and wheeze phenotypes",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 367,
+      "topic": "Cholangiocarcinoma",
+      "normalizedTopic": "cholangiocarcinoma",
+      "linkedPapers": 5,
+      "linkedGuidelines": 9,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 368,
+      "topic": "Cholangiocarcinoma systemic therapy",
+      "normalizedTopic": "cholangiocarcinoma systemic therapy",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 369,
+      "topic": "Choledocholithiasis",
+      "normalizedTopic": "choledocholithiasis",
+      "linkedPapers": 3,
+      "linkedGuidelines": 3,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 370,
+      "topic": "Choledocholithiasis and acute cholangitis endoscopy",
+      "normalizedTopic": "choledocholithiasis and acute cholangitis endoscopy",
+      "linkedPapers": 3,
+      "linkedGuidelines": 2,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 371,
+      "topic": "Cholelithiasis and Biliary Colic",
+      "normalizedTopic": "cholelithiasis and biliary colic",
+      "linkedPapers": 2,
+      "linkedGuidelines": 4,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 372,
+      "topic": "Cholera and Vibrio infections: oral rehydration, doxycycline, epidemic control, vaccination",
+      "normalizedTopic": "cholera and vibrio infections oral rehydration doxycycline epidemic control vaccination",
+      "linkedPapers": 5,
+      "linkedGuidelines": 8,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 373,
+      "topic": "chronic abdominal pain",
+      "normalizedTopic": "chronic abdominal pain",
+      "linkedPapers": 8,
+      "linkedGuidelines": 6,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 374,
+      "topic": "Chronic Allograft Dysfunction",
+      "normalizedTopic": "chronic allograft dysfunction",
+      "linkedPapers": 1,
+      "linkedGuidelines": 2,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 375,
+      "topic": "Chronic aortic regurgitation: surveillance intervals and surgical timing",
+      "normalizedTopic": "chronic aortic regurgitation surveillance intervals and surgical timing",
+      "linkedPapers": 5,
+      "linkedGuidelines": 5,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 376,
+      "topic": "chronic asthma",
+      "normalizedTopic": "chronic asthma",
+      "linkedPapers": 8,
+      "linkedGuidelines": 5,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 377,
+      "topic": "Chronic coronary syndrome: stable angina assessment and revascularisation decisions",
+      "normalizedTopic": "chronic coronary syndrome stable angina assessment and revascularisation decisions",
+      "linkedPapers": 5,
+      "linkedGuidelines": 35,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 378,
+      "topic": "chronic cough evaluation and empiric therapy",
+      "normalizedTopic": "chronic cough evaluation and empiric therapy",
+      "linkedPapers": 3,
+      "linkedGuidelines": 8,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 379,
+      "topic": "Chronic hepatitis B antiviral therapy",
+      "normalizedTopic": "chronic hepatitis b antiviral therapy",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 380,
+      "topic": "Chronic inflammatory demyelinating polyneuropathy treatment",
+      "normalizedTopic": "chronic inflammatory demyelinating polyneuropathy treatment",
+      "linkedPapers": 3,
+      "linkedGuidelines": 24,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 381,
+      "topic": "Chronic Inflammatory Demyelinating Polyradiculoneuropathy (CIDP): electrodiagnostic criteria, maintenance therapies",
+      "normalizedTopic": "chronic inflammatory demyelinating polyradiculoneuropathy cidp electrodiagnostic criteria maintenance therapies",
+      "linkedPapers": 5,
+      "linkedGuidelines": 6,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 382,
+      "topic": "chronic kidney disease",
+      "normalizedTopic": "chronic kidney disease",
+      "linkedPapers": 4,
+      "linkedGuidelines": 4,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 383,
+      "topic": "Chronic kidney disease SGLT2 inhibitors",
+      "normalizedTopic": "chronic kidney disease sglt2 inhibitors",
+      "linkedPapers": 3,
+      "linkedGuidelines": 1,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 384,
+      "topic": "Chronic Lymphocytic Leukaemia",
+      "normalizedTopic": "chronic lymphocytic leukaemia",
+      "linkedPapers": 5,
+      "linkedGuidelines": 7,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 385,
+      "topic": "Chronic lymphocytic leukaemia: chemoimmunotherapy with FCR",
+      "normalizedTopic": "chronic lymphocytic leukaemia chemoimmunotherapy with fcr",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 386,
+      "topic": "chronic lymphocytic leukaemia ibrutinib and venetoclax based targeted therapy",
+      "normalizedTopic": "chronic lymphocytic leukaemia ibrutinib and venetoclax based targeted therapy",
+      "linkedPapers": 3,
+      "linkedGuidelines": 5,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 387,
+      "topic": "Chronic Myeloid Leukaemia",
+      "normalizedTopic": "chronic myeloid leukaemia",
+      "linkedPapers": 5,
+      "linkedGuidelines": 2,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 388,
+      "topic": "chronic myeloid leukaemia imatinib and second generation tki therapy",
+      "normalizedTopic": "chronic myeloid leukaemia imatinib and second generation tki therapy",
+      "linkedPapers": 3,
+      "linkedGuidelines": 3,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 389,
+      "topic": "Chronic myeloid leukemia imatinib",
+      "normalizedTopic": "chronic myeloid leukemia imatinib",
+      "linkedPapers": 3,
+      "linkedGuidelines": 13,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 390,
+      "topic": "Chronic Myelomonocytic Leukaemia",
+      "normalizedTopic": "chronic myelomonocytic leukaemia",
+      "linkedPapers": 5,
+      "linkedGuidelines": 3,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 391,
+      "topic": "Chronic Neutrophilic Leukaemia",
+      "normalizedTopic": "chronic neutrophilic leukaemia",
+      "linkedPapers": 5,
+      "linkedGuidelines": 8,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 392,
+      "topic": "Chronic Pancreatitis",
+      "normalizedTopic": "chronic pancreatitis",
+      "linkedPapers": 5,
+      "linkedGuidelines": 25,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 393,
+      "topic": "Chronic pancreatitis pain and exocrine insufficiency",
+      "normalizedTopic": "chronic pancreatitis pain and exocrine insufficiency",
+      "linkedPapers": 3,
+      "linkedGuidelines": 21,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 394,
+      "topic": "Chronic spontaneous urticaria omalizumab",
+      "normalizedTopic": "chronic spontaneous urticaria omalizumab",
+      "linkedPapers": 25,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 395,
+      "topic": "Chronic Thromboembolic Pulmonary Hypertension",
+      "normalizedTopic": "chronic thromboembolic pulmonary hypertension",
+      "linkedPapers": 5,
+      "linkedGuidelines": 9,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 396,
+      "topic": "Chronic Tophaceous Gout",
+      "normalizedTopic": "chronic tophaceous gout",
+      "linkedPapers": 5,
+      "linkedGuidelines": 8,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 397,
+      "topic": "Chronic venous insufficiency: compression therapy, ablation, venous ulcer management",
+      "normalizedTopic": "chronic venous insufficiency compression therapy ablation venous ulcer management",
+      "linkedPapers": 5,
+      "linkedGuidelines": 23,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 398,
+      "topic": "Cirrhosis and portal hypertension",
+      "normalizedTopic": "cirrhosis and portal hypertension",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 399,
+      "topic": "Cirrhosis ascites and spontaneous bacterial peritonitis",
+      "normalizedTopic": "cirrhosis ascites and spontaneous bacterial peritonitis",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 400,
+      "topic": "CKD Cardiovascular Risk Management",
+      "normalizedTopic": "ckd cardiovascular risk management",
+      "linkedPapers": 2,
+      "linkedGuidelines": 4,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 401,
+      "topic": "CKD-MBD: Mineral and Bone Disorder",
+      "normalizedTopic": "ckd-mbd mineral and bone disorder",
+      "linkedPapers": 4,
+      "linkedGuidelines": 4,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 402,
+      "topic": "CKD mineral and bone disorder",
+      "normalizedTopic": "ckd mineral and bone disorder",
+      "linkedPapers": 5,
+      "linkedGuidelines": 13,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 403,
+      "topic": "CKD Staging and Progression",
+      "normalizedTopic": "ckd staging and progression",
+      "linkedPapers": 2,
+      "linkedGuidelines": 3,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 404,
+      "topic": "Class I antiarrhythmics: flecainide, propafenone, quinidine, use and contraindications",
+      "normalizedTopic": "class i antiarrhythmics flecainide propafenone quinidine use and contraindications",
+      "linkedPapers": 1,
+      "linkedGuidelines": 8,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 405,
+      "topic": "claudication",
+      "normalizedTopic": "claudication",
+      "linkedPapers": 8,
+      "linkedGuidelines": 7,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 406,
+      "topic": "clopidogrel aspirin acute minor ischemic stroke CHANCE",
+      "normalizedTopic": "clopidogrel aspirin acute minor ischemic stroke chance",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 407,
+      "topic": "Clostridioides difficile Infection",
+      "normalizedTopic": "clostridioides difficile infection",
+      "linkedPapers": 5,
+      "linkedGuidelines": 20,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 408,
+      "topic": "Clostridioides difficile infection: severity grading, vancomycin, fidaxomicin, FMT, bezlotoxumab",
+      "normalizedTopic": "clostridioides difficile infection severity grading vancomycin fidaxomicin fmt bezlotoxumab",
+      "linkedPapers": 5,
+      "linkedGuidelines": 18,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 409,
+      "topic": "Clozapine for treatment-resistant schizophrenia",
+      "normalizedTopic": "clozapine for treatment-resistant schizophrenia",
+      "linkedPapers": 10,
+      "linkedGuidelines": 5,
+      "mentorPresent": "Yes",
+      "mentorState": "Seed/placeholder"
+    },
+    {
+      "no": 410,
+      "topic": "clozapine-induced myocarditis",
+      "normalizedTopic": "clozapine-induced myocarditis",
+      "linkedPapers": 8,
+      "linkedGuidelines": 0,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 411,
+      "topic": "cluster headache",
+      "normalizedTopic": "cluster headache",
+      "linkedPapers": 8,
+      "linkedGuidelines": 5,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 412,
+      "topic": "Cluster headache: high-flow oxygen, triptan rescue, verapamil prophylaxis",
+      "normalizedTopic": "cluster headache high-flow oxygen triptan rescue verapamil prophylaxis",
+      "linkedPapers": 5,
+      "linkedGuidelines": 34,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 413,
+      "topic": "CMV disease in immunocompromised: retinitis, colitis, pneumonitis, ganciclovir, valganciclovir",
+      "normalizedTopic": "cmv disease in immunocompromised retinitis colitis pneumonitis ganciclovir valganciclovir",
+      "linkedPapers": 3,
+      "linkedGuidelines": 5,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 414,
+      "topic": "coagulation disorders",
+      "normalizedTopic": "coagulation disorders",
+      "linkedPapers": 8,
+      "linkedGuidelines": 0,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 415,
+      "topic": "Coal Worker's Pneumoconiosis",
+      "normalizedTopic": "coal worker s pneumoconiosis",
+      "linkedPapers": 3,
+      "linkedGuidelines": 6,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 416,
+      "topic": "Coeliac Disease",
+      "normalizedTopic": "coeliac disease",
+      "linkedPapers": 5,
+      "linkedGuidelines": 22,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 417,
+      "topic": "collapse",
+      "normalizedTopic": "collapse",
+      "linkedPapers": 8,
+      "linkedGuidelines": 1,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 418,
+      "topic": "Collapse, syncope, and cardiac arrest algorithms",
+      "normalizedTopic": "collapse syncope and cardiac arrest algorithms",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 419,
+      "topic": "Colonic Volvulus",
+      "normalizedTopic": "colonic volvulus",
+      "linkedPapers": 4,
+      "linkedGuidelines": 14,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 420,
+      "topic": "colorectal cancer",
+      "normalizedTopic": "colorectal cancer",
+      "linkedPapers": 8,
+      "linkedGuidelines": 0,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 421,
+      "topic": "Colorectal cancer adjuvant chemotherapy",
+      "normalizedTopic": "colorectal cancer adjuvant chemotherapy",
+      "linkedPapers": 5,
+      "linkedGuidelines": 112,
+      "mentorPresent": "Yes",
+      "mentorState": "Seed/placeholder"
+    },
+    {
+      "no": 422,
+      "topic": "Colorectal cancer screening and FIT strategy",
+      "normalizedTopic": "colorectal cancer screening and fit strategy",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 423,
+      "topic": "Colorectal Cancer Treatment",
+      "normalizedTopic": "colorectal cancer treatment",
+      "linkedPapers": 8,
+      "linkedGuidelines": 0,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 424,
+      "topic": "Common variable immunodeficiency diagnosis and infection prevention",
+      "normalizedTopic": "common variable immunodeficiency diagnosis and infection prevention",
+      "linkedPapers": 21,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 425,
+      "topic": "community acquired pneumonia",
+      "normalizedTopic": "community acquired pneumonia",
+      "linkedPapers": 8,
+      "linkedGuidelines": 0,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 426,
+      "topic": "community-acquired pneumonia",
+      "normalizedTopic": "community-acquired pneumonia",
+      "linkedPapers": 5,
+      "linkedGuidelines": 43,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 427,
+      "topic": "community acquired pneumonia antibiotics",
+      "normalizedTopic": "community acquired pneumonia antibiotics",
+      "linkedPapers": 8,
+      "linkedGuidelines": 12,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 428,
+      "topic": "Community-acquired pneumonia: CURB-65, PSI, empirical therapy, atypical pathogens",
+      "normalizedTopic": "community-acquired pneumonia curb-65 psi empirical therapy atypical pathogens",
+      "linkedPapers": 8,
+      "linkedGuidelines": 0,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 429,
+      "topic": "Community acquired pneumonia diagnosis and management",
+      "normalizedTopic": "community acquired pneumonia diagnosis and management",
+      "linkedPapers": 8,
+      "linkedGuidelines": 5,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 430,
+      "topic": "community acquired pneumonia diagnosis empiric antibiotic management guideline adult",
+      "normalizedTopic": "community acquired pneumonia diagnosis empiric antibiotic management guideline adult",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 431,
+      "topic": "community acquired pneumonia severity score",
+      "normalizedTopic": "community acquired pneumonia severity score",
+      "linkedPapers": 8,
+      "linkedGuidelines": 14,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 432,
+      "topic": "Community- and hospital-acquired pneumonia",
+      "normalizedTopic": "community- and hospital-acquired pneumonia",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 433,
+      "topic": "Compartment syndrome: diagnosis and emergency management",
+      "normalizedTopic": "compartment syndrome diagnosis and emergency management",
+      "linkedPapers": 3,
+      "linkedGuidelines": 5,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 434,
+      "topic": "complement deficiency infection susceptibility",
+      "normalizedTopic": "complement deficiency infection susceptibility",
+      "linkedPapers": 3,
+      "linkedGuidelines": 7,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 435,
+      "topic": "Complex Regional Pain Syndrome",
+      "normalizedTopic": "complex regional pain syndrome",
+      "linkedPapers": 5,
+      "linkedGuidelines": 27,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 436,
+      "topic": "complicated intra abdominal infection source control and duration",
+      "normalizedTopic": "complicated intra abdominal infection source control and duration",
+      "linkedPapers": 3,
+      "linkedGuidelines": 4,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 437,
+      "topic": "Complicated intra-abdominal infection source control and duration",
+      "normalizedTopic": "complicated intra-abdominal infection source control and duration",
+      "linkedPapers": 10,
+      "linkedGuidelines": 0,
+      "mentorPresent": "Yes",
+      "mentorState": "Seed/placeholder"
+    },
+    {
+      "no": 438,
+      "topic": "Complicated urinary tract infection antimicrobial strategy",
+      "normalizedTopic": "complicated urinary tract infection antimicrobial strategy",
+      "linkedPapers": 20,
+      "linkedGuidelines": 5,
+      "mentorPresent": "Yes",
+      "mentorState": "Seed/placeholder"
+    },
+    {
+      "no": 439,
+      "topic": "Congenital adrenal hyperplasia: 21-hydroxylase deficiency, glucocorticoid replacement",
+      "normalizedTopic": "congenital adrenal hyperplasia 21-hydroxylase deficiency glucocorticoid replacement",
+      "linkedPapers": 5,
+      "linkedGuidelines": 42,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 440,
+      "topic": "Connective Tissue Disease-Associated ILD",
+      "normalizedTopic": "connective tissue disease-associated ild",
+      "linkedPapers": 1,
+      "linkedGuidelines": 1,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 441,
+      "topic": "connective tissue disease-related ILD",
+      "normalizedTopic": "connective tissue disease-related ild",
+      "linkedPapers": 8,
+      "linkedGuidelines": 1,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 442,
+      "topic": "Conservative Management of CKD",
+      "normalizedTopic": "conservative management of ckd",
+      "linkedPapers": 8,
+      "linkedGuidelines": 2,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 443,
+      "topic": "Conservative oxygen therapy in mechanically ventilated patients",
+      "normalizedTopic": "conservative oxygen therapy in mechanically ventilated patients",
+      "linkedPapers": 3,
+      "linkedGuidelines": 25,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 444,
+      "topic": "Constipation and Pelvic Floor Disorders",
+      "normalizedTopic": "constipation and pelvic floor disorders",
+      "linkedPapers": 2,
+      "linkedGuidelines": 53,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 445,
+      "topic": "Constrictive pericarditis: haemodynamic features, pericardiectomy indications",
+      "normalizedTopic": "constrictive pericarditis haemodynamic features pericardiectomy indications",
+      "linkedPapers": 5,
+      "linkedGuidelines": 16,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 446,
+      "topic": "Contact dermatitis: irritant vs allergic, patch testing and management",
+      "normalizedTopic": "contact dermatitis irritant vs allergic patch testing and management",
+      "linkedPapers": 3,
+      "linkedGuidelines": 5,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 447,
+      "topic": "Continuous EEG monitoring in the ICU: non-convulsive status epilepticus",
+      "normalizedTopic": "continuous eeg monitoring in the icu non-convulsive status epilepticus",
+      "linkedPapers": 5,
+      "linkedGuidelines": 5,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 448,
+      "topic": "Continuous glucose monitoring CGM: time-in-range targets, hybrid closed loop",
+      "normalizedTopic": "continuous glucose monitoring cgm time-in-range targets hybrid closed loop",
+      "linkedPapers": 5,
+      "linkedGuidelines": 45,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 449,
+      "topic": "Continuous glucose monitoring in diabetes",
+      "normalizedTopic": "continuous glucose monitoring in diabetes",
+      "linkedPapers": 11,
+      "linkedGuidelines": 10,
+      "mentorPresent": "Yes",
+      "mentorState": "Seed/placeholder"
+    },
+    {
+      "no": 450,
+      "topic": "continuous positive airway pressure obstructive sleep apnea cardiovascular outcomes SAVE",
+      "normalizedTopic": "continuous positive airway pressure obstructive sleep apnea cardiovascular outcomes save",
+      "linkedPapers": 3,
+      "linkedGuidelines": 2,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 451,
+      "topic": "Continuous Renal Replacement Therapy",
+      "normalizedTopic": "continuous renal replacement therapy",
+      "linkedPapers": 5,
+      "linkedGuidelines": 8,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 452,
+      "topic": "Continuous renal replacement therapy: CVVH, CVVHD, CVVHDF modes and prescription",
+      "normalizedTopic": "continuous renal replacement therapy cvvh cvvhd cvvhdf modes and prescription",
+      "linkedPapers": 5,
+      "linkedGuidelines": 8,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 453,
+      "topic": "Contrast-associated acute kidney injury prevention",
+      "normalizedTopic": "contrast-associated acute kidney injury prevention",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 454,
+      "topic": "Contrast-Induced AKI",
+      "normalizedTopic": "contrast-induced aki",
+      "linkedPapers": 5,
+      "linkedGuidelines": 5,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 455,
+      "topic": "COPD exacerbation GOLD guideline",
+      "normalizedTopic": "copd exacerbation",
+      "linkedPapers": 20,
+      "linkedGuidelines": 65,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 456,
+      "topic": "COPD maintenance bronchodilator combination therapy",
+      "normalizedTopic": "copd maintenance bronchodilator combination therapy",
+      "linkedPapers": 3,
+      "linkedGuidelines": 6,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 457,
+      "topic": "Coronary angiography timing after cardiac arrest",
+      "normalizedTopic": "coronary angiography timing after cardiac arrest",
+      "linkedPapers": 3,
+      "linkedGuidelines": 5,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 458,
+      "topic": "Coronary artery calcium score risk stratification",
+      "normalizedTopic": "coronary artery calcium score risk stratification",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 459,
+      "topic": "Coronary artery calcium scoring: risk reclassification and preventive decision-making",
+      "normalizedTopic": "coronary artery calcium scoring risk reclassification and preventive decision-making",
+      "linkedPapers": 5,
+      "linkedGuidelines": 12,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 460,
+      "topic": "Coronary CT angiography: FFRCT, plaque characterisation, clinical applications",
+      "normalizedTopic": "coronary ct angiography ffrct plaque characterisation clinical applications",
+      "linkedPapers": 5,
+      "linkedGuidelines": 17,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 461,
+      "topic": "Coronary CT angiography for stable chest pain",
+      "normalizedTopic": "coronary ct angiography for stable chest pain",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 462,
+      "topic": "Coronary revascularisation in multivessel disease: SYNTAX score, PCI vs CABG",
+      "normalizedTopic": "coronary revascularisation in multivessel disease syntax score pci vs cabg",
+      "linkedPapers": 5,
+      "linkedGuidelines": 18,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 463,
+      "topic": "Corticobasal degeneration: asymmetric alien limb phenomenon, tau pathology",
+      "normalizedTopic": "corticobasal degeneration asymmetric alien limb phenomenon tau pathology",
+      "linkedPapers": 1,
+      "linkedGuidelines": 9,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 464,
+      "topic": "Corticosteroids in ARDS",
+      "normalizedTopic": "ards",
+      "linkedPapers": 8,
+      "linkedGuidelines": 11,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 465,
+      "topic": "Corticosteroids in septic shock",
+      "normalizedTopic": "corticosteroids in septic shock",
+      "linkedPapers": 5,
+      "linkedGuidelines": 10,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 466,
+      "topic": "covid",
+      "normalizedTopic": "covid",
+      "linkedPapers": 3,
+      "linkedGuidelines": 5,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 467,
+      "topic": "COVID-19 antivirals and immunomodulators: nirmatrelvir-ritonavir, remdesivir, dexamethasone, baricitinib",
+      "normalizedTopic": "covid-19 antivirals and immunomodulators nirmatrelvir-ritonavir remdesivir dexamethasone baricitinib",
+      "linkedPapers": 5,
+      "linkedGuidelines": 5,
+      "mentorPresent": "Yes",
+      "mentorState": "Seed/placeholder"
+    },
+    {
+      "no": 468,
+      "topic": "covid 19 critical care dexamethasone and immunomodulation",
+      "normalizedTopic": "covid 19 critical care dexamethasone and immunomodulation",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 469,
+      "topic": "COVID-19 critical care: dexamethasone and immunomodulation",
+      "normalizedTopic": "covid-19 critical care dexamethasone and immunomodulation",
+      "linkedPapers": 4,
+      "linkedGuidelines": 5,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 470,
+      "topic": "COVID-19 critical illness: oxygenation strategy, dexamethasone, anticoagulation",
+      "normalizedTopic": "covid-19 critical illness oxygenation strategy dexamethasone anticoagulation",
+      "linkedPapers": 5,
+      "linkedGuidelines": 11,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 471,
+      "topic": "covid 19 management",
+      "normalizedTopic": "covid 19 management",
+      "linkedPapers": 8,
+      "linkedGuidelines": 0,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 472,
+      "topic": "COVID-19 severe disease immunomodulation",
+      "normalizedTopic": "covid-19 severe disease immunomodulation",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 473,
+      "topic": "COX-2 inhibitor cardiovascular risk",
+      "normalizedTopic": "cox-2 inhibitor cardiovascular risk",
+      "linkedPapers": 8,
+      "linkedGuidelines": 2,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 474,
+      "topic": "Craniopharyngioma: suprasellar location, hypothalamic obesity, visual field defects",
+      "normalizedTopic": "craniopharyngioma suprasellar location hypothalamic obesity visual field defects",
+      "linkedPapers": 2,
+      "linkedGuidelines": 9,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 475,
+      "topic": "Creutzfeldt-Jakob Disease (CJD): 14-3-3 protein, RT-QuIC, cortical ribboning",
+      "normalizedTopic": "creutzfeldt-jakob disease cjd 14-3-3 protein rt-quic cortical ribboning",
+      "linkedPapers": 4,
+      "linkedGuidelines": 8,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 476,
+      "topic": "CRISPR-Cas9 gene editing sickle cell disease beta-thalassemia",
+      "normalizedTopic": "crispr-cas9 gene editing sickle cell disease beta-thalassemia",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 477,
+      "topic": "Critical illness polyneuropathy and myopathy: diagnosis and rehabilitation",
+      "normalizedTopic": "critical illness polyneuropathy and myopathy diagnosis and rehabilitation",
+      "linkedPapers": 3,
+      "linkedGuidelines": 22,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 478,
+      "topic": "crohn disease biologics",
+      "normalizedTopic": "crohn disease biologics",
+      "linkedPapers": 8,
+      "linkedGuidelines": 5,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 479,
+      "topic": "Crohn's disease",
+      "normalizedTopic": "crohn s disease",
+      "linkedPapers": 8,
+      "linkedGuidelines": 0,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 480,
+      "topic": "crohn's disease biologics",
+      "normalizedTopic": "crohn s disease biologics",
+      "linkedPapers": 8,
+      "linkedGuidelines": 5,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 481,
+      "topic": "Croup: assessment, severity scoring and management",
+      "normalizedTopic": "croup assessment severity scoring and management",
+      "linkedPapers": 3,
+      "linkedGuidelines": 5,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 482,
+      "topic": "Cryoglobulinaemic vasculitis: HCV association, types, skin, renal, nerve involvement",
+      "normalizedTopic": "cryoglobulinaemic vasculitis hcv association types skin renal nerve involvement",
+      "linkedPapers": 2,
+      "linkedGuidelines": 6,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 483,
+      "topic": "Cryopyrin-Associated Periodic Syndromes",
+      "normalizedTopic": "cryopyrin-associated periodic syndromes",
+      "linkedPapers": 5,
+      "linkedGuidelines": 3,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 484,
+      "topic": "Cryptococcal meningitis: India ink, cryptococcal antigen, amphotericin B, flucytosine, fluconazole",
+      "normalizedTopic": "cryptococcal meningitis india ink cryptococcal antigen amphotericin b flucytosine fluconazole",
+      "linkedPapers": 5,
+      "linkedGuidelines": 6,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 485,
+      "topic": "Cryptococcal meningitis induction therapy",
+      "normalizedTopic": "cryptococcal meningitis induction therapy",
+      "linkedPapers": 11,
+      "linkedGuidelines": 9,
+      "mentorPresent": "Yes",
+      "mentorState": "Seed/placeholder"
+    },
+    {
+      "no": 486,
+      "topic": "CT head and CT pulmonary angiography: common acute findings",
+      "normalizedTopic": "ct head and ct pulmonary angiography common acute findings",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 487,
+      "topic": "Cushings disease: pituitary source, inferior petrosal sinus sampling, transsphenoidal surgery",
+      "normalizedTopic": "cushings disease pituitary source inferior petrosal sinus sampling transsphenoidal surgery",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 488,
+      "topic": "Cushings syndrome: ACTH-dependent vs independent, screening, dexamethasone suppression",
+      "normalizedTopic": "cushings syndrome acth-dependent vs independent screening dexamethasone suppression",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 489,
+      "topic": "cushing syndrome medical therapy",
+      "normalizedTopic": "cushing syndrome medical therapy",
+      "linkedPapers": 3,
+      "linkedGuidelines": 13,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 490,
+      "topic": "Cutaneous Squamous Cell Carcinoma",
+      "normalizedTopic": "cutaneous squamous cell carcinoma",
+      "linkedPapers": 5,
+      "linkedGuidelines": 7,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 491,
+      "topic": "Cutaneous T-Cell Lymphoma",
+      "normalizedTopic": "cutaneous t-cell lymphoma",
+      "linkedPapers": 5,
+      "linkedGuidelines": 5,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 492,
+      "topic": "Cystic fibrosis CFTR modulator therapy",
+      "normalizedTopic": "cystic fibrosis cftr modulator therapy",
+      "linkedPapers": 3,
+      "linkedGuidelines": 5,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 493,
+      "topic": "Cystic Fibrosis in adults",
+      "normalizedTopic": "cystic fibrosis in adults",
+      "linkedPapers": 1,
+      "linkedGuidelines": 47,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 494,
+      "topic": "cytomegalovirus prevention in transplant recipients",
+      "normalizedTopic": "cytomegalovirus prevention in transplant recipients",
+      "linkedPapers": 3,
+      "linkedGuidelines": 7,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 495,
+      "topic": "dabigatran versus warfarin atrial fibrillation stroke prevention",
+      "normalizedTopic": "dabigatran versus warfarin atrial fibrillation stroke prevention",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 496,
+      "topic": "Deep brain stimulation (DBS): STN vs GPi target selection, patient criteria",
+      "normalizedTopic": "deep brain stimulation dbs stn vs gpi target selection patient criteria",
+      "linkedPapers": 1,
+      "linkedGuidelines": 4,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 497,
+      "topic": "deep vein thrombosis",
+      "normalizedTopic": "deep vein thrombosis",
+      "linkedPapers": 8,
+      "linkedGuidelines": 3,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 498,
+      "topic": "Degenerative cervical myelopathy management",
+      "normalizedTopic": "degenerative cervical myelopathy management",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 499,
+      "topic": "Delayed Haemolytic Transfusion Reactions",
+      "normalizedTopic": "delayed haemolytic transfusion reactions",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 500,
+      "topic": "Delayed puberty: constitutional delay vs hypogonadotrophic vs hypergonadotrophic causes",
+      "normalizedTopic": "delayed puberty constitutional delay vs hypogonadotrophic vs hypergonadotrophic causes",
+      "linkedPapers": 2,
+      "linkedGuidelines": 7,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    }
+  ]
+}
