@@ -20,40 +20,10 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
-      - name: Export topics JSON from Excel
+      - name: Prepare topics JSON artifact
         run: |
-          python3 -m pip install --user pandas openpyxl >/dev/null 2>&1 || true
-          python3 - << 'PY'
-          import pandas as pd, json, os, sys
-          SHEET = '${{ github.event.inputs.sheet }}'
-          SRC = 'uploads/Signal_MD_All_Topics_250_Per_Sheet.xlsx'
-          if not os.path.exists(SRC):
-              # Fall back to any worksheet uploaded under /opt/medsearch/data/topic-mentor-batches
-              SRC = 'Signal_MD_All_Topics_250_Per_Sheet.xlsx'
-          xl = pd.ExcelFile(SRC)
-          df = xl.parse(SHEET)
-          hi = df.index[df.iloc[:,0] == 'No.'][0]
-          cols = list(df.iloc[hi])
-          body = df.iloc[hi+1:].reset_index(drop=True)
-          body.columns = cols
-          body = body[body['Topic'].notna()]
-          rows = []
-          for _, r in body.iterrows():
-              rows.append({
-                  'no': int(r['No.']) if pd.notna(r['No.']) else None,
-                  'topic': str(r['Topic']).strip(),
-                  'normalizedTopic': (str(r['Normalized topic']).strip() if pd.notna(r['Normalized topic']) else None),
-                  'linkedPapers': int(r['Linked papers']) if pd.notna(r['Linked papers']) else 0,
-                  'linkedGuidelines': int(r['Linked guidelines']) if pd.notna(r['Linked guidelines']) else 0,
-                  'mentorPresent': str(r['Mentor present']).strip() if pd.notna(r['Mentor present']) else '',
-                  'mentorState': str(r['Mentor state']).strip() if pd.notna(r['Mentor state']) else '',
-              })
-          os.makedirs('topic-mentor-batches', exist_ok=True)
-          OUT = f'topic-mentor-batches/{SHEET.replace(\" \",\"_\")}.json'
-          with open(OUT, 'w') as f:
-              json.dump({'sheet': SHEET, 'count': len(rows), 'topics': rows}, f, indent=2)
-          print('WROTE', OUT, len(rows))
-          PY
+          echo "Using repository topics JSON under data/topic-mentor-batches/"
+          ls -la data/topic-mentor-batches || true
 
       - name: Copy topics JSON to server
         uses: appleboy/scp-action@v0.1.7
@@ -61,7 +31,7 @@ jobs:
           host: ${{ secrets.HETZNER_HOST || '178.105.155.246' }}
           username: root
           key: ${{ secrets.HETZNER_SSH_KEY }}
-          source: "topic-mentor-batches/*.json"
+          source: "data/topic-mentor-batches/*.json"
           target: "/opt/medsearch/data/topic-mentor-batches/"
           overwrite: true
 
