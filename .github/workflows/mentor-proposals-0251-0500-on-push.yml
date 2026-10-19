@@ -26,6 +26,7 @@ jobs:
           key: ${{ secrets.HETZNER_SSH_KEY }}
           source: "data/topic-mentor-batches/topics-0251-0500.json"
           target: "/opt/medsearch/data/topic-mentor-batches/"
+          strip_components: 2
           overwrite: true
 
       - name: Generate and commit mentor drafts offline

@@ -28,6 +28,7 @@ jobs:
           key: ${{ secrets.HETZNER_SSH_KEY }}
           source: "data/mcq-review/apply-mcq-review_ready_588.json"
           target: "/opt/medsearch/data/mcq-review/"
+          strip_components: 2
           overwrite: true
 
       - name: Apply MCQ review edits (apply)
