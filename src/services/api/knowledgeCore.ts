@@ -31,7 +31,7 @@ export class KnowledgeCoreApi extends BaseApiClient {
     return (await response.json()) as { agentGuidance: AgentGuidance; topicKnowledge: TopicKnowledge };
   }
 
-  async reviewTopicKnowledge(topic: string): Promise<{ found: boolean; agentGuidance?: AgentGuidance | null }> {
+  async reviewTopicKnowledge(topic: string): Promise<{ found: boolean; agentGuidance?: AgentGuidance | null; topicKnowledge?: TopicKnowledge | null }> {
     const response = await this.fetchWithSession(`${API_BASE}/api/knowledge/${encodeURIComponent(topic)}/review`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },

@@ -105,6 +105,7 @@ export const api = {
     appendAgentMessages: jest.fn().mockResolvedValue({}),
     recordAgentFeedback: jest.fn().mockResolvedValue(undefined),
     getSpacedRepTopics: jest.fn().mockResolvedValue({ topics: [] }),
+    getTopicProposals: jest.fn().mockResolvedValue({ proposals: [], total: 0 }),
   },
   collaboration: {
     getGuidelinesForTopic: jest.fn().mockResolvedValue({
@@ -133,7 +134,9 @@ export const api = {
   },
   knowledge: {
     getTopicKnowledge: jest.fn().mockResolvedValue({ found: false, agentGuidance: null }),
-    listTopicKnowledge: jest.fn().mockResolvedValue({ topics: [] }),
+    listTopicKnowledge: jest.fn().mockResolvedValue({ topics: [], total: 0, limit: 50, offset: 0 }),
+    updateTopicKnowledge: jest.fn().mockResolvedValue({ topicKnowledge: null, agentGuidance: null }),
+    getLearningHealth: jest.fn().mockResolvedValue({ health: null }),
     getTopicOverview: jest.fn().mockResolvedValue({}),
     getEvidenceMap: jest.fn().mockResolvedValue({}),
     getEvidenceDeltaBrief: jest.fn().mockResolvedValue({ brief: {} }),

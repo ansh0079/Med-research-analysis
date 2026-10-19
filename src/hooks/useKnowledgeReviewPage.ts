@@ -7,6 +7,7 @@ import {
   toStringList,
   toTeachingPoints,
   type ActiveTab,
+  type DraftReviewDecision,
   type SeminalPaper,
   type TeachingPointDraft,
 } from '@components/knowledge/KnowledgeReviewPanels';
@@ -15,12 +16,14 @@ export function useKnowledgeReviewPage() {
   const setCurrentPage = useNavigatePage();
 
   const [topics, setTopics] = React.useState<TopicKnowledge[]>([]);
+  const [topicsTotal, setTopicsTotal] = React.useState(0);
   const [selected, setSelected] = React.useState<TopicKnowledge | null>(null);
   const [query, setQuery] = React.useState('');
   const [statusFilter, setStatusFilter] = React.useState('');
   const [loading, setLoading] = React.useState(true);
   const [saving, setSaving] = React.useState(false);
-  const [reviewing, setReviewing] = React.useState(false);
+  const [reviewAction, setReviewAction] = React.useState<{ id: number; decision: DraftReviewDecision } | null>(null);
+  const reviewLock = React.useRef(false);
   const [error, setError] = React.useState('');
   const [notice, setNotice] = React.useState('');
   const [activeTab, setActiveTab] = React.useState<ActiveTab>('edit');
@@ -46,8 +49,9 @@ export function useKnowledgeReviewPage() {
     setLoading(true);
     setError('');
     try {
-      const data = await api.knowledge.listTopicKnowledge({ query, status: statusFilter, limit: 100 });
+      const data = await api.knowledge.listTopicKnowledge({ query, status: statusFilter, limit: 500 });
       setTopics(data.topics);
+      setTopicsTotal(Number(data.total || data.topics.length));
       setSelected((current) => {
         if (!current) return data.topics[0] ?? null;
         return data.topics.find((t) => t.id === current.id) ?? data.topics[0] ?? null;
@@ -63,9 +67,10 @@ export function useKnowledgeReviewPage() {
     }
   }, [query, statusFilter]);
 
-  const [prevSelected, setPrevSelected] = React.useState<TopicKnowledge | null>(null);
-  if (prevSelected !== selected) {
-    setPrevSelected(selected);
+  const selectedId = selected?.id ?? null;
+  const [hydratedId, setHydratedId] = React.useState<number | null>(null);
+  if (hydratedId !== selectedId) {
+    setHydratedId(selectedId);
     if (selected) {
       const k = selected.knowledge || {};
       setMentorMessage(String(k.mentorMessage || ''));
@@ -274,21 +279,73 @@ export function useKnowledgeReviewPage() {
     }
   };
 
-  const markReviewed = async () => {
+  const replaceTopic = (updated: TopicKnowledge) => {
+    setTopics((prev) => prev.map((t) => (t.id === updated.id ? updated : t)));
+    setSelected((current) => (current && current.id === updated.id ? updated : current));
+  };
+
+  const discardEdits = () => {
     if (!selected) return;
-    setReviewing(true);
+    const k = selected.knowledge || {};
+    setMentorMessage(String(k.mentorMessage || ''));
+    setSeminalPapers(toSeminalPapers(k.seminalPapers));
+    setTeachingPoints(toTeachingPoints(k.teachingPoints || k.coreTeachingPoints));
+    setCaseHooks(toStringList(k.caseGenerationHooks));
+    setMcqAngles(toStringList(k.mcqAngles));
+    setKeywords(toStringList(k.keywords));
+    setError('');
+    setNotice('Discarded unsaved edits.');
+  };
+
+  const setDraftDecision = async (item: TopicKnowledge, decision: DraftReviewDecision) => {
+    if (reviewLock.current) return;
+    reviewLock.current = true;
+    setReviewAction({ id: item.id, decision });
     setError('');
     setNotice('');
+    const editingOpenDraft = selected?.id === item.id;
     try {
-      const result = await api.knowledge.reviewTopicKnowledge(selected.topic);
-      if (result.agentGuidance) {
-        await loadTopics();
-        setNotice('Marked as clinician reviewed — this knowledge is now trusted.');
+      if (decision === 'needs_review') {
+        const knowledge = editingOpenDraft ? buildKnowledge() : item.knowledge;
+        if (!knowledge || typeof knowledge !== 'object') {
+          throw new Error('Stored draft has no mentor text to keep.');
+        }
+        const updated = await api.knowledge.updateTopicKnowledge(item.topic, {
+          knowledge,
+          sourceArticles: editingOpenDraft ? selected?.sourceArticles : item.sourceArticles,
+          status: 'pending_review',
+          confidence: item.confidence,
+        });
+        replaceTopic(updated.topicKnowledge);
+        setNotice(`Marked “${item.topic}” as needs review. The mentor text was kept.`);
+        return;
       }
+
+      let base = item;
+      if (editingOpenDraft) {
+        const saved = await api.knowledge.updateTopicKnowledge(item.topic, {
+          knowledge: buildKnowledge(),
+          sourceArticles: selected?.sourceArticles,
+          status: item.status || 'pending_review',
+          confidence: item.confidence,
+        });
+        base = saved.topicKnowledge;
+        replaceTopic(base);
+      }
+      const result = await api.knowledge.reviewTopicKnowledge(item.topic);
+      replaceTopic(result.topicKnowledge ?? {
+        ...base,
+        status: 'human_reviewed',
+        confidence: Math.max(Number(base.confidence) || 0, 0.85),
+        updatedAt: new Date().toISOString(),
+      });
+      setNotice(`Approved “${item.topic}”. Reviewers can still send it back to needs review.`);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to mark reviewed.');
+      const message = err instanceof Error ? err.message : 'Failed to update the draft.';
+      setError(`Could not update “${item.topic}”: ${message}`);
     } finally {
-      setReviewing(false);
+      reviewLock.current = false;
+      setReviewAction(null);
     }
   };
 
@@ -305,7 +362,9 @@ export function useKnowledgeReviewPage() {
   const reviewedCount = topics.filter(
     (t) => t.status === 'human_reviewed' || t.status === 'human_edited'
   ).length;
-  const pendingCount = topics.length - reviewedCount;
+  const pendingCount = topics.filter(
+    (t) => t.status === 'pending_review' || t.status === 'needs_review'
+  ).length;
   const healthAttention = React.useMemo(() => {
     if (!learningHealth) {
       return {
@@ -348,6 +407,7 @@ export function useKnowledgeReviewPage() {
   return {
     setCurrentPage,
     topics,
+    topicsTotal,
     selected,
     setSelected,
     query,
@@ -356,7 +416,7 @@ export function useKnowledgeReviewPage() {
     setStatusFilter,
     loading,
     saving,
-    reviewing,
+    reviewAction,
     error,
     notice,
     activeTab,
@@ -392,7 +452,8 @@ export function useKnowledgeReviewPage() {
     handleApproveProposal,
     handleRejectProposal,
     save,
-    markReviewed,
+    discardEdits,
+    setDraftDecision,
     previewGuidance,
     reviewedCount,
     pendingCount,

@@ -1,6 +1,8 @@
 export type { SeminalPaper, TeachingPointDraft, ActiveTab } from './reviewPanels/types';
 export { toSeminalPapers, toStringList, toTeachingPoints } from './reviewPanels/normalize';
 export { statusLabel } from './reviewPanels/statusLabel';
+export { DraftReviewButtons } from './reviewPanels/DraftReviewButtons';
+export type { DraftReviewDecision } from './reviewPanels/DraftReviewButtons';
 export { StringListEditor } from './reviewPanels/StringListEditor';
 export { SeminalPapersEditor } from './reviewPanels/SeminalPapersEditor';
 export { TeachingPointsEditor } from './reviewPanels/TeachingPointsEditor';

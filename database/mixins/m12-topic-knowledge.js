@@ -188,7 +188,7 @@ module.exports = (Sup) => class extends Sup {
     }
 
     async listTopicKnowledge({ query = '', status = '', limit = 50, offset = 0 } = {}) {
-        const safeLimit = Math.min(Math.max(parseInt(String(limit), 10) || 50, 1), 100);
+        const safeLimit = Math.min(Math.max(parseInt(String(limit), 10) || 50, 1), 500);
         const safeOffset = Math.max(parseInt(String(offset), 10) || 0, 0);
         const q = String(query || '').trim().toLowerCase();
         const statusFilter = String(status || '').trim();
