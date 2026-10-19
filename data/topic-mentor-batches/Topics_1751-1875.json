@@ -1,0 +1,1131 @@
+{
+  "sheet": "Topics 1751-1875",
+  "count": 125,
+  "topics": [
+    {
+      "no": 1751,
+      "topic": "Tocilizumab in giant cell arteritis: GiACTA trial, steroid sparing, remission",
+      "normalizedTopic": "tocilizumab in giant cell arteritis giacta trial steroid sparing remission",
+      "linkedPapers": 5,
+      "linkedGuidelines": 15,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1752,
+      "topic": "tonsillitis",
+      "normalizedTopic": "tonsillitis",
+      "linkedPapers": 8,
+      "linkedGuidelines": 1,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1753,
+      "topic": "Tonsillitis, peritonsillar abscess and deep neck infection",
+      "normalizedTopic": "tonsillitis peritonsillar abscess and deep neck infection",
+      "linkedPapers": 3,
+      "linkedGuidelines": 3,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1754,
+      "topic": "Tourette syndrome: tics management, alpha-2 agonists, habit reversal therapy",
+      "normalizedTopic": "tourette syndrome tics management alpha-2 agonists habit reversal therapy",
+      "linkedPapers": 5,
+      "linkedGuidelines": 21,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1755,
+      "topic": "Toxic and nutritional neuropathies: B12, B6 deficiency, chemotherapy-induced",
+      "normalizedTopic": "toxic and nutritional neuropathies b12 b6 deficiency chemotherapy-induced",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1756,
+      "topic": "toxic epidermal necrolysis",
+      "normalizedTopic": "toxic epidermal necrolysis",
+      "linkedPapers": 8,
+      "linkedGuidelines": 4,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1757,
+      "topic": "Tracheobronchomalacia",
+      "normalizedTopic": "tracheobronchomalacia",
+      "linkedPapers": 1,
+      "linkedGuidelines": 1,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1758,
+      "topic": "Tracheostomy: indications, timing, percutaneous vs surgical technique",
+      "normalizedTopic": "tracheostomy indications timing percutaneous vs surgical technique",
+      "linkedPapers": 2,
+      "linkedGuidelines": 7,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1759,
+      "topic": "Tranexamic acid and damage control resuscitation in trauma",
+      "normalizedTopic": "tranexamic acid and damage control resuscitation in trauma",
+      "linkedPapers": 3,
+      "linkedGuidelines": 37,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1760,
+      "topic": "tranexamic acid postpartum haemorrhage timing",
+      "normalizedTopic": "tranexamic acid postpartum haemorrhage timing",
+      "linkedPapers": 8,
+      "linkedGuidelines": 0,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1761,
+      "topic": "tranexamic acid trauma hemorrhage CRASH-2",
+      "normalizedTopic": "tranexamic acid trauma hemorrhage crash-2",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1762,
+      "topic": "Transcatheter aortic valve implantation (TAVI): patient selection, access, complications",
+      "normalizedTopic": "transcatheter aortic valve implantation tavi patient selection access complications",
+      "linkedPapers": 5,
+      "linkedGuidelines": 17,
+      "mentorPresent": "Yes",
+      "mentorState": "Seed/placeholder"
+    },
+    {
+      "no": 1763,
+      "topic": "transcatheter aortic valve replacement balloon-expandable low-risk patients",
+      "normalizedTopic": "transcatheter aortic valve replacement balloon-expandable low-risk patients",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1764,
+      "topic": "Transfusion-Associated Circulatory Overload",
+      "normalizedTopic": "transfusion-associated circulatory overload",
+      "linkedPapers": 1,
+      "linkedGuidelines": 5,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1765,
+      "topic": "transient ischemic attack rapid assessment",
+      "normalizedTopic": "transient ischemic attack rapid assessment",
+      "linkedPapers": 3,
+      "linkedGuidelines": 5,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1766,
+      "topic": "Transoesophageal echocardiography: indications, LA thrombus, valve assessment",
+      "normalizedTopic": "transoesophageal echocardiography indications la thrombus valve assessment",
+      "linkedPapers": 5,
+      "linkedGuidelines": 12,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1767,
+      "topic": "Transthyretin amyloidosis treatment",
+      "normalizedTopic": "transthyretin amyloidosis treatment",
+      "linkedPapers": 3,
+      "linkedGuidelines": 2,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1768,
+      "topic": "trastuzumab adjuvant HER2 positive breast cancer BCIRG 006",
+      "normalizedTopic": "trastuzumab adjuvant her2 positive breast cancer bcirg 006",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1769,
+      "topic": "trauma resuscitation",
+      "normalizedTopic": "trauma resuscitation",
+      "linkedPapers": 8,
+      "linkedGuidelines": 6,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1770,
+      "topic": "Trauma resuscitation and head injury",
+      "normalizedTopic": "trauma resuscitation and head injury",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1771,
+      "topic": "Traumatic brain injury ICU management",
+      "normalizedTopic": "traumatic brain injury icu management",
+      "linkedPapers": 3,
+      "linkedGuidelines": 54,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1772,
+      "topic": "Traumatic brain injury intracranial pressure management",
+      "normalizedTopic": "traumatic brain injury intracranial pressure management",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1773,
+      "topic": "treatment of post-exertional malaise in ME/CFS",
+      "normalizedTopic": "treatment of post-exertional malaise in me cfs",
+      "linkedPapers": 8,
+      "linkedGuidelines": 0,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1774,
+      "topic": "Treatment of psoriatic arthritis: NSAIDs, csDMARDs, IL-17, IL-23, TNF inhibitors",
+      "normalizedTopic": "treatment of psoriatic arthritis nsaids csdmards il-17 il-23 tnf inhibitors",
+      "linkedPapers": 5,
+      "linkedGuidelines": 18,
+      "mentorPresent": "Yes",
+      "mentorState": "Seed/placeholder"
+    },
+    {
+      "no": 1775,
+      "topic": "Treatment-resistant depression ketamine and ECT",
+      "normalizedTopic": "treatment-resistant depression ketamine and ect",
+      "linkedPapers": 17,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1776,
+      "topic": "Tricuspid regurgitation: functional vs primary, transcatheter repair options",
+      "normalizedTopic": "tricuspid regurgitation functional vs primary transcatheter repair options",
+      "linkedPapers": 5,
+      "linkedGuidelines": 8,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1777,
+      "topic": "Tricuspid regurgitation TEER",
+      "normalizedTopic": "tricuspid regurgitation teer",
+      "linkedPapers": 3,
+      "linkedGuidelines": 2,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1778,
+      "topic": "Trigeminal neuralgia: carbamazepine optimization, microvascular decompression",
+      "normalizedTopic": "trigeminal neuralgia carbamazepine optimization microvascular decompression",
+      "linkedPapers": 5,
+      "linkedGuidelines": 21,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1779,
+      "topic": "triple inhaler therapy",
+      "normalizedTopic": "triple inhaler therapy",
+      "linkedPapers": 8,
+      "linkedGuidelines": 7,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1780,
+      "topic": "Triple-Negative Breast Cancer",
+      "normalizedTopic": "triple-negative breast cancer",
+      "linkedPapers": 5,
+      "linkedGuidelines": 70,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1781,
+      "topic": "Triple-negative breast cancer immunotherapy",
+      "normalizedTopic": "triple-negative breast cancer immunotherapy",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1782,
+      "topic": "Trochanteric Bursitis",
+      "normalizedTopic": "trochanteric bursitis",
+      "linkedPapers": 2,
+      "linkedGuidelines": 5,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1783,
+      "topic": "tuberculosis",
+      "normalizedTopic": "tuberculosis",
+      "linkedPapers": 8,
+      "linkedGuidelines": 5,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1784,
+      "topic": "Tuberculosis: active vs latent TB, Mantoux, IGRA, NICE guidance, contact tracing",
+      "normalizedTopic": "tuberculosis active vs latent tb mantoux igra nice guidance contact tracing",
+      "linkedPapers": 5,
+      "linkedGuidelines": 150,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1785,
+      "topic": "Tuberculosis treatment regimens",
+      "normalizedTopic": "tuberculosis treatment regimens",
+      "linkedPapers": 17,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1786,
+      "topic": "Tuberous Sclerosis and Renal Angiomyolipoma",
+      "normalizedTopic": "tuberous sclerosis and renal angiomyolipoma",
+      "linkedPapers": 1,
+      "linkedGuidelines": 5,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1787,
+      "topic": "Tumour Lysis Syndrome Prophylaxis",
+      "normalizedTopic": "tumour lysis syndrome prophylaxis",
+      "linkedPapers": 4,
+      "linkedGuidelines": 3,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1788,
+      "topic": "Tumour Mutational Burden and MSI-H",
+      "normalizedTopic": "tumour mutational burden and msi-h",
+      "linkedPapers": 4,
+      "linkedGuidelines": 3,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1789,
+      "topic": "Turner syndrome 45X: HRT timing, cardiac surveillance, growth hormone therapy",
+      "normalizedTopic": "turner syndrome 45x hrt timing cardiac surveillance growth hormone therapy",
+      "linkedPapers": 5,
+      "linkedGuidelines": 5,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1790,
+      "topic": "Type 1 and type 2 diabetes",
+      "normalizedTopic": "type 1 and type 2 diabetes",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1791,
+      "topic": "type 1 diabetes intensive glycemic control",
+      "normalizedTopic": "type 1 diabetes intensive glycemic control",
+      "linkedPapers": 15,
+      "linkedGuidelines": 19,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1792,
+      "topic": "type 1 diabetes management",
+      "normalizedTopic": "type 1 diabetes management",
+      "linkedPapers": 8,
+      "linkedGuidelines": 4,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1793,
+      "topic": "Type 1 diabetes mellitus: autoimmune markers, insulin regimens, honeymoon phase",
+      "normalizedTopic": "type 1 diabetes mellitus autoimmune markers insulin regimens honeymoon phase",
+      "linkedPapers": 5,
+      "linkedGuidelines": 8,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1794,
+      "topic": "Type 1 vs Type 2 MI: universal definition and clinical differentiation",
+      "normalizedTopic": "type 1 vs type 2 mi universal definition and clinical differentiation",
+      "linkedPapers": 1,
+      "linkedGuidelines": 2,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1795,
+      "topic": "Type 2 diabetes cardiovascular outcomes",
+      "normalizedTopic": "type 2 diabetes cardiovascular outcomes",
+      "linkedPapers": 5,
+      "linkedGuidelines": 9,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1796,
+      "topic": "type 2 diabetes management",
+      "normalizedTopic": "type 2 diabetes management",
+      "linkedPapers": 8,
+      "linkedGuidelines": 6,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1797,
+      "topic": "Type 2 diabetes mellitus: insulin resistance, beta-cell failure, treatment targets",
+      "normalizedTopic": "type 2 diabetes mellitus insulin resistance beta-cell failure treatment targets",
+      "linkedPapers": 8,
+      "linkedGuidelines": 0,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1798,
+      "topic": "typhoid",
+      "normalizedTopic": "typhoid",
+      "linkedPapers": 8,
+      "linkedGuidelines": 2,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1799,
+      "topic": "Typhoid fever: Salmonella typhi, Widal test, blood culture, azithromycin, ceftriaxone",
+      "normalizedTopic": "typhoid fever salmonella typhi widal test blood culture azithromycin ceftriaxone",
+      "linkedPapers": 5,
+      "linkedGuidelines": 7,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1800,
+      "topic": "ulcerative colitis",
+      "normalizedTopic": "ulcerative colitis",
+      "linkedPapers": 8,
+      "linkedGuidelines": 0,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1801,
+      "topic": "ulcerative colitis biologic therapy comparative effectiveness adults",
+      "normalizedTopic": "ulcerative colitis biologic therapy comparative effectiveness adults",
+      "linkedPapers": 8,
+      "linkedGuidelines": 0,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1802,
+      "topic": "Upper Airway Resistance Syndrome",
+      "normalizedTopic": "upper airway resistance syndrome",
+      "linkedPapers": 3,
+      "linkedGuidelines": 6,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1803,
+      "topic": "Upper and lower GI bleeding",
+      "normalizedTopic": "upper and lower gi bleeding",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1804,
+      "topic": "Upper gastrointestinal bleeding management",
+      "normalizedTopic": "upper gastrointestinal bleeding management",
+      "linkedPapers": 3,
+      "linkedGuidelines": 24,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1805,
+      "topic": "upper gi bleed",
+      "normalizedTopic": "upper gi bleed",
+      "linkedPapers": 8,
+      "linkedGuidelines": 5,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1806,
+      "topic": "upper GI bleeding",
+      "normalizedTopic": "upper gi bleeding",
+      "linkedPapers": 8,
+      "linkedGuidelines": 0,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1807,
+      "topic": "Uraemic Complications",
+      "normalizedTopic": "uraemic complications",
+      "linkedPapers": 1,
+      "linkedGuidelines": 3,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1808,
+      "topic": "Urate-lowering therapy: allopurinol, febuxostat, target serum urate, titration",
+      "normalizedTopic": "urate-lowering therapy allopurinol febuxostat target serum urate titration",
+      "linkedPapers": 2,
+      "linkedGuidelines": 16,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1809,
+      "topic": "urinary tract infection",
+      "normalizedTopic": "urinary tract infection",
+      "linkedPapers": 8,
+      "linkedGuidelines": 3,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1810,
+      "topic": "Urinary tract infections and pyelonephritis",
+      "normalizedTopic": "urinary tract infections and pyelonephritis",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1811,
+      "topic": "Urinary tract infections: uncomplicated vs complicated, catheter-associated, treatment duration",
+      "normalizedTopic": "urinary tract infections uncomplicated vs complicated catheter-associated treatment duration",
+      "linkedPapers": 5,
+      "linkedGuidelines": 44,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1812,
+      "topic": "urticaria",
+      "normalizedTopic": "urticaria",
+      "linkedPapers": 8,
+      "linkedGuidelines": 7,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1813,
+      "topic": "Urticaria and angioedema: classification and management",
+      "normalizedTopic": "urticaria and angioedema classification and management",
+      "linkedPapers": 3,
+      "linkedGuidelines": 5,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1814,
+      "topic": "uterine fibroids",
+      "normalizedTopic": "uterine fibroids",
+      "linkedPapers": 8,
+      "linkedGuidelines": 4,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1815,
+      "topic": "UTI prophylaxis",
+      "normalizedTopic": "uti prophylaxis",
+      "linkedPapers": 8,
+      "linkedGuidelines": 2,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1816,
+      "topic": "Uveitis in JIA: silent inflammation, slit-lamp screening, methotrexate, adalimumab",
+      "normalizedTopic": "uveitis in jia silent inflammation slit-lamp screening methotrexate adalimumab",
+      "linkedPapers": 5,
+      "linkedGuidelines": 8,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1817,
+      "topic": "Vaccinations in immunosuppressed rheumatology patients: timing, live vs killed, pneumococcal, shingles",
+      "normalizedTopic": "vaccinations in immunosuppressed rheumatology patients timing live vs killed pneumococcal shingles",
+      "linkedPapers": 5,
+      "linkedGuidelines": 4,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1818,
+      "topic": "Vaccine responses in immunocompromised adults",
+      "normalizedTopic": "vaccine responses in immunocompromised adults",
+      "linkedPapers": 12,
+      "linkedGuidelines": 15,
+      "mentorPresent": "Yes",
+      "mentorState": "Seed/placeholder"
+    },
+    {
+      "no": 1819,
+      "topic": "Vancomycin therapeutic drug monitoring: AUC-based dosing, nephrotoxicity, trough targets",
+      "normalizedTopic": "vancomycin therapeutic drug monitoring auc-based dosing nephrotoxicity trough targets",
+      "linkedPapers": 22,
+      "linkedGuidelines": 8,
+      "mentorPresent": "Yes",
+      "mentorState": "Seed/placeholder"
+    },
+    {
+      "no": 1820,
+      "topic": "Vapor Gas Dust and Fume exposures",
+      "normalizedTopic": "vapor gas dust and fume exposures",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1821,
+      "topic": "variceal GI bleeding",
+      "normalizedTopic": "variceal gi bleeding",
+      "linkedPapers": 8,
+      "linkedGuidelines": 3,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1822,
+      "topic": "Variceal Haemorrhage",
+      "normalizedTopic": "variceal haemorrhage",
+      "linkedPapers": 1,
+      "linkedGuidelines": 11,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1823,
+      "topic": "Varicella zoster in adults and immunocompromised: severity, aciclovir, VZIG prophylaxis",
+      "normalizedTopic": "varicella zoster in adults and immunocompromised severity aciclovir vzig prophylaxis",
+      "linkedPapers": 5,
+      "linkedGuidelines": 7,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1824,
+      "topic": "Vascular Access for Haemodialysis",
+      "normalizedTopic": "vascular access for haemodialysis",
+      "linkedPapers": 1,
+      "linkedGuidelines": 4,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1825,
+      "topic": "Vascular dementia: Hachinski ischaemic score, subcortical ischaemic vascular dementia",
+      "normalizedTopic": "vascular dementia hachinski ischaemic score subcortical ischaemic vascular dementia",
+      "linkedPapers": 5,
+      "linkedGuidelines": 62,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1826,
+      "topic": "Vasopressor and inotrope pharmacology: noradrenaline, vasopressin, dobutamine, milrinone",
+      "normalizedTopic": "vasopressor and inotrope pharmacology noradrenaline vasopressin dobutamine milrinone",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1827,
+      "topic": "Vasopressors and inotropes in shock",
+      "normalizedTopic": "vasopressors and inotropes in shock",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1828,
+      "topic": "Vasopressor selection in septic and distributive shock",
+      "normalizedTopic": "vasopressor selection in septic and distributive shock",
+      "linkedPapers": 3,
+      "linkedGuidelines": 3,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1829,
+      "topic": "vasopressor use cardiogenic shock",
+      "normalizedTopic": "vasopressor use cardiogenic shock",
+      "linkedPapers": 8,
+      "linkedGuidelines": 8,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1830,
+      "topic": "vasopressor use septic shock",
+      "normalizedTopic": "vasopressor use septic shock",
+      "linkedPapers": 8,
+      "linkedGuidelines": 5,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1831,
+      "topic": "Veno-arterial ECMO: indications, circuit management, weaning",
+      "normalizedTopic": "veno-arterial ecmo indications circuit management weaning",
+      "linkedPapers": 2,
+      "linkedGuidelines": 30,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1832,
+      "topic": "venous leg ulcer",
+      "normalizedTopic": "venous leg ulcer",
+      "linkedPapers": 8,
+      "linkedGuidelines": 6,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1833,
+      "topic": "Venous leg ulcers, lymphoedema and lower leg management",
+      "normalizedTopic": "venous leg ulcers lymphoedema and lower leg management",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1834,
+      "topic": "venous thromboembolism",
+      "normalizedTopic": "venous thromboembolism",
+      "linkedPapers": 8,
+      "linkedGuidelines": 3,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1835,
+      "topic": "Venous thromboembolism and anticoagulation management",
+      "normalizedTopic": "venous thromboembolism and anticoagulation management",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1836,
+      "topic": "Venous thromboembolism anticoagulation",
+      "normalizedTopic": "venous thromboembolism anticoagulation",
+      "linkedPapers": 4,
+      "linkedGuidelines": 26,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1837,
+      "topic": "Venous thromboembolism direct oral anticoagulant therapy",
+      "normalizedTopic": "venous thromboembolism direct oral anticoagulant therapy",
+      "linkedPapers": 3,
+      "linkedGuidelines": 22,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1838,
+      "topic": "venous thromboembolism prevention",
+      "normalizedTopic": "venous thromboembolism prevention",
+      "linkedPapers": 8,
+      "linkedGuidelines": 0,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1839,
+      "topic": "Venous thromboembolism prophylaxis in the ICU",
+      "normalizedTopic": "venous thromboembolism prophylaxis in the icu",
+      "linkedPapers": 5,
+      "linkedGuidelines": 7,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1840,
+      "topic": "Veno-venous ECMO for respiratory failure: cannulation and monitoring",
+      "normalizedTopic": "veno-venous ecmo for respiratory failure cannulation and monitoring",
+      "linkedPapers": 5,
+      "linkedGuidelines": 6,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1841,
+      "topic": "Ventilator-associated pneumonia: bundle prevention, diagnosis, empiric treatment",
+      "normalizedTopic": "ventilator-associated pneumonia bundle prevention diagnosis empiric treatment",
+      "linkedPapers": 5,
+      "linkedGuidelines": 25,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1842,
+      "topic": "Ventilator-induced lung injury: volutrauma, barotrauma, atelectrauma",
+      "normalizedTopic": "ventilator-induced lung injury volutrauma barotrauma atelectrauma",
+      "linkedPapers": 5,
+      "linkedGuidelines": 5,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1843,
+      "topic": "Ventilator weaning and spontaneous breathing trials",
+      "normalizedTopic": "ventilator weaning and spontaneous breathing trials",
+      "linkedPapers": 5,
+      "linkedGuidelines": 11,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1844,
+      "topic": "Ventricular tachycardia catheter ablation",
+      "normalizedTopic": "ventricular tachycardia catheter ablation",
+      "linkedPapers": 3,
+      "linkedGuidelines": 15,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1845,
+      "topic": "Vericiguat in worsening heart failure",
+      "normalizedTopic": "vericiguat in worsening heart failure",
+      "linkedPapers": 3,
+      "linkedGuidelines": 2,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1846,
+      "topic": "Vestibular Schwannoma: surveillance vs radiation vs surgery, neurofibromatosis 2",
+      "normalizedTopic": "vestibular schwannoma surveillance vs radiation vs surgery neurofibromatosis 2",
+      "linkedPapers": 5,
+      "linkedGuidelines": 12,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1847,
+      "topic": "VEXAS Syndrome",
+      "normalizedTopic": "vexas syndrome",
+      "linkedPapers": 5,
+      "linkedGuidelines": 8,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1848,
+      "topic": "Viral encephalitis diagnostic and empiric acyclovir strategy",
+      "normalizedTopic": "viral encephalitis diagnostic and empiric acyclovir strategy",
+      "linkedPapers": 14,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1849,
+      "topic": "Viral encephalitis: HSV encephalitis, aciclovir, CSF PCR, MRI findings, empirical approach",
+      "normalizedTopic": "viral encephalitis hsv encephalitis aciclovir csf pcr mri findings empirical approach",
+      "linkedPapers": 4,
+      "linkedGuidelines": 8,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1850,
+      "topic": "Viral haemorrhagic fevers and high-consequence infectious diseases in the ICU",
+      "normalizedTopic": "viral haemorrhagic fevers and high-consequence infectious diseases in the icu",
+      "linkedPapers": 3,
+      "linkedGuidelines": 4,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1851,
+      "topic": "Viral hepatitis A and E: faeco-oral transmission, self-limiting, vaccination, fulminant hepatitis",
+      "normalizedTopic": "viral hepatitis a and e faeco-oral transmission self-limiting vaccination fulminant hepatitis",
+      "linkedPapers": 1,
+      "linkedGuidelines": 36,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1852,
+      "topic": "viral hepatitis B",
+      "normalizedTopic": "viral hepatitis b",
+      "linkedPapers": 8,
+      "linkedGuidelines": 6,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1853,
+      "topic": "viral hepatitis C",
+      "normalizedTopic": "viral hepatitis c",
+      "linkedPapers": 8,
+      "linkedGuidelines": 2,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1854,
+      "topic": "Viral-Induced Arthritides",
+      "normalizedTopic": "viral-induced arthritides",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1855,
+      "topic": "Viral respiratory infections: RSV, parainfluenza, adenovirus: clinical features, at-risk populations",
+      "normalizedTopic": "viral respiratory infections rsv parainfluenza adenovirus clinical features at-risk populations",
+      "linkedPapers": 5,
+      "linkedGuidelines": 13,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1856,
+      "topic": "viral wheeze",
+      "normalizedTopic": "viral wheeze",
+      "linkedPapers": 8,
+      "linkedGuidelines": 2,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1857,
+      "topic": "Vitamin B12 and Folate Deficiency",
+      "normalizedTopic": "vitamin b12 and folate deficiency",
+      "linkedPapers": 5,
+      "linkedGuidelines": 40,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1858,
+      "topic": "vitamin B12 deficiency",
+      "normalizedTopic": "vitamin b12 deficiency",
+      "linkedPapers": 8,
+      "linkedGuidelines": 5,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1859,
+      "topic": "Vitamin D deficiency: 25-OHD thresholds, supplementation doses, osteomalacia",
+      "normalizedTopic": "vitamin d deficiency 25-ohd thresholds supplementation doses osteomalacia",
+      "linkedPapers": 5,
+      "linkedGuidelines": 35,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1860,
+      "topic": "vitamin K antagonist bridging atrial fibrillation perioperative BRIDGE trial",
+      "normalizedTopic": "vitamin k antagonist bridging atrial fibrillation perioperative bridge trial",
+      "linkedPapers": 3,
+      "linkedGuidelines": 10,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1861,
+      "topic": "Vitamin K Deficiency and Liver Disease Coagulopathy",
+      "normalizedTopic": "vitamin k deficiency and liver disease coagulopathy",
+      "linkedPapers": 5,
+      "linkedGuidelines": 23,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1862,
+      "topic": "Vocal Cord Dysfunction",
+      "normalizedTopic": "vocal cord dysfunction",
+      "linkedPapers": 1,
+      "linkedGuidelines": 12,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1863,
+      "topic": "Von Hippel-Lindau syndrome: phaeochromocytoma, renal cell carcinoma, pancreatic NETs",
+      "normalizedTopic": "von hippel-lindau syndrome phaeochromocytoma renal cell carcinoma pancreatic nets",
+      "linkedPapers": 5,
+      "linkedGuidelines": 11,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1864,
+      "topic": "Von Willebrand Disease",
+      "normalizedTopic": "von willebrand disease",
+      "linkedPapers": 5,
+      "linkedGuidelines": 5,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1865,
+      "topic": "V/Q Mismatch and pulmonary gas exchange",
+      "normalizedTopic": "v q mismatch and pulmonary gas exchange",
+      "linkedPapers": 3,
+      "linkedGuidelines": 5,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1866,
+      "topic": "VTE prophylaxis in mechanically ventilated ICU patients",
+      "normalizedTopic": "vte prophylaxis in mechanically ventilated icu patients",
+      "linkedPapers": 3,
+      "linkedGuidelines": 4,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1867,
+      "topic": "VTE prophylaxis in nephrotic syndrome",
+      "normalizedTopic": "vte prophylaxis in nephrotic syndrome",
+      "linkedPapers": 8,
+      "linkedGuidelines": 0,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1868,
+      "topic": "Vulvar and Vaginal Cancers",
+      "normalizedTopic": "vulvar and vaginal cancers",
+      "linkedPapers": 1,
+      "linkedGuidelines": 24,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1869,
+      "topic": "Walled-Off Pancreatic Necrosis",
+      "normalizedTopic": "walled-off pancreatic necrosis",
+      "linkedPapers": 5,
+      "linkedGuidelines": 8,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1870,
+      "topic": "Wellens syndrome and left main equivalent ECG patterns",
+      "normalizedTopic": "wellens syndrome and left main equivalent ecg patterns",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1871,
+      "topic": "wheeze phenotypes",
+      "normalizedTopic": "wheeze phenotypes",
+      "linkedPapers": 8,
+      "linkedGuidelines": 4,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1872,
+      "topic": "withdrawal syndrome",
+      "normalizedTopic": "withdrawal syndrome",
+      "linkedPapers": 8,
+      "linkedGuidelines": 4,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1873,
+      "topic": "Wolfram syndrome DIDMOAD: diabetes insipidus, DM, optic atrophy, deafness",
+      "normalizedTopic": "wolfram syndrome didmoad diabetes insipidus dm optic atrophy deafness",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1874,
+      "topic": "workup for new heart failure with reduced ejection fraction",
+      "normalizedTopic": "workup for new heart failure with reduced ejection fraction",
+      "linkedPapers": 7,
+      "linkedGuidelines": 0,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1875,
+      "topic": "Zollinger-Ellison Syndrome",
+      "normalizedTopic": "zollinger-ellison syndrome",
+      "linkedPapers": 3,
+      "linkedGuidelines": 1,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    }
+  ]
+}

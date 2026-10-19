@@ -1,0 +1,2256 @@
+{
+  "sheet": "Topics 1501-1750",
+  "count": 250,
+  "topics": [
+    {
+      "no": 1501,
+      "topic": "Rectal cancer: total mesorectal excision, neoadjuvant chemoradiotherapy",
+      "normalizedTopic": "rectal cancer total mesorectal excision neoadjuvant chemoradiotherapy",
+      "linkedPapers": 3,
+      "linkedGuidelines": 1,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1502,
+      "topic": "Rectal Prolapse",
+      "normalizedTopic": "rectal prolapse",
+      "linkedPapers": 5,
+      "linkedGuidelines": 45,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1503,
+      "topic": "recurrent chest infections",
+      "normalizedTopic": "recurrent chest infections",
+      "linkedPapers": 8,
+      "linkedGuidelines": 1,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1504,
+      "topic": "Recurrent Clostridioides difficile infection",
+      "normalizedTopic": "recurrent clostridioides difficile infection",
+      "linkedPapers": 5,
+      "linkedGuidelines": 18,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1505,
+      "topic": "Recurrent Disease in the Transplant",
+      "normalizedTopic": "recurrent disease in the transplant",
+      "linkedPapers": 3,
+      "linkedGuidelines": 9,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1506,
+      "topic": "Recurrent nephrolithiasis medical prevention",
+      "normalizedTopic": "recurrent nephrolithiasis medical prevention",
+      "linkedPapers": 3,
+      "linkedGuidelines": 31,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1507,
+      "topic": "recurrent UTIs",
+      "normalizedTopic": "recurrent utis",
+      "linkedPapers": 8,
+      "linkedGuidelines": 6,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1508,
+      "topic": "Red blood cell transfusion threshold in critical illness",
+      "normalizedTopic": "red blood cell transfusion threshold in critical illness",
+      "linkedPapers": 3,
+      "linkedGuidelines": 10,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1509,
+      "topic": "red flags back pain",
+      "normalizedTopic": "red flags back pain",
+      "linkedPapers": 8,
+      "linkedGuidelines": 6,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1510,
+      "topic": "Refeeding Syndrome",
+      "normalizedTopic": "refeeding syndrome",
+      "linkedPapers": 5,
+      "linkedGuidelines": 14,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1511,
+      "topic": "Refeeding syndrome: pathophysiology, prevention, phosphate management",
+      "normalizedTopic": "refeeding syndrome pathophysiology prevention phosphate management",
+      "linkedPapers": 5,
+      "linkedGuidelines": 15,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1512,
+      "topic": "Refractory angina: enhanced external counterpulsation, spinal cord stimulation",
+      "normalizedTopic": "refractory angina enhanced external counterpulsation spinal cord stimulation",
+      "linkedPapers": 5,
+      "linkedGuidelines": 5,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1513,
+      "topic": "Refractory ventricular fibrillation: double sequential defibrillation, amiodarone",
+      "normalizedTopic": "refractory ventricular fibrillation double sequential defibrillation amiodarone",
+      "linkedPapers": 5,
+      "linkedGuidelines": 12,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1514,
+      "topic": "regional analgesia",
+      "normalizedTopic": "regional analgesia",
+      "linkedPapers": 8,
+      "linkedGuidelines": 2,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1515,
+      "topic": "Rehabilitation after stroke: principles and evidence",
+      "normalizedTopic": "rehabilitation after stroke principles and evidence",
+      "linkedPapers": 3,
+      "linkedGuidelines": 5,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1516,
+      "topic": "Relapsed and Refractory DLBCL",
+      "normalizedTopic": "relapsed and refractory dlbcl",
+      "linkedPapers": 5,
+      "linkedGuidelines": 5,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1517,
+      "topic": "relapse prevention",
+      "normalizedTopic": "relapse prevention",
+      "linkedPapers": 8,
+      "linkedGuidelines": 1,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1518,
+      "topic": "Remission maintenance in AAV: azathioprine, rituximab, MAINRITSAN trial",
+      "normalizedTopic": "remission maintenance in aav azathioprine rituximab mainritsan trial",
+      "linkedPapers": 5,
+      "linkedGuidelines": 8,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1519,
+      "topic": "Renal Biopsy: Indications and Interpretation",
+      "normalizedTopic": "renal biopsy indications and interpretation",
+      "linkedPapers": 2,
+      "linkedGuidelines": 9,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1520,
+      "topic": "Renal Cell Carcinoma",
+      "normalizedTopic": "renal cell carcinoma",
+      "linkedPapers": 5,
+      "linkedGuidelines": 8,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1521,
+      "topic": "renal colic",
+      "normalizedTopic": "renal colic",
+      "linkedPapers": 8,
+      "linkedGuidelines": 6,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1522,
+      "topic": "Renal Hypertension: Secondary Causes",
+      "normalizedTopic": "renal hypertension secondary causes",
+      "linkedPapers": 8,
+      "linkedGuidelines": 76,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1523,
+      "topic": "Renal Imaging in Nephrology",
+      "normalizedTopic": "renal imaging in nephrology",
+      "linkedPapers": 5,
+      "linkedGuidelines": 5,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1524,
+      "topic": "Renal Manifestations of Systemic Disease",
+      "normalizedTopic": "renal manifestations of systemic disease",
+      "linkedPapers": 2,
+      "linkedGuidelines": 6,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1525,
+      "topic": "Renal Manifestations of Vasculitis",
+      "normalizedTopic": "renal manifestations of vasculitis",
+      "linkedPapers": 5,
+      "linkedGuidelines": 6,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1526,
+      "topic": "Renal Osteodystrophy",
+      "normalizedTopic": "renal osteodystrophy",
+      "linkedPapers": 5,
+      "linkedGuidelines": 6,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1527,
+      "topic": "Renal Replacement Therapy Modality Choice",
+      "normalizedTopic": "renal replacement therapy modality choice",
+      "linkedPapers": 5,
+      "linkedGuidelines": 7,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1528,
+      "topic": "Renal replacement therapy timing in acute kidney injury",
+      "normalizedTopic": "renal replacement therapy timing in acute kidney injury",
+      "linkedPapers": 3,
+      "linkedGuidelines": 22,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1529,
+      "topic": "Renal Transplantation: Workup and Donor Selection",
+      "normalizedTopic": "renal transplantation workup and donor selection",
+      "linkedPapers": 5,
+      "linkedGuidelines": 6,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1530,
+      "topic": "Renal Tubular Acidosis",
+      "normalizedTopic": "renal tubular acidosis",
+      "linkedPapers": 3,
+      "linkedGuidelines": 2,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1531,
+      "topic": "Renal Vein Thrombosis",
+      "normalizedTopic": "renal vein thrombosis",
+      "linkedPapers": 1,
+      "linkedGuidelines": 19,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1532,
+      "topic": "Renovascular Disease and Renal Artery Stenosis",
+      "normalizedTopic": "renovascular disease and renal artery stenosis",
+      "linkedPapers": 5,
+      "linkedGuidelines": 8,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1533,
+      "topic": "reproductive health in rheumatic disease",
+      "normalizedTopic": "reproductive health in rheumatic disease",
+      "linkedPapers": 3,
+      "linkedGuidelines": 15,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1534,
+      "topic": "resistant hypertension",
+      "normalizedTopic": "resistant hypertension",
+      "linkedPapers": 8,
+      "linkedGuidelines": 2,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1535,
+      "topic": "Resistant hypertension: aldosterone antagonism, renal denervation, workup",
+      "normalizedTopic": "resistant hypertension aldosterone antagonism renal denervation workup",
+      "linkedPapers": 5,
+      "linkedGuidelines": 39,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1536,
+      "topic": "Resistant hypertension renal denervation",
+      "normalizedTopic": "resistant hypertension renal denervation",
+      "linkedPapers": 1,
+      "linkedGuidelines": 6,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1537,
+      "topic": "respiratory tract infections",
+      "normalizedTopic": "respiratory tract infections",
+      "linkedPapers": 8,
+      "linkedGuidelines": 3,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1538,
+      "topic": "Restless Legs Syndrome (RLS): iron store optimization, dopamine agonist augmentation",
+      "normalizedTopic": "restless legs syndrome rls iron store optimization dopamine agonist augmentation",
+      "linkedPapers": 5,
+      "linkedGuidelines": 5,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1539,
+      "topic": "Restless legs syndrome treatment",
+      "normalizedTopic": "restless legs syndrome treatment",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1540,
+      "topic": "Retinal detachment: presentation and emergency management",
+      "normalizedTopic": "retinal detachment presentation and emergency management",
+      "linkedPapers": 3,
+      "linkedGuidelines": 5,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1541,
+      "topic": "Retroperitoneal Sarcoma and Rare Sarcomas",
+      "normalizedTopic": "retroperitoneal sarcoma and rare sarcomas",
+      "linkedPapers": 5,
+      "linkedGuidelines": 7,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1542,
+      "topic": "Rhabdomyolysis: causes, AKI prevention, fluid targets",
+      "normalizedTopic": "rhabdomyolysis causes aki prevention fluid targets",
+      "linkedPapers": 1,
+      "linkedGuidelines": 22,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1543,
+      "topic": "Rh Alloimmunisation Management",
+      "normalizedTopic": "rh alloimmunisation management",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1544,
+      "topic": "Rheumatic valvular disease anticoagulation",
+      "normalizedTopic": "rheumatic valvular disease anticoagulation",
+      "linkedPapers": 2,
+      "linkedGuidelines": 18,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1545,
+      "topic": "rheumatoid arthritis",
+      "normalizedTopic": "rheumatoid arthritis",
+      "linkedPapers": 5,
+      "linkedGuidelines": 5,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1546,
+      "topic": "Rheumatoid arthritis: ACR/EULAR 2010 classification criteria, RF and anti-CCP serology",
+      "normalizedTopic": "rheumatoid arthritis acr eular 2010 classification criteria rf and anti-ccp serology",
+      "linkedPapers": 5,
+      "linkedGuidelines": 6,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1547,
+      "topic": "Rheumatoid arthritis biologic and JAK inhibitor therapy",
+      "normalizedTopic": "rheumatoid arthritis biologic and jak inhibitor therapy",
+      "linkedPapers": 19,
+      "linkedGuidelines": 6,
+      "mentorPresent": "Yes",
+      "mentorState": "Seed/placeholder"
+    },
+    {
+      "no": 1548,
+      "topic": "Rheumatoid arthritis ILD: UIP vs NSIP pattern, prevalence, nintedanib, pirfenidone",
+      "normalizedTopic": "rheumatoid arthritis ild uip vs nsip pattern prevalence nintedanib pirfenidone",
+      "linkedPapers": 5,
+      "linkedGuidelines": 6,
+      "mentorPresent": "Yes",
+      "mentorState": "Seed/placeholder"
+    },
+    {
+      "no": 1549,
+      "topic": "Rheumatoid arthritis initial DMARD strategy",
+      "normalizedTopic": "rheumatoid arthritis initial dmard strategy",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1550,
+      "topic": "Rheumatoid Lung Disease",
+      "normalizedTopic": "rheumatoid lung disease",
+      "linkedPapers": 1,
+      "linkedGuidelines": 2,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1551,
+      "topic": "Right ventricular failure in the ICU: management principles",
+      "normalizedTopic": "right ventricular failure in the icu management principles",
+      "linkedPapers": 5,
+      "linkedGuidelines": 10,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1552,
+      "topic": "Rituximab in rheumatic disease: dosing, pre-treatment screening, hypogammaglobulinaemia",
+      "normalizedTopic": "rituximab in rheumatic disease dosing pre-treatment screening hypogammaglobulinaemia",
+      "linkedPapers": 1,
+      "linkedGuidelines": 2,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1553,
+      "topic": "rivaroxaban treatment acute deep vein thrombosis EINSTEIN",
+      "normalizedTopic": "rivaroxaban treatment acute deep vein thrombosis einstein",
+      "linkedPapers": 3,
+      "linkedGuidelines": 1,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1554,
+      "topic": "rosuvastatin primary prevention elevated C-reactive protein",
+      "normalizedTopic": "rosuvastatin primary prevention elevated c-reactive protein",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1555,
+      "topic": "sacubitril valsartan heart failure reduced ejection fraction mortality",
+      "normalizedTopic": "sacubitril valsartan heart failure reduced ejection fraction mortality",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1556,
+      "topic": "safeguarding",
+      "normalizedTopic": "safeguarding",
+      "linkedPapers": 8,
+      "linkedGuidelines": 2,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1557,
+      "topic": "Sarcoidosis pulmonary",
+      "normalizedTopic": "sarcoidosis pulmonary",
+      "linkedPapers": 5,
+      "linkedGuidelines": 8,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1558,
+      "topic": "Sarcoidosis systemic immunosuppression",
+      "normalizedTopic": "sarcoidosis systemic immunosuppression",
+      "linkedPapers": 3,
+      "linkedGuidelines": 5,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1559,
+      "topic": "Scabies: diagnosis, treatment and outbreak management",
+      "normalizedTopic": "scabies diagnosis treatment and outbreak management",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1560,
+      "topic": "Schistosomiasis and helminth infections: praziquantel, albendazole, tropical splenomegaly",
+      "normalizedTopic": "schistosomiasis and helminth infections praziquantel albendazole tropical splenomegaly",
+      "linkedPapers": 1,
+      "linkedGuidelines": 5,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1561,
+      "topic": "Schizophrenia antipsychotic treatment strategies",
+      "normalizedTopic": "schizophrenia antipsychotic treatment strategies",
+      "linkedPapers": 3,
+      "linkedGuidelines": 104,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1562,
+      "topic": "Schnitzler Syndrome",
+      "normalizedTopic": "schnitzler syndrome",
+      "linkedPapers": 2,
+      "linkedGuidelines": 4,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1563,
+      "topic": "sciatica",
+      "normalizedTopic": "sciatica",
+      "linkedPapers": 8,
+      "linkedGuidelines": 6,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1564,
+      "topic": "Scleroderma ILD: HRCT patterns, nintedanib, mycophenolate, cyclophosphamide",
+      "normalizedTopic": "scleroderma ild hrct patterns nintedanib mycophenolate cyclophosphamide",
+      "linkedPapers": 5,
+      "linkedGuidelines": 5,
+      "mentorPresent": "Yes",
+      "mentorState": "Seed/placeholder"
+    },
+    {
+      "no": 1565,
+      "topic": "Scleroderma Renal Crisis",
+      "normalizedTopic": "scleroderma renal crisis",
+      "linkedPapers": 5,
+      "linkedGuidelines": 6,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1566,
+      "topic": "Scleroderma renal crisis: ACE inhibitors, hypertensive emergency, captopril",
+      "normalizedTopic": "scleroderma renal crisis ace inhibitors hypertensive emergency captopril",
+      "linkedPapers": 5,
+      "linkedGuidelines": 9,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1567,
+      "topic": "Secondary adrenal insufficiency: HPA axis testing, glucocorticoid replacement, sick day rules",
+      "normalizedTopic": "secondary adrenal insufficiency hpa axis testing glucocorticoid replacement sick day rules",
+      "linkedPapers": 5,
+      "linkedGuidelines": 48,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1568,
+      "topic": "secondary care mental health",
+      "normalizedTopic": "secondary care mental health",
+      "linkedPapers": 8,
+      "linkedGuidelines": 0,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1569,
+      "topic": "Secondary headaches: red flags (SNOOP4), neuroimaging criteria",
+      "normalizedTopic": "secondary headaches red flags snoop4 neuroimaging criteria",
+      "linkedPapers": 2,
+      "linkedGuidelines": 10,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1570,
+      "topic": "Secondary hyperparathyroidism in CKD: CKD-MBD, phosphate binders, cinacalcet",
+      "normalizedTopic": "secondary hyperparathyroidism in ckd ckd-mbd phosphate binders cinacalcet",
+      "linkedPapers": 5,
+      "linkedGuidelines": 9,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1571,
+      "topic": "secondary hypertension",
+      "normalizedTopic": "secondary hypertension",
+      "linkedPapers": 8,
+      "linkedGuidelines": 3,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1572,
+      "topic": "Secondary immunodeficiency from biologics and steroids",
+      "normalizedTopic": "secondary immunodeficiency from biologics and steroids",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1573,
+      "topic": "Secondary mitral regurgitation: transcatheter MitraClip vs medical therapy, COAPT trial",
+      "normalizedTopic": "secondary mitral regurgitation transcatheter mitraclip vs medical therapy coapt trial",
+      "linkedPapers": 5,
+      "linkedGuidelines": 14,
+      "mentorPresent": "Yes",
+      "mentorState": "Seed/placeholder"
+    },
+    {
+      "no": 1574,
+      "topic": "secondary stroke prevention",
+      "normalizedTopic": "secondary stroke prevention",
+      "linkedPapers": 8,
+      "linkedGuidelines": 6,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1575,
+      "topic": "Secondary stroke prevention antiplatelet anticoagulation",
+      "normalizedTopic": "secondary stroke prevention antiplatelet anticoagulation",
+      "linkedPapers": 3,
+      "linkedGuidelines": 22,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1576,
+      "topic": "Sedation and analgesia in mechanically ventilated patients: ABCDEF bundle",
+      "normalizedTopic": "sedation and analgesia in mechanically ventilated patients abcdef bundle",
+      "linkedPapers": 5,
+      "linkedGuidelines": 6,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1577,
+      "topic": "Sedation minimization and analgesia-first in ICU",
+      "normalizedTopic": "sedation minimization and analgesia-first in icu",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1578,
+      "topic": "Sedation outside theatres and procedural sedation safety",
+      "normalizedTopic": "sedation outside theatres and procedural sedation safety",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1579,
+      "topic": "sedation safety",
+      "normalizedTopic": "sedation safety",
+      "linkedPapers": 8,
+      "linkedGuidelines": 2,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1580,
+      "topic": "seizures",
+      "normalizedTopic": "seizures",
+      "linkedPapers": 8,
+      "linkedGuidelines": 0,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1581,
+      "topic": "Seizures in pregnancy: teratogenicity of AEDs, folate dosing, levels",
+      "normalizedTopic": "seizures in pregnancy teratogenicity of aeds folate dosing levels",
+      "linkedPapers": 2,
+      "linkedGuidelines": 10,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1582,
+      "topic": "Self-harm, suicide risk assessment and safe management",
+      "normalizedTopic": "self-harm suicide risk assessment and safe management",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1583,
+      "topic": "semaglutide once weekly obesity weight loss STEP 1",
+      "normalizedTopic": "semaglutide once weekly obesity weight loss step 1",
+      "linkedPapers": 3,
+      "linkedGuidelines": 3,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1584,
+      "topic": "Sepsis and septic shock",
+      "normalizedTopic": "sepsis",
+      "linkedPapers": 8,
+      "linkedGuidelines": 2,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1585,
+      "topic": "Sepsis and septic shock: Sepsis-3 definitions, qSOFA, SOFA score, 1-hour bundle",
+      "normalizedTopic": "sepsis and septic shock sepsis-3 definitions qsofa sofa score 1-hour bundle",
+      "linkedPapers": 8,
+      "linkedGuidelines": 0,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1586,
+      "topic": "sepsis fluid resuscitation",
+      "normalizedTopic": "sepsis fluid resuscitation",
+      "linkedPapers": 8,
+      "linkedGuidelines": 9,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1587,
+      "topic": "Septic Arthritis",
+      "normalizedTopic": "septic arthritis",
+      "linkedPapers": 5,
+      "linkedGuidelines": 11,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1588,
+      "topic": "Septic arthritis: diagnosis, Gram stain, joint aspiration, empirical antibiotics, surgical drainage",
+      "normalizedTopic": "septic arthritis diagnosis gram stain joint aspiration empirical antibiotics surgical drainage",
+      "linkedPapers": 5,
+      "linkedGuidelines": 29,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1589,
+      "topic": "Septic arthritis: Staphylococcus, Gonococcal, joint washout, antibiotic selection",
+      "normalizedTopic": "septic arthritis staphylococcus gonococcal joint washout antibiotic selection",
+      "linkedPapers": 5,
+      "linkedGuidelines": 34,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1590,
+      "topic": "Septic shock: vasopressor selection and targets",
+      "normalizedTopic": "septic shock vasopressor selection and targets",
+      "linkedPapers": 5,
+      "linkedGuidelines": 14,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1591,
+      "topic": "Seronegative Rheumatoid Arthritis",
+      "normalizedTopic": "seronegative rheumatoid arthritis",
+      "linkedPapers": 4,
+      "linkedGuidelines": 5,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1592,
+      "topic": "Serotonin syndrome recognition and management",
+      "normalizedTopic": "serotonin syndrome recognition and management",
+      "linkedPapers": 3,
+      "linkedGuidelines": 4,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1593,
+      "topic": "Severe acute pancreatitis ICU management",
+      "normalizedTopic": "severe acute pancreatitis icu management",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1594,
+      "topic": "severe asthma biologics",
+      "normalizedTopic": "severe asthma biologics",
+      "linkedPapers": 8,
+      "linkedGuidelines": 5,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1595,
+      "topic": "severe community acquired pneumonia corticosteroids adults",
+      "normalizedTopic": "severe community acquired pneumonia corticosteroids adults",
+      "linkedPapers": 3,
+      "linkedGuidelines": 11,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1596,
+      "topic": "Severe malaria artesunate therapy",
+      "normalizedTopic": "severe malaria artesunate therapy",
+      "linkedPapers": 13,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1597,
+      "topic": "Severe traumatic brain injury: ICP monitoring, cerebral perfusion pressure targets",
+      "normalizedTopic": "severe traumatic brain injury icp monitoring cerebral perfusion pressure targets",
+      "linkedPapers": 4,
+      "linkedGuidelines": 105,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1598,
+      "topic": "sexually transmitted infections",
+      "normalizedTopic": "sexually transmitted infections",
+      "linkedPapers": 8,
+      "linkedGuidelines": 0,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1599,
+      "topic": "Sexually transmitted infections: gonorrhoea, chlamydia, syphilis: diagnostic tests and treatment",
+      "normalizedTopic": "sexually transmitted infections gonorrhoea chlamydia syphilis diagnostic tests and treatment",
+      "linkedPapers": 3,
+      "linkedGuidelines": 8,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1600,
+      "topic": "SGLT2 inhibitors heart failure",
+      "normalizedTopic": "sglt2 inhibitors heart failure",
+      "linkedPapers": 3,
+      "linkedGuidelines": 1,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1601,
+      "topic": "SGLT2 inhibitors heart failure reduced ejection fraction outcomes",
+      "normalizedTopic": "sglt2 inhibitors heart failure reduced ejection fraction outcomes",
+      "linkedPapers": 8,
+      "linkedGuidelines": 10,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1602,
+      "topic": "SGLT2 inhibitors heart failure reduced ejection fraction randomized trial",
+      "normalizedTopic": "sglt2 inhibitors heart failure reduced ejection fraction randomized trial",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1603,
+      "topic": "SGLT2 inhibitors in cardiovascular disease: empagliflozin, dapagliflozin, renal protection",
+      "normalizedTopic": "sglt2 inhibitors in cardiovascular disease empagliflozin dapagliflozin renal protection",
+      "linkedPapers": 5,
+      "linkedGuidelines": 5,
+      "mentorPresent": "Yes",
+      "mentorState": "Seed/placeholder"
+    },
+    {
+      "no": 1604,
+      "topic": "SGLT2 Inhibitors in CKD and Nephrology",
+      "normalizedTopic": "sglt2 inhibitors in ckd and nephrology",
+      "linkedPapers": 5,
+      "linkedGuidelines": 7,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1605,
+      "topic": "SGLT-2 inhibitors in heart failure",
+      "normalizedTopic": "sglt-2 inhibitors in heart failure",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1606,
+      "topic": "SGLT2 inhibitors: mechanism, heart failure and renal benefits, euglycaemic DKA risk",
+      "normalizedTopic": "sglt2 inhibitors mechanism heart failure and renal benefits euglycaemic dka risk",
+      "linkedPapers": 5,
+      "linkedGuidelines": 6,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1607,
+      "topic": "SGLT2 inhibitor therapy for type 2 diabetes",
+      "normalizedTopic": "sglt2 inhibitor therapy for type 2 diabetes",
+      "linkedPapers": 3,
+      "linkedGuidelines": 5,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1608,
+      "topic": "Shared decision making and patient reported outcomes in rheumatology: HAQ, PROMIS, PROs",
+      "normalizedTopic": "shared decision making and patient reported outcomes in rheumatology haq promis pros",
+      "linkedPapers": 3,
+      "linkedGuidelines": 8,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1609,
+      "topic": "Short Bowel Syndrome",
+      "normalizedTopic": "short bowel syndrome",
+      "linkedPapers": 5,
+      "linkedGuidelines": 20,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1610,
+      "topic": "shortness of breath",
+      "normalizedTopic": "shortness of breath",
+      "linkedPapers": 8,
+      "linkedGuidelines": 1,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1611,
+      "topic": "Shortness of breath and acute respiratory failure",
+      "normalizedTopic": "shortness of breath and acute respiratory failure",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1612,
+      "topic": "Shoulder pain: rotator cuff disease, frozen shoulder, acromioclavicular OA, referred pain",
+      "normalizedTopic": "shoulder pain rotator cuff disease frozen shoulder acromioclavicular oa referred pain",
+      "linkedPapers": 5,
+      "linkedGuidelines": 14,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1613,
+      "topic": "shoulder pathology",
+      "normalizedTopic": "shoulder pathology",
+      "linkedPapers": 8,
+      "linkedGuidelines": 2,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1614,
+      "topic": "should I start an SGLT2 inhibitor for my patient with HFrEF?",
+      "normalizedTopic": "should i start an sglt2 inhibitor for my patient with hfref",
+      "linkedPapers": 8,
+      "linkedGuidelines": 0,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1615,
+      "topic": "SIADH: euvolaemic hyponatraemia, diagnostic criteria, fluid restriction, vaptans",
+      "normalizedTopic": "siadh euvolaemic hyponatraemia diagnostic criteria fluid restriction vaptans",
+      "linkedPapers": 2,
+      "linkedGuidelines": 5,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1616,
+      "topic": "Sickle Cell Disease",
+      "normalizedTopic": "sickle cell disease",
+      "linkedPapers": 5,
+      "linkedGuidelines": 23,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1617,
+      "topic": "Sickle cell disease gene editing",
+      "normalizedTopic": "sickle cell disease gene editing",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1618,
+      "topic": "Sickle cell disease: hydroxyurea therapy and crisis prevention",
+      "normalizedTopic": "sickle cell disease hydroxyurea therapy and crisis prevention",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1619,
+      "topic": "Silicosis",
+      "normalizedTopic": "silicosis",
+      "linkedPapers": 8,
+      "linkedGuidelines": 2,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1620,
+      "topic": "Silo Filler's Disease",
+      "normalizedTopic": "silo filler s disease",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1621,
+      "topic": "Sinusoidal Obstruction Syndrome",
+      "normalizedTopic": "sinusoidal obstruction syndrome",
+      "linkedPapers": 3,
+      "linkedGuidelines": 6,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1622,
+      "topic": "Six-Minute Walk Test",
+      "normalizedTopic": "six-minute walk test",
+      "linkedPapers": 3,
+      "linkedGuidelines": 6,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1623,
+      "topic": "Sjogren syndrome: sicca symptoms, anti-Ro, anti-La, MALT lymphoma risk, systemic features",
+      "normalizedTopic": "sjogren syndrome sicca symptoms anti-ro anti-la malt lymphoma risk systemic features",
+      "linkedPapers": 2,
+      "linkedGuidelines": 14,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1624,
+      "topic": "Sjogren syndrome systemic and topical therapy",
+      "normalizedTopic": "sjogren syndrome systemic and topical therapy",
+      "linkedPapers": 3,
+      "linkedGuidelines": 5,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1625,
+      "topic": "Skin and soft tissue infection antibiotic strategy",
+      "normalizedTopic": "skin and soft tissue infection antibiotic strategy",
+      "linkedPapers": 13,
+      "linkedGuidelines": 5,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1626,
+      "topic": "Sleep apnoea and cardiovascular disease: CPAP, AF risk, hypertension, arrhythmia",
+      "normalizedTopic": "sleep apnoea and cardiovascular disease cpap af risk hypertension arrhythmia",
+      "linkedPapers": 5,
+      "linkedGuidelines": 15,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1627,
+      "topic": "SLE: SLICC 2012 and ACR/EULAR 2019 classification criteria compared",
+      "normalizedTopic": "sle slicc 2012 and acr eular 2019 classification criteria compared",
+      "linkedPapers": 5,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1628,
+      "topic": "Slowing CKD Progression",
+      "normalizedTopic": "slowing ckd progression",
+      "linkedPapers": 1,
+      "linkedGuidelines": 6,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1629,
+      "topic": "Small Bowel Bacterial Overgrowth",
+      "normalizedTopic": "small bowel bacterial overgrowth",
+      "linkedPapers": 5,
+      "linkedGuidelines": 5,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1630,
+      "topic": "Small Cell Lung Cancer",
+      "normalizedTopic": "small cell lung cancer",
+      "linkedPapers": 5,
+      "linkedGuidelines": 5,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1631,
+      "topic": "Small fibre neuropathy: skin biopsy quantification, autonomic function testing",
+      "normalizedTopic": "small fibre neuropathy skin biopsy quantification autonomic function testing",
+      "linkedPapers": 5,
+      "linkedGuidelines": 12,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1632,
+      "topic": "Smoking cessation pharmacotherapy",
+      "normalizedTopic": "smoking cessation pharmacotherapy",
+      "linkedPapers": 5,
+      "linkedGuidelines": 10,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1633,
+      "topic": "Smouldering Multiple Myeloma",
+      "normalizedTopic": "smouldering multiple myeloma",
+      "linkedPapers": 5,
+      "linkedGuidelines": 7,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1634,
+      "topic": "soft tissue injuries",
+      "normalizedTopic": "soft tissue injuries",
+      "linkedPapers": 8,
+      "linkedGuidelines": 6,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1635,
+      "topic": "Soft Tissue Sarcomas",
+      "normalizedTopic": "soft tissue sarcomas",
+      "linkedPapers": 5,
+      "linkedGuidelines": 9,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1636,
+      "topic": "solid organ transplant induction immunosuppression",
+      "normalizedTopic": "solid organ transplant induction immunosuppression",
+      "linkedPapers": 3,
+      "linkedGuidelines": 1,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1637,
+      "topic": "Solitary Pulmonary Nodule",
+      "normalizedTopic": "solitary pulmonary nodule",
+      "linkedPapers": 5,
+      "linkedGuidelines": 8,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1638,
+      "topic": "Source control in sepsis: timing and surgical indications",
+      "normalizedTopic": "source control in sepsis timing and surgical indications",
+      "linkedPapers": 3,
+      "linkedGuidelines": 9,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1639,
+      "topic": "Sphincter of Oddi Dysfunction",
+      "normalizedTopic": "sphincter of oddi dysfunction",
+      "linkedPapers": 3,
+      "linkedGuidelines": 7,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1640,
+      "topic": "Spinal Muscular Atrophy (SMA): SMN1/SMN2 copy numbers, nusinersen therapeutics",
+      "normalizedTopic": "spinal muscular atrophy sma smn1 smn2 copy numbers nusinersen therapeutics",
+      "linkedPapers": 5,
+      "linkedGuidelines": 6,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1641,
+      "topic": "spironolactone mineralocorticoid antagonist severe heart failure survival",
+      "normalizedTopic": "spironolactone mineralocorticoid antagonist severe heart failure survival",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1642,
+      "topic": "Splenectomy and asplenia: encapsulated organism risk, vaccination schedule, emergency antibiotic supply",
+      "normalizedTopic": "splenectomy and asplenia encapsulated organism risk vaccination schedule emergency antibiotic supply",
+      "linkedPapers": 4,
+      "linkedGuidelines": 37,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1643,
+      "topic": "Spondylolysis and Spondylolisthesis",
+      "normalizedTopic": "spondylolysis and spondylolisthesis",
+      "linkedPapers": 1,
+      "linkedGuidelines": 5,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1644,
+      "topic": "spontaneous bacterial peritonitis",
+      "normalizedTopic": "spontaneous bacterial peritonitis",
+      "linkedPapers": 8,
+      "linkedGuidelines": 5,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1645,
+      "topic": "Spontaneous bacterial peritonitis: diagnosis, prophylaxis, treatment",
+      "normalizedTopic": "spontaneous bacterial peritonitis diagnosis prophylaxis treatment",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1646,
+      "topic": "Spontaneous bacterial peritonitis SBP: ascites PMN count, cefotaxime, albumin, secondary prophylaxis",
+      "normalizedTopic": "spontaneous bacterial peritonitis sbp ascites pmn count cefotaxime albumin secondary prophylaxis",
+      "linkedPapers": 5,
+      "linkedGuidelines": 10,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1647,
+      "topic": "Spontaneous bacterial peritonitis vs secondary surgical peritonitis",
+      "normalizedTopic": "spontaneous bacterial peritonitis vs secondary surgical peritonitis",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1648,
+      "topic": "Spontaneous coronary artery dissection",
+      "normalizedTopic": "spontaneous coronary artery dissection",
+      "linkedPapers": 5,
+      "linkedGuidelines": 6,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1649,
+      "topic": "Spontaneous Pneumothorax",
+      "normalizedTopic": "spontaneous pneumothorax",
+      "linkedPapers": 5,
+      "linkedGuidelines": 9,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1650,
+      "topic": "squamous cell carcinoma",
+      "normalizedTopic": "squamous cell carcinoma",
+      "linkedPapers": 8,
+      "linkedGuidelines": 8,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1651,
+      "topic": "Squamous Cell Carcinoma of Head and Neck",
+      "normalizedTopic": "squamous cell carcinoma of head and neck",
+      "linkedPapers": 5,
+      "linkedGuidelines": 6,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1652,
+      "topic": "Stable angina medical therapy versus PCI",
+      "normalizedTopic": "stable angina medical therapy versus pci",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1653,
+      "topic": "Stable coronary disease invasive strategy",
+      "normalizedTopic": "stable coronary disease invasive strategy",
+      "linkedPapers": 3,
+      "linkedGuidelines": 22,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1654,
+      "topic": "Staphylococcus aureus bacteraemia: MRSA vs MSSA, vancomycin, daptomycin, duration of therapy",
+      "normalizedTopic": "staphylococcus aureus bacteraemia mrsa vs mssa vancomycin daptomycin duration of therapy",
+      "linkedPapers": 5,
+      "linkedGuidelines": 9,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1655,
+      "topic": "Staphylococcus aureus bacteremia diagnostic workup and duration",
+      "normalizedTopic": "staphylococcus aureus bacteremia diagnostic workup and duration",
+      "linkedPapers": 19,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1656,
+      "topic": "statin adverse effects in older adults",
+      "normalizedTopic": "statin adverse effects in older adults",
+      "linkedPapers": 8,
+      "linkedGuidelines": 5,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1657,
+      "topic": "Statin-induced necrotising autoimmune myopathy: HMGCR antibody management",
+      "normalizedTopic": "statin-induced necrotising autoimmune myopathy hmgcr antibody management",
+      "linkedPapers": 5,
+      "linkedGuidelines": 9,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1658,
+      "topic": "status epilepticus",
+      "normalizedTopic": "status epilepticus",
+      "linkedPapers": 8,
+      "linkedGuidelines": 0,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1659,
+      "topic": "Status epilepticus emergency treatment",
+      "normalizedTopic": "status epilepticus emergency treatment",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1660,
+      "topic": "Status epilepticus management in the ICU: refractory and super-refractory",
+      "normalizedTopic": "status epilepticus management in the icu refractory and super-refractory",
+      "linkedPapers": 5,
+      "linkedGuidelines": 7,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1661,
+      "topic": "Status epilepticus pharmacotherapy",
+      "normalizedTopic": "status epilepticus pharmacotherapy",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1662,
+      "topic": "STEMI: electrocardiographic mimics and reperfusion decision",
+      "normalizedTopic": "stemi electrocardiographic mimics and reperfusion decision",
+      "linkedPapers": 5,
+      "linkedGuidelines": 5,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1663,
+      "topic": "STEMI primary PCI reperfusion",
+      "normalizedTopic": "thrombus aspiration in stemi",
+      "linkedPapers": 5,
+      "linkedGuidelines": 3,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1664,
+      "topic": "Steroids in community acquired pneumonia",
+      "normalizedTopic": "steroids in community acquired pneumonia",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1665,
+      "topic": "Steroids in pneumonia",
+      "normalizedTopic": "steroids in pneumonia",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1666,
+      "topic": "Stevens-Johnson syndrome",
+      "normalizedTopic": "stevens-johnson syndrome",
+      "linkedPapers": 8,
+      "linkedGuidelines": 5,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1667,
+      "topic": "Stimulant use disorder contingency management",
+      "normalizedTopic": "stimulant use disorder contingency management",
+      "linkedPapers": 3,
+      "linkedGuidelines": 5,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1668,
+      "topic": "Streptococcal infections: Group A Strep, scarlet fever, rheumatic fever, toxic shock syndrome",
+      "normalizedTopic": "streptococcal infections group a strep scarlet fever rheumatic fever toxic shock syndrome",
+      "linkedPapers": 1,
+      "linkedGuidelines": 3,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1669,
+      "topic": "Stress echocardiography: protocols, ischaemia detection, viability assessment",
+      "normalizedTopic": "stress echocardiography protocols ischaemia detection viability assessment",
+      "linkedPapers": 5,
+      "linkedGuidelines": 12,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1670,
+      "topic": "Stress ulcer prophylaxis in critically ill patients",
+      "normalizedTopic": "stress ulcer prophylaxis in critically ill patients",
+      "linkedPapers": 2,
+      "linkedGuidelines": 4,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1671,
+      "topic": "Stress ulcer prophylaxis: indications and risk-benefit in critical illness",
+      "normalizedTopic": "stress ulcer prophylaxis indications and risk-benefit in critical illness",
+      "linkedPapers": 5,
+      "linkedGuidelines": 10,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1672,
+      "topic": "stroke",
+      "normalizedTopic": "stroke",
+      "linkedPapers": 8,
+      "linkedGuidelines": 6,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1673,
+      "topic": "stroke prevention in atrial fibrillation",
+      "normalizedTopic": "stroke prevention in atrial fibrillation",
+      "linkedPapers": 8,
+      "linkedGuidelines": 9,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1674,
+      "topic": "Subarachnoid haemorrhage (SAH): vasospasm monitoring, nimodipine protocol, triple-H therapy",
+      "normalizedTopic": "subarachnoid haemorrhage sah vasospasm monitoring nimodipine protocol triple-h therapy",
+      "linkedPapers": 5,
+      "linkedGuidelines": 23,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1675,
+      "topic": "Subarachnoid hemorrhage ICU management",
+      "normalizedTopic": "subarachnoid hemorrhage icu management",
+      "linkedPapers": 3,
+      "linkedGuidelines": 17,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1676,
+      "topic": "Subclinical hypothyroidism treatment thresholds",
+      "normalizedTopic": "subclinical hypothyroidism treatment thresholds",
+      "linkedPapers": 3,
+      "linkedGuidelines": 5,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1677,
+      "topic": "substance use disorder",
+      "normalizedTopic": "substance use disorder",
+      "linkedPapers": 8,
+      "linkedGuidelines": 2,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1678,
+      "topic": "Sudden sensorineural hearing loss: diagnosis and treatment",
+      "normalizedTopic": "sudden sensorineural hearing loss diagnosis and treatment",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1679,
+      "topic": "Sudden Unexpected Death in Epilepsy (SUDEP): risk factors, patient counselling",
+      "normalizedTopic": "sudden unexpected death in epilepsy sudep risk factors patient counselling",
+      "linkedPapers": 5,
+      "linkedGuidelines": 20,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1680,
+      "topic": "suicide risk assessment",
+      "normalizedTopic": "suicide risk assessment",
+      "linkedPapers": 8,
+      "linkedGuidelines": 1,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1681,
+      "topic": "Suicide risk assessment and self-harm",
+      "normalizedTopic": "suicide risk assessment and self-harm",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1682,
+      "topic": "Superficial Thrombophlebitis versus DVT",
+      "normalizedTopic": "superficial thrombophlebitis versus dvt",
+      "linkedPapers": 5,
+      "linkedGuidelines": 6,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1683,
+      "topic": "surgical site infection prevention",
+      "normalizedTopic": "surgical site infection prevention",
+      "linkedPapers": 16,
+      "linkedGuidelines": 15,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1684,
+      "topic": "Surgical site infection: prevention and management",
+      "normalizedTopic": "surgical site infection prevention and management",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1685,
+      "topic": "Surgical site infections: classification, risk factors, prophylaxis timing, MRSA decolonisation",
+      "normalizedTopic": "surgical site infections classification risk factors prophylaxis timing mrsa decolonisation",
+      "linkedPapers": 5,
+      "linkedGuidelines": 40,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1686,
+      "topic": "Suspected melanoma, non-melanoma skin cancer and urgent referral",
+      "normalizedTopic": "suspected melanoma non-melanoma skin cancer and urgent referral",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1687,
+      "topic": "suspected pulmonary embolism diagnosis YEARS algorithm D-dimer CT pulmonary angiography",
+      "normalizedTopic": "suspected pulmonary embolism diagnosis years algorithm d-dimer ct pulmonary angiography",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1688,
+      "topic": "Symptomatic bradycardia: atropine, temporary pacing, transcutaneous pacing",
+      "normalizedTopic": "symptomatic bradycardia atropine temporary pacing transcutaneous pacing",
+      "linkedPapers": 8,
+      "linkedGuidelines": 18,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1689,
+      "topic": "syncope",
+      "normalizedTopic": "syncope",
+      "linkedPapers": 8,
+      "linkedGuidelines": 2,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1690,
+      "topic": "Syncope and postural hypotension",
+      "normalizedTopic": "syncope and postural hypotension",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1691,
+      "topic": "Syncope evaluation and pacing indications",
+      "normalizedTopic": "syncope evaluation and pacing indications",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1692,
+      "topic": "Syncope evaluation: tilt table testing, loop recorder, reflex vs cardiac causes",
+      "normalizedTopic": "syncope evaluation tilt table testing loop recorder reflex vs cardiac causes",
+      "linkedPapers": 5,
+      "linkedGuidelines": 13,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1693,
+      "topic": "Synovial fluid analysis: WBC thresholds, crystals, viscosity, culture interpretation",
+      "normalizedTopic": "synovial fluid analysis wbc thresholds crystals viscosity culture interpretation",
+      "linkedPapers": 5,
+      "linkedGuidelines": 18,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1694,
+      "topic": "Syphilis: staging, serology interpretation, penicillin treatment, neurosyphilis management",
+      "normalizedTopic": "syphilis staging serology interpretation penicillin treatment neurosyphilis management",
+      "linkedPapers": 1,
+      "linkedGuidelines": 5,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1695,
+      "topic": "Syringomyelia: Chiari malformation associations, shunt indications",
+      "normalizedTopic": "syringomyelia chiari malformation associations shunt indications",
+      "linkedPapers": 1,
+      "linkedGuidelines": 5,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1696,
+      "topic": "systemic analgesia",
+      "normalizedTopic": "systemic analgesia",
+      "linkedPapers": 8,
+      "linkedGuidelines": 3,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1697,
+      "topic": "systemic lupus erythematosus",
+      "normalizedTopic": "systemic lupus erythematosus",
+      "linkedPapers": 1,
+      "linkedGuidelines": 4,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1698,
+      "topic": "Systemic lupus erythematosus biologic therapy",
+      "normalizedTopic": "systemic lupus erythematosus biologic therapy",
+      "linkedPapers": 10,
+      "linkedGuidelines": 5,
+      "mentorPresent": "Yes",
+      "mentorState": "Seed/placeholder"
+    },
+    {
+      "no": 1699,
+      "topic": "Systemic Sclerosis",
+      "normalizedTopic": "systemic sclerosis",
+      "linkedPapers": 5,
+      "linkedGuidelines": 8,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1700,
+      "topic": "Systemic sclerosis interstitial lung disease",
+      "normalizedTopic": "systemic sclerosis interstitial lung disease",
+      "linkedPapers": 12,
+      "linkedGuidelines": 5,
+      "mentorPresent": "Yes",
+      "mentorState": "Seed/placeholder"
+    },
+    {
+      "no": 1701,
+      "topic": "Systemic sclerosis: limited vs diffuse, antitopoisomerase vs anticentromere antibodies",
+      "normalizedTopic": "systemic sclerosis limited vs diffuse antitopoisomerase vs anticentromere antibodies",
+      "linkedPapers": 5,
+      "linkedGuidelines": 9,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1702,
+      "topic": "takayasu arteritis biologic therapy",
+      "normalizedTopic": "takayasu arteritis biologic therapy",
+      "linkedPapers": 3,
+      "linkedGuidelines": 7,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1703,
+      "topic": "Takayasu arteritis: large vessel vasculitis, imaging, management, biologics",
+      "normalizedTopic": "takayasu arteritis large vessel vasculitis imaging management biologics",
+      "linkedPapers": 5,
+      "linkedGuidelines": 5,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1704,
+      "topic": "Takayasu's Arteritis",
+      "normalizedTopic": "takayasu s arteritis",
+      "linkedPapers": 1,
+      "linkedGuidelines": 4,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1705,
+      "topic": "Takotsubo cardiomyopathy: diagnostic criteria, management, recurrence",
+      "normalizedTopic": "takotsubo cardiomyopathy diagnostic criteria management recurrence",
+      "linkedPapers": 5,
+      "linkedGuidelines": 11,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1706,
+      "topic": "Targeted temperature management after cardiac arrest",
+      "normalizedTopic": "targeted temperature management after cardiac arrest",
+      "linkedPapers": 2,
+      "linkedGuidelines": 3,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1707,
+      "topic": "Targeted Therapy Principles",
+      "normalizedTopic": "targeted therapy principles",
+      "linkedPapers": 2,
+      "linkedGuidelines": 12,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1708,
+      "topic": "TB screening",
+      "normalizedTopic": "tb screening",
+      "linkedPapers": 8,
+      "linkedGuidelines": 0,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1709,
+      "topic": "TB treatment: RIPE regimen, hepatotoxicity monitoring, directly observed therapy, drug-resistant TB",
+      "normalizedTopic": "tb treatment ripe regimen hepatotoxicity monitoring directly observed therapy drug-resistant tb",
+      "linkedPapers": 8,
+      "linkedGuidelines": 48,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1710,
+      "topic": "T-Cell Lymphomas in Oncology",
+      "normalizedTopic": "t-cell lymphomas in oncology",
+      "linkedPapers": 4,
+      "linkedGuidelines": 8,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1711,
+      "topic": "temporal arteritis",
+      "normalizedTopic": "temporal arteritis",
+      "linkedPapers": 8,
+      "linkedGuidelines": 0,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1712,
+      "topic": "Temporal lobe epilepsy: mesial temporal sclerosis, anterior temporal lobectomy",
+      "normalizedTopic": "temporal lobe epilepsy mesial temporal sclerosis anterior temporal lobectomy",
+      "linkedPapers": 5,
+      "linkedGuidelines": 14,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1713,
+      "topic": "tendinopathies",
+      "normalizedTopic": "tendinopathies",
+      "linkedPapers": 8,
+      "linkedGuidelines": 1,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1714,
+      "topic": "tenecteplase alteplase acute ischemic stroke EXTEND-IA TNK",
+      "normalizedTopic": "tenecteplase alteplase acute ischemic stroke extend-ia tnk",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1715,
+      "topic": "Tension-type headache: tricyclic antidepressants, lifestyle interventions",
+      "normalizedTopic": "tension-type headache tricyclic antidepressants lifestyle interventions",
+      "linkedPapers": 5,
+      "linkedGuidelines": 32,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1716,
+      "topic": "terlipressin hepatorenal syndrome",
+      "normalizedTopic": "terlipressin hepatorenal syndrome",
+      "linkedPapers": 8,
+      "linkedGuidelines": 5,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1717,
+      "topic": "Testicular germ cell tumor chemotherapy",
+      "normalizedTopic": "testicular germ cell tumor chemotherapy",
+      "linkedPapers": 3,
+      "linkedGuidelines": 5,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1718,
+      "topic": "Testicular Germ Cell Tumours",
+      "normalizedTopic": "testicular germ cell tumours",
+      "linkedPapers": 5,
+      "linkedGuidelines": 5,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1719,
+      "topic": "Tetanus: immunisation status, wound assessment, tetanus immunoglobulin, metronidazole",
+      "normalizedTopic": "tetanus immunisation status wound assessment tetanus immunoglobulin metronidazole",
+      "linkedPapers": 3,
+      "linkedGuidelines": 5,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1720,
+      "topic": "Thin Basement Membrane Nephropathy",
+      "normalizedTopic": "thin basement membrane nephropathy",
+      "linkedPapers": 4,
+      "linkedGuidelines": 6,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1721,
+      "topic": "Third, fourth, and sixth cranial nerve palsies: pupil-sparing oculomotor palsy",
+      "normalizedTopic": "third fourth and sixth cranial nerve palsies pupil-sparing oculomotor palsy",
+      "linkedPapers": 5,
+      "linkedGuidelines": 5,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1722,
+      "topic": "Thoracic Ultrasound",
+      "normalizedTopic": "thoracic ultrasound",
+      "linkedPapers": 3,
+      "linkedGuidelines": 8,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1723,
+      "topic": "thrombectomy criteria",
+      "normalizedTopic": "thrombectomy criteria",
+      "linkedPapers": 8,
+      "linkedGuidelines": 1,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1724,
+      "topic": "thrombocytopenia",
+      "normalizedTopic": "thrombocytopenia",
+      "linkedPapers": 8,
+      "linkedGuidelines": 6,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1725,
+      "topic": "Thrombotic Microangiopathy and the Kidney",
+      "normalizedTopic": "thrombotic microangiopathy and the kidney",
+      "linkedPapers": 2,
+      "linkedGuidelines": 1,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1726,
+      "topic": "Thrombotic Thrombocytopenic Purpura",
+      "normalizedTopic": "thrombotic thrombocytopenic purpura",
+      "linkedPapers": 5,
+      "linkedGuidelines": 20,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1727,
+      "topic": "Thrombotic thrombocytopenic purpura: caplacizumab and plasma exchange",
+      "normalizedTopic": "thrombotic thrombocytopenic purpura caplacizumab and plasma exchange",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1728,
+      "topic": "Thymic Tumours and Thymoma",
+      "normalizedTopic": "thymic tumours and thymoma",
+      "linkedPapers": 3,
+      "linkedGuidelines": 8,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1729,
+      "topic": "Thyroid Cancer Management",
+      "normalizedTopic": "thyroid cancer management",
+      "linkedPapers": 8,
+      "linkedGuidelines": 102,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1730,
+      "topic": "Thyroid cancer surveillance: recurrence monitoring, thyroglobulin, neck ultrasound protocols",
+      "normalizedTopic": "thyroid cancer surveillance recurrence monitoring thyroglobulin neck ultrasound protocols",
+      "linkedPapers": 4,
+      "linkedGuidelines": 52,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1731,
+      "topic": "thyroid disease",
+      "normalizedTopic": "thyroid disease",
+      "linkedPapers": 8,
+      "linkedGuidelines": 6,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1732,
+      "topic": "Thyroid eye disease Graves ophthalmopathy: clinical activity score, selenium, teprotumumab",
+      "normalizedTopic": "thyroid eye disease graves ophthalmopathy clinical activity score selenium teprotumumab",
+      "linkedPapers": 5,
+      "linkedGuidelines": 10,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1733,
+      "topic": "Thyroid function in pregnancy: trimester-specific TSH ranges, foetal development",
+      "normalizedTopic": "thyroid function in pregnancy trimester-specific tsh ranges foetal development",
+      "linkedPapers": 5,
+      "linkedGuidelines": 110,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1734,
+      "topic": "Thyroiditis: Hashimotos, de Quervains, postpartum - phases, TSH trajectory, management",
+      "normalizedTopic": "thyroiditis hashimotos de quervains postpartum - phases tsh trajectory management",
+      "linkedPapers": 1,
+      "linkedGuidelines": 3,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1735,
+      "topic": "thyroid nodule evaluation and fna",
+      "normalizedTopic": "thyroid nodule evaluation and fna",
+      "linkedPapers": 3,
+      "linkedGuidelines": 14,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1736,
+      "topic": "thyroid nodules",
+      "normalizedTopic": "thyroid nodules",
+      "linkedPapers": 8,
+      "linkedGuidelines": 8,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1737,
+      "topic": "Thyroid nodules: ATA risk stratification, ultrasound features, FNA indications",
+      "normalizedTopic": "thyroid nodules ata risk stratification ultrasound features fna indications",
+      "linkedPapers": 5,
+      "linkedGuidelines": 112,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1738,
+      "topic": "Thyroid storm and myxoedema coma: ICU recognition and management",
+      "normalizedTopic": "thyroid storm and myxoedema coma icu recognition and management",
+      "linkedPapers": 1,
+      "linkedGuidelines": 5,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1739,
+      "topic": "Thyroid storm: Burch-Wartofsky score, propylthiouracil, beta-blockade, supportive care",
+      "normalizedTopic": "thyroid storm burch-wartofsky score propylthiouracil beta-blockade supportive care",
+      "linkedPapers": 1,
+      "linkedGuidelines": 8,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1740,
+      "topic": "TIA",
+      "normalizedTopic": "tia",
+      "linkedPapers": 8,
+      "linkedGuidelines": 5,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1741,
+      "topic": "ticagrelor versus clopidogrel acute coronary syndromes",
+      "normalizedTopic": "ticagrelor versus clopidogrel acute coronary syndromes",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1742,
+      "topic": "Tick-borne encephalitis and other arboviral infections: West Nile, Zika: clinical features and prevention",
+      "normalizedTopic": "tick-borne encephalitis and other arboviral infections west nile zika clinical features and prevention",
+      "linkedPapers": 3,
+      "linkedGuidelines": 6,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1743,
+      "topic": "tick borne rickettsial disease empiric doxycycline",
+      "normalizedTopic": "tick borne rickettsial disease empiric doxycycline",
+      "linkedPapers": 3,
+      "linkedGuidelines": 6,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1744,
+      "topic": "Tick-borne rickettsial disease empiric doxycycline",
+      "normalizedTopic": "tick-borne rickettsial disease empiric doxycycline",
+      "linkedPapers": 3,
+      "linkedGuidelines": 2,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1745,
+      "topic": "tissue plasminogen activator acute ischemic stroke",
+      "normalizedTopic": "tissue plasminogen activator acute ischemic stroke",
+      "linkedPapers": 4,
+      "linkedGuidelines": 5,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1746,
+      "topic": "TKI cardiotoxicity",
+      "normalizedTopic": "tki cardiotoxicity",
+      "linkedPapers": 8,
+      "linkedGuidelines": 0,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1747,
+      "topic": "TNF and IL-17 inhibitors in axSpA: secukinumab, ixekizumab, comparative efficacy",
+      "normalizedTopic": "tnf and il-17 inhibitors in axspa secukinumab ixekizumab comparative efficacy",
+      "linkedPapers": 1,
+      "linkedGuidelines": 4,
+      "mentorPresent": "Yes",
+      "mentorState": "Seed/placeholder"
+    },
+    {
+      "no": 1748,
+      "topic": "TNF inhibitors in RA: adalimumab, etanercept, infliximab: efficacy, TB screening, contraindications",
+      "normalizedTopic": "tnf inhibitors in ra adalimumab etanercept infliximab efficacy tb screening contraindications",
+      "linkedPapers": 20,
+      "linkedGuidelines": 3,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1749,
+      "topic": "TNF Receptor-Associated Periodic Syndrome",
+      "normalizedTopic": "tnf receptor-associated periodic syndrome",
+      "linkedPapers": 5,
+      "linkedGuidelines": 5,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1750,
+      "topic": "tocilizumab COVID-19 hospitalized patients",
+      "normalizedTopic": "tocilizumab covid-19 hospitalized patients",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    }
+  ]
+}

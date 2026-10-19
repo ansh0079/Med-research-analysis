@@ -1,0 +1,2256 @@
+{
+  "sheet": "Topics 1251-1500",
+  "count": 250,
+  "topics": [
+    {
+      "no": 1251,
+      "topic": "Osteoporosis fracture prevention pharmacotherapy",
+      "normalizedTopic": "osteoporosis fracture prevention pharmacotherapy",
+      "linkedPapers": 3,
+      "linkedGuidelines": 7,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1252,
+      "topic": "Osteoporosis: FRAX score, DXA interpretation, bisphosphonate drug holiday, fracture prevention",
+      "normalizedTopic": "osteoporosis frax score dxa interpretation bisphosphonate drug holiday fracture prevention",
+      "linkedPapers": 2,
+      "linkedGuidelines": 16,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1253,
+      "topic": "Osteoporotic fragility fracture and secondary prevention",
+      "normalizedTopic": "osteoporotic fragility fracture and secondary prevention",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1254,
+      "topic": "Otitis media, otitis externa and mastoiditis",
+      "normalizedTopic": "otitis media otitis externa and mastoiditis",
+      "linkedPapers": 3,
+      "linkedGuidelines": 1,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1255,
+      "topic": "outpatient diabetes control",
+      "normalizedTopic": "outpatient diabetes control",
+      "linkedPapers": 8,
+      "linkedGuidelines": 5,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1256,
+      "topic": "Outpatient parenteral antibiotic therapy OPAT: eligibility, monitoring, line care, drugs used",
+      "normalizedTopic": "outpatient parenteral antibiotic therapy opat eligibility monitoring line care drugs used",
+      "linkedPapers": 5,
+      "linkedGuidelines": 8,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1257,
+      "topic": "outpatient parenteral antimicrobial therapy program safety",
+      "normalizedTopic": "outpatient parenteral antimicrobial therapy program safety",
+      "linkedPapers": 3,
+      "linkedGuidelines": 8,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1258,
+      "topic": "Ovarian Cancer",
+      "normalizedTopic": "ovarian cancer",
+      "linkedPapers": 5,
+      "linkedGuidelines": 107,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1259,
+      "topic": "Ovarian cancer PARP inhibitor maintenance therapy",
+      "normalizedTopic": "ovarian cancer parp inhibitor maintenance therapy",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1260,
+      "topic": "Oxalate Nephropathy",
+      "normalizedTopic": "oxalate nephropathy",
+      "linkedPapers": 5,
+      "linkedGuidelines": 6,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1261,
+      "topic": "Oxygen prescribing, target saturations and hypoxia management",
+      "normalizedTopic": "oxygen prescribing target saturations and hypoxia management",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1262,
+      "topic": "Pacemaker indications: sinus node dysfunction, AV block, NICE/ESC criteria",
+      "normalizedTopic": "pacemaker indications sinus node dysfunction av block nice esc criteria",
+      "linkedPapers": 1,
+      "linkedGuidelines": 4,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1263,
+      "topic": "Paediatric anaphylaxis: recognition and emergency management",
+      "normalizedTopic": "paediatric anaphylaxis recognition and emergency management",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1264,
+      "topic": "Paediatric asthma: diagnosis, assessment and stepwise management",
+      "normalizedTopic": "paediatric asthma diagnosis assessment and stepwise management",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1265,
+      "topic": "paediatric dehydration",
+      "normalizedTopic": "paediatric dehydration",
+      "linkedPapers": 8,
+      "linkedGuidelines": 4,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1266,
+      "topic": "Paget disease of bone: alkaline phosphatase, zoledronate, complications, osteosarcoma risk",
+      "normalizedTopic": "paget disease of bone alkaline phosphatase zoledronate complications osteosarcoma risk",
+      "linkedPapers": 3,
+      "linkedGuidelines": 6,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1267,
+      "topic": "Paget's Disease of Bone",
+      "normalizedTopic": "paget s disease of bone",
+      "linkedPapers": 1,
+      "linkedGuidelines": 5,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1268,
+      "topic": "Pagets disease of bone: elevated ALP, bisphosphonate therapy, complications",
+      "normalizedTopic": "pagets disease of bone elevated alp bisphosphonate therapy complications",
+      "linkedPapers": 5,
+      "linkedGuidelines": 18,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1269,
+      "topic": "Palindromic Rheumatism",
+      "normalizedTopic": "palindromic rheumatism",
+      "linkedPapers": 1,
+      "linkedGuidelines": 1,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1270,
+      "topic": "Palliative care in the ICU: symptom management, comfort-focused ventilation",
+      "normalizedTopic": "palliative care in the icu symptom management comfort-focused ventilation",
+      "linkedPapers": 5,
+      "linkedGuidelines": 9,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1271,
+      "topic": "Pancreatic adenocarcinoma systemic therapy",
+      "normalizedTopic": "pancreatic adenocarcinoma systemic therapy",
+      "linkedPapers": 11,
+      "linkedGuidelines": 0,
+      "mentorPresent": "Yes",
+      "mentorState": "Seed/placeholder"
+    },
+    {
+      "no": 1272,
+      "topic": "Pancreatic Cancer",
+      "normalizedTopic": "pancreatic cancer",
+      "linkedPapers": 5,
+      "linkedGuidelines": 48,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1273,
+      "topic": "Pancreatic cancer systemic and adjuvant therapy",
+      "normalizedTopic": "pancreatic cancer systemic and adjuvant therapy",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1274,
+      "topic": "Pancreatic Cystic Lesions",
+      "normalizedTopic": "pancreatic cystic lesions",
+      "linkedPapers": 5,
+      "linkedGuidelines": 33,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1275,
+      "topic": "Pancreatic Ductal Adenocarcinoma",
+      "normalizedTopic": "pancreatic ductal adenocarcinoma",
+      "linkedPapers": 5,
+      "linkedGuidelines": 35,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1276,
+      "topic": "Pancreatic Neuroendocrine Tumours",
+      "normalizedTopic": "pancreatic neuroendocrine tumours",
+      "linkedPapers": 4,
+      "linkedGuidelines": 5,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1277,
+      "topic": "pancreatitis complications",
+      "normalizedTopic": "pancreatitis complications",
+      "linkedPapers": 8,
+      "linkedGuidelines": 2,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1278,
+      "topic": "Pancreatogenic diabetes type 3c: exocrine insufficiency, brittle glycaemia, enzyme replacement",
+      "normalizedTopic": "pancreatogenic diabetes type 3c exocrine insufficiency brittle glycaemia enzyme replacement",
+      "linkedPapers": 5,
+      "linkedGuidelines": 8,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1279,
+      "topic": "Pancytopenia Diagnostic Workup",
+      "normalizedTopic": "pancytopenia diagnostic workup",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1280,
+      "topic": "Pandemic preparedness: lessons from COVID-19, surveillance, stockpiling, One Health approach",
+      "normalizedTopic": "pandemic preparedness lessons from covid-19 surveillance stockpiling one health approach",
+      "linkedPapers": 5,
+      "linkedGuidelines": 5,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1281,
+      "topic": "panic disorder pharmacotherapy and cbt",
+      "normalizedTopic": "panic disorder pharmacotherapy and cbt",
+      "linkedPapers": 15,
+      "linkedGuidelines": 7,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1282,
+      "topic": "Papilloedema: funduscopic grading, raised intracranial pressure management",
+      "normalizedTopic": "papilloedema funduscopic grading raised intracranial pressure management",
+      "linkedPapers": 1,
+      "linkedGuidelines": 21,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1283,
+      "topic": "Papilloedema : funduscopic staging, pseudo- papilloedema vs true disc swelling",
+      "normalizedTopic": "papilloedema funduscopic staging pseudo- papilloedema vs true disc swelling",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1284,
+      "topic": "Paracetamol toxicity: NAC protocol, King's College criteria for transplant",
+      "normalizedTopic": "paracetamol toxicity nac protocol king s college criteria for transplant",
+      "linkedPapers": 3,
+      "linkedGuidelines": 19,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1285,
+      "topic": "Paraganglioma: extra-adrenal location, SDHB mutation, malignant potential, surveillance",
+      "normalizedTopic": "paraganglioma extra-adrenal location sdhb mutation malignant potential surveillance",
+      "linkedPapers": 1,
+      "linkedGuidelines": 5,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1286,
+      "topic": "Paraneoplastic neurological syndromes: Anti-Hu, Anti-Yo, Anti-Ri",
+      "normalizedTopic": "paraneoplastic neurological syndromes anti-hu anti-yo anti-ri",
+      "linkedPapers": 5,
+      "linkedGuidelines": 13,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1287,
+      "topic": "Parapneumonic Effusion and Empyema",
+      "normalizedTopic": "parapneumonic effusion and empyema",
+      "linkedPapers": 5,
+      "linkedGuidelines": 7,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1288,
+      "topic": "Parenteral Nutrition",
+      "normalizedTopic": "parenteral nutrition",
+      "linkedPapers": 3,
+      "linkedGuidelines": 84,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1289,
+      "topic": "parkinson&#039;s disease levodopa",
+      "normalizedTopic": "parkinson 039 s disease levodopa",
+      "linkedPapers": 8,
+      "linkedGuidelines": 0,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1290,
+      "topic": "Parkinson disease deep brain stimulation",
+      "normalizedTopic": "parkinson disease deep brain stimulation",
+      "linkedPapers": 8,
+      "linkedGuidelines": 60,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1291,
+      "topic": "parkinson disease levodopa",
+      "normalizedTopic": "parkinson disease levodopa",
+      "linkedPapers": 8,
+      "linkedGuidelines": 5,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1292,
+      "topic": "parkinson disease motor complications",
+      "normalizedTopic": "parkinson disease motor complications",
+      "linkedPapers": 3,
+      "linkedGuidelines": 12,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1293,
+      "topic": "parkinsonism",
+      "normalizedTopic": "parkinsonism",
+      "linkedPapers": 8,
+      "linkedGuidelines": 0,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1294,
+      "topic": "Parkinson's disease",
+      "normalizedTopic": "parkinson s disease",
+      "linkedPapers": 8,
+      "linkedGuidelines": 7,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1295,
+      "topic": "Paroxysmal Nocturnal Haemoglobinuria",
+      "normalizedTopic": "paroxysmal nocturnal haemoglobinuria",
+      "linkedPapers": 5,
+      "linkedGuidelines": 8,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1296,
+      "topic": "Patent foramen ovale closure after cryptogenic stroke",
+      "normalizedTopic": "patent foramen ovale closure after cryptogenic stroke",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1297,
+      "topic": "Patient-ventilator dyssynchrony: recognition and management",
+      "normalizedTopic": "patient-ventilator dyssynchrony recognition and management",
+      "linkedPapers": 5,
+      "linkedGuidelines": 8,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1298,
+      "topic": "PCSK9 inhibitor evolocumab cardiovascular outcomes",
+      "normalizedTopic": "pcsk9 inhibitor evolocumab cardiovascular outcomes",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1299,
+      "topic": "PEA and asystole: reversible causes, ACLS algorithm, high-quality CPR",
+      "normalizedTopic": "pea and asystole reversible causes acls algorithm high-quality cpr",
+      "linkedPapers": 1,
+      "linkedGuidelines": 1,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1300,
+      "topic": "Peanut oral immunotherapy food allergy",
+      "normalizedTopic": "peanut oral immunotherapy food allergy",
+      "linkedPapers": 21,
+      "linkedGuidelines": 9,
+      "mentorPresent": "Yes",
+      "mentorState": "Seed/placeholder"
+    },
+    {
+      "no": 1301,
+      "topic": "Pediatric ALL immunotherapy and targeted therapy",
+      "normalizedTopic": "pediatric all immunotherapy and targeted therapy",
+      "linkedPapers": 3,
+      "linkedGuidelines": 6,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1302,
+      "topic": "PEEP optimisation: recruitment manoeuvres and driving pressure",
+      "normalizedTopic": "peep optimisation recruitment manoeuvres and driving pressure",
+      "linkedPapers": 2,
+      "linkedGuidelines": 5,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1303,
+      "topic": "Pegloticase and lesinurad in refractory gout: indications, infusion reactions",
+      "normalizedTopic": "pegloticase and lesinurad in refractory gout indications infusion reactions",
+      "linkedPapers": 5,
+      "linkedGuidelines": 8,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1304,
+      "topic": "pelvic inflammatory disease",
+      "normalizedTopic": "pelvic inflammatory disease",
+      "linkedPapers": 8,
+      "linkedGuidelines": 2,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1305,
+      "topic": "Pelvic inflammatory disease: diagnosis and treatment",
+      "normalizedTopic": "pelvic inflammatory disease diagnosis and treatment",
+      "linkedPapers": 3,
+      "linkedGuidelines": 5,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1306,
+      "topic": "pembrolizumab plus chemotherapy metastatic non-small cell lung cancer",
+      "normalizedTopic": "pembrolizumab plus chemotherapy metastatic non-small cell lung cancer",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1307,
+      "topic": "Penicillin allergy delabeling and testing",
+      "normalizedTopic": "penicillin allergy delabeling and testing",
+      "linkedPapers": 40,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1308,
+      "topic": "Penicillin allergy evaluation and delabeling",
+      "normalizedTopic": "penicillin allergy evaluation and delabeling",
+      "linkedPapers": 3,
+      "linkedGuidelines": 5,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1309,
+      "topic": "Peptic ulcer bleeding and H pylori",
+      "normalizedTopic": "peptic ulcer bleeding and h pylori",
+      "linkedPapers": 3,
+      "linkedGuidelines": 17,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1310,
+      "topic": "peptic ulcer disease",
+      "normalizedTopic": "peptic ulcer disease",
+      "linkedPapers": 8,
+      "linkedGuidelines": 13,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1311,
+      "topic": "Perinatal depression screening and treatment",
+      "normalizedTopic": "perinatal depression screening and treatment",
+      "linkedPapers": 17,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1312,
+      "topic": "Periodic paralyses: hypokaemic vs hyperkaemic variants, channelopathies",
+      "normalizedTopic": "periodic paralyses hypokaemic vs hyperkaemic variants channelopathies",
+      "linkedPapers": 3,
+      "linkedGuidelines": 5,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1313,
+      "topic": "Perioperative antiplatelet and anticoagulant management",
+      "normalizedTopic": "perioperative antiplatelet and anticoagulant management",
+      "linkedPapers": 3,
+      "linkedGuidelines": 5,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1314,
+      "topic": "perioperative beta-blocker continuation versus withdrawal",
+      "normalizedTopic": "perioperative beta-blocker continuation versus withdrawal",
+      "linkedPapers": 8,
+      "linkedGuidelines": 0,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1315,
+      "topic": "Perioperative bridging anticoagulation",
+      "normalizedTopic": "perioperative bridging anticoagulation",
+      "linkedPapers": 1,
+      "linkedGuidelines": 6,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1316,
+      "topic": "Perioperative cardiovascular risk assessment: revised cardiac risk index, pre-op optimisation",
+      "normalizedTopic": "perioperative cardiovascular risk assessment revised cardiac risk index pre-op optimisation",
+      "linkedPapers": 5,
+      "linkedGuidelines": 19,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1317,
+      "topic": "perioperative comorbidity management",
+      "normalizedTopic": "perioperative comorbidity management",
+      "linkedPapers": 8,
+      "linkedGuidelines": 1,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1318,
+      "topic": "Perioperative diabetes management",
+      "normalizedTopic": "perioperative diabetes management",
+      "linkedPapers": 3,
+      "linkedGuidelines": 5,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1319,
+      "topic": "Perioperative management of common comorbidities",
+      "normalizedTopic": "perioperative management of common comorbidities",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1320,
+      "topic": "perioperative risk assessment",
+      "normalizedTopic": "perioperative risk assessment",
+      "linkedPapers": 8,
+      "linkedGuidelines": 5,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1321,
+      "topic": "Perioperative risk assessment and optimisation",
+      "normalizedTopic": "perioperative risk assessment and optimisation",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1322,
+      "topic": "Perioperative steroid management: hydrocortisone cover for adrenal insufficiency in surgery",
+      "normalizedTopic": "perioperative steroid management hydrocortisone cover for adrenal insufficiency in surgery",
+      "linkedPapers": 5,
+      "linkedGuidelines": 8,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1323,
+      "topic": "Peripartum cardiomyopathy: bromocriptine, timing of delivery, LV recovery",
+      "normalizedTopic": "peripartum cardiomyopathy bromocriptine timing of delivery lv recovery",
+      "linkedPapers": 4,
+      "linkedGuidelines": 8,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1324,
+      "topic": "peripheral arterial disease",
+      "normalizedTopic": "peripheral arterial disease",
+      "linkedPapers": 8,
+      "linkedGuidelines": 1,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1325,
+      "topic": "Peripheral arterial disease and claudication",
+      "normalizedTopic": "peripheral arterial disease and claudication",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1326,
+      "topic": "Peripheral artery disease: ABI interpretation, medical therapy, revascularisation",
+      "normalizedTopic": "peripheral artery disease abi interpretation medical therapy revascularisation",
+      "linkedPapers": 5,
+      "linkedGuidelines": 23,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1327,
+      "topic": "Peripheral artery disease antithrombotic therapy",
+      "normalizedTopic": "peripheral artery disease antithrombotic therapy",
+      "linkedPapers": 3,
+      "linkedGuidelines": 10,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1328,
+      "topic": "Peripheral Blood Smear Morphology",
+      "normalizedTopic": "peripheral blood smear morphology",
+      "linkedPapers": 5,
+      "linkedGuidelines": 9,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1329,
+      "topic": "peripheral neuropathy",
+      "normalizedTopic": "peripheral neuropathy",
+      "linkedPapers": 8,
+      "linkedGuidelines": 4,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1330,
+      "topic": "peri-procedural anticoagulation",
+      "normalizedTopic": "peri-procedural anticoagulation",
+      "linkedPapers": 8,
+      "linkedGuidelines": 6,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1331,
+      "topic": "Peritoneal dialysis-associated peritonitis: diagnosis, empirical antibiotics, catheter removal criteria",
+      "normalizedTopic": "peritoneal dialysis-associated peritonitis diagnosis empirical antibiotics catheter removal criteria",
+      "linkedPapers": 5,
+      "linkedGuidelines": 11,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1332,
+      "topic": "Peritoneal Dialysis: Principles and Adequacy",
+      "normalizedTopic": "peritoneal dialysis principles and adequacy",
+      "linkedPapers": 5,
+      "linkedGuidelines": 9,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1333,
+      "topic": "Peritoneal Disorders",
+      "normalizedTopic": "peritoneal disorders",
+      "linkedPapers": 2,
+      "linkedGuidelines": 4,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1334,
+      "topic": "Pertussis: clinical stages, macrolide treatment, post-exposure prophylaxis, vaccination",
+      "normalizedTopic": "pertussis clinical stages macrolide treatment post-exposure prophylaxis vaccination",
+      "linkedPapers": 5,
+      "linkedGuidelines": 57,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1335,
+      "topic": "Phage therapy and novel antimicrobial approaches: bacteriophage, monoclonal antibodies, future therapies",
+      "normalizedTopic": "phage therapy and novel antimicrobial approaches bacteriophage monoclonal antibodies future therapies",
+      "linkedPapers": 5,
+      "linkedGuidelines": 7,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1336,
+      "topic": "Pharmacokinetics of antibiotics in critical illness: dose adjustment strategies",
+      "normalizedTopic": "pharmacokinetics of antibiotics in critical illness dose adjustment strategies",
+      "linkedPapers": 2,
+      "linkedGuidelines": 4,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1337,
+      "topic": "Pharmacological management of fibromyalgia: duloxetine, pregabalin, milnacipran",
+      "normalizedTopic": "pharmacological management of fibromyalgia duloxetine pregabalin milnacipran",
+      "linkedPapers": 5,
+      "linkedGuidelines": 10,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1338,
+      "topic": "Philadelphia-Positive ALL Management",
+      "normalizedTopic": "philadelphia-positive all management",
+      "linkedPapers": 1,
+      "linkedGuidelines": 4,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1339,
+      "topic": "physiology guided pci fractional flow reserve",
+      "normalizedTopic": "physiology guided pci fractional flow reserve",
+      "linkedPapers": 3,
+      "linkedGuidelines": 2,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1340,
+      "topic": "Physiology-guided PCI fractional flow reserve",
+      "normalizedTopic": "physiology-guided pci fractional flow reserve",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1341,
+      "topic": "Pituitary adenomas: micro vs macro, prolactinoma medical care vs transsphenoidal surgery",
+      "normalizedTopic": "pituitary adenomas micro vs macro prolactinoma medical care vs transsphenoidal surgery",
+      "linkedPapers": 1,
+      "linkedGuidelines": 5,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1342,
+      "topic": "Pituitary apoplexy: sudden onset headache, visual loss, emergency hydrocortisone, surgery",
+      "normalizedTopic": "pituitary apoplexy sudden onset headache visual loss emergency hydrocortisone surgery",
+      "linkedPapers": 4,
+      "linkedGuidelines": 11,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1343,
+      "topic": "Plantar Fasciitis and Calcaneal Spurs",
+      "normalizedTopic": "plantar fasciitis and calcaneal spurs",
+      "linkedPapers": 5,
+      "linkedGuidelines": 6,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1344,
+      "topic": "Plaque psoriasis biologic therapy (IL-17/IL-23 inhibitors)",
+      "normalizedTopic": "plaque psoriasis biologic therapy il-17 il-23 inhibitors",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1345,
+      "topic": "Plasma Cell Leukaemia",
+      "normalizedTopic": "plasma cell leukaemia",
+      "linkedPapers": 5,
+      "linkedGuidelines": 6,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1346,
+      "topic": "Platelet Refractoriness",
+      "normalizedTopic": "platelet refractoriness",
+      "linkedPapers": 5,
+      "linkedGuidelines": 5,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1347,
+      "topic": "Platelet Storage Pool Diseases",
+      "normalizedTopic": "platelet storage pool diseases",
+      "linkedPapers": 4,
+      "linkedGuidelines": 5,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1348,
+      "topic": "Platelet transfusion thresholds in haematological malignancies",
+      "normalizedTopic": "platelet transfusion thresholds in haematological malignancies",
+      "linkedPapers": 1,
+      "linkedGuidelines": 3,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1349,
+      "topic": "Pleural effusion and parapneumonic effusion management",
+      "normalizedTopic": "pleural effusion and parapneumonic effusion management",
+      "linkedPapers": 10,
+      "linkedGuidelines": 0,
+      "mentorPresent": "Yes",
+      "mentorState": "Seed/placeholder"
+    },
+    {
+      "no": 1350,
+      "topic": "Pleural Effusion workup",
+      "normalizedTopic": "pleural effusion workup",
+      "linkedPapers": 5,
+      "linkedGuidelines": 5,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1351,
+      "topic": "Pleurodesis techniques",
+      "normalizedTopic": "pleurodesis techniques",
+      "linkedPapers": 1,
+      "linkedGuidelines": 1,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1352,
+      "topic": "Pneumocystis jirovecii Pneumonia",
+      "normalizedTopic": "pneumocystis jirovecii pneumonia",
+      "linkedPapers": 5,
+      "linkedGuidelines": 5,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1353,
+      "topic": "pneumonia",
+      "normalizedTopic": "pneumonia",
+      "linkedPapers": 3,
+      "linkedGuidelines": 5,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1354,
+      "topic": "Point-of-care ultrasound in the ICU: FAST, lung, cardiac, vascular",
+      "normalizedTopic": "point-of-care ultrasound in the icu fast lung cardiac vascular",
+      "linkedPapers": 5,
+      "linkedGuidelines": 9,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1355,
+      "topic": "Poisoning and overdose in the ICU: toxidromes, antidotes, extracorporeal removal",
+      "normalizedTopic": "poisoning and overdose in the icu toxidromes antidotes extracorporeal removal",
+      "linkedPapers": 5,
+      "linkedGuidelines": 5,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1356,
+      "topic": "Polyarteritis Nodosa",
+      "normalizedTopic": "polyarteritis nodosa",
+      "linkedPapers": 4,
+      "linkedGuidelines": 4,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1357,
+      "topic": "Polycystic Kidney Disease: ADPKD",
+      "normalizedTopic": "polycystic kidney disease adpkd",
+      "linkedPapers": 4,
+      "linkedGuidelines": 7,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1358,
+      "topic": "Polycystic Kidney Disease: ARPKD",
+      "normalizedTopic": "polycystic kidney disease arpkd",
+      "linkedPapers": 4,
+      "linkedGuidelines": 5,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1359,
+      "topic": "Polycystic ovary syndrome metabolic management",
+      "normalizedTopic": "polycystic ovary syndrome metabolic management",
+      "linkedPapers": 13,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1360,
+      "topic": "Polycystic ovary syndrome PCOS: Rotterdam criteria, insulin resistance, androgen excess",
+      "normalizedTopic": "polycystic ovary syndrome pcos rotterdam criteria insulin resistance androgen excess",
+      "linkedPapers": 1,
+      "linkedGuidelines": 6,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1361,
+      "topic": "Polycythaemia Vera",
+      "normalizedTopic": "polycythaemia vera",
+      "linkedPapers": 5,
+      "linkedGuidelines": 8,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1362,
+      "topic": "Polycythemia vera: hematocrit targets, aspirin, and cardiovascular risk reduction",
+      "normalizedTopic": "polycythemia vera hematocrit targets aspirin and cardiovascular risk reduction",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1363,
+      "topic": "Polycythemia vera: ruxolitinib for hydroxyurea-resistant or intolerant disease",
+      "normalizedTopic": "polycythemia vera ruxolitinib for hydroxyurea-resistant or intolerant disease",
+      "linkedPapers": 5,
+      "linkedGuidelines": 7,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1364,
+      "topic": "polymyalgia rheumatica",
+      "normalizedTopic": "polymyalgia rheumatica",
+      "linkedPapers": 8,
+      "linkedGuidelines": 3,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1365,
+      "topic": "Polymyalgia rheumatica: diagnostic criteria, low-dose prednisolone, relapse, GCA overlap",
+      "normalizedTopic": "polymyalgia rheumatica diagnostic criteria low-dose prednisolone relapse gca overlap",
+      "linkedPapers": 5,
+      "linkedGuidelines": 8,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1366,
+      "topic": "polymyalgia rheumatica relapse prevention",
+      "normalizedTopic": "polymyalgia rheumatica relapse prevention",
+      "linkedPapers": 3,
+      "linkedGuidelines": 2,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1367,
+      "topic": "Polymyositis and Dermatomyositis: muscle biopsy findings, extramuscular features",
+      "normalizedTopic": "polymyositis and dermatomyositis muscle biopsy findings extramuscular features",
+      "linkedPapers": 5,
+      "linkedGuidelines": 9,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1368,
+      "topic": "Polymyositis differentiation",
+      "normalizedTopic": "polymyositis differentiation",
+      "linkedPapers": 1,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1369,
+      "topic": "Polymyositis vs statin myopathy: CK levels, EMG, biopsy, anti-HMGCR antibody",
+      "normalizedTopic": "polymyositis vs statin myopathy ck levels emg biopsy anti-hmgcr antibody",
+      "linkedPapers": 5,
+      "linkedGuidelines": 8,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1370,
+      "topic": "Polypharmacy and deprescribing: STOPP/START criteria",
+      "normalizedTopic": "polypharmacy and deprescribing stopp start criteria",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1371,
+      "topic": "portal hypertension",
+      "normalizedTopic": "portal hypertension",
+      "linkedPapers": 8,
+      "linkedGuidelines": 5,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1372,
+      "topic": "Portal hypertension and variceal bleeding",
+      "normalizedTopic": "portal hypertension and variceal bleeding",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1373,
+      "topic": "Portal Hypertension Non-Cirrhotic",
+      "normalizedTopic": "portal hypertension non-cirrhotic",
+      "linkedPapers": 2,
+      "linkedGuidelines": 6,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1374,
+      "topic": "Post-cardiac arrest syndrome: targeted temperature management, haemodynamic optimisation",
+      "normalizedTopic": "post-cardiac arrest syndrome targeted temperature management haemodynamic optimisation",
+      "linkedPapers": 5,
+      "linkedGuidelines": 4,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1375,
+      "topic": "Post-cardiac arrest targeted temperature management",
+      "normalizedTopic": "post-cardiac arrest targeted temperature management",
+      "linkedPapers": 3,
+      "linkedGuidelines": 2,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1376,
+      "topic": "Post-ERCP pancreatitis prevention",
+      "normalizedTopic": "post-ercp pancreatitis prevention",
+      "linkedPapers": 2,
+      "linkedGuidelines": 7,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1377,
+      "topic": "Post-exposure prophylaxis PEP: occupational and non-occupational, 72-hour window, regimen",
+      "normalizedTopic": "post-exposure prophylaxis pep occupational and non-occupational 72-hour window regimen",
+      "linkedPapers": 5,
+      "linkedGuidelines": 5,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1378,
+      "topic": "Post-Infectious Glomerulonephritis",
+      "normalizedTopic": "post-infectious glomerulonephritis",
+      "linkedPapers": 3,
+      "linkedGuidelines": 5,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1379,
+      "topic": "Post-intensive care syndrome and long-term ICU outcomes",
+      "normalizedTopic": "post-intensive care syndrome and long-term icu outcomes",
+      "linkedPapers": 1,
+      "linkedGuidelines": 3,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1380,
+      "topic": "Post-intensive care syndrome (PICS): cognitive, physical, and psychological sequelae",
+      "normalizedTopic": "post-intensive care syndrome pics cognitive physical and psychological sequelae",
+      "linkedPapers": 5,
+      "linkedGuidelines": 8,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1381,
+      "topic": "Post-MI beta-blocker therapy contemporary evidence",
+      "normalizedTopic": "post-mi beta-blocker therapy contemporary evidence",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1382,
+      "topic": "Postoperative ileus: prevention and management",
+      "normalizedTopic": "postoperative ileus prevention and management",
+      "linkedPapers": 3,
+      "linkedGuidelines": 5,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1383,
+      "topic": "Postoperative nausea and vomiting: prevention and treatment",
+      "normalizedTopic": "postoperative nausea and vomiting prevention and treatment",
+      "linkedPapers": 3,
+      "linkedGuidelines": 5,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1384,
+      "topic": "post-operative respiratory failure",
+      "normalizedTopic": "post-operative respiratory failure",
+      "linkedPapers": 8,
+      "linkedGuidelines": 2,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1385,
+      "topic": "postpartum haemorrhage tranexamic acid maternal mortality",
+      "normalizedTopic": "postpartum haemorrhage tranexamic acid maternal mortality",
+      "linkedPapers": 8,
+      "linkedGuidelines": 0,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1386,
+      "topic": "post-renal acute kidney injury",
+      "normalizedTopic": "post-renal acute kidney injury",
+      "linkedPapers": 8,
+      "linkedGuidelines": 0,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1387,
+      "topic": "Post-Transplant Complications",
+      "normalizedTopic": "post-transplant complications",
+      "linkedPapers": 1,
+      "linkedGuidelines": 2,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1388,
+      "topic": "postural hypotension",
+      "normalizedTopic": "postural hypotension",
+      "linkedPapers": 8,
+      "linkedGuidelines": 2,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1389,
+      "topic": "Postural Orthostatic Tachycardia Syndrome (POTS): tilt table, non-pharmacological",
+      "normalizedTopic": "postural orthostatic tachycardia syndrome pots tilt table non-pharmacological",
+      "linkedPapers": 5,
+      "linkedGuidelines": 19,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1390,
+      "topic": "Postural Orthostatic Tachycardia Syndrome (POTS): tilt table test criteria, non-pharmacological methods",
+      "normalizedTopic": "postural orthostatic tachycardia syndrome pots tilt table test criteria non-pharmacological methods",
+      "linkedPapers": 3,
+      "linkedGuidelines": 6,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1391,
+      "topic": "Pouchitis",
+      "normalizedTopic": "pouchitis",
+      "linkedPapers": 5,
+      "linkedGuidelines": 8,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1392,
+      "topic": "Precision Oncology and Molecular Profiling",
+      "normalizedTopic": "precision oncology and molecular profiling",
+      "linkedPapers": 2,
+      "linkedGuidelines": 4,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1393,
+      "topic": "Precocious puberty: central vs peripheral causes, GnRH agonist treatment",
+      "normalizedTopic": "precocious puberty central vs peripheral causes gnrh agonist treatment",
+      "linkedPapers": 5,
+      "linkedGuidelines": 12,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1394,
+      "topic": "Prediabetes: impaired fasting glucose, impaired glucose tolerance, prevention interventions",
+      "normalizedTopic": "prediabetes impaired fasting glucose impaired glucose tolerance prevention interventions",
+      "linkedPapers": 5,
+      "linkedGuidelines": 6,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1395,
+      "topic": "pre-eclampsia",
+      "normalizedTopic": "pre-eclampsia",
+      "linkedPapers": 8,
+      "linkedGuidelines": 4,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1396,
+      "topic": "pre-eclampsia management",
+      "normalizedTopic": "pre-eclampsia management",
+      "linkedPapers": 8,
+      "linkedGuidelines": 5,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1397,
+      "topic": "Preeclampsia prevention aspirin",
+      "normalizedTopic": "preeclampsia prevention aspirin",
+      "linkedPapers": 5,
+      "linkedGuidelines": 10,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1398,
+      "topic": "Pregnancy and the Kidney",
+      "normalizedTopic": "pregnancy and the kidney",
+      "linkedPapers": 2,
+      "linkedGuidelines": 46,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1399,
+      "topic": "Pregnancy in chronic kidney disease",
+      "normalizedTopic": "pregnancy in chronic kidney disease",
+      "linkedPapers": 3,
+      "linkedGuidelines": 31,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1400,
+      "topic": "Pregnancy in rheumatic disease: drug safety, disease monitoring, postpartum flare risk",
+      "normalizedTopic": "pregnancy in rheumatic disease drug safety disease monitoring postpartum flare risk",
+      "linkedPapers": 4,
+      "linkedGuidelines": 8,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1401,
+      "topic": "Premature ovarian insufficiency: FSH levels, HRT indications, fertility counselling",
+      "normalizedTopic": "premature ovarian insufficiency fsh levels hrt indications fertility counselling",
+      "linkedPapers": 5,
+      "linkedGuidelines": 45,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1402,
+      "topic": "Preparation for Renal Replacement Therapy",
+      "normalizedTopic": "preparation for renal replacement therapy",
+      "linkedPapers": 5,
+      "linkedGuidelines": 7,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1403,
+      "topic": "pre-renal acute kidney injury",
+      "normalizedTopic": "pre-renal acute kidney injury",
+      "linkedPapers": 8,
+      "linkedGuidelines": 4,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1404,
+      "topic": "Pressure ulcers: staging, prevention and wound management",
+      "normalizedTopic": "pressure ulcers staging prevention and wound management",
+      "linkedPapers": 3,
+      "linkedGuidelines": 5,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1405,
+      "topic": "preventing type 1 diabetes",
+      "normalizedTopic": "preventing type 1 diabetes",
+      "linkedPapers": 8,
+      "linkedGuidelines": 5,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1406,
+      "topic": "Preventive cardiology: cardiovascular risk calculators, primary prevention guidelines",
+      "normalizedTopic": "preventive cardiology cardiovascular risk calculators primary prevention guidelines",
+      "linkedPapers": 1,
+      "linkedGuidelines": 4,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1407,
+      "topic": "Primary adrenal insufficiency Addisons disease: autoimmune causes, crisis prevention",
+      "normalizedTopic": "primary adrenal insufficiency addisons disease autoimmune causes crisis prevention",
+      "linkedPapers": 5,
+      "linkedGuidelines": 27,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1408,
+      "topic": "Primary aldosteronism diagnosis and treatment",
+      "normalizedTopic": "primary aldosteronism diagnosis and treatment",
+      "linkedPapers": 14,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1409,
+      "topic": "primary angioplasty versus thrombolytic therapy acute myocardial infarction",
+      "normalizedTopic": "primary angioplasty versus thrombolytic therapy acute myocardial infarction",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1410,
+      "topic": "Primary biliary cholangitis pharmacotherapy",
+      "normalizedTopic": "primary biliary cholangitis pharmacotherapy",
+      "linkedPapers": 3,
+      "linkedGuidelines": 3,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1411,
+      "topic": "primary care mental health",
+      "normalizedTopic": "primary care mental health",
+      "linkedPapers": 8,
+      "linkedGuidelines": 6,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1412,
+      "topic": "Primary CNS Lymphoma",
+      "normalizedTopic": "primary cns lymphoma",
+      "linkedPapers": 1,
+      "linkedGuidelines": 4,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1413,
+      "topic": "Primary hyperaldosteronism Conns: aldosterone-renin ratio, adrenal vein sampling",
+      "normalizedTopic": "primary hyperaldosteronism conns aldosterone-renin ratio adrenal vein sampling",
+      "linkedPapers": 1,
+      "linkedGuidelines": 5,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1414,
+      "topic": "primary hyperparathyroidism",
+      "normalizedTopic": "primary hyperparathyroidism",
+      "linkedPapers": 8,
+      "linkedGuidelines": 2,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1415,
+      "topic": "Primary hyperparathyroidism: asymptomatic management criteria, parathyroidectomy indications",
+      "normalizedTopic": "primary hyperparathyroidism asymptomatic management criteria parathyroidectomy indications",
+      "linkedPapers": 5,
+      "linkedGuidelines": 26,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1416,
+      "topic": "primary immunodeficiency immunoglobulin replacement",
+      "normalizedTopic": "primary immunodeficiency immunoglobulin replacement",
+      "linkedPapers": 16,
+      "linkedGuidelines": 3,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1417,
+      "topic": "Primary Mediastinal B-Cell Lymphoma",
+      "normalizedTopic": "primary mediastinal b-cell lymphoma",
+      "linkedPapers": 5,
+      "linkedGuidelines": 64,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1418,
+      "topic": "Primary membranous nephropathy immunosuppression",
+      "normalizedTopic": "primary membranous nephropathy immunosuppression",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1419,
+      "topic": "Primary mitral regurgitation: watchful waiting vs surgical repair timing",
+      "normalizedTopic": "primary mitral regurgitation watchful waiting vs surgical repair timing",
+      "linkedPapers": 5,
+      "linkedGuidelines": 7,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1420,
+      "topic": "Primary Myelofibrosis",
+      "normalizedTopic": "primary myelofibrosis",
+      "linkedPapers": 3,
+      "linkedGuidelines": 4,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1421,
+      "topic": "primary prevention icd sudden cardiac death",
+      "normalizedTopic": "primary prevention icd sudden cardiac death",
+      "linkedPapers": 3,
+      "linkedGuidelines": 6,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1422,
+      "topic": "Primary Sclerosing Cholangitis",
+      "normalizedTopic": "primary sclerosing cholangitis",
+      "linkedPapers": 1,
+      "linkedGuidelines": 6,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1423,
+      "topic": "Primary sclerosing cholangitis medical therapy and surveillance",
+      "normalizedTopic": "primary sclerosing cholangitis medical therapy and surveillance",
+      "linkedPapers": 3,
+      "linkedGuidelines": 8,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1424,
+      "topic": "Principles of Radiotherapy",
+      "normalizedTopic": "principles of radiotherapy",
+      "linkedPapers": 5,
+      "linkedGuidelines": 54,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1425,
+      "topic": "Procalcitonin and CRP in infection: diagnostic utility, antibiotic stewardship, limitations",
+      "normalizedTopic": "procalcitonin and crp in infection diagnostic utility antibiotic stewardship limitations",
+      "linkedPapers": 1,
+      "linkedGuidelines": 37,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1426,
+      "topic": "procalcitonin guided antibiotic de escalation in icu",
+      "normalizedTopic": "procalcitonin guided antibiotic de escalation in icu",
+      "linkedPapers": 3,
+      "linkedGuidelines": 1,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1427,
+      "topic": "Procalcitonin-guided antibiotic de-escalation in ICU",
+      "normalizedTopic": "procalcitonin-guided antibiotic de-escalation in icu",
+      "linkedPapers": 3,
+      "linkedGuidelines": 32,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1428,
+      "topic": "procedural sedation",
+      "normalizedTopic": "procedural sedation",
+      "linkedPapers": 8,
+      "linkedGuidelines": 5,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1429,
+      "topic": "prognosis of aortic stenosis",
+      "normalizedTopic": "prognosis of aortic stenosis",
+      "linkedPapers": 8,
+      "linkedGuidelines": 5,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1430,
+      "topic": "prognosis of idiopathic pulmonary fibrosis",
+      "normalizedTopic": "prognosis of idiopathic pulmonary fibrosis",
+      "linkedPapers": 8,
+      "linkedGuidelines": 5,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1431,
+      "topic": "Progressive Supranuclear Palsy (PSP): hummingbird sign, vertical gaze palsy",
+      "normalizedTopic": "progressive supranuclear palsy psp hummingbird sign vertical gaze palsy",
+      "linkedPapers": 5,
+      "linkedGuidelines": 7,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1432,
+      "topic": "Prolactinoma dopamine agonist therapy",
+      "normalizedTopic": "prolactinoma dopamine agonist therapy",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1433,
+      "topic": "prone positioning severe acute respiratory distress syndrome",
+      "normalizedTopic": "prone positioning severe acute respiratory distress syndrome",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1434,
+      "topic": "prostate cancer",
+      "normalizedTopic": "prostate cancer",
+      "linkedPapers": 8,
+      "linkedGuidelines": 8,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1435,
+      "topic": "prosthetic infections",
+      "normalizedTopic": "prosthetic infections",
+      "linkedPapers": 8,
+      "linkedGuidelines": 2,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1436,
+      "topic": "Prosthetic joint infection diagnosis and retention strategy",
+      "normalizedTopic": "prosthetic joint infection diagnosis and retention strategy",
+      "linkedPapers": 3,
+      "linkedGuidelines": 3,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1437,
+      "topic": "Prosthetic Joint Infections",
+      "normalizedTopic": "prosthetic joint infections",
+      "linkedPapers": 3,
+      "linkedGuidelines": 19,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1438,
+      "topic": "Prosthetic joint infection: two-stage vs one-stage revision, biofilm, rifampicin combinations",
+      "normalizedTopic": "prosthetic joint infection two-stage vs one-stage revision biofilm rifampicin combinations",
+      "linkedPapers": 5,
+      "linkedGuidelines": 22,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1439,
+      "topic": "Prosthetic valve thrombosis: thrombolysis vs surgery, anticoagulation intensification",
+      "normalizedTopic": "prosthetic valve thrombosis thrombolysis vs surgery anticoagulation intensification",
+      "linkedPapers": 5,
+      "linkedGuidelines": 5,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1440,
+      "topic": "Protein-Losing Enteropathy",
+      "normalizedTopic": "protein-losing enteropathy",
+      "linkedPapers": 2,
+      "linkedGuidelines": 4,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1441,
+      "topic": "Proteinuria: Assessment and Clinical Significance",
+      "normalizedTopic": "proteinuria assessment and clinical significance",
+      "linkedPapers": 1,
+      "linkedGuidelines": 12,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1442,
+      "topic": "Prothrombin G20210A Mutation",
+      "normalizedTopic": "prothrombin g20210a mutation",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1443,
+      "topic": "Protocol-based versus goal-directed resuscitation in septic shock",
+      "normalizedTopic": "protocol-based versus goal-directed resuscitation in septic shock",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1444,
+      "topic": "Pseudohypoparathyroidism: end-organ PTH resistance, Albright hereditary osteodystrophy",
+      "normalizedTopic": "pseudohypoparathyroidism end-organ pth resistance albright hereditary osteodystrophy",
+      "linkedPapers": 5,
+      "linkedGuidelines": 7,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1445,
+      "topic": "Pseudomonas aeruginosa eradication in bronchiectasis",
+      "normalizedTopic": "pseudomonas aeruginosa eradication in bronchiectasis",
+      "linkedPapers": 5,
+      "linkedGuidelines": 17,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1446,
+      "topic": "Pseudomyxoma Peritonei and HIPEC",
+      "normalizedTopic": "pseudomyxoma peritonei and hipec",
+      "linkedPapers": 5,
+      "linkedGuidelines": 7,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1447,
+      "topic": "psoriasis",
+      "normalizedTopic": "psoriasis",
+      "linkedPapers": 8,
+      "linkedGuidelines": 4,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1448,
+      "topic": "Psoriasis: diagnosis, severity assessment and systemic treatment",
+      "normalizedTopic": "psoriasis diagnosis severity assessment and systemic treatment",
+      "linkedPapers": 3,
+      "linkedGuidelines": 5,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1449,
+      "topic": "psoriatic arthritis",
+      "normalizedTopic": "psoriatic arthritis",
+      "linkedPapers": 8,
+      "linkedGuidelines": 5,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1450,
+      "topic": "Psoriatic arthritis: CASPAR criteria, peripheral and axial patterns, enthesitis, dactylitis",
+      "normalizedTopic": "psoriatic arthritis caspar criteria peripheral and axial patterns enthesitis dactylitis",
+      "linkedPapers": 5,
+      "linkedGuidelines": 12,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1451,
+      "topic": "Psoriatic arthritis IL-17 and targeted therapy",
+      "normalizedTopic": "psoriatic arthritis il-17 and targeted therapy",
+      "linkedPapers": 12,
+      "linkedGuidelines": 5,
+      "mentorPresent": "Yes",
+      "mentorState": "Seed/placeholder"
+    },
+    {
+      "no": 1452,
+      "topic": "Psoriatic Arthritis phenotypes",
+      "normalizedTopic": "psoriatic arthritis phenotypes",
+      "linkedPapers": 5,
+      "linkedGuidelines": 10,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1453,
+      "topic": "Psychogenic non-epileptic seizures (PNES): video-EEG differentiation, management",
+      "normalizedTopic": "psychogenic non-epileptic seizures pnes video-eeg differentiation management",
+      "linkedPapers": 5,
+      "linkedGuidelines": 10,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1454,
+      "topic": "psychosis",
+      "normalizedTopic": "psychosis",
+      "linkedPapers": 8,
+      "linkedGuidelines": 2,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1455,
+      "topic": "Psychosis and acute behavioural disturbance",
+      "normalizedTopic": "psychosis and acute behavioural disturbance",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1456,
+      "topic": "ptsd trauma focused psychotherapy and ssri",
+      "normalizedTopic": "ptsd trauma focused psychotherapy and ssri",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1457,
+      "topic": "PTSD trauma-focused psychotherapy and SSRI",
+      "normalizedTopic": "ptsd trauma-focused psychotherapy and ssri",
+      "linkedPapers": 16,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1458,
+      "topic": "Pulmonary Alveolar Proteinosis",
+      "normalizedTopic": "pulmonary alveolar proteinosis",
+      "linkedPapers": 5,
+      "linkedGuidelines": 7,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1459,
+      "topic": "Pulmonary arterial hypertension in connective tissue disease: screening, ERA, PDE5 inhibitors",
+      "normalizedTopic": "pulmonary arterial hypertension in connective tissue disease screening era pde5 inhibitors",
+      "linkedPapers": 5,
+      "linkedGuidelines": 8,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1460,
+      "topic": "Pulmonary arterial hypertension targeted therapy",
+      "normalizedTopic": "pulmonary arterial hypertension targeted therapy",
+      "linkedPapers": 3,
+      "linkedGuidelines": 7,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1461,
+      "topic": "Pulmonary Arteriovenous Malformations",
+      "normalizedTopic": "pulmonary arteriovenous malformations",
+      "linkedPapers": 4,
+      "linkedGuidelines": 8,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1462,
+      "topic": "Pulmonary artery catheter utility in critically ill patients",
+      "normalizedTopic": "pulmonary artery catheter utility in critically ill patients",
+      "linkedPapers": 2,
+      "linkedGuidelines": 0,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1463,
+      "topic": "pulmonary embolism anticoagulation duration",
+      "normalizedTopic": "pulmonary embolism anticoagulation duration",
+      "linkedPapers": 8,
+      "linkedGuidelines": 5,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1464,
+      "topic": "pulmonary embolism catheter directed thrombolysis intermediate risk outcomes",
+      "normalizedTopic": "pulmonary embolism catheter directed thrombolysis intermediate risk outcomes",
+      "linkedPapers": 8,
+      "linkedGuidelines": 6,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1465,
+      "topic": "Pulmonary embolism diagnosis",
+      "normalizedTopic": "pulmonary embolism",
+      "linkedPapers": 8,
+      "linkedGuidelines": 7,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1466,
+      "topic": "pulmonary embolism risk stratification",
+      "normalizedTopic": "pulmonary embolism risk stratification",
+      "linkedPapers": 8,
+      "linkedGuidelines": 2,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1467,
+      "topic": "pulmonary embolism thrombolysis",
+      "normalizedTopic": "pulmonary embolism thrombolysis",
+      "linkedPapers": 8,
+      "linkedGuidelines": 17,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1468,
+      "topic": "pulmonary embolism YEARS algorithm D-dimer",
+      "normalizedTopic": "pulmonary embolism years algorithm d-dimer",
+      "linkedPapers": 8,
+      "linkedGuidelines": 0,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1469,
+      "topic": "Pulmonary hypertension crisis in the ICU: triggers, inhaled nitric oxide, prostacyclins",
+      "normalizedTopic": "pulmonary hypertension crisis in the icu triggers inhaled nitric oxide prostacyclins",
+      "linkedPapers": 4,
+      "linkedGuidelines": 5,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1470,
+      "topic": "Pulmonary hypertension: WHO classification, haemodynamic definitions, targeted therapy",
+      "normalizedTopic": "pulmonary hypertension who classification haemodynamic definitions targeted therapy",
+      "linkedPapers": 5,
+      "linkedGuidelines": 32,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1471,
+      "topic": "Pulmonary Langerhans Cell Histiocytosis",
+      "normalizedTopic": "pulmonary langerhans cell histiocytosis",
+      "linkedPapers": 5,
+      "linkedGuidelines": 8,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1472,
+      "topic": "pulmonary nodule evaluation and fleischner follow up",
+      "normalizedTopic": "pulmonary nodule evaluation and fleischner follow up",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1473,
+      "topic": "Pulmonary nodule evaluation and Fleischner follow-up",
+      "normalizedTopic": "pulmonary nodule evaluation and fleischner follow-up",
+      "linkedPapers": 18,
+      "linkedGuidelines": 0,
+      "mentorPresent": "Yes",
+      "mentorState": "Seed/placeholder"
+    },
+    {
+      "no": 1474,
+      "topic": "Pulmonary Rehabilitation",
+      "normalizedTopic": "pulmonary rehabilitation",
+      "linkedPapers": 5,
+      "linkedGuidelines": 60,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1475,
+      "topic": "Pulmonary sarcoidosis corticosteroid therapy",
+      "normalizedTopic": "pulmonary sarcoidosis corticosteroid therapy",
+      "linkedPapers": 3,
+      "linkedGuidelines": 5,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1476,
+      "topic": "Pulmonary Tuberculosis",
+      "normalizedTopic": "pulmonary tuberculosis",
+      "linkedPapers": 5,
+      "linkedGuidelines": 29,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1477,
+      "topic": "Pulmonary Vasculitis",
+      "normalizedTopic": "pulmonary vasculitis",
+      "linkedPapers": 5,
+      "linkedGuidelines": 5,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1478,
+      "topic": "Pulmonary Veno-Occlusive Disease",
+      "normalizedTopic": "pulmonary veno-occlusive disease",
+      "linkedPapers": 1,
+      "linkedGuidelines": 5,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1479,
+      "topic": "Pure Red Cell Aplasia",
+      "normalizedTopic": "pure red cell aplasia",
+      "linkedPapers": 1,
+      "linkedGuidelines": 2,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1480,
+      "topic": "pyelonephritis",
+      "normalizedTopic": "pyelonephritis",
+      "linkedPapers": 8,
+      "linkedGuidelines": 8,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1481,
+      "topic": "Pyelonephritis: inpatient vs outpatient management, Gram-negative coverage, imaging indications",
+      "normalizedTopic": "pyelonephritis inpatient vs outpatient management gram-negative coverage imaging indications",
+      "linkedPapers": 5,
+      "linkedGuidelines": 13,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1482,
+      "topic": "Pyoderma Gangrenosum",
+      "normalizedTopic": "pyoderma gangrenosum",
+      "linkedPapers": 5,
+      "linkedGuidelines": 5,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1483,
+      "topic": "Quality improvement and patient safety in the ICU: checklists, daily goals, handover",
+      "normalizedTopic": "quality improvement and patient safety in the icu checklists daily goals handover",
+      "linkedPapers": 4,
+      "linkedGuidelines": 26,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1484,
+      "topic": "Quality measures in acute MI: PPCI door-to-balloon, secondary prevention audits",
+      "normalizedTopic": "quality measures in acute mi ppci door-to-balloon secondary prevention audits",
+      "linkedPapers": 1,
+      "linkedGuidelines": 1,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1485,
+      "topic": "RA and cardiovascular risk: accelerated atherosclerosis, NSAIDs, coxib caution",
+      "normalizedTopic": "ra and cardiovascular risk accelerated atherosclerosis nsaids coxib caution",
+      "linkedPapers": 5,
+      "linkedGuidelines": 3,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1486,
+      "topic": "Rabies pre- and post-exposure prophylaxis",
+      "normalizedTopic": "rabies pre- and post-exposure prophylaxis",
+      "linkedPapers": 3,
+      "linkedGuidelines": 5,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1487,
+      "topic": "Radial versus femoral access for PCI",
+      "normalizedTopic": "radial versus femoral access for pci",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1488,
+      "topic": "Radiation-induced heart disease: coronary artery disease, valvular, pericardial",
+      "normalizedTopic": "radiation-induced heart disease coronary artery disease valvular pericardial",
+      "linkedPapers": 5,
+      "linkedGuidelines": 6,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1489,
+      "topic": "Radiation necrosis vs tumour progression: perfusion MRI and PET scan utility",
+      "normalizedTopic": "radiation necrosis vs tumour progression perfusion mri and pet scan utility",
+      "linkedPapers": 3,
+      "linkedGuidelines": 4,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1490,
+      "topic": "Radiation Pneumonitis",
+      "normalizedTopic": "radiation pneumonitis",
+      "linkedPapers": 5,
+      "linkedGuidelines": 8,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1491,
+      "topic": "radiculopathy",
+      "normalizedTopic": "radiculopathy",
+      "linkedPapers": 8,
+      "linkedGuidelines": 3,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1492,
+      "topic": "RA in pregnancy: disease course, drug safety, biologics, MTX cessation",
+      "normalizedTopic": "ra in pregnancy disease course drug safety biologics mtx cessation",
+      "linkedPapers": 5,
+      "linkedGuidelines": 5,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1493,
+      "topic": "Rapidly Progressive Glomerulonephritis",
+      "normalizedTopic": "rapidly progressive glomerulonephritis",
+      "linkedPapers": 1,
+      "linkedGuidelines": 1,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1494,
+      "topic": "Rate versus rhythm control in atrial fibrillation",
+      "normalizedTopic": "rate versus rhythm control in atrial fibrillation",
+      "linkedPapers": 1,
+      "linkedGuidelines": 1,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1495,
+      "topic": "RA treat-to-target strategy: DAS28, SDAI, CDAI remission thresholds",
+      "normalizedTopic": "ra treat-to-target strategy das28 sdai cdai remission thresholds",
+      "linkedPapers": 11,
+      "linkedGuidelines": 7,
+      "mentorPresent": "Yes",
+      "mentorState": "Seed/placeholder"
+    },
+    {
+      "no": 1496,
+      "topic": "Raynaud phenomenon: primary vs secondary, digital ulcers, calcium channel blockers, PDE5 inhibitors",
+      "normalizedTopic": "raynaud phenomenon primary vs secondary digital ulcers calcium channel blockers pde5 inhibitors",
+      "linkedPapers": 2,
+      "linkedGuidelines": 5,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1497,
+      "topic": "Raynaud's Phenomenon",
+      "normalizedTopic": "raynaud s phenomenon",
+      "linkedPapers": 2,
+      "linkedGuidelines": 5,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1498,
+      "topic": "RCRI score",
+      "normalizedTopic": "rcri score",
+      "linkedPapers": 8,
+      "linkedGuidelines": 0,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1499,
+      "topic": "Reactive Arthritis",
+      "normalizedTopic": "reactive arthritis",
+      "linkedPapers": 2,
+      "linkedGuidelines": 7,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1500,
+      "topic": "Reactive arthritis: Reiter syndrome, triggers, HLA-B27, management",
+      "normalizedTopic": "reactive arthritis reiter syndrome triggers hla-b27 management",
+      "linkedPapers": 2,
+      "linkedGuidelines": 5,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    }
+  ]
+}
