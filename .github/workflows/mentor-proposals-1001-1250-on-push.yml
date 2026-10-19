@@ -60,7 +60,8 @@ jobs:
             const fs = require('fs');
             const path = require('path');
             const db = require('../database');
-            const serverConfig = require('../server/config');
+            const { loadEnv, serverConfig } = require('../config');
+            loadEnv();
             const { fetchUnifiedEvidence } = require('../server/services/search/unifiedEvidenceSearch');
             const { selectTopEvidence } = require('../server/utils/selectTopEvidence');
             const { defaultNormalize } = require('../server/services/flagshipTopicOps');
