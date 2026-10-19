@@ -5,7 +5,7 @@ on:
 
 jobs:
   export:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 10
     steps:
       - name: Export production review CSV files
@@ -57,7 +57,7 @@ jobs:
           chmod 600 ~/.ssh/id_ed25519
           ssh-keyscan -H 178.105.155.246 >> ~/.ssh/known_hosts
           scp -r root@178.105.155.246:/tmp/signal-md-question-review ./question-review-data
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: signal-md-question-review-data
           path: question-review-data/*.csv

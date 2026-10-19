@@ -27,7 +27,7 @@ permissions:
 jobs:
   audit:
     name: Legacy provenance and reachability, against production
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 10
     steps:
       - name: Run the audit in the production app container

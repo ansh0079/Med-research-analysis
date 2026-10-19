@@ -16,7 +16,7 @@ concurrency:
 
 jobs:
   backup:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 45
     env:
       # Storage auto-detection inputs (set these repository/environment secrets to enable durable storage)
@@ -34,7 +34,7 @@ jobs:
       HETZNER_SSH_KEY: ${{ secrets.HETZNER_SSH_KEY }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Install client tools (pg, rclone, jq, ssh-keyscan)
         run: |
@@ -244,7 +244,7 @@ jobs:
 
       - name: Upload as GitHub Actions artifact (14-day retention fallback)
         if: steps.storage.outputs.target == 'artifact'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: postgres-backup-${{ steps.vars.outputs.stamp }}
           path: ${{ steps.vars.outputs.outdir }}/${{ steps.vars.outputs.file }}

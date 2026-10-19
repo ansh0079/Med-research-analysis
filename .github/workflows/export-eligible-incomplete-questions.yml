@@ -5,10 +5,10 @@ on:
 
 jobs:
     export:
-        runs-on: ubuntu-latest
+        runs-on: ubuntu-24.04
         timeout-minutes: 10
         steps:
-            - uses: actions/checkout@v4
+            - uses: actions/checkout@v7
             - name: Configure production SSH
               env:
                   SSH_KEY: ${{ secrets.HETZNER_SSH_KEY }}
@@ -30,7 +30,7 @@ jobs:
                   REMOTE
                   scp root@178.105.155.246:/tmp/signal-md-eligible-incomplete-questions.csv ./signal-md-eligible-incomplete-questions.csv
                   scp root@178.105.155.246:/tmp/signal-md-curriculum-topic-catalog.csv ./signal-md-curriculum-topic-catalog.csv
-            - uses: actions/upload-artifact@v4
+            - uses: actions/upload-artifact@v7
               with:
                   name: signal-md-eligible-incomplete-questions
                   path: |

@@ -5,7 +5,7 @@ on:
 
 jobs:
   export:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 12
     steps:
       - name: Configure production SSH
@@ -93,7 +93,7 @@ jobs:
           REMOTE
           scp -r root@178.105.155.246:/tmp/topic-repair-halves ./topic-repair-halves
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: signal-md-topic-repair-halves
           path: topic-repair-halves/*.csv

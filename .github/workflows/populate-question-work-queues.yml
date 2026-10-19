@@ -5,10 +5,10 @@ on:
 
 jobs:
   populate:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 8
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Upload queue query
         uses: appleboy/scp-action@v0.1.7
         with:
