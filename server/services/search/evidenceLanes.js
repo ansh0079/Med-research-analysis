@@ -97,7 +97,7 @@ function meshTitleCorroboration(article, queryMeshTerms = []) {
     });
 }
 
-function evaluateEligibility(article, { query, queryMeshTerms = [], queryAliases = [] } = {}) {
+function evaluateEligibility(article, { query, queryMeshTerms = [], queryAliases = [], hardZeroHitGuard = false } = {}) {
     if (article?._retraction?.isRetracted) {
         return { eligible: false, route: null, rejectionReason: 'retracted' };
     }
@@ -110,6 +110,13 @@ function evaluateEligibility(article, { query, queryMeshTerms = [], queryAliases
     if (article?._pinnedLandmark) {
         const aliasHit = queryAliasMatchScore(article, queryAliases) > 0;
         const off = isOffTopic(article, query, { queryMeshTerms });
+        // In zero-hit PubMed fallbacks, be stricter: admit curated landmarks only if
+        // clearly on-topic (alias hit OR not off-topic). Do NOT use the historical
+        // single-term expansion fallback in this mode.
+        if (hardZeroHitGuard) {
+            if (aliasHit || !off) return { eligible: true, route: 'curated_landmark', rejectionReason: null };
+            return { eligible: false, route: null, rejectionReason: 'off_topic_pinned_zero_hit' };
+        }
         if (aliasHit || !off) {
             return { eligible: true, route: 'curated_landmark', rejectionReason: null };
         }
