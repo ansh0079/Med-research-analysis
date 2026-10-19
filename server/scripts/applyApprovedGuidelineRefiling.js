@@ -3,6 +3,9 @@
 /**
  * Reports approved guideline-topic moves; --write applies them, records a reversible audit row,
  * and marks only dependent summaries/MCQs for regeneration.
+ *
+ * Bugfix: treat a row as a move only when the canonical topic cluster changes, not when the
+ * stored free-text topic string differs in case or wording from the assigned topic.
  */
 const crypto = require('crypto');
 const { loadEnv } = require('../../config');
@@ -11,17 +14,32 @@ const db = require('../../database');
 
 const WRITE = process.argv.includes('--write');
 
-(async () => {
-    await db.connect();
-    if (WRITE) await db.runMigrations();
-    const rows = await db.all(
-        `SELECT i.guideline_id, i.original_topic, i.assigned_curriculum_topic_id, i.assigned_topic_name,
+async function findApprovedMoves(database) {
+    const candidates = await database.all(
+        `SELECT i.guideline_id, i.original_topic, i.assigned_curriculum_topic_id, i.assigned_topic_name, i.assigned_cluster_id,
                 g.normalized_topic AS current_normalized_topic
          FROM guideline_topic_index i JOIN topic_guidelines g ON CAST(g.id AS TEXT) = i.guideline_id
-         WHERE i.category = 'aligned' AND i.review_state = 'approved' AND i.applied_at IS NULL
-           AND COALESCE(g.normalized_topic, '') <> COALESCE(LOWER(i.assigned_topic_name), '')`,
+         WHERE i.category = 'aligned' AND i.review_state = 'approved' AND i.applied_at IS NULL`,
         [],
     );
+    const moves = [];
+    for (const row of candidates) {
+        const currentId = await database.resolveCurriculumTopicId(row.current_normalized_topic).catch(() => null);
+        if (!currentId || !row.assigned_cluster_id) continue;
+        const currentCluster = await database.get('SELECT cluster_id FROM topic_cluster_index WHERE curriculum_topic_id = ?', [currentId]).catch(() => null);
+        const currentClusterId = currentCluster?.cluster_id || null;
+        if (!currentClusterId) continue;
+        if (currentClusterId !== row.assigned_cluster_id) {
+            moves.push(row);
+        }
+    }
+    return moves;
+}
+
+async function run() {
+    await db.connect();
+    if (WRITE) await db.runMigrations();
+    const rows = await findApprovedMoves(db);
     console.log(JSON.stringify({ approvedMoves: rows.length, write: WRITE, examples: rows.slice(0, 20) }, null, 2));
     if (!WRITE) return;
     const now = new Date().toISOString();
@@ -42,4 +60,10 @@ const WRITE = process.argv.includes('--write');
         );
     }
     console.log(`Applied ${rows.length} approved moves; dependent summaries and guideline MCQs were queued for revision.`);
-})().then(() => process.exit(0)).catch((error) => { console.error(error); process.exit(1); });
+}
+
+if (require.main === module) {
+    run().then(() => process.exit(0)).catch((error) => { console.error(error); process.exit(1); });
+}
+
+module.exports = { findApprovedMoves };

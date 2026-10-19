@@ -1,8 +1,10 @@
 import React from 'react';
 import {
   ClaimsReviewPanel,
+  DraftReviewButtons,
   LearningHealthPanel,
   PreviewPanel,
+  ProposalsTable,
   SeminalPapersEditor,
   SourcesPanel,
   StringListEditor,
@@ -16,6 +18,7 @@ export const KnowledgeReviewPage: React.FC = () => {
   const {
     setCurrentPage,
     topics,
+    topicsTotal,
     selected,
     setSelected,
     query,
@@ -24,12 +27,14 @@ export const KnowledgeReviewPage: React.FC = () => {
     setStatusFilter,
     loading,
     saving,
-    reviewing,
+    reviewAction,
     error,
     notice,
     activeTab,
     setActiveTab,
     proposals,
+    proposalsLoading,
+    proposalsError,
     learningHealth,
     healthLoading,
     healthError,
@@ -58,7 +63,8 @@ export const KnowledgeReviewPage: React.FC = () => {
     handleApproveProposal,
     handleRejectProposal,
     save,
-    markReviewed,
+    discardEdits,
+    setDraftDecision,
     previewGuidance,
     reviewedCount,
     pendingCount,
@@ -131,9 +137,10 @@ export const KnowledgeReviewPage: React.FC = () => {
                 className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs outline-none focus:ring-2 focus:ring-indigo-500 dark:border-slate-700 dark:bg-slate-900 dark:text-white"
               >
                 <option value="">All statuses</option>
-                <option value="ai_generated">AI Generated</option>
-                <option value="human_reviewed">Clinician Reviewed</option>
-                <option value="human_edited">Clinician Edited</option>
+                <option value="pending_review">Needs review</option>
+                <option value="human_reviewed">Approved</option>
+                <option value="human_edited">Clinician edited</option>
+                <option value="ai_generated">AI generated</option>
               </select>
             </div>
             <div className="max-h-[68vh] overflow-y-auto divide-y divide-slate-50 dark:divide-slate-800/60">
@@ -146,34 +153,51 @@ export const KnowledgeReviewPage: React.FC = () => {
               {topics.map((item) => {
                 const s = statusLabel(item.status);
                 const isActive = selected?.id === item.id;
+                const rowBusy = reviewAction?.id === item.id ? reviewAction.decision : null;
                 return (
-                  <button
+                  <div
                     key={item.id}
-                    type="button"
-                    onClick={() => setSelected(item)}
-                    className={`w-full px-4 py-3 text-left transition-colors ${
+                    className={`px-3 py-2 ${
                       isActive
                         ? 'bg-indigo-50 dark:bg-indigo-950/40'
                         : 'hover:bg-slate-50 dark:hover:bg-slate-800/40'
                     }`}
                   >
-                    <p className={`truncate text-sm font-bold ${isActive ? 'text-indigo-700 dark:text-indigo-300' : 'text-slate-800 dark:text-slate-200'}`}>
-                      {item.topic}
-                    </p>
-                    <div className="mt-1.5 flex items-center gap-2">
-                      <span className={`rounded-full px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider ${s.bg}`}>
-                        {s.label}
-                      </span>
-                      <span className="text-[10px] text-slate-400">
-                        {Math.round((item.confidence || 0) * 100)}%
-                      </span>
-                      <span className="ml-auto text-[9px] text-slate-300 dark:text-slate-600">
-                        {item.knowledge?.seminalPapers?.length ?? 0} papers
-                      </span>
-                    </div>
-                  </button>
+                    <button
+                      type="button"
+                      onClick={() => setSelected(item)}
+                      className="w-full text-left"
+                    >
+                      <p className={`truncate text-sm font-bold ${isActive ? 'text-indigo-700 dark:text-indigo-300' : 'text-slate-800 dark:text-slate-200'}`}>
+                        {item.topic}
+                      </p>
+                      <div className="mt-1.5 flex items-center gap-2">
+                        <span className={`rounded-full px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider ${s.bg}`}>
+                          {s.label}
+                        </span>
+                        <span className="text-[10px] text-slate-400">
+                          {Math.round((item.confidence || 0) * 100)}%
+                        </span>
+                        <span className="ml-auto text-[9px] text-slate-300 dark:text-slate-600">
+                          {item.knowledge?.seminalPapers?.length ?? 0} papers
+                        </span>
+                      </div>
+                    </button>
+                    <DraftReviewButtons
+                      compact
+                      status={item.status}
+                      busyDecision={rowBusy}
+                      onApprove={() => void setDraftDecision(item, 'approve')}
+                      onNeedsReview={() => void setDraftDecision(item, 'needs_review')}
+                    />
+                  </div>
                 );
               })}
+              {topicsTotal > topics.length && (
+                <p className="p-3 text-[10px] text-slate-400">
+                  Showing {topics.length} of {topicsTotal}. Search or filter to reach the rest.
+                </p>
+              )}
             </div>
           </aside>
 
@@ -204,24 +228,12 @@ export const KnowledgeReviewPage: React.FC = () => {
                         {statusLabel(selected.status).label}
                       </span>
                       <span className="text-xs text-slate-400">{Math.round((selected.confidence || 0) * 100)}% confidence</span>
-                      {selected.status !== 'human_reviewed' && (
-                        <button
-                          type="button"
-                          onClick={() => void markReviewed()}
-                          disabled={reviewing}
-                          className="flex items-center gap-1.5 rounded-full bg-emerald-600 px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-white hover:bg-emerald-700 disabled:opacity-50 transition-colors"
-                        >
-                          {reviewing
-                            ? <><i className="fas fa-circle-notch fa-spin" /> Saving…</>
-                            : <><i className="fas fa-check-circle" /> Mark Reviewed</>
-                          }
-                        </button>
-                      )}
-                      {selected.status === 'human_reviewed' && (
-                        <span className="flex items-center gap-1.5 text-[10px] font-bold text-emerald-600">
-                          <i className="fas fa-check-circle" /> Clinician approved
-                        </span>
-                      )}
+                      <DraftReviewButtons
+                        status={selected.status}
+                        busyDecision={reviewAction?.id === selected.id ? reviewAction.decision : null}
+                        onApprove={() => void setDraftDecision(selected, 'approve')}
+                        onNeedsReview={() => void setDraftDecision(selected, 'needs_review')}
+                      />
                     </div>
                   </div>
 
@@ -373,7 +385,7 @@ export const KnowledgeReviewPage: React.FC = () => {
                       <div className="flex flex-wrap justify-end gap-2 border-t border-slate-100 pt-5 dark:border-slate-800">
                         <button
                           type="button"
-                          onClick={() => void loadTopics()}
+                          onClick={discardEdits}
                           className="rounded-xl border border-slate-200 px-4 py-2 text-xs font-bold text-slate-600 hover:bg-slate-50 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800 transition-colors"
                         >
                           Discard Changes
@@ -404,6 +416,17 @@ export const KnowledgeReviewPage: React.FC = () => {
 
                   {activeTab === 'sources' && (
                     <SourcesPanel sourceArticles={selected.sourceArticles} />
+                  )}
+
+                  {activeTab === 'proposals' && (
+                    <ProposalsTable
+                      proposals={proposals}
+                      loading={proposalsLoading}
+                      error={proposalsError}
+                      onApprove={(id) => void handleApproveProposal(id)}
+                      onReject={(id) => void handleRejectProposal(id)}
+                      actionBusyId={proposalActionId}
+                    />
                   )}
 
                   {activeTab === 'claims' && (

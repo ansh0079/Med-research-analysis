@@ -1,0 +1,73 @@
+name: Generate Mentor Proposals
+
+on:
+  workflow_dispatch:
+    inputs:
+      sheet:
+        description: 'Excel sheet name (e.g., Topics 0251-0500)'
+        required: true
+        default: 'Topics 0251-0500'
+        type: string
+      dry_run:
+        description: 'Dry run (no DB writes)'
+        required: true
+        default: 'true'
+        type: choice
+        options: ['true', 'false']
+      mode:
+        description: 'Generator mode'
+        required: true
+        default: 'offline'
+        type: choice
+        options: ['offline']
+      commit:
+        description: 'Write directly to topic_knowledge (served by search)'
+        required: true
+        default: 'false'
+        type: choice
+        options: ['true', 'false']
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Prepare topics JSON artifact
+        run: |
+          echo "Using repository topics JSON under data/topic-mentor-batches/"
+          ls -la data/topic-mentor-batches || true
+
+      - name: Copy topics JSON to server
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.HETZNER_HOST || '178.105.155.246' }}
+          username: root
+          key: ${{ secrets.HETZNER_SSH_KEY }}
+          source: "data/topic-mentor-batches/*.json"
+          target: "/opt/medsearch/data/topic-mentor-batches/"
+          overwrite: true
+
+      - name: Generate proposals on server
+        uses: appleboy/ssh-action@v1
+        env:
+          SHEET: ${{ github.event.inputs.sheet }}
+          DRY: ${{ github.event.inputs.dry_run }}
+          MODE: ${{ github.event.inputs.mode }}
+          COMMIT: ${{ github.event.inputs.commit }}
+        with:
+          host: ${{ secrets.HETZNER_HOST || '178.105.155.246' }}
+          username: root
+          key: ${{ secrets.HETZNER_SSH_KEY }}
+          command_timeout: 15m
+          envs: SHEET,DRY,MODE,COMMIT
+          script: |
+            set -euo pipefail
+            cd /opt/medsearch
+            FILE="/opt/medsearch/data/topic-mentor-batches/${SHEET// /_}.json"
+            if [ ! -f "$FILE" ]; then
+              echo "Missing topics file: $FILE"
+              exit 2
+            fi
+            docker compose -f docker-compose.hetzner.yml run --rm --no-deps -T \
+              -e NODE_OPTIONS=--max-old-space-size=1536 web \
+              node scripts/generate-topic-mentor-proposals-offline.js --topics "$FILE" $([ "$DRY" = "true" ] && echo '--dry-run' || true) $([ "$COMMIT" = "true" ] && echo '--commit-live' || true)

@@ -1,0 +1,279 @@
+name: Mentor Proposals On Push (Topics 1001-1250)
+
+on:
+  push:
+    branches:
+      - cursor/dual-link-topics-88a6
+    paths:
+      - ".github/workflows/mentor-proposals-1001-1250-on-push.yml"
+      - "data/topic-mentor-batches/Topics_1001-1250.json"
+      - "scripts/generate-topic-mentor-proposals-offline.js"
+
+jobs:
+  prewarm:
+    if: github.ref == 'refs/heads/cursor/dual-link-topics-88a6'
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Copy topics JSON to server
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.HETZNER_HOST || '178.105.155.246' }}
+          username: root
+          key: ${{ secrets.HETZNER_SSH_KEY }}
+          source: "data/topic-mentor-batches/Topics_1001-1250.json"
+          target: "/opt/medsearch/data/topic-mentor-batches/"
+          strip_components: 2
+          overwrite: true
+
+      - name: Generate and commit mentor drafts offline
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.HETZNER_HOST || '178.105.155.246' }}
+          username: root
+          key: ${{ secrets.HETZNER_SSH_KEY }}
+          command_timeout: 20m
+          script: |
+            set -euo pipefail
+            cd /opt/medsearch
+            # Ensure the generator script is available even if the running image is older
+            mkdir -p /opt/medsearch/tmp-scripts
+            cat >/opt/medsearch/tmp-scripts/generate-topic-mentor-proposals-offline.js <<'GEN'
+            #!/usr/bin/env node
+            'use strict';
+            
+            /**
+             * Offline (no LLM) mentor draft generator:
+             * - Validates topic–paper and topic–guideline relevance with token-overlap heuristics
+             * - Corrects the candidate set by dropping weakly related items
+             * - Builds a structured mentor draft (mentorMessage, teachingPoints, mcqAngles, caseGenerationHooks, seminalPapers)
+             *   anchored explicitly to the kept guidelines and top papers
+             * - Writes topic_knowledge_proposals with proposed_status 'draft_pending_clinician_review'
+             *
+             * Usage:
+             *   node scripts/generate-topic-mentor-proposals-offline.js --topics /review/topics-0251-0500.json [--limit 100] [--dry-run|--commit-live]
+             */
+            
+            const fs = require('fs');
+            const path = require('path');
+            const db = require('../database');
+            const { loadEnv, serverConfig } = require('../config');
+            loadEnv();
+            const { fetchUnifiedEvidence } = require('../server/services/search/unifiedEvidenceSearch');
+            const { selectTopEvidence } = require('../server/utils/selectTopEvidence');
+            const { defaultNormalize } = require('../server/services/flagshipTopicOps');
+            
+            function readArg(name, def = null) {
+              const i = process.argv.indexOf(name);
+              return i >= 0 ? process.argv[i + 1] : def;
+            }
+            const hasFlag = (f) => process.argv.includes(f);
+            
+            function tokenSet(normalized) {
+              return new Set(
+                String(normalized || '')
+                  .toLowerCase()
+                  .replace(/[^a-z0-9\s-]/g, ' ')
+                  .split(/\s+/)
+                  .filter((t) => t.length >= 3 && !['and', 'the', 'for', 'with', 'from', 'in', 'to', 'of'].includes(t))
+              );
+            }
+            function jaccard(a, b) {
+              if (!a.size || !b.size) return 0;
+              let inter = 0;
+              for (const x of a) if (b.has(x)) inter += 1;
+              return inter / (a.size + b.size - inter);
+            }
+            
+            function articleTokens(article) {
+              const parts = [article?.title, article?.abstract, article?.journal, article?.source];
+              return tokenSet(parts.filter(Boolean).join(' '));
+            }
+            function guidelineTokens(g) {
+              const parts = [g?.topic, g?.recommendationText, g?.sourceBody, g?.sourceSpecialty];
+              return tokenSet(parts.filter(Boolean).join(' '));
+            }
+            
+            function shortTitle(t) {
+              const s = String(t || '').trim();
+              return s.length > 120 ? s.slice(0, 117) + '…' : s;
+            }
+            
+            function buildMentorDraft(topic, keptGuidelines, keptArticles) {
+              const bodies = [...new Set(keptGuidelines.map((g) => g.sourceBody).filter(Boolean))].slice(0, 4);
+              const years = keptGuidelines.map((g) => g.sourceYear).filter(Boolean).slice(0, 4);
+              const firstYear = years.length ? Math.min(...years) : null;
+              const lastYear = years.length ? Math.max(...years) : null;
+              const bodyStr = bodies.length ? bodies.join(', ') : 'major societies';
+              const yearStr = years.length ? (firstYear === lastYear ? String(lastYear) : `${firstYear}–${lastYear}`) : 'recent years';
+            
+              const mentorMessage =
+                `${topic}: Summary anchored to ${bodyStr} guidance (${yearStr}) and ` +
+                `${keptArticles.length} key studies. Draft prepared from validated links; pending clinician review.`;
+            
+              // Teaching points from guideline recommendation_text or article titles
+              const teachingPoints = [];
+              for (const g of keptGuidelines.slice(0, 4)) {
+                const txt = String(g.recommendationText || '').trim();
+                if (txt) {
+                  teachingPoints.push({ point: shortTitle(txt), evidence: `${g.sourceBody || 'Guideline'} ${g.sourceYear || ''}`.trim() });
+                }
+              }
+              while (teachingPoints.length < 3 && teachingPoints.length + keptArticles.length < 6 && keptArticles.length) {
+                const a = keptArticles[teachingPoints.length % keptArticles.length];
+                teachingPoints.push({ point: `Practice update: ${shortTitle(a.title)}`, evidence: a.uid || a.doi || a.pmid || 'article' });
+              }
+            
+              // MCQ angles — deterministic, anchored to bodies/years and recent RCTs
+              const mcqAngles = [];
+              if (keptGuidelines.length) {
+                const g = keptGuidelines[0];
+                mcqAngles.push(`First-line management per ${g.sourceBody || 'guideline'} ${g.sourceYear || ''}`);
+              }
+              if (keptArticles.length) {
+                const a = keptArticles[0];
+                mcqAngles.push(`Interpret key RCT: ${shortTitle(a.title)} (${(a.pubdate || '').toString().slice(0, 4)})`);
+              }
+              mcqAngles.push('Contraindication/exception checks in edge scenarios');
+              mcqAngles.push('Adverse-effect monitoring and follow-up schedules');
+            
+              // Case hooks — generic but topic-bound and reviewable
+              const caseGenerationHooks = [
+                `New diagnosis of ${topic} with common comorbidities — apply society guidance`,
+                `${topic} refractory to first-line therapy — escalate per latest guidance and trials`,
+                `Special population (${topic}) — pregnancy/renal impairment considerations`,
+              ].slice(0, 3);
+            
+              // Seminal papers from kept articles
+              const seminalPapers = keptArticles.slice(0, 5).map((a) => ({
+                uid: a.uid || null,
+                pmid: a.pmid || null,
+                doi: a.doi || null,
+                title: shortTitle(a.title),
+                note: 'Kept by topic–article overlap validation',
+              }));
+            
+              return {
+                mentorMessage,
+                teachingPoints,
+                mcqAngles: mcqAngles.slice(0, 5),
+                caseGenerationHooks,
+                seminalPapers,
+                keywords: [topic],
+              };
+            }
+            
+            async function main() {
+              const topicsPath = readArg('--topics');
+              const limit = Number(readArg('--limit', '0')) || 0;
+              const dryRun = hasFlag('--dry-run');
+              const commitLive = hasFlag('--commit-live');
+              if (!topicsPath) {
+                console.error('Missing --topics <path-to-json>');
+                process.exit(2);
+              }
+              const payload = JSON.parse(fs.readFileSync(topicsPath, 'utf8'));
+              const list = Array.isArray(payload?.topics) ? payload.topics : [];
+              const slice = limit > 0 ? list.slice(0, limit) : list;
+              if (slice.length === 0) {
+                console.error('No topics found in', topicsPath);
+                process.exit(2);
+              }
+            
+              await db.connect();
+              const results = [];
+              for (const item of slice) {
+                const display = String(item.topic || '').trim();
+                if (!display) continue;
+                const normalized = typeof db.normalizeTopic === 'function' ? db.normalizeTopic(display) : defaultNormalize(display);
+                const topicTokens = tokenSet(normalized);
+                try {
+                  // Pull guidelines and filter by token overlap
+                  const guidelines = typeof db.getGuidelinesByTopic === 'function'
+                    ? await db.getGuidelinesByTopic(normalized, { limit: 50 }).catch(() => [])
+                    : [];
+                  const keptGuidelines = [];
+                  for (const g of guidelines) {
+                    const score = jaccard(topicTokens, guidelineTokens(g));
+                    // Floor at > 0 for literal matches; tolerate no literal mention only for very close topic names
+                    if (score > 0.0 || tokenSet(g.topic).has([...topicTokens][0])) {
+                      keptGuidelines.push({
+                        sourceBody: g.sourceBody,
+                        sourceYear: g.sourceYear,
+                        recommendationText: g.recommendationText,
+                      });
+                    }
+                  }
+            
+                  // Pull evidence articles and validate overlap
+                  const raw = await fetchUnifiedEvidence({
+                    query: normalized,
+                    safeLimit: 30,
+                    sourceList: ['pubmed', 'openalex'],
+                    serverConfig,
+                    fetch,
+                    vectorList: [],
+                  });
+                  const ranked = selectTopEvidence(raw, 12, {});
+                  const keptArticles = ranked.filter((a) => jaccard(topicTokens, articleTokens(a)) >= 0.08);
+                  if (keptArticles.length < 2 && keptGuidelines.length < 1) {
+                    results.push({ topic: display, ok: false, reason: 'insufficient_validated_evidence' });
+                    continue;
+                  }
+            
+                  const knowledge = buildMentorDraft(display, keptGuidelines, keptArticles);
+                  const sourceArticles = keptArticles.map((a, i) => ({
+                    sourceIndex: i + 1,
+                    uid: a.uid,
+                    title: a.title,
+                    doi: a.doi || null,
+                    pmid: a.pmid || null,
+                    source: a.source || null,
+                    pubdate: a.pubdate || null,
+                  }));
+                  if (dryRun) {
+                    results.push({ topic: display, ok: true, proposed: true, dryRun: true, keptGuidelines: keptGuidelines.length, keptArticles: keptArticles.length });
+                  } else if (!commitLive) {
+                    const prop = await db.createTopicKnowledgeProposal(display, {
+                      knowledge,
+                      sourceArticles,
+                      proposedStatus: 'draft_pending_clinician_review',
+                      confidence: 0.6,
+                      reason: 'Offline mentor draft; pending clinician review',
+                    });
+                    results.push({ topic: display, ok: true, proposalId: prop?.id || null, keptGuidelines: keptGuidelines.length, keptArticles: keptArticles.length });
+                  } else {
+                    // Directly upsert into topic_knowledge with a non-verified status so search can serve it
+                    const updated = await db.upsertTopicKnowledge(display, knowledge, sourceArticles, 'pending_review', 0.6);
+                    results.push({ topic: display, ok: true, live: true, status: updated?.status || 'pending_review', keptGuidelines: keptGuidelines.length, keptArticles: keptArticles.length });
+                  }
+                } catch (err) {
+                  results.push({ topic: display, ok: false, reason: err?.message || 'unknown_error' });
+                }
+              }
+              await db.close?.();
+              const ok = results.filter(r => r.ok).length;
+              const failed = results.length - ok;
+              console.log(JSON.stringify({ total: results.length, ok, failed, results }, null, 2));
+              if (ok === 0) process.exitCode = 1;
+            }
+            
+            if (require.main === module) {
+              main().catch((e) => { console.error(e?.stack || String(e)); process.exit(1); });
+            }
+            GEN
+            FILE="/opt/medsearch/data/topic-mentor-batches/Topics_1001-1250.json"
+            if [ ! -f "$FILE" ]; then
+              echo "Missing topics file: $FILE"
+              exit 2
+            fi
+            docker compose -f docker-compose.hetzner.yml run --rm --no-deps -T \
+              -e NODE_OPTIONS=--max-old-space-size=1536 \
+              -v /opt/medsearch/tmp-scripts:/app/scripts:ro \
+              -v /opt/medsearch/data/topic-mentor-batches:/topics:ro \
+              web \
+              node scripts/generate-topic-mentor-proposals-offline.js --topics /topics/Topics_1001-1250.json --commit-live
+

@@ -112,7 +112,7 @@ function registerTopicKnowledgeRoutes(app, deps) {
                 topic: reviewed.topic,
                 userId: req.user?.id || null,
             });
-            res.json({ found: true, agentGuidance: buildAgentGuidance(reviewed) });
+            res.json({ found: true, agentGuidance: buildAgentGuidance(reviewed), topicKnowledge: reviewed });
         } catch (error) {
             req.log?.error?.({ err: error, topic }, 'Topic knowledge review failed');
             res.status(500).json({ error: isDev ? error.message : 'Internal Server Error' });
