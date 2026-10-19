@@ -14,6 +14,12 @@ on:
         default: 'true'
         type: choice
         options: ['true', 'false']
+      mode:
+        description: 'Generator mode (offline=no LLM)'
+        required: true
+        default: 'offline'
+        type: choice
+        options: ['offline']
 
 jobs:
   generate:
@@ -40,6 +46,7 @@ jobs:
         env:
           SHEET: ${{ github.event.inputs.sheet }}
           DRY: ${{ github.event.inputs.dry_run }}
+          MODE: ${{ github.event.inputs.mode }}
         with:
           host: ${{ secrets.HETZNER_HOST || '178.105.155.246' }}
           username: root
@@ -56,4 +63,4 @@ jobs:
             fi
             docker compose -f docker-compose.hetzner.yml run --rm --no-deps -T \
               -e NODE_OPTIONS=--max-old-space-size=1536 web \
-              node scripts/generate-topic-knowledge-proposals.js --topics "$FILE" $([ "$DRY" = "true" ] && echo '--dry-run' || true)
+              node scripts/generate-topic-mentor-proposals-offline.js --topics "$FILE" $([ "$DRY" = "true" ] && echo '--dry-run' || true)
