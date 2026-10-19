@@ -75,7 +75,8 @@ async function listDrafts(db, { status = '', search = '', limit = 50, offset = 0
         [...params, limit, offset],
     );
     const counts = await db.all('SELECT status, COUNT(*) AS n FROM topic_mentor_drafts GROUP BY status');
-    return { items: rows.map((r) => mapRow(r)), counts: Object.fromEntries(counts.map((c) => [c.status, Number(c.n)])) };
+    // Full pages are included so the review panel can show a draft and its decision buttons without a second request.
+    return { items: rows.map((r) => mapRow(r, { full: true })), counts: Object.fromEntries(counts.map((c) => [c.status, Number(c.n)])) };
 }
 
 async function getDraft(db, topicId) {

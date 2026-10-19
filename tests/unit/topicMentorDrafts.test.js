@@ -34,6 +34,7 @@ describe('topic mentor drafts', () => {
         expect(list.items.map((i) => i.topic)).toEqual(['delirium (edited)', 'dengue']);
         expect(list.counts).toEqual({ draft_pending_clinician_review: 1, needs_evidence: 1 });
         expect((await listDrafts(db, { status: 'needs_evidence' })).items).toHaveLength(1);
+        expect(list.items[0].page.teaching_points).toHaveLength(1);
 
         const one = await getDraft(db, 'topic-1');
         expect(one.page.teaching_points).toHaveLength(1);
