@@ -1,0 +1,42 @@
+{
+  "sheet": "Topics 0251-0500 retries",
+  "count": 4,
+  "topics": [
+    {
+      "no": 266,
+      "topic": "Bone and joint infection oral step-down therapy",
+      "normalizedTopic": "bone and joint infection oral step-down therapy",
+      "linkedPapers": 3,
+      "linkedGuidelines": 1,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 268,
+      "topic": "Bone Marrow Fibrosis Grading",
+      "normalizedTopic": "bone marrow fibrosis grading",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 486,
+      "topic": "CT head and CT pulmonary angiography: common acute findings",
+      "normalizedTopic": "ct head and ct pulmonary angiography common acute findings",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 488,
+      "topic": "Cushings syndrome: ACTH-dependent vs independent, screening, dexamethasone suppression",
+      "normalizedTopic": "cushings syndrome acth-dependent vs independent screening dexamethasone suppression",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    }
+  ]
+}
