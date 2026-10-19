@@ -1,0 +1,56 @@
+name: Apply Ready MCQ Review (588) On Push
+
+on:
+  push:
+    branches:
+      - cursor/dual-link-topics-88a6
+    paths:
+      - "data/mcq-review/apply-mcq-review_ready_588.json"
+      - ".github/workflows/apply-mcq-ready-588-on-push.yml"
+
+jobs:
+  apply-ready-588:
+    if: github.ref == 'refs/heads/cursor/dual-link-topics-88a6'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    concurrency:
+      group: medsearch-production-deploy
+      cancel-in-progress: false
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Copy review JSON to server
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.HETZNER_HOST || '178.105.155.246' }}
+          username: root
+          key: ${{ secrets.HETZNER_SSH_KEY }}
+          source: "data/mcq-review/apply-mcq-review_ready_588.json"
+          target: "/opt/medsearch/data/mcq-review/"
+          overwrite: true
+
+      - name: Apply MCQ review edits (apply)
+        uses: appleboy/ssh-action@v1
+        env:
+          DATA: apply-mcq-review_ready_588.json
+        with:
+          host: ${{ secrets.HETZNER_HOST || '178.105.155.246' }}
+          username: root
+          key: ${{ secrets.HETZNER_SSH_KEY }}
+          command_timeout: 10m
+          envs: DATA
+          script: |
+            set -euo pipefail
+            cd /opt/medsearch
+            FILE="/opt/medsearch/data/mcq-review/${DATA}"
+            if [ ! -f "$FILE" ]; then
+              echo "Review file not found: $FILE"
+              exit 2
+            fi
+            docker compose -f docker-compose.hetzner.yml run --rm --no-deps -T -e USE_POSTGRES_MAIN=true \
+              -v /opt/medsearch/data/mcq-review:/review:ro web \
+              node server/scripts/applyMcqReviewEdits.js --data "/review/${DATA}" --apply
+            # Summarize applied changes
+            docker exec medsearch-pg psql -U medsearch -d medsearch -At -c \
+              "SELECT action, COUNT(*) FROM mcq_review_overrides WHERE applied_by='workflow:apply-mcq-review' GROUP BY action ORDER BY action;"
