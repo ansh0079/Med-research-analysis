@@ -9,6 +9,7 @@ const {
 } = require('../../services/learningVelocityService');
 const { updateInferredMisconceptionsForTopic } = require('../../services/misconceptionInferenceService');
 const { analyzeQuizErrorPatterns } = require('../../services/quizErrorPatternService');
+const { remediatePrerequisites } = require('../../services/learning/prerequisiteRemediation');
 const {
     attributeAgentQuizOutcomeReward,
     attributeQuizAttemptRewards,
@@ -293,6 +294,17 @@ function registerQuizRoutes(app, deps) {
             await db.mergeUserTopicWeakOutlineNodes(userId, topic, attempts).catch((err) => { logger.warn({ err }, 'mergeUserTopicWeakOutlineNodes failed'); return null; });
 
             const missedAttempts = attemptsWithJudgement.filter((attempt) => !attempt.isCorrect);
+            // Curriculum remediation: a high-confidence miss often marks a gap in
+            // a prerequisite concept. Seed FSRS cards for parent concepts so review
+            // re-teaches the foundation first. Best-effort — never blocks quiz flow.
+            if (missedAttempts.length > 0) {
+                void remediatePrerequisites(db, spacedRep, {
+                    userId,
+                    topic,
+                    normalizedTopic,
+                    missedAttempts,
+                }).catch((err) => { logger.warn({ err }, 'remediatePrerequisites failed'); return null; });
+            }
             const remediationTargets = missedAttempts
                 .map((attempt) => ({
                     outlineNodeId: attempt.outlineNodeId || null,
@@ -411,6 +423,11 @@ function registerQuizRoutes(app, deps) {
 
             void attributeAgentQuizOutcomeReward(db, userId, attemptsWithJudgement, topic)
                 .catch((err) => { logger.warn({ err }, 'attributeAgentQuizOutcomeReward failed'); });
+
+            void remediatePrerequisites(db, userId, attemptsWithJudgement, {
+                topic,
+                normalizedTopic,
+            }).catch((err) => { logger.warn({ err }, 'remediatePrerequisites failed'); });
 
             recordQuizMissesForSearch(userId, req.sessionId, topic, attemptsWithJudgement);
 
