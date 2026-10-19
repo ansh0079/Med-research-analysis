@@ -4,7 +4,7 @@ const fs = require('fs');
 const os = require('os');
 const path = require('path');
 const { Database } = require('../../database');
-const { upsertDrafts, listDrafts, getDraft, reviewDraft } = require('../../server/services/topicMentorDrafts');
+const { upsertDrafts, listDrafts, getDraft, reviewDraft, publishDraft, draftToKnowledge } = require('../../server/services/topicMentorDrafts');
 
 const draft = (over = {}) => ({
     topicId: 'topic-1',
@@ -46,6 +46,41 @@ describe('topic mentor drafts', () => {
         expect(out.reviewedBy).toBe('7');
         expect(await upsertDrafts(db, [draft({ topic: 'overwritten' })])).toEqual({ inserted: 0, updated: 0, skippedReviewed: 1 });
         expect((await getDraft(db, 'topic-1')).topic).toBe('delirium (edited)');
+    });
+
+    test('draft maps onto the knowledge shape with 1-based source indices', () => {
+        const { knowledge, sourceArticles } = draftToKnowledge({
+            mentor_intro: 'Intro.',
+            teaching_points: [{ claim: 'A.', cites: ['22', '11'] }, { claim: 'B.', cites: ['22'] }],
+            uncertainties: ['U.'], mcq_angles: ['M.'], case_hooks: ['C.'], gaps: 'G.',
+            sources: [{ pmid: '11', title: 'Meta', design: 'meta-analysis', year: '2024' }, { pmid: '22', title: 'Guide', design: 'guideline', year: '2025' }],
+        });
+        expect(sourceArticles.map((s) => s.uid)).toEqual(['pmid:11', 'pmid:22']);
+        expect(knowledge.teachingPoints[0]).toMatchObject({ sourceIndices: [2, 1], confidence: 'HIGH' });
+        expect(knowledge.teachingPoints[1].sourceIndices).toEqual([2]);
+        expect(knowledge.mentorMessage).toBe('Intro.');
+        expect(knowledge.controversies[0].issue).toBe('U.');
+    });
+
+    test('publish needs approval, writes human_reviewed knowledge once, and keeps the previous content', async () => {
+        await upsertDrafts(db, [draft({ topicId: 'topic-3', topic: 'gout' })]);
+        const calls = [];
+        const fake = {
+            get: (...a) => db.get(...a),
+            run: (...a) => db.run(...a),
+            getTopicKnowledge: async () => ({ knowledge: { mentorMessage: 'old' }, sourceArticles: [], status: 'ai_generated' }),
+            upsertTopicKnowledge: async (...a) => { calls.push(a); return { id: 1 }; },
+        };
+        await expect(publishDraft(fake, { topicId: 'topic-3' })).rejects.toThrow('only an approved draft');
+        await reviewDraft(db, { topicId: 'topic-3', decision: 'approved', userId: 1 });
+        const out = await publishDraft(fake, { topicId: 'topic-3', userId: 1 });
+        expect(out.status).toBe('published');
+        expect(calls).toHaveLength(1);
+        expect(calls[0][0]).toBe('gout');
+        expect(calls[0][3]).toBe('human_reviewed');
+        const row = await db.get('SELECT previous_knowledge_json FROM topic_mentor_drafts WHERE topic_id = ?', ['topic-3']);
+        expect(JSON.parse(row.previous_knowledge_json).knowledge.mentorMessage).toBe('old');
+        await expect(publishDraft(fake, { topicId: 'topic-3' })).rejects.toThrow('already published');
     });
 
     test('invalid decisions, missing drafts and approving an evidence-less draft are refused', async () => {

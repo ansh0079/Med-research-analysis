@@ -1,6 +1,6 @@
 'use strict';
 
-const { listDrafts, getDraft, reviewDraft } = require('../services/topicMentorDrafts');
+const { listDrafts, getDraft, reviewDraft, publishDraft } = require('../services/topicMentorDrafts');
 
 function registerAdminTopicDraftRoutes(app, { db, requireAuthJwt, requireRole }) {
     const guard = [requireAuthJwt, requireRole('admin', 'curator')];
@@ -40,6 +40,18 @@ function registerAdminTopicDraftRoutes(app, { db, requireAuthJwt, requireRole })
         } catch (error) {
             const status = /Invalid|not found|cannot be approved/.test(error.message) ? 400 : 500;
             req.log.error({ err: error }, 'Topic mentor draft review error');
+            res.status(status).json({ error: status === 400 ? error.message : 'Internal server error' });
+        }
+    });
+
+    // Publishing overwrites live topic knowledge, so it is limited to admins.
+    app.post('/api/admin/topic-mentor-drafts/:topicId/publish', requireAuthJwt, requireRole('admin'), async (req, res) => {
+        try {
+            const draft = await publishDraft(db, { topicId: req.params.topicId, userId: req.user?.id || null });
+            res.json({ draft });
+        } catch (error) {
+            const status = /Invalid|not found|refused/.test(error.message) ? 400 : 500;
+            req.log.error({ err: error }, 'Topic mentor draft publish error');
             res.status(status).json({ error: status === 400 ? error.message : 'Internal server error' });
         }
     });

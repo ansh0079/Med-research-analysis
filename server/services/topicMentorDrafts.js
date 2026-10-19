@@ -57,6 +57,8 @@ function mapRow(row, { full = false } = {}) {
         reviewerNotes: row.reviewer_notes,
         reviewedBy: row.reviewed_by,
         reviewedAt: row.reviewed_at,
+        publishedAt: row.published_at || null,
+        publishedBy: row.published_by || null,
     };
     if (!full) return base;
     return { ...base, page, evidence: parse(row.evidence_json, {}) };
@@ -94,4 +96,57 @@ async function reviewDraft(db, { topicId, decision, notes = '', userId = null, n
     return getDraft(db, topicId);
 }
 
-module.exports = { upsertDrafts, listDrafts, getDraft, reviewDraft, DRAFT, NEEDS_EVIDENCE, DECISIONS };
+/** Map a draft page onto the topic_knowledge shape the app already serves. Source indices are 1-based into sourceArticles. */
+function draftToKnowledge(page) {
+    const sources = Array.isArray(page.sources) ? page.sources : [];
+    const indexOf = new Map(sources.map((s, i) => [String(s.pmid), i + 1]));
+    const sourceArticles = sources.map((s) => ({
+        uid: `pmid:${s.pmid}`,
+        pmid: String(s.pmid),
+        title: s.title,
+        year: s.year,
+        publicationTypes: s.design ? [s.design] : [],
+        doi: s.doi || null,
+    }));
+    const hasGuideline = (cites) => cites.some((c) => sources.find((s) => String(s.pmid) === String(c))?.design === 'guideline');
+    return {
+        knowledge: {
+            mentorMessage: page.mentor_intro,
+            teachingPoints: (page.teaching_points || []).map((t) => ({
+                claim: t.claim,
+                sourceIndices: (t.cites || []).map((c) => indexOf.get(String(c))).filter(Boolean),
+                guidelineIndices: [],
+                confidence: hasGuideline(t.cites || []) ? 'HIGH' : 'MODERATE',
+            })),
+            caseGenerationHooks: page.case_hooks || [],
+            mcqAngles: page.mcq_angles || [],
+            controversies: (page.uncertainties || []).map((issue) => ({ issue, sourceIndices: [], guidelineIndices: [] })),
+            reviewerGaps: page.gaps || '',
+            sourceArticles,
+        },
+        sourceArticles,
+    };
+}
+
+/** Copy an approved draft into topic_knowledge as human_reviewed, keeping the previous content for rollback. */
+async function publishDraft(db, { topicId, userId = null, now = new Date().toISOString() }) {
+    const row = await db.get('SELECT * FROM topic_mentor_drafts WHERE topic_id = ?', [String(topicId)]);
+    if (!row) throw new Error('Draft not found');
+    if (row.review_decision !== 'approved') throw new Error('Invalid state: only an approved draft can be published');
+    if (row.published_at) throw new Error('Invalid state: draft is already published');
+    const page = parse(row.page_json, {});
+    if (!Array.isArray(page.teaching_points) || !page.teaching_points.length) throw new Error('Invalid state: draft has no teaching points');
+
+    const previous = await db.getTopicKnowledge(row.topic);
+    const { knowledge, sourceArticles } = draftToKnowledge(page);
+    const saved = await db.upsertTopicKnowledge(row.topic, knowledge, sourceArticles, 'human_reviewed', 0.9);
+    if (!saved) throw new Error('topic_knowledge write was refused');
+
+    await db.run(
+        'UPDATE topic_mentor_drafts SET status = ?, previous_knowledge_json = ?, published_at = ?, published_by = ?, updated_at = ? WHERE topic_id = ?',
+        ['published', previous ? JSON.stringify({ knowledge: previous.knowledge, sourceArticles: previous.sourceArticles, status: previous.status }) : null, now, userId == null ? null : String(userId), now, String(topicId)],
+    );
+    return getDraft(db, topicId);
+}
+
+module.exports = { upsertDrafts, listDrafts, getDraft, reviewDraft, publishDraft, draftToKnowledge, DRAFT, NEEDS_EVIDENCE, DECISIONS };
