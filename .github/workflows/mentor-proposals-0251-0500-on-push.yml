@@ -1,0 +1,46 @@
+name: Mentor Proposals On Push (Topics 0251-0500)
+
+on:
+  push:
+    branches:
+      - cursor/dual-link-topics-88a6
+    paths:
+      - ".github/workflows/mentor-proposals-0251-0500-on-push.yml"
+      - "data/topic-mentor-batches/topics-0251-0500.json"
+      - "scripts/generate-topic-mentor-proposals-offline.js"
+
+jobs:
+  prewarm:
+    if: github.ref == 'refs/heads/cursor/dual-link-topics-88a6'
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Copy topics JSON to server
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.HETZNER_HOST || '178.105.155.246' }}
+          username: root
+          key: ${{ secrets.HETZNER_SSH_KEY }}
+          source: "data/topic-mentor-batches/topics-0251-0500.json"
+          target: "/opt/medsearch/data/topic-mentor-batches/"
+          overwrite: true
+
+      - name: Generate and commit mentor drafts offline
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.HETZNER_HOST || '178.105.155.246' }}
+          username: root
+          key: ${{ secrets.HETZNER_SSH_KEY }}
+          command_timeout: 20m
+          script: |
+            set -euo pipefail
+            cd /opt/medsearch
+            FILE="/opt/medsearch/data/topic-mentor-batches/topics-0251-0500.json"
+            [ -f "$FILE" ] || FILE="/opt/medsearch/data/topic-mentor-batches/Topics_0251-0500.json"
+            if [ ! -f "$FILE" ]; then
+              echo "Missing topics file: $FILE"
+              exit 2
+            fi
+            docker compose -f docker-compose.hetzner.yml run --rm --no-deps -T \
+              -e NODE_OPTIONS=--max-old-space-size=1536 web \
+              node scripts/generate-topic-mentor-proposals-offline.js --topics "$FILE" --commit-live
