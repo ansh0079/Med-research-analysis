@@ -8,7 +8,40 @@ const {
     buildTopSourcesBlock,
     renderTopSourcesDocument,
     buildComparisonBlock,
+    topicRelevance,
 } = require('../../server/services/agentHelpers/topSources');
+
+describe('topical relevance of top sources', () => {
+    const ald = 'alcoholic liver disease';
+    const guidelines = [
+        { sourceBody: 'AASLD', sourceYear: 2026, recommendationText: 'Adults with non-alcoholic steatohepatitis and fibrosis should be considered for semaglutide.' },
+        { sourceBody: 'Italian Society for Pediatric Endocrinology', sourceYear: 2024, recommendationText: 'Children with obesity should be screened for non-alcoholic fatty liver disease.' },
+        { sourceBody: 'World journal of transplantation', sourceYear: 2025, recommendationText: 'Transplant candidacy for alcohol-associated hepatitis in severe liver disease should not be predetermined by abstinence duration.' },
+    ];
+    const documents = [{ id: 196, title: 'ACG Clinical Guideline: Alcohol-Associated Liver Disease.', source_year: 2024, text_excerpt: 'Alcohol-associated liver disease management abstract.' }];
+
+    test('non-alcoholic fatty liver sources do not match an alcoholic liver disease topic', () => {
+        const out = collectCandidates({ topic: ald, guidelines, articles: [], documents });
+        const labels = out.map((c) => c.label);
+        expect(labels.some((l) => l.includes('AASLD'))).toBe(false);
+        expect(labels.some((l) => l.includes('Pediatric'))).toBe(false);
+        expect(labels.some((l) => l.includes('World journal of transplantation'))).toBe(true);
+        expect(labels.some((l) => l.includes('Alcohol-Associated Liver Disease'))).toBe(true);
+    });
+
+    test('topicRelevance counts non-alcoholic as not alcohol and ignores generic words', () => {
+        expect(topicRelevance(ald, 'Alcohol-Associated Liver Disease')).toBe(1);
+        expect(topicRelevance(ald, 'Nonalcoholic fatty liver disease in children')).toBeLessThan(0.6);
+        expect(topicRelevance('heart failure', 'Management of heart failure with reduced ejection fraction')).toBe(1);
+        expect(topicRelevance('', 'anything')).toBe(1);
+    });
+
+    test('reports fewer sources rather than padding with off-topic ones', () => {
+        const { chosen, markdown } = renderTopSourcesDocument({ topic: ald, guidelines, articles: [], documents, count: 5 });
+        expect(chosen).toHaveLength(2);
+        expect(markdown).toContain('Only 2 of the 5 requested are stored');
+    });
+});
 
 describe('rendered top-sources document', () => {
     const many = Array.from({ length: 45 }, (_, i) => ({
@@ -17,7 +50,7 @@ describe('rendered top-sources document', () => {
     const other = [{ sourceBody: 'AASLD', sourceYear: 2019, documentId: 2, recommendationText: 'Corticosteroids for severe AH.' }];
 
     test('lists every stored recommendation verbatim with no cap', () => {
-        const { markdown } = renderTopSourcesDocument({ topic: 'ald', guidelines: [...many, ...other], articles: [], count: 5 });
+        const { markdown } = renderTopSourcesDocument({ topic: '', guidelines: [...many, ...other], articles: [], count: 5 });
         expect(markdown).toContain('45 stored recommendations');
         for (let i = 1; i <= 45; i++) expect(markdown).toContain(`${i}. Recommendation number ${i} stated in full.`);
         expect(markdown).toContain('1. Corticosteroids for severe AH.');
@@ -26,7 +59,7 @@ describe('rendered top-sources document', () => {
 
     test('reviews show their stored text word for word', () => {
         const { markdown } = renderTopSourcesDocument({
-            topic: 'ald', guidelines: [], count: 5, documents: [],
+            topic: '', guidelines: [], count: 5, documents: [],
             articles: [{ title: 'Meta-analysis of steroids', pubdate: '2022', publicationTypes: ['Meta-Analysis'], abstract: 'Pooled mortality fell.' }],
         });
         expect(markdown).toContain('> Pooled mortality fell.');
@@ -39,9 +72,9 @@ describe('rendered top-sources document', () => {
     });
 
     test('the model is only asked for a comparison, and only with two or more sources', () => {
-        const { chosen } = renderTopSourcesDocument({ topic: 'ald', guidelines: [...many, ...other], articles: [], count: 5 });
-        expect(buildComparisonBlock({ topic: 'ald', chosen })).toContain('do not repeat them');
-        expect(buildComparisonBlock({ topic: 'ald', chosen: [chosen[0]] })).toBe('');
+        const { chosen } = renderTopSourcesDocument({ topic: '', guidelines: [...many, ...other], articles: [], count: 5 });
+        expect(buildComparisonBlock({ topic: '', chosen })).toContain('do not repeat them');
+        expect(buildComparisonBlock({ topic: '', chosen: [chosen[0]] })).toBe('');
     });
 });
 
@@ -107,7 +140,7 @@ describe('top-sources ranking', () => {
     });
 
     test('block lists every stored recommendation of each chosen source and nothing outside the choice', () => {
-        const block = buildTopSourcesBlock({ topic: 'alcoholic liver disease', guidelines, articles, count: 2 });
+        const block = buildTopSourcesBlock({ topic: '', guidelines, articles, count: 2 });
         expect(block).toContain('S1.');
         expect(block).toContain('Abstinence is the cornerstone.');
         expect(block).toContain('duplicate body+year');
@@ -118,7 +151,7 @@ describe('top-sources ranking', () => {
     });
 
     test('says when fewer sources are stored than requested', () => {
-        const block = buildTopSourcesBlock({ topic: 'x', guidelines: [guidelines[0]], articles: [], count: 5 });
+        const block = buildTopSourcesBlock({ topic: '', guidelines: [guidelines[0]], articles: [], count: 5 });
         expect(block).toContain('Only 1 are stored');
     });
 

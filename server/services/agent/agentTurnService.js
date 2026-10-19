@@ -286,7 +286,7 @@ async function executeAgentTurn(
             return [];
         });
         const seminal = (topicKnowledge?.knowledge?.seminalPapers || []).map((p) => ({ title: p.title, pubdate: p.year, abstract: p.clinicalPrinciple || p.whySeminal || '' }));
-        const pool = { guidelines: widerGuidelines, articles: [...(currentArticles || []), ...seminal], documents: widerDocuments, count };
+        const pool = { topic: trimmedTopic, guidelines: widerGuidelines, articles: [...(currentArticles || []), ...seminal], documents: widerDocuments, count };
         // Read the full stored text of the chosen documents so their own recommendations can be quoted.
         const docIds = chooseTopSources(pool).map((c) => c.docId).filter((x) => x != null);
         const fullTexts = docIds.length && typeof db.getGuidelineDocumentFullTexts === 'function'
