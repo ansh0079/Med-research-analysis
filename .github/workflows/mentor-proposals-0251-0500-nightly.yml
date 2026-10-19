@@ -3,12 +3,20 @@ name: Nightly Mentor Prewarm (Topics 0251-0500)
 on:
   schedule:
     - cron: '20 2 * * *' # nightly UTC
+  workflow_dispatch:
+
+concurrency:
+  group: medsearch-mentor-prewarm-0251-0500
+  cancel-in-progress: false
 
 jobs:
   prewarm:
     runs-on: ubuntu-latest
     timeout-minutes: 25
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
       - name: Copy topics JSON to server
         uses: appleboy/scp-action@v0.1.7
         with:
@@ -17,6 +25,7 @@ jobs:
           key: ${{ secrets.HETZNER_SSH_KEY }}
           source: "data/topic-mentor-batches/topics-0251-0500.json"
           target: "/opt/medsearch/data/topic-mentor-batches/"
+          strip_components: 2
           overwrite: true
 
       - name: Generate and commit mentor drafts offline
@@ -29,14 +38,19 @@ jobs:
           script: |
             set -euo pipefail
             cd /opt/medsearch
-            FILE="/opt/medsearch/data/topic-mentor-batches/topics_0251-0500.json"
-            # Backward-compat with dash vs underscore naming
-            [ -f "$FILE" ] || FILE="/opt/medsearch/data/topic-mentor-batches/Topics_0251-0500.json"
-            [ -f "$FILE" ] || FILE="/opt/medsearch/data/topic-mentor-batches/topics-0251-0500.json"
+            FILE="/opt/medsearch/data/topic-mentor-batches/topics-0251-0500.json"
+            GEN="/opt/medsearch/tmp-scripts/generate-topic-mentor-proposals-offline.js"
             if [ ! -f "$FILE" ]; then
               echo "Missing topics file: $FILE"
               exit 2
             fi
+            if [ ! -f "$GEN" ]; then
+              echo "Missing generator: $GEN"
+              exit 2
+            fi
             docker compose -f docker-compose.hetzner.yml run --rm --no-deps -T \
-              -e NODE_OPTIONS=--max-old-space-size=1536 web \
-              node scripts/generate-topic-mentor-proposals-offline.js --topics "$FILE" --commit-live
+              -e NODE_OPTIONS=--max-old-space-size=1536 \
+              -v /opt/medsearch/tmp-scripts:/app/scripts:ro \
+              -v /opt/medsearch/data/topic-mentor-batches:/topics:ro \
+              web \
+              node scripts/generate-topic-mentor-proposals-offline.js --topics /topics/topics-0251-0500.json --commit-live
