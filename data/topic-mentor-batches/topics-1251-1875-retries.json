@@ -1,0 +1,213 @@
+{
+  "sheet": "Topics 1251-1875 retries",
+  "count": 23,
+  "topics": [
+    {
+      "no": 1264,
+      "topic": "Paediatric asthma: diagnosis, assessment and stepwise management",
+      "normalizedTopic": "paediatric asthma diagnosis assessment and stepwise management",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1279,
+      "topic": "Pancytopenia Diagnostic Workup",
+      "normalizedTopic": "pancytopenia diagnostic workup",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1299,
+      "topic": "PEA and asystole: reversible causes, ACLS algorithm, high-quality CPR",
+      "normalizedTopic": "pea and asystole reversible causes acls algorithm high-quality cpr",
+      "linkedPapers": 1,
+      "linkedGuidelines": 1,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1314,
+      "topic": "perioperative beta-blocker continuation versus withdrawal",
+      "normalizedTopic": "perioperative beta-blocker continuation versus withdrawal",
+      "linkedPapers": 8,
+      "linkedGuidelines": 0,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1370,
+      "topic": "Polypharmacy and deprescribing: STOPP/START criteria",
+      "normalizedTopic": "polypharmacy and deprescribing stopp start criteria",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1374,
+      "topic": "Post-cardiac arrest syndrome: targeted temperature management, haemodynamic optimisation",
+      "normalizedTopic": "post-cardiac arrest syndrome targeted temperature management haemodynamic optimisation",
+      "linkedPapers": 5,
+      "linkedGuidelines": 4,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1381,
+      "topic": "Post-MI beta-blocker therapy contemporary evidence",
+      "normalizedTopic": "post-mi beta-blocker therapy contemporary evidence",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1443,
+      "topic": "Protocol-based versus goal-directed resuscitation in septic shock",
+      "normalizedTopic": "protocol-based versus goal-directed resuscitation in septic shock",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1455,
+      "topic": "Psychosis and acute behavioural disturbance",
+      "normalizedTopic": "psychosis and acute behavioural disturbance",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1498,
+      "topic": "RCRI score",
+      "normalizedTopic": "rcri score",
+      "linkedPapers": 8,
+      "linkedGuidelines": 0,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1552,
+      "topic": "Rituximab in rheumatic disease: dosing, pre-treatment screening, hypogammaglobulinaemia",
+      "normalizedTopic": "rituximab in rheumatic disease dosing pre-treatment screening hypogammaglobulinaemia",
+      "linkedPapers": 1,
+      "linkedGuidelines": 2,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1572,
+      "topic": "Secondary immunodeficiency from biologics and steroids",
+      "normalizedTopic": "secondary immunodeficiency from biologics and steroids",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1614,
+      "topic": "should I start an SGLT2 inhibitor for my patient with HFrEF?",
+      "normalizedTopic": "should i start an sglt2 inhibitor for my patient with hfref",
+      "linkedPapers": 8,
+      "linkedGuidelines": 0,
+      "mentorPresent": "Yes",
+      "mentorState": "Draft available"
+    },
+    {
+      "no": 1625,
+      "topic": "Skin and soft tissue infection antibiotic strategy",
+      "normalizedTopic": "skin and soft tissue infection antibiotic strategy",
+      "linkedPapers": 13,
+      "linkedGuidelines": 5,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1717,
+      "topic": "Testicular germ cell tumor chemotherapy",
+      "normalizedTopic": "testicular germ cell tumor chemotherapy",
+      "linkedPapers": 3,
+      "linkedGuidelines": 5,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1727,
+      "topic": "Thrombotic thrombocytopenic purpura: caplacizumab and plasma exchange",
+      "normalizedTopic": "thrombotic thrombocytopenic purpura caplacizumab and plasma exchange",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1743,
+      "topic": "tick borne rickettsial disease empiric doxycycline",
+      "normalizedTopic": "tick borne rickettsial disease empiric doxycycline",
+      "linkedPapers": 3,
+      "linkedGuidelines": 6,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1755,
+      "topic": "Toxic and nutritional neuropathies: B12, B6 deficiency, chemotherapy-induced",
+      "normalizedTopic": "toxic and nutritional neuropathies b12 b6 deficiency chemotherapy-induced",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1820,
+      "topic": "Vapor Gas Dust and Fume exposures",
+      "normalizedTopic": "vapor gas dust and fume exposures",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1826,
+      "topic": "Vasopressor and inotrope pharmacology: noradrenaline, vasopressin, dobutamine, milrinone",
+      "normalizedTopic": "vasopressor and inotrope pharmacology noradrenaline vasopressin dobutamine milrinone",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1850,
+      "topic": "Viral haemorrhagic fevers and high-consequence infectious diseases in the ICU",
+      "normalizedTopic": "viral haemorrhagic fevers and high-consequence infectious diseases in the icu",
+      "linkedPapers": 3,
+      "linkedGuidelines": 4,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1854,
+      "topic": "Viral-Induced Arthritides",
+      "normalizedTopic": "viral-induced arthritides",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    },
+    {
+      "no": 1870,
+      "topic": "Wellens syndrome and left main equivalent ECG patterns",
+      "normalizedTopic": "wellens syndrome and left main equivalent ecg patterns",
+      "linkedPapers": 3,
+      "linkedGuidelines": 0,
+      "mentorPresent": "No",
+      "mentorState": "Missing"
+    }
+  ]
+}
