@@ -24,7 +24,7 @@ jobs:
           host: ${{ secrets.HETZNER_HOST || '178.105.155.246' }}
           username: root
           key: ${{ secrets.HETZNER_SSH_KEY }}
-          source: "data/topic-mentor-batches/topics-0251-0500.json"
+          source: "data/topic-mentor-batches/*.json"
           target: "/opt/medsearch/data/topic-mentor-batches/"
           strip_components: 2
           overwrite: true
