@@ -7,6 +7,11 @@ on:
         description: 'report or clean'
         required: false
         default: report
+  schedule:
+    # Hourly check; cleans only when usage > 85%
+    - cron: '0 * * * *'
+    # Nightly unconditional safe clean
+    - cron: '15 3 * * *'
 
 concurrency:
   group: medsearch-production-deploy
@@ -21,17 +26,21 @@ jobs:
         uses: appleboy/ssh-action@v1
         env:
           MODE: ${{ inputs.mode }}
+          SCHEDULE: ${{ github.event.schedule || '' }}
+          THRESHOLD: '85'
         with:
           host: ${{ secrets.HETZNER_HOST || '178.105.155.246' }}
           username: root
           key: ${{ secrets.HETZNER_SSH_KEY }}
           command_timeout: 20m
-          envs: MODE
+          envs: MODE,SCHEDULE,THRESHOLD
           script: |
             set -Eeuo pipefail
 
-            mode="${MODE:-report}"
-            echo "=== Mode: ${mode} ==="
+            mode="${MODE:-}"
+            schedule="${SCHEDULE:-}"
+            threshold="${THRESHOLD:-85}"
+            echo "=== Trigger: ${GITHUB_EVENT_NAME:-manual} schedule='${schedule}' mode='${mode:-auto}' threshold=${threshold}% ==="
 
             report() {
               echo "===== DISK REPORT: $(date -Is) ====="
@@ -111,15 +120,45 @@ jobs:
               echo "===== CLEAN END: $(date -Is) ====="
             }
 
-            case "$mode" in
-              report|"")
-                report
-                ;;
-              clean)
+            # Auto behavior for schedules:
+            # - Nightly (03:15 UTC): always clean (safe)
+            # - Hourly: clean only when root fs usage > threshold
+            auto_check_then_maybe_clean() {
+              echo "--- Auto-check mode (threshold ${threshold}%) ---"
+              used_pct="$(df -P / | awk 'NR==2 {print $5}' | tr -dc '0-9')"
+              free_h="$(df -h / | awk 'NR==2 {print $4}')"
+              echo "Root filesystem used=${used_pct}% free=${free_h}"
+              if [ "${used_pct:-0}" -ge "${threshold}" ]; then
+                echo "Usage >= ${threshold}% → running SAFE cleanup"
+                clean
+              else
+                echo "Usage < ${threshold}% → no cleanup. Quick summary follows."
+                df -h /
+                if command -v docker >/dev/null 2>&1; then docker system df || true; fi
+              fi
+            }
+
+            if [ -n "${mode}" ]; then
+              case "$mode" in
+                report) report ;;
+                clean) clean ;;
+                *) echo "Unknown mode: $mode (expected 'report' or 'clean')" >&2; exit 2 ;;
+              esac
+              exit 0
+            fi
+
+            # Scheduled runs
+            case "${schedule}" in
+              '15 3 * * *')
+                echo "Nightly schedule detected → unconditional SAFE clean"
                 clean
                 ;;
+              '0 * * * *'|'')
+                # hourly or unknown → thresholded check
+                auto_check_then_maybe_clean
+                ;;
               *)
-                echo "Unknown mode: $mode (expected 'report' or 'clean')" >&2
-                exit 2
+                # Any other schedule entry falls back to thresholded clean
+                auto_check_then_maybe_clean
                 ;;
             esac

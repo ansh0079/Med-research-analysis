@@ -60,3 +60,72 @@ jobs:
               git reset --hard origin/main
             fi
             bash deploy/hetzner/deploy.sh
+      - name: Install/refresh on-host disk cleanup safety net (systemd timer)
+        uses: appleboy/ssh-action@v1
+        env:
+          THRESHOLD: '85'
+        with:
+          host: ${{ secrets.HETZNER_HOST || '178.105.155.246' }}
+          username: root
+          key: ${{ secrets.HETZNER_SSH_KEY }}
+          command_timeout: 3m
+          envs: THRESHOLD
+          script: |
+            set -euo pipefail
+            echo "Installing medsearch disk cleanup safety net (threshold ${THRESHOLD}%)"
+            install -m 755 -d /usr/local/bin
+            cat >/usr/local/bin/medsearch-safeclean.sh <<'EOF'
+            #!/usr/bin/env bash
+            set -Eeuo pipefail
+            THRESHOLD="${THRESHOLD:-85}"
+            used_pct="$(df -P / | awk 'NR==2 {print $5}' | tr -dc '0-9')"
+            if [ -z "${used_pct}" ]; then echo "Could not determine disk usage"; exit 0; fi
+            if [ "${used_pct}" -lt "${THRESHOLD}" ]; then
+              echo "Disk usage ${used_pct}% < ${THRESHOLD}% — skipping cleanup"
+              exit 0
+            fi
+            echo "Disk usage ${used_pct}% >= ${THRESHOLD}% — running SAFE cleanup"
+            if command -v docker >/dev/null 2>&1; then
+              docker image prune -a -f || true
+              docker builder prune -a -f || true
+              if [ -d /var/lib/docker/containers ]; then
+                find /var/lib/docker/containers -type f -name "*-json.log" -size +50M -print -exec truncate -s 0 {} \; 2>/dev/null || true
+              fi
+            fi
+            if command -v journalctl >/dev/null 2>&1; then
+              journalctl --vacuum-size=200M || true
+            fi
+            if command -v apt-get >/dev/null 2>&1; then
+              apt-get clean || true
+            fi
+            exit 0
+            EOF
+            chmod 755 /usr/local/bin/medsearch-safeclean.sh
+
+            cat >/etc/systemd/system/medsearch-disk-cleanup.service <<'EOF'
+            [Unit]
+            Description=Medsearch safe disk cleanup when usage exceeds threshold
+            After=network.target
+
+            [Service]
+            Type=oneshot
+            Environment=THRESHOLD=85
+            ExecStart=/usr/local/bin/medsearch-safeclean.sh
+            EOF
+
+            cat >/etc/systemd/system/medsearch-disk-cleanup.timer <<'EOF'
+            [Unit]
+            Description=Hourly medsearch disk cleanup safety net
+
+            [Timer]
+            OnCalendar=hourly
+            RandomizedDelaySec=300
+            Persistent=true
+
+            [Install]
+            WantedBy=timers.target
+            EOF
+
+            systemctl daemon-reload
+            systemctl enable --now medsearch-disk-cleanup.timer
+            systemctl restart medsearch-disk-cleanup.timer || true
