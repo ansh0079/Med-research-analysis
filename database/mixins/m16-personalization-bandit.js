@@ -224,13 +224,14 @@ module.exports = (Sup) => class extends Sup {
 
     async findRecentSearchImpressionsForAttribution(userId, {
         sessionId = null,
+        searchId = null,
         topic = '',
         normalizedTopic = '',
         articleUid = null,
         days = 7,
         limit = 15,
     } = {}) {
-        if (!this.kysely || (!userId && !sessionId)) return [];
+        if (!this.kysely || (!userId && !sessionId && !searchId)) return [];
         const since = new Date(Date.now() - Math.min(Math.max(Number(days) || 7, 1), 30) * 86400000).toISOString();
         const normalized = normalizedTopic || (typeof this.normalizeTopic === 'function' ? this.normalizeTopic(topic) : '');
         const params = [since];
@@ -242,6 +243,10 @@ module.exports = (Sup) => class extends Sup {
         if (sessionId) {
             actorParts.push('sri.session_id = ?');
             params.push(String(sessionId));
+        }
+        if (searchId != null) {
+            actorParts.push('sri.search_id = ?');
+            params.push(Number(searchId));
         }
         const actorClause = ` AND (${actorParts.join(' OR ')})`;
         let topicClause = '';

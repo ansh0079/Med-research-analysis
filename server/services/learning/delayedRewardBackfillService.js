@@ -21,18 +21,31 @@ async function collectDelayedSignals(db, decision, { now = Date.now() } = {}) {
     const topic = decision.normalized_topic || decision.topic;
     const createdMs = Date.parse(decision.created_at || '') || now;
 
-    if (!db?.all || !userId) return { additive: 0, sources };
+    if (!db?.all) return { additive: 0, sources };
+    // Without a user id, only search-snapshot-linked signals are attributable.
+    const attributable = Boolean(userId || searchId);
+    if (!attributable) return { additive: 0, sources };
 
-    // Later saves / high dwell on same article
+    // Later saves / high dwell on same article. Anonymous sessions (user_id NULL)
+    // are attributed by the decision's own search snapshot instead of user id.
     if (articleUid) {
-        const impressions = await db.all(
-            `SELECT was_saved, dwell_time_ms, created_at
-             FROM search_result_impressions
-             WHERE user_id = ? AND LOWER(article_uid) = LOWER(?)
-               AND created_at > ?
-             ORDER BY created_at DESC LIMIT 20`,
-            [String(userId), String(articleUid), decision.created_at]
-        ).catch(() => []);
+        const impressions = userId
+            ? await db.all(
+                `SELECT was_saved, dwell_time_ms, created_at
+                 FROM search_result_impressions
+                 WHERE user_id = ? AND LOWER(article_uid) = LOWER(?)
+                   AND created_at > ?
+                 ORDER BY created_at DESC LIMIT 20`,
+                [String(userId), String(articleUid), decision.created_at]
+            ).catch(() => [])
+            : await db.all(
+                `SELECT was_saved, dwell_time_ms, created_at
+                 FROM search_result_impressions
+                 WHERE search_id = ? AND LOWER(article_uid) = LOWER(?)
+                   AND created_at > ?
+                 ORDER BY created_at DESC LIMIT 20`,
+                [Number(searchId), String(articleUid), decision.created_at]
+            ).catch(() => []);
         for (const row of impressions || []) {
             if (row.was_saved) {
                 additive += 0.35;
@@ -44,8 +57,9 @@ async function collectDelayedSignals(db, decision, { now = Date.now() } = {}) {
         }
     }
 
-    // Quiz use on same article / topic after decision
-    if (articleUid || topic) {
+    // Quiz use on same article / topic after decision (user-linked only —
+    // anonymous sessions cannot own quiz attempts)
+    if (userId && (articleUid || topic)) {
         const quizzes = await db.all(
             `SELECT is_correct, created_at, source_article_uid
              FROM quiz_attempts
@@ -72,7 +86,7 @@ async function collectDelayedSignals(db, decision, { now = Date.now() } = {}) {
     }
 
     // Synthesis / synopsis feedback after decision on same article
-    if (articleUid && db.all) {
+    if (userId && articleUid && db.all) {
         const syn = await db.all(
             `SELECT feedback_type, created_at FROM synopsis_feedback
              WHERE user_id = ? AND LOWER(article_uid) = LOWER(?) AND created_at > ?
@@ -90,8 +104,8 @@ async function collectDelayedSignals(db, decision, { now = Date.now() } = {}) {
         }
     }
 
-    // Repeat topic searches (engagement with the clinical question)
-    if (topic) {
+    // Repeat topic searches (engagement with the clinical question; user-linked only)
+    if (userId && topic) {
         const repeats = await db.get(
             `SELECT COUNT(*) AS cnt FROM searches
              WHERE user_id = ? AND normalized_topic = ? AND created_at > ?
@@ -202,9 +216,9 @@ async function backfillDecisionHorizon(db, decision, horizonDays, { now = Date.n
     // additive is cumulative from decision.created_at — convert to incremental vs last horizon.
     const immediate = Number(decision.immediate_reward || 0);
     const cumulativeDelayed = Math.max(-1, Math.min(1, additive));
-    const newDelayed = Math.max(-1, Math.min(1, cumulativeDelayed));
-    const newTotal = Math.max(-1, Math.min(1, immediate + newDelayed));
-    const delta = newTotal - baseline.previousTotal;
+    const newDelayed = Math.round(Math.max(-1, Math.min(1, cumulativeDelayed)) * 1e4) / 1e4;
+    const newTotal = Math.round(Math.max(-1, Math.min(1, immediate + newDelayed)) * 1e4) / 1e4;
+    const delta = Math.round((newTotal - baseline.previousTotal) * 1e4) / 1e4;
 
     await db.updatePersonalizationDecisionReward?.(decision.id, {
         immediateReward: immediate,
@@ -261,7 +275,6 @@ async function runDelayedRewardBackfill(db, { daysLookback = 14, limit = 200 } =
         `SELECT * FROM personalization_decisions
          WHERE policy_type = ?
            AND created_at >= ?
-           AND user_id IS NOT NULL
          ORDER BY created_at ASC
          LIMIT ?`,
         [POLICY_SEARCH_RANKING, since, Math.min(Math.max(Number(limit) || 200, 1), 1000)]

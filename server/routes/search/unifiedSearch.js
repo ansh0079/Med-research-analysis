@@ -443,6 +443,17 @@ function registerUnifiedSearchRoutes(app, deps) {
                         banditMeta: effectiveBanditMeta,
                     });
                     rankingAttribution = logged?.decisions || [];
+
+                    if (typeof db?.recordSearchImpressions === 'function' && Array.isArray(articles) && articles.length > 0) {
+                        const impressionList = articles.slice(0, 30).map((a, idx) => ({
+                            articleUid: a.uid,
+                            position: idx + 1,
+                        })).filter((imp) => imp.articleUid);
+                        if (impressionList.length > 0) {
+                            void db.recordSearchImpressions(searchId, req.sessionId, impressionList, req.user?.id ?? null)
+                                .catch((err) => logger.warn({ err }, 'auto recordSearchImpressions failed'));
+                        }
+                    }
                 } catch (err) {
                     logger.warn({ err }, 'recordSearchRankingDecisions failed');
                 }

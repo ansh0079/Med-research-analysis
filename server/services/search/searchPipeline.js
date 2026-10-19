@@ -37,6 +37,7 @@ const {
     rankArticlesWithinLanes,
     laneShadowSummary,
 } = require('./evidenceLanes');
+const { applyGuidelineCoverageMask } = require('./guidelineCoverageMask');
 const { buildQueryRepresentation } = require('./queryRepresentation');
 const { persistSearchEvidenceSnapshot } = require('./searchEvidenceSnapshot');
 
@@ -801,6 +802,7 @@ async function personalizeSearchEvidence(shared, {
             query,
             sessionId,
             previousQueries,
+            queryIntent,
         }));
         articles = applySearchLearningBoost(articles, learningContextFull, postPicoEvidenceRanking);
         articles = annotateArticlesWithRankingTraces(articles, postPicoEvidenceRanking, learningContextFull);
@@ -830,6 +832,15 @@ async function personalizeSearchEvidence(shared, {
         });
         const laneShadow = laneShadowSummary(articles);
         if (laneShadow) telemetry.laneRankingShadow = laneShadow;
+        // Clinical guardrail: therapeutic/guideline queries must serve at least
+        // one guideline source. Hard mask — runs after all learning reordering.
+        const guardrail = applyGuidelineCoverageMask(articles, shared.articles, { intent: queryIntent });
+        if (guardrail.applied) {
+            articles = guardrail.articles;
+            telemetry.guidelineGuardrail = { reason: guardrail.reason, insertedUid: guardrail.inserted?.uid || null };
+        } else if (guardrail.reason === 'no_guideline_in_pool') {
+            telemetry.guidelineGuardrail = { reason: guardrail.reason };
+        }
         const searchPack = buildSearchPack(articles, { intent: queryIntent });
         // Awaited: generation needs a durable evidence context, so the outcome (persisted, disabled
         // or failed) must be known and reported, not fired and forgotten. It never throws.

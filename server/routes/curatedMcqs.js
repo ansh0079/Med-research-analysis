@@ -26,17 +26,20 @@ function registerCuratedMcqRoutes(app, deps) {
       const rows = await db.all(
         `SELECT object_key, topic, object_payload
          FROM teaching_objects
-         WHERE object_type = 'curated_topic_mcq'
+         WHERE object_type IN ('curated_topic_mcq', 'verified_topic_mcq')
            AND review_state != 'withdrawn'
          ORDER BY topic ASC`
       );
       const topics = [];
+      const seenTopics = new Set();
       for (const row of rows) {
         let payload;
         try { payload = JSON.parse(row.object_payload || '{}'); } catch { payload = {}; }
         const mcqCount = Array.isArray(payload.mcqs) ? payload.mcqs.length : 0;
         if (mcqCount <= 0) continue; // hide empty topics from listing
-        const topicKey = String(payload.topicKey || row.object_key.replace(/^curated-mcq:/, '') || '').trim();
+        const topicKey = String(payload.topicKey || row.object_key.replace(/^(curated|verified)-mcq:/, '') || '').trim();
+        if (seenTopics.has(topicKey)) continue;
+        seenTopics.add(topicKey);
         topics.push({
           topicKey,
           displayName: payload.topicDisplayName || row.topic || topicKey,
@@ -59,16 +62,27 @@ function registerCuratedMcqRoutes(app, deps) {
       if (!raw) return res.status(400).json({ error: 'topic is required' });
       const withdrawn = await loadWithdrawnOverrides(db);
 
-      // Try exact curated key first
-      const objectKey = raw.startsWith('curated-mcq:') ? raw : `curated-mcq:${raw.toLowerCase()}`;
-      let row = await db.get(`SELECT * FROM teaching_objects WHERE object_key = ? AND object_type = 'curated_topic_mcq'`, [objectKey]);
+      // Try exact key first (curated or verified)
+      const rawLower = raw.toLowerCase();
+      let row = await db.get(
+        `SELECT * FROM teaching_objects 
+         WHERE (object_key = ? OR object_key = ? OR object_key = ?)
+           AND object_type IN ('curated_topic_mcq', 'verified_topic_mcq')
+           AND review_state != 'withdrawn'
+         ORDER BY CASE WHEN object_type = 'verified_topic_mcq' THEN 0 ELSE 1 END, updated_at DESC LIMIT 1`,
+        [raw, `curated-mcq:${rawLower}`, `verified-mcq:${rawLower}`]
+      );
 
       // Fall back to resolving topic string via alias -> curriculum topic id
       if (!row) {
         const id = await db.resolveCurriculumTopicId(raw);
         if (id) {
           row = await db.get(
-            `SELECT * FROM teaching_objects WHERE object_type = 'curated_topic_mcq' AND curriculum_topic_id = ? ORDER BY updated_at DESC LIMIT 1`,
+            `SELECT * FROM teaching_objects 
+             WHERE object_type IN ('curated_topic_mcq', 'verified_topic_mcq') 
+               AND curriculum_topic_id = ? 
+               AND review_state != 'withdrawn'
+             ORDER BY CASE WHEN object_type = 'verified_topic_mcq' THEN 0 ELSE 1 END, updated_at DESC LIMIT 1`,
             [id]
           );
         }
@@ -81,7 +95,7 @@ function registerCuratedMcqRoutes(app, deps) {
         const candidates = await db.all(
           `SELECT object_key, topic, object_payload
            FROM teaching_objects
-           WHERE object_type = 'curated_topic_mcq' AND review_state != 'withdrawn'`
+           WHERE object_type IN ('curated_topic_mcq', 'verified_topic_mcq') AND review_state != 'withdrawn'`
         );
         for (const cand of candidates) {
           let p = {};
@@ -97,7 +111,7 @@ function registerCuratedMcqRoutes(app, deps) {
 
       if (!row) return res.status(404).json({ error: 'No curated MCQs for this topic' });
       const payload = (() => { try { return JSON.parse(row.object_payload || '{}'); } catch { return {}; } })();
-      const topicKeyOut = String(payload.topicKey || row.object_key.replace(/^curated-mcq:/, '') || '').trim();
+      const topicKeyOut = String(payload.topicKey || row.object_key.replace(/^(curated|verified)-mcq:/, '') || '').trim();
       const displayName = payload.topicDisplayName || row.topic || topicKeyOut;
       const coverageNote = payload.coverageNote || null;
 
@@ -109,7 +123,7 @@ function registerCuratedMcqRoutes(app, deps) {
       // Combine: per-question withdrawal overrides (by object index and by hash) AND clinical audit holds.
       const questions = stored
         .filter((q, i) => {
-          if (!q || !q.question || !q.correctAnswer || !Array.isArray(q.options)) return false;
+          if (!q || !q.question || !q.correctAnswer || (!Array.isArray(q.options) && (!q.options || typeof q.options !== 'object'))) return false;
           // Withdrawn via explicit override for this object slot
           if (withdrawn.byObjectIndex.has(`${row.object_key}#${i}`)) return false;
           try {
@@ -126,7 +140,9 @@ function registerCuratedMcqRoutes(app, deps) {
           type: 'multiple_choice',
           questionType: canonicalQuestionType(q.questionType || 'guideline'),
           question: q.question,
-          options: Array.isArray(q.options) ? q.options : letters.map((L) => `${L}: ${(q.options && q.options[L]) || ''}`),
+          options: Array.isArray(q.options)
+            ? q.options
+            : letters.filter((L) => q.options && q.options[L]).map((L) => `${L}: ${q.options[L]}`),
           correctAnswer: q.correctAnswer,
           explanation: q.explanation || '',
           difficulty: q.difficulty || 'medium',

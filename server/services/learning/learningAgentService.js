@@ -364,23 +364,47 @@ async function getPersonalisedRecommendations(db, userId, { limit = 8 } = {}) {
     // ── 7. Cold start — no mastery data yet ──────────────────────────────────
     if (mastery.length === 0) {
         const randomExpr = db.isPostgres ? 'random()' : 'RANDOM()';
-        const popularTopics = await db.all(
-            `SELECT topic, normalized_topic, confidence, updated_at, last_refreshed_at
-             FROM topic_knowledge
-             ORDER BY confidence DESC, ${randomExpr}
-             LIMIT 6`
-        );
-        for (const t of popularTopics.slice(0, 3)) {
-            const stale = freshnessHint(t, now);
+        // Prioritize topics that have verified clinical questions ready for the user
+        const verifiedTopics = await db.all(
+            `SELECT topic, normalized_topic
+             FROM teaching_objects
+             WHERE object_type IN ('verified_topic_mcq', 'curated_topic_mcq')
+               AND review_state = 'verified'
+             ORDER BY ${randomExpr}
+             LIMIT 4`
+        ).catch(() => []);
+
+        for (const t of verifiedTopics) {
             recommendations.push({
                 type: 'start',
                 topic: t.topic,
-                normalizedTopic: t.normalized_topic,
-                reason: `Get started with this clinical topic: read the synopsis and test yourself.${stale ? ` ${stale.label}; verify current evidence.` : ''}`,
-                action: 'topic',
-                priority: 40 + (stale ? 5 : 0),
-                icon: 'fa-play-circle',
+                normalizedTopic: t.normalized_topic || normalizeCandidate(db, t.topic),
+                reason: `Test your knowledge with verified clinical practice questions on ${t.topic}.`,
+                action: 'quiz',
+                priority: 45,
+                icon: 'fa-check-circle',
             });
+        }
+
+        if (recommendations.length < 3) {
+            const popularTopics = await db.all(
+                `SELECT topic, normalized_topic, confidence, updated_at, last_refreshed_at
+                 FROM topic_knowledge
+                 ORDER BY confidence DESC, ${randomExpr}
+                 LIMIT 6`
+            ).catch(() => []);
+            for (const t of popularTopics.slice(0, 3 - recommendations.length)) {
+                const stale = freshnessHint(t, now);
+                recommendations.push({
+                    type: 'start',
+                    topic: t.topic,
+                    normalizedTopic: t.normalized_topic,
+                    reason: `Get started with this clinical topic: read the synopsis and test yourself.${stale ? ` ${stale.label}; verify current evidence.` : ''}`,
+                    action: 'topic',
+                    priority: 40 + (stale ? 5 : 0),
+                    icon: 'fa-play-circle',
+                });
+            }
         }
     }
 

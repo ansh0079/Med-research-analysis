@@ -21,6 +21,7 @@
 const fs = require('fs');
 const path = require('path');
 const { validateCuratedTopicBlock, transformCuratedQuestionToStored } = require('../services/curatedMcqImportValidation');
+const { dedupeMcqList, normalizeMcqStem } = require('../utils/mcqDedup');
 
 function findBatchFiles(rootDir) {
   const dir = path.resolve(rootDir);
@@ -52,7 +53,25 @@ async function run({ apply = false, dir = null } = {}) {
     await db.connect();
   }
   let written = 0;
+  let deduped = 0;
   const aggregated = new Map(); // topicKey -> merged topic payload
+
+  // Bank-wide stem index: seed from live DB so imports cannot recreate
+  // duplicates against questions already stored under other objects.
+  const seenStems = new Set();
+  if (apply && db) {
+    const existing = await db.all(
+      `SELECT object_payload FROM teaching_objects
+       WHERE object_type IN ('curated_topic_mcq','verified_topic_mcq','cold_start_mcq','guideline_mcq')`);
+    for (const row of existing) {
+      let payload = {};
+      try { payload = JSON.parse(row.object_payload); } catch { continue; }
+      for (const m of payload.mcqs || []) {
+        const norm = normalizeMcqStem(m.question || m.stem || '');
+        if (norm.length >= 8) seenStems.add(norm);
+      }
+    }
+  }
 
   for (const file of files) {
     const json = readJsonFile(file);
@@ -91,9 +110,14 @@ async function run({ apply = false, dir = null } = {}) {
       current.storedRowCount += Number(t.storedRowCount || 0);
       // Keep first non-null coverage note
       if (!current.coverageNote && t.coverageNote) current.coverageNote = t.coverageNote;
-      // Append questions
+      // Append questions (deduped against the bank-wide stem index)
       const transformed = t.mcqs.map(transformCuratedQuestionToStored);
-      current.mcqs.push(...transformed);
+      const { kept, removed } = dedupeMcqList(transformed, seenStems);
+      deduped += removed.length;
+      if (removed.length) {
+        console.log(`  - ${t.topicDisplayName}: ${removed.length} duplicate stem(s) skipped`);
+      }
+      current.mcqs.push(...kept);
       aggregated.set(key, current);
       console.log(`  - ${t.topicDisplayName} (${transformed.length} MCQs) — queued`);
     }
@@ -127,8 +151,9 @@ async function run({ apply = false, dir = null } = {}) {
   console.log(`  Files:     ${files.length}`);
   console.log(`  Topics:    ${topicsCount}`);
   console.log(`  Questions: ${questionsCount}`);
+  console.log(`  Deduped:   ${deduped} (duplicate stems skipped)`);
   console.log(`  Written:   ${apply ? written : 0} ${apply ? '(applied)' : '(dry-run)'}`);
-  return { files: files.length, topics: topicsCount, questions: questionsCount, written: apply ? written : 0 };
+  return { files: files.length, topics: topicsCount, questions: questionsCount, deduped, written: apply ? written : 0 };
 }
 
 if (require.main === module) {

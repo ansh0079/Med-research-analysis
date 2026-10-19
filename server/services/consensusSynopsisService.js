@@ -380,7 +380,20 @@ async function generateConsensusSynopsis({
     if (db) {
         try {
             if (typeof db.getGuidelinesByTopic === 'function') {
-                guidelines = await db.getGuidelinesByTopic(topic, { limit: 3 });
+                guidelines = await db.getGuidelinesByTopic(topic, { limit: 5 });
+            }
+            if ((!guidelines || guidelines.length === 0) && typeof db.all === 'function') {
+                // Direct lookup fallback across topic_guidelines using topic match
+                const norm = typeof db.normalizeTopic === 'function' ? db.normalizeTopic(topic) : String(topic).toLowerCase().replace(/[^a-z0-9]/g, '-');
+                const matchedRows = await db.all(
+                    `SELECT source_body as sourceBody, source_year as sourceYear, recommendation_text as recommendationText
+                     FROM topic_guidelines
+                     WHERE normalized_topic = ? OR topic LIKE ? LIMIT 5`,
+                    [norm, `%${topic}%`]
+                ).catch(() => []);
+                if (matchedRows.length > 0) {
+                    guidelines = matchedRows;
+                }
             }
         } catch (err) {
             logger.debug({ err, topic }, 'Failed to load guidelines for synopsis');

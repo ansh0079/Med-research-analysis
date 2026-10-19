@@ -107,3 +107,5 @@ _ul
 # data/review-articles/ is ~14MB of downloaded source XML.
 data/review-articles/
 topics-without-mcqs.txt
+tests/tmp-*.json
+scratch/
