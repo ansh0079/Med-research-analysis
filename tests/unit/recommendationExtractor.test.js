@@ -47,14 +47,14 @@ describe('top-sources document with stored full text', () => {
     test('quotes recommendations from the stored full text of an open-access document', () => {
         const fullText = `${'Filler sentence about methods and the many trials that were screened for inclusion. '.repeat(40)}`
             + 'We recommend that corticosteroids be offered to patients with severe alcoholic hepatitis and a Maddrey score above 32.';
-        const { markdown } = renderTopSourcesDocument({ topic: 'ald', guidelines: [], articles: [], documents, fullTexts: { 7: { text: fullText, source: 'jats' } }, count: 5 });
+        const { markdown } = renderTopSourcesDocument({ topic: '', guidelines: [], articles: [], documents, fullTexts: { 7: { text: fullText, source: 'jats' } }, count: 5 });
         expect(markdown).toContain('quoted exactly');
         expect(markdown).toContain('1. We recommend that corticosteroids be offered to patients with severe alcoholic hepatitis and a Maddrey score above 32.');
         expect(markdown).not.toContain('should not be shown when full text exists');
     });
 
     test('says plainly when only the abstract is stored', () => {
-        const { markdown } = renderTopSourcesDocument({ topic: 'ald', guidelines: [], articles: [], documents, fullTexts: {}, count: 5 });
+        const { markdown } = renderTopSourcesDocument({ topic: '', guidelines: [], articles: [], documents, fullTexts: {}, count: 5 });
         expect(markdown).toContain('Only the abstract is stored');
     });
 });

@@ -55,9 +55,32 @@ const DESIGN_WEIGHT = { guideline: 50, 'meta-analysis': 40, 'systematic review':
 const MAX_POINTS_PER_SOURCE = 20;
 const MAX_POINT_CHARS = 380;
 
+
+// How well a source matches the topic. Guideline rows are attached to topics loosely, so without this a
+// recent unrelated row (fatty liver in children) outranks the real source. "non-alcoholic" must not count
+// as a match for "alcohol".
+const GENERIC_TOPIC_WORDS = new Set(['disease', 'diseases', 'syndrome', 'syndromes', 'disorder', 'disorders', 'management', 'treatment', 'therapy', 'diagnosis', 'clinical', 'patients', 'with', 'and', 'the', 'for', 'of', 'in', 'on', 'to']);
+
+function topicStems(topic) {
+    return [...new Set((String(topic || '').toLowerCase().match(/[a-z]{3,}/g) || [])
+        .filter((w) => !GENERIC_TOPIC_WORDS.has(w))
+        .map((w) => w.slice(0, 5)))];
+}
+
+function topicRelevance(topic, text) {
+    const stems = topicStems(topic);
+    if (!stems.length) return 1;
+    const hay = String(text || '').toLowerCase().replace(/non[-\s]?alcohol\w*/g, ' ');
+    const hit = stems.filter((st) => new RegExp('\\b' + st).test(hay)).length;
+    return hit / stems.length;
+}
+
+const MIN_TOPIC_RELEVANCE = 0.6;
+const RELEVANCE_WEIGHT = 40;
+
 // A guideline is a document, not a row: topic_guidelines stores one row per recommendation, so
 // group rows by document (or body+year) and keep every recommendation as a point.
-function collectCandidates({ guidelines = [], articles = [], documents = [] } = {}) {
+function collectCandidates({ guidelines = [], articles = [], documents = [], topic = null } = {}) {
     const groups = new Map();
     for (const g of guidelines) {
         const body = g.sourceBody || g.source_body || 'Guideline';
@@ -80,6 +103,7 @@ function collectCandidates({ guidelines = [], articles = [], documents = [] } = 
             year: grp.year,
             url: grp.url,
             // More stored recommendations means more to summarise, so break ties toward the richer source.
+            relevance: topic ? topicRelevance(topic, `${grp.body} ${grp.points.join(' ')}`) : 1,
             score: DESIGN_WEIGHT.guideline + (grp.tier === 'guideline' ? 5 : 0) + Math.max(0, grp.year - 2000) / 5 + Math.min(grp.points.length, 20) / 10,
         });
     }
@@ -100,6 +124,7 @@ function collectCandidates({ guidelines = [], articles = [], documents = [] } = 
             points: [],
             year,
             uid: a.uid || null,
+            relevance: topic ? topicRelevance(topic, `${a.title} ${abstract.slice(0, 1500)}`) : 1,
             score: DESIGN_WEIGHT[design] + Math.max(0, year - 2000) / 5 + Math.min(cites, 500) / 100,
         });
     }
@@ -124,14 +149,17 @@ function collectCandidates({ guidelines = [], articles = [], documents = [] } = 
             url: d.sourceUrl || d.source_url || null,
             docId: d.id ?? null,
             textSource: d.full_text_source ?? d.fullTextSource ?? null,
+            relevance: topic ? topicRelevance(topic, `${d.title} ${text.slice(0, 3000)}`) : 1,
             score: DESIGN_WEIGHT[design] + Math.max(0, year - 2000) / 5 + Math.min(Number(d._topicScore) || 0, 2),
         });
     }
-    return out.sort((x, y) => y.score - x.score);
+    const relevant = topic ? out.filter((c) => c.relevance >= MIN_TOPIC_RELEVANCE) : out;
+    for (const c of relevant) c.score += (c.relevance ?? 1) * RELEVANCE_WEIGHT;
+    return relevant.sort((x, y) => y.score - x.score);
 }
 
 function buildTopSourcesBlock({ topic, guidelines, articles, documents, count = 5 } = {}) {
-    const chosen = collectCandidates({ guidelines, articles, documents }).slice(0, count);
+    const chosen = collectCandidates({ guidelines, articles, documents, topic }).slice(0, count);
     if (!chosen.length) {
         return `## Top-sources request\nThe learner asked for the top ${count} guidelines, reviews or meta-analyses on "${topic}". `
             + 'No guideline, review or meta-analysis is stored for this topic. Say so plainly and suggest a search; do not invent sources.';
@@ -161,15 +189,15 @@ function buildTopSourcesBlock({ topic, guidelines, articles, documents, count = 
 // The summary itself is rendered here, not by the model: a model asked to "list every point" compresses,
 // merges and drops. Stored text goes out verbatim; the model only writes the comparison afterwards.
 // Which sources a request would show, so the caller can read their full text before rendering.
-function chooseTopSources({ guidelines, articles, documents, count = 5 } = {}) {
-    return collectCandidates({ guidelines, articles, documents }).slice(0, count);
+function chooseTopSources({ topic, guidelines, articles, documents, count = 5 } = {}) {
+    return collectCandidates({ guidelines, articles, documents, topic }).slice(0, count);
 }
 
 const FULL_TEXT_MIN_CHARS = 2000;
 
 // fullTexts: { [documentId]: { text, source } } for the chosen documents that have stored full text.
 function renderTopSourcesDocument({ topic, guidelines, articles, documents, count = 5, fullTexts = {}, storedRecs = {} } = {}) {
-    const chosen = chooseTopSources({ guidelines, articles, documents, count });
+    const chosen = chooseTopSources({ topic, guidelines, articles, documents, count });
     if (!chosen.length) {
         return { chosen, markdown: `No guideline, review or meta-analysis is stored for "${topic}". Run a search for this topic to bring some in.\n` };
     }
@@ -220,4 +248,4 @@ function buildComparisonBlock({ topic, chosen } = {}) {
         + digest;
 }
 
-module.exports = { isTopSourcesRequest, requestedSourceCount, articleDesign, documentDesign, collectCandidates, buildTopSourcesBlock, chooseTopSources, renderTopSourcesDocument, buildComparisonBlock };
+module.exports = { isTopSourcesRequest, requestedSourceCount, articleDesign, documentDesign, collectCandidates, buildTopSourcesBlock, topicRelevance, chooseTopSources, renderTopSourcesDocument, buildComparisonBlock };

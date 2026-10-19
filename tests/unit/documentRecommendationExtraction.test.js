@@ -77,7 +77,7 @@ describe('top-sources document prefers stored extracted recommendations', () => 
     const documents = [{ id: 7, title: 'A meta-analysis of steroids in alcoholic hepatitis', source_year: 2024, text_excerpt: 'Abstract excerpt only.' }];
     test('shows the stored sentences and not the abstract excerpt', () => {
         const { markdown } = renderTopSourcesDocument({
-            topic: 'ald', guidelines: [], articles: [], documents, count: 5,
+            topic: '', guidelines: [], articles: [], documents, count: 5,
             storedRecs: { 7: ['Steroids should be offered to eligible patients.', 'Abstinence is advised for all patients.'] },
         });
         expect(markdown).toContain('2 recommendations identified in the stored full text, quoted exactly');
