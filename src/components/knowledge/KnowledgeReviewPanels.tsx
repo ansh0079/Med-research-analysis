@@ -8,3 +8,4 @@ export { PreviewPanel } from './reviewPanels/PreviewPanel';
 export { SourcesPanel } from './reviewPanels/SourcesPanel';
 export { LearningHealthPanel } from './reviewPanels/LearningHealthPanel';
 export { ClaimsReviewPanel } from './reviewPanels/claims/ClaimsReviewPanel';
+export { ProposalsTable } from './reviewPanels/ProposalsTable';

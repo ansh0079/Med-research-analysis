@@ -25,6 +25,8 @@ export function useKnowledgeReviewPage() {
   const [notice, setNotice] = React.useState('');
   const [activeTab, setActiveTab] = React.useState<ActiveTab>('edit');
   const [proposals, setProposals] = React.useState<import('../types').TopicKnowledgeProposal[]>([]);
+  const [proposalsLoading, setProposalsLoading] = React.useState(false);
+  const [proposalsError, setProposalsError] = React.useState('');
   const [learningHealth, setLearningHealth] = React.useState<LearningHealthResponse['health'] | null>(null);
   const [healthLoading, setHealthLoading] = React.useState(false);
   const [healthError, setHealthError] = React.useState('');
@@ -76,9 +78,15 @@ export function useKnowledgeReviewPage() {
       setError('');
       setActiveTab('edit');
       // Fetch pending proposals for this topic
+      setProposalsLoading(true);
+      setProposalsError('');
       api.learning.getTopicProposals(selected.topic)
         .then((data) => setProposals(data.proposals))
-        .catch(() => setProposals([]));
+        .catch((e) => {
+          setProposals([]);
+          setProposalsError(e instanceof Error ? e.message : 'Failed to load proposals');
+        })
+        .finally(() => setProposalsLoading(false));
       setClaimQueue([]);
       setClaimsError('');
     }
@@ -332,6 +340,7 @@ export function useKnowledgeReviewPage() {
     { id: 'edit', label: 'Edit', icon: 'fa-pen' },
     { id: 'preview', label: 'Preview', icon: 'fa-eye' },
     { id: 'sources', label: `Sources (${selected?.sourceArticles?.length ?? 0})`, icon: 'fa-file-alt' },
+    { id: 'proposals', label: `Proposals${proposals.length ? ` (${proposals.length})` : ''}`, icon: 'fa-lightbulb' },
     { id: 'claims', label: `Claims${claimQueue.length ? ` (${claimQueue.length})` : ''}`, icon: 'fa-shield-alt' },
     { id: 'health', label: 'Learning Health', icon: 'fa-chart-line' },
   ];
@@ -353,6 +362,8 @@ export function useKnowledgeReviewPage() {
     activeTab,
     setActiveTab,
     proposals,
+    proposalsLoading,
+    proposalsError,
     learningHealth,
     healthLoading,
     healthError,

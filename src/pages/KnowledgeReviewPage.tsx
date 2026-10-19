@@ -3,6 +3,7 @@ import {
   ClaimsReviewPanel,
   LearningHealthPanel,
   PreviewPanel,
+  ProposalsTable,
   SeminalPapersEditor,
   SourcesPanel,
   StringListEditor,
@@ -30,6 +31,8 @@ export const KnowledgeReviewPage: React.FC = () => {
     activeTab,
     setActiveTab,
     proposals,
+    proposalsLoading,
+    proposalsError,
     learningHealth,
     healthLoading,
     healthError,
@@ -404,6 +407,17 @@ export const KnowledgeReviewPage: React.FC = () => {
 
                   {activeTab === 'sources' && (
                     <SourcesPanel sourceArticles={selected.sourceArticles} />
+                  )}
+
+                  {activeTab === 'proposals' && (
+                    <ProposalsTable
+                      proposals={proposals}
+                      loading={proposalsLoading}
+                      error={proposalsError}
+                      onApprove={(id) => void handleApproveProposal(id)}
+                      onReject={(id) => void handleRejectProposal(id)}
+                      actionBusyId={proposalActionId}
+                    />
                   )}
 
                   {activeTab === 'claims' && (
