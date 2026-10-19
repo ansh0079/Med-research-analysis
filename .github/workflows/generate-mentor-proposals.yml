@@ -15,11 +15,17 @@ on:
         type: choice
         options: ['true', 'false']
       mode:
-        description: 'Generator mode (offline=no LLM)'
+        description: 'Generator mode'
         required: true
         default: 'offline'
         type: choice
         options: ['offline']
+      commit:
+        description: 'Write directly to topic_knowledge (served by search)'
+        required: true
+        default: 'false'
+        type: choice
+        options: ['true', 'false']
 
 jobs:
   generate:
@@ -47,12 +53,13 @@ jobs:
           SHEET: ${{ github.event.inputs.sheet }}
           DRY: ${{ github.event.inputs.dry_run }}
           MODE: ${{ github.event.inputs.mode }}
+          COMMIT: ${{ github.event.inputs.commit }}
         with:
           host: ${{ secrets.HETZNER_HOST || '178.105.155.246' }}
           username: root
           key: ${{ secrets.HETZNER_SSH_KEY }}
           command_timeout: 15m
-          envs: SHEET,DRY
+          envs: SHEET,DRY,MODE,COMMIT
           script: |
             set -euo pipefail
             cd /opt/medsearch
@@ -63,4 +70,4 @@ jobs:
             fi
             docker compose -f docker-compose.hetzner.yml run --rm --no-deps -T \
               -e NODE_OPTIONS=--max-old-space-size=1536 web \
-              node scripts/generate-topic-mentor-proposals-offline.js --topics "$FILE" $([ "$DRY" = "true" ] && echo '--dry-run' || true)
+              node scripts/generate-topic-mentor-proposals-offline.js --topics "$FILE" $([ "$DRY" = "true" ] && echo '--dry-run' || true) $([ "$COMMIT" = "true" ] && echo '--commit-live' || true)

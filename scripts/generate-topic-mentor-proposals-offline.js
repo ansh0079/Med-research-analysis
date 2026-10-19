@@ -10,7 +10,7 @@
  * - Writes topic_knowledge_proposals with proposed_status 'draft_pending_clinician_review'
  *
  * Usage:
- *   node scripts/generate-topic-mentor-proposals-offline.js --topics /review/topics-0251-0500.json [--limit 100] [--dry-run]
+ *   node scripts/generate-topic-mentor-proposals-offline.js --topics /review/topics-0251-0500.json [--limit 100] [--dry-run|--commit-live]
  */
 
 const fs = require('fs');
@@ -125,6 +125,7 @@ async function main() {
   const topicsPath = readArg('--topics');
   const limit = Number(readArg('--limit', '0')) || 0;
   const dryRun = hasFlag('--dry-run');
+  const commitLive = hasFlag('--commit-live');
   if (!topicsPath) {
     console.error('Missing --topics <path-to-json>');
     process.exit(2);
@@ -190,7 +191,7 @@ async function main() {
       }));
       if (dryRun) {
         results.push({ topic: display, ok: true, proposed: true, dryRun: true, keptGuidelines: keptGuidelines.length, keptArticles: keptArticles.length });
-      } else {
+      } else if (!commitLive) {
         const prop = await db.createTopicKnowledgeProposal(display, {
           knowledge,
           sourceArticles,
@@ -199,6 +200,10 @@ async function main() {
           reason: 'Offline mentor draft; pending clinician review',
         });
         results.push({ topic: display, ok: true, proposalId: prop?.id || null, keptGuidelines: keptGuidelines.length, keptArticles: keptArticles.length });
+      } else {
+        // Directly upsert into topic_knowledge with a non-verified status so search can serve it
+        const updated = await db.upsertTopicKnowledge(display, knowledge, sourceArticles, 'pending_review', 0.6);
+        results.push({ topic: display, ok: true, live: true, status: updated?.status || 'pending_review', keptGuidelines: keptGuidelines.length, keptArticles: keptArticles.length });
       }
     } catch (err) {
       results.push({ topic: display, ok: false, reason: err?.message || 'unknown_error' });
