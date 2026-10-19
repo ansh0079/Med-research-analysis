@@ -16,10 +16,10 @@ permissions:
 jobs:
   lint:
     name: Lint
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
           node-version: '22'
           cache: 'npm'
@@ -57,14 +57,14 @@ jobs:
 # ──────────────────────────────────────────────
   unit-tests:
     name: Unit & API Tests
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: lint
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           # Need full history so origin/<base>...HEAD has a merge base for the freeze check.
           fetch-depth: 0
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: '22'
           cache: 'npm'
@@ -81,7 +81,7 @@ jobs:
           JWT_SECRET: test-jwt-secret
           ADMIN_TOKEN: test-admin-token
       - name: Upload coverage report
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: coverage-report
           path: coverage/
@@ -92,7 +92,7 @@ jobs:
 # ──────────────────────────────────────────────
   integration-tests:
     name: Postgres & Redis Integration Tests
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: lint
     services:
       postgres:
@@ -118,8 +118,8 @@ jobs:
         ports:
           - 6379:6379
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
           node-version: '22'
           cache: 'npm'
@@ -145,11 +145,11 @@ jobs:
 # ──────────────────────────────────────────────
   security:
     name: Security Audit
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: lint
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
           node-version: '22'
           cache: 'npm'
@@ -161,11 +161,11 @@ jobs:
 # ──────────────────────────────────────────────
   build:
     name: Build
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: [unit-tests, integration-tests, security]
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
           node-version: '22'
           cache: 'npm'
@@ -175,7 +175,7 @@ jobs:
         env:
           NODE_ENV: production
       - name: Upload build artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: dist
           path: dist/
@@ -186,11 +186,11 @@ jobs:
 # ──────────────────────────────────────────────
   openapi-verify:
     name: OpenAPI Verify
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: build
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
           node-version: '22'
           cache: 'npm'
@@ -200,7 +200,7 @@ jobs:
       - name: Validate OpenAPI spec
         run: npm run docs:openapi:validate
       - name: Upload OpenAPI artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: openapi-spec
           path: docs/openapi.json
@@ -211,11 +211,11 @@ jobs:
 # ──────────────────────────────────────────────
   load-test-smoke:
     name: API Availability Smoke
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: build
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
           node-version: '22'
           cache: 'npm'
@@ -236,7 +236,7 @@ jobs:
         env:
           BASE_URL: http://localhost:3002
       - name: Upload k6 report
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: k6-smoke-report
           path: tests/load/results/
@@ -248,14 +248,14 @@ jobs:
 # ──────────────────────────────────────────────
   release:
     name: Optional Docker Hub Publish
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: [build, integration-tests, openapi-verify, load-test-smoke]
     if: github.event_name == 'push' && github.ref == 'refs/heads/main' && vars.DOCKERHUB_PUBLISH_ENABLED == 'true'
     env:
       BETA_BASE_URL: ${{ secrets.BETA_BASE_URL }}
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
           node-version: '22'
           cache: 'npm'

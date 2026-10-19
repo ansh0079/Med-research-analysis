@@ -5,10 +5,10 @@ on:
 
 jobs:
   export:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Configure production SSH
         env:
           SSH_KEY: ${{ secrets.HETZNER_SSH_KEY }}
@@ -70,7 +70,7 @@ jobs:
           docker cp medsearch-pg:/tmp/repair-papers.csv /tmp/question-repair-evidence/
           REMOTE
           scp -r root@178.105.155.246:/tmp/question-repair-evidence ./question-repair-evidence
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: signal-md-question-repair-evidence
           path: question-repair-evidence/*.csv

@@ -5,10 +5,10 @@ on:
 
 jobs:
     export:
-        runs-on: ubuntu-latest
+        runs-on: ubuntu-24.04
         timeout-minutes: 15
         steps:
-            - uses: actions/checkout@v4
+            - uses: actions/checkout@v7
             - name: Configure production SSH
               env:
                   SSH_KEY: ${{ secrets.HETZNER_SSH_KEY }}
@@ -32,7 +32,7 @@ jobs:
                   for f in signal-md-clinical-review-master.csv signal-md-clinical-review-batch-001.csv signal-md-clinical-review-evidence-groups.csv signal-md-approval-provenance-exceptions.csv; do
                     scp "root@178.105.155.246:/tmp/$f" "./$f"
                   done
-            - uses: actions/upload-artifact@v4
+            - uses: actions/upload-artifact@v7
               with:
                   name: signal-md-clinical-review-backlog
                   path: signal-md-*.csv

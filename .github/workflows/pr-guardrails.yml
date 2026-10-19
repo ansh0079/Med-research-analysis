@@ -9,14 +9,14 @@ permissions:
 jobs:
   guardrails:
     name: Test, Typecheck, Lint, Audit
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Setup Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           node-version: '22'
           cache: npm
@@ -107,14 +107,14 @@ jobs:
   # Offline gates always block: gold fixture ↔ landmark alias coverage + baseline contracts.
   search-quality-offline-gate:
     name: Search Quality Offline Gate
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: guardrails
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Setup Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           node-version: '22'
           cache: npm
@@ -164,15 +164,15 @@ jobs:
   # signal to re-run locally before merge when fixtures/seeds change.
   search-quality-eval:
     name: Live Labelled Search Quality (advisory)
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: guardrails
     continue-on-error: true
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Setup Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           node-version: '22'
           cache: npm
@@ -201,7 +201,7 @@ jobs:
 
       - name: Upload search quality eval artifacts
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: search-quality-eval-${{ github.run_id }}
           path: eval-results/search-quality-gold-*.json
