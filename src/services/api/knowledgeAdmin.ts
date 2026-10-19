@@ -1,4 +1,4 @@
-﻿import { API_BASE } from './core';
+import { API_BASE } from './core';
 import type { LearningHealthResponse } from '@types';
 import { KnowledgeCoreApi } from './knowledgeCore';
 
@@ -15,6 +15,51 @@ export type QuestionTopicReviewItem = {
   category: 'aligned' | 'unclear' | 'unassignable';
   reasons: string[];
   question?: { question?: string; explanation?: string } | null;
+};
+
+export type TopicMentorDraftSource = {
+  pmid: string;
+  doi?: string | null;
+  design: string;
+  year?: string | null;
+  journal?: string | null;
+  title: string;
+};
+
+export type TopicMentorDraftPage = {
+  mentor_intro: string;
+  teaching_points: Array<{ claim: string; cites: string[] }>;
+  uncertainties: string[];
+  mcq_angles: string[];
+  case_hooks: string[];
+  gaps: string;
+  sources: TopicMentorDraftSource[];
+};
+
+export type TopicMentorDraft = {
+  id: number;
+  topicId: string;
+  topic: string;
+  cluster: string | null;
+  status: string;
+  sourceBatch: string | null;
+  teachingPoints: number;
+  sourceCount: number;
+  reviewDecision: string | null;
+  reviewerNotes: string | null;
+  reviewedBy: string | null;
+  reviewedAt: string | null;
+  publishedAt?: string | null;
+  publishedBy?: string | null;
+  page?: TopicMentorDraftPage;
+  evidence?: Record<string, unknown>;
+};
+
+export type TopicMentorDraftListResponse = {
+  items: TopicMentorDraft[];
+  counts: Record<string, number>;
+  limit: number;
+  offset: number;
 };
 
 export type ProductionObservabilityStatus = 'healthy' | 'watch' | 'degraded' | 'insufficient_data';
@@ -454,6 +499,30 @@ export class KnowledgeAdminApi extends KnowledgeCoreApi {
   async reviewQuestionTopic(input: { objectKey: string; questionIndex: number; decision: 'approved' | 'needs_revision' | 'retired'; assignedCurriculumTopicId?: string; notes?: string }): Promise<{ assignment: unknown }> {
     const response = await this.fetchWithSession(`${API_BASE}/api/admin/question-topic-review`, {
       method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(input),
+    });
+    if (!response.ok) await this.parseErrorResponse(response);
+    return response.json();
+  }
+
+  async listTopicMentorDrafts(options: { status?: string; q?: string; limit?: number; offset?: number } = {}): Promise<TopicMentorDraftListResponse> {
+    const params = new URLSearchParams();
+    Object.entries(options).forEach(([key, value]) => { if (value !== undefined && value !== '') params.set(key, String(value)); });
+    const response = await this.fetchWithSession(`${API_BASE}/api/admin/topic-mentor-drafts?${params}`);
+    if (!response.ok) await this.parseErrorResponse(response);
+    return response.json();
+  }
+
+  async reviewTopicMentorDraft(input: { topicId: string; decision: 'approved' | 'needs_changes' | 'rejected'; notes?: string }): Promise<{ draft: TopicMentorDraft }> {
+    const response = await this.fetchWithSession(`${API_BASE}/api/admin/topic-mentor-drafts/${encodeURIComponent(input.topicId)}`, {
+      method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ decision: input.decision, notes: input.notes }),
+    });
+    if (!response.ok) await this.parseErrorResponse(response);
+    return response.json();
+  }
+
+  async publishTopicMentorDraft(topicId: string): Promise<{ draft: TopicMentorDraft }> {
+    const response = await this.fetchWithSession(`${API_BASE}/api/admin/topic-mentor-drafts/${encodeURIComponent(topicId)}/publish`, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' }, body: '{}',
     });
     if (!response.ok) await this.parseErrorResponse(response);
     return response.json();

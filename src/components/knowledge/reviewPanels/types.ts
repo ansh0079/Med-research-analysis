@@ -12,4 +12,4 @@ export interface TeachingPointDraft {
   confidence: 'HIGH' | 'MODERATE' | 'LOW' | 'VERY_LOW';
 }
 
-export type ActiveTab = 'edit' | 'preview' | 'sources' | 'claims' | 'health';
+export type ActiveTab = 'edit' | 'preview' | 'sources' | 'claims' | 'health' | 'drafts';

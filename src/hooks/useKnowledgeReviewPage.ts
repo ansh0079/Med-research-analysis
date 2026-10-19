@@ -2,6 +2,7 @@ import React from 'react';
 import { useNavigatePage } from '@contexts/SearchContext';
 import { api } from '@services/api';
 import type { AgentGuidance, LearningHealthResponse, TeachingClaimReviewItem, TopicKnowledge } from '@types';
+import type { TopicMentorDraft } from '@services/api/knowledgeAdmin';
 import {
   toSeminalPapers,
   toStringList,
@@ -31,6 +32,12 @@ export function useKnowledgeReviewPage() {
   const [claimQueue, setClaimQueue] = React.useState<TeachingClaimReviewItem[]>([]);
   const [claimsLoading, setClaimsLoading] = React.useState(false);
   const [claimsError, setClaimsError] = React.useState('');
+  const [drafts, setDrafts] = React.useState<TopicMentorDraft[]>([]);
+  const [draftCounts, setDraftCounts] = React.useState<Record<string, number>>({});
+  const [draftsLoading, setDraftsLoading] = React.useState(false);
+  const [draftsError, setDraftsError] = React.useState('');
+  const [draftStatusFilter, setDraftStatusFilter] = React.useState('');
+  const [draftReviewingId, setDraftReviewingId] = React.useState<string | null>(null);
 
   // Editor state
   const [mentorMessage, setMentorMessage] = React.useState('');
@@ -83,6 +90,75 @@ export function useKnowledgeReviewPage() {
       setClaimsError('');
     }
   }
+
+  const loadDrafts = React.useCallback(async () => {
+    setDraftsLoading(true);
+    setDraftsError('');
+    try {
+      const data = await api.knowledge.listTopicMentorDrafts({
+        status: draftStatusFilter || undefined,
+        limit: 100,
+      });
+      setDrafts(data.items);
+      setDraftCounts(data.counts || {});
+    } catch (err) {
+      setDraftsError(err instanceof Error ? err.message : 'Failed to load mentor drafts.');
+    } finally {
+      setDraftsLoading(false);
+    }
+  }, [draftStatusFilter]);
+
+  // Load once on mount so the tab label shows the pending count.
+  React.useEffect(() => {
+    let cancelled = false;
+    void Promise.resolve().then(() => {
+      if (!cancelled) void loadDrafts();
+    });
+    return () => { cancelled = true; };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  React.useEffect(() => {
+    let cancelled = false;
+    if (activeTab === 'drafts') {
+      void Promise.resolve().then(() => {
+        if (!cancelled) void loadDrafts();
+      });
+    }
+    return () => { cancelled = true; };
+  }, [activeTab, loadDrafts]);
+
+  const reviewMentorDraft = async (
+    topicId: string,
+    decision: 'approved' | 'needs_changes' | 'rejected',
+    notes?: string,
+  ) => {
+    setDraftReviewingId(topicId);
+    try {
+      await api.knowledge.reviewTopicMentorDraft({ topicId, decision, notes });
+      setNotice(`Mentor draft ${decision.replace(/_/g, ' ')}.`);
+      setDraftsError('');
+      await loadDrafts();
+    } catch (err) {
+      setDraftsError(err instanceof Error ? err.message : 'Failed to record draft decision.');
+    } finally {
+      setDraftReviewingId(null);
+    }
+  };
+
+  const publishMentorDraft = async (topicId: string) => {
+    setDraftReviewingId(topicId);
+    try {
+      await api.knowledge.publishTopicMentorDraft(topicId);
+      setNotice('Mentor draft published to the topic.');
+      setDraftsError('');
+      await loadDrafts();
+    } catch (err) {
+      setDraftsError(err instanceof Error ? err.message : 'Failed to publish mentor draft.');
+    } finally {
+      setDraftReviewingId(null);
+    }
+  };
 
   React.useEffect(() => {
     let cancelled = false;
@@ -328,11 +404,13 @@ export function useKnowledgeReviewPage() {
     };
   }, [healthError, learningHealth]);
 
+  const draftsPending = draftCounts['draft_pending_clinician_review'] ?? 0;
   const TABS: { id: ActiveTab; label: string; icon: string }[] = [
     { id: 'edit', label: 'Edit', icon: 'fa-pen' },
     { id: 'preview', label: 'Preview', icon: 'fa-eye' },
     { id: 'sources', label: `Sources (${selected?.sourceArticles?.length ?? 0})`, icon: 'fa-file-alt' },
     { id: 'claims', label: `Claims${claimQueue.length ? ` (${claimQueue.length})` : ''}`, icon: 'fa-shield-alt' },
+    { id: 'drafts', label: `Drafts${draftsPending ? ` (${draftsPending})` : ''}`, icon: 'fa-clipboard-check' },
     { id: 'health', label: 'Learning Health', icon: 'fa-chart-line' },
   ];
 
@@ -359,6 +437,16 @@ export function useKnowledgeReviewPage() {
     claimQueue,
     claimsLoading,
     claimsError,
+    drafts,
+    draftCounts,
+    draftsLoading,
+    draftsError,
+    draftStatusFilter,
+    setDraftStatusFilter,
+    reviewMentorDraft,
+    publishMentorDraft,
+    draftReviewingId,
+    loadDrafts,
     mentorMessage,
     setMentorMessage,
     seminalPapers,

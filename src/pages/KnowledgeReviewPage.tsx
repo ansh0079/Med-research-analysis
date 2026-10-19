@@ -10,6 +10,7 @@ import {
   statusLabel,
 } from '@components/knowledge/KnowledgeReviewPanels';
 import { TopicItemPsychometricsPanel } from '@components/knowledge/TopicItemPsychometricsPanel';
+import { MentorDraftsPanel } from '@components/knowledge/reviewPanels/MentorDraftsPanel';
 import { useKnowledgeReviewPage } from '@hooks/useKnowledgeReviewPage';
 
 export const KnowledgeReviewPage: React.FC = () => {
@@ -36,6 +37,16 @@ export const KnowledgeReviewPage: React.FC = () => {
     claimQueue,
     claimsLoading,
     claimsError,
+    drafts,
+    draftCounts,
+    draftsLoading,
+    draftsError,
+    draftStatusFilter,
+    setDraftStatusFilter,
+    reviewMentorDraft,
+    publishMentorDraft,
+    draftReviewingId,
+    loadDrafts,
     mentorMessage,
     setMentorMessage,
     seminalPapers,
@@ -415,6 +426,21 @@ export const KnowledgeReviewPage: React.FC = () => {
                       onUpdate={(claim, verificationStatus, opts) => void updateClaimVerification(claim, verificationStatus, opts)}
                       onGuidelineCheck={(claim) => void checkClaimGuideline(claim)}
                       onCuratorMeta={(claim, patch) => void updateCuratorMeta(claim, patch)}
+                    />
+                  )}
+
+                  {activeTab === 'drafts' && (
+                    <MentorDraftsPanel
+                      drafts={drafts}
+                      counts={draftCounts}
+                      loading={draftsLoading}
+                      error={draftsError}
+                      statusFilter={draftStatusFilter}
+                      onStatusFilter={setDraftStatusFilter}
+                      onRefresh={() => void loadDrafts()}
+                      onReview={(topicId, decision, notes) => void reviewMentorDraft(topicId, decision, notes)}
+                      onPublish={(topicId) => void publishMentorDraft(topicId)}
+                      reviewing={draftReviewingId}
                     />
                   )}
 
