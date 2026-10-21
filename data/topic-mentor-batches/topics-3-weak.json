@@ -1,0 +1,370 @@
+{
+  "sheet": "3-weak",
+  "count": 52,
+  "topics": [
+    {
+      "no": 1,
+      "topic": "aortic dissection",
+      "normalizedTopic": "aortic dissection",
+      "dbStatus": "ai_generated",
+      "reason": "has summary but no relevant review-grade sources and no guideline support"
+    },
+    {
+      "no": 2,
+      "topic": "asthma exacerbation",
+      "normalizedTopic": "asthma exacerbation",
+      "dbStatus": "ai_generated",
+      "reason": "has summary but no relevant review-grade sources and no guideline support"
+    },
+    {
+      "no": 3,
+      "topic": "best initial test for suspected pulmonary embolism in a stable patient",
+      "normalizedTopic": "best initial test for suspected pulmonary embolism in a stable patient",
+      "dbStatus": "ai_generated",
+      "reason": "has summary but no relevant review-grade sources and no guideline support"
+    },
+    {
+      "no": 4,
+      "topic": "canakinumab anti-inflammatory therapy atherosclerotic disease",
+      "normalizedTopic": "canakinumab anti-inflammatory therapy atherosclerotic disease",
+      "dbStatus": "pending_review",
+      "reason": "has summary but no relevant review-grade sources and no guideline support"
+    },
+    {
+      "no": 5,
+      "topic": "car t therapy large b cell lymphoma",
+      "normalizedTopic": "car t therapy large b cell lymphoma",
+      "dbStatus": "pending_review",
+      "reason": "has summary but no relevant review-grade sources and no guideline support"
+    },
+    {
+      "no": 6,
+      "topic": "cardiac arrhythmias",
+      "normalizedTopic": "cardiac arrhythmias",
+      "dbStatus": "pending_review",
+      "reason": "has summary but no relevant review-grade sources and no guideline support"
+    },
+    {
+      "no": 7,
+      "topic": "Cardiorenal Syndrome",
+      "normalizedTopic": "cardiorenal syndrome",
+      "dbStatus": "pending_review",
+      "reason": "has summary but no relevant review-grade sources and no guideline support"
+    },
+    {
+      "no": 8,
+      "topic": "Carpal tunnel syndrome: diagnosis and management",
+      "normalizedTopic": "carpal tunnel syndrome: diagnosis and management",
+      "dbStatus": "pending_review",
+      "reason": "has summary but no relevant review-grade sources and no guideline support"
+    },
+    {
+      "no": 9,
+      "topic": "colorectal cancer",
+      "normalizedTopic": "colorectal cancer",
+      "dbStatus": "pending_review",
+      "reason": "has summary but no relevant review-grade sources and no guideline support"
+    },
+    {
+      "no": 10,
+      "topic": "Colorectal Cancer Treatment",
+      "normalizedTopic": "colorectal cancer treatment",
+      "dbStatus": "pending_review",
+      "reason": "has summary but no relevant review-grade sources and no guideline support"
+    },
+    {
+      "no": 11,
+      "topic": "Common variable immunodeficiency diagnosis and infection prevention",
+      "normalizedTopic": "common variable immunodeficiency diagnosis and infection prevention",
+      "dbStatus": "pending_review",
+      "reason": "has summary but no relevant review-grade sources and no guideline support"
+    },
+    {
+      "no": 12,
+      "topic": "Community-acquired pneumonia: CURB-65, PSI, empirical therapy, atypical pathogens",
+      "normalizedTopic": "community-acquired pneumonia: curb-65, psi, empirical therapy, atypical pathogens",
+      "dbStatus": "pending_review",
+      "reason": "has summary but no relevant review-grade sources and no guideline support"
+    },
+    {
+      "no": 13,
+      "topic": "Complicated intra-abdominal infection source control and duration",
+      "normalizedTopic": "complicated intra-abdominal infection source control and duration",
+      "dbStatus": "pending_review",
+      "reason": "has summary but no relevant review-grade sources and no guideline support"
+    },
+    {
+      "no": 14,
+      "topic": "Cushings disease: pituitary source, inferior petrosal sinus sampling, transsphenoidal surgery",
+      "normalizedTopic": "cushings disease: pituitary source, inferior petrosal sinus sampling, transsphenoidal surgery",
+      "dbStatus": "pending_review",
+      "reason": "has summary but no relevant review-grade sources and no guideline support"
+    },
+    {
+      "no": 15,
+      "topic": "febrile neutropenia",
+      "normalizedTopic": "febrile neutropenia",
+      "dbStatus": "ai_generated",
+      "reason": "has summary but no relevant review-grade sources and no guideline support"
+    },
+    {
+      "no": 16,
+      "topic": "H. pylori infection",
+      "normalizedTopic": "h. pylori infection",
+      "dbStatus": "ai_generated",
+      "reason": "has summary but no relevant review-grade sources and no guideline support"
+    },
+    {
+      "no": 17,
+      "topic": "haemorrhagic stroke",
+      "normalizedTopic": "haemorrhagic stroke",
+      "dbStatus": "ai_generated",
+      "reason": "has summary but no relevant review-grade sources and no guideline support"
+    },
+    {
+      "no": 18,
+      "topic": "hyperuricaemia",
+      "normalizedTopic": "hyperuricaemia",
+      "dbStatus": "ai_generated",
+      "reason": "has summary but no relevant review-grade sources and no guideline support"
+    },
+    {
+      "no": 19,
+      "topic": "hypothyroidism",
+      "normalizedTopic": "hypothyroidism",
+      "dbStatus": "ai_generated",
+      "reason": "has summary but no relevant review-grade sources and no guideline support"
+    },
+    {
+      "no": 20,
+      "topic": "imatinib versus interferon chronic myeloid leukemia IRIS trial",
+      "normalizedTopic": "imatinib versus interferon chronic myeloid leukemia iris trial",
+      "dbStatus": "ai_generated",
+      "reason": "has summary but no relevant review-grade sources and no guideline support"
+    },
+    {
+      "no": 21,
+      "topic": "Leflunomide, Sulfasalazine, and Hydroxychloroquine toxicities",
+      "normalizedTopic": "leflunomide, sulfasalazine, and hydroxychloroquine toxicities",
+      "dbStatus": "pending_review",
+      "reason": "has summary but no relevant review-grade sources and no guideline support"
+    },
+    {
+      "no": 22,
+      "topic": "leukaemia",
+      "normalizedTopic": "leukaemia",
+      "dbStatus": "pending_review",
+      "reason": "has summary but no relevant review-grade sources and no guideline support"
+    },
+    {
+      "no": 23,
+      "topic": "management of HF with Reduced ejection fraction",
+      "normalizedTopic": "management of hf with reduced ejection fraction",
+      "dbStatus": "pending_review",
+      "reason": "has summary but no relevant review-grade sources and no guideline support"
+    },
+    {
+      "no": 24,
+      "topic": "management of PRESS",
+      "normalizedTopic": "management of press",
+      "dbStatus": "pending_review",
+      "reason": "has summary but no relevant review-grade sources and no guideline support"
+    },
+    {
+      "no": 25,
+      "topic": "meningitis",
+      "normalizedTopic": "meningitis",
+      "dbStatus": "pending_review",
+      "reason": "has summary but no relevant review-grade sources and no guideline support"
+    },
+    {
+      "no": 26,
+      "topic": "methotrexate early rheumatoid arthritis combination therapy TEAR",
+      "normalizedTopic": "methotrexate early rheumatoid arthritis combination therapy tear",
+      "dbStatus": "pending_review",
+      "reason": "has summary but no relevant review-grade sources and no guideline support"
+    },
+    {
+      "no": 27,
+      "topic": "mog antibody associated disease diagnosis and relapse prevention",
+      "normalizedTopic": "mog antibody associated disease diagnosis and relapse prevention",
+      "dbStatus": "pending_review",
+      "reason": "has summary but no relevant review-grade sources and no guideline support"
+    },
+    {
+      "no": 28,
+      "topic": "Multiple myeloma: VRd versus Rd for newly diagnosed disease",
+      "normalizedTopic": "multiple myeloma: vrd versus rd for newly diagnosed disease",
+      "dbStatus": "pending_review",
+      "reason": "has summary but no relevant review-grade sources and no guideline support"
+    },
+    {
+      "no": 29,
+      "topic": "Non-alcoholic fatty liver disease pharmacotherapy",
+      "normalizedTopic": "non-alcoholic fatty liver disease pharmacotherapy",
+      "dbStatus": "pending_review",
+      "reason": "has summary but no relevant review-grade sources and no guideline support"
+    },
+    {
+      "no": 30,
+      "topic": "Obesity pharmacotherapy: orlistat, GLP-1 agonists, naltrexone-bupropion indications and outcomes",
+      "normalizedTopic": "obesity pharmacotherapy: orlistat, glp-1 agonists, naltrexone-bupropion indications and outcomes",
+      "dbStatus": "pending_review",
+      "reason": "has summary but no relevant review-grade sources and no guideline support"
+    },
+    {
+      "no": 31,
+      "topic": "Oxygen prescribing, target saturations and hypoxia management",
+      "normalizedTopic": "oxygen prescribing, target saturations and hypoxia management",
+      "dbStatus": "pending_review",
+      "reason": "has summary but no relevant review-grade sources and no guideline support"
+    },
+    {
+      "no": 32,
+      "topic": "Paediatric anaphylaxis: recognition and emergency management",
+      "normalizedTopic": "paediatric anaphylaxis: recognition and emergency management",
+      "dbStatus": "pending_review",
+      "reason": "has summary but no relevant review-grade sources and no guideline support"
+    },
+    {
+      "no": 33,
+      "topic": "Papilloedema : funduscopic staging, pseudo- papilloedema vs true disc swelling",
+      "normalizedTopic": "papilloedema : funduscopic staging, pseudo- papilloedema vs true disc swelling",
+      "dbStatus": "pending_review",
+      "reason": "has summary but no relevant review-grade sources and no guideline support"
+    },
+    {
+      "no": 34,
+      "topic": "parkinsonism",
+      "normalizedTopic": "parkinsonism",
+      "dbStatus": "pending_review",
+      "reason": "has summary but no relevant review-grade sources and no guideline support"
+    },
+    {
+      "no": 35,
+      "topic": "Perioperative risk assessment and optimisation",
+      "normalizedTopic": "perioperative risk assessment and optimisation",
+      "dbStatus": "pending_review",
+      "reason": "has summary but no relevant review-grade sources and no guideline support"
+    },
+    {
+      "no": 36,
+      "topic": "pneumonia",
+      "normalizedTopic": "pneumonia",
+      "dbStatus": "pending_review",
+      "reason": "has summary but no relevant review-grade sources and no guideline support"
+    },
+    {
+      "no": 37,
+      "topic": "Polycythemia vera: hematocrit targets, aspirin, and cardiovascular risk reduction",
+      "normalizedTopic": "polycythemia vera: hematocrit targets, aspirin, and cardiovascular risk reduction",
+      "dbStatus": "pending_review",
+      "reason": "has summary but no relevant review-grade sources and no guideline support"
+    },
+    {
+      "no": 38,
+      "topic": "Primary aldosteronism diagnosis and treatment",
+      "normalizedTopic": "primary aldosteronism diagnosis and treatment",
+      "dbStatus": "pending_review",
+      "reason": "has summary but no relevant review-grade sources and no guideline support"
+    },
+    {
+      "no": 39,
+      "topic": "Pulmonary artery catheter utility in critically ill patients",
+      "normalizedTopic": "pulmonary artery catheter utility in critically ill patients",
+      "dbStatus": "pending_review",
+      "reason": "has summary but no relevant review-grade sources and no guideline support"
+    },
+    {
+      "no": 40,
+      "topic": "Radiation necrosis vs tumour progression: perfusion MRI and PET scan utility",
+      "normalizedTopic": "radiation necrosis vs tumour progression: perfusion mri and pet scan utility",
+      "dbStatus": "pending_review",
+      "reason": "has summary but no relevant review-grade sources and no guideline support"
+    },
+    {
+      "no": 41,
+      "topic": "RCRI score",
+      "normalizedTopic": "rcri score",
+      "dbStatus": "ai_generated",
+      "reason": "has summary but no relevant review-grade sources and no guideline support"
+    },
+    {
+      "no": 42,
+      "topic": "rosuvastatin primary prevention elevated C-reactive protein",
+      "normalizedTopic": "rosuvastatin primary prevention elevated c-reactive protein",
+      "dbStatus": "pending_review",
+      "reason": "has summary but no relevant review-grade sources and no guideline support"
+    },
+    {
+      "no": 43,
+      "topic": "seizures",
+      "normalizedTopic": "seizures",
+      "dbStatus": "pending_review",
+      "reason": "has summary but no relevant review-grade sources and no guideline support"
+    },
+    {
+      "no": 44,
+      "topic": "sexually transmitted infections",
+      "normalizedTopic": "sexually transmitted infections",
+      "dbStatus": "pending_review",
+      "reason": "has summary but no relevant review-grade sources and no guideline support"
+    },
+    {
+      "no": 45,
+      "topic": "should I start an SGLT2 inhibitor for my patient with HFrEF?",
+      "normalizedTopic": "should i start an sglt2 inhibitor for my patient with hfref?",
+      "dbStatus": "pending_review",
+      "reason": "has summary but no relevant review-grade sources and no guideline support"
+    },
+    {
+      "no": 46,
+      "topic": "Spontaneous bacterial peritonitis vs secondary surgical peritonitis",
+      "normalizedTopic": "spontaneous bacterial peritonitis vs secondary surgical peritonitis",
+      "dbStatus": "pending_review",
+      "reason": "has summary but no relevant review-grade sources and no guideline support"
+    },
+    {
+      "no": 47,
+      "topic": "status epilepticus",
+      "normalizedTopic": "status epilepticus",
+      "dbStatus": "pending_review",
+      "reason": "has summary but no relevant review-grade sources and no guideline support"
+    },
+    {
+      "no": 48,
+      "topic": "Steroids in community acquired pneumonia",
+      "normalizedTopic": "steroids in community acquired pneumonia",
+      "dbStatus": "pending_review",
+      "reason": "has summary but no relevant review-grade sources and no guideline support"
+    },
+    {
+      "no": 49,
+      "topic": "temporal arteritis",
+      "normalizedTopic": "temporal arteritis",
+      "dbStatus": "pending_review",
+      "reason": "has summary but no relevant review-grade sources and no guideline support"
+    },
+    {
+      "no": 50,
+      "topic": "TKI cardiotoxicity",
+      "normalizedTopic": "tki cardiotoxicity",
+      "dbStatus": "pending_review",
+      "reason": "has summary but no relevant review-grade sources and no guideline support"
+    },
+    {
+      "no": 51,
+      "topic": "ulcerative colitis",
+      "normalizedTopic": "ulcerative colitis",
+      "dbStatus": "pending_review",
+      "reason": "has summary but no relevant review-grade sources and no guideline support"
+    },
+    {
+      "no": 52,
+      "topic": "Venous thromboembolism and anticoagulation management",
+      "normalizedTopic": "venous thromboembolism and anticoagulation management",
+      "dbStatus": "pending_review",
+      "reason": "has summary but no relevant review-grade sources and no guideline support"
+    }
+  ]
+}
