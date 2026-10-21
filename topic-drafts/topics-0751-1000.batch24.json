@@ -1,0 +1,1334 @@
+[
+  {
+    "no": 981,
+    "topicId": "91ee83bd-9f84-44a5-9412-aedb0163cb79",
+    "topic": "irritable bowel syndrome",
+    "cluster": "IBS general management",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 8,
+      "papersKept": [
+        {
+          "uid": "pubmed-40789179",
+          "title": "Irritable Bowel Syndrome.",
+          "year": "2025"
+        },
+        {
+          "uid": "pubmed-37541528",
+          "title": "Efficacy of Probiotics in Irritable Bowel Syndrome: Systematic Review and Meta-analysis.",
+          "year": "2024"
+        },
+        {
+          "uid": "pubmed-35419092",
+          "title": "Diet, fibers, and probiotics for irritable bowel syndrome.",
+          "year": "2022"
+        },
+        {
+          "uid": "pubmed-25734736",
+          "title": "Irritable bowel syndrome: a clinical review.",
+          "year": "2015"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-40258374",
+          "title": "Efficacy of dietary interventions in IBS: systematic review and network meta-analysis.",
+          "reason": "Duplicate cluster: network meta-analysis of diets assigned to the diet/microbiome-specific topic 982 for scope differentiation."
+        },
+        {
+          "uid": "pubmed-36324042",
+          "title": "Gastrocolonic Response.",
+          "reason": "Physiology monograph, not clinical management evidence for IBS."
+        },
+        {
+          "uid": "pubmed-33213766",
+          "title": "Functional Bowel Disease.",
+          "reason": "Broad monograph; redundant with the topic-specific reviews kept."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Irritable bowel syndrome affects roughly 4-10% of the population (estimates range up to 21% depending on criteria) and is defined by abdominal pain associated with altered bowel habits rather than being a diagnosis of exclusion. Modern management is positive and subtype-directed: classify as IBS-C, IBS-D, or mixed, then step through diet and lifestyle measures, fibre and probiotics, targeted pharmacotherapy by subtype, and gut-directed psychological therapy for refractory symptoms. This page anchors the general strategy; the paired diet/microbiome topic (982) details dietary intervention.",
+      "teaching_points": [
+        {
+          "claim": "IBS is a positive clinical diagnosis based on symptom criteria (Rome IV): recurrent abdominal pain related to defecation with altered stool frequency or form; subtypes are IBS-C, IBS-D, and mixed.",
+          "cites": [
+            "40789179",
+            "25734736"
+          ]
+        },
+        {
+          "claim": "Probiotics may benefit some IBS patients, but heterogeneity of species, strains, and endpoints has prevented specific strain-level recommendations.",
+          "cites": [
+            "37541528"
+          ]
+        },
+        {
+          "claim": "Dietary therapy - soluble fibre and fermentable-carbohydrate restriction - is a first-line treatment pillar alongside lifestyle advice, chosen by subtype.",
+          "cites": [
+            "35419092"
+          ]
+        },
+        {
+          "claim": "IBS substantially reduces quality of life and work productivity; practical stepwise treatment recommendations exist for generalists and specialists.",
+          "cites": [
+            "25734736",
+            "40789179"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Which specific probiotic strains (if any) have reproducible efficacy in IBS subtypes remains unresolved.",
+        "The durability of dietary restriction beyond short symptom-control periods is uncertain."
+      ],
+      "mcq_angles": [
+        "Rome IV diagnostic criteria and subtype classification.",
+        "Evidence limits of probiotics and why no specific strain is recommended.",
+        "Stepwise management ladder by IBS subtype.",
+        "Red flags that should divert the work-up away from an IBS label."
+      ],
+      "case_hooks": [
+        "A 28-year-old woman has 6 months of bloating and pain relieved by defecation with alternating stool habits; structure the positive diagnosis and subtype.",
+        "An IBS-D patient asks whether a probiotic will cure symptoms; frame an honest evidence answer and subtype-appropriate alternatives."
+      ],
+      "gaps": "Diet/fibers evidence retained is a narrative review; the dietary-interventions network meta-analysis (40258374) was assigned to topic 982 for scope differentiation.",
+      "sources": [
+        {
+          "pmid": "40789179",
+          "design": "review",
+          "year": "2025",
+          "journal": null,
+          "title": "Irritable Bowel Syndrome."
+        },
+        {
+          "pmid": "37541528",
+          "design": "systematic-review",
+          "year": "2024",
+          "journal": null,
+          "title": "Efficacy of Probiotics in Irritable Bowel Syndrome: Systematic Review and Meta-analysis."
+        },
+        {
+          "pmid": "35419092",
+          "design": "review",
+          "year": "2022",
+          "journal": null,
+          "title": "Diet, fibers, and probiotics for irritable bowel syndrome."
+        },
+        {
+          "pmid": "25734736",
+          "design": "review",
+          "year": "2015",
+          "journal": null,
+          "title": "Irritable bowel syndrome: a clinical review."
+        }
+      ]
+    }
+  },
+  {
+    "no": 982,
+    "topicId": "616e8a96-a634-4323-9b85-d14b2152cc86",
+    "topic": "Irritable bowel syndrome diet and microbiome-directed therapy",
+    "cluster": "IBS dietary and microbiome therapy",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 8,
+      "papersKept": [
+        {
+          "uid": "pubmed-38337655",
+          "title": "The Role of the FODMAP Diet in IBS.",
+          "year": "2024"
+        },
+        {
+          "uid": "pubmed-28592442",
+          "title": "The low FODMAP diet: recent advances in understanding its mechanisms and efficacy in IBS.",
+          "year": "2017"
+        },
+        {
+          "uid": "pubmed-28244669",
+          "title": "How to institute the low-FODMAP diet.",
+          "year": "2015"
+        },
+        {
+          "uid": "pubmed-35125827",
+          "title": "Gut bless you: The microbiota-gut-brain axis in irritable bowel syndrome.",
+          "year": "2022"
+        },
+        {
+          "uid": "pubmed-40258374",
+          "title": "Efficacy of dietary interventions in irritable bowel syndrome: a systematic review and network meta-analysis.",
+          "year": "2024"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-35419092",
+          "title": "Diet, fibers, and probiotics for irritable bowel syndrome.",
+          "reason": "Duplicate cluster: kept under the general IBS topic 981 to avoid double-citation."
+        },
+        {
+          "uid": "pubmed-31947991",
+          "title": "Low FODMAP Diet: Evidence, Doubts, and Hopes.",
+          "reason": "Opinion/commentary piece; low evidentiary weight for a therapy page."
+        },
+        {
+          "uid": "pubmed-31427404",
+          "title": "Update on lactose malabsorption and intolerance.",
+          "reason": "Lactose intolerance management, not IBS dietary strategy - off-topic."
+        },
+        {
+          "uid": "pubmed-35565890",
+          "title": "Carbohydrate Maldigestion and Intolerance.",
+          "reason": "General carbohydrate intolerance review, not IBS-specific dietary therapy - off-topic."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Diet is the most requested and most misunderstood lever in IBS. The low-FODMAP diet - restricting fermentable oligosaccharides, disaccharides, monosaccharides, and polyols - is now an internationally accepted strategy: MRI studies show short-chain fermentable carbohydrates expand small-bowel water and colonic gas, provoking symptoms in patients with visceral hypersensitivity. The diet works through a three-phase restriction-reintroduction-personalisation structure under dietetic supervision. Microbiome-directed therapy (probiotics, and emerging prebiotic/psychobiotic approaches) rests on the reframing of IBS as a disturbance of the microbiota-gut-brain axis, though long-term, large randomised evidence remains thin.",
+      "teaching_points": [
+        {
+          "claim": "MRI studies demonstrate that short-chain fermentable carbohydrates increase small-intestinal water and colonic gas, producing symptoms in patients with visceral hypersensitivity - the mechanistic basis of the low-FODMAP diet.",
+          "cites": [
+            "28592442"
+          ]
+        },
+        {
+          "claim": "The low-FODMAP diet is an internationally accepted dietary management strategy for IBS with demonstrated symptom efficacy in randomised trials.",
+          "cites": [
+            "38337655",
+            "28244669"
+          ]
+        },
+        {
+          "claim": "Implementation follows three phases: short restriction, structured reintroduction to identify triggers, then personalisation for long-term maintenance - ideally under dietetic guidance.",
+          "cites": [
+            "28244669"
+          ]
+        },
+        {
+          "claim": "IBS is increasingly conceptualised as a disturbance of the microbiota-gut-brain axis, providing the rationale for microbiome-directed (probiotic and psychobiotic) therapies.",
+          "cites": [
+            "35125827"
+          ]
+        },
+        {
+          "claim": "A network meta-analysis compares the relative efficacy of available dietary interventions for IBS, informing diet selection when multiple options are proposed.",
+          "cites": [
+            "40258374"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Long-term, large randomised controlled trials of the low-FODMAP diet are still lacking, and effects on microbiome composition versus symptoms need disentangling.",
+        "Which microbiome-directed interventions (which strains, which targets) confer durable benefit is unresolved."
+      ],
+      "mcq_angles": [
+        "FODMAP acronym and the fermentable carbohydrates involved.",
+        "Three-phase low-FODMAP implementation and reintroduction logic.",
+        "Mechanistic evidence (luminal distension, visceral hypersensitivity) behind dietary therapy.",
+        "Microbiota-gut-brain axis as rationale for microbiome-directed therapy."
+      ],
+      "case_hooks": [
+        "An IBS-C patient asks for dietary options before medication; outline the dietitian-supervised low-FODMAP pathway and alternatives.",
+        "A patient restricted FODMAPs for a year and never reintroduced; correct the phase structure and micronutrient risks."
+      ],
+      "gaps": "Evidence base for long-term dietary and microbiome-directed therapy remains limited; statement-level citations come from reviews and one network meta-analysis rather than large durable-outcome trials.",
+      "sources": [
+        {
+          "pmid": "38337655",
+          "design": "review",
+          "year": "2024",
+          "journal": null,
+          "title": "The Role of the FODMAP Diet in IBS."
+        },
+        {
+          "pmid": "28592442",
+          "design": "review",
+          "year": "2017",
+          "journal": null,
+          "title": "The low FODMAP diet: recent advances in understanding its mechanisms and efficacy in IBS."
+        },
+        {
+          "pmid": "28244669",
+          "design": "review",
+          "year": "2015",
+          "journal": null,
+          "title": "How to institute the low-FODMAP diet."
+        },
+        {
+          "pmid": "35125827",
+          "design": "review",
+          "year": "2022",
+          "journal": null,
+          "title": "Gut bless you: The microbiota-gut-brain axis in irritable bowel syndrome."
+        },
+        {
+          "pmid": "40258374",
+          "design": "systematic-review",
+          "year": "2024",
+          "journal": null,
+          "title": "Efficacy of dietary interventions in irritable bowel syndrome: a systematic review and network meta-analysis."
+        }
+      ]
+    }
+  },
+  {
+    "no": 983,
+    "topicId": "a17809cc-5f60-4bfa-837b-cb36aceb9a02",
+    "topic": "ischaemic heart disease",
+    "cluster": "chronic coronary disease",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 8,
+      "papersKept": [
+        {
+          "uid": "pubmed-37471501",
+          "title": "2023 AHA/ACC/ACCP/ASPC/NLA/PCNA Guideline for the Management of Patients With Chronic Coronary Disease.",
+          "year": "2023"
+        },
+        {
+          "uid": "pubmed-37904413",
+          "title": "Comprehensive review of ST-segment elevation myocardial infarction: Understanding pathophysiology, diagnosis, and management.",
+          "year": "2024"
+        },
+        {
+          "uid": "pubmed-40902613",
+          "title": "Clopidogrel versus aspirin for secondary prevention of coronary artery disease: a systematic review and individual patient-level meta-analysis.",
+          "year": "2025"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-34543069",
+          "title": "Coronary Artery Anomalies.",
+          "reason": "Congenital anomalies, not acquired ischaemic heart disease - off-topic."
+        },
+        {
+          "uid": "pubmed-30466521",
+          "title": "Coronary Microvascular Disease Pathogenic Mechanisms and Therapeutic Options.",
+          "reason": "Coronary microvascular disease is a distinct entity; off the general IHD scope."
+        },
+        {
+          "uid": "pubmed-34991791",
+          "title": "Coronary Atherosclerotic Plaque Regression: JACC State-of-the-Art Review.",
+          "reason": "Plaque-regression biology review; not management guidance for IHD - off-scope."
+        },
+        {
+          "uid": "pubmed-38103139",
+          "title": "Ischemic cardiomyopathy: epidemiology, pathophysiology, outcomes, and therapeutic options.",
+          "reason": "Heart-failure phenotype downstream of IHD; managed under heart failure topics - off-scope."
+        },
+        {
+          "uid": "pubmed-35534718",
+          "title": "Definition and epidemiology of coronary microvascular disease.",
+          "reason": "Microvascular disease epidemiology; off the general IHD scope."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Ischaemic heart disease spans stable chronic coronary disease through acute occlusive events. The 2023 AHA/ACC chronic coronary disease guideline consolidated a decade of evidence since the 2012 stable ischaemic heart disease guideline: guideline-directed medical therapy for secondary prevention, symptom-directed antianginal therapy, and selective revascularisation. At the acute extreme, STEMI is complete coronary occlusion and a time-critical emergency. Antiplatelet choice for long-term secondary prevention is an active question - an individual patient-level meta-analysis now directly compares clopidogrel with aspirin monotherapy in established coronary disease.",
+      "teaching_points": [
+        {
+          "claim": "The 2023 AHA/ACC chronic coronary disease guideline updates and consolidates evidence for managing stable ischaemic heart disease, replacing the 2012 stable IHD guideline framework.",
+          "cites": [
+            "37471501"
+          ]
+        },
+        {
+          "claim": "STEMI represents complete coronary artery occlusion leading to myocardial ischaemia and necrosis; it remains a leading cause of morbidity and mortality and demands rapid reperfusion.",
+          "cites": [
+            "37904413"
+          ]
+        },
+        {
+          "claim": "An individual patient-level meta-analysis compares clopidogrel versus aspirin monotherapy for secondary prevention in established coronary disease, most of whom had prior PCI or ACS.",
+          "cites": [
+            "40902613"
+          ]
+        },
+        {
+          "claim": "Chronic coronary disease management rests on secondary-prevention risk-factor control alongside symptom-directed antianginal therapy, with revascularisation reserved for prognostic or refractory-symptom indications.",
+          "cites": [
+            "37471501"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Optimal long-term antiplatelet agent and intensity after PCI or ACS is still being refined (clopidogrel vs aspirin head-to-head evidence is young).",
+        "Which stable patients benefit prognostically from revascularisation beyond left-main/proximal-LAD anatomy."
+      ],
+      "mcq_angles": [
+        "Components of guideline-directed medical therapy in chronic coronary disease.",
+        "Time-critical pathophysiology of STEMI and reperfusion goals.",
+        "Antiplatelet selection for secondary prevention after PCI/ACS.",
+        "Indications for revascularisation in stable disease."
+      ],
+      "case_hooks": [
+        "A 62-year-old with exertional angina and multivessel disease on optimal medical therapy; weigh revascularisation indications.",
+        "A post-MI patient asks why clopidogrel rather than lifelong aspirin; summarise the comparative-evidence landscape."
+      ],
+      "gaps": "The clopidogrel-versus-aspirin meta-analysis abstract was truncated mid-results in retrieval; verify effect estimates and confidence intervals against the full text before approval.",
+      "sources": [
+        {
+          "pmid": "37471501",
+          "design": "guideline",
+          "year": "2023",
+          "journal": null,
+          "title": "2023 AHA/ACC/ACCP/ASPC/NLA/PCNA Guideline for the Management of Patients With Chronic Coronary Disease."
+        },
+        {
+          "pmid": "37904413",
+          "design": "review",
+          "year": "2024",
+          "journal": null,
+          "title": "Comprehensive review of ST-segment elevation myocardial infarction: Understanding pathophysiology, diagnosis, and management."
+        },
+        {
+          "pmid": "40902613",
+          "design": "systematic-review",
+          "year": "2025",
+          "journal": null,
+          "title": "Clopidogrel versus aspirin for secondary prevention of coronary artery disease: a systematic review and individual patient-level meta-analysis."
+        }
+      ]
+    }
+  },
+  {
+    "no": 984,
+    "topicId": "b3a627be-458a-4ae0-b80d-e80e7fcc750c",
+    "topic": "Ischaemic heart disease and acute coronary syndromes",
+    "cluster": "ACS management",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 7,
+      "papersKept": [
+        {
+          "uid": "pubmed-40014670",
+          "title": "2025 ACC/AHA/ACEP/NAEMSP/SCAI Guideline for the Management of Patients With Acute Coronary Syndromes.",
+          "year": "2025"
+        },
+        {
+          "uid": "pubmed-42377293",
+          "title": "Antiplatelet Therapy in the Management of Atherosclerotic Cardiovascular Disease: 2026 ACC Scientific Statement.",
+          "year": "2026"
+        },
+        {
+          "uid": "pubmed-34709879",
+          "title": "2021 AHA/ACC/ASE/CHEST/SAEM/SCCT/SCMR Guideline for the Evaluation and Diagnosis of Chest Pain.",
+          "year": "2021"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-40013746",
+          "title": "2025 ACC/AHA/ACEP/NAEMSP/SCAI Guideline for the Management of Patients With Acute Coronary Syndromes.",
+          "reason": "Companion/summary report of the same 2025 ACS guideline kept as 40014670; duplicate record."
+        },
+        {
+          "uid": "pubmed-38033089",
+          "title": "2023 ACC/AHA/ACCP/HRS Guideline for the Diagnosis and Management of Atrial Fibrillation.",
+          "reason": "Atrial fibrillation guideline - off the ACS scope."
+        },
+        {
+          "uid": "pubmed-41123621",
+          "title": "European Resuscitation Council and European Society of Intensive Care Medicine guidelines 2025: post-resuscitation care.",
+          "reason": "Post-resuscitation care guideline - off the ACS scope."
+        },
+        {
+          "uid": "pubmed-37471501",
+          "title": "2023 AHA/ACC Chronic Coronary Disease Guideline.",
+          "reason": "Duplicate cluster: chronic/stable disease guideline kept under the canonical ischaemic heart disease topic 983."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Acute coronary syndromes sit at the emergency end of ischaemic heart disease, and their guidance has just been rewritten: the 2025 ACC/AHA/ACEP/NAEMSP/SCAI ACS guideline incorporates evidence since the 2013 STEMI and 2014 NSTE-ACS documents. Two companion frames complete the picture: the 2021 chest pain guideline standardises front-door evaluation and risk stratification, and the 2026 ACC scientific statement on antiplatelet therapy recalibrates aspirin - no longer routine for primary prevention, reserved for selected high-risk patients, while secondary-prevention therapy remains foundational.",
+      "teaching_points": [
+        {
+          "claim": "The 2025 ACC/AHA/ACEP/NAEMSP/SCAI ACS guideline replaces the 2013 STEMI and 2014 NSTE-ACS guidelines, incorporating new evidence across the ACS spectrum.",
+          "cites": [
+            "40014670"
+          ]
+        },
+        {
+          "claim": "The 2026 ACC scientific statement on antiplatelet therapy: recent data do not support routine aspirin for primary prevention of ASCVD in unselected populations; use is reserved for selected patients.",
+          "cites": [
+            "42377293"
+          ]
+        },
+        {
+          "claim": "The 2021 chest pain guideline provides recommendations and algorithms for evaluating chest pain in adults, emphasising structured risk assessment at first contact.",
+          "cites": [
+            "34709879"
+          ]
+        },
+        {
+          "claim": "Antiplatelet therapy remains fundamental to ASCVD management; recommendations have evolved over the past decade and should be applied selectively by prevention context.",
+          "cites": [
+            "42377293"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Timing and selection of an invasive strategy in intermediate-risk NSTE-ACS continues to evolve.",
+        "Optimal de-escalation and duration of dual antiplatelet therapy balancing ischaemia and bleeding."
+      ],
+      "mcq_angles": [
+        "First-contact evaluation of chest pain using the 2021 guideline framework.",
+        "Primary versus secondary prevention aspirin decisions.",
+        "Evolution of ACS guidelines and what changed in 2025.",
+        "Risk stratification driving invasive-strategy timing."
+      ],
+      "case_hooks": [
+        "An ED patient with 2 hours of pressure-like chest pain; walk the triage, ECG, and pathway decision algorithm.",
+        "A stable ASCVD patient asks whether he should restart daily aspirin after stopping it; apply the 2026 statement logic."
+      ],
+      "gaps": "Antiplatelet statement is a scientific statement rather than formal guideline; verify class-of-recommendation wording against the full document before approval.",
+      "sources": [
+        {
+          "pmid": "40014670",
+          "design": "guideline",
+          "year": "2025",
+          "journal": null,
+          "title": "2025 ACC/AHA/ACEP/NAEMSP/SCAI Guideline for the Management of Patients With Acute Coronary Syndromes."
+        },
+        {
+          "pmid": "42377293",
+          "design": "guideline",
+          "year": "2026",
+          "journal": null,
+          "title": "Antiplatelet Therapy in the Management of Atherosclerotic Cardiovascular Disease: 2026 ACC Scientific Statement."
+        },
+        {
+          "pmid": "34709879",
+          "design": "guideline",
+          "year": "2021",
+          "journal": null,
+          "title": "2021 AHA/ACC/ASE/CHEST/SAEM/SCCT/SCMR Guideline for the Evaluation and Diagnosis of Chest Pain."
+        }
+      ]
+    }
+  },
+  {
+    "no": 985,
+    "topicId": "ce12718d-6010-4956-9acb-e486373a0067",
+    "topic": "Ischaemic optic neuropathy: arteritic (GCA) vs non-arteritic (NAION) differentiation",
+    "cluster": "ischaemic optic neuropathy",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 7,
+      "papersKept": [
+        {
+          "uid": "pubmed-31952875",
+          "title": "Acute ischemic optic nerve disease: Pathophysiology, clinical features and management.",
+          "year": "2018"
+        },
+        {
+          "uid": "pubmed-33892603",
+          "title": "Arteritic anterior ischaemic optic neuropathy: An update.",
+          "year": "2020"
+        },
+        {
+          "uid": "pubmed-42710617",
+          "title": "Joint position paper on anterior ischemic optic neuropathy (AION). Vascular Risk Group and Systemic Autoimmune Disease Group.",
+          "year": "2025"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-32451139",
+          "title": "[Ischemic optic neuropathies].",
+          "reason": "Non-English (French, bracketed title) - excluded per pipeline language rule."
+        },
+        {
+          "uid": "pubmed-32057527",
+          "title": "[Acute ischemic optic nerve disease: Pathophysiology, clinical features and management (French translation)].",
+          "reason": "French translation of the English review already kept (31952875) - non-English duplicate."
+        },
+        {
+          "uid": "pubmed-28483156",
+          "title": "[Bilateral papilledema].",
+          "reason": "Papilledema, not ischaemic optic neuropathy - off-topic."
+        },
+        {
+          "uid": "pubmed-40388925",
+          "title": "A bibliometric and visualized analysis of ischemic optic neuropathy from 2014 to 2024.",
+          "reason": "Bibliometric analysis, not clinical evidence - low evidentiary value for a management page."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Anterior ischaemic optic neuropathy is a leading cause of sudden, painless monocular vision loss after age 50, and the first clinical task is separating its two forms because everything downstream differs. The arteritic form, usually driven by giant cell arteritis, is a medical and ophthalmological emergency: corticosteroids must start immediately to protect the fellow eye, and GCA may present with minimal systemic features. The non-arteritic form (NAION) - associated with vascular risk factors, often a small cup-to-disc ratio - has no proven acute treatment, so management is risk-factor control. Posterior forms (PION) complicate the picture and require the same urgent discrimination.",
+      "teaching_points": [
+        {
+          "claim": "Two forms of AION carry clearly different clinical, diagnostic, and therapeutic implications: arteritic (usually GCA, an emergency) versus non-arteritic; posterior forms (PION) also exist and complicate diagnosis.",
+          "cites": [
+            "31952875",
+            "42710617"
+          ]
+        },
+        {
+          "claim": "Suspected arteritic AION demands immediate corticosteroid therapy because the fellow eye is threatened; GCA may present with few or no systemic features, so inflammatory markers and temporal artery assessment support - not replace - clinical judgement.",
+          "cites": [
+            "33892603",
+            "42710617"
+          ]
+        },
+        {
+          "claim": "AAION is usually due to giant cell arteritis; NAION, by contrast, is associated with vascular risk factors and small optic discs, and has no proven acute therapy.",
+          "cites": [
+            "31952875",
+            "33892603"
+          ]
+        },
+        {
+          "claim": "Ischemic optic neuropathies are among the leading causes of severe visual loss over age 50 and are clinically, aetiologically, and therapeutically distinct entities - anatomical (anterior vs posterior) and aetiological (arteritic vs non-arteritic) classification both matter.",
+          "cites": [
+            "31952875"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "No acute therapy has proven efficacy for NAION; the role of aspirin remains debated.",
+        "Optimal biopsy timing and steroid-taper strategy after visual-stabilisation in GCA-associated AAION."
+      ],
+      "mcq_angles": [
+        "Differentiating arteritic from non-arteritic AION at the bedside (disc appearance, age, systemic features).",
+        "Immediate management steps when GCA is suspected, and protecting the fellow eye.",
+        "Anatomical classification: AION versus PION.",
+        "What can and cannot be offered for NAION."
+      ],
+      "case_hooks": [
+        "A 72-year-old reports sudden painless visual loss with jaw claudication; sequence steroids, inflammatory markers, and biopsy without delaying treatment.",
+        "A 55-year-old hypertensive has painless morning visual loss with a crowded disc; explain NAION prognosis and risk-factor management."
+      ],
+      "gaps": "Evidence base is narrative reviews and a position paper; no recent randomised treatment evidence for either form is retrievable under the pipeline filter.",
+      "sources": [
+        {
+          "pmid": "31952875",
+          "design": "review",
+          "year": "2018",
+          "journal": null,
+          "title": "Acute ischemic optic nerve disease: Pathophysiology, clinical features and management."
+        },
+        {
+          "pmid": "33892603",
+          "design": "review",
+          "year": "2020",
+          "journal": null,
+          "title": "Arteritic anterior ischaemic optic neuropathy: An update."
+        },
+        {
+          "pmid": "42710617",
+          "design": "position-paper",
+          "year": "2025",
+          "journal": null,
+          "title": "Joint position paper on anterior ischemic optic neuropathy (AION). Vascular Risk Group and Systemic Autoimmune Disease Group."
+        }
+      ]
+    }
+  },
+  {
+    "no": 986,
+    "topicId": "414e27f8-c92c-4204-bab6-003ad2b0fe8d",
+    "topic": "ischaemic stroke",
+    "cluster": "acute ischaemic stroke management",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 8,
+      "papersKept": [
+        {
+          "uid": "pubmed-41582814",
+          "title": "2026 Guideline for the Early Management of Patients With Acute Ischemic Stroke.",
+          "year": "2026"
+        },
+        {
+          "uid": "pubmed-32507747",
+          "title": "Diagnosis and management of acute ischaemic stroke.",
+          "year": "2020"
+        },
+        {
+          "uid": "pubmed-39496213",
+          "title": "Contemporary Management of Acute Ischemic Stroke.",
+          "year": "2021"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-34454905",
+          "title": "Ischemic Stroke.",
+          "reason": "General concise review for internists; redundant with the guideline and focused reviews kept."
+        },
+        {
+          "uid": "pubmed-40335091",
+          "title": "Advances in treatments for acute ischemic stroke.",
+          "reason": "Redundant advances review overlapping the kept contemporary-management review."
+        },
+        {
+          "uid": "pubmed-32947473",
+          "title": "Management of Acute Ischemic Stroke.",
+          "reason": "Synthetic review overlapping the kept evidence; redundant."
+        },
+        {
+          "uid": "pubmed-40197996",
+          "title": "Acute ischemic stroke: A guideline-based overview of evaluation and management.",
+          "reason": "Redundant guideline-based overview; the primary guideline itself is kept instead."
+        },
+        {
+          "uid": "pubmed-34878154",
+          "title": "Neuronal injuries in cerebral infarction and ischemic stroke: From mechanisms to treatment (Review).",
+          "reason": "Mechanisms-focused review; off the acute-management scope of this topic."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Acute ischaemic stroke - vascular occlusion causing cerebral infarction - is the fifth most common cause of death in the United States, with incidence projected to rise. Its management has been recast by reperfusion: intravenous thrombolysis, now shifting from alteplase to tenecteplase, plus mechanical thrombectomy for large-vessel occlusion have expanded the treatment window to 24 hours in selected patients. The 2026 AHA/ASA guideline replaces the 2018 guideline and its 2019 update with a comprehensive prehospital-to-discharge framework. Everything in the pathway keys off one datum: time since last-known-well.",
+      "teaching_points": [
+        {
+          "claim": "The 2026 AHA/ASA guideline for early management of acute ischaemic stroke replaces the 2018 guideline and 2019 update, providing comprehensive evidence-based recommendations from prehospital care onward.",
+          "cites": [
+            "41582814"
+          ]
+        },
+        {
+          "claim": "Timely reperfusion is the cornerstone of stroke care and requires early symptom recognition by the public and first responders, triage to an appropriate stroke centre, and efficient assessment.",
+          "cites": [
+            "32507747"
+          ]
+        },
+        {
+          "claim": "Intravenous thrombolysis (first alteplase, now increasingly tenecteplase) remains a cornerstone of acute management; in large-vessel occlusion, endovascular thrombectomy added to IV thrombolysis has expanded the therapeutic window to 24 hours.",
+          "cites": [
+            "39496213"
+          ]
+        },
+        {
+          "claim": "Treatment decisions require establishing a high probability of ischaemic stroke and confirming the time since last-known-well, which anchors eligibility for both thrombolysis and thrombectomy.",
+          "cites": [
+            "39496213"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Comparative effectiveness of tenecteplase versus alteplase is being refined by ongoing trials.",
+        "Patient-selection criteria for thrombectomy in the extended (up to 24-hour) window continue to evolve."
+      ],
+      "mcq_angles": [
+        "Thrombolysis eligibility, contraindications, and time windows.",
+        "Large-vessel occlusion recognition and thrombectomy window.",
+        "The decisive role of last-known-well time in eligibility decisions.",
+        "Prehospital recognition and stroke-centre triage."
+      ],
+      "case_hooks": [
+        "A patient wakes with aphasia found at 07:00; determine thrombolysis/thrombectomy eligibility from last-known-well.",
+        "A transfer decision for a suspected large-vessel occlusion 90 minutes from a thrombectomy centre; justify the pathway."
+      ],
+      "gaps": "Pivotal thrombectomy trials (e.g., MR CLEAN, DAWN, DEFUSE-3) predate the pipeline's 2015+ filter and are cited here through guideline and review summaries; verify against primary publications.",
+      "sources": [
+        {
+          "pmid": "41582814",
+          "design": "guideline",
+          "year": "2026",
+          "journal": null,
+          "title": "2026 Guideline for the Early Management of Patients With Acute Ischemic Stroke."
+        },
+        {
+          "pmid": "32507747",
+          "design": "review",
+          "year": "2020",
+          "journal": null,
+          "title": "Diagnosis and management of acute ischaemic stroke."
+        },
+        {
+          "pmid": "39496213",
+          "design": "review",
+          "year": "2021",
+          "journal": null,
+          "title": "Contemporary Management of Acute Ischemic Stroke."
+        }
+      ]
+    }
+  },
+  {
+    "no": 987,
+    "topicId": "a38355d5-2072-4124-bd75-ccbaf166604a",
+    "topic": "Ivabradine in heart failure with reduced ejection fraction",
+    "cluster": "ivabradine in HFrEF",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 8,
+      "papersKept": [
+        {
+          "uid": "pubmed-27752846",
+          "title": "Ivabradine.",
+          "year": "2016"
+        },
+        {
+          "uid": "pubmed-30173307",
+          "title": "The effect of ivabradine therapy on heart failure patients with reduced ejection fraction: a systematic review and meta-analysis.",
+          "year": "2019"
+        },
+        {
+          "uid": "pubmed-38729854",
+          "title": "A Systematic Review and Meta-Analysis of Randomised Controlled Trials Assessing Clinical and Haemodynamic Outcomes of Ivabradine.",
+          "year": "2024"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-34895860",
+          "title": "Systematic Review and Network Meta-Analysis of Pharmacological Treatment of HFrEF.",
+          "reason": "Class-level HFrEF network meta-analysis, not ivabradine-specific - off the narrow topic scope."
+        },
+        {
+          "uid": "pubmed-32749493",
+          "title": "Heart Failure With Reduced Ejection Fraction: A Review.",
+          "reason": "General HFrEF review; ivabradine covered in dedicated sources kept."
+        },
+        {
+          "uid": "pubmed-40834370",
+          "title": "Heart Failure With Reduced Ejection Fraction: Medical Management.",
+          "reason": "General HFrEF management review; not ivabradine-focused - off the narrow scope."
+        },
+        {
+          "uid": "pubmed-29300199",
+          "title": "Recent advances in heart failure.",
+          "reason": "Broad heart-failure advances review, mostly non-ivabradine content - off the narrow scope."
+        },
+        {
+          "uid": "pubmed-33634543",
+          "title": "Pharmacotherapy for HFrEF and health-related quality of life.",
+          "reason": "HRQoL-focused synthesis; not ivabradine-specific clinical outcomes - off the narrow scope."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Ivabradine is the selective funny-current (If) blocker that reduces heart rate without touching contractility or vascular tone - a pharmacological niche in HFrEF. It was tested in the landmark SHIFT trial in stable chronic heart failure, low ejection fraction, sinus rhythm, on contemporary background therapy. Its licensed niche is precise: sinus rhythm, resting heart rate at or above threshold, despite maximally tolerated beta-blockade - or when beta-blockers cannot be used at all. Meta-analyses now quantify its clinical and haemodynamic effects on top of, and apart from, beta-blockade.",
+      "teaching_points": [
+        {
+          "claim": "Ivabradine selectively blocks funny-current (If) channels in sinoatrial node cells, producing pure heart-rate reduction with no direct effect on contractility or vessels.",
+          "cites": [
+            "27752846"
+          ]
+        },
+        {
+          "claim": "Ivabradine is indicated for HFrEF patients in sinus rhythm with heart rate >=70 bpm (licensing varies by region) on a maximum tolerated beta-blocker dose, or when beta-blockers are contraindicated.",
+          "cites": [
+            "38729854",
+            "27752846"
+          ]
+        },
+        {
+          "claim": "Ivabradine was tested in a large outcome trial (SHIFT) in stable chronic heart failure with low ejection fraction and sinus rhythm on contemporary background therapy.",
+          "cites": [
+            "27752846"
+          ]
+        },
+        {
+          "claim": "A systematic review and meta-analysis examined ivabradine's additional effect, apart from beta-blockers, on cardiovascular death, all-cause mortality, and hospitalisation in HFrEF.",
+          "cites": [
+            "30173307"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Whether ivabradine's benefit is fully independent of beta-blockade, and its net effect when added to contemporary quadruple therapy.",
+        "The balance of haemodynamic versus hard clinical benefit in real-world populations outside trial enrolment criteria."
+      ],
+      "mcq_angles": [
+        "If-channel mechanism and why it preserves contractility.",
+        "SHIFT trial population and entry criteria.",
+        "Licensed niche: sinus rhythm, heart-rate threshold, beta-blocker maximised or contraindicated.",
+        "When ivabradine is NOT appropriate (AF, pacing, low-normal HR)."
+      ],
+      "case_hooks": [
+        "An HFrEF patient remains at 82 bpm sinus rhythm on maximally tolerated beta-blocker; assess ivabradine candidacy.",
+        "A beta-blocker-intolerant HFrEF patient in sinus rhythm asks about rate control options; position ivabradine."
+      ],
+      "gaps": "SHIFT (2010) and the pivotal outcome evidence predate the pipeline's 2015+ filter and are cited via review summaries; verify doses and effect sizes against the primary publication before approval.",
+      "sources": [
+        {
+          "pmid": "27752846",
+          "design": "review",
+          "year": "2016",
+          "journal": null,
+          "title": "Ivabradine."
+        },
+        {
+          "pmid": "30173307",
+          "design": "systematic-review",
+          "year": "2019",
+          "journal": null,
+          "title": "The effect of ivabradine therapy on heart failure patients with reduced ejection fraction: a systematic review and meta-analysis."
+        },
+        {
+          "pmid": "38729854",
+          "design": "systematic-review",
+          "year": "2024",
+          "journal": null,
+          "title": "A Systematic Review and Meta-Analysis of Randomised Controlled Trials Assessing Clinical and Haemodynamic Outcomes of Ivabradine."
+        }
+      ]
+    }
+  },
+  {
+    "no": 988,
+    "topicId": "5827fc33-2ace-49b5-8941-9ef314a6bed3",
+    "topic": "JAK inhibitors in RA: tofacitinib, baricitinib, upadacitinib: efficacy and cardiovascular safety",
+    "cluster": "JAK inhibitors in RA",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 8,
+      "papersKept": [
+        {
+          "uid": "pubmed-39383617",
+          "title": "Cardiovascular safety of the class of JAK inhibitors or tocilizumab compared with TNF inhibitors in patients with RA.",
+          "year": "2024"
+        },
+        {
+          "uid": "pubmed-37614310",
+          "title": "Cardiovascular safety of Janus kinase inhibitors in patients with rheumatoid arthritis: systematic review and network meta-analysis.",
+          "year": "2023"
+        },
+        {
+          "uid": "pubmed-39513305",
+          "title": "Upadacitinib and Cardiovascular Adverse Events in Rheumatoid Arthritis: A Systematic Review and Meta-Analysis.",
+          "year": "2024"
+        },
+        {
+          "uid": "pubmed-31088790",
+          "title": "Impact of Janus kinase inhibitors on risk of cardiovascular events in patients with rheumatoid arthritis: meta-analysis of RCTs.",
+          "year": "2019"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-40928778",
+          "title": "Comparative Safety of JAK Inhibitors vs TNF Antagonists in Immune-Mediated Inflammatory Diseases.",
+          "reason": "IMID-wide population, not RA-specific; assigned to the broader rheumatology topic 989."
+        },
+        {
+          "uid": "pubmed-34741000",
+          "title": "Risk of Cardiovascular and Venous Thromboembolic Events Associated With JAK Inhibitors in RA.",
+          "reason": "Narrative review; redundant with the meta-analyses kept."
+        },
+        {
+          "uid": "pubmed-40666511",
+          "title": "Efficacy and safety of upadacitinib for patients with immune-mediated inflammatory diseases.",
+          "reason": "IMID-wide upadacitinib synthesis; assigned to the broader rheumatology topic 989."
+        },
+        {
+          "uid": "pubmed-37910098",
+          "title": "Cardiovascular and Venous Thromboembolic Risk With JAK Inhibitors in Immune-Mediated Inflammatory Skin Diseases.",
+          "reason": "Skin-disease population (atopic dermatitis etc.) - off the RA scope."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "The JAK inhibitors transformed RA treatment with oral, rapid, targeted efficacy - and then the class acquired a safety shadow. After the regulatory wake-up call from the tofacitinib cardiovascular outcomes programme, prescribing is now risk-stratified: older patients with cardiovascular risk factors need particular counselling before a JAK inhibitor, and TNF inhibitors remain the usual comparator benchmark. This page focuses on RA-specific evidence: meta-analyses of randomised trials quantifying cardiovascular event risk, network meta-analyses comparing class safety, and the upadacitinib-specific cardiovascular data.",
+      "teaching_points": [
+        {
+          "claim": "A systematic review of phase 2-4 randomised trials compares major adverse cardiovascular events and all-cause death for JAK inhibitors or tocilizumab versus TNF inhibitors in RA - the head-to-head safety evidence regulators now expect.",
+          "cites": [
+            "39383617"
+          ]
+        },
+        {
+          "claim": "A network meta-analysis meticulously assesses and compares the cardiovascular safety of JAK inhibitors in RA, supporting class-level risk comparison across agents.",
+          "cites": [
+            "37614310"
+          ]
+        },
+        {
+          "claim": "For upadacitinib specifically, a systematic review and meta-analysis of cardiovascular adverse events found current evidence does not provide a definitive conclusion - counsel with calibrated uncertainty.",
+          "cites": [
+            "39513305"
+          ]
+        },
+        {
+          "claim": "Meta-analysis of randomised controlled trials found the overall impact of JAK inhibitors on cardiovascular event risk in RA requires subgroup interpretation, particularly in older patients with cardiovascular risk factors.",
+          "cites": [
+            "31088790"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Absolute cardiovascular risk of individual JAK inhibitors in older RA patients with baseline risk factors.",
+        "Whether safety differences exist between JAK1-selective and pan-JAK agents at the class level."
+      ],
+      "mcq_angles": [
+        "Implications of the tofacitinib cardiovascular outcomes programme for prescribing.",
+        "MACE definition and which patients warrant heightened surveillance.",
+        "When to prefer a TNF inhibitor over a JAK inhibitor on safety grounds.",
+        "Interpreting non-definitive upadacitinib cardiovascular evidence for consent discussions."
+      ],
+      "case_hooks": [
+        "A 68-year-old smoker with RA failing a TNF inhibitor asks for tofacitinib; risk-stratify the conversation.",
+        "A patient on upadacitinib with a new VTE asks whether the drug caused it; summarise what the meta-analytic evidence does and does not show."
+      ],
+      "gaps": "The pivotal tofacitinib cardiovascular outcome trial (ORAL Surveillance) predates the pipeline's 2015+ filter and is cited via review summaries; verify absolute risk figures against the primary publication.",
+      "sources": [
+        {
+          "pmid": "39383617",
+          "design": "systematic-review",
+          "year": "2024",
+          "journal": null,
+          "title": "Cardiovascular safety of the class of JAK inhibitors or tocilizumab compared with TNF inhibitors in patients with RA."
+        },
+        {
+          "pmid": "37614310",
+          "design": "systematic-review",
+          "year": "2023",
+          "journal": null,
+          "title": "Cardiovascular safety of Janus kinase inhibitors in patients with rheumatoid arthritis: systematic review and network meta-analysis."
+        },
+        {
+          "pmid": "39513305",
+          "design": "systematic-review",
+          "year": "2024",
+          "journal": null,
+          "title": "Upadacitinib and Cardiovascular Adverse Events in Rheumatoid Arthritis: A Systematic Review and Meta-Analysis."
+        },
+        {
+          "pmid": "31088790",
+          "design": "meta-analysis",
+          "year": "2019",
+          "journal": null,
+          "title": "Impact of Janus kinase inhibitors on risk of cardiovascular events in patients with rheumatoid arthritis: meta-analysis of RCTs."
+        }
+      ]
+    }
+  },
+  {
+    "no": 989,
+    "topicId": "f1ef4acc-bffd-4240-9409-29778761bc8f",
+    "topic": "JAK Inhibitors in Rheumatology",
+    "cluster": "JAK inhibitors across rheumatic disease",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 8,
+      "papersKept": [
+        {
+          "uid": "pubmed-41826212",
+          "title": "EULAR recommendations for the management of rheumatoid arthritis with synthetic and biologic disease-modifying antirheumatic drugs: 2023 update.",
+          "year": "2026"
+        },
+        {
+          "uid": "pubmed-38240831",
+          "title": "Rheumatoid arthritis (Lancet Seminar).",
+          "year": "2023"
+        },
+        {
+          "uid": "pubmed-37984057",
+          "title": "Upadacitinib: Mechanism of action, clinical, and translational science.",
+          "year": "2022"
+        },
+        {
+          "uid": "pubmed-39125897",
+          "title": "JAK Inhibitors in Rheumatoid Arthritis: Immunomodulatory Properties and Clinical Efficacy.",
+          "year": "2024"
+        },
+        {
+          "uid": "pubmed-40666511",
+          "title": "Efficacy and safety of upadacitinib for patients with immune-mediated inflammatory diseases.",
+          "year": "2025"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-34831081",
+          "title": "Management of Rheumatoid Arthritis: An Overview.",
+          "reason": "General RA management overview; redundant with the EULAR recommendations and seminar kept."
+        },
+        {
+          "uid": "pubmed-38499325",
+          "title": "EULAR recommendations for the management of psoriatic arthritis with pharmacological therapies: 2023 update.",
+          "reason": "PsA pharmacological recommendations; not JAK-inhibitor-focused - off the topic scope."
+        },
+        {
+          "uid": "pubmed-39798984",
+          "title": "Axial spondyloarthritis.",
+          "reason": "AxSpA overview; not JAK-inhibitor-focused - off the topic scope."
+        },
+        {
+          "uid": "pubmed-38467779",
+          "title": "TYK2: an emerging therapeutic target in rheumatic disease.",
+          "reason": "Emerging-target translational review; no clinical prescribing guidance for current practice."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "JAK-STAT signalling sits downstream of the cytokine receptors that drive rheumatoid arthritis, which is why JAK inhibitors work - and why their biology spans rheumatic disease more broadly. The 2023 EULAR RA recommendations position these agents within treat-to-target sequencing, after conventional synthetic DMARDs and usually after or instead of a TNF inhibitor, with risk-factor caveats inherited from the class's cardiovascular surveillance. Upadacitinib, the JAK1-selective exemplar, is approved across rheumatic, dermatologic, and gastrointestinal indications, giving rheumatologists a cross-specialty familiarity with its mechanism and trial programme.",
+      "teaching_points": [
+        {
+          "claim": "The 2023 EULAR update on synthetic and biological DMARDs for RA provides the current recommendations on where JAK inhibitors sit in the treatment sequence, based on systematic literature research and international task-force consensus.",
+          "cites": [
+            "41826212"
+          ]
+        },
+        {
+          "claim": "JAK-STAT signalling contributes to RA pathogenesis through cytokine-receptor pathways, providing the mechanistic rationale for JAK inhibition as targeted oral therapy.",
+          "cites": [
+            "38240831",
+            "39125897"
+          ]
+        },
+        {
+          "claim": "Upadacitinib is a selective JAK1 inhibitor approved by the FDA, EMA, and other agencies for chronic inflammatory diseases spanning rheumatic, dermatologic, and gastrointestinal conditions.",
+          "cites": [
+            "37984057"
+          ]
+        },
+        {
+          "claim": "A systematic review and meta-analysis of randomised trials characterises upadacitinib's efficacy and safety across immune-mediated inflammatory diseases, informing its benefit-risk profile.",
+          "cites": [
+            "40666511"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Long-term class safety of JAK inhibitors relative to established biologic DMARDs beyond cardiovascular endpoints (malignancy, serious infection).",
+        "Optimal positioning of JAK1-selective agents versus IL-6 pathway blockade after TNF-inhibitor failure."
+      ],
+      "mcq_angles": [
+        "JAK selectivity: what JAK1-selective inhibition means clinically versus pan-JAK agents.",
+        "EULAR treat-to-target sequencing of JAK inhibitors after csDMARDs.",
+        "Mechanistic basis of JAK-STAT blockade in RA cytokine signalling.",
+        "Cross-indication familiarity: where else upadacitinib is approved."
+      ],
+      "case_hooks": [
+        "An RA patient has failed methotrexate and one TNF inhibitor; apply EULAR sequencing logic to choosing a JAK inhibitor versus an alternative bDMARD.",
+        "A patient asks how upadacitinib differs from tofacitinib; explain selectivity, indications, and the safety caveats that apply to both."
+      ],
+      "gaps": "Comparative-effectiveness evidence between individual JAK inhibitors remains indirect; cardiovascular primary-trial data predate the 2015+ pipeline filter and are cited via review summaries.",
+      "sources": [
+        {
+          "pmid": "41826212",
+          "design": "guideline",
+          "year": "2026",
+          "journal": null,
+          "title": "EULAR recommendations for the management of rheumatoid arthritis with synthetic and biologic disease-modifying antirheumatic drugs: 2023 update."
+        },
+        {
+          "pmid": "38240831",
+          "design": "review",
+          "year": "2023",
+          "journal": null,
+          "title": "Rheumatoid arthritis (Lancet Seminar)."
+        },
+        {
+          "pmid": "37984057",
+          "design": "review",
+          "year": "2022",
+          "journal": null,
+          "title": "Upadacitinib: Mechanism of action, clinical, and translational science."
+        },
+        {
+          "pmid": "39125897",
+          "design": "review",
+          "year": "2024",
+          "journal": null,
+          "title": "JAK Inhibitors in Rheumatoid Arthritis: Immunomodulatory Properties and Clinical Efficacy."
+        },
+        {
+          "pmid": "40666511",
+          "design": "systematic-review",
+          "year": "2025",
+          "journal": null,
+          "title": "Efficacy and safety of upadacitinib for patients with immune-mediated inflammatory diseases."
+        }
+      ]
+    }
+  },
+  {
+    "no": 990,
+    "topicId": "ff84d9e4-835e-4dd7-a0e4-554b9910c71b",
+    "topic": "Juvenile idiopathic arthritis biologic strategy",
+    "cluster": "JIA biologic therapy",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 16,
+      "papersKept": [
+        {
+          "uid": "pubmed-32116038",
+          "title": "Current and emerging biologics for the treatment of juvenile idiopathic arthritis.",
+          "year": "2020"
+        },
+        {
+          "uid": "pubmed-27135404",
+          "title": "The clinical effectiveness and cost-effectiveness of abatacept, adalimumab, etanercept and tocilizumab for JIA.",
+          "year": "2015"
+        },
+        {
+          "uid": "pubmed-26385753",
+          "title": "Biologic-associated infections in pediatric rheumatology.",
+          "year": "2016"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-38639758",
+          "title": "Drug therapy in juvenile spondyloarthritis.",
+          "reason": "Juvenile spondyloarthritis subset; not the general JIA biologic strategy - off-topic."
+        },
+        {
+          "uid": "pubmed-29624303",
+          "title": "[JUVENILE SPONDYLOARTHRITIS].",
+          "reason": "Non-English (Spanish, bracketed title) - excluded per pipeline language rule."
+        },
+        {
+          "uid": "pubmed-25727936",
+          "title": "Biologic response modifiers and pediatric psoriasis.",
+          "reason": "Pediatric psoriasis biologics - off the JIA scope."
+        },
+        {
+          "uid": "pubmed-28612180",
+          "title": "Immunogenicity of Biologics in Chronic Inflammatory Diseases: A Systematic Review.",
+          "reason": "Adult-focused immunogenicity review; weak fit for paediatric JIA prescribing."
+        },
+        {
+          "uid": "pubmed-28703718",
+          "title": "Current Practices for Therapeutic Drug Monitoring of Biopharmaceuticals in Pediatrics.",
+          "reason": "TDM practices review; not biologic-selection strategy - off-topic."
+        },
+        {
+          "uid": "pubmed-34425842",
+          "title": "Juvenile idiopathic arthritis: from aetiopathogenesis to therapeutic approaches.",
+          "reason": "Abstract not retrievable this session; excluded per evidence-first rule (no citation without a read abstract)."
+        },
+        {
+          "uid": "pubmed-28841363",
+          "title": "Tocilizumab (Actemra).",
+          "reason": "Drug monograph superseded by JIA-specific reviews kept."
+        },
+        {
+          "uid": "pubmed-28778870",
+          "title": "Interleukin (IL-6) Immunotherapy.",
+          "reason": "Drug-class monograph; superseded by JIA-specific reviews kept."
+        },
+        {
+          "uid": "pubmed-34635295",
+          "title": "Uveitis in Children and Adolescents.",
+          "reason": "JIA-associated uveitis management, not biologic strategy for arthritis - off-topic."
+        },
+        {
+          "uid": "pubmed-35718887",
+          "title": "2022 ACR/AHKS Guideline for the Perioperative Management of Arthroplasty.",
+          "reason": "Perioperative hip/knee arthroplasty guideline - off-topic."
+        },
+        {
+          "uid": "pubmed-35935936",
+          "title": "Efficacy and Safety of Curcumin and Curcuma longa Extract in the Treatment of Arthritis.",
+          "reason": "Herbal intervention; not biologic DMARD strategy - off-topic."
+        },
+        {
+          "uid": "pubmed-34635301",
+          "title": "Juvenile Fibromyalgia.",
+          "reason": "Juvenile fibromyalgia, not JIA - off-topic."
+        },
+        {
+          "uid": "pubmed-27402112",
+          "title": "Juvenile Spondyloarthropathies.",
+          "reason": "Spondyloarthropathy subset; off the general JIA scope."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Juvenile idiopathic arthritis management aims for remission - control of articular and systemic inflammation before joint damage produces disability and growth restriction. Methotrexate remains the conventional anchor, but the biologic era has transformed the escalation ladder: TNF inhibitors (etanercept, adalimumab), abatacept, tocilizumab, and IL-1 blockade each answer a different phenotype. Comparative-effectiveness evidence - including health-technology evaluation of abatacept, adalimumab, etanercept, and tocilizumab - supports choosing among them, while the infection signal associated with biologics demands disciplined screening and vigilance in a population where the disease itself already raises bacterial-infection risk.",
+      "teaching_points": [
+        {
+          "claim": "JIA management combines pharmacological, physical, and psychosocial therapies with the goal of inducing remission by controlling articular and systemic inflammation; biologics now anchor escalation beyond methotrexate.",
+          "cites": [
+            "32116038"
+          ]
+        },
+        {
+          "claim": "Clinical-effectiveness and cost-effectiveness evidence directly compares abatacept, adalimumab, etanercept, and tocilizumab for JIA, informing biologic selection.",
+          "cites": [
+            "27135404"
+          ]
+        },
+        {
+          "claim": "Biologic-associated infection is the principal safety concern in paediatric rheumatology; the bacterial-infection risk appears increased in JIA patients from the disease itself, compounding agent-related immunosuppression.",
+          "cites": [
+            "26385753"
+          ]
+        },
+        {
+          "claim": "Biologic choice is phenotype-driven: TNF inhibitors for polyarticular disease, IL-1/IL-6 pathways for systemic phenotypes - matching mechanism to presentation.",
+          "cites": [
+            "32116038",
+            "27135404"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Optimal biologic sequencing after first-agent failure and how to choose the second biologic.",
+        "Long-term safety and growth effects of early biologic exposure; cost-effectiveness thresholds vary by health system."
+      ],
+      "mcq_angles": [
+        "Biologic classes and their pathways (TNF, CTLA4-Ig, IL-6R, IL-1).",
+        "Phenotype-driven biologic selection in JIA subtypes.",
+        "Pre-biologic infection screening and vaccination review.",
+        "Treat-to-target and remission goals specific to paediatric populations."
+      ],
+      "case_hooks": [
+        "An 8-year-old with polyarticular JIA has inadequate response to methotrexate; construct the biologic-selection reasoning.",
+        "A child on etanercept presents with fever; outline the infection work-up and whether the biologic should be held."
+      ],
+      "gaps": "WEAK EVIDENCE BASE: only three retained sources, one a 2015 technology appraisal; no recent international JIA biologic guideline was retrievable under the pipeline filter - verify against the current ACR/EULAR paediatric guidance before approval.",
+      "sources": [
+        {
+          "pmid": "32116038",
+          "design": "review",
+          "year": "2020",
+          "journal": null,
+          "title": "Current and emerging biologics for the treatment of juvenile idiopathic arthritis."
+        },
+        {
+          "pmid": "27135404",
+          "design": "technology-appraisal",
+          "year": "2015",
+          "journal": null,
+          "title": "The clinical effectiveness and cost-effectiveness of abatacept, adalimumab, etanercept and tocilizumab for JIA."
+        },
+        {
+          "pmid": "26385753",
+          "design": "review",
+          "year": "2016",
+          "journal": null,
+          "title": "Biologic-associated infections in pediatric rheumatology."
+        }
+      ]
+    }
+  }
+]

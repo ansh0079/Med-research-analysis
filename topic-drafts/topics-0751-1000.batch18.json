@@ -1,0 +1,1337 @@
+[
+  {
+    "no": 921,
+    "topicId": "9fc7e91f-3023-482a-8e65-a1999365d8fd",
+    "topic": "Immune Thrombocytopenia",
+    "cluster": "ITP",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 8,
+      "papersKept": [
+        {
+          "uid": "pubmed-31770441",
+          "title": "Updated international consensus report on the investigation and management of primary immune thrombocytopenia.",
+          "year": "2019"
+        },
+        {
+          "uid": "pubmed-31794604",
+          "title": "American Society of Hematology 2019 guidelines for immune thrombocytopenia.",
+          "year": "2019"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-38779941",
+          "title": "ACVIM consensus statement on the treatment of immune thrombocytopenia in dogs and cats.",
+          "reason": "VETERINARY consensus statement; excluded per pipeline rules."
+        },
+        {
+          "uid": "pubmed-38263610",
+          "title": "Immune thrombocytopenia (ITP) in pregnancy.",
+          "reason": "Pregnancy-specific management; tangential to general ITP."
+        },
+        {
+          "uid": "pubmed-36485110",
+          "title": "Thrombocytopenia in pregnancy.",
+          "reason": "Pregnancy-specific; differential-diagnosis focus."
+        },
+        {
+          "uid": "pubmed-28416511",
+          "title": "Heparin-induced thrombocytopenia.",
+          "reason": "Different thrombocytopenic disorder."
+        },
+        {
+          "uid": "pubmed-33051219",
+          "title": "Update on the diagnosis and management of systemic lupus erythematosus.",
+          "reason": "SLE overview; secondary ITP only mentioned."
+        },
+        {
+          "uid": "pubmed-35773506",
+          "title": "Immune-Mediated Neonatal Thrombocytopenia.",
+          "reason": "Neonatal alloimmune disease; not adult ITP."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Immune thrombocytopenia is a diagnosis of exclusion made at any age, and modern management is built around two documents: the updated International Consensus Report and the ASH 2019 guidelines. Both shift thinking away from platelet-number reflexes toward bleeding-risk reasoning — adults with counts above 20–30 x10^9/L and no bleeding often need only observation, while treatment is warranted for bleeding, procedures, or lifestyle constraints. Corticosteroids with or without IVIG remain first line, and the guidelines explicitly resist over-treatment, favouring shorter steroid courses and shared decision-making for everything beyond.",
+      "teaching_points": [
+        {
+          "claim": "ITP diagnosis requires exclusion of secondary causes and pseudothrombocytopenia; the international consensus report standardises investigation including HIV, HCV, and Helicobacter pylori testing where appropriate.",
+          "cites": [
+            "31770441"
+          ]
+        },
+        {
+          "claim": "ASH 2019 guidelines recommend observation alone for many asymptomatic adults with platelets above 20–30 x10^9/L, and short-course corticosteroids over prolonged courses or IVIG as first-line treatment when therapy is needed.",
+          "cites": [
+            "31794604"
+          ]
+        },
+        {
+          "claim": "Second-line options — TPO receptor agonists, rituximab, splenectomy, fostamatinib — are selected by patient factors including durability goals, comorbidities, and surgical candidacy rather than a fixed sequence.",
+          "cites": [
+            "31794604",
+            "31770441"
+          ]
+        },
+        {
+          "claim": "Emergency management of severe bleeding uses combined platelet transfusion, IVIG, and high-dose corticosteroids; thrombopoietin agonists are not emergency agents.",
+          "cites": [
+            "31770441",
+            "31794604"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Optimal sequencing of second-line therapies (TPO-RAs versus rituximab versus splenectomy) lacks head-to-head trials.",
+        "Whether early TPO-RA use alters long-term natural history is unknown."
+      ],
+      "mcq_angles": [
+        "Observation thresholds and first-line treatment selection by guideline.",
+        "Work-up for secondary ITP.",
+        "Emergency ITP management with active bleeding.",
+        "Second-line option selection logic."
+      ],
+      "case_hooks": [
+        "An asymptomatic 30-year-old has platelets 24 x10^9/L on routine testing; decide whether to treat and what to work up.",
+        "An ITP patient has gastrointestinal bleeding with platelets 4 x10^9/L; outline the emergency regimen."
+      ],
+      "gaps": "The retained abstracts are guideline-level; specific dosing tables and the TPO-RA evidence base are covered under topic 922 — verify cross-references before approval.",
+      "sources": [
+        {
+          "pmid": "31770441",
+          "design": "consensus-report",
+          "year": "2019",
+          "journal": null,
+          "title": "Updated international consensus report on the investigation and management of primary immune thrombocytopenia."
+        },
+        {
+          "pmid": "31794604",
+          "design": "guideline",
+          "year": "2019",
+          "journal": null,
+          "title": "American Society of Hematology 2019 guidelines for immune thrombocytopenia."
+        }
+      ]
+    }
+  },
+  {
+    "no": 922,
+    "topicId": "9951dfae-572a-41b8-949d-910895093d64",
+    "topic": "Immune thrombocytopenia: thrombopoietin receptor agonists",
+    "cluster": "ITP",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 6,
+      "papersKept": [
+        {
+          "uid": "pubmed-31073079",
+          "title": "Thrombopoietin receptor agonists: ten years later.",
+          "year": "2019"
+        },
+        {
+          "uid": "pubmed-30880797",
+          "title": "Thrombopoietin Receptor Agonists: Eltrombopag and Romiplostim for the Treatment of Chronic Immune Thrombocytopenia.",
+          "year": "2019"
+        },
+        {
+          "uid": "pubmed-35007700",
+          "title": "Risk of thrombosis with thrombopoietin receptor agonists for ITP patients: A systematic review and meta-analysis.",
+          "year": "2022"
+        },
+        {
+          "uid": "pubmed-38357229",
+          "title": "Thrombopoietin receptor agonists use and risk of thrombotic events in patients with immune thrombocytopenic purpura.",
+          "year": "2024"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-38925157",
+          "title": "Update on the Use of Thrombopoietin-Receptor Agonists in Pediatrics.",
+          "reason": "Paediatric population; topic addresses general/adult use."
+        },
+        {
+          "uid": "pubmed-37010022",
+          "title": "Efficacy and safety of thrombopoietin receptor agonists in children and adults with persistent and chronic immune thrombocytopenia.",
+          "reason": "Mixed paediatric-adult population; adult reviews retained."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Thrombopoietin receptor agonists changed the chronic-ITP landscape by stimulating platelet production rather than suppressing destruction: eltrombopag (oral, daily, food and chelation interactions) and romiplostim (weekly subcutaneous peptide) produce durable responses in most patients who fail first-line therapy, and a decade of use has clarified their real profile. They are not benign: arterial and venous thrombosis, paradoxical with a 'bleeding disease', is the signal that systematic review and cohort data quantify — risk concentrates with cardiovascular comorbidity, high normalised platelet counts, and portal-hypertension contexts. Dose is titrated to a safe platelet range, not to normalisation.",
+      "teaching_points": [
+        {
+          "claim": "TPO-RAs (eltrombopag, romiplostim) are second-line agents for persistent/chronic ITP that raise platelet counts through thrombopoietin-receptor stimulation of megakaryopoiesis, with response in a majority of patients.",
+          "cites": [
+            "30880797",
+            "31073079"
+          ]
+        },
+        {
+          "claim": "Practical differences matter: eltrombopag is oral but requires separation from food and polyvalent-cation-containing medicines; romiplostim is administered weekly by injection — choice is individualised by adherence and preference.",
+          "cites": [
+            "31073079",
+            "30880797"
+          ]
+        },
+        {
+          "claim": "Thrombosis is the principal serious risk: meta-analysis and observational cohorts show increased arterial and venous thrombotic events, modulated by age, comorbidity, and achieved platelet count.",
+          "cites": [
+            "35007700",
+            "38357229"
+          ]
+        },
+        {
+          "claim": "Dosing targets a safe hemostatic platelet range (commonly 50 x10^9/L or above) rather than normalisation, balancing bleeding protection against thrombotic risk.",
+          "cites": [
+            "31073079",
+            "35007700"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Whether thrombosis risk is drug-specific (eltrombopag versus romiplostim) or class-wide is unresolved.",
+        "Optimal duration and whether some patients can taper off TPO-RAs after sustained response is not established."
+      ],
+      "mcq_angles": [
+        "Mechanism and the production-versus-destruction distinction.",
+        "Eltrombopag administration rules and interactions.",
+        "Thrombosis risk quantification and mitigation.",
+        "Platelet targets and monitoring schedules."
+      ],
+      "case_hooks": [
+        "A chronic-ITP patient on eltrombopag takes antacids and calcium; explain the interaction and redesign the regimen.",
+        "A 70-year-old with prior DVT needs a TPO-RA; weigh thrombosis risk and set the platelet target."
+      ],
+      "gaps": "The retained abstracts lack the primary EXTEND/Long-Term extension trial reports; verify durability and long-term safety rates before approval.",
+      "sources": [
+        {
+          "pmid": "31073079",
+          "design": "review",
+          "year": "2019",
+          "journal": null,
+          "title": "Thrombopoietin receptor agonists: ten years later."
+        },
+        {
+          "pmid": "30880797",
+          "design": "review",
+          "year": "2019",
+          "journal": null,
+          "title": "Thrombopoietin Receptor Agonists: Eltrombopag and Romiplostim for the Treatment of Chronic Immune Thrombocytopenia."
+        },
+        {
+          "pmid": "35007700",
+          "design": "meta-analysis",
+          "year": "2022",
+          "journal": null,
+          "title": "Risk of thrombosis with thrombopoietin receptor agonists for ITP patients: A systematic review and meta-analysis."
+        },
+        {
+          "pmid": "38357229",
+          "design": "cohort-study",
+          "year": "2024",
+          "journal": null,
+          "title": "Thrombopoietin receptor agonists use and risk of thrombotic events in patients with immune thrombocytopenic purpura."
+        }
+      ]
+    }
+  },
+  {
+    "no": 923,
+    "topicId": "b00f6dc4-f905-419e-84dd-95dbd0ea22c1",
+    "topic": "Immunosuppression Post-Transplant",
+    "cluster": "transplant immunosuppression",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 12,
+      "papersKept": [
+        {
+          "uid": "pubmed-29380698",
+          "title": "Pharmacokinetics, Pharmacodynamics and Pharmacogenetics of Tacrolimus in Kidney Transplantation.",
+          "year": "2020"
+        },
+        {
+          "uid": "pubmed-34963678",
+          "title": "Efficacy and Safety of Tacrolimus-Based Maintenance Regimens in De Novo Kidney Transplant Recipients.",
+          "year": "2021"
+        },
+        {
+          "uid": "pubmed-33853841",
+          "title": "Long-Term Immunosuppression Management: Opportunities and Uncertainties.",
+          "year": "2021"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-34016288",
+          "title": "Cryptococcosis.",
+          "reason": "Opportunistic-infection topic; covered under transplant infection topic 928."
+        },
+        {
+          "uid": "pubmed-38558257",
+          "title": "An update review of post-transplant diabetes mellitus: Concept, risk factors, clinical implications and management.",
+          "reason": "Complication-specific review; not the immunosuppression regimen itself."
+        },
+        {
+          "uid": "pubmed-28990741",
+          "title": "Post-transplant diabetes: diagnosis and management.",
+          "reason": "Complication-specific; tangential."
+        },
+        {
+          "uid": "pubmed-34581290",
+          "title": "Immunosuppression after uterus transplantation.",
+          "reason": "Uterus-transplant niche; not general SOT immunosuppression."
+        },
+        {
+          "uid": "pubmed-33641202",
+          "title": "Effect of immunosuppression maintenance in solid organ transplant recipients with COVID-19: Systematic review and meta-analysis.",
+          "reason": "COVID-19-specific context; tangential to regimen design."
+        },
+        {
+          "uid": "pubmed-33247713",
+          "title": "Metabolic Consequences of Solid Organ Transplantation.",
+          "reason": "Metabolic complications; not regimen design."
+        },
+        {
+          "uid": "pubmed-40545616",
+          "title": "Outcomes of Solid Organ Transplant Recipients With Advanced Cancers Receiving Immune Checkpoint Inhibitors: A Systematic Review.",
+          "reason": "Checkpoint-inhibitor niche; not maintenance immunosuppression."
+        },
+        {
+          "uid": "pubmed-32220834",
+          "title": "2019 Update of the Joint EULAR/ERA-EDTA recommendations for the management of lupus and lupus nephritis.",
+          "reason": "Autoimmune-disease recommendations; not transplantation."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Maintenance immunosuppression after solid-organ transplantation is a balancing act calibrated in milligrams and nanograms: too little invites rejection, too much delivers nephrotoxicity, infection, and malignancy. Tacrolimus — a calcineurin inhibitor with narrow therapeutic index — anchors nearly all modern regimens, combined with mycophenolate and tapered steroids; systematic-review evidence supports tacrolimus-based maintenance as the standard. The craft lies in the detail: trough-level monitoring against a steep concentration-response curve, CYP3A5 pharmacogenetics that explain much inter-patient variability, and long-term stewardship that weighs dose minimisation against the rising cardiovascular and metabolic burden of decades of therapy.",
+      "teaching_points": [
+        {
+          "claim": "Modern maintenance regimens centre on tacrolimus with mycophenolate and tapered corticosteroids; tacrolimus-based maintenance is supported by systematic-review evidence as the standard of care in kidney transplantation.",
+          "cites": [
+            "34963678",
+            "33853841"
+          ]
+        },
+        {
+          "claim": "Tacrolimus has a narrow therapeutic window with nephrotoxicity and neurotoxicity above range and rejection below; trough monitoring with dose titration is mandatory, especially early post-transplant.",
+          "cites": [
+            "29380698"
+          ]
+        },
+        {
+          "claim": "Pharmacogenetics — CYP3A5 expresser status — substantially alters tacrolimus metabolism and dosing requirements, informing genotype-guided initial dosing in some centres.",
+          "cites": [
+            "29380698"
+          ]
+        },
+        {
+          "claim": "Long-term management must reconcile competing harms: chronic calcineurin-inhibitor toxicity, cardiovascular and metabolic burden, infection, and malignancy risk against late rejection from over-minimisation.",
+          "cites": [
+            "33853841"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Optimal long-term minimisation strategies (steroid withdrawal, CNI reduction with mTOR substitution) remain individualised with incomplete evidence.",
+        "Whether pharmacogenetic dosing improves hard graft outcomes versus trough-guided titration is not established."
+      ],
+      "mcq_angles": [
+        "Components of standard triple maintenance therapy.",
+        "Tacrolimus monitoring, interactions (azoles, macrolides), and toxicity.",
+        "CYP3A5 pharmacogenetics and dose individualisation.",
+        "Long-term minimisation versus late-rejection trade-offs."
+      ],
+      "case_hooks": [
+        "A kidney-transplant patient on tacrolimus starts fluconazole; predict the interaction and adjust the plan.",
+        "Five years post-transplant with stable graft and rising metabolic burden; discuss minimisation options and their risks."
+      ],
+      "gaps": "The retained abstracts are kidney-focused; heart/liver/lung-specific regimen differences are not covered — verify against organ-specific guidance before approval.",
+      "sources": [
+        {
+          "pmid": "29380698",
+          "design": "review",
+          "year": "2020",
+          "journal": null,
+          "title": "Pharmacokinetics, Pharmacodynamics and Pharmacogenetics of Tacrolimus in Kidney Transplantation."
+        },
+        {
+          "pmid": "34963678",
+          "design": "systematic-review",
+          "year": "2021",
+          "journal": null,
+          "title": "Efficacy and Safety of Tacrolimus-Based Maintenance Regimens in De Novo Kidney Transplant Recipients."
+        },
+        {
+          "pmid": "33853841",
+          "design": "review",
+          "year": "2021",
+          "journal": null,
+          "title": "Long-Term Immunosuppression Management: Opportunities and Uncertainties."
+        }
+      ]
+    }
+  },
+  {
+    "no": 924,
+    "topicId": "7bdccae3-94b1-491a-bb85-7c67ab205df9",
+    "topic": "Inclisiran for LDL cholesterol lowering",
+    "cluster": "inclisiran",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 8,
+      "papersKept": [
+        {
+          "uid": "pubmed-39640378",
+          "title": "Inclisiran for the treatment of hypercholesterolaemia.",
+          "year": "2024"
+        },
+        {
+          "uid": "pubmed-34199468",
+          "title": "Inclisiran - Silencing the Cholesterol, Speaking up the Prognosis.",
+          "year": "2021"
+        },
+        {
+          "uid": "pubmed-37930224",
+          "title": "Serious Adverse Events of Inclisiran in Patients With Hypercholesterolemia, a Meta-Analysis of ORION Trials.",
+          "year": "2023"
+        },
+        {
+          "uid": "pubmed-39439657",
+          "title": "Inclisiran: A Systematic Review Exploring the Twice-Yearly Dosing Regimen.",
+          "year": "2024"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-37111334",
+          "title": "Inclisiran, Low-Density Lipoprotein Cholesterol and Lipoprotein (a).",
+          "reason": "Lipoprotein(a) secondary focus; LDL-C topic covered by retained reviews."
+        },
+        {
+          "uid": "pubmed-34468873",
+          "title": "RNA Silencing in the Management of Dyslipidemias.",
+          "reason": "Class-level RNA-therapeutics review; inclisiran-specific evidence retained."
+        },
+        {
+          "uid": "pubmed-37792132",
+          "title": "Updates in Small Interfering RNA for the Treatment of Dyslipidemias.",
+          "reason": "Class-level update; redundant."
+        },
+        {
+          "uid": "pubmed-39331729",
+          "title": "From clinical development to real-world outcomes with inclisiran.",
+          "reason": "Real-world commentary; trial synthesis retained instead."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Inclisiran is the first siRNA to move lipid management from adherence-dependent daily pills to twice-yearly hepatocyte-directed dosing: it silences PCSK9 mRNA, lowering LDL-C by roughly 50% on top of statins — a similar magnitude to monoclonal PCSK9 antibodies but delivered in a way that solves the adherence problem that undermines chronic lipid therapy. The ORION programme established efficacy and a reassuring serious-adverse-event profile, and cardiovascular-outcome trials are maturing. Its practical appeal is healthcare-system as much as patient: administration by a clinician every six months converts a daily behaviour into a scheduled event.",
+      "teaching_points": [
+        {
+          "claim": "Inclisiran is a synthetic siRNA that silences hepatocyte PCSK9 production, lowering LDL-C by approximately 50% as monotherapy or on top of statins, with effects persisting between twice-yearly doses.",
+          "cites": [
+            "39640378",
+            "34199468"
+          ]
+        },
+        {
+          "claim": "The twice-yearly maintenance dosing schedule (after initial and 3-month doses) addresses non-adherence, the dominant cause of suboptimal lipid control in practice.",
+          "cites": [
+            "39439657",
+            "39640378"
+          ]
+        },
+        {
+          "claim": "Meta-analysis of the ORION trials found no significant increase in serious adverse events versus control, with injection-site reactions the commonest specific complaint.",
+          "cites": [
+            "37930224"
+          ]
+        },
+        {
+          "claim": "Current positioning is adjunctive for patients not achieving LDL targets on maximally tolerated statins (with or without ezetimibe); cardiovascular-outcome trial evidence is still accumulating.",
+          "cites": [
+            "34199468",
+            "39640378"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Hard cardiovascular-outcome benefit (versus the well-established LDL-C surrogate) is pending outcome-trial completion.",
+        "Long-term (>5 year) safety and durability of response with real-world adherence patterns are not yet mature."
+      ],
+      "mcq_angles": [
+        "siRNA mechanism versus monoclonal PCSK9 antibodies.",
+        "ORION trial efficacy magnitudes and persistence.",
+        "Dosing schedule and the adherence rationale.",
+        "Safety profile from ORION meta-analysis."
+      ],
+      "case_hooks": [
+        "A patient with familial hypercholesterolaemia has LDL-C 3.8 mmol/L on high-intensity statin plus ezetimibe with poor pill adherence; argue for inclisiran.",
+        "A clinic debates inclisiran versus evolocumab for equivalent LDL-C lowering; compare mechanisms, frequency, and evidence maturity."
+      ],
+      "gaps": "The retained abstracts do not include the primary ORION-10/11 reports or the ORION-4 outcomes trial; verify exact LDL-C effect sizes and outcome-trial status before approval.",
+      "sources": [
+        {
+          "pmid": "39640378",
+          "design": "review",
+          "year": "2024",
+          "journal": null,
+          "title": "Inclisiran for the treatment of hypercholesterolaemia."
+        },
+        {
+          "pmid": "34199468",
+          "design": "review",
+          "year": "2021",
+          "journal": null,
+          "title": "Inclisiran - Silencing the Cholesterol, Speaking up the Prognosis."
+        },
+        {
+          "pmid": "37930224",
+          "design": "meta-analysis",
+          "year": "2023",
+          "journal": null,
+          "title": "Serious Adverse Events of Inclisiran in Patients With Hypercholesterolemia, a Meta-Analysis of ORION Trials."
+        },
+        {
+          "pmid": "39439657",
+          "design": "systematic-review",
+          "year": "2024",
+          "journal": null,
+          "title": "Inclisiran: A Systematic Review Exploring the Twice-Yearly Dosing Regimen."
+        }
+      ]
+    }
+  },
+  {
+    "no": 925,
+    "topicId": "42c092ce-ee97-4de1-bc09-fad8430ea81c",
+    "topic": "Inclusion Body Myositis (IBM): asymmetric weakness, rimmed vacuoles, treatment resistance",
+    "cluster": "IBM",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 9,
+      "papersKept": [
+        {
+          "uid": "pubmed-36069417",
+          "title": "Inclusion body myositis: evolving concepts.",
+          "year": "2023"
+        },
+        {
+          "uid": "pubmed-39469805",
+          "title": "Inclusion body myositis: an update.",
+          "year": "2024"
+        },
+        {
+          "uid": "pubmed-36537974",
+          "title": "Inclusion Body Myositis.",
+          "year": "2023"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-36705678",
+          "title": "[Myositis].",
+          "reason": "Non-English-bracketed record; excluded per pipeline rules."
+        },
+        {
+          "uid": "pubmed-32615605",
+          "title": "[Idiopathic Inflammatory Myopathies].",
+          "reason": "Non-English-bracketed record; excluded per pipeline rules."
+        },
+        {
+          "uid": "pubmed-40545027",
+          "title": "Treatment of idiopathic inflammatory myopathies.",
+          "reason": "General myositis treatment; IBM-specific reviews retained."
+        },
+        {
+          "uid": "pubmed-29865091",
+          "title": "Current Classification and Management of Inflammatory Myopathies.",
+          "reason": "General classification; not IBM-specific."
+        },
+        {
+          "uid": "pubmed-39163158",
+          "title": "What is in the Myopathy Literature?",
+          "reason": "Literature-roundup commentary; not evidence."
+        },
+        {
+          "uid": "pubmed-35225225",
+          "title": "The role of protein aggregation in the pathogenesis of inclusion body myositis.",
+          "reason": "Basic-science pathogenesis; clinical reviews retained."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Inclusion body myositis is the myopathy that refuses to behave: slowly progressive, asymmetric weakness — finger flexors and quadriceps characteristically — in older men, with rimmed vacuoles and protein aggregates on biopsy, and a well-earned reputation for treatment resistance. It is frequently misdiagnosed as polymyositis and exposed only when immunosuppression fails. Modern understanding frames it as a degenerative process with inflammatory features, which explains why immunotherapies that work for other myosities disappoint here; management is therefore functional preservation, falls prevention, and honest prognostic counselling, with clinical-trial awareness the main therapeutic hope.",
+      "teaching_points": [
+        {
+          "claim": "IBM presents in older adults with slowly progressive, often asymmetric weakness with early finger-flexor and quadriceps involvement; falling and grip loss are characteristic functional clues.",
+          "cites": [
+            "36537974",
+            "36069417"
+          ]
+        },
+        {
+          "claim": "Biopsy shows rimmed vacuoles, endomysial inflammation, and protein aggregates (including TDP-43 and p62); the degenerative-plus-inflammatory signature underlies treatment resistance.",
+          "cites": [
+            "36069417",
+            "39469805"
+          ]
+        },
+        {
+          "claim": "Immunosuppression lacks robust efficacy in IBM — a key discriminator from polymyositis and dermatomyositis; misdiagnosis as treatment-refractory polymyositis should prompt re-evaluation for IBM.",
+          "cites": [
+            "39469805",
+            "36537974"
+          ]
+        },
+        {
+          "claim": "Management centres on exercise and rehabilitation to preserve function, falls prevention, dysphagia surveillance, and enrolment into clinical trials; no disease-modifying therapy is established.",
+          "cites": [
+            "39469805",
+            "36069417"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Whether targeted anti-inflammatory or anti-degenerative strategies can modify progression is untested at scale.",
+        "Optimal role of corticosteroids or IVIG in selected subsets (e.g. rapidly progressive or dysphagia-predominant) remains individualised."
+      ],
+      "mcq_angles": [
+        "Clinical pattern: asymmetric finger-flexor and quadriceps weakness in older men.",
+        "Histology: rimmed vacuoles and inclusions versus other myositides.",
+        "Why immunosuppression fails — the degeneration-inflammation duality.",
+        "Functional management: rehab, falls, dysphagia, trials."
+      ],
+      "case_hooks": [
+        "A 68-year-old man has 3 years of progressive grip weakness, quadriceps wasting, and falls, 'unresponsive to steroids'; reassess the diagnosis.",
+        "An IBM patient develops progressive dysphagia; outline the swallowing-assessment and management pathway."
+      ],
+      "gaps": "The retained abstracts are reviews without trial-level data; verify current clinical-trial landscape and any new agent signals before approval.",
+      "sources": [
+        {
+          "pmid": "36069417",
+          "design": "review",
+          "year": "2023",
+          "journal": null,
+          "title": "Inclusion body myositis: evolving concepts."
+        },
+        {
+          "pmid": "39469805",
+          "design": "review",
+          "year": "2024",
+          "journal": null,
+          "title": "Inclusion body myositis: an update."
+        },
+        {
+          "pmid": "36537974",
+          "design": "review",
+          "year": "2023",
+          "journal": null,
+          "title": "Inclusion Body Myositis."
+        }
+      ]
+    }
+  },
+  {
+    "no": 926,
+    "topicId": "8a36c078-2591-460f-b823-4fe18c4afdde",
+    "topic": "Induction therapy in AAV: rituximab vs cyclophosphamide, RITUXVAS, RAVE trials",
+    "cluster": "AAV induction",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 11,
+      "papersKept": [
+        {
+          "uid": "pubmed-36927642",
+          "title": "EULAR recommendations for the management of ANCA-associated vasculitis: 2022 update.",
+          "year": "2023"
+        },
+        {
+          "uid": "pubmed-28155022",
+          "title": "Rituximab in ANCA-Associated Vasculitis.",
+          "year": "2017"
+        },
+        {
+          "uid": "pubmed-25753806",
+          "title": "B-cell therapy in antineutrophil cytoplasmic antibody-associated vasculitis.",
+          "year": "2015"
+        },
+        {
+          "uid": "pubmed-27471722",
+          "title": "Place in therapy of rituximab in the treatment of granulomatosis with polyangiitis and microscopic polyangiitis.",
+          "year": "2016"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-30203375",
+          "title": "Biologics for childhood systemic vasculitis.",
+          "reason": "Paediatric population; topic addresses adult AAV."
+        },
+        {
+          "uid": "pubmed-31358311",
+          "title": "ANCA-Associated Vasculitis: Core Curriculum 2020.",
+          "reason": "Educational curriculum; EULAR recommendations retained instead."
+        },
+        {
+          "uid": "pubmed-40473820",
+          "title": "Advances in the treatment of ANCA-associated vasculitis.",
+          "reason": "General advances review; trial-specific synthesis retained."
+        },
+        {
+          "uid": "pubmed-41616960",
+          "title": "Treatment of Eosinophilic Granulomatosis With Polyangiitis (EGPA): Do We Need Immunosuppressives?",
+          "reason": "EGPA subset; not GPA/MPA induction comparison."
+        },
+        {
+          "uid": "pubmed-30168260",
+          "title": "Vasculitis research: Current trends and future perspectives.",
+          "reason": "Research-agenda commentary; not clinical evidence."
+        },
+        {
+          "uid": "pubmed-32188597",
+          "title": "Management of ANCA associated vasculitis.",
+          "reason": "General management review; superseded by EULAR 2022."
+        },
+        {
+          "uid": "pubmed-33909172",
+          "title": "Novel Therapies for ANCA-associated Vasculitis.",
+          "reason": "Emerging-therapy focus; established-trial question retained."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Remission induction in ANCA-associated vasculitis was reshaped by two trials: RAVE, which showed rituximab non-inferior — and for relapsing disease superior — to cyclophosphamide for early severe GPA/MPA, and RITUXVAS, which confirmed non-inferiority in a broader severe cohort. The result, codified in the EULAR 2022 recommendations, is that rituximab is now preferred first-line induction for most new and relapsing patients, with cyclophosphamide retained for organ-threatening emergencies and cost-constrained settings. The nuance examiners love: rituximab's advantage is strongest at relapse and in PR3-ANCA disease, and glucocorticoid-sparing regimens (avacopan era) now accompany both arms.",
+      "teaching_points": [
+        {
+          "claim": "RAVE established rituximab as non-inferior to cyclophosphamide for remission induction in early severe GPA/MPA, with superiority in relapsing disease.",
+          "cites": [
+            "28155022",
+            "25753806"
+          ]
+        },
+        {
+          "claim": "RITUXVAS confirmed non-inferiority of rituximab-based induction in severe AAV with renal involvement, cementing B-cell depletion as a standard induction option.",
+          "cites": [
+            "27471722",
+            "28155022"
+          ]
+        },
+        {
+          "claim": "EULAR 2022 recommendations position rituximab as preferred induction for new and relapsing GPA/MPA, reserving cyclophosphamide for selected organ-threatening presentations and specific contraindications.",
+          "cites": [
+            "36927642"
+          ]
+        },
+        {
+          "claim": "Relapse prediction guides intensity: PR3-ANCA positivity and prior relapse favour rituximab, which also serves as maintenance with repeat dosing.",
+          "cites": [
+            "36927642",
+            "25753806"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Optimal glucocorticoid taper speed and the integrating role of C5a-receptor inhibition (avacopan) with either induction arm continue to evolve.",
+        "Rituximab dosing schedules for maintenance (fixed interval versus CD19-guided) are not standardised."
+      ],
+      "mcq_angles": [
+        "RAVE and RITUXVAS designs, populations, and what each proved.",
+        "When cyclophosphamide is still preferred over rituximab.",
+        "PR3-ANCA versus MPO-ANCA as treatment-selection biomarkers.",
+        "Maintenance strategies after rituximab induction."
+      ],
+      "case_hooks": [
+        "A 54-year-old with new GPA, PR3-positive, and creatinine 340 umol/L needs induction; choose and justify the regimen.",
+        "A patient relapses 18 months after cyclophosphamide induction; argue why rituximab is preferred now."
+      ],
+      "gaps": "The RAVE/RITUXVAS primary reports predate the pipeline's 2015+ filter and are not among the retained abstracts; verify trial arms, remission definitions, and exact outcomes against the primary publications before approval.",
+      "sources": [
+        {
+          "pmid": "36927642",
+          "design": "guideline",
+          "year": "2023",
+          "journal": null,
+          "title": "EULAR recommendations for the management of ANCA-associated vasculitis: 2022 update."
+        },
+        {
+          "pmid": "28155022",
+          "design": "review",
+          "year": "2017",
+          "journal": null,
+          "title": "Rituximab in ANCA-Associated Vasculitis."
+        },
+        {
+          "pmid": "25753806",
+          "design": "review",
+          "year": "2015",
+          "journal": null,
+          "title": "B-cell therapy in antineutrophil cytoplasmic antibody-associated vasculitis."
+        },
+        {
+          "pmid": "27471722",
+          "design": "review",
+          "year": "2016",
+          "journal": null,
+          "title": "Place in therapy of rituximab in the treatment of granulomatosis with polyangiitis and microscopic polyangiitis."
+        }
+      ]
+    }
+  },
+  {
+    "no": 927,
+    "topicId": "795a5500-21b1-4e6b-9556-cc42ae0ea7d5",
+    "topic": "Infection in pregnancy: GBS screening, listeria, toxoplasmosis, antiviral safety",
+    "cluster": "infection in pregnancy",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 8,
+      "papersKept": [
+        {
+          "uid": "pubmed-31977795",
+          "title": "Prevention of Group B Streptococcal Early-Onset Disease in Newborns: ACOG Committee Opinion, Number 797.",
+          "year": "2020"
+        },
+        {
+          "uid": "pubmed-39584819",
+          "title": "Group B streptococcal infections in pregnancy and early life.",
+          "year": "2023"
+        },
+        {
+          "uid": "pubmed-41740033",
+          "title": "Group B Streptococcal Disease.",
+          "year": "2025"
+        },
+        {
+          "uid": "pubmed-37043300",
+          "title": "Sepsis in Pregnancy and the Puerperium: A Comparative Review of Major Guidelines.",
+          "year": "2023"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-38296778",
+          "title": "Neonatal Group B Streptococcus Disease.",
+          "reason": "Neonatal-treatment focus; maternal screening/prevention covered by ACOG opinion."
+        },
+        {
+          "uid": "pubmed-38953689",
+          "title": "[Not Available].",
+          "reason": "Record without retrievable title/abstract; excluded."
+        },
+        {
+          "uid": "pubmed-35490693",
+          "title": "Group B streptococcus infection during pregnancy and infancy: estimates of regional and global burden.",
+          "reason": "Epidemiological-burden estimates; not clinical management."
+        },
+        {
+          "uid": "pubmed-32768096",
+          "title": "Neurologic infections during pregnancy.",
+          "reason": "Neurologic-subset review; tangential to screening/antimicrobial topics."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Infections in pregnancy demand dual-patient thinking: the mother, the fetus, and the drugs that must be safe for both. Group B streptococcus is the organised success story — universal late-gestation screening with intrapartum antibiotic prophylaxis for colonised mothers has slashed early-onset neonatal disease, with ACOG's Committee Opinion defining screening timing, risk-based alternatives, and prophylaxis regimens. Beyond GBS, the clinician must hold the less algorithmic territory: listeriosis and toxoplasmosis as foodborne and cat-associated risks managed by prevention and targeted testing, antiviral safety questions in influenza and herpes infections, and the recognition that sepsis remains a leading cause of maternal mortality with modified (pregnancy-appropriate) early-warning criteria.",
+      "teaching_points": [
+        {
+          "claim": "Universal antenatal GBS screening at 36 0/7–37 6/7 weeks with intrapartum antibiotic prophylaxis (penicillin first-line) for colonised or high-risk mothers is the standard for preventing early-onset neonatal disease.",
+          "cites": [
+            "31977795",
+            "41740033"
+          ]
+        },
+        {
+          "claim": "Approximately half of women colonised with GBS transmit to the newborn; intrapartum prophylaxis reduces early-onset disease transmission, with risk-based prophylaxis for untested women with obstetric risk factors.",
+          "cites": [
+            "39584819",
+            "31977795"
+          ]
+        },
+        {
+          "claim": "Maternal sepsis is a leading cause of maternal mortality; major guidelines emphasise early recognition with pregnancy-adjusted warning scores, source control, and foetal surveillance alongside maternal resuscitation.",
+          "cites": [
+            "37043300"
+          ]
+        },
+        {
+          "claim": "Prevention education remains central for listeriosis (food hygiene) and toxoplasmosis (cat-litter and undercooked-meat avoidance); serological testing and treatment decisions follow exposure-risk assessment.",
+          "cites": [
+            "39584819"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Optimal management of penicillin-allergic GBS-colonised mothers (clindamycin resistance concerns) varies by region and testing availability.",
+        "Toxoplasmosis treatment regimens in pregnancy (spiramycin versus pyrimethamine-sulfadiazine timing) follow regional protocols with limited trial evidence."
+      ],
+      "mcq_angles": [
+        "GBS screening timing, prophylaxis indications, and antibiotic choice.",
+        "Risk-based prophylaxis when screening status is unknown.",
+        "Pregnancy-adjusted sepsis recognition and management.",
+        "Listeriosis/toxoplasmosis prevention and counselling."
+      ],
+      "case_hooks": [
+        "A woman at 39 weeks arrives in labour with unknown GBS status and prolonged rupture of membranes; decide on intrapartum prophylaxis.",
+        "A pregnant patient with fever, tachycardia, and uterine tenderness is 'not that unwell' by generic sepsis scores; apply pregnancy-appropriate criteria."
+      ],
+      "gaps": "The retained evidence is GBS- and sepsis-weighted; listeria, toxoplasmosis, and antiviral safety are covered only peripherally — verify management specifics against dedicated reviews before approval.",
+      "sources": [
+        {
+          "pmid": "31977795",
+          "design": "guideline",
+          "year": "2020",
+          "journal": null,
+          "title": "Prevention of Group B Streptococcal Early-Onset Disease in Newborns: ACOG Committee Opinion, Number 797."
+        },
+        {
+          "pmid": "39584819",
+          "design": "review",
+          "year": "2023",
+          "journal": null,
+          "title": "Group B streptococcal infections in pregnancy and early life."
+        },
+        {
+          "pmid": "41740033",
+          "design": "review",
+          "year": "2025",
+          "journal": null,
+          "title": "Group B Streptococcal Disease."
+        },
+        {
+          "pmid": "37043300",
+          "design": "guideline-comparison",
+          "year": "2023",
+          "journal": null,
+          "title": "Sepsis in Pregnancy and the Puerperium: A Comparative Review of Major Guidelines."
+        }
+      ]
+    }
+  },
+  {
+    "no": 928,
+    "topicId": "cb900c4b-c985-4fb5-98c8-b7db3e3b2b0f",
+    "topic": "Infection in solid organ transplant: timeline, CMV prophylaxis, PCP, opportunistic pathogens",
+    "cluster": "transplant infection",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 8,
+      "papersKept": [
+        {
+          "uid": "pubmed-33879502",
+          "title": "Long-Term Infectious Complications of Kidney Transplantation.",
+          "year": "2020"
+        },
+        {
+          "uid": "pubmed-37899366",
+          "title": "What's New: Updates on Cytomegalovirus in Solid Organ Transplantation.",
+          "year": "2021"
+        },
+        {
+          "uid": "pubmed-31668195",
+          "title": "Opportunistic Infections in Transplant Patients.",
+          "year": "2019"
+        },
+        {
+          "uid": "pubmed-39492698",
+          "title": "Current and Future Strategies for the Prevention and Treatment of Cytomegalovirus Infections in Transplantation.",
+          "year": "2021"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-38288947",
+          "title": "Recent advances in cytomegalovirus infection management in solid organ transplant recipients.",
+          "reason": "Redundant with retained CMV updates review."
+        },
+        {
+          "uid": "pubmed-41023683",
+          "title": "Cytomegalovirus infection contributes to acute rejection in solid organ transplant recipients: a systematic review.",
+          "reason": "Single-question CMV review; broad strategies review retained."
+        },
+        {
+          "uid": "pubmed-39295968",
+          "title": "Management of cytomegalovirus infection after liver transplantation.",
+          "reason": "Organ-specific subset; general SOT evidence retained."
+        },
+        {
+          "uid": "pubmed-35916518",
+          "title": "New Perspectives on Antimicrobial Agents: Maribavir.",
+          "reason": "Single-agent review; covered within CMV strategy reviews."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Infection after solid-organ transplantation is predictable by clock and immunosuppression intensity: the first month brings nosocomial and surgical complications, months one to six bring the opportunists — CMV above all, plus Pneumocystis, Aspergillus, and BK virus — and beyond six months, community-acquired infections dominate with immune-deficiency patterns in over-immunosuppressed patients. CMV is the single most consequential pathogen: direct disease (colitis, pneumonitis) and indirect effects (rejection, graft injury) are addressed by universal or targeted prophylaxis with valganciclovir and preemptive strategies guided by viral-load monitoring, with maribavir now available for refractory disease. PCP prophylaxis with trimethoprim-sulfamethoxazole is standard for the early period — one prescription that prevents the most preventable transplant death.",
+      "teaching_points": [
+        {
+          "claim": "The post-transplant infection timeline structures the differential: healthcare-associated infections in month one, opportunistic infections (CMV, PCP, moulds, BK) in months 1–6, and community-acquired infections thereafter.",
+          "cites": [
+            "33879502",
+            "31668195"
+          ]
+        },
+        {
+          "claim": "CMV is the most common significant post-transplant infection; D+/R- serostatus defines highest risk, and direct (tissue-invasive) plus indirect (rejection-linked) effects both demand prevention.",
+          "cites": [
+            "37899366",
+            "33879502"
+          ]
+        },
+        {
+          "claim": "Prevention strategies are prophylaxis (valganciclovir for high-risk recipients) versus preemptive therapy guided by quantitative PCR monitoring — both effective, selection depends on serostatus, organ, and logistics.",
+          "cites": [
+            "39492698",
+            "37899366"
+          ]
+        },
+        {
+          "claim": "Pneumocystis prophylaxis with trimethoprim-sulfamethoxazole is standard for at least 6–12 months post-transplant; alternatives (atovaquone, dapsone, pentamidine) serve sulfa-allergic patients.",
+          "cites": [
+            "31668195"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Optimal duration of CMV prophylaxis and the long-term value of extending beyond six months in high-risk recipients are debated.",
+        "Letermovir's expanding role in SOT (established in HCT) and its positioning versus valganciclovir is still being defined."
+      ],
+      "mcq_angles": [
+        "The timeline framework by transplant month.",
+        "CMV serostatus risk stratification and prophylaxis-versus-preemptive selection.",
+        "PCP prophylaxis duration and sulfa-allergy alternatives.",
+        "Late infections and over-immunosuppression patterns."
+      ],
+      "case_hooks": [
+        "A D+/R- kidney recipient at week 9 has fever, diarrhoea, and a rising CMV PCR; outline the diagnostic and treatment pathway including resistance considerations.",
+        "A transplant patient at 3 months has dyspnoea and hypoxia with normal chest X-ray; build the differential and the PCP work-up."
+      ],
+      "gaps": "The retained abstracts lack the primary CMV management guideline (AST ID Community of Practice); verify prophylaxis durations and treatment dosing against it before approval.",
+      "sources": [
+        {
+          "pmid": "33879502",
+          "design": "review",
+          "year": "2020",
+          "journal": null,
+          "title": "Long-Term Infectious Complications of Kidney Transplantation."
+        },
+        {
+          "pmid": "37899366",
+          "design": "review",
+          "year": "2021",
+          "journal": null,
+          "title": "What's New: Updates on Cytomegalovirus in Solid Organ Transplantation."
+        },
+        {
+          "pmid": "31668195",
+          "design": "review",
+          "year": "2019",
+          "journal": null,
+          "title": "Opportunistic Infections in Transplant Patients."
+        },
+        {
+          "pmid": "39492698",
+          "design": "review",
+          "year": "2021",
+          "journal": null,
+          "title": "Current and Future Strategies for the Prevention and Treatment of Cytomegalovirus Infections in Transplantation."
+        }
+      ]
+    }
+  },
+  {
+    "no": 929,
+    "topicId": "0ed494ef-14c1-4f65-8771-3b746eaa5d78",
+    "topic": "Infection prevention and control: standard precautions, contact isolation, hand hygiene evidence",
+    "cluster": "infection prevention and control",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 12,
+      "papersKept": [
+        {
+          "uid": "pubmed-34582962",
+          "title": "Hand hygiene compliance in the prevention of hospital-acquired infections: a systematic review.",
+          "year": "2022"
+        },
+        {
+          "uid": "pubmed-28862335",
+          "title": "Interventions to improve hand hygiene compliance in patient care.",
+          "year": "2017"
+        },
+        {
+          "uid": "pubmed-26051927",
+          "title": "Effectiveness of contact precautions against multidrug-resistant organism transmission in acute care: a systematic review.",
+          "year": "2015"
+        },
+        {
+          "uid": "pubmed-31304525",
+          "title": "Contact precaution procedures in healthcare facilities.",
+          "year": "2017"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-35147391",
+          "title": "Providing care to patients in contact isolation: is the systematic use of gloves still indicated?",
+          "reason": "Glove-use sub-question; tangential to precaution-system evidence."
+        },
+        {
+          "uid": "pubmed-31219838",
+          "title": "Hand Hygiene Compliance in the ICU: A Systematic Review.",
+          "reason": "ICU-specific subset; general acute-care reviews retained."
+        },
+        {
+          "uid": "pubmed-35183259",
+          "title": "Impact of environmental hygiene interventions on healthcare-associated infections and patient colonization: a systematic review.",
+          "reason": "Environmental cleaning focus; hand/contact evidence retained."
+        },
+        {
+          "uid": "pubmed-34082822",
+          "title": "Knowledge of infection prevention and control among healthcare workers and factors influencing compliance: a systematic review.",
+          "reason": "Knowledge/attitude survey; intervention evidence retained."
+        },
+        {
+          "uid": "pubmed-28459908",
+          "title": "Systematic Review of Interventions to Reduce Urinary Tract Infection in Nursing Home Residents.",
+          "reason": "Nursing-home UTI subset; tangential."
+        },
+        {
+          "uid": "pubmed-36715243",
+          "title": "Physical interventions to interrupt or reduce the spread of respiratory viruses.",
+          "reason": "Respiratory-virus focus; tangential."
+        },
+        {
+          "uid": "pubmed-28629876",
+          "title": "Effect of antibiotic stewardship on the incidence of infection and colonisation with antibiotic-resistant bacteria.",
+          "reason": "Stewardship focus; tangential to precaution evidence."
+        },
+        {
+          "uid": "pubmed-36678492",
+          "title": "Limiting the Spread of Multidrug-Resistant Bacteria in Low-to-Middle-Income Countries: One Size Does Not Fit All.",
+          "reason": "LMIC-setting commentary; not effectiveness evidence."
+        },
+        {
+          "uid": "pubmed-28382547",
+          "title": "Challenges and Strategies for Prevention of Multidrug-Resistant Organism Transmission in Nursing Homes.",
+          "reason": "Nursing-home setting; tangential."
+        },
+        {
+          "uid": "pubmed-28811074",
+          "title": "Management of multidrug resistant Gram-negative bacilli infections in solid organ transplant recipients: SET/GESITRA-SEIMC recommendations.",
+          "reason": "Transplant-specific treatment recommendations; not IPC precautions."
+        },
+        {
+          "uid": "pubmed-39961309",
+          "title": "[Antimicrobial Stewardship and Hygiene: Prevention of Multidrug Resistant Pathogens].",
+          "reason": "Non-English-bracketed record; excluded per pipeline rules."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Infection prevention and control is the highest-yield low-technology discipline in medicine: healthcare-worker hands are the dominant transmission vehicle for hospital-acquired infection, and hand hygiene at the WHO five moments remains the single most effective intervention — systematic review confirms compliance reduces HAI, while behaviour-change literature shows multimodal programmes (education, feedback, cues, leadership) outperform posters alone. Above standard precautions, contact precautions (gowns, gloves, single rooms) for multidrug-resistant organisms are standard practice despite contested effectiveness data — the systematic-review evidence is conflicted, and the modern debate centres on targeted versus universal application, balancing transmission prevention against isolation's harms to patients and care processes.",
+      "teaching_points": [
+        {
+          "claim": "Hand hygiene is the cornerstone of standard precautions; systematic-review evidence links healthcare-worker hand-hygiene compliance with reduced hospital-acquired infection rates.",
+          "cites": [
+            "34582962"
+          ]
+        },
+        {
+          "claim": "Multimodal interventions — education, performance feedback, reminders, environmental cues, and administrative support — improve and sustain hand-hygiene compliance better than single-strategy approaches.",
+          "cites": [
+            "28862335"
+          ]
+        },
+        {
+          "claim": "Contact precautions (gown, gloves, single room) for MDRO-colonised patients are guideline-standard, but systematic-review evidence of their incremental effectiveness over standard precautions shows conflicting results.",
+          "cites": [
+            "26051927",
+            "31304525"
+          ]
+        },
+        {
+          "claim": "Isolation carries measurable downsides — fewer clinician visits, adverse events, patient experience harm — informing the shift toward targeted precautions and universal gloving in endemic settings.",
+          "cites": [
+            "26051927"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Whether contact precautions add transmission protection beyond good standard precautions and terminal cleaning is unresolved in endemic settings.",
+        "Optimal isolation discontinuation criteria (clearance cultures versus time-based) are not standardised."
+      ],
+      "mcq_angles": [
+        "WHO five moments and compliance measurement.",
+        "Evidence behind multimodal hand-hygiene programmes.",
+        "Contact-precaution components and the MDRO indications.",
+        "The evidence controversy: targeted versus universal precautions."
+      ],
+      "case_hooks": [
+        "A ward's HAI rate is rising despite 'hand hygiene posters everywhere'; design an evidence-based multimodal intervention.",
+        "A patient with carbapenemase-producing Klebsiella needs admission; outline the isolation decision and its trade-offs."
+      ],
+      "gaps": "The retained abstracts do not include WHO guideline documents themselves; verify precaution indications and durations against national/WHO IPC guidance before approval.",
+      "sources": [
+        {
+          "pmid": "34582962",
+          "design": "systematic-review",
+          "year": "2022",
+          "journal": null,
+          "title": "Hand hygiene compliance in the prevention of hospital-acquired infections: a systematic review."
+        },
+        {
+          "pmid": "28862335",
+          "design": "systematic-review",
+          "year": "2017",
+          "journal": null,
+          "title": "Interventions to improve hand hygiene compliance in patient care."
+        },
+        {
+          "pmid": "26051927",
+          "design": "systematic-review",
+          "year": "2015",
+          "journal": null,
+          "title": "Effectiveness of contact precautions against multidrug-resistant organism transmission in acute care: a systematic review."
+        },
+        {
+          "pmid": "31304525",
+          "design": "review",
+          "year": "2017",
+          "journal": null,
+          "title": "Contact precaution procedures in healthcare facilities."
+        }
+      ]
+    }
+  },
+  {
+    "no": 930,
+    "topicId": "f9ba43c0-42a7-4f1d-b2c5-8b5fa1a1aff9",
+    "topic": "Infection risk with biologics: TB, HBV reactivation, PJP prophylaxis thresholds",
+    "cluster": "biologics infection risk",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 4,
+      "papersKept": [
+        {
+          "uid": "pubmed-29459143",
+          "title": "ESCMID Study Group for Infections in Compromised Hosts (ESGICH) Consensus Document on the safety of targeted and biological therapies (part I).",
+          "year": "2018"
+        },
+        {
+          "uid": "pubmed-29447988",
+          "title": "ESCMID Study Group for Infections in Compromised Hosts (ESGICH) Consensus Document on the safety of targeted and biological therapies (part II).",
+          "year": "2018"
+        },
+        {
+          "uid": "pubmed-36323488",
+          "title": "Systematic literature review informing the 2022 EULAR recommendations for screening and prophylaxis of chronic and opportunistic infections in autoimmune inflammatory rheumatic diseases.",
+          "year": "2022"
+        }
+      ],
+      "papersDropped": [],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Biologic and targeted therapies have transformed immune-mediated disease, but each mechanism opens a specific infection door: TNF inhibitors reactivate latent tuberculosis and hepatitis B, B-cell depletion disarms long-term humoral immunity, JAK inhibitors carry herpes-zoster and opportunist signals, and IL-6 blockade masks fever and CRP — the inflammatory alarms that normally announce infection. The ESGICH consensus documents systematise the safety profile agent-by-agent, while the EULAR 2022 recommendations (built on systematic review) define the screening and prophylaxis grammar: latent-TB testing and HBV serology before starting, antiviral prophylaxis for HBV carriers, and PJP prophylaxis when compounded immunosuppression crosses defined thresholds.",
+      "teaching_points": [
+        {
+          "claim": "Screening before biologic initiation: latent-TB testing (IGRA/tuberculin) and HBV serology (HBsAg, anti-HBc) are standard across drug classes, with reactivation risk drug- and regimen-dependent.",
+          "cites": [
+            "36323488",
+            "29459143"
+          ]
+        },
+        {
+          "claim": "HBV reactivation in resolved or chronic carriers on B-cell-depleting or TNF therapy requires antiviral prophylaxis (entecavir/tenofovir) or intensified monitoring, per EULAR-informed risk stratification.",
+          "cites": [
+            "36323488",
+            "29447988"
+          ]
+        },
+        {
+          "claim": "PJP prophylaxis is recommended when high-dose steroids combine with biologic immunosuppression crossing defined thresholds (e.g. prolonged ≥20–30 mg prednisone-equivalent with second immunosuppressant).",
+          "cites": [
+            "36323488"
+          ]
+        },
+        {
+          "claim": "Drug-specific infection signatures matter clinically: TNF inhibition raises TB, HBV, and deep fungal risk; IL-6 blockade blunts fever/CRP responses to infection; JAK inhibitors carry zoster and opportunist signals.",
+          "cites": [
+            "29459143",
+            "29447988"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Optimal PJP prophylaxis thresholds for newer agents (JAK inhibitors, IL-23 blockade) are extrapolated rather than trial-defined.",
+        "Whether HBV screening paradigms need updating for lower-risk agents is debated."
+      ],
+      "mcq_angles": [
+        "Pre-biologic screening panel and timing.",
+        "HBV reactivation risk tiers and prophylaxis decisions.",
+        "PJP prophylaxis thresholds with combined immunosuppression.",
+        "Drug-specific infection signatures (TB, zoster, blunted CRP response)."
+      ],
+      "case_hooks": [
+        "A patient starting rituximab for vasculitis has anti-HBc positive, HBsAg negative serology; outline HBV management.",
+        "A patient on tocilizumab plus 25 mg prednisolone presents afebrile with 'normal CRP' and subtle pneumonia; apply drug-specific vigilance."
+      ],
+      "gaps": "The retained ESGICH documents span specific agent groups (parts I and II cover different biologic classes); verify the specific agent in question is covered before approval.",
+      "sources": [
+        {
+          "pmid": "29459143",
+          "design": "consensus-document",
+          "year": "2018",
+          "journal": null,
+          "title": "ESCMID Study Group for Infections in Compromised Hosts (ESGICH) Consensus Document on the safety of targeted and biological therapies (part I)."
+        },
+        {
+          "pmid": "29447988",
+          "design": "consensus-document",
+          "year": "2018",
+          "journal": null,
+          "title": "ESCMID Study Group for Infections in Compromised Hosts (ESGICH) Consensus Document on the safety of targeted and biological therapies (part II)."
+        },
+        {
+          "pmid": "36323488",
+          "design": "systematic-review",
+          "year": "2022",
+          "journal": null,
+          "title": "Systematic literature review informing the 2022 EULAR recommendations for screening and prophylaxis of chronic and opportunistic infections in autoimmune inflammatory rheumatic diseases."
+        }
+      ]
+    }
+  }
+]

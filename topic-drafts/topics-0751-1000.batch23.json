@@ -1,0 +1,1199 @@
+[
+  {
+    "no": 971,
+    "topicId": "3ea3f705-b554-4b57-9f71-917d61dd6f4f",
+    "topic": "Intravenous inotropes: dobutamine, milrinone, levosimendan in acute heart failure",
+    "cluster": "inotropes in heart failure",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 4,
+      "papersKept": [
+        {
+          "uid": "pubmed-26690127",
+          "title": "Use of Inotropic Agents in Treatment of Systolic Heart Failure.",
+          "year": "2016"
+        }
+      ],
+      "papersDropped": [],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "In acute decompensated heart failure with a low-output state — hypoperfusion, rising lactate, cool extremities despite adequate filling pressures — intravenous inotropes are the temporary scaffold while the cause is treated. Dobutamine, the beta-agonist workhorse, increases contractility and output at the price of tachyarrhythmia and myocardial oxygen demand; milrinone, a phosphodiesterase-3 inhibitor, adds vasodilation and lusitropy but accumulates in renal dysfunction and causes hypotension; levosimendan, the calcium-sensitising agent with active metabolites, offers catecholamine-independent inotropy suited to the beta-blocked patient. None improve hard outcomes — they are a bridge to recovery, device, or decision.",
+      "teaching_points": [
+        {
+          "claim": "Inotropes in acute heart failure are indicated for the hypoperfused low-output state (end-organ dysfunction with low cardiac output), not for routine decongestion; they are a bridge to definitive therapy.",
+          "cites": [
+            "26690127"
+          ]
+        },
+        {
+          "claim": "Dobutamine provides inotropy and mild vasodilation through beta-agonism, with tachyarrhythmia and increased oxygen demand as principal limitations.",
+          "cites": [
+            "26690127"
+          ]
+        },
+        {
+          "claim": "Milrinone offers inotropy plus vasodilation and is useful in pulmonary hypertension contexts, but causes hypotension and requires renal dose adjustment; levosimendan provides calcium-sensitising, catecholamine-independent inotropy with utility in beta-blocked patients.",
+          "cites": [
+            "26690127"
+          ]
+        },
+        {
+          "claim": "No inotrope has improved survival in acute heart failure; therapy is temporising, with arrhythmia, ischaemia, and hypotension as the costs that must be monitored.",
+          "cites": [
+            "26690127"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Whether levosimendan improves outcomes over dobutamine in specific phenotypes (beta-blocked, septic-cardiomyopathy) is unproven.",
+        "Optimal weaning sequences and inotrope-free intervals are protocolised rather than evidence-defined."
+      ],
+      "mcq_angles": [
+        "Low-output-state recognition and inotrope indications.",
+        "Agent selection by phenotype and renal function.",
+        "The no-mortality-benefit principle.",
+        "Monitoring: arrhythmia, ischaemia, hypotension."
+      ],
+      "case_hooks": [
+        "A decompensated-HF patient is cold, confused, and lactate-rising on optimal diuretics; decide on inotrope initiation and agent selection.",
+        "A beta-blocked low-output patient needs inotropy; argue for levosimendan over escalating dobutamine."
+      ],
+      "gaps": "THIN EVIDENCE BASE: only one source. The retained abstract lacks the comparative-trial literature (LIDO, SURVIVE, LEVO-CTS); verify agent-comparison data before approval. Cross-reference topic 947 for the shock-specific inotrope evidence.",
+      "sources": [
+        {
+          "pmid": "26690127",
+          "design": "review",
+          "year": "2016",
+          "journal": null,
+          "title": "Use of Inotropic Agents in Treatment of Systolic Heart Failure."
+        }
+      ]
+    }
+  },
+  {
+    "no": 972,
+    "topicId": "929507d7-090b-41d9-bef5-191088b89e01",
+    "topic": "intrinsic acute kidney injury",
+    "cluster": "intrinsic AKI",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 8,
+      "papersKept": [
+        {
+          "uid": "pubmed-33121629",
+          "title": "Acute Kidney Injury.",
+          "year": "2021"
+        },
+        {
+          "uid": "pubmed-26804946",
+          "title": "Acute kidney injury: current concepts and new insights.",
+          "year": "2016"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-32928750",
+          "title": "Hepatorenal syndrome: pathophysiology, diagnosis, and management.",
+          "reason": "HRS is a functional (pre-renal spectrum) entity; not intrinsic AKI."
+        },
+        {
+          "uid": "pubmed-30606404",
+          "title": "Epidemiology, Pathophysiology, and Management of Hepatorenal Syndrome.",
+          "reason": "HRS; excluded for same reason."
+        },
+        {
+          "uid": "pubmed-37680416",
+          "title": "A Comprehensive Systematic Review of the Latest Management Strategies for Hepatorenal Syndrome.",
+          "reason": "HRS; excluded."
+        },
+        {
+          "uid": "pubmed-34364868",
+          "title": "Impact of Obesity in Critical Illness.",
+          "reason": "Obesity-ICU review; tangential."
+        },
+        {
+          "uid": "pubmed-28899876",
+          "title": "Treatment and management of children with haemolytic uraemic syndrome.",
+          "reason": "Paediatric HUS; excluded."
+        },
+        {
+          "uid": "pubmed-26370473",
+          "title": "Pathophysiology and clinical evaluation of acute heart failure.",
+          "reason": "Heart-failure focus; wrong organ system."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Intrinsic acute kidney injury is parenchymal failure: the kidney itself is injured, whether by ischaemia-reperfusion (the ischaemic ATN of shock and sepsis), nephrotoxins (aminoglycosides, contrast, cisplatin), pigment (rhabdomyolysis, haemolysis), or interstitial inflammation (drug AIN). It is distinguished from pre-renal azotaemia by its failure to respond to volume and by urinary sediment — muddy-brown casts the classic signature of ischaemic ATN. Management is largely supportive: haemodynamic optimisation without fluid overload, nephrotoxin withdrawal, dose adjustment, and the recognition that recovery, when it comes, takes weeks.",
+      "teaching_points": [
+        {
+          "claim": "AKI is defined by rising creatinine or falling urine output over hours to days; categorising the cause as pre-renal, intrinsic, or post-renal structures the diagnostic work-up.",
+          "cites": [
+            "33121629"
+          ]
+        },
+        {
+          "claim": "Intrinsic AKI subtypes include ischaemic/toxic acute tubular necrosis, pigment nephropathy, and interstitial nephritis; the urinary sediment (muddy-brown granular casts in ATN) and failure to respond to volume help distinguish intrinsic from pre-renal disease.",
+          "cites": [
+            "33121629",
+            "26804946"
+          ]
+        },
+        {
+          "claim": "Management is supportive: treat the cause, withdraw nephrotoxins, adjust drug doses, optimise haemodynamics while avoiding fluid overload, and institute RRT only for absolute indications.",
+          "cites": [
+            "26804946",
+            "33121629"
+          ]
+        },
+        {
+          "claim": "Recovery from intrinsic AKI is slow — tubular regeneration takes weeks — and incomplete recovery leaves CKD, the rationale for nephrotoxin vigilance and follow-up.",
+          "cites": [
+            "26804946"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "No pharmacological therapy (dopamine, fenoldopam, mannitol) has improved outcomes in intrinsic AKI.",
+        "Biomarker-guided early differentiation of pre-renal from intrinsic AKI is promising but not practice-changing."
+      ],
+      "mcq_angles": [
+        "Pre-renal, intrinsic, post-renal categorisation.",
+        "Sediment and diagnostic clues by subtype.",
+        "Supportive management and nephrotoxin withdrawal.",
+        "Recovery timeline and CKD transition."
+      ],
+      "case_hooks": [
+        "A septic patient has AKI unresponsive to 48 hours of fluid optimisation with muddy-brown casts; classify and manage.",
+        "A crush-injury patient has dark urine and rising creatinine; outline the pigment-nephropathy pathway and prevention."
+      ],
+      "gaps": "The retained evidence is AKI-general; verify intrinsic-subtype specifics (pigment, AIN, contrast) against dedicated reviews — cross-reference topics 918 and 961 for interstitial causes.",
+      "sources": [
+        {
+          "pmid": "33121629",
+          "design": "review",
+          "year": "2021",
+          "journal": null,
+          "title": "Acute Kidney Injury."
+        },
+        {
+          "pmid": "26804946",
+          "design": "review",
+          "year": "2016",
+          "journal": null,
+          "title": "Acute kidney injury: current concepts and new insights."
+        }
+      ]
+    }
+  },
+  {
+    "no": 973,
+    "topicId": "5c1b08a0-d2cb-4cc7-bb95-6a7215143a94",
+    "topic": "invasive aspergillosis antifungal therapy",
+    "cluster": "invasive aspergillosis",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 8,
+      "papersKept": [
+        {
+          "uid": "pubmed-29544767",
+          "title": "Diagnosis and management of Aspergillus diseases: executive summary of the 2017 ESCMID-ECMM-ERS guideline.",
+          "year": "2018"
+        },
+        {
+          "uid": "pubmed-34016284",
+          "title": "Aspergillosis: Epidemiology, Diagnosis, and Treatment.",
+          "year": "2019"
+        },
+        {
+          "uid": "pubmed-28702763",
+          "title": "Pharmacokinetics of antifungal drugs: practical implications for optimized treatment of patients.",
+          "year": "2016"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-32000286",
+          "title": "Invasive Pulmonary Aspergillosis.",
+          "reason": "IPA clinical review; retained under topic 976."
+        },
+        {
+          "uid": "pubmed-31119309",
+          "title": "[Fungal infections].",
+          "reason": "Non-English-bracketed record; excluded per pipeline rules."
+        },
+        {
+          "uid": "pubmed-38899061",
+          "title": "Chronic pulmonary aspergillosis: comprehensive insights into epidemiology, treatment, and unresolved challenges.",
+          "reason": "Chronic pulmonary aspergillosis is a distinct entity; excluded."
+        },
+        {
+          "uid": "pubmed-38935907",
+          "title": "Aspergillus fumigatus - a systematic review to inform the World Health Organization priority list of fungal pathogens.",
+          "reason": "WHO-pathogen-list review; not clinical therapy."
+        },
+        {
+          "uid": "pubmed-36836369",
+          "title": "Invasive Aspergillosis after Renal Transplantation.",
+          "reason": "Transplant-subset cohort; tangential."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Antifungal therapy for invasive aspergillosis is anchored by the ESCMID-ECMM-ERS guideline: voriconazole is first-line for most invasive disease, with isavuconazole an equal-alternative and liposomal amphotericin B the alternative when azoles fail or are contraindicated. The pharmacology makes or breaks outcomes: voriconazole's nonlinear kinetics, CYP2C19 genetic variability, and narrow therapeutic window demand therapeutic drug monitoring; posaconazole and itraconazole absorption is erratic without formulations optimised. Resistance surveillance — azole-resistant A. fumigatus — is now a first-order concern shaping empiric choices and requiring susceptibility data.",
+      "teaching_points": [
+        {
+          "claim": "Voriconazole is first-line therapy for invasive aspergillosis per ESCMID-ECMM-ERS guidance, with isavuconazole an equal alternative and liposomal amphotericin B reserved for intolerance, failure, or resistance.",
+          "cites": [
+            "29544767",
+            "34016284"
+          ]
+        },
+        {
+          "claim": "Therapeutic drug monitoring is essential for voriconazole (nonlinear kinetics, CYP2C19 variability, neurotoxicity at high levels) and recommended for posaconazole/itraconazole; trough-guided dosing improves exposure-target attainment.",
+          "cites": [
+            "28702763",
+            "29544767"
+          ]
+        },
+        {
+          "claim": "Combination antifungal therapy (voriconazole plus an echinocandin) is considered in selected high-risk or refractory cases but lacks definitive outcome superiority.",
+          "cites": [
+            "29544767",
+            "34016284"
+          ]
+        },
+        {
+          "claim": "Azole resistance in A. fumigatus is an escalating threat; susceptibility testing and local-resistance patterns should inform empiric and salvage therapy.",
+          "cites": [
+            "34016284",
+            "29544767"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "The optimal role and timing of combination antifungal therapy remains unresolved.",
+        "Whether newer agents (rezafungin, olorofim) displace current first-line therapy awaits comparative outcome data."
+      ],
+      "mcq_angles": [
+        "First-line agent selection by guideline.",
+        "TDM indications and target troughs.",
+        "Combination-therapy positioning.",
+        "Azole resistance and susceptibility-guided therapy."
+      ],
+      "case_hooks": [
+        "An immunocompromised patient with probable IA has CYP2C19 ultrarapid-metaboliser status; adjust voriconazole management.",
+        "An IA patient fails voriconazole therapy on adequate troughs; design salvage therapy using the guideline ladder."
+      ],
+      "gaps": "The retained guideline summary is 2017-era; verify against the current ESCMID-ECMM-ERS update before approval.",
+      "sources": [
+        {
+          "pmid": "29544767",
+          "design": "guideline",
+          "year": "2018",
+          "journal": null,
+          "title": "Diagnosis and management of Aspergillus diseases: executive summary of the 2017 ESCMID-ECMM-ERS guideline."
+        },
+        {
+          "pmid": "34016284",
+          "design": "review",
+          "year": "2019",
+          "journal": null,
+          "title": "Aspergillosis: Epidemiology, Diagnosis, and Treatment."
+        },
+        {
+          "pmid": "28702763",
+          "design": "review",
+          "year": "2016",
+          "journal": null,
+          "title": "Pharmacokinetics of antifungal drugs: practical implications for optimized treatment of patients."
+        }
+      ]
+    }
+  },
+  {
+    "no": 974,
+    "topicId": "5cb3c77b-8add-4bcb-88f4-de8ab7072a23",
+    "topic": "invasive candidiasis and candidemia antifungal therapy",
+    "cluster": "invasive candidiasis",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 8,
+      "papersKept": [
+        {
+          "uid": "pubmed-26679628",
+          "title": "Clinical Practice Guideline for the Management of Candidiasis: 2016 Update by the Infectious Diseases Society of America.",
+          "year": "2016"
+        },
+        {
+          "uid": "pubmed-26739610",
+          "title": "Invasive Candidiasis.",
+          "year": "2016"
+        },
+        {
+          "uid": "pubmed-37220664",
+          "title": "Invasive candidiasis: current clinical challenges and unmet needs in adult populations.",
+          "year": "2022"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-38514673",
+          "title": "Invasive candidiasis.",
+          "reason": "Duplicate-topic review; retained sources cover it."
+        },
+        {
+          "uid": "pubmed-37674021",
+          "title": "Candida parapsilosis complex in the clinical setting.",
+          "reason": "Species-complex review; tangential to therapy selection."
+        },
+        {
+          "uid": "pubmed-38935900",
+          "title": "Candida auris - a systematic review to inform the world health organization fungal priority pathogens list.",
+          "reason": "WHO-pathogen-list review; not therapy guidance."
+        },
+        {
+          "uid": "pubmed-37121240",
+          "title": "Worldwide emergence of fluconazole-resistant Candida parapsilosis: current framework and future research roadmap.",
+          "reason": "Species-specific resistance review; tangential."
+        },
+        {
+          "uid": "pubmed-28011902",
+          "title": "ECIL-6 guidelines for the treatment of invasive candidiasis, aspergillosis and mucormycosis in leukemia and hematopoietic stem cell transplant patients.",
+          "reason": "Haematology-population guideline; general adult guidance retained."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Candidemia is the commonest invasive fungal disease in hospitals, and its management has two non-negotiables: an echinocandin is first-line empiric therapy (fluconazole reserved for stable, susceptible isolates), and central-line removal plus fundoscopic examination are part of the treatment, not adjuncts to it. The IDSA 2016 update codifies therapy by syndrome — candidemia, candidaemia with neutropenia, and organ-specific disease each have distinct durations and agents. The challenges review frames the modern threats: non-albicans species with reduced azole susceptibility, echninocandin resistance emerging in C. glabrata, and the difficulty of diagnosing deep-seated foci without candidemia.",
+      "teaching_points": [
+        {
+          "claim": "An echinocandin (caspofungin, micafungin, anidulafungin) is recommended first-line empiric therapy for candidemia; fluconazole is an option for stable patients with susceptible isolates, and step-down to oral fluconazole follows susceptibility.",
+          "cites": [
+            "26679628",
+            "26739610"
+          ]
+        },
+        {
+          "claim": "Source control is integral: central-venous-catheter removal where feasible, and ophthalmological examination to exclude endophthalmitis, are parts of standard candidemia management.",
+          "cites": [
+            "26679628",
+            "37220664"
+          ]
+        },
+        {
+          "claim": "Non-albicans species (C. glabrata, C. parapsilosis, C. tropicalis) now dominate many series with reduced azole susceptibility, driving species-level therapy selection and susceptibility testing.",
+          "cites": [
+            "37220664",
+            "26739610"
+          ]
+        },
+        {
+          "claim": "Treatment duration is typically 14 days from first negative blood culture for candidemia without metastatic foci; longer with endophthalmitis, osteoarticular, or other deep-seated disease.",
+          "cites": [
+            "26679628"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "The optimal role of rapid species-identification and resistance-marker testing in directing early therapy is evolving.",
+        "Management of persistent candidemia despite therapy (source exclusion, resistance, immune reconstitution) is individualised."
+      ],
+      "mcq_angles": [
+        "First-line agent selection and step-down rules.",
+        "Source control: line removal and fundoscopy.",
+        "Species-level susceptibility patterns.",
+        "Duration by syndrome."
+      ],
+      "case_hooks": [
+        "A candidaemic ICU patient has a central line and new visual floaters; sequence therapy, line removal, and ophthalmology.",
+        "A stable patient grows fluconazole-susceptible C. albicans from blood; justify step-down to oral therapy and duration."
+      ],
+      "gaps": "The retained IDSA guideline is the 2016 update; verify against any newer revision before approval.",
+      "sources": [
+        {
+          "pmid": "26679628",
+          "design": "guideline",
+          "year": "2016",
+          "journal": null,
+          "title": "Clinical Practice Guideline for the Management of Candidiasis: 2016 Update by the Infectious Diseases Society of America."
+        },
+        {
+          "pmid": "26739610",
+          "design": "review",
+          "year": "2016",
+          "journal": null,
+          "title": "Invasive Candidiasis."
+        },
+        {
+          "pmid": "37220664",
+          "design": "review",
+          "year": "2022",
+          "journal": null,
+          "title": "Invasive candidiasis: current clinical challenges and unmet needs in adult populations."
+        }
+      ]
+    }
+  },
+  {
+    "no": 975,
+    "topicId": "9f7052a1-8c48-44c9-afc9-b4010138d564",
+    "topic": "Invasive fungal infection in immunocompromised: aspergillosis, candida, galactomannan, voriconazole",
+    "cluster": "invasive fungal infection",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 8,
+      "papersKept": [
+        {
+          "uid": "pubmed-26165502",
+          "title": "Fungal infections in the ICU: advances in treatment and diagnosis.",
+          "year": "2016"
+        },
+        {
+          "uid": "pubmed-28355466",
+          "title": "Invasive mould infections in the ICU setting: complexities and solutions.",
+          "year": "2016"
+        },
+        {
+          "uid": "pubmed-24994691",
+          "title": "Current and future therapies for invasive aspergillosis.",
+          "year": "2015"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-29544767",
+          "title": "Diagnosis and management of Aspergillus diseases: executive summary of the 2017 ESCMID-ECMM-ERS guideline.",
+          "reason": "Retained under topic 973 to avoid duplicate citation."
+        },
+        {
+          "uid": "pubmed-32000286",
+          "title": "Invasive Pulmonary Aspergillosis.",
+          "reason": "IPA review; retained under topic 976."
+        },
+        {
+          "uid": "pubmed-28835093",
+          "title": "Voriconazole-refractory invasive aspergillosis.",
+          "reason": "Refractory-subset review; covered under topic 976."
+        },
+        {
+          "uid": "pubmed-31454845",
+          "title": "[Invasive Pulmonary Aspergillosis].",
+          "reason": "Non-English-bracketed record; excluded per pipeline rules."
+        },
+        {
+          "uid": "pubmed-36978151",
+          "title": "Management of pulmonary aspergillosis in children: a systematic review.",
+          "reason": "Paediatric population; excluded."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "In the immunocompromised host, invasive fungal infection is a race between diagnostic certainty and disease progression — and the modern strategy treats early. Serum and bronchoalveolar galactomannan, beta-D-glucan, and high-resolution CT's halo sign provide pre-culture evidence; the host's net state of immunosuppression (neutropenia duration, corticosteroid dose, transplant type) sets the pre-test probability. The ICU adds a diagnostic wrinkle: invasive aspergillosis now occurs in non-neutropenic patients — COPD on steroids, cirrhosis, post-influenza — where the classic frameworks fit poorly. Therapy is empiric-to-preemptive, anchored on voriconazole with the echinocandins and the newer agents filling defined niches.",
+      "teaching_points": [
+        {
+          "claim": "Host-immunosuppression assessment (neutropenia, corticosteroid dose, transplant, haematologic malignancy) drives fungal-risk stratification and the threshold for empiric/preemptive therapy.",
+          "cites": [
+            "26165502",
+            "28355466"
+          ]
+        },
+        {
+          "claim": "Non-culture diagnostics — galactomannan (serum and BAL), beta-D-glucan, and CT halo/infarct patterns — enable earlier diagnosis and preemptive therapy before culture or histology.",
+          "cites": [
+            "26165502",
+            "24994691"
+          ]
+        },
+        {
+          "claim": "Invasive aspergillosis increasingly affects non-neutropenic ICU patients (COPD on steroids, post-influenza, liver failure), challenging classical diagnostic frameworks built on neutropenia.",
+          "cites": [
+            "28355466"
+          ]
+        },
+        {
+          "claim": "Voriconazole anchors therapy; echinocandins serve as first-line in selected candidiasis contexts and salvage in aspergillosis, with newer agents expanding the armamentarium.",
+          "cites": [
+            "24994691",
+            "26165502"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Optimal thresholds for galactomannan and beta-D-glucan positivity vary by host and specimen.",
+        "Whether preemptive (diagnostics-triggered) strategies outperform empiric antifungal therapy in outcomes is incompletely tested."
+      ],
+      "mcq_angles": [
+        "Risk stratification by immunosuppression type.",
+        "Galactomannan and beta-D-glucan interpretation.",
+        "Non-neutropenic invasive aspergillosis recognition.",
+        "Empiric versus preemptive therapy strategies."
+      ],
+      "case_hooks": [
+        "A neutropenic patient has fever, a halo sign on CT, and a rising serum galactomannan; outline the preemptive-therapy decision.",
+        "A COPD patient on high-dose steroids deteriorates with putative bacterial pneumonia unresponsive to antibiotics; consider non-neutropenic invasive aspergillosis."
+      ],
+      "gaps": "The retained reviews are 2015-2016 era; verify diagnostics thresholds and the newer-agent landscape against current ECMM guidance before approval.",
+      "sources": [
+        {
+          "pmid": "26165502",
+          "design": "review",
+          "year": "2016",
+          "journal": null,
+          "title": "Fungal infections in the ICU: advances in treatment and diagnosis."
+        },
+        {
+          "pmid": "28355466",
+          "design": "review",
+          "year": "2016",
+          "journal": null,
+          "title": "Invasive mould infections in the ICU setting: complexities and solutions."
+        },
+        {
+          "pmid": "24994691",
+          "design": "review",
+          "year": "2015",
+          "journal": null,
+          "title": "Current and future therapies for invasive aspergillosis."
+        }
+      ]
+    }
+  },
+  {
+    "no": 976,
+    "topicId": "857fdab7-7441-4adc-8b0f-d6a0377964c5",
+    "topic": "Invasive Pulmonary Aspergillosis",
+    "cluster": "invasive aspergillosis",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 8,
+      "papersKept": [
+        {
+          "uid": "pubmed-38714471",
+          "title": "Invasive aspergillosis: A comprehensive review.",
+          "year": "2024"
+        },
+        {
+          "uid": "pubmed-38286175",
+          "title": "How do I manage refractory invasive pulmonary aspergillosis.",
+          "year": "2023"
+        },
+        {
+          "uid": "pubmed-32034433",
+          "title": "Diagnosis of severe respiratory infections in immunocompromised patients.",
+          "year": "2021"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-29544767",
+          "title": "Diagnosis and management of Aspergillus diseases: executive summary of the 2017 ESCMID-ECMM-ERS guideline.",
+          "reason": "Retained under topic 973 to avoid duplicate citation."
+        },
+        {
+          "uid": "pubmed-38423624",
+          "title": "Revised ISHAM-ABPA working group clinical practice guidelines for diagnosing, classifying and treating allergic bronchopulmonary aspergillosis.",
+          "reason": "ABPA is an allergic, non-invasive entity; excluded."
+        },
+        {
+          "uid": "pubmed-26699723",
+          "title": "Chronic pulmonary aspergillosis: rationale and clinical guidelines for diagnosis and management.",
+          "reason": "Chronic pulmonary aspergillosis is distinct; excluded."
+        },
+        {
+          "uid": "pubmed-30329097",
+          "title": "Pulmonary cryptococcosis: A review of pathobiology and clinical aspects.",
+          "reason": "Cryptococcus, not Aspergillus; wrong pathogen."
+        },
+        {
+          "uid": "pubmed-41544957",
+          "title": "Pulmonary Fungal Infections in the Immunocompetent Host.",
+          "reason": "Immunocompetent-host subset; tangential."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Invasive pulmonary aspergillosis is the clinical entity — fever, cough, pleuritic pain, and progressive infiltrates in an immunocompromised host — that the antifungal guidelines (topic 973) treat. Diagnosis is probabilistic, staged from possible to probable to proven on host factors, radiology, and mycology; the halo sign on early CT is the radiological signature, later giving way to the air-crescent of recovering lesions. Refractory disease — failure on adequate voriconazole — demands systematic reassessment: adherence and troughs first, resistance and imaging progression next, then salvage with a lipid amphotericin, isavuconazole, or combination approaches, with surgical resection considered for localised disease in fit patients.",
+      "teaching_points": [
+        {
+          "claim": "IPA diagnosis is staged (possible/probable/proven) combining host factors, radiological features (halo sign, infarct-shaped consolidation), and mycological evidence (galactomannan, culture, BAL microscopy).",
+          "cites": [
+            "38714471",
+            "32034433"
+          ]
+        },
+        {
+          "claim": "Invasive aspergillosis increasingly involves non-fumigatus species with variable antifungal susceptibility; identification to species level and susceptibility testing inform management.",
+          "cites": [
+            "38714471"
+          ]
+        },
+        {
+          "claim": "Refractory IPA management follows a sequence: confirm exposure (adherence, trough levels), assess resistance and progression, then salvage with alternative agents (liposomal amphotericin B, isavuconazole), combination therapy, or surgical resection for localised disease.",
+          "cites": [
+            "38286175"
+          ]
+        },
+        {
+          "claim": "Severe respiratory infection in the immunocompromised demands systematic identification of the cause — invasive diagnostics (BAL with galactomannan, multiplex PCR) improve targeted therapy in hypoxaemic respiratory failure.",
+          "cites": [
+            "32034433"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "The contribution of surgical resection to outcomes in localised IPA is based on case series rather than trials.",
+        "Optimal salvage-therapy sequencing for refractory disease is expert-guided."
+      ],
+      "mcq_angles": [
+        "Diagnostic staging and the halo sign.",
+        "Species identification and susceptibility.",
+        "Refractory-disease work-up sequence.",
+        "Role of invasive diagnostics in the immunocompromised."
+      ],
+      "case_hooks": [
+        "A neutropenic patient on voriconazole for probable IPA worsens; work through the refractory-disease sequence.",
+        "An immunocompromised patient has hypoxaemic respiratory failure with a negative routine work-up; justify BAL with galactomannan and PCR."
+      ],
+      "gaps": "The retained evidence is review-level; verify diagnostic-staging criteria against the current ECMM/ERS consensus definitions before approval.",
+      "sources": [
+        {
+          "pmid": "38714471",
+          "design": "review",
+          "year": "2024",
+          "journal": null,
+          "title": "Invasive aspergillosis: A comprehensive review."
+        },
+        {
+          "pmid": "38286175",
+          "design": "review",
+          "year": "2023",
+          "journal": null,
+          "title": "How do I manage refractory invasive pulmonary aspergillosis."
+        },
+        {
+          "pmid": "32034433",
+          "design": "review",
+          "year": "2021",
+          "journal": null,
+          "title": "Diagnosis of severe respiratory infections in immunocompromised patients."
+        }
+      ]
+    }
+  },
+  {
+    "no": 977,
+    "topicId": "6b20bb5c-3328-4323-8263-7b099abed624",
+    "topic": "investigating suspected stable angina in women",
+    "cluster": "stable angina in women",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 5,
+      "papersKept": [
+        {
+          "uid": "pubmed-36921653",
+          "title": "Chest Pain in Women: Considerations From the 2021 AHA/ACC Chest Pain Guideline.",
+          "year": "2023"
+        },
+        {
+          "uid": "pubmed-37704315",
+          "title": "Comprehensive Management of ANOCA, Part 1 - Definition, Patient Population, and Diagnosis (JACC State-of-the-Art Review).",
+          "year": "2023"
+        },
+        {
+          "uid": "pubmed-31189617",
+          "title": "Diagnosis of obstructive coronary artery disease using computed tomography angiography in patients with stable chest pain (subgroup analysis).",
+          "year": "2019"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-35781776",
+          "title": "Non-obstructive Plaque and Treatment of INOCA: More to Be Learned.",
+          "reason": "Editorial commentary; state-of-the-art review retained."
+        },
+        {
+          "uid": "pubmed-35200704",
+          "title": "An Evaluation of the Role of Oxidative Stress in Non-Obstructive Coronary Artery Disease.",
+          "reason": "Mechanistic focus; not diagnostic strategy."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Suspected stable angina in women runs on a different track: women present later, with atypical and microvascular-predominant disease, and carry a higher burden of angina with non-obstructive coronary arteries — ANOCA/INOCA affecting nearly half of women undergoing angiography for suspected ischemia. The 2021 AHA/ACC chest-pain guideline explicitly addresses sex-specific pathways: functional testing and CT-angiography selection perform differently by sex, and a negative anatomical test does not end the work-up when microvascular disease is plausible. The modern skill is resisting both errors: dismissing women's chest pain as non-cardiac, and stop investigating once the epicardial arteries look clean.",
+      "teaching_points": [
+        {
+          "claim": "Women with suspected CAD present with atypical symptoms more often, develop more nonobstructive and microvascular disease, and are under-investigated relative to men — the 2021 AHA/ACC guideline codifies sex-specific diagnostic pathways.",
+          "cites": [
+            "36921653"
+          ]
+        },
+        {
+          "claim": "ANOCA/INOCA — angina with non-obstructive coronary arteries — may affect nearly half of patients undergoing invasive angiography for suspected ischemia and encompasses coronary microvascular dysfunction and vasospasm.",
+          "cites": [
+            "37704315",
+            "36921653"
+          ]
+        },
+        {
+          "claim": "Diagnostic-test performance differs by sex; CTA subgroup analysis informs appropriate-use, and a clean epicardial angiogram should prompt functional/microvascular assessment (stress imaging, CFR/IMR where available) rather than reassurance alone.",
+          "cites": [
+            "31189617",
+            "37704315"
+          ]
+        },
+        {
+          "claim": "Investigating women requires the dual framework: exclude obstructive disease with appropriate testing, then actively pursue microvascular and vasospastic mechanisms when symptoms persist.",
+          "cites": [
+            "37704315",
+            "36921653"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Optimal diagnostic thresholds and test-selection algorithms for women remain refined by ongoing sex-specific outcome data.",
+        "Treatment of confirmed microvascular angina improves symptoms more consistently than outcomes."
+      ],
+      "mcq_angles": [
+        "Sex differences in presentation and disease pattern.",
+        "ANOCA/INOCA definitions and population frequency.",
+        "Test selection by sex from the AHA/ACC guideline.",
+        "Next steps after a nonobstructive angiogram."
+      ],
+      "case_hooks": [
+        "A 58-year-old woman has exertional chest discomfort, a normal resting ECG, and intermediate pre-test probability; design the guideline-concordant investigation.",
+        "A woman's angiogram shows nonobstructive disease but disabling symptoms continue; outline the microvascular work-up."
+      ],
+      "gaps": "The retained evidence is guideline-review level; verify test-performance numbers against the primary AHA/ACC guideline and PROMISE/SCOT-HEART sex-subgroup analyses before approval.",
+      "sources": [
+        {
+          "pmid": "36921653",
+          "design": "guideline-review",
+          "year": "2023",
+          "journal": null,
+          "title": "Chest Pain in Women: Considerations From the 2021 AHA/ACC Chest Pain Guideline."
+        },
+        {
+          "pmid": "37704315",
+          "design": "state-of-the-art",
+          "year": "2023",
+          "journal": null,
+          "title": "Comprehensive Management of ANOCA, Part 1 - Definition, Patient Population, and Diagnosis (JACC State-of-the-Art Review)."
+        },
+        {
+          "pmid": "31189617",
+          "design": "meta-analysis",
+          "year": "2019",
+          "journal": null,
+          "title": "Diagnosis of obstructive coronary artery disease using computed tomography angiography in patients with stable chest pain (subgroup analysis)."
+        }
+      ]
+    }
+  },
+  {
+    "no": 978,
+    "topicId": "9e99370c-46b4-43cf-b749-9e9fd4c370ba",
+    "topic": "iron deficiency anaemia",
+    "cluster": "iron deficiency anaemia",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 8,
+      "papersKept": [
+        {
+          "uid": "pubmed-34497146",
+          "title": "British Society of Gastroenterology guidelines for the management of iron deficiency anaemia in adults.",
+          "year": "2021"
+        },
+        {
+          "uid": "pubmed-41252836",
+          "title": "Iron Deficiency Anemia: Evaluation and Management.",
+          "year": "2024"
+        },
+        {
+          "uid": "pubmed-33362380",
+          "title": "Diagnosis and treatment of iron-deficiency anemia in gastrointestinal bleeding: A systematic review.",
+          "year": "2019"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-41485807",
+          "title": "Executive Summary of the KDIGO 2026 Clinical Practice Guideline for the Management of Anemia in Chronic Kidney Disease.",
+          "reason": "CKD-anemia guideline; covered separately in this topic set."
+        },
+        {
+          "uid": "pubmed-39788978",
+          "title": "Hereditary haemorrhagic telangiectasia.",
+          "reason": "Specific-genetic disorder; tangential."
+        },
+        {
+          "uid": "pubmed-39145520",
+          "title": "Daily oral iron supplementation during pregnancy.",
+          "reason": "Pregnancy subset; excluded."
+        },
+        {
+          "uid": "pubmed-36423618",
+          "title": "Small-bowel capsule endoscopy and device-assisted enteroscopy for diagnosis and treatment of small-bowel disorders.",
+          "reason": "Endoscopy-technique review; tangential."
+        },
+        {
+          "uid": "pubmed-32053933",
+          "title": "Iron Deficiency and Iron Deficiency Anemia: Implications and Impact in Pregnancy, Fetal Development, and Early Childhood.",
+          "reason": "Pregnancy/paediatric focus; excluded."
+        },
+        {
+          "uid": "pubmed-34534708",
+          "title": "Hypophosphatemia after intravenous iron therapy: Comprehensive review of clinical findings and recommendations.",
+          "reason": "IV-iron complication review; retained under topic 979."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Iron deficiency anaemia is a sign before it is a diagnosis: in men and postmenopausal women the mandate is finding the blood loss, which is gastrointestinal until proven otherwise. The BSG guideline structures the work-up — coeliac serology with the ferritin, faecal occult blood and endoscopic evaluation by risk, and small-bowel investigation when upper-and-lower endoscopy is negative — while ferritin thresholds (with transferrin saturation where inflammation blurs the picture) anchor the laboratory diagnosis. Treatment restores the deficit (oral first for most, intravenous when oral fails or urgency dictates — see topic 979) but never substitutes for finding the cause.",
+      "teaching_points": [
+        {
+          "claim": "In adults without inflammation, ferritin below 45 ng/mL is diagnostic of iron deficiency; ferritin 46-99 ng/mL with transferrin saturation below 20% also confirms deficiency — inflammation raises ferritin and masks deficiency.",
+          "cites": [
+            "41252836"
+          ]
+        },
+        {
+          "claim": "Men and postmenopausal women with IDA require gastrointestinal evaluation for occult blood loss; coeliac serology is part of the first-line work-up, and small-bowel investigation follows negative bidirectional endoscopy in ongoing-deficiency cases.",
+          "cites": [
+            "34497146",
+            "33362380"
+          ]
+        },
+        {
+          "claim": "Oral iron is first-line for most stable patients; intravenous iron is reserved for intolerance, malabsorption, ongoing losses exceeding oral absorption, or clinical urgency.",
+          "cites": [
+            "34497146",
+            "41252836"
+          ]
+        },
+        {
+          "claim": "Response is monitored by reticulocyte haemoglobin and haemoglobin rise at 2-4 weeks; failure to respond prompts re-evaluation of adherence, absorption, continued loss, and the original diagnosis.",
+          "cites": [
+            "41252836",
+            "34497146"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Optimal small-bowel-imaging pathways (capsule versus MR-enterography versus device-assisted enteroscopy) follow local expertise.",
+        "The threshold for IV-first strategies in non-urgent IDA is evolving (see topic 979)."
+      ],
+      "mcq_angles": [
+        "Ferritin/TSAT diagnostic thresholds and inflammation caveats.",
+        "GI work-up sequence by sex and risk.",
+        "Oral-versus-IV first-line selection.",
+        "Response monitoring and non-response work-up."
+      ],
+      "case_hooks": [
+        "A 65-year-old man has ferritin 30 ng/mL and microcytic anaemia; structure the cause-seeking work-up.",
+        "An IDA patient's haemoglobin fails to rise after 4 weeks of oral iron; evaluate adherence, absorption, and continued loss."
+      ],
+      "gaps": "The retained evidence is adult-focused; pregnancy and paediatric IDA follow separate guidance — verify scope before approval.",
+      "sources": [
+        {
+          "pmid": "34497146",
+          "design": "guideline",
+          "year": "2021",
+          "journal": null,
+          "title": "British Society of Gastroenterology guidelines for the management of iron deficiency anaemia in adults."
+        },
+        {
+          "pmid": "41252836",
+          "design": "review",
+          "year": "2024",
+          "journal": null,
+          "title": "Iron Deficiency Anemia: Evaluation and Management."
+        },
+        {
+          "pmid": "33362380",
+          "design": "systematic-review",
+          "year": "2019",
+          "journal": null,
+          "title": "Diagnosis and treatment of iron-deficiency anemia in gastrointestinal bleeding: A systematic review."
+        }
+      ]
+    }
+  },
+  {
+    "no": 979,
+    "topicId": "9ff99ba7-404a-45b9-ba4e-f8524b0cfdb4",
+    "topic": "Iron deficiency anaemia: intravenous iron therapy",
+    "cluster": "iron deficiency anaemia",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 8,
+      "papersKept": [
+        {
+          "uid": "pubmed-40603803",
+          "title": "Oral and Intravenous Iron Therapy.",
+          "year": "2025"
+        },
+        {
+          "uid": "pubmed-39935027",
+          "title": "Ferric Carboxymaltose (FCM)-Associated Hypophosphatemia (HPP): A Systematic Review.",
+          "year": "2023"
+        },
+        {
+          "uid": "pubmed-34534708",
+          "title": "Hypophosphatemia after intravenous iron therapy: Comprehensive review of clinical findings and recommendations.",
+          "year": "2021"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-33932115",
+          "title": "Iron deficiency in heart failure.",
+          "reason": "Heart-failure subset; general IV-iron evidence retained."
+        },
+        {
+          "uid": "pubmed-39001744",
+          "title": "Management of Iron Deficiency in Heart Failure: Practical Considerations and Implementation of Evidence-Based Therapies.",
+          "reason": "Heart-failure subset; tangential."
+        },
+        {
+          "uid": "pubmed-39651609",
+          "title": "Effect and safety of intravenous iron compared to oral iron for treatment of iron deficiency anaemia in pregnancy.",
+          "reason": "Pregnancy subset; excluded."
+        },
+        {
+          "uid": "pubmed-34758368",
+          "title": "Recent and Emerging Therapies for Iron Deficiency in Anemia of CKD: A Review.",
+          "reason": "CKD-subset review; general adult IDA evidence retained."
+        },
+        {
+          "uid": "pubmed-33362380",
+          "title": "Diagnosis and treatment of iron-deficiency anemia in gastrointestinal bleeding: A systematic review.",
+          "reason": "GI-bleeding-subset review; retained under topic 978."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Intravenous iron has moved from rescue to routine: modern formulations (ferric carboxymaltose, iron derisomaltose, ferumoxytol) deliver a gram of iron in 15-60 minutes with reaction rates that no longer justify inpatient observation. The indications are intolerance or non-response to oral iron, malabsorption, ongoing losses outpacing oral absorption, and urgency — but increasingly also convenience and guaranteed delivery. The distinctive modern safety signal is hypophosphatemia: FCM's FGF-23-mediated phosphate wasting is common, usually transient and subclinical, but symptomatic cases with osteomalacia risk warrant monitoring in high-risk and repeated-dose patients.",
+      "teaching_points": [
+        {
+          "claim": "IV iron indications: oral intolerance or non-response, malabsorption (IBD, bariatric, coeliac), ongoing losses exceeding oral replacement, and clinical urgency; modern formulations allow rapid high-dose repletion in single or split doses.",
+          "cites": [
+            "40603803"
+          ]
+        },
+        {
+          "claim": "Oral iron remains first-line for stable, tolerant patients; IV iron achieves faster and more complete repletion and is increasingly used first-line where speed, certainty, or tolerance favour it.",
+          "cites": [
+            "40603803"
+          ]
+        },
+        {
+          "claim": "Ferric carboxymaltose is associated with hypophosphatemia through FGF-23-mediated renal phosphate wasting; systematic review quantifies the risk as frequent, usually transient, but occasionally symptomatic.",
+          "cites": [
+            "39935027",
+            "34534708"
+          ]
+        },
+        {
+          "claim": "Hypophosphatemia risk is higher with repeated doses, low baseline phosphate, and certain formulations; monitoring phosphate in at-risk patients and choosing lower-risk formulations (e.g. derisomaltose) are practical mitigations.",
+          "cites": [
+            "34534708",
+            "39935027"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Long-term clinical consequences of repeated FCM-associated hypophosphatemia (bone health) are incompletely defined.",
+        "Optimal IV-first versus oral-first strategies by phenotype and health-system cost are evolving."
+      ],
+      "mcq_angles": [
+        "IV-iron indications and modern formulations.",
+        "Oral-versus-IV positioning.",
+        "FCM hypophosphatemia mechanism and risk factors.",
+        "Monitoring and formulation-selection mitigation."
+      ],
+      "case_hooks": [
+        "An IBD patient with ongoing intestinal losses needs iron repletion; compare oral versus IV strategies and select a formulation.",
+        "A patient receiving repeated FCM doses has fatigue and a low phosphate; recognise FCM-associated hypophosphatemia and adjust."
+      ],
+      "gaps": "The retained evidence is general-adult; condition-specific IV-iron evidence (heart failure, CKD) follows separate guidance — verify scope before approval.",
+      "sources": [
+        {
+          "pmid": "40603803",
+          "design": "review",
+          "year": "2025",
+          "journal": null,
+          "title": "Oral and Intravenous Iron Therapy."
+        },
+        {
+          "pmid": "39935027",
+          "design": "systematic-review",
+          "year": "2023",
+          "journal": null,
+          "title": "Ferric Carboxymaltose (FCM)-Associated Hypophosphatemia (HPP): A Systematic Review."
+        },
+        {
+          "pmid": "34534708",
+          "design": "review",
+          "year": "2021",
+          "journal": null,
+          "title": "Hypophosphatemia after intravenous iron therapy: Comprehensive review of clinical findings and recommendations."
+        }
+      ]
+    }
+  },
+  {
+    "no": 980,
+    "topicId": "7226395e-bc4e-4f0f-9577-0cb4b5d98ef0",
+    "topic": "Irradiated, Leukoreduced and Washed Blood Products",
+    "cluster": "blood product modification",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 9,
+      "papersKept": [
+        {
+          "uid": "pubmed-27113002",
+          "title": "Modifications to Blood Components: When to Use them and What is the Evidence?",
+          "year": "2017"
+        },
+        {
+          "uid": "pubmed-25931584",
+          "title": "A systematic review of transfusion-associated graft-versus-host disease.",
+          "year": "2016"
+        },
+        {
+          "uid": "pubmed-37753040",
+          "title": "Transfusion-Associated Graft-Versus-Host Disease in Adults.",
+          "year": "2020"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-28833219",
+          "title": "Prevention of transfusion-associated graft-versus-host disease with pathogen-reduced platelets with amotosalen and UVA photochemical treatment.",
+          "reason": "Pathogen-reduction subset; general modification indications retained."
+        },
+        {
+          "uid": "pubmed-29950246",
+          "title": "[Application Development of Blood Irradiation Indicator -Review].",
+          "reason": "Non-English-bracketed record; excluded per pipeline rules."
+        },
+        {
+          "uid": "pubmed-26708909",
+          "title": "[Pathogenesis and Prevention of Transfusion-Associated Graft-versus-host Disease].",
+          "reason": "Non-English-bracketed record; excluded per pipeline rules."
+        },
+        {
+          "uid": "pubmed-30267423",
+          "title": "Transfusion-associated graft-versus-host disease reexamined: potential for improved prevention using a universally applied biochemical inactivation of leukocyte.",
+          "reason": "Experimental-prevention review; tangential."
+        },
+        {
+          "uid": "pubmed-40376416",
+          "title": "Effects of ionizing radiations of different qualities and delivery types on blood cells.",
+          "reason": "Radiation-biology study; not clinical indications."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Blood-component modifications exist because transfusions can harm in specific hosts: irradiation prevents the rare and fatal transfusion-associated graft-versus-host disease in recipients whose immune systems cannot clear donor lymphocytes — congenital immunodeficiency, haematologic malignancy, stem-cell transplant, directed donations from relatives, and HLA-matched platelets. Leukoreduction reduces febrile non-haemolytic reactions, CMV transmission risk, and HLA-alloimmunisation — near-universal in many systems. Washing removes plasma for the rare severe allergic or IgA-deficiency recipient. Each modification adds cost and delay, so the discipline is matching modification to indication, not applying them by default.",
+      "teaching_points": [
+        {
+          "claim": "Irradiated cellular components prevent transfusion-associated graft-versus-host disease (TA-GVHD), a rare but near-universally fatal complication in recipients who cannot reject donor lymphocytes.",
+          "cites": [
+            "25931584",
+            "37753040"
+          ]
+        },
+        {
+          "claim": "Irradiation indications include congenital cellular immunodeficiency, haematologic malignancy and its treatment, haematopoietic stem-cell transplantation, directed donations from blood relatives, and HLA-matched platelets.",
+          "cites": [
+            "37753040",
+            "27113002"
+          ]
+        },
+        {
+          "claim": "Leukoreduction reduces febrile non-haemolytic transfusion reactions, CMV transmission risk, and HLA-alloimmunisation; many jurisdictions apply it universally while others target by indication.",
+          "cites": [
+            "27113002"
+          ]
+        },
+        {
+          "claim": "Washed components (removing plasma) are reserved for severe allergic transfusion reactions and IgA-deficiency with anti-IgA — the modification must match a defined indication because each adds cost and delay.",
+          "cites": [
+            "27113002",
+            "25931584"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Whether pathogen-reduction technology will consolidate or replace component-modification strategies is system-dependent.",
+        "The precise threshold of immunosuppression warranting irradiation in non-classical indications follows expert consensus."
+      ],
+      "mcq_angles": [
+        "TA-GVHD pathophysiology and fatality.",
+        "The irradiation indication list.",
+        "Leukoreduction benefits by mechanism.",
+        "Washed-component indications."
+      ],
+      "case_hooks": [
+        "A stem-cell-transplant recipient needs platelets from an HLA-matched sibling donor; specify the required modification and why.",
+        "A patient has recurrent febrile reactions to transfusion; explain the role and mechanism of leukoreduction."
+      ],
+      "gaps": "The retained evidence is indication-focused; verify modification policies against national haemovigilance and transfusion-service guidelines before approval.",
+      "sources": [
+        {
+          "pmid": "27113002",
+          "design": "review",
+          "year": "2017",
+          "journal": null,
+          "title": "Modifications to Blood Components: When to Use them and What is the Evidence?"
+        },
+        {
+          "pmid": "25931584",
+          "design": "systematic-review",
+          "year": "2016",
+          "journal": null,
+          "title": "A systematic review of transfusion-associated graft-versus-host disease."
+        },
+        {
+          "pmid": "37753040",
+          "design": "review",
+          "year": "2020",
+          "journal": null,
+          "title": "Transfusion-Associated Graft-Versus-Host Disease in Adults."
+        }
+      ]
+    }
+  }
+]

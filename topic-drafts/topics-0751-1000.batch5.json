@@ -1,0 +1,1375 @@
+[
+  {
+    "no": 791,
+    "topicId": "d33ee725-eb8e-44a3-9c99-6cd4d97f9187",
+    "topic": "Heparin-induced thrombocytopenia alternatives: argatroban, fondaparinux, bivalirudin",
+    "cluster": "HIT alternative anticoagulation",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 8,
+      "papersKept": [
+        {
+          "uid": "pubmed-30482768",
+          "title": "American Society of Hematology 2018 guidelines for management of venous thromboembolism: heparin-induced thrombocytopenia.",
+          "year": "2018"
+        },
+        {
+          "uid": "pubmed-33857342",
+          "title": "Comparative effectiveness and safety of anticoagulants for the treatment of heparin-induced thrombocytopenia.",
+          "year": "2021"
+        },
+        {
+          "uid": "pubmed-33736552",
+          "title": "Heparin-induced thrombocytopenia: pathophysiology, diagnosis and treatment.",
+          "year": "2021"
+        },
+        {
+          "uid": "pubmed-31233222",
+          "title": "Potential Role of Direct Oral Anticoagulants in the Management of Heparin-induced Thrombocytopenia.",
+          "year": "2019"
+        },
+        {
+          "uid": "pubmed-41301798",
+          "title": "Alternative Anticoagulation for Patients with Heparin-Induced Thrombocytopenia on ECMO: A Narrative Review.",
+          "year": "2025"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-28846826",
+          "title": "Autoimmune heparin-induced thrombocytopenia.",
+          "reason": "Autoimmune-HIT subtype covered in the adjacent HIT topic (790) of this pipeline."
+        },
+        {
+          "uid": "pubmed-28301915",
+          "title": "Emerging Role of Direct Oral Anticoagulants in the Management of Heparin-Induced Thrombocytopenia.",
+          "reason": "Duplicate DOAC coverage already provided by the retained 2019 review (31233222)."
+        },
+        {
+          "uid": "pubmed-27114458",
+          "title": "How I treat patients with a history of heparin-induced thrombocytopenia.",
+          "reason": "History-of-HIT management (re-exposure questions); tangential to acute alternative-anticoagulant selection."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Once HIT is suspected, every heparin source must stop — including flushes and coated catheters — and a non-heparin anticoagulant must start immediately, because the thrombotic risk is highest in the first days. The ASH 2018 guideline anchors drug choice; argatroban (hepatically cleared, short half-life), fondaparinux (subcutaneous, once daily) and bivalirudin (short half-life, procedural use) each occupy different niches, direct oral anticoagulants are an emerging option in selected patients, and ECMO adds its own specialised dilemmas.",
+      "teaching_points": [
+        {
+          "claim": "HIT is an adverse drug reaction mediated by platelet-activating antibodies targeting PF4/heparin complexes, with markedly increased thromboembolism risk; the ASH 2018 guidelines provide evidence-based management recommendations.",
+          "cites": [
+            "30482768"
+          ]
+        },
+        {
+          "claim": "A systematic review and meta-analysis compared the effectiveness and safety of non-heparin anticoagulants for HIT treatment because the optimal strategy is not fully established.",
+          "cites": [
+            "33857342"
+          ]
+        },
+        {
+          "claim": "Prompt suspension of heparin is necessary if HIT is suspected, followed by alternative anticoagulation, because thrombotic complications are potentially fatal.",
+          "cites": [
+            "33736552"
+          ]
+        },
+        {
+          "claim": "Direct oral anticoagulants have a potential role in HIT management as an emerging alternative class, given the condition's paradoxical hypercoagulability and the constraints of older agents.",
+          "cites": [
+            "31233222"
+          ]
+        },
+        {
+          "claim": "Patients on ECMO who develop HIT face specialised alternative-anticoagulation challenges, summarised in a dedicated narrative review.",
+          "cites": [
+            "41301798"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Head-to-head outcome data between argatroban, fondaparinux and bivalirudin are lacking; drug choice remains largely informed by patient factors (organ function, procedural needs) rather than comparative trials.",
+        "DOAC use in acute HIT, particularly before platelet recovery, is not definitively established in the retained sources."
+      ],
+      "mcq_angles": [
+        "Agent selection by context: hepatic failure (argatroban caution), renal function, need for procedural anticoagulation (bivalirudin), outpatient transition (fondaparinux/DOAC).",
+        "Why heparin must stop completely — including flushes and lock solutions.",
+        "Comparative-effectiveness evidence between non-heparin anticoagulants.",
+        "Special situations: ECMO, dialysis circuits, percutaneous coronary intervention."
+      ],
+      "case_hooks": [
+        "A patient with new HIT and decompensated cirrhosis needs anticoagulation; select the agent and justify.",
+        "A patient stabilised on fondaparinux for HIT wants outpatient management; plan transition and monitoring."
+      ],
+      "gaps": "Agent-specific dosing, argatroban INR-transition rules, and bivalirudin procedural protocols are not in the retained abstracts; verify against ASH 2018 full guideline and agent monographs before approval.",
+      "sources": [
+        {
+          "pmid": "30482768",
+          "design": "guideline",
+          "year": "2018",
+          "journal": null,
+          "title": "American Society of Hematology 2018 guidelines for management of venous thromboembolism: heparin-induced thrombocytopenia."
+        },
+        {
+          "pmid": "33857342",
+          "design": "meta-analysis",
+          "year": "2021",
+          "journal": null,
+          "title": "Comparative effectiveness and safety of anticoagulants for the treatment of heparin-induced thrombocytopenia."
+        },
+        {
+          "pmid": "33736552",
+          "design": "review",
+          "year": "2021",
+          "journal": null,
+          "title": "Heparin-induced thrombocytopenia: pathophysiology, diagnosis and treatment."
+        },
+        {
+          "pmid": "31233222",
+          "design": "review",
+          "year": "2019",
+          "journal": null,
+          "title": "Potential Role of Direct Oral Anticoagulants in the Management of Heparin-induced Thrombocytopenia."
+        },
+        {
+          "pmid": "41301798",
+          "design": "review",
+          "year": "2025",
+          "journal": null,
+          "title": "Alternative Anticoagulation for Patients with Heparin-Induced Thrombocytopenia on ECMO: A Narrative Review."
+        }
+      ]
+    }
+  },
+  {
+    "no": 792,
+    "topicId": "47498fb6-6a00-401c-8911-2e17b639ba6c",
+    "topic": "Heparin-induced thrombocytopenia: diagnosis and management",
+    "cluster": "HIT diagnosis and management",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 8,
+      "papersKept": [
+        {
+          "uid": "pubmed-39644042",
+          "title": "Practical guide to the diagnosis and management of heparin-induced thrombocytopenia.",
+          "year": "2024"
+        },
+        {
+          "uid": "pubmed-33736552",
+          "title": "Heparin-induced thrombocytopenia: pathophysiology, diagnosis and treatment.",
+          "year": "2021"
+        },
+        {
+          "uid": "pubmed-27230048",
+          "title": "Heparin-Induced Thrombocytopenia: A Comprehensive Clinical Review.",
+          "year": "2016"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-30504360",
+          "title": "Drug-associated thrombocytopenia.",
+          "reason": "General drug-induced thrombocytopenia review; tangential to HIT-specific diagnosis."
+        },
+        {
+          "uid": "pubmed-31443111",
+          "title": "Sepsis-Induced Coagulopathy and Disseminated Intravascular Coagulation.",
+          "reason": "DIC/sepsis coagulopathy is a differential diagnosis, not HIT management content."
+        },
+        {
+          "uid": "pubmed-35642486",
+          "title": "Treatment of drug-induced immune thrombocytopenias.",
+          "reason": "General DITP treatment review; tangential to HIT."
+        },
+        {
+          "uid": "pubmed-27866576",
+          "title": "Thrombocytopenia.",
+          "reason": "General thrombocytopenia review; too broad for this topic."
+        },
+        {
+          "uid": "pubmed-28846826",
+          "title": "Autoimmune heparin-induced thrombocytopenia.",
+          "reason": "Subtype content already covered in the adjacent HIT topic (790) of this pipeline."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "HIT diagnosis is a pre-test-probability discipline: most thrombocytopenia on a heparin ward is not HIT, and unselective testing floods the lab with false positives. Score first (4Ts), stop heparin on suspicion, start a non-heparin anticoagulant while functional and immunologic assays resolve the question, and never let a positive antibody test override an incompatible clinical picture.",
+      "teaching_points": [
+        {
+          "claim": "HIT is an immune reaction to heparin associated with thrombocytopenia, thrombotic risk and high morbidity and mortality; a practical diagnostic and management framework is essential because heparin use and thrombocytopenia are both common in hospital.",
+          "cites": [
+            "39644042"
+          ]
+        },
+        {
+          "claim": "Immune-mediated HIT is an infrequent complication of heparin exposure with potentially fatal thrombotic outcome; prompt suspension of heparin is necessary if HIT is suspected, followed by alternative anticoagulation.",
+          "cites": [
+            "33736552"
+          ]
+        },
+        {
+          "claim": "HIT is a profoundly dangerous, potentially lethal immunologically mediated adverse drug reaction to unfractionated heparin or, less commonly, low-molecular-weight heparin.",
+          "cites": [
+            "27230048"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "The operating characteristics of the 4Ts score across different patient populations, and how to integrate ELISA optical density with functional assay results, are not detailed in the retained abstracts.",
+        "Optimal anticoagulation duration for HIT without thrombosis is not resolved in the retained sources."
+      ],
+      "mcq_angles": [
+        "4Ts pre-test probability: elements and thresholds for testing.",
+        "Immunologic (ELISA) versus functional (SRA, HIPA) assays and their false-positive/false-negative patterns.",
+        "The management reflex sequence: stop heparin, start non-heparin anticoagulant, avoid warfarin alone early.",
+        "UFH versus LMWH risk and typical-onset timing (5-10 days)."
+      ],
+      "case_hooks": [
+        "A post-cardiac-surgery patient has a platelet drop on day 7 with heparin flushes running; score, test, and act.",
+        "An ELISA comes back weakly positive in a patient with a low 4Ts score; decide what the result means and what to do next."
+      ],
+      "gaps": "4Ts scoring detail, assay algorithms, warfarin-transition rules, and anticoagulation durations are not in the retained abstracts; verify against ASH 2018 HIT guidelines before approval.",
+      "sources": [
+        {
+          "pmid": "39644042",
+          "design": "review",
+          "year": "2024",
+          "journal": null,
+          "title": "Practical guide to the diagnosis and management of heparin-induced thrombocytopenia."
+        },
+        {
+          "pmid": "33736552",
+          "design": "review",
+          "year": "2021",
+          "journal": null,
+          "title": "Heparin-induced thrombocytopenia: pathophysiology, diagnosis and treatment."
+        },
+        {
+          "pmid": "27230048",
+          "design": "review",
+          "year": "2016",
+          "journal": null,
+          "title": "Heparin-Induced Thrombocytopenia: A Comprehensive Clinical Review."
+        }
+      ]
+    }
+  },
+  {
+    "no": 793,
+    "topicId": "b6fe4052-2c59-4da8-971e-76a78955a1d6",
+    "topic": "Hepatic encephalopathy recurrence prevention",
+    "cluster": "hepatic encephalopathy",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 8,
+      "papersKept": [
+        {
+          "uid": "pubmed-40378134",
+          "title": "Efficacy and safety of rifaximin in preventing hepatic encephalopathy: A systematic review and meta-analysis.",
+          "year": "2025"
+        },
+        {
+          "uid": "pubmed-30444745",
+          "title": "Long-term management of hepatic encephalopathy with lactulose and/or rifaximin: a review of the evidence.",
+          "year": "2019"
+        },
+        {
+          "uid": "pubmed-35677508",
+          "title": "Encephalopathy in Cirrhosis: Prevention and Management.",
+          "year": "2022"
+        },
+        {
+          "uid": "pubmed-40332628",
+          "title": "Hepatic encephalopathy in cirrhosis: therapies and developments.",
+          "year": "2025"
+        },
+        {
+          "uid": "pubmed-34242619",
+          "title": "Overt Hepatic Encephalopathy: Current Pharmacologic Treatments and Improving Clinical Outcomes.",
+          "year": "2021"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-28392702",
+          "title": "Hepatic encephalopathy: what the multidisciplinary team can do.",
+          "reason": "Care-coordination focus; tangential to recurrence-prevention pharmacology."
+        },
+        {
+          "uid": "pubmed-29705917",
+          "title": "Management of Hepatic Encephalopathy Not Responsive to First-Line Treatments.",
+          "reason": "Refractory-HE escalation niche; tangential to standard secondary prevention."
+        },
+        {
+          "uid": "pubmed-30834114",
+          "title": "Understanding the impact of neurologic complications in patients with cirrhosis.",
+          "reason": "Neurologic-complications overview; tangential to HE prevention."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "After a first episode of overt hepatic encephalopathy, most patients will recur without prevention, and each recurrence worsens prognosis and quality of life. Secondary prevention rests on two drugs with complementary jobs: lactulose, the non-absorbable disaccharide that traps ammonium in the colon, and rifaximin, the poorly absorbed antibiotic added when episodes break through — now supported by meta-analysis as prevention in its own right. Every recurrence should also trigger a search for the precipitant, because most are iatrogenic or gastrointestinal.",
+      "teaching_points": [
+        {
+          "claim": "Rifaximin is recommended for the treatment of hepatic encephalopathy, and a 2025 systematic review and meta-analysis assessed its safety and efficacy for preventing HE in patients with cirrhosis.",
+          "cites": [
+            "40378134"
+          ]
+        },
+        {
+          "claim": "Evidence for long-term (>=6 months) pharmacological management of HE with lactulose and/or rifaximin has been consolidated in a dedicated review, addressing effectiveness and safety/tolerability.",
+          "cites": [
+            "30444745"
+          ]
+        },
+        {
+          "claim": "Hepatic encephalopathy is a major neuropsychiatric complication of cirrhosis ranging from mild confusion to coma, and it is an important cause of recurrent admissions — framing the prevention priority.",
+          "cites": [
+            "35677508"
+          ]
+        },
+        {
+          "claim": "Ammonia is a major neurotoxin implicated in the pathogenesis, progression and severity of HE, with contributions from multiple organs; therapies target ammonia production and handling.",
+          "cites": [
+            "40332628"
+          ]
+        },
+        {
+          "claim": "Overt HE is a generally reversible but prognostically serious complication of cirrhosis, associated with poor hospitalisation- and mortality-related outcomes, which makes improving clinical outcomes through pharmacologic treatment a priority.",
+          "cites": [
+            "34242619"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Whether rifaximin monotherapy prevents first episodes (primary prevention) as effectively as it prevents recurrence is not established in the retained abstracts.",
+        "The comparative effectiveness of lactulose alone versus lactulose plus rifaximin for secondary prevention needs individual-patient interpretation of trial data."
+      ],
+      "mcq_angles": [
+        "Secondary prevention after a first overt episode: lactulose titrated to stool output, plus rifaximin for recurrence.",
+        "Precipitant hunt at every recurrence: infection, GI bleeding, constipation, sedatives, dehydration, TIPS.",
+        "Ammonia-centric pathophysiology and why gut-directed therapies work.",
+        "Covert vs overt HE classification and why covert HE still matters for driving and work."
+      ],
+      "case_hooks": [
+        "A patient hospitalised twice this year with overt HE is on lactulose alone; review the prevention plan.",
+        "A cirrhotic on rifaximin develops breakthrough confusion; hunt the precipitant before escalating therapy."
+      ],
+      "gaps": "Primary-prevention indications, TIPS-specific prophylaxis, and nutritional/ sarcopenia management are not covered by the retained abstracts; verify against AASLD/EASL HE guidance before approval.",
+      "sources": [
+        {
+          "pmid": "40378134",
+          "design": "meta-analysis",
+          "year": "2025",
+          "journal": null,
+          "title": "Efficacy and safety of rifaximin in preventing hepatic encephalopathy: A systematic review and meta-analysis."
+        },
+        {
+          "pmid": "30444745",
+          "design": "review",
+          "year": "2019",
+          "journal": null,
+          "title": "Long-term management of hepatic encephalopathy with lactulose and/or rifaximin: a review of the evidence."
+        },
+        {
+          "pmid": "35677508",
+          "design": "review",
+          "year": "2022",
+          "journal": null,
+          "title": "Encephalopathy in Cirrhosis: Prevention and Management."
+        },
+        {
+          "pmid": "40332628",
+          "design": "review",
+          "year": "2025",
+          "journal": null,
+          "title": "Hepatic encephalopathy in cirrhosis: therapies and developments."
+        },
+        {
+          "pmid": "34242619",
+          "design": "review",
+          "year": "2021",
+          "journal": null,
+          "title": "Overt Hepatic Encephalopathy: Current Pharmacologic Treatments and Improving Clinical Outcomes."
+        }
+      ]
+    }
+  },
+  {
+    "no": 794,
+    "topicId": "88f23d44-e382-4667-8412-3421b517cce1",
+    "topic": "Hepatitis B: natural history, HBeAg, HBsAg, HBV DNA, antiviral indications, tenofovir",
+    "cluster": "hepatitis B serology and antivirals",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 8,
+      "papersKept": [
+        {
+          "uid": "pubmed-28427875",
+          "title": "EASL 2017 Clinical Practice Guidelines on the management of hepatitis B virus infection.",
+          "year": "2017"
+        },
+        {
+          "uid": "pubmed-26566246",
+          "title": "Antiviral therapy for chronic hepatitis B viral infection in adults: A systematic review and meta-analysis.",
+          "year": "2016"
+        },
+        {
+          "uid": "pubmed-35767258",
+          "title": "Risk of Hepatocellular Carcinoma With Tenofovir vs Entecavir Treatment for Chronic Hepatitis B Virus: A Systematic Review and Meta-Analysis.",
+          "year": "2022"
+        },
+        {
+          "uid": "pubmed-30803099",
+          "title": "Can we stop nucleoside analogues before HBsAg loss?",
+          "year": "2019"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-30179565",
+          "title": "Antimicrobial Prophylaxis for Adult Patients With Cancer-Related Immunosuppression: ASCO and IDSA Clinical Practice Guideline Update.",
+          "reason": "Oncology antimicrobial prophylaxis; unrelated to HBV natural history and antivirals."
+        },
+        {
+          "uid": "pubmed-30982722",
+          "title": "Hepatitis B virus infection in children and adolescents.",
+          "reason": "Paediatric population; the topic targets adult natural history and treatment."
+        },
+        {
+          "uid": "pubmed-32805200",
+          "title": "Efficacy and safety of antiviral prophylaxis during pregnancy to prevent mother-to-child transmission of hepatitis B virus: a systematic review and meta-analysis.",
+          "reason": "Peripartum MTCT prophylaxis niche; tangential to serology/antiviral-indication teaching."
+        },
+        {
+          "uid": "pubmed-27262164",
+          "title": "Chronic hepatitis B in children: Therapeutic challenges and perspectives.",
+          "reason": "Paediatric treatment challenges; off population for this topic."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Chronic hepatitis B is a disease of phases, and the serology tells the story: HBeAg and its seroconversion mark the immune-reactive chapter, quantitative HBsAg hints at immune control, and HBV DNA is the number that decides whether treatment is needed. When treatment starts, entecavir or tenofovir suppress the virus durably, but stopping before HBsAg loss is possible only in carefully selected patients — and HCC surveillance continues regardless of viral suppression.",
+      "teaching_points": [
+        {
+          "claim": "HBV infection remains a global public health problem with changing epidemiology due to vaccination policies and migration; the EASL 2017 guideline presents updated recommendations for optimal management.",
+          "cites": [
+            "28427875"
+          ]
+        },
+        {
+          "claim": "Chronic HBV infection remains a significant global health problem, and evidence-based guidelines are needed to determine when treatment should be initiated, which medication is most appropriate, and when it can safely be stopped.",
+          "cites": [
+            "26566246"
+          ]
+        },
+        {
+          "claim": "Meta-analysis addressed whether tenofovir disoproxil fumarate differs from entecavir in reducing hepatocellular carcinoma risk among patients with chronic hepatitis B, where earlier aggregated analyses had yielded conflicting results.",
+          "cites": [
+            "35767258"
+          ]
+        },
+        {
+          "claim": "Most guidelines and existing data suggest nucleos(t)ide analogue therapy may be stopped only in carefully selected chronic hepatitis B patients, and discontinuation decisions remain nuanced even before HBsAg loss.",
+          "cites": [
+            "30803099"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Whether tenofovir truly reduces HCC risk more than entecavir remains contested after meta-analytic effort.",
+        "Functional-cure strategies beyond nucleos(t)ide analogues (interferon, siRNA, capsid assembly modulators) are investigational and not resolved in the retained sources."
+      ],
+      "mcq_angles": [
+        "Serologic phases of chronic HBV and what HBeAg seroconversion means.",
+        "Antiviral indications driven by HBV DNA, ALT and fibrosis stage.",
+        "Entecavir versus tenofovir: potency, resistance barriers, renal/bone considerations.",
+        "HCC surveillance continues even with suppressed viral replication."
+      ],
+      "case_hooks": [
+        "A 42-year-old with HBeAg-positive chronic HBV, ALT 2x ULN and high HBV DNA; apply treatment-indication criteria.",
+        "A patient on tenofovir with undetectable DNA for 5 years asks whether the drug can be stopped; counsel using guideline criteria."
+      ],
+      "gaps": "Quantitative HBsAg interpretation, immune-tolerant phase management, and peginterferon candidacy are not covered by the retained abstracts; verify against the current EASL 2025 HBV guideline before approval.",
+      "sources": [
+        {
+          "pmid": "28427875",
+          "design": "guideline",
+          "year": "2017",
+          "journal": null,
+          "title": "EASL 2017 Clinical Practice Guidelines on the management of hepatitis B virus infection."
+        },
+        {
+          "pmid": "26566246",
+          "design": "meta-analysis",
+          "year": "2016",
+          "journal": null,
+          "title": "Antiviral therapy for chronic hepatitis B viral infection in adults: A systematic review and meta-analysis."
+        },
+        {
+          "pmid": "35767258",
+          "design": "meta-analysis",
+          "year": "2022",
+          "journal": null,
+          "title": "Risk of Hepatocellular Carcinoma With Tenofovir vs Entecavir Treatment for Chronic Hepatitis B Virus: A Systematic Review and Meta-Analysis."
+        },
+        {
+          "pmid": "30803099",
+          "design": "review",
+          "year": "2019",
+          "journal": null,
+          "title": "Can we stop nucleoside analogues before HBsAg loss?"
+        }
+      ]
+    }
+  },
+  {
+    "no": 795,
+    "topicId": "79184fdc-b1d1-4642-8cab-9b3e203cae5f",
+    "topic": "hepatitis b treatment",
+    "cluster": "hepatitis B treatment",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 8,
+      "papersKept": [
+        {
+          "uid": "pubmed-41186418",
+          "title": "AASLD ISDA Practice Guideline on treatment of chronic hepatitis B.",
+          "year": "2026"
+        },
+        {
+          "uid": "pubmed-40348683",
+          "title": "EASL Clinical Practice Guidelines on the management of hepatitis B virus infection.",
+          "year": "2025"
+        },
+        {
+          "uid": "pubmed-41157628",
+          "title": "Interferon-alpha for Immune Modulation in Chronic Hepatitis B Toward Functional Cure.",
+          "year": "2025"
+        },
+        {
+          "uid": "pubmed-39863345",
+          "title": "AGA Clinical Practice Guideline on the Prevention and Treatment of Hepatitis B Virus Reactivation in At-Risk Patients.",
+          "year": "2025"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-34670284",
+          "title": "[Hepatocellular Carcinoma].",
+          "reason": "HCC review; tangential to HBV antiviral treatment."
+        },
+        {
+          "uid": "pubmed-29405329",
+          "title": "Update on prevention, diagnosis, and treatment of chronic hepatitis B: AASLD 2018 hepatitis B guidance.",
+          "reason": "Superseded by the retained 2026 AASLD ISDA practice guideline."
+        },
+        {
+          "uid": "pubmed-28412170",
+          "title": "Lipid Nanoparticle Systems for Enabling Gene Therapies.",
+          "reason": "Drug-delivery technology review; unrelated to clinical HBV treatment."
+        },
+        {
+          "uid": "pubmed-37884736",
+          "title": "Global trends in hepatocellular carcinoma epidemiology: implications for screening, prevention and therapy.",
+          "reason": "HCC epidemiology; tangential to antiviral treatment teaching."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "HBV treatment goals have moved beyond simple viral suppression toward functional cure — HBsAg loss with or without seroconversion. The 2026 AASLD ISDA guideline and the 2025 EASL guideline define current practice: nucleos(t)ide analogues (entecavir, tenofovir) for durable suppression, peginterferon where immune modulation is attractive, and — increasingly — vigilance for reactivation when immunosuppression enters the picture, which the 2025 AGA guideline addresses directly.",
+      "teaching_points": [
+        {
+          "claim": "Accumulating data on prevention, surveillance and treatment of chronic hepatitis B prompted the updated AASLD ISDA practice guideline, developed using the GRADE approach.",
+          "cites": [
+            "41186418"
+          ]
+        },
+        {
+          "claim": "The updated EASL guidelines provide comprehensive evidence-based recommendations spanning ten thematic sections, addressing diagnostics, treatment goals and management of HBV infection.",
+          "cites": [
+            "40348683"
+          ]
+        },
+        {
+          "claim": "Chronic hepatitis B persists as a major global health challenge due to covalently closed circular DNA (cccDNA) persistence and impaired host immunity; interferon-alpha both directly restricts HBV and modulates immunity toward functional cure.",
+          "cites": [
+            "41157628"
+          ]
+        },
+        {
+          "claim": "HBV reactivation can occur with a variety of immune-modulating exposures; antiviral prophylaxis is effective, and in select cases monitoring without prophylaxis is appropriate, per the AGA guideline.",
+          "cites": [
+            "39863345"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Functional-cure rates achievable with current agents remain modest, and combination strategies are investigational.",
+        "Whether finite-duration therapy can replace indefinite nucleos(t)ide analogue treatment outside carefully selected groups is not resolved."
+      ],
+      "mcq_angles": [
+        "Treatment goals: suppression versus functional cure (HBsAg loss).",
+        "First-line agents (entecavir, tenofovir alafenamide/disoproxil) and resistance barriers.",
+        "HBV reactivation risk with chemotherapy and biologics; screening and prophylaxis before immunosuppression.",
+        "Peginterferon candidacy and its immune-modulating rationale."
+      ],
+      "case_hooks": [
+        "A patient with chronic HBV is about to start rituximab for lymphoma; assess reactivation risk and prophylaxis.",
+        "A young woman with high-level HBV replication asks about 'cure'; explain functional cure versus suppression."
+      ],
+      "gaps": "Specific treatment-indication thresholds, monitoring schedules, and finite-therapy trial data are not in the retained abstracts; verify against the AASLD ISDA 2026 and EASL 2025 full guidelines before approval.",
+      "sources": [
+        {
+          "pmid": "41186418",
+          "design": "guideline",
+          "year": "2026",
+          "journal": null,
+          "title": "AASLD ISDA Practice Guideline on treatment of chronic hepatitis B."
+        },
+        {
+          "pmid": "40348683",
+          "design": "guideline",
+          "year": "2025",
+          "journal": null,
+          "title": "EASL Clinical Practice Guidelines on the management of hepatitis B virus infection."
+        },
+        {
+          "pmid": "41157628",
+          "design": "review",
+          "year": "2025",
+          "journal": null,
+          "title": "Interferon-alpha for Immune Modulation in Chronic Hepatitis B Toward Functional Cure."
+        },
+        {
+          "pmid": "39863345",
+          "design": "guideline",
+          "year": "2025",
+          "journal": null,
+          "title": "AGA Clinical Practice Guideline on the Prevention and Treatment of Hepatitis B Virus Reactivation in At-Risk Patients."
+        }
+      ]
+    }
+  },
+  {
+    "no": 796,
+    "topicId": "26e6b893-823e-4441-ae0d-802a55245824",
+    "topic": "Hepatitis C: DAA therapy, pangenotypic regimens, SVR12, HCV cure, screening",
+    "cluster": "hepatitis C DAA therapy",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 15,
+      "papersKept": [
+        {
+          "uid": "pubmed-31922124",
+          "title": "Pangenotypic direct acting antivirals for the treatment of chronic hepatitis C virus infection: A systematic review and meta-analysis.",
+          "year": "2020"
+        },
+        {
+          "uid": "pubmed-30506705",
+          "title": "Evolution of efficacious pangenotypic hepatitis C virus therapies.",
+          "year": "2019"
+        },
+        {
+          "uid": "pubmed-39361017",
+          "title": "Prevalence of Drug Resistance Associated Substitutions in Persons With Chronic Hepatitis C Infection and Response to Direct-Acting Antivirals: A Systematic Review and Meta-Analysis.",
+          "year": "2024"
+        },
+        {
+          "uid": "pubmed-33610022",
+          "title": "Epidemiology of hepatitis C virus infection.",
+          "year": "2021"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-31631857",
+          "title": "Hepatitis C.",
+          "reason": "Duplicate epidemiology coverage already provided by the retained 2021 review (33610022)."
+        },
+        {
+          "uid": "pubmed-36800699",
+          "title": "Acute hepatitis C virus infection: clinical update and remaining challenges.",
+          "reason": "Acute-infection niche; tangential to chronic DAA therapy and cure."
+        },
+        {
+          "uid": "pubmed-33917830",
+          "title": "Hepatitis C: A Pharmacological Therapeutic Update.",
+          "reason": "Duplicate DAA therapeutic coverage already provided by retained pangenotypic reviews."
+        },
+        {
+          "uid": "pubmed-41127976",
+          "title": "Glecaprevir/Pibrentasvir Versus Sofosbuvir/Velpatasvir for Hepatitis C Virus Genotype 6: A Systematic Review and Meta-Analysis.",
+          "reason": "Single-genotype (GT6) comparison; tangential to pangenotypic curriculum content."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Hepatitis C went from a chronic, often silent killer to a curable infection in under a decade: pangenotypic direct-acting antiviral combinations (sofosbuvir/velpatasvir, glecaprevir/pibrentasvir) deliver sustained virological response — SVR12, the practical definition of cure — in the overwhelming majority of patients, regardless of genotype. The remaining challenges are systems challenges: finding the undiagnosed (screening) and managing the 2-12% who fail therapy, where resistance-associated substitutions guide retreatment.",
+      "teaching_points": [
+        {
+          "claim": "The approval and adoption of pangenotypic direct-acting antivirals necessitated revision of the 2015 WHO guidelines for managing HCV infection, and systematic-review evidence supports their use.",
+          "cites": [
+            "31922124"
+          ]
+        },
+        {
+          "claim": "HCV therapeutic regimens have undergone rapid advancement over the last decade, with structure-based drug design producing increasingly efficacious pangenotypic therapies.",
+          "cites": [
+            "30506705"
+          ]
+        },
+        {
+          "claim": "Virological failure occurs in 2%-12% of persons receiving curative DAA treatment and may be presaged by drug resistance-associated substitutions, whose prevalence and impact on retreatment have been quantified in meta-analysis.",
+          "cites": [
+            "39361017"
+          ]
+        },
+        {
+          "claim": "An estimated 71.1 million individuals are chronically infected with HCV worldwide (about 1% of the population), with transmission most commonly associated with blood exposure — the population screening must reach.",
+          "cites": [
+            "33610022"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Optimal screening strategies (birth-cohort versus risk-based versus universal) vary by prevalence setting and are not settled in the retained sources.",
+        "Retreatment regimens after DAA failure, guided by resistance testing, are evolving and not detailed in the retained abstracts."
+      ],
+      "mcq_angles": [
+        "SVR12 as the definition of cure and its clinical implications.",
+        "Pangenotypic regimens and why genotyping has become optional.",
+        "Resistance-associated substitutions: prevalence and when to test.",
+        "Who to screen: risk groups, birth cohorts, one-time adult screening."
+      ],
+      "case_hooks": [
+        "A 55-year-old with abnormal LFTs and a remote injecting-drug history tests HCV-antibody positive; walk from screening to cure.",
+        "A patient relapses after sofosbuvir/velpatasvir; interpret the role of resistance testing in retreatment."
+      ],
+      "gaps": "Specific regimen choice by fibrosis stage, drug-drug interaction management, and perinatal/transmission-prevention counselling are not covered by the retained abstracts; verify against EASL/AASLD HCV guidance before approval.",
+      "sources": [
+        {
+          "pmid": "31922124",
+          "design": "article",
+          "year": "2020",
+          "journal": null,
+          "title": "Pangenotypic direct acting antivirals for the treatment of chronic hepatitis C virus infection: A systematic review and meta-analysis."
+        },
+        {
+          "pmid": "30506705",
+          "design": "review",
+          "year": "2019",
+          "journal": null,
+          "title": "Evolution of efficacious pangenotypic hepatitis C virus therapies."
+        },
+        {
+          "pmid": "39361017",
+          "design": "meta-analysis",
+          "year": "2024",
+          "journal": null,
+          "title": "Prevalence of Drug Resistance Associated Substitutions in Persons With Chronic Hepatitis C Infection and Response to Direct-Acting Antivirals: A Systematic Review and Meta-Analysis."
+        },
+        {
+          "pmid": "33610022",
+          "design": "review",
+          "year": "2021",
+          "journal": null,
+          "title": "Epidemiology of hepatitis C virus infection."
+        }
+      ]
+    }
+  },
+  {
+    "no": 797,
+    "topicId": "97c37d05-3d79-400b-8147-9c0d60106776",
+    "topic": "hepatitis c treatment",
+    "cluster": "hepatitis C treatment",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 15,
+      "papersKept": [
+        {
+          "uid": "pubmed-32956768",
+          "title": "EASL recommendations on treatment of hepatitis C: Final update of the series.",
+          "year": "2020"
+        },
+        {
+          "uid": "pubmed-29751875",
+          "title": "Chronic Hepatitis C and Direct Acting Antivirals.",
+          "year": "2018"
+        },
+        {
+          "uid": "pubmed-27530469",
+          "title": "Managing drug-drug interactions with new direct-acting antiviral agents in chronic hepatitis C.",
+          "year": "2017"
+        },
+        {
+          "uid": "pubmed-31033122",
+          "title": "Efficacy and safety of direct-acting antivirals for hepatitis C in the elderly: A systematic review and meta-analysis.",
+          "year": "2019"
+        },
+        {
+          "uid": "pubmed-32875681",
+          "title": "Impact of liver-stiffness measurement on hepatocellular carcinoma development in chronic hepatitis C patients treated with direct-acting antivirals.",
+          "year": "2021"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-37916482",
+          "title": "Cryoglobulinemic vasculitis: a 2023 update.",
+          "reason": "Extrahepatic vasculitis; tangential to HCV treatment itself."
+        },
+        {
+          "uid": "pubmed-38235776",
+          "title": "[Not Available].",
+          "reason": "Paediatric DAA treatment review; off population for general treatment teaching."
+        },
+        {
+          "uid": "pubmed-31513710",
+          "title": "Efficacy of Direct-acting Antivirals for Chronic Hepatitis C Virus Infection in People Who Inject Drugs or on Opiioid Substitution Therapy: A Systematic Review and Meta-analysis.",
+          "reason": "PWID/OST subpopulation efficacy focus; tangential to general treatment workflow."
+        },
+        {
+          "uid": "pubmed-32809230",
+          "title": "Systematic review with meta-analysis: the efficacy and safety of direct-acting antivirals in children and adolescents.",
+          "reason": "Paediatric population; off scope for this topic."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Treating hepatitis C is now a straightforward clinical act with outsized benefit: a short oral DAA course cures the infection, prevents cirrhosis and hepatocellular carcinoma, and works even in patients once considered difficult-to-treat, including the elderly. The EASL recommendations anchor regimen choice; the practical craft is checking drug-drug interactions, staging fibrosis (which governs HCC surveillance after cure), and linking the patient into treatment.",
+      "teaching_points": [
+        {
+          "claim": "HCV infection is a major cause of chronic liver disease with approximately 71 million chronically infected individuals worldwide, and clinical care has advanced considerably thanks to enhanced treatment options, per the EASL recommendations.",
+          "cites": [
+            "32956768"
+          ]
+        },
+        {
+          "claim": "HCV is the most common blood-borne infection in the United States and the most common cause of end-stage liver disease requiring liver transplant; over the last decade direct-acting antivirals have revolutionised treatment.",
+          "cites": [
+            "29751875"
+          ]
+        },
+        {
+          "claim": "Each DAA has its own metabolism and drug-drug interactions, and managing DDIs is a practical challenge in DAA prescribing.",
+          "cites": [
+            "27530469"
+          ]
+        },
+        {
+          "claim": "Meta-analysis confirms high efficacy and safety of DAAs in elderly patients — a group previously considered difficult to treat.",
+          "cites": [
+            "31033122"
+          ]
+        },
+        {
+          "claim": "Patients with chronic HCV treated with DAAs remain at risk for hepatocellular carcinoma even after achieving sustained virologic response, and liver-stiffness measurement helps stratify that risk.",
+          "cites": [
+            "32875681"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Optimal HCC surveillance intervals after SVR in patients with advanced fibrosis are not standardised in the retained sources.",
+        "Treatment of acute HCV and perinatal infection remains less codified than chronic-treatment pathways."
+      ],
+      "mcq_angles": [
+        "The treatment pathway: confirm chronic infection, stage fibrosis, check DDIs, treat, confirm SVR12.",
+        "High-priority DDI examples (acid-reducing agents with ledipasvir, amiodarone with sofosbuvir).",
+        "Why elderly and previously 'difficult-to-treat' patients are now routine DAA candidates.",
+        "Post-SVR HCC risk stratification with liver stiffness."
+      ],
+      "case_hooks": [
+        "A 78-year-old with HCV cirrhosis and multiple comedications is referred for treatment; assess candidacy and interactions.",
+        "A patient achieves SVR12 but has LSM 18 kPa; plan surveillance and counselling."
+      ],
+      "gaps": "Regimen tables by genotype/fibrosis stage, ribavirin-sparing strategies, and decompensated-cirrhosis treatment are not in the retained abstracts; verify against the EASL full update before approval.",
+      "sources": [
+        {
+          "pmid": "32956768",
+          "design": "guideline",
+          "year": "2020",
+          "journal": null,
+          "title": "EASL recommendations on treatment of hepatitis C: Final update of the series."
+        },
+        {
+          "pmid": "29751875",
+          "design": "review",
+          "year": "2018",
+          "journal": null,
+          "title": "Chronic Hepatitis C and Direct Acting Antivirals."
+        },
+        {
+          "pmid": "27530469",
+          "design": "review",
+          "year": "2017",
+          "journal": null,
+          "title": "Managing drug-drug interactions with new direct-acting antiviral agents in chronic hepatitis C."
+        },
+        {
+          "pmid": "31033122",
+          "design": "meta-analysis",
+          "year": "2019",
+          "journal": null,
+          "title": "Efficacy and safety of direct-acting antivirals for hepatitis C in the elderly: A systematic review and meta-analysis."
+        },
+        {
+          "pmid": "32875681",
+          "design": "meta-analysis",
+          "year": "2021",
+          "journal": null,
+          "title": "Impact of liver-stiffness measurement on hepatocellular carcinoma development in chronic hepatitis C patients treated with direct-acting antivirals."
+        }
+      ]
+    }
+  },
+  {
+    "no": 798,
+    "topicId": "f8e37412-2679-4093-b595-9839a87f0db4",
+    "topic": "Hepatitis C virus direct-acting antiviral therapy",
+    "cluster": "HCV DAA therapy",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 8,
+      "papersKept": [
+        {
+          "uid": "pubmed-37741678",
+          "title": "Hepatitis C.",
+          "year": "2023"
+        },
+        {
+          "uid": "pubmed-40971900",
+          "title": "State-of-the-Art Review: Hepatitis C.",
+          "year": "2025"
+        },
+        {
+          "uid": "pubmed-36825358",
+          "title": "Global treatment rate and barriers to direct-acting antiviral therapy: A systematic review and meta-analysis.",
+          "year": "2023"
+        },
+        {
+          "uid": "pubmed-35357774",
+          "title": "Efficacy and safety of direct-acting antiviral therapy for hepatitis C virus in elderly patients (>=60): A meta-analysis.",
+          "year": "2022"
+        },
+        {
+          "uid": "pubmed-31096005",
+          "title": "Sustained virologic response to direct-acting antiviral therapy in patients with chronic hepatitis C and hepatocellular carcinoma.",
+          "year": "2019"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-38235776",
+          "title": "[Not Available].",
+          "reason": "Paediatric DAA review; off population for this topic."
+        },
+        {
+          "uid": "pubmed-36800699",
+          "title": "Acute hepatitis C virus infection: clinical update and remaining challenges.",
+          "reason": "Acute-infection niche; tangential to chronic DAA therapy."
+        },
+        {
+          "uid": "pubmed-39452713",
+          "title": "Hepatitis C Virus Infection in Europe.",
+          "reason": "Regional epidemiology; tangential to DAA therapy evidence."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Direct-acting antivirals target specific HCV proteins — NS3/4A protease, NS5A, NS5B polymerase — and combining agents from different classes produced the cure rates that define modern hepatology. This page focuses on the therapy itself: how DAAs transformed the natural history, how well they work in special populations (the elderly, patients with HCC), and the uncomfortable gap between efficacy and delivery, since global treatment rates remain far below need.",
+      "teaching_points": [
+        {
+          "claim": "HCV is a hepatotropic RNA virus causing progressive liver damage resulting in cirrhosis, decompensated liver disease and hepatocellular carcinoma; WHO called for HCV elimination in 2016, made conceivable by DAA therapy.",
+          "cites": [
+            "37741678"
+          ]
+        },
+        {
+          "claim": "HCV remains a major cause of chronic liver disease and premature mortality worldwide, and WHO and the US Department of Health and Human Services have committed to eliminating HCV as a public health problem.",
+          "cites": [
+            "40971900"
+          ]
+        },
+        {
+          "claim": "A systematic review and meta-analysis quantified global DAA treatment rates and identified barriers to treatment in the DAA era, showing efficacy has not translated into universal access.",
+          "cites": [
+            "36825358"
+          ]
+        },
+        {
+          "claim": "Meta-analysis of patients aged 60 and older confirms DAA efficacy and safety in elderly HCV patients.",
+          "cites": [
+            "35357774"
+          ]
+        },
+        {
+          "claim": "The effect of hepatocellular carcinoma on response to interferon-free DAA therapy in chronic HCV has been evaluated in systematic review and meta-analysis, informing treatment of patients with HCC history.",
+          "cites": [
+            "31096005"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Whether DAAs should be given before or after HCC treatment, and their impact on HCC recurrence, remain debated and are not resolved in the retained sources.",
+        "Barriers to DAA access (cost, infrastructure, stigma) persist despite high efficacy, and solutions vary by health system."
+      ],
+      "mcq_angles": [
+        "DAA targets: NS3/4A protease inhibitors, NS5A inhibitors, NS5B polymerase inhibitors and why they are combined.",
+        "Treatment access gap: efficacy versus global treatment rates.",
+        "DAAs in special populations: elderly, prior HCC, advanced fibrosis.",
+        "HCV elimination targets and the role of treatment-as-prevention."
+      ],
+      "case_hooks": [
+        "A national programme has cure rates >95% but treatment coverage of 20%; discuss barriers and system fixes.",
+        "A patient with successfully treated early HCC has detectable HCV; discuss DAA timing and counselling."
+      ],
+      "gaps": "Specific combination regimens, treatment duration by cirrhosis status, and HCC-recurrence evidence are not in the retained abstracts; verify against EASL/AASLD guidance before approval.",
+      "sources": [
+        {
+          "pmid": "37741678",
+          "design": "review",
+          "year": "2023",
+          "journal": null,
+          "title": "Hepatitis C."
+        },
+        {
+          "pmid": "40971900",
+          "design": "review",
+          "year": "2025",
+          "journal": null,
+          "title": "State-of-the-Art Review: Hepatitis C."
+        },
+        {
+          "pmid": "36825358",
+          "design": "meta-analysis",
+          "year": "2023",
+          "journal": null,
+          "title": "Global treatment rate and barriers to direct-acting antiviral therapy: A systematic review and meta-analysis."
+        },
+        {
+          "pmid": "35357774",
+          "design": "meta-analysis",
+          "year": "2022",
+          "journal": null,
+          "title": "Efficacy and safety of direct-acting antiviral therapy for hepatitis C virus in elderly patients (>=60): A meta-analysis."
+        },
+        {
+          "pmid": "31096005",
+          "design": "meta-analysis",
+          "year": "2019",
+          "journal": null,
+          "title": "Sustained virologic response to direct-acting antiviral therapy in patients with chronic hepatitis C and hepatocellular carcinoma."
+        }
+      ]
+    }
+  },
+  {
+    "no": 799,
+    "topicId": "25c9ce73-cb4a-49c1-9465-601aeeef7b05",
+    "topic": "Hepatitis D: superinfection vs coinfection, severity, peginterferon, bulevirtide",
+    "cluster": "hepatitis D",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 8,
+      "papersKept": [
+        {
+          "uid": "pubmed-31266627",
+          "title": "HBV/HDV Coinfection: A Challenge for Therapeutics.",
+          "year": "2019"
+        },
+        {
+          "uid": "pubmed-40668572",
+          "title": "Comparative Efficacy of Treatment Regimens for Chronic Hepatitis D Virus Infection: A Systematic Review and Meta-Analysis.",
+          "year": "2025"
+        },
+        {
+          "uid": "pubmed-41134660",
+          "title": "Current evidence of bulevirtide as monotherapy compared to combination treatment with pegylated interferon.",
+          "year": "2025"
+        },
+        {
+          "uid": "pubmed-35028672",
+          "title": "[Bulevirtide as the first specific agent against hepatitis D virus infections-mechanism and clinical].",
+          "year": "2022"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-35748639",
+          "title": "Treatment of hepatitis delta and HIV infection.",
+          "reason": "HIV-coinfection niche; tangential to general HDV treatment."
+        },
+        {
+          "uid": "pubmed-40575639",
+          "title": "Advances in treatment of hepatitis delta virus infection: Update on novel investigational drugs.",
+          "reason": "Investigational-pipeline coverage; overlaps retained bulevirtide evidence."
+        },
+        {
+          "uid": "pubmed-42057812",
+          "title": "Comparative Efficacy of Bulevirtide, Interferons, and Nucleos(t)ide Analogs for Chronic Hepatitis Delta.",
+          "reason": "Duplicate comparative-efficacy coverage already provided by the retained 2025 meta-analysis (40668572)."
+        },
+        {
+          "uid": "pubmed-40008233",
+          "title": "Current and future therapeutic options for chronic hepatitis D virus infection.",
+          "reason": "Duplicate therapeutic-options coverage; tangential to the comparative focus retained."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Hepatitis D is the defective satellite virus that only exists alongside hepatitis B — it needs HBsAg to enter and propagate — and it converts a manageable HBV infection into the most severe form of human viral hepatitis. The clinical fork is coinfection (HDV and HBV acquired together, often transient) versus superinfection (HDV landing on established chronic HBV, which usually becomes chronic and aggressive). Treatment was peginterferon for three decades with minority response rates; bulevirtide, the first-in-class entry inhibitor, has finally given the field an approved targeted drug.",
+      "teaching_points": [
+        {
+          "claim": "Chronic hepatitis D results from infection with HBV and HDV, and is the most severe form of human viral hepatitis; current treatment options consist of interferon alfa, effective only in a minority of patients.",
+          "cites": [
+            "31266627"
+          ]
+        },
+        {
+          "claim": "Chronic hepatitis D results from infection with both HBV and HDV together, and it is the most severe form of human viral hepatitis — which is why HDV screening matters in every patient with chronic HBV.",
+          "cites": [
+            "31266627"
+          ]
+        },
+        {
+          "claim": "Pegylated interferon-alpha treatment of chronic HDV gives variable and often poor responses; bulevirtide was recently approved with promising results, and meta-analysis now compares regimens comparatively.",
+          "cites": [
+            "40668572"
+          ]
+        },
+        {
+          "claim": "Bulevirtide, a first-in-class entry inhibitor, is the first drug formally approved for chronic hepatitis delta, whereas pegylated interferon has been used off-label since the 1990s; current evidence compares bulevirtide monotherapy with combination treatment.",
+          "cites": [
+            "41134660"
+          ]
+        },
+        {
+          "claim": "Blocking cell entry is a suitable therapeutic approach, and bulevirtide works by inhibiting the bile-acid transporter NTCP that HDV uses for hepatocyte entry.",
+          "cites": [
+            "35028672"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Optimal duration of bulevirtide therapy and durability of response after stopping are not settled in the retained sources.",
+        "Whether combination bulevirtide plus peginterferon outperforms either alone needs head-to-head confirmation beyond current evidence."
+      ],
+      "mcq_angles": [
+        "Coinfection versus superinfection: clinical course and chronicity risk.",
+        "Why HDV requires HBV (HBsAg dependence).",
+        "Peginterferon limitations: response in a minority, off-label status.",
+        "Bulevirtide: NTCP entry-inhibitor mechanism and approved status."
+      ],
+      "case_hooks": [
+        "A patient with chronic HBV deteriorates rapidly with rising ALT; test for HDV superinfection and discuss implications.",
+        "An exam question compares coinfection and superinfection outcomes; justify the prognosis difference."
+      ],
+      "gaps": "EASL HDV guideline treatment algorithms, HDV RNA monitoring endpoints, and liver-transplantation indications are not in the retained abstracts; verify against current EASL HDV guidance before approval.",
+      "sources": [
+        {
+          "pmid": "31266627",
+          "design": "review",
+          "year": "2019",
+          "journal": null,
+          "title": "HBV/HDV Coinfection: A Challenge for Therapeutics."
+        },
+        {
+          "pmid": "40668572",
+          "design": "meta-analysis",
+          "year": "2025",
+          "journal": null,
+          "title": "Comparative Efficacy of Treatment Regimens for Chronic Hepatitis D Virus Infection: A Systematic Review and Meta-Analysis."
+        },
+        {
+          "pmid": "41134660",
+          "design": "review",
+          "year": "2025",
+          "journal": null,
+          "title": "Current evidence of bulevirtide as monotherapy compared to combination treatment with pegylated interferon."
+        },
+        {
+          "pmid": "35028672",
+          "design": "review",
+          "year": "2022",
+          "journal": null,
+          "title": "[Bulevirtide as the first specific agent against hepatitis D virus infections-mechanism and clinical]."
+        }
+      ]
+    }
+  },
+  {
+    "no": 800,
+    "topicId": "7bb39aaf-c94b-4afa-88e7-a4cb663c17d0",
+    "topic": "hepatitis management",
+    "cluster": "viral hepatitis management",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 8,
+      "papersKept": [
+        {
+          "uid": "pubmed-40247447",
+          "title": "Viral Hepatitis.",
+          "year": "2025"
+        },
+        {
+          "uid": "pubmed-40348683",
+          "title": "EASL Clinical Practice Guidelines on the management of hepatitis B virus infection.",
+          "year": "2025"
+        },
+        {
+          "uid": "pubmed-35180382",
+          "title": "Global change in hepatitis C virus prevalence and cascade of care between 2015 and 2020: a modelling study.",
+          "year": "2022"
+        },
+        {
+          "uid": "pubmed-39863345",
+          "title": "AGA Clinical Practice Guideline on the Prevention and Treatment of Hepatitis B Virus Reactivation in At-Risk Patients.",
+          "year": "2025"
+        },
+        {
+          "uid": "pubmed-38793606",
+          "title": "Hepatitis B Virus Infection: A Mini Review.",
+          "year": "2024"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-30496122",
+          "title": "Chronic hepatitis B virus infection.",
+          "reason": "Duplicate HBV overview coverage superseded by retained newer sources."
+        },
+        {
+          "uid": "pubmed-34913875",
+          "title": "Hepatitis B Virus Infection and Extra-Hepatic Manifestations: A Systemic Disease.",
+          "reason": "Extrahepatic-manifestations focus; tangential to general management."
+        },
+        {
+          "uid": "pubmed-28427875",
+          "title": "EASL 2017 Clinical Practice Guidelines on the management of hepatitis B virus infection.",
+          "reason": "Superseded by the retained EASL 2025 guideline."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Viral hepatitis spans five viruses with five different stories: A and E, transmitted faeco-orally and usually self-limiting; B and C, blood-borne chronic infections that drive cirrhosis and hepatocellular carcinoma; and D, the HBV-dependent satellite with the worst prognosis. Modern management is a cascade-of-care problem — prevent (vaccination), test, link to treatment, suppress or cure, and monitor for reactivation and cancer — and the metrics that matter are how well each health system moves patients through that cascade.",
+      "teaching_points": [
+        {
+          "claim": "Five hepatitis virus types (A, B, C, D, E) have distinct transmission, prognosis and management: HAV, spread faeco-orally, is typically self-limiting with supportive therapy, while HBV, HCV and HDV drive chronic liver disease.",
+          "cites": [
+            "40247447"
+          ]
+        },
+        {
+          "claim": "The updated EASL guidelines provide comprehensive evidence-based recommendations for HBV management across ten thematic sections, addressing diagnostics, treatment goals and more.",
+          "cites": [
+            "40348683"
+          ]
+        },
+        {
+          "claim": "Modelling of global HCV prevalence and cascade of care between 2015 and 2020 shows many countries were progressing toward elimination targets before the COVID-19 pandemic — measuring the cascade, not just prevalence, is how management is judged.",
+          "cites": [
+            "35180382"
+          ]
+        },
+        {
+          "claim": "HBV reactivation can follow diverse immune-modulating exposures; antiviral prophylaxis is effective, and select patients can be monitored without prophylaxis, per the AGA guideline.",
+          "cites": [
+            "39863345"
+          ]
+        },
+        {
+          "claim": "HBV and HCV are the leading causes of end-stage liver disease worldwide; despite a potent HBV vaccine, many new infections occur annually where vaccination coverage is weak.",
+          "cites": [
+            "38793606"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Elimination targets (WHO 2030) remain ambitious; modelling shows progress is fragile and system-dependent.",
+        "Integration of hepatitis services with primary care and harm-reduction programmes is uneven and not standardised in the retained sources."
+      ],
+      "mcq_angles": [
+        "Transmission routes and typical courses of HAV, HBV, HCV, HDV, HEV.",
+        "The cascade of care: prevention, testing, linkage, treatment, surveillance.",
+        "HBV reactivation prevention before immunosuppression.",
+        "Global elimination targets and what 'elimination' actually means epidemiologically."
+      ],
+      "case_hooks": [
+        "A traveller returns with acute hepatitis A; outline management and distinguish it from chronic viral hepatitis.",
+        "A health system reviews its hepatitis cascade of care; identify where patients are lost and what to measure."
+      ],
+      "gaps": "HEV management in pregnancy/immunosuppression, hepatitis A vaccination schedules, and antiviral regimen tables are not covered by the retained abstracts; verify against EASL/WHO guidance before approval.",
+      "sources": [
+        {
+          "pmid": "40247447",
+          "design": "review",
+          "year": "2025",
+          "journal": null,
+          "title": "Viral Hepatitis."
+        },
+        {
+          "pmid": "40348683",
+          "design": "guideline",
+          "year": "2025",
+          "journal": null,
+          "title": "EASL Clinical Practice Guidelines on the management of hepatitis B virus infection."
+        },
+        {
+          "pmid": "35180382",
+          "design": "review",
+          "year": "2022",
+          "journal": null,
+          "title": "Global change in hepatitis C virus prevalence and cascade of care between 2015 and 2020: a modelling study."
+        },
+        {
+          "pmid": "39863345",
+          "design": "guideline",
+          "year": "2025",
+          "journal": null,
+          "title": "AGA Clinical Practice Guideline on the Prevention and Treatment of Hepatitis B Virus Reactivation in At-Risk Patients."
+        },
+        {
+          "pmid": "38793606",
+          "design": "review",
+          "year": "2024",
+          "journal": null,
+          "title": "Hepatitis B Virus Infection: A Mini Review."
+        }
+      ]
+    }
+  }
+]

@@ -1,0 +1,1019 @@
+[
+  {
+    "no": 881,
+    "topicId": "77bc8c1a-a626-4abc-ba17-2900b1771c4c",
+    "topic": "Hyperthyroidism: Graves disease vs toxic nodular goitre, TSH receptor antibodies",
+    "cluster": "thyrotoxicosis aetiology",
+    "status": "published",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 8,
+      "papersKept": [
+        {
+          "uid": "pubmed-27521067",
+          "title": "2016 American Thyroid Association Guidelines for Diagnosis and Management of Hyperthyroidism and Other Causes of Thyrotoxicosis.",
+          "year": "2017"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-37847271",
+          "title": "Hyperthyroidism: A Review.",
+          "reason": "Retained under topic 880 to avoid duplication."
+        },
+        {
+          "uid": "pubmed-36848916",
+          "title": "Hyperthyroidism: aetiology, pathogenesis, diagnosis, management.",
+          "reason": "Retained under topic 880 to avoid duplication."
+        },
+        {
+          "uid": "pubmed-38278171",
+          "title": "Hyperthyroidism.",
+          "reason": "Retained under topic 880 to avoid duplication."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Separating Graves' disease from toxic nodular goitre is the pivotal fork in thyrotoxicosis management, and the ATA guideline supplies the algorithm. Both share suppressed TSH and elevated hormones; they diverge on TRAb — positive in Graves', negative in nodular disease — and on the radionuclide uptake scan, which shows diffuse uptake in Graves' versus patchy or focal uptake in toxic nodular goitre. The distinction is not academic: Graves' warrants consideration of antithyroid drugs as first-line with thionamide complications in view, while toxic nodular goitre virtually never remits on drugs and heads toward radioiodine or surgery.",
+      "teaching_points": [
+        {
+          "claim": "The ATA guideline describes evidence-based diagnosis and management of hyperthyroidism and other causes of thyrotoxicosis, where appropriate treatment requires accurate diagnosis and is influenced by comorbidity and patient preference.",
+          "cites": [
+            "27521067"
+          ]
+        },
+        {
+          "claim": "Thyroid-stimulating hormone receptor antibodies (TRAb / TSI) demonstrate >97-99% sensitivity and specificity for diagnosing Graves' disease, distinguishing it from toxic nodular goitre and destructive thyroiditis without radioiodine uptake scans.",
+          "cites": [
+            "27521067"
+          ]
+        },
+        {
+          "claim": "Toxic multinodular goitre and solitary toxic adenoma are caused by activating TSH-receptor somatic mutations; unlike Graves' disease, they never remit spontaneously and require definitive therapy (radioactive iodine or surgical resection).",
+          "cites": [
+            "27521067"
+          ]
+        },
+        {
+          "claim": "First-line antithyroid drug therapy for Graves' disease is methimazole (MMI), except during the first trimester of pregnancy or in thyroid storm where propylthiouracil (PTU) is preferred due to MMI-associated embryopathy.",
+          "cites": [
+            "27521067"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "TRAb-negative thyrotoxicosis sometimes needs imaging to resolve the aetiology, and uptake scans are contraindicated in pregnancy.",
+        "Whether Graves' first-line should be thionamides or radioiodine varies by guideline, geography and patient factors."
+      ],
+      "mcq_angles": [
+        "TRAb testing as the first-line differentiator.",
+        "Uptake-scan patterns: diffuse (Graves') versus focal (toxic nodular).",
+        "Thyroid orbitopathy as a Graves'-specific clinical marker.",
+        "Treatment-path divergence between the two aetiologies."
+      ],
+      "case_hooks": [
+        "A thyrotoxic patient is TRAb-positive with orbitopathy; confirm the aetiology and outline management.",
+        "A TRAb-negative patient has a palpable multinodular goitre; plan the uptake scan and its interpretation."
+      ],
+      "gaps": "THIN EVIDENCE BASE (1 source): specific TRAb thresholds, scan contraindications and pregnancy-specific pathways are not covered. Cross-check topic 880 and verify against the full ATA guideline before approval.",
+      "sources": [
+        {
+          "pmid": "27521067",
+          "design": "guideline",
+          "year": "2017",
+          "journal": null,
+          "title": "2016 American Thyroid Association Guidelines for Diagnosis and Management of Hyperthyroidism and Other Causes of Thyrotoxicosis."
+        }
+      ]
+    },
+    "publishedAt": "2026-10-20T09:15:42.585498+00:00"
+  },
+  {
+    "no": 882,
+    "topicId": "30153238-c897-4193-abe9-25e629ed34a6",
+    "topic": "Hypertriglyceridaemia: pancreatitis risk threshold, fibrates, omega-3, dietary management",
+    "cluster": "hypertriglyceridemia",
+    "status": "published",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 8,
+      "papersKept": [
+        {
+          "uid": "pubmed-33027225",
+          "title": "Hypertriglyceridemia: new approaches in management and treatment.",
+          "year": "2021"
+        },
+        {
+          "uid": "pubmed-39964788",
+          "title": "Emerging agents targeting triglycerides.",
+          "year": "2024"
+        },
+        {
+          "uid": "pubmed-41012446",
+          "title": "Emerging triglyceride-rich lipoprotein targeted therapies.",
+          "year": "2024"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-35081380",
+          "title": "Hypertriglyceridemia-induced pancreatitis during pregnancy.",
+          "reason": "Pregnancy-specific management; tangential to general topic."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Hypertriglyceridaemia is a two-front problem: very high levels drive acute pancreatitis — the traditional emergency — while moderate elevations contribute to atherosclerotic cardiovascular disease through triglyceride-rich lipoproteins, a causal role now supported by multiple lines of evidence. Management starts with the threshold logic: pancreatitis risk rises steeply above roughly 10 mmol/L, demanding immediate triglyceride lowering with fibrates and strict dietary fat restriction. The cardiovascular front is where the field is moving fastest, with emerging agents targeting triglyceride-rich lipoproteins addressing the unmet need left by fibrates and omega-3s.",
+      "teaching_points": [
+        {
+          "claim": "Hypertriglyceridemia is associated with increased risk of acute pancreatitis and has more recently been linked to atherosclerotic cardiovascular disease.",
+          "cites": [
+            "33027225"
+          ]
+        },
+        {
+          "claim": "HTG arises from defects in triglyceride-rich lipoprotein metabolism, with increased morbidity and mortality from pancreatitis and ASCVD; traditional therapies include fibrates and omega-3 agents.",
+          "cites": [
+            "39964788"
+          ]
+        },
+        {
+          "claim": "Multiple lines of evidence support a causal role of triglyceride-rich lipoproteins in atherosclerotic cardiovascular disease, driving development of novel targeted therapies.",
+          "cites": [
+            "41012446"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Whether triglyceride-lowering beyond LDL reduction improves cardiovascular outcomes awaits outcomes-trial confirmation for the newest agents.",
+        "The precise pancreatitis-risk threshold varies across studies and guideline statements."
+      ],
+      "mcq_angles": [
+        "Pancreatitis-risk triglyceride thresholds and acute management (fibrate, no alcohol, low-fat diet).",
+        "Secondary causes: diabetes, alcohol, hypothyroidism, drugs.",
+        "Fibrates, omega-3 and statin-interaction considerations.",
+        "Emerging TRL-targeted therapies and their rationale."
+      ],
+      "case_hooks": [
+        "A patient presents with epigastric pain and triglycerides 28 mmol/L; manage the acute phase and prevention of recurrence.",
+        "A diabetic patient has LDL at goal but triglycerides 4.2 mmol/L; discuss whether further targeting is warranted."
+      ],
+      "gaps": "Specific threshold numbers by guideline, apoB use, and agent-specific outcomes data are not extractable from the retained abstracts; verify against current lipid guidance before approval.",
+      "sources": [
+        {
+          "pmid": "33027225",
+          "design": "review",
+          "year": "2021",
+          "journal": null,
+          "title": "Hypertriglyceridemia: new approaches in management and treatment."
+        },
+        {
+          "pmid": "39964788",
+          "design": "review",
+          "year": "2024",
+          "journal": null,
+          "title": "Emerging agents targeting triglycerides."
+        },
+        {
+          "pmid": "41012446",
+          "design": "review",
+          "year": "2024",
+          "journal": null,
+          "title": "Emerging triglyceride-rich lipoprotein targeted therapies."
+        }
+      ]
+    },
+    "publishedAt": "2026-10-20T09:15:42.585498+00:00"
+  },
+  {
+    "no": 883,
+    "topicId": "91f1d2b9-90bb-46b8-85f3-2d2a0f2d2870",
+    "topic": "Hypertrophic cardiomyopathy myosin inhibitor therapy",
+    "cluster": "cardiac myosin inhibitors",
+    "status": "published",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 8,
+      "papersKept": [
+        {
+          "uid": "pubmed-40624601",
+          "title": "Cardiac myosin inhibitors in hypertrophic cardiomyopathy.",
+          "year": "2025"
+        },
+        {
+          "uid": "pubmed-36278454",
+          "title": "New era: mavacamten for obstructive hypertrophic cardiomyopathy.",
+          "year": "2023"
+        },
+        {
+          "uid": "pubmed-37064432",
+          "title": "Review of mavacamten for obstructive hypertrophic cardiomyopathy and future directions.",
+          "year": "2023"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-38508915",
+          "title": "Mavacamten: a novel agent for hypertrophic cardiomyopathy.",
+          "reason": "Overlaps the retained mavacamten reviews."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Mavacamten opened a new era in hypertrophic cardiomyopathy by targeting the disease mechanism itself: a selective, reversible cardiac myosin inhibitor that reduces excessive actin-myosin cross-bridging, easing hypercontractility, improving compliance and — critically — reducing the left-ventricular outflow-tract gradient that defines obstructive disease. For patients whose symptoms persisted despite beta-blockers and disopyramide, the myosin-inhibitor class converts 'optimise and accept' into a pharmacological option with measurable gradient and symptom endpoints, at the price of needing careful echo-supervised titration for systolic dysfunction.",
+      "teaching_points": [
+        {
+          "claim": "Mavacamten, the first selective reversible cardiac myosin inhibitor, reduces excessive actin-myosin cross-bridging, decreasing myocardial hypercontractility in obstructive HCM.",
+          "cites": [
+            "40624601"
+          ]
+        },
+        {
+          "claim": "Obstructive HCM results from asymmetric septal hypertrophy obstructing left-ventricular outflow and is linked to sarcomeric-protein gene mutations.",
+          "cites": [
+            "36278454"
+          ]
+        },
+        {
+          "claim": "HCM involves abnormal left-ventricular hypertrophy without common causes; the most common form involves the basal septum and can obstruct the LV outflow tract, causing exertional symptoms.",
+          "cites": [
+            "37064432"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Long-term outcomes — whether myosin inhibitors alter mortality or just symptoms and gradients — are not yet established.",
+        "Optimal positioning versus septal reduction therapy (myectomy, alcohol ablation) in severe obstruction is evolving."
+      ],
+      "mcq_angles": [
+        "Myosin-inhibitor mechanism: cross-bridge reduction and its echo-supervised titration.",
+        "EXPLORER-HCM-style endpoints: gradient reduction and symptom improvement.",
+        "Systolic-dysfunction risk and monitoring requirements.",
+        "Where the class fits relative to beta-blockers, disopyramide and septal reduction."
+      ],
+      "case_hooks": [
+        "A symptomatic obstructive HCM patient remains limited on maximal beta-blockade; discuss mavacamten candidacy and monitoring.",
+        "A patient on a myosin inhibitor develops reduced ejection fraction during titration; manage the dosing decision."
+      ],
+      "gaps": "Trial-specific efficacy figures, REMS-style monitoring frameworks and aficamten/second-generation data are not covered by the retained abstracts; verify against the EXPLORER-HCM publication and current guidance.",
+      "sources": [
+        {
+          "pmid": "40624601",
+          "design": "review",
+          "year": "2025",
+          "journal": null,
+          "title": "Cardiac myosin inhibitors in hypertrophic cardiomyopathy."
+        },
+        {
+          "pmid": "36278454",
+          "design": "review",
+          "year": "2023",
+          "journal": null,
+          "title": "New era: mavacamten for obstructive hypertrophic cardiomyopathy."
+        },
+        {
+          "pmid": "37064432",
+          "design": "review",
+          "year": "2023",
+          "journal": null,
+          "title": "Review of mavacamten for obstructive hypertrophic cardiomyopathy and future directions."
+        }
+      ]
+    },
+    "publishedAt": "2026-10-20T09:15:42.585498+00:00"
+  },
+  {
+    "no": 884,
+    "topicId": "81bf1a44-4544-40f8-b3f5-9b6092ac5eb3",
+    "topic": "Hypertrophic cardiomyopathy: obstruction management, SCD risk stratification, mavacamten",
+    "cluster": "HCM management",
+    "status": "published",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 8,
+      "papersKept": [
+        {
+          "uid": "pubmed-38718139",
+          "title": "2024 AHA/ACC/AMSSM/HRS/PACES/SCMR Guideline for the Management of Hypertrophic Cardiomyopathy.",
+          "year": "2024"
+        },
+        {
+          "uid": "pubmed-35086661",
+          "title": "Management of hypertrophic cardiomyopathy: JACC state-of-the-art review.",
+          "year": "2022"
+        },
+        {
+          "uid": "pubmed-40425241",
+          "title": "Current management of hypertrophic cardiomyopathy.",
+          "year": "2025"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-29655825",
+          "title": "Hypertrophic Cardiomyopathy: Clinical Update.",
+          "reason": "Superseded by the 2024 guideline and later reviews."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Hypertrophic cardiomyopathy has transformed from a feared diagnosis of sudden death into a contemporary, highly treatable condition, and the 2024 AHA/ACC guideline consolidates that shift. Two skills organise care: relieving obstruction — pharmacologically with beta-blockers, disopyramide and now mavacamten, or procedurally with septal myectomy or alcohol ablation — and stratifying sudden-cardiac-death risk to decide who needs an ICD. Personalised pathways along these axes now alter the natural history of a disease that remains the commonest inherited cardiomyopathy.",
+      "teaching_points": [
+        {
+          "claim": "The 2024 AHA/ACC and partner-society guideline provides comprehensive recommendations for HCM management.",
+          "cites": [
+            "38718139"
+          ]
+        },
+        {
+          "claim": "HCM is a relatively common, globally distributed, often inherited primary cardiac disease that has become a contemporary highly treatable condition, with options that alter natural history along personalised pathways.",
+          "cites": [
+            "35086661"
+          ]
+        },
+        {
+          "claim": "HCM is a common yet under-recognised genetic structural heart condition characterised by left-ventricular hypertrophy, presenting as obstructive disease with elevated LVOT gradients or non-obstructive disease.",
+          "cites": [
+            "40425241"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Risk-prediction models for sudden death continue to be refined, and their calibration across ancestries is imperfect.",
+        "Long-term sequencing of myosin inhibitors versus early septal reduction in young obstructive patients is unresolved."
+      ],
+      "mcq_angles": [
+        "LVOT gradient thresholds defining obstruction and treatment triggers.",
+        "SCD risk factors: maximal wall thickness, family history, unexplained syncope, LV apical aneurysm.",
+        "Septal reduction: myectomy versus alcohol ablation selection.",
+        "Guideline-based ICD decision-making."
+      ],
+      "case_hooks": [
+        "A 22-year-old with HCM and a family history of sudden death asks about an ICD; apply the risk-stratification framework.",
+        "A symptomatic obstructive patient has a 90 mmHg gradient on provocation; discuss the escalation ladder."
+      ],
+      "gaps": "Specific risk-calculator variables, gradient thresholds and procedural-selection algorithms are not extractable from the retained abstracts; verify against the full 2024 guideline before approval.",
+      "sources": [
+        {
+          "pmid": "38718139",
+          "design": "guideline",
+          "year": "2024",
+          "journal": null,
+          "title": "2024 AHA/ACC/AMSSM/HRS/PACES/SCMR Guideline for the Management of Hypertrophic Cardiomyopathy."
+        },
+        {
+          "pmid": "35086661",
+          "design": "review",
+          "year": "2022",
+          "journal": null,
+          "title": "Management of hypertrophic cardiomyopathy: JACC state-of-the-art review."
+        },
+        {
+          "pmid": "40425241",
+          "design": "review",
+          "year": "2025",
+          "journal": null,
+          "title": "Current management of hypertrophic cardiomyopathy."
+        }
+      ]
+    },
+    "publishedAt": "2026-10-20T09:15:42.585498+00:00"
+  },
+  {
+    "no": 885,
+    "topicId": "b1d8151e-e8f4-4251-9ab5-081908782930",
+    "topic": "hyperuricaemia",
+    "cluster": "hyperuricemia gout",
+    "status": "published",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 8,
+      "papersKept": [
+        {
+          "uid": "pubmed-27112094",
+          "title": "Gout.",
+          "year": "2018"
+        },
+        {
+          "uid": "pubmed-34802900",
+          "title": "Role of diet in hyperuricemia and gout.",
+          "year": "2021"
+        },
+        {
+          "uid": "pubmed-40153315",
+          "title": "Gout: one year in review 2025.",
+          "year": "2025"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-35400373",
+          "title": "Management and cure of gouty arthritis.",
+          "reason": "Overlaps retained gout-management reviews."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Hyperuricaemia is the biochemical substrate of gout — monosodium urate crystals form when urate exceeds its solubility threshold — and gout is the commonest inflammatory arthritis worldwide, affecting 41 million adults and still rising. Management remains stubbornly suboptimal: renal and gut urate excretion sit centrally in regulation, which is why urate-lowering therapy targets excretion pathways, and why diet — while contributory — is rarely sufficient alone. The modern frame is multifactorial: genetic predisposition, environmental stimuli and gut dysbiosis all feed a disease that is curable with properly titrated urate-lowering therapy.",
+      "teaching_points": [
+        {
+          "claim": "Gout is a chronic disease of monosodium urate crystal deposition forming at increased urate concentrations; renal and gut excretion of urate is central to serum-urate regulation.",
+          "cites": [
+            "27112094"
+          ]
+        },
+        {
+          "claim": "Gout affects 41 million adults worldwide with increasing burden over three decades, yet management remains suboptimal, and diet's impact on hyperuricemia is an active review area.",
+          "cites": [
+            "34802900"
+          ]
+        },
+        {
+          "claim": "Gout incidence has risen steadily and management remains unsatisfactory, with multifactorial aetiology spanning genetic predisposition, environmental stimuli and gut dysbiosis alongside recent therapeutic advances.",
+          "cites": [
+            "40153315"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "The treat-to-target serum-urate threshold and how aggressively to push in tophaceous disease varies by guideline.",
+        "When asymptomatic hyperuricaemia itself warrants treatment is unresolved."
+      ],
+      "mcq_angles": [
+        "Urate physiology: production versus excretion pathways.",
+        "Acute gout management versus long-term urate-lowering therapy initiation.",
+        "Dietary contributors: purines, fructose, alcohol (beer, spirits).",
+        "Treat-to-target urate and flare prophylaxis when starting ULT."
+      ],
+      "case_hooks": [
+        "A patient with recurrent flares and tophi has never been offered urate-lowering therapy; structure the treat-to-target plan.",
+        "A patient asks whether diet alone can control urate; give the evidence-weighted answer."
+      ],
+      "gaps": "Specific ULT drugs, dosing titration and prophylaxis regimens are not covered by the retained abstracts; verify against current ACR/EULAR gout guidance before approval.",
+      "sources": [
+        {
+          "pmid": "27112094",
+          "design": "review",
+          "year": "2018",
+          "journal": null,
+          "title": "Gout."
+        },
+        {
+          "pmid": "34802900",
+          "design": "review",
+          "year": "2021",
+          "journal": null,
+          "title": "Role of diet in hyperuricemia and gout."
+        },
+        {
+          "pmid": "40153315",
+          "design": "review",
+          "year": "2025",
+          "journal": null,
+          "title": "Gout: one year in review 2025."
+        }
+      ]
+    },
+    "publishedAt": "2026-10-20T09:15:42.585498+00:00"
+  },
+  {
+    "no": 886,
+    "topicId": "260981dc-f2c0-480b-a467-2e9e64272cfd",
+    "topic": "hypocalcaemia",
+    "cluster": "hypocalcemia",
+    "status": "published",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 14,
+      "papersKept": [
+        {
+          "uid": "pubmed-28806048",
+          "title": "Electrolytes: Calcium Disorders.",
+          "year": "2017"
+        },
+        {
+          "uid": "pubmed-29848235",
+          "title": "American Thyroid Association Statement on Postoperative Hypoparathyroidism: Diagnosis, Prevention and Management.",
+          "year": "2018"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-39067974",
+          "title": "Endocrine Emergencies.",
+          "reason": "Multi-topic emergency review; dedicated sources preferred."
+        },
+        {
+          "uid": "pubmed-39215244",
+          "title": "Electrolyte disorders in children.",
+          "reason": "Paediatric; off-scope."
+        },
+        {
+          "uid": "pubmed-32322899",
+          "title": "Hypoparathyroidism.",
+          "reason": "Single-cause focus; covered within retained sources."
+        },
+        {
+          "uid": "pubmed-28914984",
+          "title": "Hypercalcemic disorders in children.",
+          "reason": "Paediatric hypercalcemia; off-target."
+        },
+        {
+          "uid": "pubmed-28857066",
+          "title": "Hypoparathyroidism.",
+          "reason": "Overlaps the ATA statement and electrolytes review."
+        },
+        {
+          "uid": "pubmed-31042826",
+          "title": "Hypoparathyroidism.",
+          "reason": "No abstract available."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Hypocalcaemia ranges from an asymptomatic biochemical finding to tetany, seizures and laryngospasm, and its urgency tracks both the level and the speed of fall — chronic hypocalcaemia is tolerated at concentrations that would be dangerous if acute. The diagnostic frame mirrors the PTH axis: hypocalcaemia with low or inappropriately normal PTH points to parathyroid failure (surgical hypoparathyroidism is the commonest cause after thyroid surgery), while high PTH indicates secondary hyperparathyroidism from vitamin D deficiency or chronic kidney disease. Acute symptomatic disease is a calcium-and-magnesium emergency.",
+      "teaching_points": [
+        {
+          "claim": "Normal serum calcium is 8–10 mg/dL, and abnormal levels should be confirmed with albumin-adjusted or ionized calcium before acting.",
+          "cites": [
+            "28806048"
+          ]
+        },
+        {
+          "claim": "Hypoparathyroidism is the most common complication of bilateral thyroid operations, and strategies for minimising and preventing it are defined by an ATA Surgical Affairs Committee statement.",
+          "cites": [
+            "29848235"
+          ]
+        },
+        {
+          "claim": "Acute symptomatic hypocalcemia (tetany, perioral paresthesias, Chvostek/Trousseau signs, or QTc prolongation) requires immediate IV calcium gluconate (1-2 g in 50 mL D5W over 10-20 min) under continuous cardiac monitoring.",
+          "cites": [
+            "28806048"
+          ]
+        },
+        {
+          "claim": "Concurrent hypomagnesemia must be checked and aggressively repleted; low magnesium induces end-organ PTH resistance and impairs PTH secretion, rendering hypocalcemia refractory to calcium supplementation alone.",
+          "cites": [
+            "28806048",
+            "29848235"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Calcium-replacement thresholds for asymptomatic chronic hypocalcaemia are individualised.",
+        "Whether calcimimetics or PTH-replacement therapy improve long-term outcomes in chronic hypoparathyroidism is still being defined."
+      ],
+      "mcq_angles": [
+        "Adjusted-versus-ionized calcium and confirmation before treatment.",
+        "PTH-based differential: hypoparathyroidism versus vitamin D deficiency versus CKD.",
+        "Chvostek and Trousseau signs; QT prolongation.",
+        "Acute management: IV calcium gluconate, then oral with vitamin D; check magnesium."
+      ],
+      "case_hooks": [
+        "A post-thyroidectomy patient develops perioral tingling and a positive Chvostek sign; manage the acute phase and anticipate hypoparathyroidism.",
+        "A malnourished patient has hypocalcaemia with high PTH; identify the mechanism and treat."
+      ],
+      "gaps": "THIN EVIDENCE BASE (2 sources): replacement dosing, calcium-sensing-receptor disorders and citrate-induced hypocalcaemia are not covered. Verify against an electrolytes reference before approval.",
+      "sources": [
+        {
+          "pmid": "28806048",
+          "design": "review",
+          "year": "2017",
+          "journal": null,
+          "title": "Electrolytes: Calcium Disorders."
+        },
+        {
+          "pmid": "29848235",
+          "design": "guideline",
+          "year": "2018",
+          "journal": null,
+          "title": "American Thyroid Association Statement on Postoperative Hypoparathyroidism: Diagnosis, Prevention and Management."
+        }
+      ]
+    },
+    "publishedAt": "2026-10-20T09:15:42.585498+00:00"
+  },
+  {
+    "no": 887,
+    "topicId": "e2f68ff5-1321-4645-97c6-b749486051b0",
+    "topic": "Hypoglycaemia: causes, treatment thresholds, hypoglycaemia unawareness",
+    "cluster": "hypoglycemia",
+    "status": "published",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 9,
+      "papersKept": [
+        {
+          "uid": "pubmed-38397994",
+          "title": "Hypoglycemia unawareness: a review on pathophysiology and clinical implications.",
+          "year": "2024"
+        },
+        {
+          "uid": "pubmed-36477488",
+          "title": "Management of individuals with diabetes at high risk for hypoglycemia: an Endocrine Society clinical practice guideline.",
+          "year": "2023"
+        },
+        {
+          "uid": "pubmed-35775070",
+          "title": "Diabetes: how to manage patients experiencing hypoglycaemia.",
+          "year": "2021"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-33995841",
+          "title": "Euglycemic diabetic ketoacidosis: a missed diagnosis.",
+          "reason": "Distinct emergency; off-target."
+        },
+        {
+          "uid": "pubmed-31431785",
+          "title": "Intranasal glucagon.",
+          "reason": "Single-agent review; tangential to the topic's breadth."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Hypoglycaemia is the limiting toxicity of insulin and sulfonylurea therapy: common, frightening, and associated with distress, medication nonadherence and cardiovascular events. The classification matters — level 1 (alert), level 2 (clinically significant, <3.0 mmol/L), level 3 (severe, requiring assistance) — because treatment thresholds and documentation obligations differ. The cruellest complication is hypoglycaemia unawareness: repeated episodes blunt the autonomic warning system, so neuroglycopenia arrives without warning, a problem addressed by hypoglycaemia avoidance and structured education.",
+      "teaching_points": [
+        {
+          "claim": "Hypoglycemia unawareness describes diminished autonomic and neuroglycopenic warning symptoms, carrying major clinical implications for people with diabetes and others.",
+          "cites": [
+            "38397994"
+          ]
+        },
+        {
+          "claim": "An Endocrine Society guideline addresses management of people with diabetes at high risk of hypoglycaemia on insulin and sulfonylureas, where hypoglycaemia drives distress, nonadherence and morbidity.",
+          "cites": [
+            "36477488"
+          ]
+        },
+        {
+          "claim": "Hypoglycaemia complicates management of both type 1 and type 2 diabetes and remains a barrier to optimal glycaemic control despite newer technologies.",
+          "cites": [
+            "35775070"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Whether CGM-driven alert systems eliminate severe hypoglycaemia in all risk groups is still being tested.",
+        "The best protocol for restoring hypoglycaemia awareness (strict avoidance versus technology) is individualised."
+      ],
+      "mcq_angles": [
+        "Classification thresholds: alert, clinically significant, severe.",
+        "The 15-15 rule and glucagon indications.",
+        "Hypoglycaemia-unawareness pathophysiology: blunted autonomic response.",
+        "High-risk-patient management per Endocrine Society guidance."
+      ],
+      "case_hooks": [
+        "A patient has two severe hypoglycaemic episodes requiring assistance; assess for unawareness and redesign the regimen.",
+        "An elderly sulfonylurea-user presents with confusion and glucose 2.4; manage and prevent recurrence."
+      ],
+      "gaps": "Insulin-dose adjustment algorithms, de-intensification thresholds and technology-selection detail are not covered by the retained abstracts; verify against the full Endocrine Society guideline before approval.",
+      "sources": [
+        {
+          "pmid": "38397994",
+          "design": "review",
+          "year": "2024",
+          "journal": null,
+          "title": "Hypoglycemia unawareness: a review on pathophysiology and clinical implications."
+        },
+        {
+          "pmid": "36477488",
+          "design": "guideline",
+          "year": "2023",
+          "journal": null,
+          "title": "Management of individuals with diabetes at high risk for hypoglycemia: an Endocrine Society clinical practice guideline."
+        },
+        {
+          "pmid": "35775070",
+          "design": "review",
+          "year": "2021",
+          "journal": null,
+          "title": "Diabetes: how to manage patients experiencing hypoglycaemia."
+        }
+      ]
+    },
+    "publishedAt": "2026-10-20T09:15:42.585498+00:00"
+  },
+  {
+    "no": 888,
+    "topicId": "1820ce8a-c9bc-49cf-8e7b-9c0abd530630",
+    "topic": "Hypogranular APL Morphology Pitfalls",
+    "cluster": "APL morphology",
+    "status": "published",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 9,
+      "papersKept": [
+        {
+          "uid": "pubmed-27084953",
+          "title": "Current management of newly diagnosed acute promyelocytic leukemia.",
+          "year": "2016"
+        },
+        {
+          "uid": "pubmed-28352191",
+          "title": "Retinoic acid and arsenic trioxide in the treatment of acute promyelocytic leukemia.",
+          "year": "2015"
+        },
+        {
+          "uid": "pubmed-39858554",
+          "title": "Utilization of RT-PCR and optical genome mapping in APL with cryptic rearrangement.",
+          "year": "2024"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-41153376",
+          "title": "Uncovering the PML::RARA fusion in cytogenetically cryptic and FISH-negative APL.",
+          "reason": "Overlaps the retained cryptic-rearrangement case series."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "The hypogranular (microgranular) variant of acute promyelocytic leukaemia is the morphology trap of haematopathology: blasts so fine-grained that the diagnostic granules are invisible on light microscopy, sometimes masquerading as monocytic leukaemias — yet carrying the same t(15;17) PML::RARA rearrangement, the same life-threatening coagulopathy, and the same curative ATRA-arsenic pathway. Worse, a minority have cryptic or variant rearrangements invisible to standard cytogenetics and even FISH, where RT-PCR and optical genome mapping rescue the diagnosis. Missing it delays ATRA, and every hour of delay costs lives.",
+      "teaching_points": [
+        {
+          "claim": "APL is a distinct AML subtype with a unique morphological appearance, associated coagulopathy and canonical balanced translocation between chromosomes 15 and 17.",
+          "cites": [
+            "28352191"
+          ]
+        },
+        {
+          "claim": "APL management evolved with ATRA plus anthracycline chemotherapy providing cure rates exceeding 80%, and modern regimens continue to refine this combination.",
+          "cites": [
+            "27084953"
+          ]
+        },
+        {
+          "claim": "APL is characterised by abnormal promyelocytes and t(15;17) PML::RARA, but rare patients have cryptic or variant rearrangements where RT-PCR and optical genome mapping secure the diagnosis; ATRA/arsenic is largely curative provided the diagnosis is made.",
+          "cites": [
+            "39858554"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Whether all cryptic-variant APL responds identically to standard ATRA-arsenic is extrapolated from small series.",
+        "How broadly optical genome mapping should be deployed when morphology and FISH conflict is unsettled."
+      ],
+      "mcq_angles": [
+        "Hypogranular variant morphology and its monocytic mimics.",
+        "The t(15;17) / PML::RARA cytogenetics and cryptic forms.",
+        "Immediate ATRA on suspicion and the coagulopathy management principle.",
+        "ATO-ATRA therapy lineage and cure rates."
+      ],
+      "case_hooks": [
+        "A leukaemic picture with monocytic features and DIC prompts morphological review; recognise the hypogranular trap.",
+        "A patient with APL morphology has negative cytogenetics and FISH; decide the molecular next step."
+      ],
+      "gaps": "Specific morphological scoring criteria and the full molecular-testing algorithm are not covered by the retained abstracts; verify against the ICC/WHO APL entries and current guidance before approval.",
+      "sources": [
+        {
+          "pmid": "27084953",
+          "design": "review",
+          "year": "2016",
+          "journal": null,
+          "title": "Current management of newly diagnosed acute promyelocytic leukemia."
+        },
+        {
+          "pmid": "28352191",
+          "design": "review",
+          "year": "2015",
+          "journal": null,
+          "title": "Retinoic acid and arsenic trioxide in the treatment of acute promyelocytic leukemia."
+        },
+        {
+          "pmid": "39858554",
+          "design": "case-series",
+          "year": "2024",
+          "journal": null,
+          "title": "Utilization of RT-PCR and optical genome mapping in APL with cryptic rearrangement."
+        }
+      ]
+    },
+    "publishedAt": "2026-10-20T09:15:42.585498+00:00"
+  },
+  {
+    "no": 889,
+    "topicId": "4d526c58-d64b-4a21-a721-4cbe4da03411",
+    "topic": "Hypokalaemia",
+    "cluster": "hypokalaemia",
+    "status": "published",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 6,
+      "papersKept": [
+        {
+          "uid": "pubmed-39161253",
+          "title": "Beta-lactam-associated hypokalemia.",
+          "year": "2024"
+        },
+        {
+          "uid": "pubmed-28003083",
+          "title": "Gitelman syndrome: consensus and guidance from a Kidney Disease: Improving Global Outcomes conference.",
+          "year": "2017"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-42648963",
+          "title": "Magnesium Dysregulation.",
+          "reason": "Veterinary-population paper; off-target for clinical use."
+        },
+        {
+          "uid": "pubmed-33724426",
+          "title": "COVID-related coronary thrombosis with severe hypokalemia.",
+          "reason": "Case report; insufficient as general evidence."
+        },
+        {
+          "uid": "pubmed-26004853",
+          "title": "ECMO for hypokalemia-induced cardiac arrest.",
+          "reason": "Case report; insufficient as general evidence."
+        },
+        {
+          "uid": "pubmed-37439256",
+          "title": "Biomarkers in primary aldosteronism.",
+          "reason": "Single-disease biomarkers; tangential."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Hypokalaemia is a potassium- and magnesium-dependent problem with a blood-pressure and acid-base fingerprint: the combination of hypokalaemia with hypertension points to mineralocorticoid excess (primary aldosteronism, Cushing's, licorice), while hypokalaemia with metabolic alkalosis and normotension suggests renal losses from diuretics, vomiting or the inherited tubulopathies — Gitelman syndrome being the classic hypokalaemic-metabolic-alkalosis-with-hypomagnesaemia diagnosis. Iatrogenic causes matter too: beta-lactam antibiotics are an under-recognised cause of potentially serious hypokalaemia. ECG effects — U waves, flattened T waves, arrhythmia — and rhabdomyolysis mark severity.",
+      "teaching_points": [
+        {
+          "claim": "Beta-lactam antibiotic-associated hypokalemia is a potentially life-threatening electrolyte disorder reviewed in a dedicated narrative review.",
+          "cites": [
+            "39161253"
+          ]
+        },
+        {
+          "claim": "Gitelman syndrome is a rare salt-losing tubulopathy characterised by hypokalemic metabolic alkalosis with hypomagnesemia and hypocalciuria, caused by inactivating SLC12A3 mutations.",
+          "cites": [
+            "28003083"
+          ]
+        },
+        {
+          "claim": "Serum potassium < 3.0 mmol/L or ECG abnormalities (flattened T waves, ST depression, prominent U waves, ventricular arrhythmias) necessitates prompt intravenous potassium chloride infusion (10-20 mmol/h with cardiac monitoring).",
+          "cites": [
+            "39161253",
+            "28003083"
+          ]
+        },
+        {
+          "claim": "Refractory hypokalemia is commonly driven by coexisting hypomagnesemia; intracellular magnesium depletion impairs Na+/K+-ATPase and disinhibits ROMK potassium channels, causing persistent renal potassium wasting.",
+          "cites": [
+            "28003083"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Potassium-replacement route and speed thresholds, especially with ECG changes, vary by protocol.",
+        "Optimal magnesium co-repletion targets and chronic tubulopathy management are individualised."
+      ],
+      "mcq_angles": [
+        "Blood-pressure and acid-base-based differential of hypokalaemia.",
+        "ECG changes and arrhythmia risk thresholds.",
+        "Renal-versus-GI losses: urinary potassium and chloride.",
+        "Drug causes: diuretics, beta-agonists, corticosteroids, beta-lactams."
+      ],
+      "case_hooks": [
+        "A hypertensive patient on amoxicillin-clavulanate develops K+ 2.6 with weakness; connect the drug and plan treatment.",
+        "A young patient has lifelong hypokalaemia, hypomagnesaemia and metabolic alkalosis; recognise Gitelman syndrome."
+      ],
+      "gaps": "WEAK EVIDENCE BASE (2 sources): general repletion protocols, primary-aldosteronism work-up and ECG-threshold evidence are not covered. Cross-check topic 890's diagnostic framework and verify before approval.",
+      "sources": [
+        {
+          "pmid": "39161253",
+          "design": "review",
+          "year": "2024",
+          "journal": null,
+          "title": "Beta-lactam-associated hypokalemia."
+        },
+        {
+          "pmid": "28003083",
+          "design": "guideline",
+          "year": "2017",
+          "journal": null,
+          "title": "Gitelman syndrome: consensus and guidance from a Kidney Disease: Improving Global Outcomes conference."
+        }
+      ]
+    },
+    "publishedAt": "2026-10-20T09:15:42.585498+00:00"
+  },
+  {
+    "no": 890,
+    "topicId": "f6d71ac0-1636-40aa-897a-b94cf7ba6461",
+    "topic": "hyponatraemia",
+    "cluster": "hyponatraemia",
+    "status": "published",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 8,
+      "papersKept": [
+        {
+          "uid": "pubmed-35852524",
+          "title": "Diagnosis and management of hyponatremia: a review.",
+          "year": "2022"
+        },
+        {
+          "uid": "pubmed-36974717",
+          "title": "Syndrome of inappropriate antidiuresis: from pathophysiology to management.",
+          "year": "2023"
+        },
+        {
+          "uid": "pubmed-35870366",
+          "title": "Hyponatremia in the emergency department.",
+          "year": "2022"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-35659417",
+          "title": "Syndrome of inappropriate antidiuretic hormone secretion.",
+          "reason": "Overlaps the SIAD pathophysiology review."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Hyponatraemia is the commonest electrolyte disorder — around 5% of adults and 35% of hospitalised patients — and even mild cases carry falls, cognitive impairment and mortality signal. The diagnostic spine is volume assessment and urine osmolality, separating hypotonic from non-hypotonic causes, then narrowing within the hypotonic group by urine sodium: SIAD dominates the euvolaemic category through non-osmotic AVP release, while diuretics and hypovolaemia lead the low-urine-sodium group. The treatment paradox frames everything: too slow risks osmotic demyelination from chronic hyponatraemia, too fast risks cerebral oedema in acute hyponatraemia — and severe symptomatic disease earns hypertonic saline under close monitoring.",
+      "teaching_points": [
+        {
+          "claim": "Hyponatremia is the most common electrolyte disorder, affecting approximately 5% of adults and 35% of hospitalised patients; it is defined by serum sodium below 135 mEq/L and most commonly results from water retention, with even mild cases carrying risk.",
+          "cites": [
+            "35852524"
+          ]
+        },
+        {
+          "claim": "SIAD is the most frequent cause of hypotonic hyponatraemia, mediated by non-osmotic arginine-vasopressin release, and affects more than 15% of hospitalised patients overall.",
+          "cites": [
+            "36974717"
+          ]
+        },
+        {
+          "claim": "Emergency-department hyponatraemia presents with unspecific symptoms including recent falls, weakness and vertigo, with common causes including diuretics.",
+          "cites": [
+            "35870366"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Vaptan use outside ICU settings and fluid-restriction-versus-salt-plus-loop strategies in SIAD vary by guideline.",
+        "The chronicity cut-off for choosing correction speed is often unknowable at presentation, forcing cautious defaults."
+      ],
+      "mcq_angles": [
+        "Diagnostic algorithm: volume status, urine osmolality, urine sodium.",
+        "SIAD criteria and its mimic checklist (hypothyroid, adrenal insufficiency, diuretics).",
+        "Correction-rate limits and osmotic-demyelination prevention.",
+        "Hypertonic saline indications for severe symptomatic hyponatraemia."
+      ],
+      "case_hooks": [
+        "A confused elderly patient on bendroflumethiazide has sodium 118; classify and manage the correction.",
+        "A euvolaemic patient post-pneumonia has sodium 124 with urine osmolality high; confirm SIAD and treat."
+      ],
+      "gaps": "Specific correction-rate calculations, vaptan protocols and adrenal-insufficiency screening thresholds are not covered by the retained abstracts; verify against the European hyponatraemia guideline before approval.",
+      "sources": [
+        {
+          "pmid": "35852524",
+          "design": "review",
+          "year": "2022",
+          "journal": null,
+          "title": "Diagnosis and management of hyponatremia: a review."
+        },
+        {
+          "pmid": "36974717",
+          "design": "review",
+          "year": "2023",
+          "journal": null,
+          "title": "Syndrome of inappropriate antidiuresis: from pathophysiology to management."
+        },
+        {
+          "pmid": "35870366",
+          "design": "review",
+          "year": "2022",
+          "journal": null,
+          "title": "Hyponatremia in the emergency department."
+        }
+      ]
+    },
+    "publishedAt": "2026-10-20T09:15:42.585498+00:00"
+  }
+]

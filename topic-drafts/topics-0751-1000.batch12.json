@@ -1,0 +1,1059 @@
+[
+  {
+    "no": 861,
+    "topicId": "591e8d76-8165-4d2d-b128-cf4cde0fe482",
+    "topic": "hyperemesis gravidarum",
+    "cluster": "hyperemesis gravidarum",
+    "status": "published",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 8,
+      "papersKept": [
+        {
+          "uid": "pubmed-40843754",
+          "title": "Hyperemesis in pregnancy: complications and treatment.",
+          "year": "2024"
+        },
+        {
+          "uid": "pubmed-27512487",
+          "title": "Ondansetron and pregnancy: understanding the data.",
+          "year": "2016"
+        },
+        {
+          "uid": "pubmed-26287788",
+          "title": "ACOG Practice Bulletin No. 153: Nausea and Vomiting of Pregnancy.",
+          "year": "2015"
+        },
+        {
+          "uid": "pubmed-40226035",
+          "title": "Effectiveness of ginger supplementation in alleviating hyperemesis gravidarum.",
+          "year": "2024"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-26917969",
+          "title": "Barriers and Challenges in Hyperemesis Gravidarum Research.",
+          "reason": "Research-methodology focus; tangential to clinical management."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Hyperemesis gravidarum is the severe end of the nausea-and-vomiting-of-pregnancy spectrum and the leading cause of hospitalisation in early pregnancy, affecting roughly 0.3–3% of pregnancies and carrying real maternal morbidity. Most NVP peaks between 7 and 12 weeks and resolves by week 20, which frames both the natural history and the safety calculus of treatment. Management is stepwise — dietary and ginger first, then antiemetics, with ondansetron's reassuring data quieting much of the first-trimester anxiety — and escalates to rehydration, thiamine and occasionally steroids for refractory disease.",
+      "teaching_points": [
+        {
+          "claim": "Hyperemesis gravidarum, affecting approximately 0.3–3% of pregnancies, is the leading cause of hospitalisation during early pregnancy and is associated with substantial maternal morbidity.",
+          "cites": [
+            "40843754"
+          ]
+        },
+        {
+          "claim": "Nausea and vomiting of pregnancy affects about 75% of women, begins early in the first trimester, peaks between 7 and 12 weeks, and abates by week 20 in over 90%.",
+          "cites": [
+            "27512487"
+          ]
+        },
+        {
+          "claim": "ACOG Practice Bulletin 153 provides evidence-based management guidance for nausea and vomiting of pregnancy, recognising its impact on quality of life, healthcare costs and work absence.",
+          "cites": [
+            "26287788"
+          ]
+        },
+        {
+          "claim": "Ginger supplementation has been evaluated in a systematic review for alleviating hyperemesis gravidarum, reflecting demand for alternatives to prescription medication.",
+          "cites": [
+            "40226035"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "The aetiology of HG remains incompletely explained, limiting targeted therapy.",
+        "Optimal refractory-disease pathways (steroid dosing, enteral/parenteral nutrition thresholds) vary by centre."
+      ],
+      "mcq_angles": [
+        "NVP-to-HG spectrum, epidemiology and natural history timing.",
+        "Stepwise antiemetic ladder and the ondansetron safety data.",
+        "Thiamine before dextrose, and Wernicke prevention in prolonged vomiting.",
+        "When to escalate to corticosteroids and nutrition support."
+      ],
+      "case_hooks": [
+        "A woman at 9 weeks has ketonuria and 3 kg weight loss; build the treatment and monitoring plan.",
+        "A patient requests 'something natural' before antiemetics; discuss ginger evidence and set expectations."
+      ],
+      "gaps": "Dosing schedules, steroid protocols and psychological-support evidence are not covered by the retained abstracts; verify against current ACOG/RCOG guidance before approval.",
+      "sources": [
+        {
+          "pmid": "40843754",
+          "design": "review",
+          "year": "2024",
+          "journal": null,
+          "title": "Hyperemesis in pregnancy: complications and treatment."
+        },
+        {
+          "pmid": "27512487",
+          "design": "review",
+          "year": "2016",
+          "journal": null,
+          "title": "Ondansetron and pregnancy: understanding the data."
+        },
+        {
+          "pmid": "26287788",
+          "design": "guideline",
+          "year": "2015",
+          "journal": null,
+          "title": "ACOG Practice Bulletin No. 153: Nausea and Vomiting of Pregnancy."
+        },
+        {
+          "pmid": "40226035",
+          "design": "systematic-review",
+          "year": "2024",
+          "journal": null,
+          "title": "Effectiveness of ginger supplementation in alleviating hyperemesis gravidarum."
+        }
+      ]
+    },
+    "publishedAt": "2026-10-20T09:15:42.585498+00:00"
+  },
+  {
+    "no": 862,
+    "topicId": "51eb38a6-7023-462c-af60-480ae59d71a9",
+    "topic": "Hypereosinophilic Syndrome",
+    "cluster": "hypereosinophilic syndrome",
+    "status": "published",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 8,
+      "papersKept": [
+        {
+          "uid": "pubmed-38551368",
+          "title": "World Health Organization and International Consensus Classification of eosinophilic disorders: 2024 update.",
+          "year": "2024"
+        },
+        {
+          "uid": "pubmed-26475367",
+          "title": "Hypereosinophilic Syndrome.",
+          "year": "2015"
+        },
+        {
+          "uid": "pubmed-36207764",
+          "title": "Proposed refined diagnostic criteria and classification of eosinophil disorders and related syndromes.",
+          "year": "2022"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-40407964",
+          "title": "Hypereosinophilia in Children.",
+          "reason": "Paediatric population; off-scope."
+        },
+        {
+          "uid": "pubmed-32394361",
+          "title": "Eosinophilic Dermatoses: Recognition and Management.",
+          "reason": "Cutaneous subset; tangential to systemic HES."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Hypereosinophilic syndrome is where a blood count becomes a multi-organ emergency: abnormal eosinophil accumulation independent of secondary causes, with highly variable manifestations driven by which organs the cells infiltrate — heart, lung, gut, skin, nervous system. The field's modern backbone is classification: separating reactive (secondary) from clonal (primary, e.g. FIP1L1-PDGFRA) disease, because targeted therapy — imatinib for the tyrosine-kinase-driven form — transformed one subtype from chronic illness to molecularly-curable disease. Hypereosinophilia above 1.5 × 10⁹/L with end-organ damage defines the syndrome, and corticosteroids remain the rapid organ-protection bridge.",
+      "teaching_points": [
+        {
+          "claim": "The eosinophilias span non-hematologic (secondary/reactive) and hematologic (primary/clonal) disorders with potential end-organ damage; hypereosinophilia is generally defined as a peripheral blood eosinophil count greater than 1.5 × 10⁹/L.",
+          "cites": [
+            "38551368"
+          ]
+        },
+        {
+          "claim": "Hypereosinophilic syndrome comprises disorders of abnormal eosinophil accumulation in blood or peripheral tissues independent of known secondary causes, with highly variable clinical manifestations.",
+          "cites": [
+            "26475367"
+          ]
+        },
+        {
+          "claim": "Refined international diagnostic criteria and classification separate eosinophilia from hypereosinophilic syndrome, with organ damage often prompting the HES diagnosis.",
+          "cites": [
+            "36207764"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Organ-damage prediction from eosinophil counts alone is poor, so surveillance intensity is empirical.",
+        "Sequencing of steroids, imatinib and emerging targeted agents in non-clonal HES is individualised."
+      ],
+      "mcq_angles": [
+        "Definition thresholds and the reactive versus clonal classification.",
+        "End-organ patterns: Loeffler endocarditis, neuropathy, dermatologic and GI involvement.",
+        "FIP1L1-PDGFRA and the imatinib-responsive subtype.",
+        "Steroids as acute organ-protection therapy."
+      ],
+      "case_hooks": [
+        "A patient with persistent eosinophilia of 8 × 10⁹/L and a new murmur; work through organ assessment and initial therapy.",
+        "A patient with clonal HES is found FIP1L1-PDGFRA positive; explain why imatinib changes everything."
+      ],
+      "gaps": "Molecular testing algorithms, mepolizumab/benralizumab positioning and anticoagulation strategies are not covered by the retained abstracts; verify against current consensus guidance before approval.",
+      "sources": [
+        {
+          "pmid": "38551368",
+          "design": "guideline",
+          "year": "2024",
+          "journal": null,
+          "title": "World Health Organization and International Consensus Classification of eosinophilic disorders: 2024 update."
+        },
+        {
+          "pmid": "26475367",
+          "design": "review",
+          "year": "2015",
+          "journal": null,
+          "title": "Hypereosinophilic Syndrome."
+        },
+        {
+          "pmid": "36207764",
+          "design": "consensus-criteria",
+          "year": "2022",
+          "journal": null,
+          "title": "Proposed refined diagnostic criteria and classification of eosinophil disorders and related syndromes."
+        }
+      ]
+    },
+    "publishedAt": "2026-10-20T09:15:42.585498+00:00"
+  },
+  {
+    "no": 863,
+    "topicId": "ff1f0546-f853-47d9-b610-1cf178764f8d",
+    "topic": "hyperglycaemic hyperosmolar state",
+    "cluster": "HHS",
+    "status": "published",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 8,
+      "papersKept": [
+        {
+          "uid": "pubmed-28372715",
+          "title": "Management of Hyperglycemic Crises: Diabetic Ketoacidosis and Hyperglycemic Hyperosmolar State.",
+          "year": "2017"
+        },
+        {
+          "uid": "pubmed-36405291",
+          "title": "Overlap of diabetic ketoacidosis and hyperosmolar hyperglycemic state.",
+          "year": "2022"
+        },
+        {
+          "uid": "pubmed-26893262",
+          "title": "Diabetic emergencies: ketoacidosis, hyperglycaemic hyperosmolar state and hypoglycaemia.",
+          "year": "2017"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-30099998",
+          "title": "Hyperglycemia Syndromes.",
+          "reason": "Broad syndrome overview; the crisis-specific consensus preferred."
+        },
+        {
+          "uid": "pubmed-39360087",
+          "title": "Treatment challenges in critically ill DKA.",
+          "reason": "DKA-critical-care focus; tangential to HHS."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Hyperglycaemic hyperosmolar state is the hyperglycaemic emergency of older, type 2, often previously-undiagnosed diabetic patients — profound hyperglycaemia and hyperosmolarity with enough residual insulin to suppress ketogenesis, so no significant acidosis. It carries higher mortality than DKA, driven by the age and comorbidity of its victims, and its treatment is a discipline of slow rehydration and careful osmolality decline: fluids first, insulin lower-dose, and obsessive attention to sodium correction as glucose falls.",
+      "teaching_points": [
+        {
+          "claim": "DKA and HHS are the most serious hyperglycemic emergencies; HHS occurs more in adult and elderly type 2 diabetes patients, with overlapping clinical features.",
+          "cites": [
+            "28372715"
+          ]
+        },
+        {
+          "claim": "DKA and HHS are life-threatening complications increasing mortality and morbidity, and reaching uniform consensus on diagnostic criteria and treatment remains a challenge.",
+          "cites": [
+            "36405291"
+          ]
+        },
+        {
+          "claim": "DKA and HHS are characterised by insulinopaenia and severe hyperglycaemia, requiring prompt recognition, diagnosis and treatment.",
+          "cites": [
+            "26893262"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Diagnostic boundaries between HHS, HHS-DKA overlap and severe hyperglycaemia are variably defined across guidelines.",
+        "Optimal rehydration tonicity, osmolality decline targets and anticoagulation in HHS remain practice-dependent."
+      ],
+      "mcq_angles": [
+        "HHS versus DKA: osmolality, acidosis, ketones, patient phenotype.",
+        "Treatment sequence: aggressive fluids, low-dose insulin, potassium management.",
+        "Corrected sodium and the risk of over-rapid osmolality shifts.",
+        "Precipitant search (infection, MI, steroids, thiazides)."
+      ],
+      "case_hooks": [
+        "An 80-year-old has glucose 55 mmol/L, sodium 150, altered consciousness; plan the first 24 hours.",
+        "A patient has features of both HHS and DKA; discuss how overlap changes management."
+      ],
+      "gaps": "Precise diagnostic cut-offs (effective osmolality, pH/bicarbonate thresholds), insulin infusion rates and phosphate management are not extractable from the retained abstracts; verify against the full ADA/EASD hyperglycaemic-crises consensus before approval.",
+      "sources": [
+        {
+          "pmid": "28372715",
+          "design": "consensus-guideline",
+          "year": "2017",
+          "journal": null,
+          "title": "Management of Hyperglycemic Crises: Diabetic Ketoacidosis and Hyperglycemic Hyperosmolar State."
+        },
+        {
+          "pmid": "36405291",
+          "design": "review",
+          "year": "2022",
+          "journal": null,
+          "title": "Overlap of diabetic ketoacidosis and hyperosmolar hyperglycemic state."
+        },
+        {
+          "pmid": "26893262",
+          "design": "review",
+          "year": "2017",
+          "journal": null,
+          "title": "Diabetic emergencies: ketoacidosis, hyperglycaemic hyperosmolar state and hypoglycaemia."
+        }
+      ]
+    },
+    "publishedAt": "2026-10-20T09:15:42.585498+00:00"
+  },
+  {
+    "no": 864,
+    "topicId": "ba24c9aa-ebbc-4d35-b9b8-0730fa182498",
+    "topic": "hyperkalaemia",
+    "cluster": "hyperkalaemia general",
+    "status": "published",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 16,
+      "papersKept": [
+        {
+          "uid": "pubmed-42629001",
+          "title": "Diagnosis and management of acute hyperkalaemia.",
+          "year": "2025"
+        },
+        {
+          "uid": "pubmed-29731287",
+          "title": "Controversies in management of hyperkalemia.",
+          "year": "2018"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-36407194",
+          "title": "Propofol-Related Infusion Syndrome: A Clinical Review.",
+          "reason": "Off-target."
+        },
+        {
+          "uid": "pubmed-30857601",
+          "title": "Propofol infusion syndrome: structured literature review.",
+          "reason": "Off-target."
+        },
+        {
+          "uid": "pubmed-28806047",
+          "title": "Electrolytes: Potassium Disorders.",
+          "reason": "Not re-verified after query refetch; replaced by 2025 acute-hyperkalaemia review."
+        },
+        {
+          "uid": "pubmed-39174582",
+          "title": "Tumour lysis syndrome.",
+          "reason": "Single-cause focus; tangential to general hyperkalaemia."
+        },
+        {
+          "uid": "pubmed-35190110",
+          "title": "Tumor Lysis Syndrome.",
+          "reason": "Single-cause focus; tangential."
+        },
+        {
+          "uid": "pubmed-30912843",
+          "title": "In-Hospital Cardiac Arrest: A Review.",
+          "reason": "Off-target."
+        },
+        {
+          "uid": "pubmed-31268919",
+          "title": "Updates on medical management of hyperkalemia.",
+          "reason": "Overlaps retained reviews."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Hyperkalaemia is the electrolyte emergency everyone meets first and understands last: common, frequently iatrogenic, and dangerous because of malignant arrhythmia. Its management has three tiers with different speeds and purposes — membrane stabilisation with intravenous calcium, intracellular shift with insulin-dextrose and beta-agonists, and actual potassium removal with dialysis or binders — and the art lies in knowing which tier the patient needs and how long each buys. Controversies persist, not least around the older exchange resins and the role of the newer binders.",
+      "teaching_points": [
+        {
+          "claim": "Hyperkalaemia is a common, potentially life-threatening electrolyte abnormality because of its association with malignant cardiac arrhythmias and sudden cardiac arrest, encountered across acute and chronic care and disproportionately affecting patients with kidney disease, heart failure and diabetes.",
+          "cites": [
+            "42629001"
+          ]
+        },
+        {
+          "claim": "Classic hyperkalemia treatments and their controversies are evaluated in a dedicated review, including new medications for management.",
+          "cites": [
+            "29731287"
+          ]
+        },
+        {
+          "claim": "Severe hyperkalemia (K+ > 6.5 mmol/L or ECG changes: peaked T waves, widened QRS, PR prolongation) requires immediate membrane stabilization with intravenous calcium (gluconate or chloride) within 1-3 minutes.",
+          "cites": [
+            "42629001"
+          ]
+        },
+        {
+          "claim": "Intracellular potassium shift therapies (regular insulin 10 units IV with 25-50g dextrose, and inhaled nebulized albuterol) act within 15-30 minutes, temporizing while elimination via loop diuretics, potassium binders (patiromer, SZC), or hemodialysis is arranged.",
+          "cites": [
+            "42629001",
+            "29731287"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Treatment thresholds for mild asymptomatic hyperkalaemia, especially with ECG ambiguity, vary across guidelines.",
+        "The clinical value of newer potassium binders in chronic management versus acute settings is still being defined."
+      ],
+      "mcq_angles": [
+        "ECG progression: peaked T waves, PR prolongation, sine wave.",
+        "Three-tier management and the speed of each intervention.",
+        "Common precipitants: CKD, RAAS inhibitors, potassium-sparing drugs, tissue breakdown.",
+        "Pseudohyperkalaemia and confirmatory testing."
+      ],
+      "case_hooks": [
+        "A CKD patient on lisinopril and spironolactone has K+ 6.4 with peaked T waves; sequence the treatment.",
+        "An asymptomatic patient has K+ 6.0 with a normal ECG; decide on urgency and the confirmatory approach."
+      ],
+      "gaps": "THIN EVIDENCE BASE (2 sources): shift-therapy doses, dialysis indications and binder comparison data are covered only in outline. Cross-check topics 865/866 and verify against KDIGO guidance before approval.",
+      "sources": [
+        {
+          "pmid": "42629001",
+          "design": "review",
+          "year": "2025",
+          "journal": null,
+          "title": "Diagnosis and management of acute hyperkalaemia."
+        },
+        {
+          "pmid": "29731287",
+          "design": "review",
+          "year": "2018",
+          "journal": null,
+          "title": "Controversies in management of hyperkalemia."
+        }
+      ]
+    },
+    "publishedAt": "2026-10-20T09:15:42.585498+00:00"
+  },
+  {
+    "no": 865,
+    "topicId": "ed16c5cb-4e09-425f-a3c5-4ccf6b486a0b",
+    "topic": "hyperkalaemia emergency treatment",
+    "cluster": "hyperkalaemia emergency",
+    "status": "published",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 4,
+      "papersKept": [
+        {
+          "uid": "pubmed-32852924",
+          "title": "Acute hyperkalemia in the emergency department: a summary from a Kidney Disease: Improving Global Outcomes conference.",
+          "year": "2020"
+        },
+        {
+          "uid": "pubmed-26880451",
+          "title": "Treatment of hyperkalemia: something old, something new.",
+          "year": "2016"
+        },
+        {
+          "uid": "pubmed-38289453",
+          "title": "Hyperkalaemia in cardiological patients: new solutions for an old problem.",
+          "year": "2024"
+        }
+      ],
+      "papersDropped": [],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Emergency hyperkalaemia treatment is a study in timelines: calcium works in minutes, insulin-dextrose and salbutamol shift potassium over an hour or two, and dialysis or binders are the only true removal. The KDIGO conference summary anchors the modern ED approach, including the pivotal insight that ECG changes are neither perfectly sensitive nor specific — which pushes treatment decisions toward the clinical picture and potassium trend rather than a single number. In cardiology patients the stakes are doubled: RAAS inhibitors and MRA therapy that prolong life also cause the hyperkalaemia, creating a treat-the-number versus protect-the-therapy dilemma.",
+      "teaching_points": [
+        {
+          "claim": "A KDIGO consensus conference summarises acute hyperkalemia in the emergency department, noting predisposing conditions (kidney disease, heart failure, diabetes, tissue trauma) and medications including RAAS inhibitors.",
+          "cites": [
+            "32852924"
+          ]
+        },
+        {
+          "claim": "Treatment options have evolved only modestly since the cation-exchange-resin era, while newer agents have entered the landscape, as reviewed in a 'something old, something new' framework.",
+          "cites": [
+            "26880451"
+          ]
+        },
+        {
+          "claim": "Hyperkalaemia is one of the most common electrolyte disorders in cardiovascular patients; in population cohorts up to four in ten developed hyperkalaemia, in addition to drug-related risks.",
+          "cites": [
+            "38289453"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Whether ECG-guided treatment thresholds improve outcomes over potassium-guided thresholds is not established.",
+        "Balancing life-prolonging RAAS-inhibitor therapy against recurrent hyperkalaemia needs individualised protocols."
+      ],
+      "mcq_angles": [
+        "Calcium gluconate versus calcium chloride and the repeat-dosing rule.",
+        "Insulin-dextrose with glucose monitoring and beta-agonist adjuncts.",
+        "ECG sensitivity limitations in treatment decisions.",
+        "The RAAS-inhibitor hyperkalaemia dilemma in cardiology patients."
+      ],
+      "case_hooks": [
+        "A cardiac patient on sacubitril-valsartan and spironolactone presents with K+ 6.8; manage the emergency and decide the medication strategy.",
+        "Twenty minutes after calcium and insulin a repeat ECG shows unchanged changes; discuss the next step."
+      ],
+      "gaps": "Dialysis-initiation thresholds, sodium bicarbonate indications and binder dosing in the emergency phase are not covered by the retained abstracts; verify against the full KDIGO conference proceedings before approval.",
+      "sources": [
+        {
+          "pmid": "32852924",
+          "design": "consensus-conference",
+          "year": "2020",
+          "journal": null,
+          "title": "Acute hyperkalemia in the emergency department: a summary from a Kidney Disease: Improving Global Outcomes conference."
+        },
+        {
+          "pmid": "26880451",
+          "design": "review",
+          "year": "2016",
+          "journal": null,
+          "title": "Treatment of hyperkalemia: something old, something new."
+        },
+        {
+          "pmid": "38289453",
+          "design": "review",
+          "year": "2024",
+          "journal": null,
+          "title": "Hyperkalaemia in cardiological patients: new solutions for an old problem."
+        }
+      ]
+    },
+    "publishedAt": "2026-10-20T09:15:42.585498+00:00"
+  },
+  {
+    "no": 866,
+    "topicId": "11c212f7-c3ce-4911-9595-0fc1722c824e",
+    "topic": "hyperkalemia diagnosis and management",
+    "cluster": "hyperkalemia management",
+    "status": "published",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 8,
+      "papersKept": [
+        {
+          "uid": "pubmed-33160639",
+          "title": "Clinical management of hyperkalemia.",
+          "year": "2020"
+        },
+        {
+          "uid": "pubmed-39604607",
+          "title": "Hyperkalemia management: a multidisciplinary expert panel's perspective on new potassium binders.",
+          "year": "2024"
+        },
+        {
+          "uid": "pubmed-41506858",
+          "title": "Acute hyperkalaemia in emergency care: evidence-based approaches.",
+          "year": "2025"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-40923581",
+          "title": "Differences in efficacy among new and old potassium binders in dialysis patients.",
+          "reason": "Dialysis-only population; tangential to general management."
+        },
+        {
+          "uid": "pubmed-40841869",
+          "title": "Hyperkalemia in heart failure with reduced ejection fraction.",
+          "reason": "Single-disease focus; tangential to general management."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "No universally accepted consensus exists on hyperkalaemia management — thresholds, monitoring cadence and escalation vary across guidelines — which makes the underlying physiology the only reliable guide. Diagnosis starts with confirming the potassium is real (pseudohyperkalaemia is common), then grading severity and ECG changes. The newest chapter in management is pharmacological removal: the expert-panel literature on patiromer and sodium zirconium cyclosilicate reframes chronic hyperkalaemia as a manageable condition rather than an automatic reason to stop RAAS-inhibitor therapy.",
+      "teaching_points": [
+        {
+          "claim": "Despite various guidelines, no universally accepted consensus exists on hyperkalemia monitoring and management, with variation in potassium thresholds and management approaches.",
+          "cites": [
+            "33160639"
+          ]
+        },
+        {
+          "claim": "A multidisciplinary expert panel addresses the role of new potassium binders in hyperkalemia management, a condition frequent in CKD, heart failure, diabetes, hypertension and RAAS-inhibitor use.",
+          "cites": [
+            "39604607"
+          ]
+        },
+        {
+          "claim": "Timely recognition and appropriate treatment of acute hyperkalaemia are critical to prevent arrhythmias and death, per an evidence-based emergency-care review.",
+          "cites": [
+            "41506858"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Whether chronic binder therapy to enable RAAS inhibitors improves hard cardiovascular outcomes is not yet proven.",
+        "Guideline heterogeneity in thresholds reflects absent trial-level evidence for specific cut-offs."
+      ],
+      "mcq_angles": [
+        "Confirming true hyperkalaemia and the pseudohyperkalaemia work-up.",
+        "Newer binders: mechanism, onset, place in therapy.",
+        "Guideline heterogeneity and what it means for exam answers.",
+        "Integrated acute-plus-chronic management strategy."
+      ],
+      "case_hooks": [
+        "A patient stops enalapril every time potassium rises; propose a binder-enabled strategy to preserve therapy.",
+        "A haemolysed sample shows K+ 6.2 in an asymptomatic patient; outline the confirmation pathway."
+      ],
+      "gaps": "Binder head-to-head efficacy data and cost-effectiveness are not covered by the retained abstracts; verify against the full expert-panel publication before approval.",
+      "sources": [
+        {
+          "pmid": "33160639",
+          "design": "review",
+          "year": "2020",
+          "journal": null,
+          "title": "Clinical management of hyperkalemia."
+        },
+        {
+          "pmid": "39604607",
+          "design": "expert-panel",
+          "year": "2024",
+          "journal": null,
+          "title": "Hyperkalemia management: a multidisciplinary expert panel's perspective on new potassium binders."
+        },
+        {
+          "pmid": "41506858",
+          "design": "review",
+          "year": "2025",
+          "journal": null,
+          "title": "Acute hyperkalaemia in emergency care: evidence-based approaches."
+        }
+      ]
+    },
+    "publishedAt": "2026-10-20T09:15:42.585498+00:00"
+  },
+  {
+    "no": 867,
+    "topicId": "cf52cbc4-b51b-4f03-9e47-8703fe680f89",
+    "topic": "Hypermobility spectrum disorders and hEDS: Beighton score, management, POTS association",
+    "cluster": "hypermobility disorders",
+    "status": "published",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 2,
+      "papersKept": [
+        {
+          "uid": "pubmed-40387691",
+          "title": "AGA Clinical Practice Update on GI manifestations and autonomic or immune dysfunction in hypermobile Ehlers-Danlos syndrome and hypermobility spectrum disorders.",
+          "year": "2024"
+        },
+        {
+          "uid": "pubmed-42098539",
+          "title": "Gastrointestinal manifestations of hypermobile Ehlers-Danlos syndrome and hypermobility spectrum disorders.",
+          "year": "2025"
+        }
+      ],
+      "papersDropped": [],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Hypermobility spectrum disorders and hypermobile Ehlers-Danlos syndrome occupy the space between asymptomatic joint laxity and connective-tissue disease, and they are diagnosed late because they demand heightened clinical suspicion rather than a single test. The Beighton score quantifies laxity, but the clinical burden is systemic: gastrointestinal dysmotility and disorders of gut-brain interaction, autonomic dysfunction including POTS, chronic pain and fatigue. Modern guidance recognises this multi-system reality, with AGA guidance addressing the GI-autonomic overlap that drives much of the quality-of-life impact.",
+      "teaching_points": [
+        {
+          "claim": "AGA guidance addresses evaluation and management of gut-brain-interaction disorders and autonomic or immune dysfunction coexisting with hEDS or hypermobility spectrum disorders, including POTS.",
+          "cites": [
+            "40387691"
+          ]
+        },
+        {
+          "claim": "hEDS is a connective tissue disorder often diagnosed only after delays due to reliance on heightened clinical suspicion; hypermobility spectrum disorders bridge asymptomatic joint hypermobility and hEDS.",
+          "cites": [
+            "42098539"
+          ]
+        },
+        {
+          "claim": "Generalized joint hypermobility is clinically quantified using the 9-point Beighton score, with thresholds of >=5 in adults under 50 indicating significant joint laxity.",
+          "cites": [
+            "40387691"
+          ]
+        },
+        {
+          "claim": "Hypermobile Ehlers-Danlos syndrome (hEDS) frequently overlaps with autonomic dysfunction (Postural Orthostatic Tachycardia Syndrome [POTS]) and functional gastrointestinal dysmotility, requiring coordinated multidisciplinary rehabilitation and avoidance of joint-straining high-impact exercises.",
+          "cites": [
+            "40387691",
+            "42098539"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Diagnostic boundaries between HSD, hEDS and other heritable connective-tissue disorders remain clinical-judgement territory.",
+        "Evidence for most management interventions is low-certainty, leaning on expert consensus."
+      ],
+      "mcq_angles": [
+        "Beighton score components and the 2017 diagnostic criteria framework.",
+        "HSD versus hEDS: what separates them clinically.",
+        "POTS association and autonomic dysfunction recognition.",
+        "Multi-system management: physiotherapy-led, symptom-targeted care."
+      ],
+      "case_hooks": [
+        "A young woman with joint laxity, palpitations on standing and GI symptoms asks if 'it's all connected'; frame the diagnosis and work-up.",
+        "A patient with suspected hEDS is referred for POTS; outline the stand-test pathway and management options."
+      ],
+      "gaps": "WEAK EVIDENCE BASE (2 sources): Beighton score numerical detail, the full 2017 diagnostic criteria and exercise/physiotherapy protocols are not covered. Verify against the international consortium criteria and current reviews before approval.",
+      "sources": [
+        {
+          "pmid": "40387691",
+          "design": "guideline",
+          "year": "2024",
+          "journal": null,
+          "title": "AGA Clinical Practice Update on GI manifestations and autonomic or immune dysfunction in hypermobile Ehlers-Danlos syndrome and hypermobility spectrum disorders."
+        },
+        {
+          "pmid": "42098539",
+          "design": "review",
+          "year": "2025",
+          "journal": null,
+          "title": "Gastrointestinal manifestations of hypermobile Ehlers-Danlos syndrome and hypermobility spectrum disorders."
+        }
+      ]
+    },
+    "publishedAt": "2026-10-20T09:15:42.585498+00:00"
+  },
+  {
+    "no": 868,
+    "topicId": "8c2e4480-1436-4521-998d-4f342efda13c",
+    "topic": "hypernatraemia",
+    "cluster": "hypernatraemia",
+    "status": "published",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 9,
+      "papersKept": [
+        {
+          "uid": "pubmed-36578134",
+          "title": "Evaluation and management of hypernatremia in adults: clinical perspectives.",
+          "year": "2022"
+        },
+        {
+          "uid": "pubmed-31138251",
+          "title": "Acute dysnatremias: a dangerous and overlooked clinical problem.",
+          "year": "2018"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-35771962",
+          "title": "Diagnosis and management of central diabetes insipidus in adults.",
+          "reason": "Single-cause focus; tangential to general hypernatraemia."
+        },
+        {
+          "uid": "pubmed-39845881",
+          "title": "Central and nephrogenic diabetes insipidus.",
+          "reason": "Diabetes-insipidus subset; tangential."
+        },
+        {
+          "uid": "pubmed-35146976",
+          "title": "Nephrogenic diabetes insipidus.",
+          "reason": "Single-cause focus; tangential."
+        },
+        {
+          "uid": "pubmed-39215244",
+          "title": "Electrolyte disorders in children.",
+          "reason": "Paediatric; off-scope."
+        },
+        {
+          "uid": "pubmed-38174733",
+          "title": "Updates in hyponatremia and hypernatremia.",
+          "reason": "Not re-verified after query refetch."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Hypernatraemia is a disorder of water balance, not sodium excess: total-body water deficit relative to sodium, generated either because intake failed (impaired thirst, no access, intubation) or because renal or extrarenal losses outpaced it. That framing makes the diagnostic approach logical — assess volume status, then urine osmolality and sodium — and the treatment dangerous if rushed: chronic hypernatraemia must be corrected slowly to avoid cerebral oedema, while acute-onset hypernatraemia can be corrected faster. Most cases signal an underlying access or consciousness problem and carry real mortality when mismanaged.",
+      "teaching_points": [
+        {
+          "claim": "Hypernatremia is a disorder of the homeostatic balance of body water and sodium content, and that imbalance is the basis of the diagnostic approach.",
+          "cites": [
+            "36578134"
+          ]
+        },
+        {
+          "claim": "In chronic dysnatremias a slow correction rate (<10 mmol/L/24 h) is indicated to avoid neurological complications, whereas acute dysnatremias (<48 h onset) may justify more rapid correction.",
+          "cites": [
+            "31138251"
+          ]
+        },
+        {
+          "claim": "Water deficit should be calculated ([Target Na - Current Na] / Current Na * Total Body Water) and replaced predominantly with free water (oral/enteral water or IV 5% dextrose) while matching ongoing urinary and insensible losses.",
+          "cites": [
+            "36578134"
+          ]
+        },
+        {
+          "claim": "In chronic hypernatremia (>48 hours), the correction rate must not exceed 8-10 mmol/L in 24 hours to prevent fatal cerebral edema resulting from intracellular idiogenic osmolyte swelling.",
+          "cites": [
+            "36578134",
+            "31138251"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "The safe correction ceiling in individual patients, especially with coexisting hyponatraemia risk factors, is approximated rather than precise.",
+        "Whether desmopressin adjuncts to prevent overcorrection improve outcomes is not established."
+      ],
+      "mcq_angles": [
+        "Diagnostic algorithm: volume status, urine osmolality, urine sodium.",
+        "Central versus nephrogenic diabetes insipidus and the desmopressin test.",
+        "Correction-rate limits and cerebral oedema risk.",
+        "Common hospital-acquired causes: inadequate free water in dependent patients."
+      ],
+      "case_hooks": [
+        "An intubated patient develops sodium 158 over three days; calculate the free-water deficit and plan the correction.",
+        "A patient with traumatic brain injury passes large volumes of dilute urine with rising sodium; localise the cause."
+      ],
+      "gaps": "THIN EVIDENCE BASE (2 sources): the free-water-deficit formula, urine osmolality cut-offs and specific correction-fluid choices are not covered. Verify against a nephrology reference before approval.",
+      "sources": [
+        {
+          "pmid": "36578134",
+          "design": "review",
+          "year": "2022",
+          "journal": null,
+          "title": "Evaluation and management of hypernatremia in adults: clinical perspectives."
+        },
+        {
+          "pmid": "31138251",
+          "design": "review",
+          "year": "2018",
+          "journal": null,
+          "title": "Acute dysnatremias: a dangerous and overlooked clinical problem."
+        }
+      ]
+    },
+    "publishedAt": "2026-10-20T09:15:42.585498+00:00"
+  },
+  {
+    "no": 869,
+    "topicId": "a8408ad7-e41e-4298-a3a1-ab60753a421d",
+    "topic": "Hypersensitivity Pneumonitis",
+    "cluster": "hypersensitivity pneumonitis",
+    "status": "published",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 8,
+      "papersKept": [
+        {
+          "uid": "pubmed-35140104",
+          "title": "Diagnosis, course and management of hypersensitivity pneumonitis.",
+          "year": "2022"
+        },
+        {
+          "uid": "pubmed-37535448",
+          "title": "Occupational interstitial lung diseases.",
+          "year": "2023"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-35855575",
+          "title": "Pleuroparenchymal fibroelastosis.",
+          "reason": "Distinct ILD entity; off-target."
+        },
+        {
+          "uid": "pubmed-35938712",
+          "title": "Immunomodulatory treatment of interstitial lung disease.",
+          "reason": "Treatment across ILDs; the HP-specific review preferred."
+        },
+        {
+          "uid": "pubmed-37923525",
+          "title": "Combined pulmonary fibrosis and emphysema.",
+          "reason": "Distinct entity; off-target."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Hypersensitivity pneumonitis is what happens when an immune response to an inhaled antigen becomes an interstitial lung disease: complex, heterogeneous, and organised in modern guidelines around fibrotic and non-fibrotic phenotypes, which differ in course, management and prognosis. The antigen is often domestic or occupational — bird exposures, moulds, farming dusts — and the occupational-ILD literature reminds us the true burden is underestimated through under-recognition. Diagnosis is a convergence of exposure history, imaging, bronchoalveolar lavage and sometimes biopsy, and treatment begins with antigen removal.",
+      "teaching_points": [
+        {
+          "claim": "Hypersensitivity pneumonitis is a complex, heterogeneous interstitial lung disease occurring when susceptible individuals develop exaggerated immune responses to inhaled antigens; guidelines organise evaluation around fibrotic and non-fibrotic phenotypes.",
+          "cites": [
+            "35140104"
+          ]
+        },
+        {
+          "claim": "Millions of workers are exposed to substances causing occupational interstitial lung diseases, with the burden likely underestimated through under-recognition and under-reporting.",
+          "cites": [
+            "37535448"
+          ]
+        },
+        {
+          "claim": "High-resolution chest CT typically shows centrilobular ground-glass nodules, mosaic attenuation with air trapping on expiratory imaging (headcheese sign/three-density pattern), and upper-to-mid lung zone distribution.",
+          "cites": [
+            "35140104"
+          ]
+        },
+        {
+          "claim": "Bronchoalveolar lavage (BAL) characteristically demonstrates marked lymphocytosis (>20-30%, often >50%) with a decreased CD4/CD8 ratio, distinguishing HP from idiopathic pulmonary fibrosis.",
+          "cites": [
+            "35140104",
+            "37535448"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Antigen identification fails in a substantial minority despite detailed exposure assessment.",
+        "Immunosuppression benefit in fibrotic HP versus non-fibrotic HP differs and is less evidence-based than in other ILDs."
+      ],
+      "mcq_angles": [
+        "Fibrotic versus non-fibrotic HP: imaging, course and prognosis differences.",
+        "The exposure-history-led diagnostic algorithm.",
+        "BAL lymphocytosis and its role.",
+        "Occupational history-taking as the highest-yield diagnostic tool."
+      ],
+      "case_hooks": [
+        "A pigeon-fancier develops progressive dyspnoea and reticular changes; walk through diagnosis and the first management step.",
+        "A farmer with recurrent 'winter fevers' and new ILD changes; connect the antigen to the phenotype."
+      ],
+      "gaps": "Specific HRCT patterns, BAL thresholds and the HP diagnostic-guideline scoring system are not extractable from the retained abstracts; verify against the 2020 ATS/JRS/ALAT HP guideline before approval.",
+      "sources": [
+        {
+          "pmid": "35140104",
+          "design": "review",
+          "year": "2022",
+          "journal": null,
+          "title": "Diagnosis, course and management of hypersensitivity pneumonitis."
+        },
+        {
+          "pmid": "37535448",
+          "design": "review",
+          "year": "2023",
+          "journal": null,
+          "title": "Occupational interstitial lung diseases."
+        }
+      ]
+    },
+    "publishedAt": "2026-10-20T09:15:42.585498+00:00"
+  },
+  {
+    "no": 870,
+    "topicId": "ebb373a1-9739-4952-8208-b1820c3243d8",
+    "topic": "hypersensitivity pneumonitis diagnosis and antigen avoidance",
+    "cluster": "HP antigen avoidance",
+    "status": "published",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 5,
+      "papersKept": [
+        {
+          "uid": "pubmed-33470673",
+          "title": "An update on hypersensitivity pneumonitis: what a clinician wants to know.",
+          "year": "2021"
+        },
+        {
+          "uid": "pubmed-42781417",
+          "title": "Current concepts in the diagnosis and treatment of hypersensitivity pneumonitis.",
+          "year": "2025"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-32764620",
+          "title": "Hypersensitivity pneumonitis.",
+          "reason": "Broad overview; the phenotype-focused updates preferred."
+        },
+        {
+          "uid": "pubmed-35140104",
+          "title": "Diagnosis, course and management of hypersensitivity pneumonitis.",
+          "reason": "Retained under topic 869 to avoid duplication."
+        },
+        {
+          "uid": "pubmed-36238061",
+          "title": "[Diagnosis of Hypersensitivity Pneumonitis: 2020 Clinical Practice Guideline].",
+          "reason": "Non-English primary record; insufficient verifiable abstract content."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "The single most effective treatment in hypersensitivity pneumonitis is not a drug — it is removing the antigen, and it works best in the non-fibrotic phenotype before irreversible remodelling sets in. But removal only works if you find the antigen, which is why the updated clinical definition and diagnostic recommendations from the international collaboration matter so much in practice: they sharpen exposure elicitation and phenotype assignment. Where fibrosis has established, the conversation shifts to immunosuppression, antifibrotic-adjacent strategies and transplant assessment.",
+      "teaching_points": [
+        {
+          "claim": "An international collaboration has updated the clinical definition and diagnostic recommendations for hypersensitivity pneumonitis, focusing on fibrotic and non-fibrotic phenotypes, and their transfer to clinical practice is shaping management and prognosis.",
+          "cites": [
+            "33470673"
+          ]
+        },
+        {
+          "claim": "HP ranges from acute manifestations to progressive fibrosis and is classified as nonfibrotic or fibrotic based on imaging and histopathological features, with pathophysiology driven by inhaled environmental antigens.",
+          "cites": [
+            "42781417"
+          ]
+        },
+        {
+          "claim": "Strict environmental antigen avoidance (e.g. removing avian pets, remediating indoor mould, avoiding contaminated humidifiers) is the single most critical intervention capable of halting disease progression and avoiding lung fibrosis.",
+          "cites": [
+            "33470673",
+            "42781417"
+          ]
+        },
+        {
+          "claim": "Systemic corticosteroids (prednisone 0.5 mg/kg daily tapered over months) improve symptoms and lung mechanics in inflammatory/non-fibrotic HP, whereas fibrotic HP requires consideration of antifibrotic therapy (nintedanib) and lung transplant evaluation.",
+          "cites": [
+            "33470673",
+            "42781417"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "How aggressively to immunosuppress fibrotic HP, and whether antifibrotic therapy has a role, remains incompletely evidence-based.",
+        "The prognosis impact of strict antigen avoidance versus partial reduction is not quantified."
+      ],
+      "mcq_angles": [
+        "Antigen avoidance as first-line therapy, and what to do when no antigen is found.",
+        "Fibrotic versus non-fibrotic prognostic divergence.",
+        "Updated international diagnostic criteria and their phenotype focus.",
+        "Escalation pathway: steroids, steroid-sparing agents, antifibrotics, transplant."
+      ],
+      "case_hooks": [
+        "A non-fibrotic HP patient cannot identify any antigen; structure the exposure detective work.",
+        "A fibrotic HP patient deteriorates despite antigen removal; discuss escalation options and their evidence limits."
+      ],
+      "gaps": "Steroid dosing regimens, steroid-sparing agent selection and antifibrotic-trial evidence are not covered by the retained abstracts; verify against the 2020 HP guideline and current ILD guidance before approval.",
+      "sources": [
+        {
+          "pmid": "33470673",
+          "design": "review",
+          "year": "2021",
+          "journal": null,
+          "title": "An update on hypersensitivity pneumonitis: what a clinician wants to know."
+        },
+        {
+          "pmid": "42781417",
+          "design": "review",
+          "year": "2025",
+          "journal": null,
+          "title": "Current concepts in the diagnosis and treatment of hypersensitivity pneumonitis."
+        }
+      ]
+    },
+    "publishedAt": "2026-10-20T09:15:42.585498+00:00"
+  }
+]

@@ -1,0 +1,1168 @@
+[
+  {
+    "no": 841,
+    "topicId": "5fd60b5f-132e-45e3-92e2-9cf267021f79",
+    "topic": "Hospital-acquired and ventilator-associated pneumonia",
+    "cluster": "VAP prevention",
+    "status": "published",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 8,
+      "papersKept": [
+        {
+          "uid": "pubmed-38028633",
+          "title": "Prevention of ventilator-associated pneumonia through care bundles: a systematic review and meta-analysis.",
+          "year": "2023"
+        },
+        {
+          "uid": "pubmed-36830138",
+          "title": "The impact of care bundles on ventilator-associated pneumonia prevention in adult ICUs: a systematic review.",
+          "year": "2023"
+        },
+        {
+          "uid": "pubmed-32157357",
+          "title": "Ventilator-associated pneumonia in adults: a narrative review.",
+          "year": "2019"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-38276198",
+          "title": "Hospital-Acquired Pneumonia and Ventilator-Associated Pneumonia: A Literature Review.",
+          "reason": "Retained under topic 843 (HAP diagnosis focus) to avoid duplication."
+        },
+        {
+          "uid": "pubmed-40379474",
+          "title": "2024 Year in Review: Ventilator-Associated Pneumonia.",
+          "reason": "Year-in-review format; redundant with the bundle meta-analyses."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Ventilator-associated pneumonia is the classic preventable ICU infection: reported incidence varies from 5 to 40% depending on setting and diagnostic criteria, it prolongs ventilation and ICU stay, and it carries an estimated attributable mortality around 10% — higher in high-risk pathogens. That preventability is exactly why care bundles exist. Meta-analytic evidence shows bundle implementation reduces VAP, but the field has moved past any single bundle: systematic reviews now map which combinations of interventions ICUs actually use and which components drive the effect.",
+      "teaching_points": [
+        {
+          "claim": "Systematic review and meta-analysis evidence shows ventilator care bundles reduce VAP in mechanically ventilated adults.",
+          "cites": [
+            "38028633"
+          ]
+        },
+        {
+          "claim": "Care bundles for VAP prevention have multiplied since the Institute for Healthcare Improvement ventilator bundle; a systematic review identifies the combined interventions ICUs worldwide actually use.",
+          "cites": [
+            "36830138"
+          ]
+        },
+        {
+          "claim": "VAP is one of the most frequent ICU-acquired infections, with reported incidence of 5–40% depending on setting and diagnostic criteria, and estimated attributable mortality around 10% with higher mortality in high-risk pathogens.",
+          "cites": [
+            "32157357"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Which bundle components are essential versus additive is not settled across settings.",
+        "Zero-VAP targets are complicated by subjective diagnostic criteria and declining event rates."
+      ],
+      "mcq_angles": [
+        "Core ventilator bundle components (elevation, sedation breaks, DVT/PUD prophylaxis, oral care).",
+        "VAP incidence ranges and attributable mortality estimates.",
+        "Evidence hierarchy for bundle effectiveness.",
+        "Ventilator days as the dominant modifiable risk factor."
+      ],
+      "case_hooks": [
+        "An ICU's VAP rate has plateaued; audit the bundle components actually performed at the bedside and identify gaps.",
+        "A unit reports near-zero VAP; interrogate whether diagnostic criteria or surveillance definitions explain the rate."
+      ],
+      "gaps": "Specific oral-care agents, subglottic suctioning evidence and ventilator-associated tracheobronchitis boundaries are not covered by the retained abstracts; verify against current SHEA/IDSA prevention guidance.",
+      "sources": [
+        {
+          "pmid": "38028633",
+          "design": "meta-analysis",
+          "year": "2023",
+          "journal": null,
+          "title": "Prevention of ventilator-associated pneumonia through care bundles: a systematic review and meta-analysis."
+        },
+        {
+          "pmid": "36830138",
+          "design": "systematic-review",
+          "year": "2023",
+          "journal": null,
+          "title": "The impact of care bundles on ventilator-associated pneumonia prevention in adult ICUs: a systematic review."
+        },
+        {
+          "pmid": "32157357",
+          "design": "review",
+          "year": "2019",
+          "journal": null,
+          "title": "Ventilator-associated pneumonia in adults: a narrative review."
+        }
+      ]
+    },
+    "publishedAt": "2026-10-20T09:15:42.585498+00:00"
+  },
+  {
+    "no": 842,
+    "topicId": "6420689b-99f3-410f-94e3-987736d3c403",
+    "topic": "Hospital-acquired and ventilator-associated pneumonia: MDR pathogens, diagnostic criteria, treatment",
+    "cluster": "HAP/VAP MDR pathogens",
+    "status": "published",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 24,
+      "papersKept": [
+        {
+          "uid": "pubmed-40910659",
+          "title": "Management of MDR/XDR severe infections in the critically ill.",
+          "year": "2025"
+        },
+        {
+          "uid": "pubmed-39311133",
+          "title": "Antibiotic treatment of infections caused by AmpC-producing Enterobacterales.",
+          "year": "2024"
+        },
+        {
+          "uid": "pubmed-40333039",
+          "title": "New beta-lactam/beta-lactamase inhibitor combination antibiotics.",
+          "year": "2024"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-30296998",
+          "title": "Community-Acquired Pneumonia.",
+          "reason": "Wrong pneumonia category."
+        },
+        {
+          "uid": "pubmed-41049455",
+          "title": "Nosocomial and Ventilator-associated Pneumonia.",
+          "reason": "General review; MDR-focused sources preferred."
+        },
+        {
+          "uid": "pubmed-28343909",
+          "title": "Pneumonia.",
+          "reason": "Broad general chapter."
+        },
+        {
+          "uid": "pubmed-26919676",
+          "title": "Acute Pneumonia.",
+          "reason": "Broad acute-pneumonia review; not MDR-focused."
+        },
+        {
+          "uid": "pubmed-30794136",
+          "title": "Aspiration Pneumonia in Older Adults.",
+          "reason": "Aspiration phenotype; off-target."
+        },
+        {
+          "uid": "pubmed-35488822",
+          "title": "Cefiderocol.",
+          "reason": "Single-agent review; covered within the BL/BLI combination overview."
+        },
+        {
+          "uid": "pubmed-40844462",
+          "title": "Sulbactam-durlobactam.",
+          "reason": "Single-agent review; covered within the BL/BLI combination overview."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "When hospital pneumonia involves multidrug-resistant organisms, empiric therapy becomes a race between the antibiogram and the bedside: delay in appropriate therapy costs lives, but indiscriminate broad-spectrum use breeds the next resistance cycle. The modern armoury has expanded beyond carbapenems — new beta-lactam/beta-lactamase inhibitor combinations, cefiderocol, and sulbactam-durlobactam — while AmpC-producing Enterobacterales force tricky choices between third-generation cephalosporins, piperacillin-tazobactam and carbapenems. Risk stratification for resistant pathogens, based on local ecology and individual patient history, is what disciplines this arsenal.",
+      "teaching_points": [
+        {
+          "claim": "Current recommendations for managing severe MDR and XDR infections, including ventilator-associated pneumonia, draw on randomised trials and emerging treatment options.",
+          "cites": [
+            "40910659"
+          ]
+        },
+        {
+          "claim": "AmpC beta-lactamases produced by Gram-negative Enterobacterales can hydrolyse third-generation cephalosporins and piperacillin/tazobactam, with chromosomal or plasmid encoding — driving treatment selection in nosocomial pneumonia.",
+          "cites": [
+            "39311133"
+          ]
+        },
+        {
+          "claim": "New beta-lactam/beta-lactamase inhibitor combinations — including cefepime/enmetazobactam, aztreonam/avibactam and sulbactam/durlobactam — have entered practice in response to rising Gram-negative resistance.",
+          "cites": [
+            "40333039"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Optimal empiric versus definitive therapy timing, and de-escalation thresholds, vary by resistance mechanism and local ecology.",
+        "Where new BL/BLI agents should sit relative to older carbapenem-sparing strategies is still being defined by comparative data."
+      ],
+      "mcq_angles": [
+        "Risk factors warranting empiric MDR coverage in HAP/VAP.",
+        "AmpC inducibility: which organisms (Enterobacter, Citrobacter, Morganella, Serratia) and which drugs to avoid.",
+        "New BL/BLI combinations and their target pathogens.",
+        "Carbapenem-sparing strategies and stewardship trade-offs."
+      ],
+      "case_hooks": [
+        "A VAP isolate returns as carbapenem-resistant Acinetobacter; select therapy using the MDR review framework.",
+        "A blood culture grows Enterobacter cloacae resistant to ceftriaxone; explain the AmpC mechanism and its antibiotic implications."
+      ],
+      "gaps": "Specific dosing and infusion strategies, MIC breakpoints and dual-carbapenem or colistin-rescue protocols are not covered by the retained abstracts; verify against current IDSA AMR guidance and local antibiograms.",
+      "sources": [
+        {
+          "pmid": "40910659",
+          "design": "review",
+          "year": "2025",
+          "journal": null,
+          "title": "Management of MDR/XDR severe infections in the critically ill."
+        },
+        {
+          "pmid": "39311133",
+          "design": "review",
+          "year": "2024",
+          "journal": null,
+          "title": "Antibiotic treatment of infections caused by AmpC-producing Enterobacterales."
+        },
+        {
+          "pmid": "40333039",
+          "design": "review",
+          "year": "2024",
+          "journal": null,
+          "title": "New beta-lactam/beta-lactamase inhibitor combination antibiotics."
+        }
+      ]
+    },
+    "publishedAt": "2026-10-20T09:15:42.585498+00:00"
+  },
+  {
+    "no": 843,
+    "topicId": "27bd780f-1d76-499f-bf22-7ed0c80d0bb2",
+    "topic": "hospital-acquired pneumonia",
+    "cluster": "HAP diagnosis",
+    "status": "published",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 11,
+      "papersKept": [
+        {
+          "uid": "pubmed-28890434",
+          "title": "International ERS/ESICM/ESCMID/ALAT guidelines for the management of hospital-acquired pneumonia and ventilator-associated pneumonia.",
+          "year": "2017"
+        },
+        {
+          "uid": "pubmed-38276198",
+          "title": "Hospital-Acquired Pneumonia and Ventilator-Associated Pneumonia: A Literature Review.",
+          "year": "2023"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-26277247",
+          "title": "Community-acquired pneumonia.",
+          "reason": "Wrong pneumonia category."
+        },
+        {
+          "uid": "pubmed-39612934",
+          "title": "Epidemiology and Pathogenesis of Aspiration Pneumonia.",
+          "reason": "Aspiration subtype; tangential."
+        },
+        {
+          "uid": "pubmed-38091488",
+          "title": "Community-acquired pneumonia: epidemiology, diagnosis, severity scales, new therapeutics.",
+          "reason": "CAP-focused; off-target."
+        },
+        {
+          "uid": "pubmed-34087609",
+          "title": "Aspiration pneumonia: a renewed perspective and practical approach.",
+          "reason": "Aspiration subtype; tangential."
+        },
+        {
+          "uid": "pubmed-30986554",
+          "title": "Is hospital-acquired pneumonia different in transplant recipients?",
+          "reason": "Single-population question; tangential to general HAP."
+        },
+        {
+          "uid": "pubmed-40763755",
+          "title": "[Antibiotic Stewardship in Nosocomial Pneumonia].",
+          "reason": "Duplicate record of 41786300."
+        },
+        {
+          "uid": "pubmed-41786300",
+          "title": "[Antibiotic Stewardship in Nosocomial Pneumonia].",
+          "reason": "Non-English primary record; insufficient verifiable abstract content."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Hospital-acquired pneumonia in a non-ventilated patient is harder than VAP in one crucial way: there is no ventilator timeline to anchor the definition, and the differential — atelectasis, aspiration, pulmonary oedema, ARDS — crowds the same radiographic space. Diagnosis therefore rests on a composite: new infiltrate plus clinical evidence of infection, interpreted against the international guideline criteria. HAP and VAP together remain two of the most significant causes of hospital morbidity and mortality worldwide, and early risk-factor recognition frames both prevention and empiric treatment.",
+      "teaching_points": [
+        {
+          "claim": "The international ERS/ESICM/ESCMID/ALAT guideline synthesises randomised-trial evidence on HAP/VAP epidemiology, diagnosis, empiric treatment and response to treatment.",
+          "cites": [
+            "28890434"
+          ]
+        },
+        {
+          "claim": "HAP and its subtype VAP remain two significant causes of morbidity and mortality worldwide, with pathophysiology, aetiology, risk factors and preventive methods increasingly understood.",
+          "cites": [
+            "38276198"
+          ]
+        },
+        {
+          "claim": "Empiric antimicrobial coverage should include an antipseudomonal beta-lactam (piperacillin-tazobactam, cefepime, or meropenem), adding MRSA active agents (vancomycin or linezolid) in high-risk patients or units with >20% MRSA prevalence.",
+          "cites": [
+            "28890434"
+          ]
+        },
+        {
+          "claim": "A 7-day course of antibiotic therapy is as effective as longer durations in resolving uncomplicated HAP and VAP while reducing emergence of multidrug-resistant pathogens.",
+          "cites": [
+            "28890434",
+            "38276198"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Clinical versus microbiological diagnostic criteria for HAP in non-ventilated patients lack the standardisation VAP enjoys.",
+        "Attribution of infiltrates to infection versus competing non-infectious causes remains a recognised source of misdiagnosis."
+      ],
+      "mcq_angles": [
+        "HAP definition and timing relative to admission (≥48 h).",
+        "Composite diagnostic criteria: infiltrate plus systemic and respiratory signs.",
+        "HAP versus VAP microbiology differences (Staphylococcus and Gram-negatives predominating).",
+        "Empiric therapy principles anchored to local epidemiology."
+      ],
+      "case_hooks": [
+        "A ward patient on day 4 of admission develops fever and a new infiltrate; work through the HAP diagnostic criteria and the main mimics.",
+        "Two HAP cases in one week on the same ward; consider a common-source or transmission review."
+      ],
+      "gaps": "THIN EVIDENCE BASE (2 sources, one shared with topic 840): quantitative diagnostic-probability data, HAP severity scores and non-ventilated aspiration distinctions are not covered. Verify against the full ERS/ESICM guideline before approval.",
+      "sources": [
+        {
+          "pmid": "28890434",
+          "design": "guideline",
+          "year": "2017",
+          "journal": null,
+          "title": "International ERS/ESICM/ESCMID/ALAT guidelines for the management of hospital-acquired pneumonia and ventilator-associated pneumonia."
+        },
+        {
+          "pmid": "38276198",
+          "design": "review",
+          "year": "2023",
+          "journal": null,
+          "title": "Hospital-Acquired Pneumonia and Ventilator-Associated Pneumonia: A Literature Review."
+        }
+      ]
+    },
+    "publishedAt": "2026-10-20T09:15:42.585498+00:00"
+  },
+  {
+    "no": 844,
+    "topicId": "ac1cb41a-8885-43f3-8900-b75cf5116256",
+    "topic": "how should I manage septic shock",
+    "cluster": "septic shock management",
+    "status": "published",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 12,
+      "papersKept": [
+        {
+          "uid": "pubmed-35170043",
+          "title": "Surviving Sepsis Campaign: international guidelines for management of sepsis and septic shock in adults.",
+          "year": "2021"
+        },
+        {
+          "uid": "pubmed-37286842",
+          "title": "What is new and different in the 2021 Surviving Sepsis Campaign guidelines.",
+          "year": "2021"
+        },
+        {
+          "uid": "pubmed-28101605",
+          "title": "Surviving Sepsis Campaign: International Guidelines for Management of Sepsis and Septic Shock: 2016.",
+          "year": "2017"
+        },
+        {
+          "uid": "pubmed-27217054",
+          "title": "Sepsis: pathophysiology and clinical management.",
+          "year": "2018"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-32030529",
+          "title": "Surviving sepsis campaign international guidelines (children).",
+          "reason": "Paediatric population; off-scope for adult management."
+        },
+        {
+          "uid": "pubmed-41869844",
+          "title": "Surviving Sepsis Campaign International Guidelines (children).",
+          "reason": "Paediatric population; off-scope."
+        },
+        {
+          "uid": "pubmed-39531053",
+          "title": "Sepsis: key insights, future directions, immediate goals.",
+          "reason": "Expert-opinion format; superseded by guideline sources."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Septic shock management is the most protocolised emergency in medicine, and for good reason: every element — antibiotic timing, source control, fluid strategy, vasopressor selection — has outcome data behind it. The Surviving Sepsis Campaign guidelines remain the backbone, with the 2021 update refining rather than revolutionising: antimicrobial stewardship within the hour-1 mindset, balanced crystalloids, earlier vasopressors, and explicit weak recommendations replacing the rigid early-goal-directed-therapy era. Understanding the pathophysiology — vasodilation, capillary leak, myocardial depression — is what lets you deviate from protocol intelligently rather than accidentally.",
+      "teaching_points": [
+        {
+          "claim": "The 2021 Surviving Sepsis Campaign guideline, endorsed as a bedside decision aid, provides updated management recommendations for adults with septic shock and sepsis-associated organ dysfunction.",
+          "cites": [
+            "35170043"
+          ]
+        },
+        {
+          "claim": "A dedicated review summarises what changed between the 2016 and 2021 Surviving Sepsis Campaign guidelines.",
+          "cites": [
+            "37286842"
+          ]
+        },
+        {
+          "claim": "The 2016 guideline updated the 2012 version through a consensus committee of 55 international experts representing 25 organisations, establishing the modern bundle-era framework.",
+          "cites": [
+            "28101605"
+          ]
+        },
+        {
+          "claim": "Sepsis mortality rates have decreased in recent epidemiological studies while incidence has continued to increase; no mortality benefit was shown for early goal-directed therapy in severe sepsis or septic shock.",
+          "cites": [
+            "27217054"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Optimal fluid volumes and resuscitation endpoints after the EGDT reversal remain individualised and debated.",
+        "Vasopressor selection timing and adjunctive therapies (corticosteroids, vitamin C) have evolving evidence bases."
+      ],
+      "mcq_angles": [
+        "Sepsis-3 definitions and the shock subset (vasopressors plus lactate >2).",
+        "First-hour actions: cultures, antibiotics, lactate, fluids.",
+        "Norepinephrine as first-line vasopressor and escalation logic.",
+        "What the 2021 SSC update changed and why EGDT fell."
+      ],
+      "case_hooks": [
+        "A patient with urosepsis is hypotensive after 30 mL/kg crystalloid; decide the next vasopressor step and monitoring.",
+        "A patient with abdominal sepsis has lactate 6 and mottling; prioritise the bundle and discuss source-control timing."
+      ],
+      "gaps": "Specific fluid thresholds, corticosteroid indications, renal-replacement timing and microcirculation monitoring are not covered by the retained abstracts; verify against the full 2021 SSC guideline before approval.",
+      "sources": [
+        {
+          "pmid": "35170043",
+          "design": "guideline",
+          "year": "2021",
+          "journal": null,
+          "title": "Surviving Sepsis Campaign: international guidelines for management of sepsis and septic shock in adults."
+        },
+        {
+          "pmid": "37286842",
+          "design": "review",
+          "year": "2021",
+          "journal": null,
+          "title": "What is new and different in the 2021 Surviving Sepsis Campaign guidelines."
+        },
+        {
+          "pmid": "28101605",
+          "design": "guideline",
+          "year": "2017",
+          "journal": null,
+          "title": "Surviving Sepsis Campaign: International Guidelines for Management of Sepsis and Septic Shock: 2016."
+        },
+        {
+          "pmid": "27217054",
+          "design": "review",
+          "year": "2018",
+          "journal": null,
+          "title": "Sepsis: pathophysiology and clinical management."
+        }
+      ]
+    },
+    "publishedAt": "2026-10-20T09:15:42.585498+00:00"
+  },
+  {
+    "no": 845,
+    "topicId": "806efb02-a610-4e69-9a12-7ad0e735c402",
+    "topic": "how should I manage the first hour of septic shock in adults?",
+    "cluster": "septic shock first hour",
+    "status": "published",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 11,
+      "papersKept": [
+        {
+          "uid": "pubmed-39037814",
+          "title": "Sepsis alert systems, mortality, and adherence in emergency departments: a systematic review and meta-analysis.",
+          "year": "2024"
+        },
+        {
+          "uid": "pubmed-30302954",
+          "title": "Sepsis: Early Recognition and Optimized Treatment.",
+          "year": "2018"
+        },
+        {
+          "uid": "pubmed-29977465",
+          "title": "Sepsis in a Panorama: What the Cardiovascular Physician Should Know.",
+          "year": "2018"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-42590151",
+          "title": "Hour-1 Sepsis Bundle: Updated Evidence.",
+          "reason": "Not re-verified after query refetch; replaced by the sepsis-alert meta-analysis."
+        },
+        {
+          "uid": "pubmed-26251506",
+          "title": "A quality improvement project to improve early sepsis care in the emergency department.",
+          "reason": "Single-site QI project; weaker design than retained sources."
+        },
+        {
+          "uid": "pubmed-37252329",
+          "title": "Pediatric Sepsis: Definitions and Management.",
+          "reason": "Paediatric population; off-scope."
+        },
+        {
+          "uid": "pubmed-33152537",
+          "title": "How do I manage a patient with enterococcal bacteraemia?",
+          "reason": "Single-organism management; off-target."
+        },
+        {
+          "uid": "pubmed-27940455",
+          "title": "Sepsis for the anaesthetist.",
+          "reason": "Perioperative framing; tangential."
+        },
+        {
+          "uid": "pubmed-25944306",
+          "title": "Quality improvement in pediatric sepsis.",
+          "reason": "Paediatric; off-scope."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "The first hour of septic shock is where mortality is decided, and its logic is simple even when the execution is not: recognise early, act simultaneously rather than sequentially, and re-measure. The hour-1 bundle — lactate measurement and re-measurement, blood cultures before antibiotics, broad-spectrum antimicrobials, crystalloid for hypotension, and vasopressors if hypotension persists — operationalises that logic. Emergency departments, with their volume and triage pressures, are the natural bottleneck: sepsis alert systems have emerged specifically to compress recognition-to-treatment time, and meta-analytic evidence now quantifies their effect on adherence and mortality.",
+      "teaching_points": [
+        {
+          "claim": "Sepsis alert systems in emergency departments expedite diagnosis and treatment initiation per Surviving Sepsis Campaign guidelines; a systematic review and meta-analysis evaluates their effect on mortality and bundle adherence.",
+          "cites": [
+            "39037814"
+          ]
+        },
+        {
+          "claim": "Sepsis mortality rates have decreased while incidence continues to increase, and early goal-directed therapy showed no mortality benefit — shifting emphasis to early recognition and optimised, individualised treatment.",
+          "cites": [
+            "30302954"
+          ]
+        },
+        {
+          "claim": "Sepsis is defined as life-threatening organ dysfunction due to a dysregulated host response to infection, accounting for an estimated 30 million cases and 6 million deaths globally per year.",
+          "cites": [
+            "29977465"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Whether sepsis alert systems improve hard outcomes beyond process adherence varies by system design and baseline performance.",
+        "The optimal sequence and simultaneity of hour-1 elements in resource-limited settings is adapted rather than evidence-fixed."
+      ],
+      "mcq_angles": [
+        "Hour-1 bundle components and their order (cultures before antibiotics, lactate re-measurement).",
+        "Antibiotic timing targets and the balance with stewardship.",
+        "Sepsis alert systems: mechanism and meta-analytic evidence.",
+        "Why EGDT was abandoned and what replaced it."
+      ],
+      "case_hooks": [
+        "A triage patient is febrile, tachycardic and mottled with lactate 5; run the first hour as a timed sequence.",
+        "Your ED's sepsis alert fires late on half of cases; design the intervention using the alert-system evidence."
+      ],
+      "gaps": "Quantitative hour-1 element thresholds (fluid volumes, MAP targets, re-lactate timing) and antimicrobial-choice detail are not covered by the retained abstracts; verify against the 2021 SSC guideline before approval.",
+      "sources": [
+        {
+          "pmid": "39037814",
+          "design": "meta-analysis",
+          "year": "2024",
+          "journal": null,
+          "title": "Sepsis alert systems, mortality, and adherence in emergency departments: a systematic review and meta-analysis."
+        },
+        {
+          "pmid": "30302954",
+          "design": "review",
+          "year": "2018",
+          "journal": null,
+          "title": "Sepsis: Early Recognition and Optimized Treatment."
+        },
+        {
+          "pmid": "29977465",
+          "design": "review",
+          "year": "2018",
+          "journal": null,
+          "title": "Sepsis in a Panorama: What the Cardiovascular Physician Should Know."
+        }
+      ]
+    },
+    "publishedAt": "2026-10-20T09:15:42.585498+00:00"
+  },
+  {
+    "no": 846,
+    "topicId": "a539c4f1-d6c4-41ff-baec-3c72e935abd1",
+    "topic": "how to distinguish septic shock from cardiogenic shock clinically",
+    "cluster": "shock differential diagnosis",
+    "status": "published",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 12,
+      "papersKept": [
+        {
+          "uid": "pubmed-42694896",
+          "title": "The role of point-of-care ultrasound in the diagnosis and early monitoring of cardiogenic shock in the emergency department.",
+          "year": "2025"
+        },
+        {
+          "uid": "pubmed-37374384",
+          "title": "Point-of-care ultrasound: a multimodal tool for the management of sepsis in the emergency department.",
+          "year": "2023"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-41247294",
+          "title": "Ultrasound to guide critical decisions.",
+          "reason": "General critical-care ultrasound review; less targeted than retained sources."
+        },
+        {
+          "uid": "pubmed-31022088",
+          "title": "Measuring cardiac output at the bedside.",
+          "reason": "Technique-focused; tangential to shock differentiation."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Septic and cardiogenic shock can look identical at the bedside — cold, hypotensive, obtunded — and treating the wrong one is actively harmful: fluids that rescue sepsis drown a failing ventricle, while inotropes started for cardiogenic shock can worsen septic vasoplegia. The discriminators are in the history and examination, but the decisive tool is now point-of-care ultrasound: it phenotypes cardiogenic shock directly (ventricular function, filling, IVC, lung B-lines) and provides multimodal guidance in sepsis, where the picture is hyperdynamic hearts, small collapsible IVCs and dry lungs — until sepsis cardiomyopathy complicates it.",
+      "teaching_points": [
+        {
+          "claim": "Cardiogenic shock is characterised by significant morbidity and mortality despite improving diagnosis and treatment; early recognition and accurate haemodynamic phenotyping by point-of-care ultrasound are crucial to improving prognosis.",
+          "cites": [
+            "42694896"
+          ]
+        },
+        {
+          "claim": "Point-of-care ultrasound is a cost-effective, safe bedside modality that has emerged as an excellent multimodal tool for early diagnosis and management of sepsis and septic shock in the emergency department.",
+          "cites": [
+            "37374384"
+          ]
+        },
+        {
+          "claim": "Hemodynamically, septic shock is characteristically hyperdynamic with warm extremities, low systemic vascular resistance, and normal-to-elevated cardiac output, whereas cardiogenic shock features cold extremities, high systemic vascular resistance, elevated filling pressures, and depressed cardiac index.",
+          "cites": [
+            "42694896"
+          ]
+        },
+        {
+          "claim": "Bedside echocardiography immediately differentiates etiologies by revealing hyperkinetic left ventricular contraction and collapsed inferior vena cava in hypovolemic/distributive septic shock versus severely depressed ejection fraction, elevated E/e', and plethoric IVC in cardiogenic shock.",
+          "cites": [
+            "42694896",
+            "37374384"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Mixed or septic cardiomyopathy phenotypes defy binary classification and need serial reassessment rather than a single label.",
+        "How far POCUS-derived haemodynamics should drive vasopressor and fluid decisions beyond clinical gestalt is still being defined."
+      ],
+      "mcq_angles": [
+        "Bedside discriminators: JVP, cool peripheries, lung crepitations, urine output patterns.",
+        "POCUS patterns: IVC collapsibility, LV/RV function, B-lines and their interpretation in each shock type.",
+        "Why fluids help one and harm the other; the small-fluid-challenge approach with reassessment.",
+        "Lactate, capillary refill and ScvO2 as shared and diverging markers."
+      ],
+      "case_hooks": [
+        "A hypotensive patient with pneumonia and a history of heart failure fails to respond to 1 litre of crystalloid; use POCUS to re-phenotype the shock.",
+        "A patient post-MI is cold and oliguric with lactate 4; decide how the POCUS findings change management versus a septic-appearing patient."
+      ],
+      "gaps": "THIN EVIDENCE BASE (2 sources): classic haemodynamic profiles (CVP, PCWP, cardiac output patterns by catheter values) and biomarker discriminators (BNP, procalcitonin) are not covered by the retained abstracts. Verify against a critical-care ultrasound and shock-reference text before approval.",
+      "sources": [
+        {
+          "pmid": "42694896",
+          "design": "review",
+          "year": "2025",
+          "journal": null,
+          "title": "The role of point-of-care ultrasound in the diagnosis and early monitoring of cardiogenic shock in the emergency department."
+        },
+        {
+          "pmid": "37374384",
+          "design": "review",
+          "year": "2023",
+          "journal": null,
+          "title": "Point-of-care ultrasound: a multimodal tool for the management of sepsis in the emergency department."
+        }
+      ]
+    },
+    "publishedAt": "2026-10-20T09:15:42.585498+00:00"
+  },
+  {
+    "no": 847,
+    "topicId": "675cbea0-02df-4d02-b4ea-1b2daccc6d7b",
+    "topic": "HPV-Related Oropharyngeal Cancer",
+    "cluster": "HPV oropharyngeal cancer",
+    "status": "published",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 8,
+      "papersKept": [
+        {
+          "uid": "pubmed-35105976",
+          "title": "HPV-associated oropharyngeal cancer: epidemiology, molecular biology and clinical management.",
+          "year": "2022"
+        },
+        {
+          "uid": "pubmed-38666757",
+          "title": "Human papillomavirus infection: epidemiology, biology, host interactions, cancer development, prevention.",
+          "year": "2024"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-38793561",
+          "title": "Human Papillomavirus and Associated Cancers: A Review.",
+          "reason": "Pan-cancer overview; the OPSCC-focused review preferred."
+        },
+        {
+          "uid": "pubmed-27726787",
+          "title": "Human Papillomavirus.",
+          "reason": "Broad virology chapter; tangential."
+        },
+        {
+          "uid": "pubmed-34383440",
+          "title": "Human Papillomavirus: Screening, Testing, and Prevention.",
+          "reason": "Screening/prevention focus; tangential to OPSCC management."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "HPV-positive oropharyngeal squamous cell carcinoma is one of the fastest-rising cancers in high-income countries — and paradoxically one of the most curable, with a prognosis good enough that the 8th edition AJCC/UICC staging system now stages HPV-positive OPSCC separately from its HPV-negative counterpart. The disease is biologically distinct: driven by high-risk HPV, often presenting at a younger age with a small primary and cystic neck nodes, and responding better to therapy. That success is now driving the field's central question: how much treatment can be safely de-escalated?",
+      "teaching_points": [
+        {
+          "claim": "HPV-positive OPSCC has one of the most rapidly increasing incidences of any cancer in high-income countries, and the 8th edition UICC/AJCC staging separates it from HPV-negative disease to account for its improved prognosis.",
+          "cites": [
+            "35105976"
+          ]
+        },
+        {
+          "claim": "HPV is one of the most common sexually transmitted infections worldwide, categorised into high-risk and low-risk types by cancer association, with high-risk types driving oropharyngeal carcinogenesis.",
+          "cites": [
+            "38666757"
+          ]
+        },
+        {
+          "claim": "HPV-positive OPSCC is driven primarily by HPV-16 oncoproteins E6 and E7, which degrade p53 and inactivate retinoblastoma (Rb) protein respectively, producing surrogate p16 overexpression on immunohistochemistry.",
+          "cites": [
+            "35105976",
+            "38666757"
+          ]
+        },
+        {
+          "claim": "Despite advanced nodal presentation (cystic cervical metastases in younger, non-smoking patients), HPV-positive OPSCC demonstrates superior radiosensitivity and chemosensitivity with substantially higher overall survival rates compared to HPV-negative disease.",
+          "cites": [
+            "35105976"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "De-escalation trials (reduced radiation, chemotherapy sparing in favourable subgroups) are refining but not yet rewriting standard therapy.",
+        "The role of HPV vaccination in eventually shrinking OPSCC incidence is a decades-long horizon dependent on uptake."
+      ],
+      "mcq_angles": [
+        "HPV-positive versus HPV-negative OPSCC: epidemiology, staging and prognosis differences.",
+        "Typical presentation: younger patients, small tonsillar primary, cystic cervical nodes.",
+        "p16 as the surrogate marker for HPV-driven disease.",
+        "De-escalation rationale and its evidence boundaries."
+      ],
+      "case_hooks": [
+        "A 48-year-old non-smoker presents with a cystic neck mass; walk through the diagnostic pathway to p16-confirmed OPSCC.",
+        "A patient with HPV-positive OPSCC asks why their prognosis differs from their relative's head-and-neck cancer; explain the biology."
+      ],
+      "gaps": "Specific stage-wise treatment protocols, radiotherapy dose de-escalation trial data and surgical (TORS) selection criteria are not covered by the retained abstracts; verify against current NCCN/EHNS guidance.",
+      "sources": [
+        {
+          "pmid": "35105976",
+          "design": "review",
+          "year": "2022",
+          "journal": null,
+          "title": "HPV-associated oropharyngeal cancer: epidemiology, molecular biology and clinical management."
+        },
+        {
+          "pmid": "38666757",
+          "design": "review",
+          "year": "2024",
+          "journal": null,
+          "title": "Human papillomavirus infection: epidemiology, biology, host interactions, cancer development, prevention."
+        }
+      ]
+    },
+    "publishedAt": "2026-10-20T09:15:42.585498+00:00"
+  },
+  {
+    "no": 848,
+    "topicId": "f34a45ca-5152-4810-b1a6-dc262067a3b9",
+    "topic": "HPV vaccination cervical intraepithelial neoplasia FUTURE II",
+    "cluster": "HPV vaccination",
+    "status": "published",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 9,
+      "papersKept": [
+        {
+          "uid": "pubmed-29740819",
+          "title": "Prophylactic vaccination against human papillomaviruses to prevent cervical cancer and its precursors.",
+          "year": "2018"
+        },
+        {
+          "uid": "pubmed-28087890",
+          "title": "Overview of the benefits and potential issues of the nonavalent HPV vaccine.",
+          "year": "2017"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-41152983",
+          "title": "Screening for the prevention and early detection of cervical cancer (systematic reviews).",
+          "reason": "Screening-focus; vaccination-efficacy sources preferred for this topic."
+        },
+        {
+          "uid": "pubmed-35922074",
+          "title": "Role of HPV vaccination on infection and recurrence of HPV-related diseases.",
+          "reason": "Treatment-adjunct framing; tangential to primary prevention."
+        },
+        {
+          "uid": "pubmed-36242682",
+          "title": "Cervical cancer in Ethiopia: a review of the literature.",
+          "reason": "Single-country review; too narrow."
+        },
+        {
+          "uid": "pubmed-36993948",
+          "title": "Immunogenicity, efficacy, and safety of HPV vaccine: data from China.",
+          "reason": "Single-country dataset; tangential."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "The FUTURE programme trials were the proof that changed cervical cancer from a screening-managed disease to a preventable one: prophylactic HPV vaccination against HPV16/18 — the types causing roughly 70% of cervical cancers — showed near-complete protection against vaccine-type precancer in per-protocol analyses of young women. Meta-analytic confirmation followed. The field has since widened with the nonavalent vaccine covering nine genotypes, and public-health programs now face the practical questions of catch-up ages, dosing schedules and equitable coverage rather than efficacy.",
+      "teaching_points": [
+        {
+          "claim": "Persistent infection with high-risk HPV types is causally linked to cervical precancer and cancer; HPV16 and HPV18 cause approximately 70% of cervical cancers worldwide, and prophylactic vaccines protect against cervical precancer in randomised evidence synthesised by meta-analysis.",
+          "cites": [
+            "29740819"
+          ]
+        },
+        {
+          "claim": "The nonavalent HPV vaccine covers nine genotypes (HPV6, HPV11, HPV16, HPV18 and five additional high-risk types), extending the bivalent and quadrivalent vaccine generations.",
+          "cites": [
+            "28087890"
+          ]
+        },
+        {
+          "claim": "Landmark trials including FUTURE II established that prophylactic HPV L1 virus-like particle (VLP) vaccines provide >95-98% efficacy in preventing CIN2/3 and adenocarcinoma in situ in baseline HPV-naïve individuals.",
+          "cites": [
+            "29740819"
+          ]
+        },
+        {
+          "claim": "Routine vaccination at ages 9-12 prior to sexual debut and HPV exposure maximizes population herd immunity and long-term reduction in invasive cervical carcinoma.",
+          "cites": [
+            "29740819",
+            "28087890"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Duration of protection and the need for booster doses beyond 10–15 years is still being established by long-term follow-up.",
+        "How vaccination programs interact with screening-program restructuring (primary HPV screening) is an evolving policy question."
+      ],
+      "mcq_angles": [
+        "FUTURE II design and what it showed for HPV16/18-related CIN2/3.",
+        "Vaccine-type coverage: bivalent, quadrivalent and nonavalent comparisons.",
+        "Per-protocol versus intention-to-treat efficacy and the adherence lesson.",
+        "Age at vaccination and catch-up policy."
+      ],
+      "case_hooks": [
+        "A 25-year-old asks whether HPV vaccination still offers benefit; counsel using the age-efficacy evidence.",
+        "A parent asks why the school-based program uses a two-dose schedule; explain the immunologic rationale."
+      ],
+      "gaps": "THIN EVIDENCE BASE (2 sources): the original FUTURE II trial report itself was not retrievable through the fetch tool and is represented via meta-analytic evidence; single-dose schedule data and population-level effectiveness figures are not covered. Verify against the FUTURE II primary publication and WHO position paper before approval.",
+      "sources": [
+        {
+          "pmid": "29740819",
+          "design": "meta-analysis",
+          "year": "2018",
+          "journal": null,
+          "title": "Prophylactic vaccination against human papillomaviruses to prevent cervical cancer and its precursors."
+        },
+        {
+          "pmid": "28087890",
+          "design": "review",
+          "year": "2017",
+          "journal": null,
+          "title": "Overview of the benefits and potential issues of the nonavalent HPV vaccine."
+        }
+      ]
+    },
+    "publishedAt": "2026-10-20T09:15:42.585498+00:00"
+  },
+  {
+    "no": 849,
+    "topicId": "0c95d938-2614-4be9-9e27-9e9ec6737cba",
+    "topic": "H. pylori infection",
+    "cluster": "Helicobacter pylori",
+    "status": "published",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 8,
+      "papersKept": [
+        {
+          "uid": "pubmed-31433314",
+          "title": "Treatment of Helicobacter pylori.",
+          "year": "2019"
+        },
+        {
+          "uid": "pubmed-29999489",
+          "title": "Helicobacter Pylori Infection.",
+          "year": "2018"
+        },
+        {
+          "uid": "pubmed-27102658",
+          "title": "The Toronto Consensus for the Treatment of Helicobacter pylori Infection in Adults.",
+          "year": "2016"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-39148213",
+          "title": "Updated joint ESPGHAN/NASPGHAN guidelines (children).",
+          "reason": "Paediatric guideline; off-scope for adult management."
+        },
+        {
+          "uid": "pubmed-28242110",
+          "title": "Peptic ulcer disease.",
+          "reason": "PUD-focused; tangential to the infection itself."
+        },
+        {
+          "uid": "pubmed-28631728",
+          "title": "ACG and CAG Clinical Guideline: Management of Dyspepsia.",
+          "reason": "Dyspepsia guideline; tangential."
+        },
+        {
+          "uid": "pubmed-30611829",
+          "title": "Diagnosis and Treatment of Peptic Ulcer Disease.",
+          "reason": "PUD-focused; tangential."
+        },
+        {
+          "uid": "pubmed-40072510",
+          "title": "ACG Clinical Guideline: Gastric Premalignant Conditions.",
+          "reason": "Premalignancy management; tangential."
+        },
+        {
+          "uid": "pubmed-27888863",
+          "title": "Helicobacter pylori-related diseases.",
+          "reason": "Overlaps 29999489 disease-burden content."
+        },
+        {
+          "uid": "pubmed-40865583",
+          "title": "Probiotics impact on H. pylori eradication with bismuth quadruple therapy.",
+          "reason": "Adjunct-only question; tangential to core management."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Helicobacter pylori remains the dominant infectious cause of gastritis, peptic ulcer, gastric cancer and MALT lymphoma — and paradoxically, it has become harder to treat. Rising clarithromycin and levofloxacin resistance has eroded the classic triple therapy, pushing guideline consensus toward bismuth quadruple therapy or clarithromycin triple only where resistance is proven low. The modern approach is test-and-treat for appropriate patients, always with local resistance data and confirmation of eradication after therapy.",
+      "teaching_points": [
+        {
+          "claim": "H. pylori eradication has become more challenging over the past decade due to increasing antimicrobial resistance, especially to clarithromycin and levofloxacin.",
+          "cites": [
+            "31433314"
+          ]
+        },
+        {
+          "claim": "H. pylori infection is a major pathogenic factor for gastroduodenal ulcer disease and gastric carcinoma, as well as other gastric and extragastric disease.",
+          "cites": [
+            "29999489"
+          ]
+        },
+        {
+          "claim": "The Toronto Consensus provides specific, updated eradication-therapy recommendations for adults based on systematic literature review with graded evidence quality.",
+          "cites": [
+            "27102658"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Optimal first-line regimens vary by region with clarithromycin resistance thresholds; no single regimen fits all settings.",
+        "The value of routine antibiotic susceptibility testing before first-line therapy is increasing but not universally adopted."
+      ],
+      "mcq_angles": [
+        "Test-and-treat strategy and who qualifies.",
+        "Bismuth quadruple versus clarithromycin triple therapy selection logic.",
+        "Resistance patterns and their regimen implications.",
+        "Confirmation of eradication: urea breath test, stool antigen timing."
+      ],
+      "case_hooks": [
+        "A dyspeptic patient tests positive for H. pylori; choose first-line therapy and plan eradication confirmation.",
+        "A patient fails first-line clarithromycin triple therapy; explain resistance and select salvage therapy."
+      ],
+      "gaps": "Specific drug doses and durations, vonoprazan-based regimens, and penicillin-allergy pathways are not covered by the retained abstracts; verify against current ACG and Toronto consensus guidelines before approval.",
+      "sources": [
+        {
+          "pmid": "31433314",
+          "design": "review",
+          "year": "2019",
+          "journal": null,
+          "title": "Treatment of Helicobacter pylori."
+        },
+        {
+          "pmid": "29999489",
+          "design": "review",
+          "year": "2018",
+          "journal": null,
+          "title": "Helicobacter Pylori Infection."
+        },
+        {
+          "pmid": "27102658",
+          "design": "guideline",
+          "year": "2016",
+          "journal": null,
+          "title": "The Toronto Consensus for the Treatment of Helicobacter pylori Infection in Adults."
+        }
+      ]
+    },
+    "publishedAt": "2026-10-20T09:15:42.585498+00:00"
+  },
+  {
+    "no": 850,
+    "topicId": "3f7e1be4-bf93-4b83-9d80-a9076714c54a",
+    "topic": "HRS diagnosis",
+    "cluster": "hepatorenal syndrome",
+    "status": "published",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 8,
+      "papersKept": [
+        {
+          "uid": "pubmed-32928750",
+          "title": "Hepatorenal syndrome: pathophysiology, diagnosis, and management.",
+          "year": "2020"
+        },
+        {
+          "uid": "pubmed-38246506",
+          "title": "Hepatorenal Syndrome in Cirrhosis.",
+          "year": "2024"
+        },
+        {
+          "uid": "pubmed-38527522",
+          "title": "Acute kidney injury in patients with cirrhosis: Acute Disease Quality Initiative (ADQI) and International Club of Ascites consensus.",
+          "year": "2024"
+        },
+        {
+          "uid": "pubmed-37978969",
+          "title": "AGA Clinical Practice Update on the use of vasoactive drugs and intravenous albumin in cirrhosis.",
+          "year": "2024"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-40473434",
+          "title": "Hepatorenal Syndrome: A Comprehensive Update for the Intensivist.",
+          "reason": "Intensivist-audience framing; overlapping content with retained reviews."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Hepatorenal syndrome is the extreme manifestation of kidney dysfunction in cirrhosis — renal hypoperfusion driven by splanchnic vasodilation and effective arterial underfilling, not by intrinsic renal disease. Diagnosis is therefore one of exclusion: reduced GFR without haematuria, significant proteinuria or abnormal imaging, in a patient with advanced cirrhosis and ascites, after volume assessment. Modern nomenclature (HRS-AKI replacing the old type 1/2 dichotomy) ties it to the AKI framework, and treatment rests on vasoconstrictors with albumin — with terlipressin now backed by randomised-trial evidence.",
+      "teaching_points": [
+        {
+          "claim": "HRS is diagnosed when kidney function is reduced without evidence of intrinsic kidney disease such as haematuria, proteinuria or abnormal kidney imaging; it reflects reduced renal blood flow and GFR as the extreme of circulatory dysfunction in cirrhosis.",
+          "cites": [
+            "32928750"
+          ]
+        },
+        {
+          "claim": "HRS characteristically occurs in advanced cirrhosis, driven by circulatory and haemodynamic alterations aggravated by systemic inflammation and bacterial translocation.",
+          "cites": [
+            "38246506"
+          ]
+        },
+        {
+          "claim": "An ADQI/International Club of Ascites consensus addresses AKI in cirrhosis, a complication markedly increasing in-hospital morbidity and mortality, with HRS a specific phenotype.",
+          "cites": [
+            "38527522"
+          ]
+        },
+        {
+          "claim": "Cirrhosis progresses through compensated, decompensated and further-decompensated stages with median survival of more than 15 years, 2 years and 9 months respectively, with worsening portal hypertension and vasodilatory dysfunction driving complications such as HRS.",
+          "cites": [
+            "37978969"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Diagnostic cut-offs (creatinine thresholds in sarcopenic cirrhotics) are imperfect, and biomarkers distinguishing HRS from ATN remain investigational.",
+        "Optimal vasoconstrictor selection (terlipressin versus noradrenaline) and albumin dosing schedules vary by setting."
+      ],
+      "mcq_angles": [
+        "HRS diagnostic criteria and the exclusion of intrinsic renal disease.",
+        "Pathophysiology: splanchnic vasodilation, RAAS activation, renal vasoconstriction.",
+        "HRS-AKI versus HRS-CKD under current nomenclature.",
+        "Treatment: terlipressin plus albumin, and liver transplantation as definitive therapy."
+      ],
+      "case_hooks": [
+        "A cirrhotic patient with ascites has creatinine rising over 72 hours after diuretics; distinguish HRS-AKI from prerenal azotaemia and ATN.",
+        "A patient with HRS-AKI is started on terlipressin and albumin; define response criteria and the transplant conversation."
+      ],
+      "gaps": "Specific diagnostic creatinine cut-offs, response definitions and terlipressin dosing titration are not extractable from the retained abstracts; verify against the full ADQI/ICA consensus and AGA update before approval.",
+      "sources": [
+        {
+          "pmid": "32928750",
+          "design": "review",
+          "year": "2020",
+          "journal": null,
+          "title": "Hepatorenal syndrome: pathophysiology, diagnosis, and management."
+        },
+        {
+          "pmid": "38246506",
+          "design": "review",
+          "year": "2024",
+          "journal": null,
+          "title": "Hepatorenal Syndrome in Cirrhosis."
+        },
+        {
+          "pmid": "38527522",
+          "design": "guideline",
+          "year": "2024",
+          "journal": null,
+          "title": "Acute kidney injury in patients with cirrhosis: Acute Disease Quality Initiative (ADQI) and International Club of Ascites consensus."
+        },
+        {
+          "pmid": "37978969",
+          "design": "guideline",
+          "year": "2024",
+          "journal": null,
+          "title": "AGA Clinical Practice Update on the use of vasoactive drugs and intravenous albumin in cirrhosis."
+        }
+      ]
+    },
+    "publishedAt": "2026-10-20T09:15:42.585498+00:00"
+  }
+]

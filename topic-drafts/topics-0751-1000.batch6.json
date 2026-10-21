@@ -1,0 +1,1505 @@
+[
+  {
+    "no": 801,
+    "topicId": "19863570-9ca1-4c03-81d6-3e055c8739ad",
+    "topic": "Hepatocellular Carcinoma",
+    "cluster": "hepatocellular carcinoma",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 8,
+      "papersKept": [
+        {
+          "uid": "pubmed-39690085",
+          "title": "EASL Clinical Practice Guidelines on the management of hepatocellular carcinoma.",
+          "year": "2025"
+        },
+        {
+          "uid": "pubmed-33479224",
+          "title": "Hepatocellular carcinoma.",
+          "year": "2021"
+        },
+        {
+          "uid": "pubmed-39242496",
+          "title": "Biomarkers for diagnosis and therapeutic options in hepatocellular carcinoma.",
+          "year": "2024"
+        },
+        {
+          "uid": "pubmed-38253289",
+          "title": "Immunotherapy and transplantation for hepatocellular carcinoma.",
+          "year": "2024"
+        },
+        {
+          "uid": "pubmed-38958301",
+          "title": "ACG Clinical Guideline: Focal Liver Lesions.",
+          "year": "2024"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-40348684",
+          "title": "EASL Clinical Practice Guidelines on the management of autoimmune hepatitis.",
+          "reason": "Autoimmune hepatitis; unrelated to hepatocellular carcinoma management."
+        },
+        {
+          "uid": "pubmed-40348683",
+          "title": "EASL Clinical Practice Guidelines on the management of hepatitis B virus infection.",
+          "reason": "HBV management; aetiology context only, tangential to HCC treatment teaching."
+        },
+        {
+          "uid": "pubmed-35662478",
+          "title": "EASL Clinical Practice Guidelines on haemochromatosis.",
+          "reason": "Haemochromatosis; tangential to HCC management."
+        },
+        {
+          "uid": "pubmed-37084797",
+          "title": "EASL-ILCA Clinical Practice Guidelines on the management of intrahepatic cholangiocarcinoma.",
+          "reason": "Intrahepatic cholangiocarcinoma is a different primary liver cancer."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Hepatocellular carcinoma is the dominant primary liver cancer (about 90% of cases) and the third leading cause of cancer death worldwide, rising on the back of cirrhosis, HBV/HCV and metabolic liver disease. Management is stage-dependent — resection, ablation, transplant for early disease; locoregional therapy for intermediate; systemic immunotherapy-based regimens for advanced — so the first clinical skill is correct staging, and the second is surveillance discipline in cirrhotic patients, because early HCC is the HCC that gets cured.",
+      "teaching_points": [
+        {
+          "claim": "Liver cancer is the third leading cause of cancer-related deaths worldwide, with HCC accounting for approximately 90% of primary liver cancers; the EASL 2025 guideline covers current management.",
+          "cites": [
+            "39690085"
+          ]
+        },
+        {
+          "claim": "HCC is the most common form of liver cancer (~90% of cases), with incidence projected to exceed 1 million cases by 2025, and infection with HBV and HCV is a major driver.",
+          "cites": [
+            "33479224"
+          ]
+        },
+        {
+          "claim": "HCC is highly heterogeneous in molecular and cellular signatures, and biomarker development for diagnosis and therapeutic selection is an active field.",
+          "cites": [
+            "39242496"
+          ]
+        },
+        {
+          "claim": "Immune checkpoint inhibitors have emerged as the primary treatment for advanced HCC and shown promise in the neoadjuvant setting, while liver transplantation remains the preferred treatment for patients within criteria with unresectable early disease.",
+          "cites": [
+            "38253289"
+          ]
+        },
+        {
+          "claim": "Focal liver lesions are an increasingly common incidental finding on abdominal imaging, and structured evaluation distinguishes HCC from benign lesions without biopsy in many cases.",
+          "cites": [
+            "38958301"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Surveillance programme effectiveness and optimal interval in non-cirrhotic HBV carriers remain debated.",
+        "Biopsy-avoidance criteria and the expanding role of molecular biomarkers are evolving and not settled in the retained sources."
+      ],
+      "mcq_angles": [
+        "Stage-dependent treatment: resection/ablation/transplant vs TACE vs systemic therapy.",
+        "Surveillance: ultrasound +/- AFP every 6 months in cirrhosis.",
+        "Non-invasive HCC diagnosis in cirrhosis (LI-RADS imaging criteria).",
+        "Systemic therapy evolution from sorafenib to immune-checkpoint combinations."
+      ],
+      "case_hooks": [
+        "A cirrhotic patient has a 2-cm arterial-enhancing lesion; walk through diagnosis and curative options.",
+        "A patient with advanced HCC and preserved liver function is assessed for first-line systemic therapy; outline the modern options."
+      ],
+      "gaps": "BCLC staging detail, transplant criteria (Milan), and specific systemic regimens are not covered by the retained abstracts; verify against the EASL 2025 full guideline before approval.",
+      "sources": [
+        {
+          "pmid": "39690085",
+          "design": "guideline",
+          "year": "2025",
+          "journal": null,
+          "title": "EASL Clinical Practice Guidelines on the management of hepatocellular carcinoma."
+        },
+        {
+          "pmid": "33479224",
+          "design": "review",
+          "year": "2021",
+          "journal": null,
+          "title": "Hepatocellular carcinoma."
+        },
+        {
+          "pmid": "39242496",
+          "design": "review",
+          "year": "2024",
+          "journal": null,
+          "title": "Biomarkers for diagnosis and therapeutic options in hepatocellular carcinoma."
+        },
+        {
+          "pmid": "38253289",
+          "design": "review",
+          "year": "2024",
+          "journal": null,
+          "title": "Immunotherapy and transplantation for hepatocellular carcinoma."
+        },
+        {
+          "pmid": "38958301",
+          "design": "guideline",
+          "year": "2024",
+          "journal": null,
+          "title": "ACG Clinical Guideline: Focal Liver Lesions."
+        }
+      ]
+    }
+  },
+  {
+    "no": 802,
+    "topicId": "59ca6562-d77a-4423-87f6-034515cafe0b",
+    "topic": "Hepatocellular carcinoma systemic therapy",
+    "cluster": "HCC systemic therapy",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 8,
+      "papersKept": [
+        {
+          "uid": "pubmed-39690085",
+          "title": "EASL Clinical Practice Guidelines on the management of hepatocellular carcinoma.",
+          "year": "2025"
+        },
+        {
+          "uid": "pubmed-38350421",
+          "title": "Precision treatment in advanced hepatocellular carcinoma.",
+          "year": "2024"
+        },
+        {
+          "uid": "pubmed-34764464",
+          "title": "Immunotherapies for hepatocellular carcinoma.",
+          "year": "2022"
+        },
+        {
+          "uid": "pubmed-33850328",
+          "title": "Advances in immunotherapy for hepatocellular carcinoma.",
+          "year": "2021"
+        },
+        {
+          "uid": "pubmed-35484418",
+          "title": "Molecular pathogenesis and systemic therapies for hepatocellular carcinoma.",
+          "year": "2022"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-33479224",
+          "title": "Hepatocellular carcinoma.",
+          "reason": "Duplicate general-HCC coverage already used in the adjacent HCC topic (801)."
+        },
+        {
+          "uid": "pubmed-38679698",
+          "title": "Immunosuppressive tumor microenvironment and immunotherapy of hepatocellular carcinoma: current status.",
+          "reason": "Duplicate immunotherapy coverage already provided by retained reviews."
+        },
+        {
+          "uid": "pubmed-38424197",
+          "title": "Adjuvant and neoadjuvant immunotherapies in hepatocellular carcinoma.",
+          "reason": "Perioperative niche; tangential to systemic therapy of advanced disease."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Systemic therapy for advanced HCC has been transformed twice in a decade: from a single multikinase inhibitor (sorafenib) to a menu of immune-checkpoint-based combinations. Around half of HCC patients receive systemic therapy at some point, and the craft now lies in selecting regimens by liver function, tolerability and molecular context — recognising that response is real but rarely universal, and that the immunosuppressive tumour microenvironment explains much of the residual failure.",
+      "teaching_points": [
+        {
+          "claim": "The EASL 2025 guideline incorporates advances in diagnostic and therapeutic tools for HCC, including systemic options.",
+          "cites": [
+            "39690085"
+          ]
+        },
+        {
+          "claim": "The past decade has seen significant advances in systemic treatment of advanced HCC, but new strategies have not achieved universal success and patients frequently exhibit heterogeneous responses.",
+          "cites": [
+            "38350421"
+          ]
+        },
+        {
+          "claim": "Around 50% of patients with HCC receive systemic therapies; historically sorafenib or lenvatinib, now increasingly immune-based regimens.",
+          "cites": [
+            "34764464"
+          ]
+        },
+        {
+          "claim": "Until 2017 advanced-HCC systemic therapy consisted only of antiangiogenic tyrosine kinase inhibitors; immunotherapy then reshaped the landscape, with the immune system modulating HCC progression.",
+          "cites": [
+            "33850328"
+          ]
+        },
+        {
+          "claim": "Understanding of HCC molecular pathogenesis is changing the poor outcome of this deadly cancer through effective systemic therapies, with molecular characterisation increasingly guiding treatment.",
+          "cites": [
+            "35484418"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Optimal sequencing after first-line immune-based combination failure is not established.",
+        "Predictive biomarkers to select patients for specific systemic regimens remain investigational."
+      ],
+      "mcq_angles": [
+        "The sorafenib-to-immunotherapy evolution and landmark regimens (atezolizumab-bevacizumab class).",
+        "Why liver function (Child-Pugh) gates systemic therapy decisions.",
+        "Tumour microenvironment and mechanisms of immunotherapy resistance.",
+        "Molecular-targeted agents and where they fit now."
+      ],
+      "case_hooks": [
+        "A patient with advanced HCC on atezolizumab-bevacizumab progresses; outline second-line reasoning.",
+        "An exam vignette juxtaposes TKI-era and immune-era trials; explain the survival gains and their limits."
+      ],
+      "gaps": "Specific regimen names beyond the abstract level, response criteria, and safety management are not in the retained abstracts; verify against the EASL 2025 full guideline before approval.",
+      "sources": [
+        {
+          "pmid": "39690085",
+          "design": "guideline",
+          "year": "2025",
+          "journal": null,
+          "title": "EASL Clinical Practice Guidelines on the management of hepatocellular carcinoma."
+        },
+        {
+          "pmid": "38350421",
+          "design": "review",
+          "year": "2024",
+          "journal": null,
+          "title": "Precision treatment in advanced hepatocellular carcinoma."
+        },
+        {
+          "pmid": "34764464",
+          "design": "review",
+          "year": "2022",
+          "journal": null,
+          "title": "Immunotherapies for hepatocellular carcinoma."
+        },
+        {
+          "pmid": "33850328",
+          "design": "review",
+          "year": "2021",
+          "journal": null,
+          "title": "Advances in immunotherapy for hepatocellular carcinoma."
+        },
+        {
+          "pmid": "35484418",
+          "design": "review",
+          "year": "2022",
+          "journal": null,
+          "title": "Molecular pathogenesis and systemic therapies for hepatocellular carcinoma."
+        }
+      ]
+    }
+  },
+  {
+    "no": 803,
+    "topicId": "0aa323d3-cfc7-486f-b2ef-13c9bd2591e7",
+    "topic": "Hepatopulmonary Syndrome",
+    "cluster": "hepatopulmonary syndrome",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 8,
+      "papersKept": [
+        {
+          "uid": "pubmed-36035361",
+          "title": "Hepatopulmonary syndrome.",
+          "year": "2022"
+        },
+        {
+          "uid": "pubmed-25732713",
+          "title": "Hepatopulmonary Syndrome.",
+          "year": "2015"
+        },
+        {
+          "uid": "pubmed-37005097",
+          "title": "[Hepatopulmonary syndrome].",
+          "year": "2024"
+        },
+        {
+          "uid": "pubmed-40670035",
+          "title": "Hepatopulmonary Syndrome and Portopulmonary Hypertension.",
+          "year": "2025"
+        },
+        {
+          "uid": "pubmed-25840463",
+          "title": "[Heptopulmonary syndrome].",
+          "year": "2015"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-35814522",
+          "title": "Overview of Complications in Cirrhosis.",
+          "reason": "General cirrhosis-complications overview; tangential to HPS-specific content."
+        },
+        {
+          "uid": "pubmed-30083871",
+          "title": "[Hepatopulmonary interactions].",
+          "reason": "Liver-lung interactions broad review; duplicate context, tangential to HPS."
+        },
+        {
+          "uid": "pubmed-35715316",
+          "title": "[Telomeres and lung].",
+          "reason": "Telomere biology in interstitial lung disease; unrelated to hepatopulmonary syndrome."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Hepatopulmonary syndrome is the dyspnoea of cirrhosis that gets missed: intrapulmonary vascular dilatation and shunting produce impaired gas exchange and arterial hypoxaemia in a patient with liver disease or portal hypertension. The diagnostic triad is liver disease, intrapulmonary vasodilatation and hypoxaemia; contrast echocardiography demonstrates the shunt. It worsens prognosis, it matters enormously at transplant assessment, and apart from liver transplantation there is no definitive therapy — though oxygen and careful candidate selection are the practical tools.",
+      "teaching_points": [
+        {
+          "claim": "Hepatopulmonary syndrome is a pulmonary vascular complication of liver disease, characterised by intrapulmonary vascular dilatations and shunts resulting in impaired gas exchange, and it adversely affects prognosis.",
+          "cites": [
+            "36035361"
+          ]
+        },
+        {
+          "claim": "HPS occurs in patients with chronic liver disease and/or portal hypertension, and intrapulmonary vascular dilatation may induce severe hypoxaemia through microvascular dilation and shunting.",
+          "cites": [
+            "25732713"
+          ]
+        },
+        {
+          "claim": "HPS should be considered for any dyspnoea in cirrhotic patients; it is a pulmonary vascular disease associated with cirrhosis and portal hypertension.",
+          "cites": [
+            "37005097"
+          ]
+        },
+        {
+          "claim": "In liver transplant candidates, HPS must be distinguished from portopulmonary hypertension (elevated pulmonary pressures and vascular remodelling), because the two have opposite implications for transplant eligibility.",
+          "cites": [
+            "40670035"
+          ]
+        },
+        {
+          "claim": "The diagnostic triad of hepatopulmonary syndrome is liver disease, pulmonary vascular dilatations and arterial hypoxaemia, and it is usually associated with cirrhosis of any origin.",
+          "cites": [
+            "25840463"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "No effective medical therapy exists; the role of experimental agents and the thresholds for transplant priority (MELD exception) are not detailed in the retained abstracts.",
+        "Optimal contrast-echo protocol and shunt quantification for diagnosis are not standardised in the retained sources."
+      ],
+      "mcq_angles": [
+        "Diagnostic triad: liver disease + intrapulmonary vasodilatation + hypoxaemia.",
+        "Contrast echocardiography (agitated saline) demonstrating late left-heart bubbles.",
+        "HPS versus portopulmonary hypertension: shunt versus pressure, transplant implications.",
+        "Why dyspnoea in cirrhosis should always prompt consideration of HPS."
+      ],
+      "case_hooks": [
+        "A cirrhotic patient has progressive dyspnoea and orthodeoxia; work through the HPS diagnostic pathway.",
+        "A transplant candidate's echo shows a positive contrast study; distinguish HPS from portopulmonary hypertension before listing."
+      ],
+      "gaps": "MELD-exception criteria, severity thresholds (PaO2 cut-offs), and experimental therapy evidence are not covered by the retained abstracts; verify against transplant-society guidance before approval.",
+      "sources": [
+        {
+          "pmid": "36035361",
+          "design": "review",
+          "year": "2022",
+          "journal": null,
+          "title": "Hepatopulmonary syndrome."
+        },
+        {
+          "pmid": "25732713",
+          "design": "review",
+          "year": "2015",
+          "journal": null,
+          "title": "Hepatopulmonary Syndrome."
+        },
+        {
+          "pmid": "37005097",
+          "design": "review",
+          "year": "2024",
+          "journal": null,
+          "title": "[Hepatopulmonary syndrome]."
+        },
+        {
+          "pmid": "40670035",
+          "design": "review",
+          "year": "2025",
+          "journal": null,
+          "title": "Hepatopulmonary Syndrome and Portopulmonary Hypertension."
+        },
+        {
+          "pmid": "25840463",
+          "design": "review",
+          "year": "2015",
+          "journal": null,
+          "title": "[Heptopulmonary syndrome]."
+        }
+      ]
+    }
+  },
+  {
+    "no": 804,
+    "topicId": "add51f87-be79-4d63-aa38-d23d08328008",
+    "topic": "hepatorenal",
+    "cluster": "hepatorenal syndrome",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 8,
+      "papersKept": [
+        {
+          "uid": "pubmed-32928750",
+          "title": "Hepatorenal syndrome: pathophysiology, diagnosis, and management.",
+          "year": "2020"
+        },
+        {
+          "uid": "pubmed-38246506",
+          "title": "Hepatorenal Syndrome in Cirrhosis.",
+          "year": "2024"
+        },
+        {
+          "uid": "pubmed-33942342",
+          "title": "Diagnosis, Evaluation, and Management of Ascites, Spontaneous Bacterial Peritonitis and Hepatorenal Syndrome.",
+          "year": "2021"
+        },
+        {
+          "uid": "pubmed-37159031",
+          "title": "Diagnosis and Management of Cirrhosis and Its Complications: A Review.",
+          "year": "2023"
+        },
+        {
+          "uid": "pubmed-38607390",
+          "title": "Albumin: a comprehensive review and practical guideline for clinical use.",
+          "year": "2024"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-39732564",
+          "title": "Liver Cirrhosis: ancient disease, new challenge.",
+          "reason": "Duplicate cirrhosis-overview coverage already provided by the retained 2023 review."
+        },
+        {
+          "uid": "pubmed-33752858",
+          "title": "Hepatorenal Syndrome.",
+          "reason": "Duplicate HRS coverage; adjacent HRS topics in this pipeline carry it."
+        },
+        {
+          "uid": "pubmed-38527522",
+          "title": "Acute kidney injury in patients with cirrhosis: Acute Disease Quality Initiative (ADQI) and International Club of Ascites.",
+          "reason": "AKI-in-cirrhosis consensus detail already used in adjacent HRS topics of this pipeline."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "The hepatorenal syndrome is the kidney failure of advanced cirrhosis that is functional, not structural: splanchnic vasodilatation and a hyperdynamic circulation leave the kidneys maximally vasoconstricted, and creatinine rises without primary renal disease. It sits at the extreme end of AKI in cirrhosis, is diagnosed after excluding alternatives (volume depletion, nephrotoxins, sepsis, structural disease), and its treatment pairs vasoconstrictors with albumin — with transplantation the only definitive cure.",
+      "teaching_points": [
+        {
+          "claim": "Hepatorenal syndrome, the extreme manifestation of renal impairment in cirrhosis, is characterised by reduced renal blood flow and glomerular filtration rate, and is diagnosed when kidney function is reduced in the absence of an alternative explanation.",
+          "cites": [
+            "32928750"
+          ]
+        },
+        {
+          "claim": "HRS is a form of kidney dysfunction that occurs characteristically in cirrhosis in response to circulatory and haemodynamic alterations of advanced liver disease.",
+          "cites": [
+            "38246506"
+          ]
+        },
+        {
+          "claim": "The AASLD guidance covers the diagnosis, evaluation and management of ascites, spontaneous bacterial peritonitis and hepatorenal syndrome as an integrated complication set.",
+          "cites": [
+            "33942342"
+          ]
+        },
+        {
+          "claim": "Cirrhosis affects approximately 2.2 million US adults, with rising age-adjusted mortality, and HRS is among its most serious complications within a staged natural history.",
+          "cites": [
+            "37159031"
+          ]
+        },
+        {
+          "claim": "Albumin has accepted evidence-based indications beyond simple hypoalbuminaemia — resuscitation in shock and, importantly for HRS, use alongside vasoconstrictor therapy.",
+          "cites": [
+            "38607390"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Diagnostic criteria for HRS-AKI continue to evolve (ICA revisions), and serum creatinine underestimates renal dysfunction in cirrhosis.",
+        "The optimal vasoconstrictor agent and dosing regimen vary by region and resource setting."
+      ],
+      "mcq_angles": [
+        "Functional versus structural AKI: why HRS has no primary renal pathology.",
+        "Diagnostic exclusions: hypovolaemia, sepsis, nephrotoxins, obstruction, parenchymal disease.",
+        "The splanchnic vasodilatation -> renal vasoconstriction cascade.",
+        "Albumin plus vasoconstrictor as the treatment backbone."
+      ],
+      "case_hooks": [
+        "A decompensated cirrhotic's creatinine rises after diuretic escalation; separate prerenal azotaemia from HRS.",
+        "A patient with refractory ascites develops oliguria; outline the HRS diagnostic work-up and initial therapy."
+      ],
+      "gaps": "HRS-AKI versus HRS-CKD (formerly type 1 vs type 2) definitions, specific diagnostic thresholds, and terlipressin dosing are not covered by the retained abstracts; verify against AASLD/ICA guidance before approval.",
+      "sources": [
+        {
+          "pmid": "32928750",
+          "design": "review",
+          "year": "2020",
+          "journal": null,
+          "title": "Hepatorenal syndrome: pathophysiology, diagnosis, and management."
+        },
+        {
+          "pmid": "38246506",
+          "design": "review",
+          "year": "2024",
+          "journal": null,
+          "title": "Hepatorenal Syndrome in Cirrhosis."
+        },
+        {
+          "pmid": "33942342",
+          "design": "guideline",
+          "year": "2021",
+          "journal": null,
+          "title": "Diagnosis, Evaluation, and Management of Ascites, Spontaneous Bacterial Peritonitis and Hepatorenal Syndrome."
+        },
+        {
+          "pmid": "37159031",
+          "design": "review",
+          "year": "2023",
+          "journal": null,
+          "title": "Diagnosis and Management of Cirrhosis and Its Complications: A Review."
+        },
+        {
+          "pmid": "38607390",
+          "design": "review",
+          "year": "2024",
+          "journal": null,
+          "title": "Albumin: a comprehensive review and practical guideline for clinical use."
+        }
+      ]
+    }
+  },
+  {
+    "no": 805,
+    "topicId": "4fffa4e9-8549-41cb-8a2c-3543e05c0561",
+    "topic": "Hepatorenal Syndrome",
+    "cluster": "hepatorenal syndrome",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 8,
+      "papersKept": [
+        {
+          "uid": "pubmed-38246506",
+          "title": "Hepatorenal Syndrome in Cirrhosis.",
+          "year": "2024"
+        },
+        {
+          "uid": "pubmed-38527522",
+          "title": "Acute kidney injury in patients with cirrhosis: Acute Disease Quality Initiative (ADQI) and International Club of Ascites consensus.",
+          "year": "2024"
+        },
+        {
+          "uid": "pubmed-30213943",
+          "title": "Hepatorenal syndrome.",
+          "year": "2018"
+        },
+        {
+          "uid": "pubmed-37258014",
+          "title": "Hepatorenal Syndrome: Pathophysiology, Diagnosis, and Treatment.",
+          "year": "2023"
+        },
+        {
+          "uid": "pubmed-39869432",
+          "title": "Update on Hepatorenal Syndrome: From Pathophysiology to Treatment.",
+          "year": "2025"
+        },
+        {
+          "uid": "pubmed-41123991",
+          "title": "Treating Hepatorenal Syndrome in the Current Era.",
+          "year": "2026"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-30996046",
+          "title": "Hepatorenal Syndrome.",
+          "reason": "Duplicate HRS hemodynamic coverage already provided by retained sources."
+        },
+        {
+          "uid": "pubmed-33752858",
+          "title": "Hepatorenal Syndrome.",
+          "reason": "Duplicate HRS overview; newer sources in this set supersede it."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "HRS is the kidney failure that cirrhosis causes by haemodynamics alone: splanchnic arterial vasodilatation progresses until effective arterial volume and central blood volume fall, vasoconstrictor systems activate to their limit, and extreme renal vasoconstriction drops the GFR. Modern terminology splits it into HRS-AKI and HRS-CKD; HRS-AKI accounts for roughly one in five AKI presentations in cirrhosis; and because there is no gold standard test, diagnosis remains one of exclusion — which is where most management errors begin.",
+      "teaching_points": [
+        {
+          "claim": "HRS is a form of kidney dysfunction characteristically occurring in cirrhosis, with marked impairment of kidney function in response to circulatory and haemodynamic alterations of advanced liver disease.",
+          "cites": [
+            "38246506"
+          ]
+        },
+        {
+          "claim": "Patients with cirrhosis are prone to AKI, which carries markedly increased in-hospital morbidity and mortality and risk of progression to CKD; the ADQI/ICA consensus addresses AKI management in this population.",
+          "cites": [
+            "38527522"
+          ]
+        },
+        {
+          "claim": "Terminology has changed: acute HRS is now referred to as AKI-HRS and chronic HRS as chronic kidney disease-CKD-HRS, aligning HRS with the universal AKI framework.",
+          "cites": [
+            "30213943"
+          ]
+        },
+        {
+          "claim": "HRS is a primarily functional form of AKI that develops in decompensated cirrhosis; the pathophysiologic cascade begins with pooling of blood in the splanchnic system.",
+          "cites": [
+            "37258014"
+          ]
+        },
+        {
+          "claim": "HRS-AKI occurs in the setting of advanced chronic liver disease, portal hypertension and ascites, and is found in about 20% of patients presenting to hospital with AKI — though it may coexist with other kidney injuries.",
+          "cites": [
+            "39869432"
+          ]
+        },
+        {
+          "claim": "HRS-1 is a severe form of AKI in advanced cirrhosis and ascites whose pathogenesis is rooted in marked maladaptive renal vasoconstriction, and the lack of a gold-standard test makes diagnosis and treatment selection challenging.",
+          "cites": [
+            "41123991"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "HRS-AKI can coexist with other kidney injuries (sepsis-associated, ischemic, drug-induced), complicating both diagnosis and trial interpretation.",
+        "Whether novel biomarkers will supplant creatinine-based criteria in cirrhosis is unresolved."
+      ],
+      "mcq_angles": [
+        "HRS-AKI versus HRS-CKD terminology and the old type 1/type 2 mapping.",
+        "The splanchnic pooling -> effective hypovolaemia -> renal vasoconstriction cascade.",
+        "Diagnosis by exclusion and the unreliability of creatinine in cirrhosis.",
+        "Treatment pillars: albumin, vasoconstrictors, transplant evaluation."
+      ],
+      "case_hooks": [
+        "A decompensated cirrhotic presents with AKI after SBP; distinguish HRS-AKI from sepsis-associated AKI and start therapy.",
+        "An exam question contrasts HRS-AKI and HRS-CKD; explain the trajectory and management difference."
+      ],
+      "gaps": "Diagnostic thresholds (creatinine cut-offs, urine output criteria), terlipressin versus noradrenaline selection, and renal-replacement indications are not covered by the retained abstracts; verify against ICA/AASLD guidance before approval.",
+      "sources": [
+        {
+          "pmid": "38246506",
+          "design": "review",
+          "year": "2024",
+          "journal": null,
+          "title": "Hepatorenal Syndrome in Cirrhosis."
+        },
+        {
+          "pmid": "38527522",
+          "design": "review",
+          "year": "2024",
+          "journal": null,
+          "title": "Acute kidney injury in patients with cirrhosis: Acute Disease Quality Initiative (ADQI) and International Club of Ascites consensus."
+        },
+        {
+          "pmid": "30213943",
+          "design": "review",
+          "year": "2018",
+          "journal": null,
+          "title": "Hepatorenal syndrome."
+        },
+        {
+          "pmid": "37258014",
+          "design": "review",
+          "year": "2023",
+          "journal": null,
+          "title": "Hepatorenal Syndrome: Pathophysiology, Diagnosis, and Treatment."
+        },
+        {
+          "pmid": "39869432",
+          "design": "review",
+          "year": "2025",
+          "journal": null,
+          "title": "Update on Hepatorenal Syndrome: From Pathophysiology to Treatment."
+        },
+        {
+          "pmid": "41123991",
+          "design": "review",
+          "year": "2026",
+          "journal": null,
+          "title": "Treating Hepatorenal Syndrome in the Current Era."
+        }
+      ]
+    }
+  },
+  {
+    "no": 806,
+    "topicId": "f264a25d-c2c7-4069-aca9-65689876b6a9",
+    "topic": "Hepatorenal syndrome diagnosis and management",
+    "cluster": "HRS diagnosis and management",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 16,
+      "papersKept": [
+        {
+          "uid": "pubmed-37258014",
+          "title": "Hepatorenal Syndrome: Pathophysiology, Diagnosis, and Treatment.",
+          "year": "2023"
+        },
+        {
+          "uid": "pubmed-38527522",
+          "title": "Acute kidney injury in patients with cirrhosis: Acute Disease Quality Initiative (ADQI) and International Club of Ascites consensus.",
+          "year": "2024"
+        },
+        {
+          "uid": "pubmed-33942342",
+          "title": "Diagnosis, Evaluation, and Management of Ascites, Spontaneous Bacterial Peritonitis and Hepatorenal Syndrome.",
+          "year": "2021"
+        },
+        {
+          "uid": "pubmed-33752858",
+          "title": "Hepatorenal Syndrome.",
+          "year": "2021"
+        },
+        {
+          "uid": "pubmed-41123991",
+          "title": "Treating Hepatorenal Syndrome in the Current Era.",
+          "year": "2026"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-37159031",
+          "title": "Diagnosis and Management of Cirrhosis and Its Complications: A Review.",
+          "reason": "Duplicate cirrhosis-complications coverage already used in adjacent HRS topics of this pipeline."
+        },
+        {
+          "uid": "pubmed-32928750",
+          "title": "Hepatorenal syndrome: pathophysiology, diagnosis, and management.",
+          "reason": "Duplicate HRS coverage already used in adjacent HRS topic (804)."
+        },
+        {
+          "uid": "pubmed-38246506",
+          "title": "Hepatorenal Syndrome in Cirrhosis.",
+          "reason": "Duplicate HRS coverage already used in adjacent HRS topic (805)."
+        },
+        {
+          "uid": "pubmed-30213943",
+          "title": "Hepatorenal syndrome.",
+          "reason": "Duplicate HRS terminology coverage already used in adjacent HRS topic (805)."
+        },
+        {
+          "uid": "pubmed-30996046",
+          "title": "Hepatorenal Syndrome.",
+          "reason": "Duplicate HRS hemodynamic coverage; newer sources in this set supersede it."
+        },
+        {
+          "uid": "pubmed-39869432",
+          "title": "Update on Hepatorenal Syndrome: From Pathophysiology to Treatment.",
+          "reason": "Duplicate HRS update coverage already used in adjacent HRS topic (805)."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Diagnosing HRS is an exercise in disciplined exclusion: cirrhotic AKI has many mimics — volume depletion, sepsis, nephrotoxins, obstruction, parenchymal disease — and HRS is what remains when they have been ruled out in a patient with advanced liver disease, portal hypertension and ascites. Management then moves quickly: albumin volume expansion to test responsiveness, vasoconstrictor therapy to reverse the renal vasoconstriction, evaluation for liver transplantation, and renal replacement therapy when vasoconstrictors fail or are contraindicated.",
+      "teaching_points": [
+        {
+          "claim": "HRS is a primarily functional form of AKI developing in decompensated cirrhosis, beginning with splanchnic blood pooling; pathophysiology, diagnosis and treatment are reviewed in an integrated framework.",
+          "cites": [
+            "37258014"
+          ]
+        },
+        {
+          "claim": "The ADQI/ICA consensus provides recommendations for managing AKI in cirrhosis, within which HRS-AKI is the most morbid and complex entity intensivists face.",
+          "cites": [
+            "38527522",
+            "41123991"
+          ]
+        },
+        {
+          "claim": "The AASLD guidance integrates diagnosis, evaluation and management of ascites, SBP and HRS as a single complication pathway.",
+          "cites": [
+            "33942342"
+          ]
+        },
+        {
+          "claim": "Diagnosis of AKI in chronic liver disease remains challenging because traditional markers such as serum creatinine are unreliable, and novel biomarkers are under development.",
+          "cites": [
+            "33752858"
+          ]
+        },
+        {
+          "claim": "Because HRS-1 lacks a gold-standard diagnostic test and is driven by maladaptive renal vasoconstriction, treatment selection in the current era rests on careful diagnosis plus vasoconstrictor-based therapy.",
+          "cites": [
+            "41123991"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "The precise creatinine and urine-output thresholds defining HRS-AKI continue to be revised as diagnostic criteria evolve.",
+        "Which patients benefit from early renal replacement therapy versus continued vasoconstrictor trials is not resolved in the retained sources."
+      ],
+      "mcq_angles": [
+        "Stepwise diagnostic exclusions before labelling HRS.",
+        "Albumin challenge: responsiveness argues against HRS.",
+        "Vasoconstrictor classes (terlipressin, noradrenaline, midodrine-octreotide) and their settings.",
+        "Transplant evaluation as the definitive management for eligible patients."
+      ],
+      "case_hooks": [
+        "A cirrhotic with AKI fails to respond to albumin and diuretic withdrawal; confirm HRS and start vasoconstrictor therapy.",
+        "A patient with HRS-AKI has a contraindication to terlipressin; select an alternative regimen."
+      ],
+      "gaps": "Precise diagnostic criteria tables, vasoconstrictor dosing, and RRT thresholds are not covered by the retained abstracts; verify against AASLD/ICA full guidance before approval.",
+      "sources": [
+        {
+          "pmid": "37258014",
+          "design": "review",
+          "year": "2023",
+          "journal": null,
+          "title": "Hepatorenal Syndrome: Pathophysiology, Diagnosis, and Treatment."
+        },
+        {
+          "pmid": "38527522",
+          "design": "review",
+          "year": "2024",
+          "journal": null,
+          "title": "Acute kidney injury in patients with cirrhosis: Acute Disease Quality Initiative (ADQI) and International Club of Ascites consensus."
+        },
+        {
+          "pmid": "33942342",
+          "design": "guideline",
+          "year": "2021",
+          "journal": null,
+          "title": "Diagnosis, Evaluation, and Management of Ascites, Spontaneous Bacterial Peritonitis and Hepatorenal Syndrome."
+        },
+        {
+          "pmid": "33752858",
+          "design": "review",
+          "year": "2021",
+          "journal": null,
+          "title": "Hepatorenal Syndrome."
+        },
+        {
+          "pmid": "41123991",
+          "design": "review",
+          "year": "2026",
+          "journal": null,
+          "title": "Treating Hepatorenal Syndrome in the Current Era."
+        }
+      ]
+    }
+  },
+  {
+    "no": 807,
+    "topicId": "6d022147-1c92-474a-be31-8564c854cd6b",
+    "topic": "hepatorenal syndrome management guidelines",
+    "cluster": "HRS management guidelines",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 8,
+      "papersKept": [
+        {
+          "uid": "pubmed-33942342",
+          "title": "Diagnosis, Evaluation, and Management of Ascites, Spontaneous Bacterial Peritonitis and Hepatorenal Syndrome.",
+          "year": "2021"
+        },
+        {
+          "uid": "pubmed-37978969",
+          "title": "AGA Clinical Practice Update on the Use of Vasoactive Drugs and Intravenous Albumin in Cirrhosis.",
+          "year": "2024"
+        },
+        {
+          "uid": "pubmed-40250764",
+          "title": "Albumin infusion in hepatorenal syndrome-acute kidney injury: New evidence challenges recent consensus.",
+          "year": "2025"
+        },
+        {
+          "uid": "pubmed-37011958",
+          "title": "Diagnosis and management of ascites, spontaneous bacterial peritonitis, and hepatorenal syndrome.",
+          "year": "2023"
+        },
+        {
+          "uid": "pubmed-38607390",
+          "title": "Albumin: a comprehensive review and practical guideline for clinical use.",
+          "year": "2024"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-41114681",
+          "title": "AGA Clinical Practice Update on the Management of Ascites, Volume Overload, and Hyponatremia in Cirrhosis.",
+          "reason": "Ascites/volume-overload focus; overlaps retained AGA vasoactive-drug update only partially, tangential to HRS."
+        },
+        {
+          "uid": "pubmed-34231046",
+          "title": "Evidence-based clinical practice guidelines for Liver Cirrhosis 2020.",
+          "reason": "General cirrhosis guideline; tangential to HRS-specific management."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Guideline-based HRS management has three pillars — vasoconstrictors, albumin, and expedited transplant pathways — but the consensus itself is being stress-tested: recent evidence on how much albumin helps in HRS-AKI has challenged the assumptions behind the ADQI/ICA recommendations. The trainee should know both the guideline defaults (AASLD; AGA Clinical Practice Update on vasoactive drugs and albumin) and the live controversy, because exam questions increasingly probe exactly that tension.",
+      "teaching_points": [
+        {
+          "claim": "The AASLD guidance integrates the diagnosis, evaluation and management of ascites, SBP and HRS as a single pathway, anchoring guideline-based HRS care.",
+          "cites": [
+            "33942342"
+          ]
+        },
+        {
+          "claim": "The AGA Clinical Practice Update summarises evidence and expert best-practice advice on vasoactive drugs and intravenous albumin in cirrhosis — the two pharmacological pillars of HRS management.",
+          "cites": [
+            "37978969"
+          ]
+        },
+        {
+          "claim": "New evidence on albumin infusion in HRS-AKI challenges the recent ADQI/ICA consensus recommendations, meaning the albumin pillar of guideline care is actively contested.",
+          "cites": [
+            "40250764"
+          ]
+        },
+        {
+          "claim": "The AASLD 2021 review of ascites, SBP and HRS management reflects antimicrobial-resistance developments and comparative therapy studies, framing current practice.",
+          "cites": [
+            "37011958"
+          ]
+        },
+        {
+          "claim": "Albumin's accepted indications in cirrhosis are specific (shock resuscitation, HRS with vasoconstrictors, selected paracentesis/SBP settings) rather than simple hypoalbuminaemia, per a practical clinical guideline.",
+          "cites": [
+            "38607390"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "The optimal albumin dose, duration and responder profile in HRS-AKI are under active re-evaluation.",
+        "Guideline differences between AASLD, AGA and ICA on vasoconstrictor choice and monitoring are not fully reconciled in the retained sources."
+      ],
+      "mcq_angles": [
+        "Guideline pillars: vasoconstrictor + albumin + transplant referral.",
+        "What the albumin controversy in HRS-AKI is about and why consensus is shifting.",
+        "When albumin is (and is not) indicated in cirrhosis.",
+        "Regional differences in agent availability (terlipressin approval status)."
+      ],
+      "case_hooks": [
+        "A patient with HRS-AKI is started on terlipressin and albumin per guideline; discuss what 'response' means and when to call it failure.",
+        "An exam question cites the albumin-challenge evidence; explain how it modifies the consensus algorithm."
+      ],
+      "gaps": "Exact guideline recommendation wording, dosing schedules, and transplant-referral triggers are not covered by the retained abstracts; verify against the AASLD full guidance and AGA CPU before approval.",
+      "sources": [
+        {
+          "pmid": "33942342",
+          "design": "guideline",
+          "year": "2021",
+          "journal": null,
+          "title": "Diagnosis, Evaluation, and Management of Ascites, Spontaneous Bacterial Peritonitis and Hepatorenal Syndrome."
+        },
+        {
+          "pmid": "37978969",
+          "design": "guideline",
+          "year": "2024",
+          "journal": null,
+          "title": "AGA Clinical Practice Update on the Use of Vasoactive Drugs and Intravenous Albumin in Cirrhosis."
+        },
+        {
+          "pmid": "40250764",
+          "design": "review",
+          "year": "2025",
+          "journal": null,
+          "title": "Albumin infusion in hepatorenal syndrome-acute kidney injury: New evidence challenges recent consensus."
+        },
+        {
+          "pmid": "37011958",
+          "design": "review",
+          "year": "2023",
+          "journal": null,
+          "title": "Diagnosis and management of ascites, spontaneous bacterial peritonitis, and hepatorenal syndrome."
+        },
+        {
+          "pmid": "38607390",
+          "design": "review",
+          "year": "2024",
+          "journal": null,
+          "title": "Albumin: a comprehensive review and practical guideline for clinical use."
+        }
+      ]
+    }
+  },
+  {
+    "no": 808,
+    "topicId": "1eb73cc8-17f0-4614-a29f-0e594aa944c3",
+    "topic": "hepatorenal syndrome terlipressin",
+    "cluster": "HRS terlipressin",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 16,
+      "papersKept": [
+        {
+          "uid": "pubmed-38353275",
+          "title": "Terlipressin for hepatorenal syndrome.",
+          "year": "2024"
+        },
+        {
+          "uid": "pubmed-40207491",
+          "title": "Terlipressin for the treatment of hepatorenal syndrome: a meta-analysis of randomized controlled trials.",
+          "year": "2025"
+        },
+        {
+          "uid": "pubmed-39295934",
+          "title": "Terlipressin versus placebo or noradrenalin in the treatment of hepatorenal syndrome: a systematic review and meta-analysis.",
+          "year": "2024"
+        },
+        {
+          "uid": "pubmed-29668606",
+          "title": "Terlipressin in the treatment of hepatorenal syndrome: A systematic review and meta-analysis.",
+          "year": "2018"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-37159031",
+          "title": "Diagnosis and Management of Cirrhosis and Its Complications: A Review.",
+          "reason": "Duplicate cirrhosis-complications coverage; tangential to terlipressin-specific evidence."
+        },
+        {
+          "uid": "pubmed-32928750",
+          "title": "Hepatorenal syndrome: pathophysiology, diagnosis, and management.",
+          "reason": "Duplicate general-HRS coverage already used in adjacent HRS topics of this pipeline."
+        },
+        {
+          "uid": "pubmed-38246506",
+          "title": "Hepatorenal Syndrome in Cirrhosis.",
+          "reason": "Duplicate general-HRS coverage already used in adjacent HRS topic (805)."
+        },
+        {
+          "uid": "pubmed-38527522",
+          "title": "Acute kidney injury in patients with cirrhosis: Acute Disease Quality Initiative (ADQI) and International Club of Ascites consensus.",
+          "reason": "Duplicate AKI-consensus coverage already used in adjacent HRS topics."
+        },
+        {
+          "uid": "pubmed-30213943",
+          "title": "Hepatorenal syndrome.",
+          "reason": "Duplicate HRS terminology coverage already used in adjacent HRS topic (805)."
+        },
+        {
+          "uid": "pubmed-30996046",
+          "title": "Hepatorenal Syndrome.",
+          "reason": "Duplicate HRS hemodynamic coverage; newer sources in this set supersede it."
+        },
+        {
+          "uid": "pubmed-37258014",
+          "title": "Hepatorenal Syndrome: Pathophysiology, Diagnosis, and Treatment.",
+          "reason": "Duplicate general-HRS coverage already used in adjacent HRS topic (806)."
+        },
+        {
+          "uid": "pubmed-33752858",
+          "title": "Hepatorenal Syndrome.",
+          "reason": "Duplicate general-HRS coverage; terlipressin-specific sources retained here."
+        },
+        {
+          "uid": "pubmed-28991106",
+          "title": "Pharmacological Therapies for Hepatorenal Syndrome: A Systematic Review and Meta-Analysis.",
+          "reason": "Broad pharmacological-therapy coverage; terlipressin detail provided by dedicated retained meta-analyses."
+        },
+        {
+          "uid": "pubmed-28052382",
+          "title": "Systematic review with meta-analysis: vasoactive drugs for the treatment of hepatorenal syndrome type 1.",
+          "reason": "Duplicate vasoactive meta-analysis coverage already carried in the adjacent vasoconstrictor topic (809)."
+        },
+        {
+          "uid": "pubmed-29422242",
+          "title": "Transjugular intrahepatic portosystemic shunt for hepatorenal syndrome: A systematic review and meta-analysis.",
+          "reason": "TIPS is an alternative intervention, not terlipressin evidence; adjacent to this topic's drug focus."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Terlipressin is the vasoconstrictor that made HRS treatable: a V1-receptor agonist that constricts the splanchnic bed, restoring effective arterial volume and relieving renal vasoconstriction when combined with albumin. Long the international standard of care, it was only recently approved for HRS-AKI in the United States — and its evidence base is now mature enough that meta-analyses of randomised trials define both its efficacy and its safety boundaries, including ischaemic adverse events that demand careful patient selection.",
+      "teaching_points": [
+        {
+          "claim": "The definition and diagnostic criteria of HRS-AKI have undergone recent changes, and terlipressin has recently been approved as pharmacotherapy for HRS-AKI in the United States.",
+          "cites": [
+            "38353275"
+          ]
+        },
+        {
+          "claim": "Meta-analysis of randomised controlled trials confirms terlipressin (with albumin) as an effective treatment for HRS, consolidating the evidence base for its use.",
+          "cites": [
+            "40207491"
+          ]
+        },
+        {
+          "claim": "A 2024 systematic review and meta-analysis re-assessed terlipressin versus placebo or noradrenaline for HRS, examining both efficacy and safety in light of HRS's poor prognosis and unmet therapeutic need.",
+          "cites": [
+            "39295934"
+          ]
+        },
+        {
+          "claim": "Terlipressin is the most widely used treatment for HRS, though therapy effects were historically inconsistent, prompting repeated meta-analytic assessment of its safety and efficacy.",
+          "cites": [
+            "29668606"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Ischaemic adverse events (cardiac, intestinal, digital) temper terlipressin use in patients with vascular disease or shock; the risk-benefit threshold is not crisply defined in the retained abstracts.",
+        "Whether noradrenaline is truly non-inferior to terlipressin — particularly in ICU settings — remains an active comparison."
+      ],
+      "mcq_angles": [
+        "Terlipressin mechanism: V1 agonism, splanchnic vasoconstriction, albumin co-therapy.",
+        "Approval status and evidence hierarchy for HRS-AKI.",
+        "Terlipressin versus noradrenaline: where each fits.",
+        "Safety monitoring: ischaemia, arrhythmia, fluid overload."
+      ],
+      "case_hooks": [
+        "A patient with HRS-AKI and coronary disease needs vasoconstrictor therapy; weigh terlipressin against alternatives.",
+        "An exam question asks why terlipressin must be given with albumin; explain the haemodynamic rationale."
+      ],
+      "gaps": "Dosing algorithms (bolus vs continuous), response definitions, and retreatment rules are not covered by the retained abstracts; verify against the full terlipressin reviews and regulatory label before approval.",
+      "sources": [
+        {
+          "pmid": "38353275",
+          "design": "review",
+          "year": "2024",
+          "journal": null,
+          "title": "Terlipressin for hepatorenal syndrome."
+        },
+        {
+          "pmid": "40207491",
+          "design": "meta-analysis",
+          "year": "2025",
+          "journal": null,
+          "title": "Terlipressin for the treatment of hepatorenal syndrome: a meta-analysis of randomized controlled trials."
+        },
+        {
+          "pmid": "39295934",
+          "design": "systematic review",
+          "year": "2024",
+          "journal": null,
+          "title": "Terlipressin versus placebo or noradrenalin in the treatment of hepatorenal syndrome: a systematic review and meta-analysis."
+        },
+        {
+          "pmid": "29668606",
+          "design": "meta-analysis",
+          "year": "2018",
+          "journal": null,
+          "title": "Terlipressin in the treatment of hepatorenal syndrome: A systematic review and meta-analysis."
+        }
+      ]
+    }
+  },
+  {
+    "no": 809,
+    "topicId": "4730725c-4183-4242-a710-c7828ab6d78d",
+    "topic": "Hepatorenal syndrome vasoconstrictor therapy",
+    "cluster": "HRS vasoconstrictor therapy",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 8,
+      "papersKept": [
+        {
+          "uid": "pubmed-32928750",
+          "title": "Hepatorenal syndrome: pathophysiology, diagnosis, and management.",
+          "year": "2020"
+        },
+        {
+          "uid": "pubmed-30996046",
+          "title": "Hepatorenal Syndrome.",
+          "year": "2019"
+        },
+        {
+          "uid": "pubmed-28052382",
+          "title": "Systematic review with meta-analysis: vasoactive drugs for the treatment of hepatorenal syndrome type 1.",
+          "year": "2017"
+        },
+        {
+          "uid": "pubmed-28991106",
+          "title": "Pharmacological Therapies for Hepatorenal Syndrome: A Systematic Review and Meta-Analysis.",
+          "year": "2018"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-37159031",
+          "title": "Diagnosis and Management of Cirrhosis and Its Complications: A Review.",
+          "reason": "Duplicate cirrhosis-complications coverage; tangential to vasoconstrictor therapy."
+        },
+        {
+          "uid": "pubmed-38246506",
+          "title": "Hepatorenal Syndrome in Cirrhosis.",
+          "reason": "Duplicate general-HRS coverage already used in adjacent HRS topic (805)."
+        },
+        {
+          "uid": "pubmed-38527522",
+          "title": "Acute kidney injury in patients with cirrhosis: Acute Disease Quality Initiative (ADQI) and International Club of Ascites consensus.",
+          "reason": "Duplicate AKI-consensus coverage already used in adjacent HRS topics."
+        },
+        {
+          "uid": "pubmed-30213943",
+          "title": "Hepatorenal syndrome.",
+          "reason": "Duplicate HRS terminology coverage already used in adjacent HRS topic (805)."
+        },
+        {
+          "uid": "pubmed-37258014",
+          "title": "Hepatorenal Syndrome: Pathophysiology, Diagnosis, and Treatment.",
+          "reason": "Duplicate general-HRS coverage already used in adjacent HRS topic (806)."
+        },
+        {
+          "uid": "pubmed-33752858",
+          "title": "Hepatorenal Syndrome.",
+          "reason": "Duplicate general-HRS coverage; vasoconstrictor-specific meta-analyses retained here."
+        },
+        {
+          "uid": "pubmed-29422242",
+          "title": "Transjugular intrahepatic portosystemic shunt for hepatorenal syndrome: A systematic review and meta-analysis.",
+          "reason": "TIPS is an alternative intervention, not a vasoconstrictor; terlipressin-specific evidence sits in the adjacent topic (808)."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Vasoconstrictor therapy is the pharmacological reversal of HRS pathophysiology: constrict the over-dilated splanchnic circulation, restore effective arterial volume, and let the kidneys reopen. The available classes — terlipressin, noradrenaline, and the oral midodrine-octreotide combination — differ in potency, evidence depth, setting (ward vs ICU) and availability. Meta-analyses support vasoactive drugs as a class for HRS-1, with terlipressin the most studied, and choice driven by haemodynamic monitoring capacity and contraindications.",
+      "teaching_points": [
+        {
+          "claim": "HRS, the extreme manifestation of renal impairment in cirrhosis, features reduced renal blood flow and GFR, and its management centres on vasoconstrictor therapy combined with albumin.",
+          "cites": [
+            "32928750"
+          ]
+        },
+        {
+          "claim": "HRS is characterised by increased splanchnic blood flow, a hyperdynamic state, decreased central volume, activation of vasoconstrictor systems and extreme kidney vasoconstriction — the rationale for pharmacological splanchnic vasoconstriction.",
+          "cites": [
+            "30996046"
+          ]
+        },
+        {
+          "claim": "Systematic review with meta-analysis supports vasoactive drugs for HRS type 1 — a functional, rapidly progressive but potentially reversible AKI characterised by intense renal arterial vasoconstriction and very poor prognosis.",
+          "cites": [
+            "28052382"
+          ]
+        },
+        {
+          "claim": "Different pharmacological therapies for HRS have variable efficacy, and meta-analytic comparison of drug classes informs the choice among available vasoconstrictor regimens.",
+          "cites": [
+            "28991106"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Whether oral combinations (midodrine-octreotide) match parenteral agents in efficacy remains uncertain.",
+        "Response predictors (baseline creatinine, bilirubin, arterial pressure) that should guide agent selection are not quantified in the retained abstracts."
+      ],
+      "mcq_angles": [
+        "Vasoconstrictor classes and their receptors (terlipressin V1, noradrenaline alpha-1, midodrine-octreotide oral).",
+        "Why all vasoconstrictors are given with albumin.",
+        "Ward-based versus ICU-based agent selection.",
+        "Response assessment and when to switch or escalate to RRT/transplant."
+      ],
+      "case_hooks": [
+        "A patient with HRS-1 in a district hospital without terlipressin access; construct a noradrenaline or oral-combination plan.",
+        "An exam question compares the mechanisms of terlipressin and midodrine-octreotide; justify agent choice by setting."
+      ],
+      "gaps": "Dosing, titration targets (mean arterial pressure), and comparative head-to-head trial detail are not covered by the retained abstracts; verify against ICA/AASLD guidance before approval.",
+      "sources": [
+        {
+          "pmid": "32928750",
+          "design": "review",
+          "year": "2020",
+          "journal": null,
+          "title": "Hepatorenal syndrome: pathophysiology, diagnosis, and management."
+        },
+        {
+          "pmid": "30996046",
+          "design": "review",
+          "year": "2019",
+          "journal": null,
+          "title": "Hepatorenal Syndrome."
+        },
+        {
+          "pmid": "28052382",
+          "design": "meta-analysis",
+          "year": "2017",
+          "journal": null,
+          "title": "Systematic review with meta-analysis: vasoactive drugs for the treatment of hepatorenal syndrome type 1."
+        },
+        {
+          "pmid": "28991106",
+          "design": "meta-analysis",
+          "year": "2018",
+          "journal": null,
+          "title": "Pharmacological Therapies for Hepatorenal Syndrome: A Systematic Review and Meta-Analysis."
+        }
+      ]
+    }
+  },
+  {
+    "no": 810,
+    "topicId": "34a98c4a-8ee3-4417-a183-0a4206655182",
+    "topic": "HER2 positive breast cancer adjuvant trastuzumab",
+    "cluster": "HER2-positive breast cancer",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 16,
+      "papersKept": [
+        {
+          "uid": "pubmed-31287333",
+          "title": "Adjuvant trastuzumab regimen for HER2-positive early-stage breast cancer: a systematic review and meta-analysis.",
+          "year": "2019"
+        },
+        {
+          "uid": "pubmed-35148934",
+          "title": "Neoadjuvant and adjuvant treatment of patients with HER2-positive early breast cancer.",
+          "year": "2022"
+        },
+        {
+          "uid": "pubmed-27939064",
+          "title": "HER2-positive breast cancer.",
+          "year": "2017"
+        },
+        {
+          "uid": "pubmed-34969516",
+          "title": "[Not Available].",
+          "year": "2021"
+        },
+        {
+          "uid": "pubmed-35367784",
+          "title": "Adjuvant and neoadjuvant breast cancer treatments: A systematic review of their effects on mortality.",
+          "year": "2022"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-33726508",
+          "title": "Current trends in the treatment of HR+/HER2+ breast cancer.",
+          "reason": "HR+/HER2+ subset focus; tangential to the general adjuvant-trastuzumab topic."
+        },
+        {
+          "uid": "pubmed-38621469",
+          "title": "Trastuzumab deruxtecan in breast cancer.",
+          "reason": "Antibody-drug conjugate review centred on advanced disease; tangential to adjuvant trastuzumab."
+        },
+        {
+          "uid": "pubmed-29117498",
+          "title": "20-Year Risks of Breast-Cancer Recurrence after Stopping Endocrine Therapy at 5 Years.",
+          "reason": "ER-positive endocrine-therapy topic; tangential to HER2-directed therapy."
+        },
+        {
+          "uid": "pubmed-39184927",
+          "title": "Chinese Society of Clinical Oncology (CSCO) Breast Cancer guidelines 2024.",
+          "reason": "Regional guideline; better-anchored evidence retained for this curriculum."
+        },
+        {
+          "uid": "pubmed-26253814",
+          "title": "Clinical implications of the intrinsic molecular subtypes of breast cancer.",
+          "reason": "Molecular-subtype biology review; tangential to adjuvant trastuzumab decision-making."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "HER2-positive breast cancer used to be the aggressive subtype; adjuvant trastuzumab turned it into one of the more curable ones. About 15-20% of breast cancers overexpress HER2, and adding trastuzumab to chemotherapy produced one of the largest survival benefits ever recorded in adjuvant oncology. The modern craft is duration and escalation: one year of trastuzumab as the default, neoadjuvant therapy when downsizing matters, and escalation to dual HER2 blockade or T-DM1 for residual disease after neoadjuvant treatment.",
+      "teaching_points": [
+        {
+          "claim": "About 15% to 20% of breast cancers are HER2-positive — a more aggressive subtype with shortened survival; meta-analysis evidence defines the optimal adjuvant trastuzumab regimen.",
+          "cites": [
+            "31287333"
+          ]
+        },
+        {
+          "claim": "The availability of HER2-targeted therapy has dramatically improved outcomes in HER2-positive early breast cancer, as demonstrated by the EBCTCG meta-analysis on trastuzumab.",
+          "cites": [
+            "35148934"
+          ]
+        },
+        {
+          "claim": "Anti-HER2 treatment has changed the natural biology of HER2-positive breast cancer, with major achievements in both metastatic and early disease and particular success of neoadjuvant approaches.",
+          "cites": [
+            "27939064"
+          ]
+        },
+        {
+          "claim": "Breast cancer with HER2 amplification accounts for 20% of breast cancers, and management has dramatically changed since 2000 with monoclonal antibodies in metastatic and (neo)adjuvant settings.",
+          "cites": [
+            "34969516"
+          ]
+        },
+        {
+          "claim": "Adjuvant and neoadjuvant breast cancer treatments reduce breast cancer mortality, though effects on other-cause mortality vary — a systematic review quantified these trade-offs.",
+          "cites": [
+            "35367784"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "De-escalation questions — shorter trastuzumab duration for selected low-risk patients, and chemotherapy-free regimens for small node-negative tumours — remain partially unresolved.",
+        "Optimal escalation for residual disease after neoadjuvant therapy continues to evolve with newer agents."
+      ],
+      "mcq_angles": [
+        "The magnitude of adjuvant trastuzumab benefit and its evidence base (EBCTCG meta-analysis).",
+        "One-year versus shorter durations: what trials showed.",
+        "Neoadjuvant therapy and pathologic complete response as a prognostic and escalation trigger.",
+        "Cardiac monitoring during HER2 therapy (LVEF surveillance)."
+      ],
+      "case_hooks": [
+        "A 45-year-old with a 2-cm node-positive HER2-positive tumour; construct the adjuvant plan and monitoring schedule.",
+        "A patient has residual disease after neoadjuvant HER2 therapy; explain escalation options."
+      ],
+      "gaps": "Dual-blockade regimens, T-DM1/tucatinib positioning, and cardiotoxicity management algorithms are not covered by the retained abstracts; verify against current ASCO/ESMO guidelines before approval.",
+      "sources": [
+        {
+          "pmid": "31287333",
+          "design": "meta-analysis",
+          "year": "2019",
+          "journal": null,
+          "title": "Adjuvant trastuzumab regimen for HER2-positive early-stage breast cancer: a systematic review and meta-analysis."
+        },
+        {
+          "pmid": "35148934",
+          "design": "meta-analysis",
+          "year": "2022",
+          "journal": null,
+          "title": "Neoadjuvant and adjuvant treatment of patients with HER2-positive early breast cancer."
+        },
+        {
+          "pmid": "27939064",
+          "design": "review",
+          "year": "2017",
+          "journal": null,
+          "title": "HER2-positive breast cancer."
+        },
+        {
+          "pmid": "34969516",
+          "design": "review",
+          "year": "2021",
+          "journal": null,
+          "title": "[Not Available]."
+        },
+        {
+          "pmid": "35367784",
+          "design": "systematic review",
+          "year": "2022",
+          "journal": null,
+          "title": "Adjuvant and neoadjuvant breast cancer treatments: A systematic review of their effects on mortality."
+        }
+      ]
+    }
+  }
+]

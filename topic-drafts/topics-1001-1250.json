@@ -1,0 +1,4899 @@
+[
+  {
+    "no": 1001,
+    "topicId": "9dd63b66-4f69-43fd-acd5-0e7cc3aa1dbb",
+    "topic": "Latent autoimmune diabetes in adults LADA: GAD antibodies, insulin progression",
+    "cluster": "latent autoimmune diabetes in adults lada gad antibodies insulin progression",
+    "status": "published",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 1,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [
+        "Management of Latent Autoimmune Diabetes in Adults: A Consensus Statement From an International Expert Panel"
+      ],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Latent autoimmune diabetes in adults (LADA) presents phenotypically as type 2 diabetes but features islet autoantibodies and progressive immune-mediated pancreatic beta-cell destruction. Clinical decision-making balances early glycemic control with beta-cell preservation, guided by baseline GADA titers and residual C-peptide secretion.",
+      "teaching_points": [
+        {
+          "claim": "The 2020 international expert consensus on LADA establishes that screening for glutamic acid decarboxylase autoantibodies (GADA) is recommended in adults presenting with apparent type 2 diabetes who are non-obese, age under 50, or exhibit early oral agent failure.",
+          "cites": [
+            "32847960"
+          ]
+        },
+        {
+          "claim": "Residual fasting C-peptide concentrations stratify therapeutic pathways in LADA: levels below 0.3 nmol/L require an immediate multiple-dose insulin regimen, while levels from 0.3 to 0.7 nmol/L represent a vulnerable gray zone where insulin is introduced or combined with incretin therapies.",
+          "cites": [
+            "32847960"
+          ]
+        },
+        {
+          "claim": "Sulfonylureas are contraindicated or strongly discouraged in LADA as secretagogues accelerate autoimmune beta-cell apoptosis and hasten progression toward complete insulin dependence compared to insulin or metformin.",
+          "cites": [
+            "32847960"
+          ]
+        },
+        {
+          "claim": "Longitudinal follow-up demonstrates that high-titer GADA positivity confers a significantly faster rate of beta-cell loss, with over 50% requiring absolute insulin replacement within 3 to 6 years of clinical diagnosis.",
+          "cites": [
+            "32847960"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "pmid": "32847960",
+          "design": "consensus-guideline",
+          "year": "2020",
+          "journal": "Diabetes",
+          "title": "Management of Latent Autoimmune Diabetes in Adults: A Consensus Statement From an International Expert Panel"
+        }
+      ],
+      "uncertainties": [
+        "Whether upfront immunomodulatory interventions (such as low-dose alum-formulated GAD65) can permanently halt progressive beta-cell decline in newly diagnosed LADA cohorts.",
+        "The long-term renal and cardiovascular outcomes of SGLT2 inhibitors in LADA patients with intermediate C-peptide levels due to euglycemic DKA risk."
+      ],
+      "mcq_angles": [
+        "Diagnostic criteria differentiating LADA from classic adult-onset type 1 and type 2 diabetes (age >=30, presence of islet autoantibodies, and at least 6 months without initial insulin requirement).",
+        "Selection of optimal pharmacotherapy when C-peptide is 0.4 nmol/L (avoiding sulfonylureas, combining metformin/incretins with low-dose basal insulin).",
+        "Autoantibody panel priority: high sensitivity and diagnostic utility of GADA over IA-2A and ZnT8 in adult populations."
+      ],
+      "case_hooks": [
+        "A 42-year-old non-obese female with diagnosed T2DM who develops secondary failure on metformin plus glimepiride within 14 months and exhibits positive anti-GAD65 antibodies.",
+        "A 55-year-old male with mild hyperglycemia, normal BMI, and unexplained weight loss presenting with ketones on urinalysis after initiation of an SGLT2 inhibitor."
+      ],
+      "gaps": "Clarifying safe clinical parameters for SGLT2 inhibitor use in antibody-positive adults with preserved C-peptide."
+    }
+  },
+  {
+    "no": 1002,
+    "topicId": "e43a07ad-39a7-4062-902e-7c7332788920",
+    "topic": "latent tuberculosis",
+    "cluster": "latent tuberculosis",
+    "status": "published",
+    "dbEvidence": {
+      "totalTrials": 1,
+      "totalGuidelines": 1,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [
+        "Updated Guidelines for the Treatment of Latent Tuberculosis Infection: CDC and National Tuberculosis Controllers Association"
+      ],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Latent tuberculosis infection (LTBI) represents a state of persistent immune response to Mycobacterium tuberculosis antigens without evidence of clinically active disease. Clinical management prioritizes identifying high-risk individuals for progression, excluding active pulmonary or extrapulmonary disease, and selecting short-course rifamycin regimens.",
+      "teaching_points": [
+        {
+          "claim": "The 2020 CDC and NTCA guidelines preferentially recommend short-course rifamycin-based regimens over 6- to 9-month isoniazid monotherapy for treating latent tuberculosis infection due to superior completion rates and reduced hepatotoxicity.",
+          "cites": [
+            "32053584"
+          ]
+        },
+        {
+          "claim": "Active tuberculosis disease must be definitively excluded via targeted symptom screening and chest radiography before commencing any latent TB regimen to prevent the rapid emergence of rifamycin resistance.",
+          "cites": [
+            "32053584"
+          ]
+        },
+        {
+          "claim": "Interferon-gamma release assays (IGRAs) demonstrate superior diagnostic specificity over the tuberculin skin test (TST) in individuals with prior BCG vaccination or non-tuberculous mycobacterial exposures.",
+          "cites": [
+            "32053584",
+            "22129253"
+          ]
+        },
+        {
+          "claim": "The randomized PREVENT TB trial confirmed that 3 months of once-weekly isoniazid plus rifapentine (3HP) is noninferior to 9 months of daily isoniazid, with treatment completion rates of 82.1% versus 69.0%.",
+          "cites": [
+            "22129253"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "pmid": "32053584",
+          "design": "guideline",
+          "year": "2020",
+          "journal": "MMWR Recomm Rep",
+          "title": "Updated Guidelines for the Treatment of Latent Tuberculosis Infection: CDC and National Tuberculosis Controllers Association"
+        },
+        {
+          "pmid": "22129253",
+          "design": "trial",
+          "year": "2011",
+          "journal": "N Engl J Med",
+          "title": "Three Months of Rifapentine and Isoniazid for Latent Tuberculosis Infection (PREVENT TB Trial)"
+        }
+      ],
+      "uncertainties": [
+        "The optimal screening and preventive treatment strategy for individuals repeatedly exposed to multidrug-resistant tuberculosis (MDR-TB) contacts.",
+        "Safety and efficacy of ultra-short 1-month regimens (1HP) in immunocompetent non-HIV adult populations."
+      ],
+      "mcq_angles": [
+        "Distinguishing LTBI from active tuberculosis: positive IGRA with normal chest radiograph and absent constitutional symptoms vs active cavitation.",
+        "First-line regimen selection in a patient initiating TNF-alpha inhibitor therapy: preferential use of 3HP or 4R over 9H.",
+        "Management of elevated baseline transaminases during rifamycin treatment and absolute thresholds for therapy discontinuation."
+      ],
+      "case_hooks": [
+        "A 34-year-old healthcare worker from an endemic region with a positive QuantiFERON-TB Gold Plus, normal chest X-ray, and no constitutional symptoms prior to starting adalimumab.",
+        "A 50-year-old diabetic male who develops asymptomatic mild transaminitis (ALT 2x ULN) two weeks into a 4-month daily rifampin regimen."
+      ],
+      "gaps": "Managing drug-drug interactions between rifamycins and modern immunosuppressive or direct-acting antiviral therapies."
+    }
+  },
+  {
+    "no": 1003,
+    "topicId": "f858b266-77f8-4bb8-ad7c-43c7dbc1c82a",
+    "topic": "Latent tuberculosis infection treatment",
+    "cluster": "latent tuberculosis infection treatment",
+    "status": "published",
+    "dbEvidence": {
+      "totalTrials": 1,
+      "totalGuidelines": 1,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [
+        "Updated Guidelines for the Treatment of Latent Tuberculosis Infection: CDC and National Tuberculosis Controllers Association"
+      ],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Latent tuberculosis infection treatment prevents progression to active disease in high-risk hosts. Modern guidelines prioritize 3- to 4-month rifamycin-containing options (3HP, 4R, 3HR) over protracted isoniazid monotherapies, balancing cytochrome P450 interactions and hepatic tolerance.",
+      "teaching_points": [
+        {
+          "claim": "The preferred first-line options for latent tuberculosis in the 2020 CDC/NTCA guidelines are 3 months of once-weekly isoniazid plus rifapentine (3HP) or 4 months of daily rifampin monotherapy (4R).",
+          "cites": [
+            "32053584"
+          ]
+        },
+        {
+          "claim": "Daily rifampin for 4 months (4R) offers a favorable safety profile with significantly lower drug-induced liver injury (0.3% vs 2.5%) and higher adherence compared to 9 months of daily isoniazid (9H).",
+          "cites": [
+            "32053584",
+            "31731988"
+          ]
+        },
+        {
+          "claim": "Rifamycins are potent inducers of CYP3A4 and P-glycoprotein, necessitating close dosage adjustment or alternative regimens for patients taking protease inhibitors, direct oral anticoagulants, or calcineurin inhibitors.",
+          "cites": [
+            "32053584"
+          ]
+        },
+        {
+          "claim": "In patients with HIV receiving efavirenz or dolutegravir-based ART, 3HP can be safely co-administered with appropriate dose adjustments, expanding access to short-course curative therapy.",
+          "cites": [
+            "31731988"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "pmid": "32053584",
+          "design": "guideline",
+          "year": "2020",
+          "journal": "MMWR Recomm Rep",
+          "title": "Updated Guidelines for the Treatment of Latent Tuberculosis Infection: CDC and National Tuberculosis Controllers Association"
+        },
+        {
+          "pmid": "31731988",
+          "design": "trial",
+          "year": "2019",
+          "journal": "Clin Infect Dis",
+          "title": "Adherence and Safety of 3 Months of Weekly Rifapentine and Isoniazid for Latent Tuberculosis Infection"
+        }
+      ],
+      "uncertainties": [
+        "Optimal preventative dosing and safety of rifapentine regimens during the first trimester of pregnancy.",
+        "Management protocols for LTBI in solid organ transplant candidates on waiting lists with severe pre-existing hepatic impairment."
+      ],
+      "mcq_angles": [
+        "Dosing schedule and composition of 3HP (12 once-weekly doses of isoniazid and weight-based rifapentine).",
+        "Identification of severe drug-drug interactions between rifampin and direct oral anticoagulants (apixaban/rivaroxaban), prompting regimen adjustments.",
+        "Clinical criteria warranting urgent liver panel evaluation: jaundice, right upper quadrant pain, vomiting, or ALT > 5x ULN without symptoms."
+      ],
+      "case_hooks": [
+        "A 28-year-old woman with systemic lupus erythematosus on azathioprine requiring LTBI clearance before commencing rituximab infusion.",
+        "A 62-year-old man on warfarin and atorvastatin diagnosed with LTBI, requiring medication coordination prior to commencing rifampin."
+      ],
+      "gaps": "Real-world adherence monitoring comparing self-administered 3HP with digital adherence technologies versus in-clinic DOT."
+    }
+  },
+  {
+    "no": 1004,
+    "topicId": "da0d4243-6baa-4371-b8f8-7ba44a85f0a2",
+    "topic": "Late-onset hypogonadism: diagnostic thresholds, testosterone replacement risks, monitoring",
+    "cluster": "late-onset hypogonadism diagnostic thresholds testosterone replacement risks monitoring",
+    "status": "published",
+    "dbEvidence": {
+      "totalTrials": 2,
+      "totalGuidelines": 1,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [
+        "Testosterone Therapy in Men with Hypogonadism: An Endocrine Society Clinical Practice Guideline"
+      ],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Late-onset hypogonadism involves persistent clinical features of androgen deficiency paired with unequivocally low serum testosterone levels in aging men. The Endocrine Society emphasizes rigorous morning laboratory verification, exclusion of reversible secondary etiologies, and objective cardiovascular risk evaluation.",
+      "teaching_points": [
+        {
+          "claim": "The Endocrine Society clinical guideline requires at least two separate fasting morning (8:00 AM to 10:00 AM) total testosterone measurements below 300 ng/dL (10.4 nmol/L) alongside specific clinical symptoms to establish a diagnosis of hypogonadism.",
+          "cites": [
+            "29562364"
+          ]
+        },
+        {
+          "claim": "The randomized TRAVERSE trial of 5,246 hypogonadal men with cardiovascular disease or high risk showed that transdermal testosterone therapy was noninferior to placebo for major adverse cardiovascular events (HR 0.96; 95% CI, 0.78 to 1.17).",
+          "cites": [
+            "37326322"
+          ]
+        },
+        {
+          "claim": "In the TRAVERSE trial, testosterone therapy did not reduce clinical fracture risk and was unexpectedly associated with a numerically higher incidence of all clinical fractures compared with placebo (HR 1.43).",
+          "cites": [
+            "38152430"
+          ]
+        },
+        {
+          "claim": "Baseline and surveillance monitoring during testosterone replacement requires periodic hematocrit assessment to detect polycythemia, with treatment withholding or dose reduction recommended if hematocrit exceeds 54%.",
+          "cites": [
+            "29562364",
+            "37326322"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "pmid": "29562364",
+          "design": "guideline",
+          "year": "2018",
+          "journal": "J Clin Endocrinol Metab",
+          "title": "Testosterone Therapy in Men with Hypogonadism: An Endocrine Society Clinical Practice Guideline"
+        },
+        {
+          "pmid": "37326322",
+          "design": "trial",
+          "year": "2023",
+          "journal": "N Engl J Med",
+          "title": "Cardiovascular Safety of Testosterone-Replacement Therapy (TRAVERSE Trial)"
+        },
+        {
+          "pmid": "38152430",
+          "design": "trial",
+          "year": "2024",
+          "journal": "N Engl J Med",
+          "title": "Testosterone Treatment and Fractures in Men with Hypogonadism (TRAVERSE Fracture Substudy)"
+        }
+      ],
+      "uncertainties": [
+        "The precise biological mechanism responsible for increased clinical fracture incidence observed in elderly men receiving transdermal testosterone in the TRAVERSE trial.",
+        "Long-term prostate cancer incidence and progression rates beyond 5 years of therapeutic testosterone replacement in men with treated low-risk localized prostate carcinoma."
+      ],
+      "mcq_angles": [
+        "Diagnostic confirmation of hypogonadism: necessity of repeat morning fasting total testosterone and evaluating free testosterone if SHBG is altered.",
+        "Cardiovascular safety consensus following TRAVERSE: non-inferiority for MACE but increased risk of arrhythmias (atrial fibrillation), venous thromboembolism, and acute kidney injury.",
+        "Mandatory lab safety threshold for erythrocytosis: dose reduction or phlebotomy if hematocrit exceeds 54%."
+      ],
+      "case_hooks": [
+        "A 66-year-old male with type 2 diabetes and stable coronary artery disease seeking testosterone therapy for decreased libido, presenting with a single random afternoon testosterone of 280 ng/dL.",
+        "A 71-year-old hypogonadal male on transdermal testosterone gel whose routine 6-month laboratory check reveals a hematocrit of 56%."
+      ],
+      "gaps": "Defining personalized risk-benefit algorithms for testosterone therapy in frail elderly men with multi-morbidity."
+    }
+  },
+  {
+    "no": 1005,
+    "topicId": "4f80f5ec-d663-4642-bb2e-a7b6694b5996",
+    "topic": "Lateral epicondylitis (tennis elbow): assessment and management",
+    "cluster": "lateral epicondylitis tennis elbow assessment and management",
+    "status": "published",
+    "dbEvidence": {
+      "totalTrials": 2,
+      "totalGuidelines": 0,
+      "totalMeta": 1,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Lateral epicondylitis (tennis elbow) is a chronic angiofibroblastic tendinopathy of the common extensor origin, primarily involving the extensor carpi radialis brevis (ECRB). Management focuses on eccentric wrist extensor rehabilitation, while reserving interventional therapies for refractory pain.",
+      "teaching_points": [
+        {
+          "claim": "A landmark randomized trial in JAMA demonstrated that corticosteroid injection provides superior short-term pain relief at 4 weeks but is associated with significantly higher recurrence rates and worse 1-year outcomes compared to physiotherapy or wait-and-see.",
+          "cites": [
+            "23385277"
+          ]
+        },
+        {
+          "claim": "A randomized controlled trial in the BMJ demonstrated that physical therapy combining elbow mobilization with movement and eccentric exercise yields superior durable long-term success at 52 weeks compared with corticosteroid injection.",
+          "cites": [
+            "17060460"
+          ]
+        },
+        {
+          "claim": "A 2023 meta-analysis of Level 1 and 2 randomized trials established that corticosteroid injections are superior to platelet-rich plasma (PRP) at 1 month, whereas PRP achieves superior and durable functional and pain scores at 6 months.",
+          "cites": [
+            "37247780"
+          ]
+        },
+        {
+          "claim": "Pathologically, lateral epicondylitis represents non-inflammatory angiofibroblastic tendinosis and collagen disorientation rather than acute inflammation, explaining the limited disease-modifying utility of chronic oral NSAIDs.",
+          "cites": [
+            "23385277",
+            "37247780"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "pmid": "23385277",
+          "design": "trial",
+          "year": "2013",
+          "journal": "JAMA",
+          "title": "Effect of Corticosteroid Injection, Physiotherapy, or Both on Clinical Outcomes in Patients With Unilateral Lateral Epicondylalgia: A Randomized Controlled Trial"
+        },
+        {
+          "pmid": "17060460",
+          "design": "trial",
+          "year": "2006",
+          "journal": "BMJ",
+          "title": "Mobilisation with Movement and Exercise, Corticosteroid Injection, or Wait and See for Tennis Elbow: Randomised Trial"
+        },
+        {
+          "pmid": "37247780",
+          "design": "meta-analysis",
+          "year": "2023",
+          "journal": "J Shoulder Elbow Surg",
+          "title": "Corticosteroid Injections for the Treatment of Lateral Epicondylitis Are Superior to Platelet-Rich Plasma at 1 Month but Platelet-Rich Plasma Is More Effective at 6 Months: A Systematic Review and Meta-Analysis"
+        }
+      ],
+      "uncertainties": [
+        "The comparative clinical efficacy of leukocyte-rich versus leukocyte-poor platelet-rich plasma formulations in chronic refractory tendinopathy.",
+        "The optimal timing and definitive clinical indication for surgical or arthroscopic ECRB debridement after failed conservative therapy."
+      ],
+      "mcq_angles": [
+        "Clinical physical exam localization: maximal point tenderness 1 to 2 cm distal to the lateral epicondyle exacerbated by resisted wrist and third digit extension.",
+        "Long-term therapeutic trajectory of local corticosteroid injections: transient early relief followed by high recurrence and tendon matrix compromise at 12 months.",
+        "First-line evidence-based conservative management: heavy slow resistance/eccentric wrist extensor physiotherapy combined with activity modification."
+      ],
+      "case_hooks": [
+        "A 46-year-old carpenter presenting with lateral elbow pain that worsens during gripping and screwdriver use, with exquisite tenderness over the ECRB origin.",
+        "A 52-year-old avid tennis player who received two previous cortisone shots with transient relief but now reports severe recrudescence of pain and diminished grip strength."
+      ],
+      "gaps": "Standardizing preparation protocols and injection volumes for platelet-rich plasma in clinical practice."
+    }
+  },
+  {
+    "no": 1006,
+    "topicId": "1ae6b811-9676-4802-b669-d543e9487f72",
+    "topic": "latest guideline recommendations for atrial fibrillation stroke prevention",
+    "cluster": "latest guideline recommendations for atrial fibrillation stroke prevention",
+    "status": "published",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 1,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [
+        "2024 ESC Guidelines for the Management of Atrial Fibrillation Developed in Collaboration with EACTS"
+      ],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Stroke prevention in atrial fibrillation is centered on risk stratification and oral anticoagulation. The 2024 ESC guidelines introduced the CHA2DS2-VA score and reiterated the primacy of direct oral anticoagulants (DOACs) over vitamin K antagonists in non-valvular disease.",
+      "teaching_points": [
+        {
+          "claim": "The 2024 ESC guidelines for atrial fibrillation introduced the CHA2DS2-VA score, removing female sex as an independent score point and establishing oral anticoagulation as strongly indicated for scores of 2 or higher.",
+          "cites": [
+            "39210723"
+          ]
+        },
+        {
+          "claim": "Direct oral anticoagulants (apixaban, dabigatran, edoxaban, rivaroxaban) are class I recommended over vitamin K antagonists (warfarin) in non-valvular atrial fibrillation due to superior reductions in intracranial hemorrhage and mortality.",
+          "cites": [
+            "39210723"
+          ]
+        },
+        {
+          "claim": "Warfarin remains the mandatory anticoagulant of choice in patients with moderate-to-severe rheumatic mitral stenosis or mechanical prosthetic heart valves, where DOACs are contraindicated.",
+          "cites": [
+            "39210723"
+          ]
+        },
+        {
+          "claim": "In patients with a CHA2DS2-VA score of 1 in men or equivalent clinical risk, oral anticoagulation should be considered (Class IIa), balancing individual bleeding risk using modifiable risk factor calculators.",
+          "cites": [
+            "39210723"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "pmid": "39210723",
+          "design": "guideline",
+          "year": "2024",
+          "journal": "Eur Heart J",
+          "title": "2024 ESC Guidelines for the Management of Atrial Fibrillation Developed in Collaboration with EACTS"
+        }
+      ],
+      "uncertainties": [
+        "The definitive stroke reduction efficacy of percutaneous left atrial appendage occlusion compared with modern DOAC therapy in patients without contraindications to anticoagulation.",
+        "Anticoagulation management strategies in patients with subclinical, device-detected atrial fibrillation episodes lasting between 6 minutes and 24 hours."
+      ],
+      "mcq_angles": [
+        "Application of the updated CHA2DS2-VA score: elimination of female sex category and revised risk thresholds for anticoagulation initiation.",
+        "Strict contraindications to DOACs requiring warfarin therapy (mechanical prosthetic valve or significant mitral stenosis).",
+        "Optimal timing of DOAC resumption following acute ischemic stroke based on infarct volume and hemorrhagic transformation risk."
+      ],
+      "case_hooks": [
+        "A 72-year-old male with hypertension, type 2 diabetes, and newly diagnosed paroxysmal atrial fibrillation presenting for stroke prevention counseling.",
+        "A 68-year-old female with atrial fibrillation and a mechanical bileaflet mitral valve whose primary care physician inappropriately initiated apixaban."
+      ],
+      "gaps": "Clarifying clinical thresholds for initiating oral anticoagulation in short-duration subclinical atrial fibrillation detected by consumer wearables."
+    }
+  },
+  {
+    "no": 1007,
+    "topicId": "ac71dcf0-49e4-4396-87e7-2723b4bea437",
+    "topic": "Latex and perioperative allergy evaluation",
+    "cluster": "latex and perioperative allergy evaluation",
+    "status": "published",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 1,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [
+        "Management of Suspected Immediate Perioperative Allergic Reactions: An International Overview and Consensus Recommendations"
+      ],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Perioperative anaphylaxis requires immediate resuscitation and multidisciplinary allergological investigation. The 2019 international consensus recommendations establish protocols for acute serial tryptase measurements, identification of latex vs drug triggers, and timing of diagnostic skin testing.",
+      "teaching_points": [
+        {
+          "claim": "The 2019 international consensus recommendations emphasize that immediate management of perioperative anaphylaxis requires prompt intramuscular or titrated intravenous epinephrine alongside aggressive crystalloid resuscitation.",
+          "cites": [
+            "31053233"
+          ]
+        },
+        {
+          "claim": "Serial serum total tryptase sampling is recommended at the time of resuscitation, at 1 to 2 hours post-reaction, and at baseline (after at least 24 hours) to confirm mast cell activation via the consensus formula: acute tryptase > (1.2 x baseline tryptase + 2 ug/L).",
+          "cites": [
+            "31053233"
+          ]
+        },
+        {
+          "claim": "Comprehensive allergy workup including skin prick testing and specific IgE testing should be scheduled 4 to 6 weeks following the acute episode to avoid false-negative results from transient mast cell exhaustion.",
+          "cites": [
+            "31053233"
+          ]
+        },
+        {
+          "claim": "High-risk populations for Type I IgE-mediated latex allergy include patients with spina bifida, congenital urological anomalies with multiple surgical exposures, healthcare workers, and individuals with latex-fruit syndrome (banana, avocado, kiwi, chestnut).",
+          "cites": [
+            "31053233"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "pmid": "31053233",
+          "design": "consensus-guideline",
+          "year": "2019",
+          "journal": "Br J Anaesth",
+          "title": "Management of Suspected Immediate Perioperative Allergic Reactions: An International Overview and Consensus Recommendations"
+        }
+      ],
+      "uncertainties": [
+        "Sensitivity and safety of rapid alternative skin testing within 2 weeks of acute reaction when urgent life-saving re-operation cannot be delayed 4 to 6 weeks.",
+        "Clinical cross-reactivity and clinical significance of asymptomatic specific IgE sensitization to Hev b recombinant allergens."
+      ],
+      "mcq_angles": [
+        "Diagnostic interpretation of acute tryptase elevation using the formula: peak > 1.2 x baseline + 2 ug/L.",
+        "Identifying high-risk clinical populations warranting a latex-safe surgical environment without prior documented anaphylaxis (e.g. myelomeningocele).",
+        "Recommended timeline for specialist skin prick testing post-anaphylaxis (4 to 6 weeks) and the risk of false negatives if performed prematurely."
+      ],
+      "case_hooks": [
+        "A 24-year-old male with spina bifida who develops sudden profound hypotension, bronchospasm, and urticaria 30 minutes into an elective orthopedic procedure.",
+        "A 40-year-old operating room nurse with hand eczema and oral pruritus with kiwi fruit who experiences anaphylaxis during an outpatient dental procedure."
+      ],
+      "gaps": "Harmonizing standard electronic health record alerts to distinguish true Type I IgE-mediated latex anaphylaxis from Type IV contact dermatitis."
+    }
+  },
+  {
+    "no": 1008,
+    "topicId": "9ed2b94f-7e25-43e0-b7c2-8814e6b39606",
+    "topic": "LDL lowering and ASCVD prevention",
+    "cluster": "ldl lowering and ascvd prevention",
+    "status": "published",
+    "dbEvidence": {
+      "totalTrials": 3,
+      "totalGuidelines": 1,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [
+        "2019 ESC/EAS Guidelines for the Management of Dyslipidaemias: Lipid Modification to Reduce Cardiovascular Risk"
+      ],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Atherosclerotic cardiovascular disease (ASCVD) risk reduction is fundamentally driven by absolute low-density lipoprotein cholesterol (LDL-C) reduction. Landmark trials and current guidelines establish that lower LDL-C levels achieved over long durations yield progressive reductions in major adverse cardiovascular events without an identified lower safety threshold.",
+      "teaching_points": [
+        {
+          "claim": "The IMPROVE-IT trial established that adding ezetimibe to simvastatin in post-acute coronary syndrome patients lowered median LDL-C to 53.7 mg/dL and significantly reduced major adverse cardiovascular events (HR 0.936, P=0.016), validating non-statin LDL lowering.",
+          "cites": [
+            "26039521"
+          ]
+        },
+        {
+          "claim": "The FOURIER trial demonstrated that adding the PCSK9 inhibitor evolocumab to statin therapy lowered LDL-C to a median of 30 mg/dL and significantly reduced the composite of cardiovascular death, MI, stroke, hospitalization for angina, or revascularization (HR 0.85, P<0.001).",
+          "cites": [
+            "28304224"
+          ]
+        },
+        {
+          "claim": "The ODYSSEY OUTCOMES trial confirmed that alirocumab added to high-intensity statin therapy after acute coronary syndrome significantly reduced major adverse cardiovascular events (HR 0.85) and was associated with lower all-cause mortality in patients with baseline LDL-C >= 100 mg/dL.",
+          "cites": [
+            "30415629"
+          ]
+        },
+        {
+          "claim": "The 2019 ESC/EAS guidelines establish an intensive LDL-C goal of <55 mg/dL (<1.4 mmol/L) alongside at least a 50% baseline reduction for individuals at very high cardiovascular risk, recommending a stepwise addition of ezetimibe and PCSK9 inhibitors.",
+          "cites": [
+            "31504418"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "pmid": "26039521",
+          "design": "trial",
+          "year": "2015",
+          "journal": "N Engl J Med",
+          "title": "Ezetimibe Added to Statin Therapy after Acute Coronary Syndromes (IMPROVE-IT Trial)"
+        },
+        {
+          "pmid": "28304224",
+          "design": "trial",
+          "year": "2017",
+          "journal": "N Engl J Med",
+          "title": "Evolocumab and Clinical Outcomes in Patients with Cardiovascular Disease (FOURIER Trial)"
+        },
+        {
+          "pmid": "30415629",
+          "design": "trial",
+          "year": "2018",
+          "journal": "N Engl J Med",
+          "title": "Alirocumab and Cardiovascular Outcomes after Acute Coronary Syndrome (ODYSSEY OUTCOMES Trial)"
+        },
+        {
+          "pmid": "31504418",
+          "design": "guideline",
+          "year": "2019",
+          "journal": "Eur Heart J",
+          "title": "2019 ESC/EAS Guidelines for the Management of Dyslipidaemias: Lipid Modification to Reduce Cardiovascular Risk"
+        }
+      ],
+      "uncertainties": [
+        "Long-term neurocognitive and endocrine safety profiles when sustaining ultra-low LDL-C levels (<20 mg/dL) over decades with combination siRNA (inclisiran) and PCSK9 inhibitors.",
+        "The incremental benefit and cost-effectiveness of routine triple therapy (statin + ezetimibe + PCSK9 inhibitor) initiated upfront during index acute myocardial infarction hospitalization."
+      ],
+      "mcq_angles": [
+        "Target LDL-C thresholds in very-high-risk secondary prevention: <55 mg/dL (1.4 mmol/L) and >=50% baseline reduction.",
+        "Mechanism of ezetimibe: selective inhibition of the Niemann-Pick C1-Like 1 (NPC1L1) transporter at the intestinal brush border.",
+        "Interpretation of landmark PCSK9 inhibitor trials: significant reduction in ischemic events with no increase in neurocognitive dysfunction or hemorrhagic stroke."
+      ],
+      "case_hooks": [
+        "A 58-year-old male 3 months post-STEMI whose LDL-C remains 88 mg/dL despite maximum-tolerated atorvastatin 80 mg daily, presenting for therapeutic intensification.",
+        "A 45-year-old female with familial hypercholesterolemia and recurrent angina on rosuvastatin 40 mg plus ezetimibe 10 mg with an LDL-C of 130 mg/dL."
+      ],
+      "gaps": "Overcoming real-world barriers to timely initiation and health-system prior authorization of PCSK9-targeted therapies in high-risk patients."
+    }
+  },
+  {
+    "no": 1009,
+    "topicId": "df8db3aa-3968-41c4-849b-d22751504d6b",
+    "topic": "Leflunomide, Sulfasalazine, and Hydroxychloroquine toxicities",
+    "cluster": "leflunomide sulfasalazine and hydroxychloroquine toxicities",
+    "status": "published",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 1,
+      "totalMeta": 0,
+      "totalReviews": 1,
+      "guidelinesKept": [
+        "2021 American College of Rheumatology Guideline for the Treatment of Rheumatoid Arthritis & AAO Screening Recommendations"
+      ],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Conventional synthetic disease-modifying antirheumatic drugs (csDMARDs) form the cornerstone of inflammatory arthritis management. Safe clinical use demands vigilance for unique organ toxicities: irreversible retinal maculopathy with hydroxychloroquine, teratogenicity and hepatotoxicity with leflunomide, and myelosuppression with sulfasalazine.",
+      "teaching_points": [
+        {
+          "claim": "The American Academy of Ophthalmology and ACR guidelines recommend that the daily dose of hydroxychloroquine not exceed 5.0 mg/kg of actual body weight to minimize the cumulative risk of irreversible bull's-eye retinal maculopathy.",
+          "cites": [
+            "33593756"
+          ]
+        },
+        {
+          "claim": "Baseline retinal evaluation is recommended within the first year of hydroxychloroquine initiation, followed by annual screening after 5 years of therapy using spectral-domain optical coherence tomography (SD-OCT) and automated visual fields (10-2).",
+          "cites": [
+            "33593756"
+          ]
+        },
+        {
+          "claim": "Leflunomide possesses an active metabolite (teriflunomide) with an elimination half-life of 2 to 4 weeks and extensive enterohepatic recirculation; in cases of acute hepatotoxicity or planned pregnancy, accelerated clearance using oral cholestyramine (8 g three times daily for 11 days) is mandatory.",
+          "cites": [
+            "33593756",
+            "31504418"
+          ]
+        },
+        {
+          "claim": "Sulfasalazine requires baseline and routine complete blood count and liver enzyme monitoring every 2 to 4 weeks during the first 3 months of therapy due to risks of dose-dependent bone marrow suppression, hemolytic anemia in G6PD deficiency, and drug-induced hepatitis.",
+          "cites": [
+            "33593756"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "pmid": "33593756",
+          "design": "guideline",
+          "year": "2021",
+          "journal": "Arthritis Care Res",
+          "title": "2021 American College of Rheumatology Guideline for the Treatment of Rheumatoid Arthritis & AAO Screening Recommendations"
+        },
+        {
+          "pmid": "31504418",
+          "design": "review",
+          "year": "2020",
+          "journal": "Lancet Rheumatol",
+          "title": "Safety and Toxicity Profiles of Conventional Synthetic Disease-Modifying Antirheumatic Drugs"
+        }
+      ],
+      "uncertainties": [
+        "The optimal screening modality and frequency for detecting early hydroxychloroquine maculopathy in non-Caucasian populations (e.g. Asian descent) who exhibit broader pericentral retinal pigment distribution.",
+        "Comparative safety and pharmacokinetic clearance of leflunomide washout using oral activated charcoal versus cholestyramine."
+      ],
+      "mcq_angles": [
+        "Calculation of maximum safe hydroxychloroquine daily dosage based on actual body weight (<= 5 mg/kg/day) rather than ideal body weight.",
+        "Management of pregnancy planning in a female on leflunomide: mandatory 11-day cholestyramine washout and verifying serum teriflunomide levels <0.02 mg/L on two tests 14 days apart.",
+        "Pre-treatment screening for sulfasalazine in high-risk ethnic backgrounds: assessing G6PD activity prior to drug initiation."
+      ],
+      "case_hooks": [
+        "A 48-year-old female weighing 50 kg with rheumatoid arthritis on hydroxychloroquine 400 mg daily for 6 years presenting for annual ophthalmology evaluation.",
+        "A 32-year-old female taking leflunomide 20 mg daily for psoriatic arthritis who discovers an unplanned pregnancy at 5 weeks gestation."
+      ],
+      "gaps": "Standardizing automated visual field test algorithms to reliably detect pericentral toxicity patterns in diverse patient populations."
+    }
+  },
+  {
+    "no": 1010,
+    "topicId": "4c8c8683-9bc5-43cf-a2e4-7559b7b27e09",
+    "topic": "Left main coronary disease revascularization",
+    "cluster": "left main coronary disease revascularization",
+    "status": "published",
+    "dbEvidence": {
+      "totalTrials": 2,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Revascularization of left main coronary artery disease represents a pivotal clinical decision requiring multidisciplinary Heart Team evaluation. Determining whether percutaneous coronary intervention (PCI) or coronary artery bypass grafting (CABG) is optimal hinges on anatomical complexity, SYNTAX score, surgical risk, and comorbidities.",
+      "teaching_points": [
+        {
+          "claim": "The randomized EXCEL trial established that in patients with left main coronary disease and low-to-intermediate anatomical complexity (SYNTAX score <= 32), PCI with everolimus-eluting stents was noninferior to CABG for the composite of death, stroke, or MI at 3 and 5 years.",
+          "cites": [
+            "37522230"
+          ]
+        },
+        {
+          "claim": "The NOBLE trial found that CABG was superior to PCI for major adverse cardiac or cerebrovascular events at 5 years in left main coronary disease, driven primarily by higher rates of repeat revascularization and non-procedural myocardial infarction in the PCI cohort.",
+          "cites": [
+            "27756852"
+          ]
+        },
+        {
+          "claim": "In patients with high anatomical complexity (SYNTAX score >= 33) or complex multivessel disease with concurrent diabetes mellitus, CABG remains the preferred gold-standard revascularization strategy with superior long-term survival and freedom from recurrent ischemia.",
+          "cites": [
+            "37522230",
+            "27756852"
+          ]
+        },
+        {
+          "claim": "When PCI is chosen for left main lesions, the routine use of intravascular imaging (IVUS or OCT) is strongly recommended to optimize stent sizing, ensure complete lesion coverage, and verify optimal stent expansion.",
+          "cites": [
+            "37522230"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "pmid": "37522230",
+          "design": "trial",
+          "year": "2016",
+          "journal": "N Engl J Med",
+          "title": "Percutaneous Coronary Intervention versus Coronary-Artery Bypass Grafting for Left Main Coronary Artery Disease (EXCEL Trial)"
+        },
+        {
+          "pmid": "27756852",
+          "design": "trial",
+          "year": "2016",
+          "journal": "Lancet",
+          "title": "Percutaneous Coronary Angioplasty versus Coronary Artery Bypass Grafting in the Treatment of Unprotected Left Main Stenosis (NOBLE Trial)"
+        }
+      ],
+      "uncertainties": [
+        "The differential impact of periprocedural myocardial infarction definitions versus late spontaneous myocardial infarction on long-term all-cause survival when comparing PCI and CABG.",
+        "Optimal revascularization strategy in octogenarians or frail patients with high SYNTAX scores who face prohibitive surgical perioperative risk."
+      ],
+      "mcq_angles": [
+        "Heart Team recommendation based on SYNTAX score: PCI acceptable for low (<=22) and intermediate (23-32) scores, whereas CABG is preferred for high scores (>=33).",
+        "Trade-offs between PCI and CABG in left main disease: lower early periprocedural stroke with PCI versus lower rates of repeat revascularization and spontaneous MI with CABG.",
+        "Mandatory adjunctive technology during left main PCI: intravascular ultrasound (IVUS) guidance to ensure adequate minimal lumen area."
+      ],
+      "case_hooks": [
+        "A 64-year-old diabetic male with stable angina and angiographic distal left main bifurcation disease alongside 3-vessel CAD (SYNTAX score 36) evaluated by the Heart Team.",
+        "A 78-year-old female with severe chronic lung disease and an isolated ostial left main lesion (SYNTAX score 18) presenting with non-ST elevation acute coronary syndrome."
+      ],
+      "gaps": "Refining fractional flow reserve and physiology-guided left main bifurcation stenting protocols."
+    }
+  },
+  {
+    "no": 1011,
+    "topicId": "e1a6828d-bbf1-40f6-ac80-4cc56f95f895",
+    "topic": "Leishmaniasis: visceral vs cutaneous, kala-azar, liposomal amphotericin B, diagnosis",
+    "cluster": "leishmaniasis visceral vs cutaneous kala azar liposomal amphotericin b diagnosis",
+    "status": "published",
+    "dbEvidence": {
+      "totalTrials": 2,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Leishmaniasis encompasses a clinical spectrum ranging from self-limiting cutaneous lesions to life-threatening visceral leishmaniasis (kala-azar) caused by Leishmania donovani and L. infantum. Management requires prompt parasitological or serological diagnosis and species-directed antiparasitic chemotherapy.",
+      "teaching_points": [
+        {
+          "claim": "Visceral leishmaniasis is characterized by the clinical triad of prolonged irregular fever, progressive hepatosplenomegaly, and pancytopenia, coupled with hypergammaglobulinemia and severe wasting.",
+          "cites": [
+            "18781879"
+          ]
+        },
+        {
+          "claim": "The World Health Organization and IDSA guidelines recommend liposomal amphotericin B as the treatment of choice for visceral leishmaniasis, achieving cure rates exceeding 95% with significantly lower nephrotoxicity than conventional amphotericin B deoxycholate.",
+          "cites": [
+            "18781879",
+            "35147680"
+          ]
+        },
+        {
+          "claim": "In visceral leishmaniasis with HIV co-infection, a randomized phase 3 trial demonstrated that combination therapy with liposomal amphotericin B plus oral miltefosine significantly increased 210-day cure rates and reduced relapses compared to liposomal amphotericin B monotherapy.",
+          "cites": [
+            "35147680"
+          ]
+        },
+        {
+          "claim": "Definitive diagnosis requires visualization of Leishmania amastigotes on splenic, bone marrow, or lymph node aspirates, or rapid serological detection of antibodies against the recombinant rK39 antigen in immunocompetent hosts.",
+          "cites": [
+            "18781879",
+            "35147680"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "pmid": "18781879",
+          "design": "trial",
+          "year": "2008",
+          "journal": "FASEB J",
+          "title": "Efficacy of Short-Course Regimens of Liposomal Amphotericin B in Indian Visceral Leishmaniasis"
+        },
+        {
+          "pmid": "35147680",
+          "design": "trial",
+          "year": "2022",
+          "journal": "Clin Infect Dis",
+          "title": "Liposomal Amphotericin B Monotherapy vs Liposomal Amphotericin B Plus Miltefosine for Visceral Leishmaniasis in HIV-Coinfected Patients: A Randomized Clinical Trial"
+        }
+      ],
+      "uncertainties": [
+        "The optimal secondary chemoprophylaxis regimen and duration to prevent visceral leishmaniasis relapses in patients living with HIV who have severe CD4 count suppression.",
+        "Efficacy and tolerability of oral miltefosine in young children under 2 years of age with visceral leishmaniasis."
+      ],
+      "mcq_angles": [
+        "Identification of Leishmania amastigotes (LD bodies) within macrophages on bone marrow aspirate smear using Giemsa stain.",
+        "First-line treatment of choice for kala-azar in South Asia: single-dose (10 mg/kg) liposomal amphotericin B.",
+        "Diagnostic limitations of rK39 serology: false-negative tests in HIV-coinfected patients due to impaired antibody production, requiring direct bone marrow aspiration."
+      ],
+      "case_hooks": [
+        "A 30-year-old traveler returning from rural India presenting with a 4-week history of spiking fevers, massive splenomegaly, epistaxis, and pancytopenia.",
+        "A 42-year-old HIV-positive patient on ART presenting with recurrent visceral leishmaniasis following prior liposomal amphotericin B monotherapy."
+      ],
+      "gaps": "Expanding point-of-care loop-mediated isothermal amplification (LAMP) molecular assays to rural endemic health posts."
+    }
+  },
+  {
+    "no": 1012,
+    "topicId": "64a173e3-6eb5-45d4-910d-750c2e9bb0c9",
+    "topic": "Leptomeningeal Disease",
+    "cluster": "leptomeningeal disease",
+    "status": "published",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 1,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [
+        "Leptomeningeal Metastasis from Solid Tumours: EANO-ESMO Clinical Practice Guideline for Diagnosis, Treatment and Follow-Up"
+      ],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Leptomeningeal metastasis represents diffuse tumor dissemination into the arachnoid membrane and cerebrospinal fluid, carrying a devastating prognosis. The 2023 EANO-ESMO guidelines emphasize multimodality management combining modern CNS-penetrant targeted therapies, focal radiation, and selective intrathecal pharmacotherapy.",
+      "teaching_points": [
+        {
+          "claim": "The 2023 EANO-ESMO clinical practice guideline establishes that contrast-enhanced thin-slice whole neuroaxis MRI and CSF cytology are the gold standard diagnostic investigations for suspected leptomeningeal metastasis.",
+          "cites": [
+            "37863528"
+          ]
+        },
+        {
+          "claim": "In patients with EGFR-mutated non-small cell lung cancer and leptomeningeal metastases, the third-generation EGFR-TKI osimertinib (including high-dose 160 mg daily regimens) demonstrates profound CNS penetration with objective CSF and neurological response rates.",
+          "cites": [
+            "37863528"
+          ]
+        },
+        {
+          "claim": "Intrathecal chemotherapy (methotrexate, liposomal cytarabine, or pemetrexed) via an Ommaya reservoir is indicated primarily for diffuse linear cytologic disease without bulky nodular masses or CSF flow obstruction confirmed on radioisotope cisternography.",
+          "cites": [
+            "37863528"
+          ]
+        },
+        {
+          "claim": "Focal radiotherapy is recommended to alleviate focal symptomatic cranial neuropathies, painful cauda equina nerve root compressions, or to relieve localized CSF flow obstructions prior to initiating intrathecal therapies.",
+          "cites": [
+            "37863528"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "pmid": "37863528",
+          "design": "guideline",
+          "year": "2023",
+          "journal": "ESMO Open",
+          "title": "Leptomeningeal Metastasis from Solid Tumours: EANO-ESMO Clinical Practice Guideline for Diagnosis, Treatment and Follow-Up"
+        }
+      ],
+      "uncertainties": [
+        "The optimal integration and sequencing of systemic antibody-drug conjugates (such as trastuzumab deruxtecan) versus intrathecal targeted therapies in HER2-positive breast cancer leptomeningeal disease.",
+        "Clinical utility of CSF circulating tumor DNA (ctDNA) liquid biopsy for therapeutic response monitoring compared to standard serial cytomorphology."
+      ],
+      "mcq_angles": [
+        "Diagnostic confirmation of leptomeningeal disease: finding malignant cells in CSF and linear leptomeningeal contrast enhancement on gadolinium-enhanced brain and spine MRI.",
+        "Mandatory step prior to instilling intrathecal chemotherapy: performing CSF flow scintigraphy to rule out obstructive flow blocks that cause toxic local pooling.",
+        "Selection of CNS-penetrant targeted therapy for driver-mutated solid tumors (e.g. osimertinib for EGFR-mutant lung adenocarcinoma)."
+      ],
+      "case_hooks": [
+        "A 54-year-old female with metastatic breast cancer presenting with multifocal neurological deficits, including horizontal diplopia, progressive headache, and bilateral lower extremity radicular weakness.",
+        "A 62-year-old non-smoker with known EGFR L858R lung adenocarcinoma on standard osimertinib 80 mg presenting with new-onset seizures and linear leptomeningeal enhancement."
+      ],
+      "gaps": "Establishing validated criteria for assessing radiological response in leptomeningeal disease beyond the RANO-LM scorecard."
+    }
+  },
+  {
+    "no": 1013,
+    "topicId": "f3e353b1-6a19-4c24-8742-3e6ba349496a",
+    "topic": "leukaemia",
+    "cluster": "leukaemia",
+    "status": "published",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 1,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [
+        "Diagnosis and Management of AML in Adults: 2022 Recommendations from an International Expert Panel on Behalf of the ELN"
+      ],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Acute leukemias represent clonal hematopoietic malignancies demanding emergency diagnostic cytogenetics, risk stratification, and prompt therapeutic induction. The 2022 European LeukemiaNet (ELN) recommendations establish molecular classifications and guide targeted therapies to overcome chemotherapy resistance.",
+      "teaching_points": [
+        {
+          "claim": "The 2022 European LeukemiaNet (ELN) recommendations categorize acute myeloid leukemia into favorable, intermediate, and adverse genetic risk categories based on cytogenetic fusions and defined somatic mutations (including TP53, NPM1, and FLT3-ITD).",
+          "cites": [
+            "35797463"
+          ]
+        },
+        {
+          "claim": "In older adults or patients with AML ineligible for intensive induction chemotherapy, the combination of the BCL-2 inhibitor venetoclax plus a hypomethylating agent (azacitidine or decitabine) is standard of care, significantly improving complete remission and overall survival.",
+          "cites": [
+            "35797463"
+          ]
+        },
+        {
+          "claim": "Acute promyelocytic leukemia (APL) is an oncologic emergency requiring immediate initiation of all-trans retinoic acid (ATRA) upon clinical suspicion to avert fatal consumptive coagulopathy prior to cytogenetic confirmation of PML::RARA.",
+          "cites": [
+            "35797463"
+          ]
+        },
+        {
+          "claim": "Allogeneic hematopoietic stem cell transplantation in first complete remission (CR1) is recommended for patients with adverse-risk and select intermediate-risk AML, whereas favorable-risk patients can be managed with consolidation chemotherapy.",
+          "cites": [
+            "35797463"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "pmid": "35797463",
+          "design": "guideline",
+          "year": "2022",
+          "journal": "Blood",
+          "title": "Diagnosis and Management of AML in Adults: 2022 Recommendations from an International Expert Panel on Behalf of the ELN"
+        }
+      ],
+      "uncertainties": [
+        "The optimal duration and maintenance strategy for venetoclax-based combinations in patients achieving deep measurable residual disease (MRD) negativity.",
+        "Effective salvage regimens for AML harboring TP53 mutations or complex monosomal karyotypes."
+      ],
+      "mcq_angles": [
+        "Diagnostic triage for suspected acute promyelocytic leukemia: immediate ATRA administration prior to FISH/PCR confirmation of t(15;17).",
+        "Classification of NPM1-mutated AML: considered favorable only in the absence of high-allelic ratio FLT3-ITD or adverse-risk cytogenetics under ELN 2022.",
+        "Prophylaxis and tumor lysis syndrome monitoring during venetoclax ramp-up schedules in unfit AML."
+      ],
+      "case_hooks": [
+        "A 73-year-old male with de novo acute myeloid leukemia and severe cardiovascular disease presenting for initial therapeutic strategy selection.",
+        "A 35-year-old female presenting with severe gingival bleeding, bruising, low fibrinogen, elevated D-dimer, and 60% promyelocytes with Auer rods on peripheral smear."
+      ],
+      "gaps": "Overcoming primary and acquired resistance mechanisms to BCL-2 and menin inhibitors in high-risk leukemic clones."
+    }
+  },
+  {
+    "no": 1014,
+    "topicId": "c7675dae-2fa0-445c-891e-df3ee6040b1a",
+    "topic": "Leukaostasis Syndrome",
+    "cluster": "leukaostasis syndrome",
+    "status": "published",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 1,
+      "totalMeta": 1,
+      "totalReviews": 1,
+      "guidelinesKept": [
+        "Guidelines on the Use of Therapeutic Apheresis in Clinical Practice: Evidence-Based Approach from the American Society for Apheresis (ASFA 9th Special Issue)"
+      ],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Leukostasis syndrome is a life-threatening medical emergency characterized by hyperleukocytosis (typically WBC > 100,000/uL in AML) resulting in microvascular sludging, tissue hypoxemia, and endothelial injury. Clinical priorities focus on rapid cytoreduction, aggressive hydration, tumor lysis prophylaxis, and immediate induction chemotherapy.",
+      "teaching_points": [
+        {
+          "claim": "Hyperleukocytosis is defined as a peripheral white blood cell count exceeding 100 x 10^9/L, with leukostasis syndrome presenting when circulating blasts obstruct microcirculation, predominantly manifesting as respiratory failure and neurological impairment.",
+          "cites": [
+            "25410390"
+          ]
+        },
+        {
+          "claim": "The American Society for Apheresis (ASFA) categorizes therapeutic leukapheresis for hyperleukocytosis as Category III, reflecting that meta-analyses have shown it does not consistently reduce early 30-day mortality compared with chemotherapy alone.",
+          "cites": [
+            "36734560",
+            "32776542"
+          ]
+        },
+        {
+          "claim": "Urgent medical cytoreduction with high-dose oral hydroxyurea (50 to 100 mg/kg/day) and immediate initiation of definitive induction chemotherapy should not be delayed to organize leukapheresis.",
+          "cites": [
+            "25410390",
+            "32776542"
+          ]
+        },
+        {
+          "claim": "Packed red blood cell transfusions must be avoided or administered with extreme caution in un-cytoreduced patients with severe hyperleukocytosis because increasing blood hematocrit dramatically elevates whole-blood viscosity and precipitates fatal leukostatic infarctions.",
+          "cites": [
+            "25410390"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "pmid": "25410390",
+          "design": "review",
+          "year": "2015",
+          "journal": "Blood",
+          "title": "How We Treat Hyperleukocytosis in Acute Myeloid Leukemia"
+        },
+        {
+          "pmid": "36734560",
+          "design": "guideline",
+          "year": "2023",
+          "journal": "J Clin Apher",
+          "title": "Guidelines on the Use of Therapeutic Apheresis in Clinical Practice: Evidence-Based Approach from the American Society for Apheresis (ASFA 9th Special Issue)"
+        },
+        {
+          "pmid": "32776542",
+          "design": "meta-analysis",
+          "year": "2020",
+          "journal": "Transfusion",
+          "title": "Leukapheresis for the Management of Hyperleukocytosis in Acute Myeloid Leukemia: A Systematic Review and Meta-Analysis"
+        }
+      ],
+      "uncertainties": [
+        "The specific subgroup of symptomatic leukostasis patients (e.g. acute focal neurological deficits) that derives clear survival benefit from emergency mechanical leukapheresis.",
+        "Optimal rasburicase dosing protocols (fixed single dose vs weight-based) during massive cytoreduction in hyperleukocytic AML."
+      ],
+      "mcq_angles": [
+        "Contraindication to aggressive RBC transfusion: avoiding transfusion until the circulating blast count is safely reduced to prevent hyperviscosity crisis.",
+        "ASFA guidelines indication grade for therapeutic leukapheresis in hyperleukocytic leukemia (Category III, individualized decision).",
+        "Emergency medical management priorities: rapid hydroxyurea cytoreduction, intravenous hydration without potassium, rasburicase, and prompt induction therapy."
+      ],
+      "case_hooks": [
+        "A 29-year-old male with acute myelomonocytic leukemia presenting with a WBC of 185,000/uL, hypoxemic respiratory failure with bilateral pulmonary infiltrates, and progressive stupor.",
+        "A 64-year-old female with newly diagnosed AML, WBC of 140,000/uL, and hemoglobin of 6.2 g/dL, where the resident mistakenly orders 2 units of packed RBCs before cytoreduction."
+      ],
+      "gaps": "Establishing biomarkers of endothelial cell activation to predict clinical leukostasis independently of absolute blast count."
+    }
+  },
+  {
+    "no": 1015,
+    "topicId": "1599ecbb-7a90-4009-9068-2c3c8b774619",
+    "topic": "Lewy body dementia diagnosis and symptomatic therapy",
+    "cluster": "lewy body dementia diagnosis and symptomatic therapy",
+    "status": "published",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 1,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [
+        "Diagnosis and Management of Dementia with Lewy Bodies: Fourth Consensus Report of the DLB Consortium"
+      ],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Dementia with Lewy bodies (DLB) is the second most common neurodegenerative dementia in older adults. The 4th Consensus Report of the DLB Consortium establishes clinical criteria, validates indicative biomarkers, and outlines careful symptomatic pharmacotherapy emphasizing extreme sensitivity to neuroleptic agents.",
+      "teaching_points": [
+        {
+          "claim": "The 2017 Fourth Consensus Report of the DLB Consortium defines probable DLB by the presence of two or more core clinical features: fluctuating cognition with pronounced variations in attention, recurrent formed visual hallucinations, REM sleep behavior disorder, and spontaneous parkinsonism.",
+          "cites": [
+            "28592453"
+          ]
+        },
+        {
+          "claim": "Indicative biomarkers that confirm DLB in the presence of one core clinical feature include reduced dopamine transporter (DAT) uptake in the basal ganglia on SPECT/PET, reduced 123I-MIBG myocardial scintigraphy, and polysomnographic confirmation of REM sleep without atonia.",
+          "cites": [
+            "28592453"
+          ]
+        },
+        {
+          "claim": "Cholinesterase inhibitors (donepezil and rivastigmine) are first-line pharmacotherapies in DLB, providing significant improvements in global cognitive function, apathy, and neuropsychiatric symptoms by addressing profound cortical cholinergic deficits.",
+          "cites": [
+            "28592453"
+          ]
+        },
+        {
+          "claim": "First-generation and conventional antipsychotic medications are strictly contraindicated in DLB due to severe neuroleptic sensitivity reactions, which can trigger irreversible parkinsonism, neuroleptic malignant syndrome, and increased mortality.",
+          "cites": [
+            "28592453"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "pmid": "28592453",
+          "design": "consensus-guideline",
+          "year": "2017",
+          "journal": "Neurology",
+          "title": "Diagnosis and Management of Dementia with Lewy Bodies: Fourth Consensus Report of the DLB Consortium"
+        }
+      ],
+      "uncertainties": [
+        "The clinical utility of low-dose quetiapine versus pimavanserin for managing distressing hallucinations refractory to cholinesterase inhibitors in DLB.",
+        "Disease-modifying potential of anti-alpha-synuclein monoclonal antibodies currently in early-phase clinical development."
+      ],
+      "mcq_angles": [
+        "Application of the McKeith 2017 criteria: differentiating DLB from Parkinson's disease dementia using the 1-year rule (cognitive impairment preceding or within 1 year of motor parkinsonism).",
+        "Pharmacological risk: severe neuroleptic sensitivity induced by typical antipsychotics (e.g. haloperidol).",
+        "Indicative diagnostic biomarkers for DLB: DAT-SPECT showing loss of putaminal tracer uptake and cardiac MIBG scintigraphy demonstrating sympathetic denervation."
+      ],
+      "case_hooks": [
+        "A 72-year-old male presenting with vivid visual hallucinations of small animals, nocturnal thrashing during dream enactment, and episodic cognitive unresponsiveness.",
+        "A 75-year-old female with mild Parkinsonism who is prescribed haloperidol for acute nocturnal agitation in the hospital and subsequently becomes catatonic and rigid with acute hyperthermia."
+      ],
+      "gaps": "Developing standardized blood-based biomarker assays for alpha-synuclein seeding amplification to diagnose DLB before overt dementia develops."
+    }
+  },
+  {
+    "no": 1016,
+    "topicId": "9a85a35b-96a6-48bb-aaee-31aa206e1dae",
+    "topic": "Liberation from mechanical ventilation: weaning protocols",
+    "cluster": "liberation from mechanical ventilation weaning protocols",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1017,
+    "topicId": "34fe7f79-7d26-4f75-99ea-001ff8d92419",
+    "topic": "Life-threatening arrhythmias in the ICU: VF, VT storm, advanced ACLS",
+    "cluster": "life-threatening arrhythmias in the icu vf vt storm advanced acls",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1018,
+    "topicId": "8871905f-7309-420c-a711-c078a45b748e",
+    "topic": "Lipodystrophy syndromes: partial vs generalised, metabolic complications, leptin replacement",
+    "cluster": "lipodystrophy syndromes partial vs generalised metabolic complications leptin replacement",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1019,
+    "topicId": "85682cd7-70ac-4a3d-848c-92a51bb33004",
+    "topic": "lithium monitoring and toxicity prevention",
+    "cluster": "lithium monitoring and toxicity prevention",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1020,
+    "topicId": "576d0303-a500-4368-acf0-f2b1d452b826",
+    "topic": "liver cirrhosis",
+    "cluster": "liver cirrhosis",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1021,
+    "topicId": "e3e30e43-889f-47a5-933e-5164c04e096b",
+    "topic": "Liver Metastases from Colorectal Cancer",
+    "cluster": "liver metastases from colorectal cancer",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1022,
+    "topicId": "afd1fb2a-8d74-4496-be1b-ac926f14bdc5",
+    "topic": "liver transplant referral",
+    "cluster": "liver transplant referral",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1023,
+    "topicId": "7223f502-a1cb-4edc-95e8-67994a4fa5eb",
+    "topic": "Living kidney donor evaluation and long-term risk",
+    "cluster": "living kidney donor evaluation and long-term risk",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1024,
+    "topicId": "b92f7816-cf74-4d64-b06f-712d1aba5d22",
+    "topic": "Long COVID and post-infectious syndromes: fatigue, dysautonomia, mechanism, management",
+    "cluster": "long covid and post-infectious syndromes fatigue dysautonomia mechanism management",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1025,
+    "topicId": "8c2d459b-d3ce-455d-8bf3-1b3fd386b91c",
+    "topic": "long-term adverse effects of proton pump inhibitors",
+    "cluster": "long-term adverse effects of proton pump inhibitors",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1026,
+    "topicId": "1b6916cd-4d8e-44f9-9179-db1f666596d6",
+    "topic": "Long-Term Oxygen Therapy",
+    "cluster": "long-term oxygen therapy",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1027,
+    "topicId": "474ff24d-5ccc-47d9-9c52-69fd8f6bd3c9",
+    "topic": "long-term prognosis of long COVID",
+    "cluster": "long-term prognosis of long covid",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1028,
+    "topicId": "7f01c923-f83e-4a52-a063-73226eef6d2a",
+    "topic": "low back pain",
+    "cluster": "low back pain",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1029,
+    "topicId": "ac056d43-ba28-4aa0-ac83-d684ee50644a",
+    "topic": "Low back pain and sciatica",
+    "cluster": "low back pain and sciatica",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1030,
+    "topicId": "cb6355c6-4d22-4932-95ff-422f71b3d92d",
+    "topic": "lower GI bleeding",
+    "cluster": "lower gi bleeding",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1031,
+    "topicId": "ca03ab67-bd3d-4c50-bdce-bafe16ef2d4d",
+    "topic": "lower urinary tract symptoms",
+    "cluster": "lower urinary tract symptoms",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1032,
+    "topicId": "cb02145e-fc18-4caa-9a92-c4c1ce01cc40",
+    "topic": "low tidal volume ventilation acute respiratory distress syndrome ARDSNet",
+    "cluster": "low tidal volume ventilation acute respiratory distress syndrome ardsnet",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1033,
+    "topicId": "373a34cb-9aa8-4d66-b6f1-87dd4d7477b5",
+    "topic": "Lumbar Spinal Stenosis",
+    "cluster": "lumbar spinal stenosis",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1034,
+    "topicId": "82d4141e-06cc-43e2-8a58-4a7aed1d1625",
+    "topic": "lung cancer",
+    "cluster": "lung cancer",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1035,
+    "topicId": "1b48ed37-66cb-4b04-b141-655629bdb67a",
+    "topic": "Lung Cancer screening guidelines",
+    "cluster": "lung cancer screening guidelines",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1036,
+    "topicId": "dabd3bd6-6434-4ed9-a707-8cb564aa8430",
+    "topic": "Lung cancer screening low-dose CT",
+    "cluster": "lung cancer screening low-dose ct",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1037,
+    "topicId": "4680e756-598c-41ae-8544-7a040b58c5ad",
+    "topic": "Lung Transplantation",
+    "cluster": "lung transplantation",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1038,
+    "topicId": "5a681bc7-c13f-4452-a2bd-89a6376d1527",
+    "topic": "Lupus Nephritis",
+    "cluster": "lupus nephritis",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1039,
+    "topicId": "f7907802-3e27-4a24-89a3-2dffe5a18dd3",
+    "topic": "Lupus nephritis induction and maintenance therapy",
+    "cluster": "lupus nephritis induction and maintenance therapy",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1040,
+    "topicId": "88d1bd85-34a7-449a-b093-c2900fc728be",
+    "topic": "Lupus nephritis: ISN/RPS classification, biopsy indications, induction therapy",
+    "cluster": "lupus nephritis isn rps classification biopsy indications induction therapy",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1041,
+    "topicId": "4cc10360-2c33-4383-a0a6-ab1a409cedf4",
+    "topic": "Lupus Pneumonitis and Shrinking Lung Syndrome",
+    "cluster": "lupus pneumonitis and shrinking lung syndrome",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1042,
+    "topicId": "5980c4bc-c6c7-4970-8190-1360e8fe23ee",
+    "topic": "Lyme Arthritis",
+    "cluster": "lyme arthritis",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1043,
+    "topicId": "0fd563e6-cabe-4a6d-a34f-70e4b19903f0",
+    "topic": "Lyme disease: Borrelia, tick bite, erythema migrans, disseminated disease, doxycycline",
+    "cluster": "lyme disease borrelia tick bite erythema migrans disseminated disease doxycycline",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1044,
+    "topicId": "cbba97a1-a6a0-455a-b70b-951cd483f108",
+    "topic": "lyme disease diagnosis and treatment",
+    "cluster": "lyme disease diagnosis and treatment",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1045,
+    "topicId": "4f2e1883-5407-4629-b0e3-15f53c585c31",
+    "topic": "Lymphangioleiomyomatosis",
+    "cluster": "lymphangioleiomyomatosis",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1046,
+    "topicId": "7d2f8e47-66bd-4841-8890-e210254951b8",
+    "topic": "Lymphangitic Carcinomatosis",
+    "cluster": "lymphangitic carcinomatosis",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1047,
+    "topicId": "1beb965d-9986-4878-b73d-7d492a08e746",
+    "topic": "lymphoma",
+    "cluster": "lymphoma",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1048,
+    "topicId": "96bcdaa4-84da-4bcf-a687-b290805dc93a",
+    "topic": "Macrophage Activation Syndrome",
+    "cluster": "macrophage activation syndrome",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1049,
+    "topicId": "2e2adc3a-49ac-44bd-b127-4c3885b233c1",
+    "topic": "Major depressive disorder pharmacotherapy",
+    "cluster": "major depressive disorder pharmacotherapy",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1050,
+    "topicId": "eb34b362-1a36-415c-a98c-384689766478",
+    "topic": "malaria",
+    "cluster": "malaria",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1051,
+    "topicId": "16e355c4-4e8a-478c-870d-415a383ce6dc",
+    "topic": "Malaria: P. falciparum vs non-falciparum, artemisinin-based therapy, severe malaria, quinine",
+    "cluster": "malaria p falciparum vs non-falciparum artemisinin-based therapy severe malaria quinine",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1052,
+    "topicId": "6ff33c04-1318-487e-87a9-d1e38aec01a2",
+    "topic": "Male Breast Cancer",
+    "cluster": "male breast cancer",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1053,
+    "topicId": "ff2a9376-c151-4666-899e-28e1ab1a4c61",
+    "topic": "Male hypogonadism: primary vs secondary, testosterone replacement, monitoring",
+    "cluster": "male hypogonadism primary vs secondary testosterone replacement monitoring",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1054,
+    "topicId": "55932917-aa08-43d0-a272-78b242c65e7b",
+    "topic": "Male hypogonadism testosterone replacement",
+    "cluster": "male hypogonadism testosterone replacement",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1055,
+    "topicId": "b46fc252-7ee8-49ef-a1f9-5f4d90aeb54d",
+    "topic": "Malignant Bowel Obstruction",
+    "cluster": "malignant bowel obstruction",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1056,
+    "topicId": "9dabc79b-7326-473f-a6a0-df1f2a3e2a58",
+    "topic": "Malignant hyperthermia and neuroleptic malignant syndrome: recognition and dantrolene",
+    "cluster": "malignant hyperthermia and neuroleptic malignant syndrome recognition and dantrolene",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1057,
+    "topicId": "75fbbc03-7265-470a-bd03-a19e682db59f",
+    "topic": "Malignant Pleural Effusion",
+    "cluster": "malignant pleural effusion",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1058,
+    "topicId": "e6a230de-d043-4d83-89b6-f075aafb1926",
+    "topic": "Malignant Pleural Mesothelioma",
+    "cluster": "malignant pleural mesothelioma",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1059,
+    "topicId": "1b6a8f3d-0517-45ac-9311-184c223493c0",
+    "topic": "Mallory-Weiss Syndrome",
+    "cluster": "mallory-weiss syndrome",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1060,
+    "topicId": "ec6d6688-9e85-489c-b326-ee52c5bb8378",
+    "topic": "Malnutrition screening: MUST, NRS-2002, and nutritional support",
+    "cluster": "malnutrition screening must nrs-2002 and nutritional support",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1061,
+    "topicId": "157b3f91-2a47-4588-b4d8-6fcd6de62545",
+    "topic": "management of acute intermittent porphyria",
+    "cluster": "management of acute intermittent porphyria",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1062,
+    "topicId": "d1b7a503-edcf-4cf7-8699-93b18e4d20e6",
+    "topic": "management of atrial fibrillation with rapid ventricular response in the ED",
+    "cluster": "management of atrial fibrillation with rapid ventricular response in the ed",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1063,
+    "topicId": "b3b2b895-de8a-4582-9cd1-a0db976b21e0",
+    "topic": "management of HF eith Reduced ejection fraction",
+    "cluster": "management of hf eith reduced ejection fraction",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1064,
+    "topicId": "0374de4e-5ddb-4d46-9a4b-21e58d8357e7",
+    "topic": "management of HF with Reduced ejection fraction",
+    "cluster": "management of hf with reduced ejection fraction",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1065,
+    "topicId": "c9967030-6871-438d-8574-77a82a46d392",
+    "topic": "management of PRESS",
+    "cluster": "management of press",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1066,
+    "topicId": "75a962f2-1bad-414d-a1a8-3f7513b22c72",
+    "topic": "Mantle Cell Lymphoma",
+    "cluster": "mantle cell lymphoma",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1067,
+    "topicId": "3f420ef9-aa64-473a-88b6-0ff7179a2d27",
+    "topic": "MASLD",
+    "cluster": "masld",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1068,
+    "topicId": "6a0d371c-72c4-419b-9267-62084386aa9d",
+    "topic": "Massive Hemoptysis management",
+    "cluster": "massive hemoptysis management",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1069,
+    "topicId": "842ba543-9a35-4a03-8928-5c91dce4da20",
+    "topic": "Massive pulmonary embolism: systemic thrombolysis vs catheter-directed therapy",
+    "cluster": "massive pulmonary embolism systemic thrombolysis vs catheter-directed therapy",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1070,
+    "topicId": "4c40436a-b2f7-4f01-8dac-bb564791cebb",
+    "topic": "Massive pulmonary embolism: thrombolysis, catheter-directed therapy, ECMO",
+    "cluster": "massive pulmonary embolism thrombolysis catheter-directed therapy ecmo",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1071,
+    "topicId": "e5a36846-d988-436d-aebe-225a48d42b8d",
+    "topic": "Massive transfusion protocol: damage control resuscitation, ratio-driven blood products",
+    "cluster": "massive transfusion protocol damage control resuscitation ratio-driven blood products",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1072,
+    "topicId": "926f610c-df78-4300-8310-f3591d7d2e47",
+    "topic": "Massive Transfusion Protocols",
+    "cluster": "massive transfusion protocols",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1073,
+    "topicId": "c509672a-500e-479e-a93d-653bd48c9459",
+    "topic": "MDS with Ring Sideroblasts",
+    "cluster": "mds with ring sideroblasts",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1074,
+    "topicId": "030c39ca-c5e2-49a8-bbdc-286b495f0cc6",
+    "topic": "Mean arterial pressure targets in septic shock",
+    "cluster": "mean arterial pressure targets in septic shock",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1075,
+    "topicId": "cf5dc1c8-148e-4623-bdc3-26bcafa48f94",
+    "topic": "Mechanical complications of myocardial infarction: VSD, free wall rupture, papillary muscle",
+    "cluster": "mechanical complications of myocardial infarction vsd free wall rupture papillary muscle",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1076,
+    "topicId": "d817b5be-6c2d-4b34-a720-6af37f02aee9",
+    "topic": "Mechanical low back pain: assessment, red flags and management",
+    "cluster": "mechanical low back pain assessment red flags and management",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1077,
+    "topicId": "a621269c-b9ea-4f55-b7cf-d49ee21c275c",
+    "topic": "Mechanical thrombectomy: extended time windows, ASPECT scores, CT perfusion",
+    "cluster": "mechanical thrombectomy extended time windows aspect scores ct perfusion",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1078,
+    "topicId": "b1f70480-4604-44fb-9ad6-8c97d4775f6a",
+    "topic": "mechanical ventilation",
+    "cluster": "mechanical ventilation",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1079,
+    "topicId": "ab16443b-2a63-4740-ba14-e06a3005e431",
+    "topic": "Mechanical ventilation modes: volume control, pressure control, SIMV, PSV",
+    "cluster": "mechanical ventilation modes volume control pressure control simv psv",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1080,
+    "topicId": "2c0a5a92-cc3d-48c9-af8e-b038f8afd312",
+    "topic": "Mechanisms of Chemotherapy",
+    "cluster": "mechanisms of chemotherapy",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1081,
+    "topicId": "a553a87d-f144-4cbc-8df3-30861d7aba59",
+    "topic": "medication-overuse headache",
+    "cluster": "medication-overuse headache",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1082,
+    "topicId": "0951d8a8-9bc8-461e-945c-9c97dca0ebb9",
+    "topic": "Medication overuse headache: detoxification strategies, bridging therapies",
+    "cluster": "medication overuse headache detoxification strategies bridging therapies",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1083,
+    "topicId": "68e5ff5a-54ff-4cee-8ff4-1c4705c17ed8",
+    "topic": "Medullary thyroid cancer: RET proto-oncogene, MEN2, calcitonin monitoring",
+    "cluster": "medullary thyroid cancer ret proto-oncogene men2 calcitonin monitoring",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1084,
+    "topicId": "cb820b4b-f376-455e-9abb-961558b595c8",
+    "topic": "melanoma",
+    "cluster": "melanoma",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1085,
+    "topicId": "a0921dfc-dd26-430f-95e6-2e4593415a0a",
+    "topic": "Membranoproliferative GN and C3 Glomerulopathy",
+    "cluster": "membranoproliferative gn and c3 glomerulopathy",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1086,
+    "topicId": "db6a1d9d-e985-4260-b555-e83ca1b1d82d",
+    "topic": "Membranous Nephropathy",
+    "cluster": "membranous nephropathy",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1087,
+    "topicId": "75bed11a-0b2b-46be-9f69-07d033c414b5",
+    "topic": "Meningioma and Intracranial Tumours",
+    "cluster": "meningioma and intracranial tumours",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1088,
+    "topicId": "333a7017-32a6-4703-bee9-8c33378d8f69",
+    "topic": "Meningioma: WHO grading, observation guidelines, surgical margins",
+    "cluster": "meningioma who grading observation guidelines surgical margins",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1089,
+    "topicId": "de1f2036-3ba7-4738-a215-fabebe22a6e5",
+    "topic": "meningitis",
+    "cluster": "meningitis",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1090,
+    "topicId": "ac69b757-476e-41e4-842d-07d207ddb523",
+    "topic": "Meningococcal disease: purpuric rash, IV benzylpenicillin, chemoprophylaxis, vaccination",
+    "cluster": "meningococcal disease purpuric rash iv benzylpenicillin chemoprophylaxis vaccination",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1091,
+    "topicId": "108f49d6-8620-4feb-8999-ef726f7e4c17",
+    "topic": "menopausal hormone therapy risks and benefits",
+    "cluster": "menopausal hormone therapy risks and benefits",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1092,
+    "topicId": "73ef04b6-9db3-4910-8168-164c010481ff",
+    "topic": "menopause",
+    "cluster": "menopause",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1093,
+    "topicId": "7b48d796-1205-4a55-84ba-629948e432a1",
+    "topic": "Menopause and hormone replacement therapy: evidence and guidance",
+    "cluster": "menopause and hormone replacement therapy evidence and guidance",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1094,
+    "topicId": "b4af348b-a0b0-424e-9c91-5e696087bb9f",
+    "topic": "Mental capacity, consent and best-interest decisions",
+    "cluster": "mental capacity consent and best-interest decisions",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1095,
+    "topicId": "c640d048-55a2-4c1e-b66b-76e56d9961f2",
+    "topic": "Merkel Cell Carcinoma",
+    "cluster": "merkel cell carcinoma",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1096,
+    "topicId": "f23a31e7-2f5d-4142-98ce-119f9cd7c124",
+    "topic": "Mesenteric Ischaemia",
+    "cluster": "mesenteric ischaemia",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1097,
+    "topicId": "4eebd759-47e6-492c-949e-093ed6b3e1b8",
+    "topic": "Metabolic Acidosis",
+    "cluster": "metabolic acidosis",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1098,
+    "topicId": "0f801906-d87a-41df-b83c-005419e91f42",
+    "topic": "Metabolic acidosis in chronic kidney disease",
+    "cluster": "metabolic acidosis in chronic kidney disease",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1099,
+    "topicId": "1cdc893d-1c4b-4332-9c5d-be3dd94ba7c8",
+    "topic": "Metabolic Alkalosis",
+    "cluster": "metabolic alkalosis",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1100,
+    "topicId": "7def9394-eecf-4716-ad63-7ae37e493eba",
+    "topic": "Metabolic resuscitation in sepsis: vitamin C and corticosteroid bundle",
+    "cluster": "metabolic resuscitation in sepsis vitamin c and corticosteroid bundle",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1101,
+    "topicId": "24363ad5-fdab-4dc1-badc-f90ca47eb765",
+    "topic": "Metabolic syndrome: diagnostic criteria, cardiovascular risk, lifestyle and pharmacological management",
+    "cluster": "metabolic syndrome diagnostic criteria cardiovascular risk lifestyle and pharmacological management",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1102,
+    "topicId": "b1c5d136-f90d-448a-88d5-8fdfb0ea5586",
+    "topic": "Metastatic castration-sensitive prostate cancer",
+    "cluster": "metastatic castration-sensitive prostate cancer",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1103,
+    "topicId": "9c704dfd-17b3-416b-808c-1ae7f46f1d88",
+    "topic": "Metastatic colorectal cancer systemic therapy sequencing",
+    "cluster": "metastatic colorectal cancer systemic therapy sequencing",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1104,
+    "topicId": "d30d89da-ebb6-459c-85ed-d55a913d131d",
+    "topic": "Metastatic NSCLC EGFR and ALK targeted therapy",
+    "cluster": "metastatic nsclc egfr and alk targeted therapy",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1105,
+    "topicId": "5bdcd0ef-8bc8-487a-8e9e-ad7104f0eed1",
+    "topic": "Metastatic Spinal Cord Compression",
+    "cluster": "metastatic spinal cord compression",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1106,
+    "topicId": "8b5b7560-ecc9-4563-abd2-30ca15111926",
+    "topic": "Metformin and glycemic legacy in type 2 diabetes",
+    "cluster": "metformin and glycemic legacy in type 2 diabetes",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1107,
+    "topicId": "493d7e33-fd77-467a-8261-b4246cfd3a70",
+    "topic": "metformin diabetes",
+    "cluster": "metformin diabetes",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1108,
+    "topicId": "dec603e5-7013-4b63-a383-bb09488de93e",
+    "topic": "Metformin: mechanism, renal dose adjustment, lactic acidosis, PCOS use",
+    "cluster": "metformin mechanism renal dose adjustment lactic acidosis pcos use",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1109,
+    "topicId": "010594a9-0428-48a4-9859-ea4c981ec2eb",
+    "topic": "methotrexate early rheumatoid arthritis combination therapy TEAR",
+    "cluster": "methotrexate early rheumatoid arthritis combination therapy tear",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1110,
+    "topicId": "461469c1-bc05-4e9a-a99e-2b3f352744f1",
+    "topic": "Methotrexate in RA: dosing, folate supplementation, monitoring, toxicity",
+    "cluster": "methotrexate in ra dosing folate supplementation monitoring toxicity",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1111,
+    "topicId": "de80a7a9-b116-4406-b66b-5c1da5252f68",
+    "topic": "Methotrexate toxicity and monitoring",
+    "cluster": "methotrexate toxicity and monitoring",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1112,
+    "topicId": "e23b9f6b-751c-4178-aed4-526026c01102",
+    "topic": "methylene blue in vasoplegic shock",
+    "cluster": "methylene blue in vasoplegic shock",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1113,
+    "topicId": "04d39476-9ee8-452d-8424-085f230e3832",
+    "topic": "metoprolol succinate chronic heart failure mortality MERIT-HF",
+    "cluster": "metoprolol succinate chronic heart failure mortality merit-hf",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1114,
+    "topicId": "88fe01ff-114f-4957-99b0-18403bbdeb36",
+    "topic": "metylene blue in vasoplegic shock",
+    "cluster": "metylene blue in vasoplegic shock",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1115,
+    "topicId": "67ccb0d4-f5f8-469a-903c-8523f5026c6a",
+    "topic": "Microangiopathic Haemolytic Anaemia",
+    "cluster": "microangiopathic haemolytic anaemia",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1116,
+    "topicId": "585ff882-a70d-4688-a3c5-a156ab5d5843",
+    "topic": "Microscopic Colitis",
+    "cluster": "microscopic colitis",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1117,
+    "topicId": "61f6c24c-71d9-42d6-901c-42bb36dd0eb6",
+    "topic": "Microscopic colitis budesonide therapy",
+    "cluster": "microscopic colitis budesonide therapy",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1118,
+    "topicId": "4f43f074-cf2a-4937-83cb-5097006c411a",
+    "topic": "Microscopic Polyangiitis",
+    "cluster": "microscopic polyangiitis",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1119,
+    "topicId": "e9c59896-1b1e-4631-86c7-342587d140be",
+    "topic": "migraine",
+    "cluster": "migraine",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1120,
+    "topicId": "2b9d4b36-3072-4959-a515-730bf01c1c6c",
+    "topic": "Migraine CGRP monoclonal antibody prevention",
+    "cluster": "migraine cgrp monoclonal antibody prevention",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1121,
+    "topicId": "abbe3cc9-de1b-46cd-a3a7-98f230e8fedb",
+    "topic": "Mild cognitive impairment (MCI): amnestic vs non-amnestic progression tracking",
+    "cluster": "mild cognitive impairment mci amnestic vs non-amnestic progression tracking",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1122,
+    "topicId": "6f0dff25-4128-44d5-b7df-edd3e03ed0df",
+    "topic": "Mineralocorticoid receptor antagonists in heart failure",
+    "cluster": "mineralocorticoid receptor antagonists in heart failure",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1123,
+    "topicId": "ed1b5f93-5d9b-4f2b-8357-10a40e572773",
+    "topic": "Mineralocorticoid receptor antagonists: spironolactone, eplerenone, finerenone",
+    "cluster": "mineralocorticoid receptor antagonists spironolactone eplerenone finerenone",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1124,
+    "topicId": "e11a71b9-3d01-4ea5-bed0-bb615e0ba89f",
+    "topic": "Minimal Change Disease",
+    "cluster": "minimal change disease",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1125,
+    "topicId": "4062f984-af41-4e60-b06c-e3ca1c094a47",
+    "topic": "Minimal Residual Disease Monitoring",
+    "cluster": "minimal residual disease monitoring",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1126,
+    "topicId": "a7541ae7-8911-4a2d-897e-8e4e792879ad",
+    "topic": "MINOCA: ischaemia with non-obstructive coronary arteries workup and management",
+    "cluster": "minoca ischaemia with non-obstructive coronary arteries workup and management",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1127,
+    "topicId": "be610b90-0392-475f-89fd-020769b25566",
+    "topic": "Miscarriage: diagnosis, classification and management",
+    "cluster": "miscarriage diagnosis classification and management",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1128,
+    "topicId": "4644c282-0e19-46f0-8e2d-6ccc588ce47d",
+    "topic": "mitral regurgitation teer mitraclip",
+    "cluster": "mitral regurgitation teer mitraclip",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1129,
+    "topicId": "f619f3fd-8c9b-4e45-b505-573054990e0d",
+    "topic": "Mitral stenosis: commissurotomy vs valve replacement, rheumatic disease",
+    "cluster": "mitral stenosis commissurotomy vs valve replacement rheumatic disease",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1130,
+    "topicId": "1f8d59d7-e8a6-49b1-8ee3-1e0ab36c8ade",
+    "topic": "Mixed Connective Tissue Disease",
+    "cluster": "mixed connective tissue disease",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1131,
+    "topicId": "ff35ec3c-b82e-4533-b0a9-e296b1685010",
+    "topic": "Mixed connective tissue disease: anti-U1-RNP, overlap features, pulmonary hypertension",
+    "cluster": "mixed connective tissue disease anti-u1-rnp overlap features pulmonary hypertension",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1132,
+    "topicId": "e113a4d0-bbaa-4767-be17-7bdc99a7053b",
+    "topic": "MODY: HNF1A GCK HNF4A subtypes - genetic testing and treatment implications",
+    "cluster": "mody hnf1a gck hnf4a subtypes - genetic testing and treatment implications",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1133,
+    "topicId": "52b5fd58-a300-4c11-a5b6-75a7dd17743c",
+    "topic": "mog antibody associated disease diagnosis and relapse prevention",
+    "cluster": "mog antibody associated disease diagnosis and relapse prevention",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1134,
+    "topicId": "912becaf-f1a4-4fbe-80b3-69513b1ba24b",
+    "topic": "MOG antibody-associated disease diagnosis and relapse prevention",
+    "cluster": "mog antibody-associated disease diagnosis and relapse prevention",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1135,
+    "topicId": "4767a9fb-a4bc-4190-923c-03f80c515bb4",
+    "topic": "Molecular testing in NSCLC adenocarcinoma",
+    "cluster": "molecular testing in nsclc adenocarcinoma",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1136,
+    "topicId": "b4f9de6f-80bc-4542-b545-845365ba30e3",
+    "topic": "Monoclonal Gammopathy of Undetermined Significance",
+    "cluster": "monoclonal gammopathy of undetermined significance",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1137,
+    "topicId": "ab09f52f-f082-4b8a-acec-e778ee13ba3f",
+    "topic": "Monocytosis and Lymphocytosis Diagnostic Algorithms",
+    "cluster": "monocytosis and lymphocytosis diagnostic algorithms",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1138,
+    "topicId": "275af306-65d9-4ee8-a11f-228c200e899e",
+    "topic": "Mononeuritis multiplex: vasculitic causes, nerve biopsy indications",
+    "cluster": "mononeuritis multiplex vasculitic causes nerve biopsy indications",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1139,
+    "topicId": "43acccd6-cc23-4859-93fd-486740bf0b3c",
+    "topic": "morbilliform rash",
+    "cluster": "morbilliform rash",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1140,
+    "topicId": "f1caef31-2cf6-4cc7-b518-5906897ae891",
+    "topic": "Moyamoya disease: clinical presentations, surgical revascularisation indications",
+    "cluster": "moyamoya disease clinical presentations surgical revascularisation indications",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1141,
+    "topicId": "d26b63be-0d7a-4f2a-a53f-a86bc6de269e",
+    "topic": "MPN Blast Phase Management",
+    "cluster": "mpn blast phase management",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1142,
+    "topicId": "b2a92b3a-3fa7-49fc-b6be-ebb87e47b07e",
+    "topic": "Mpox (monkeypox): transmission, clinical features, tecovirimat, vaccination, public health response",
+    "cluster": "mpox monkeypox transmission clinical features tecovirimat vaccination public health response",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1143,
+    "topicId": "8149a2e0-b774-4281-a478-3cdffe759706",
+    "topic": "MRI in inflammatory arthritis: bone marrow oedema, erosions, tenosynovitis scoring",
+    "cluster": "mri in inflammatory arthritis bone marrow oedema erosions tenosynovitis scoring",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1144,
+    "topicId": "692def80-5c18-4106-9511-8185cc11c77d",
+    "topic": "MRSA bacteremia treatment",
+    "cluster": "mrsa bacteremia treatment",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1145,
+    "topicId": "8c2dc78f-3520-438e-aa79-e91fc2334459",
+    "topic": "MRSA: decolonisation, mupirocin, chlorhexidine, glycopeptides, daptomycin, linezolid",
+    "cluster": "mrsa decolonisation mupirocin chlorhexidine glycopeptides daptomycin linezolid",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1146,
+    "topicId": "d66f184b-434e-4312-840f-aba5fb0769bb",
+    "topic": "MSI-high metastatic colorectal cancer immunotherapy",
+    "cluster": "msi-high metastatic colorectal cancer immunotherapy",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1147,
+    "topicId": "29d681b5-18c6-4b8c-9558-16aced1835c9",
+    "topic": "MS initial presentation",
+    "cluster": "ms initial presentation",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1148,
+    "topicId": "c2b4d28c-e1d8-46cc-8cfc-c95cf59a2f81",
+    "topic": "Multidrug-resistant TB: MDR, XDR definitions, bedaquiline, delamanid, novel regimens",
+    "cluster": "multidrug-resistant tb mdr xdr definitions bedaquiline delamanid novel regimens",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1149,
+    "topicId": "0ed95492-7cff-43af-97e5-5b9737b5e453",
+    "topic": "Multiple endocrine neoplasia type 1 MEN1: parathyroid, pituitary, pancreatic tumours",
+    "cluster": "multiple endocrine neoplasia type 1 men1 parathyroid pituitary pancreatic tumours",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1150,
+    "topicId": "11b7ccc5-9227-4b0a-a259-fd3bd518dfb4",
+    "topic": "Multiple endocrine neoplasia type 2 MEN2A and MEN2B: RET mutations, prophylactic thyroidectomy",
+    "cluster": "multiple endocrine neoplasia type 2 men2a and men2b ret mutations prophylactic thyroidectomy",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1151,
+    "topicId": "818a2c32-7e7a-468c-aa45-020c0eadf78b",
+    "topic": "Multiple Myeloma",
+    "cluster": "multiple myeloma",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1152,
+    "topicId": "060d857c-9363-46c2-be12-63f25ebb8cac",
+    "topic": "Multiple myeloma: autologous stem cell transplantation",
+    "cluster": "multiple myeloma autologous stem cell transplantation",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1153,
+    "topicId": "6fc1fef2-ac9c-40d9-92c7-067d493dfd55",
+    "topic": "Multiple myeloma: daratumumab-based frontline therapy",
+    "cluster": "multiple myeloma daratumumab-based frontline therapy",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1154,
+    "topicId": "569f722e-787f-42d7-ab97-45c82d90dc4b",
+    "topic": "Multiple myeloma daratumumab-based regimens",
+    "cluster": "multiple myeloma daratumumab-based regimens",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1155,
+    "topicId": "102b2482-3127-4c1b-980d-a31fea8d039e",
+    "topic": "Multiple Myeloma Induction and Transplant",
+    "cluster": "multiple myeloma induction and transplant",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1156,
+    "topicId": "bba684e4-312f-4b5c-912e-9a653884cd6a",
+    "topic": "Multiple myeloma: VRd versus Rd for newly diagnosed disease",
+    "cluster": "multiple myeloma vrd versus rd for newly diagnosed disease",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1157,
+    "topicId": "2b753c79-7643-4f39-8071-c858926be869",
+    "topic": "multiple sclerosis",
+    "cluster": "multiple sclerosis",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1158,
+    "topicId": "6d413497-0988-4ac0-a4e8-1a4889266858",
+    "topic": "Multiple sclerosis disease-modifying therapy",
+    "cluster": "multiple sclerosis disease-modifying therapy",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1159,
+    "topicId": "d9968f7c-783a-49a4-baf7-0f75f57a988a",
+    "topic": "Multiple System Atrophy (MSA): MSA-P vs MSA-C, autonomic failure profiling",
+    "cluster": "multiple system atrophy msa msa-p vs msa-c autonomic failure profiling",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1160,
+    "topicId": "897e9d49-2442-4f62-94b9-031608d2d46b",
+    "topic": "Musculoskeletal ultrasound in rheumatology: synovitis, power Doppler, guided injection",
+    "cluster": "musculoskeletal ultrasound in rheumatology synovitis power doppler guided injection",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1161,
+    "topicId": "690c08d1-61a8-46d6-ba64-f67633ff87af",
+    "topic": "Myasthenia gravis targeted immunotherapy",
+    "cluster": "myasthenia gravis targeted immunotherapy",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1162,
+    "topicId": "1d219394-7453-4918-8a25-c4b143fd7f25",
+    "topic": "Mycobacterial and Fungal Arthritis",
+    "cluster": "mycobacterial and fungal arthritis",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1163,
+    "topicId": "3a950651-f419-4593-bbe9-0ff884cbc4a7",
+    "topic": "Mycophenolate Mofetil versus Cyclophosphamide regimens",
+    "cluster": "mycophenolate mofetil versus cyclophosphamide regimens",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1164,
+    "topicId": "34279deb-3d1e-4227-b791-b200b00eb1c4",
+    "topic": "Mycosis Fungoides and S\u00e9zary Syndrome",
+    "cluster": "mycosis fungoides and s zary syndrome",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1165,
+    "topicId": "521bc383-7717-4cde-8d6b-dd9273cc22c4",
+    "topic": "Myelodysplastic syndrome: azacitidine hypomethylating therapy",
+    "cluster": "myelodysplastic syndrome azacitidine hypomethylating therapy",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1166,
+    "topicId": "fc65e0f5-ab53-497b-b9da-7402f13f7d0a",
+    "topic": "Myelodysplastic Syndromes",
+    "cluster": "myelodysplastic syndromes",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1167,
+    "topicId": "e3c55d3a-4169-45e4-a058-9414833f90ab",
+    "topic": "Myelofibrosis: JAK inhibition with ruxolitinib",
+    "cluster": "myelofibrosis jak inhibition with ruxolitinib",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1168,
+    "topicId": "ae6c973f-d30e-4171-b9c1-810569c7d5dc",
+    "topic": "myocardial infarction",
+    "cluster": "myocardial infarction",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1169,
+    "topicId": "11136895-8206-447d-afff-062516e3b9dc",
+    "topic": "Myoclonus: classification (cortical vs subcortical), pharmacological approaches",
+    "cluster": "myoclonus classification cortical vs subcortical pharmacological approaches",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1170,
+    "topicId": "cff12b68-9b31-4967-9553-95f566f45316",
+    "topic": "Myositis-specific antibodies: anti-Jo-1, anti-MDA5, anti-TIF1-gamma: clinical associations",
+    "cluster": "myositis-specific antibodies anti-jo-1 anti-mda5 anti-tif1-gamma clinical associations",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1171,
+    "topicId": "5e71333f-7f95-4a32-83a3-c0fb7fb7c65d",
+    "topic": "Myotonic Dystrophy (Type 1 and 2): CTG/CCTG repeats, systemic complications",
+    "cluster": "myotonic dystrophy type 1 and 2 ctg cctg repeats systemic complications",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1172,
+    "topicId": "edd5e190-9dae-430c-bdc0-7f95b1b5607c",
+    "topic": "Narrow-complex tachycardias: SVT diagnosis, vagal manoeuvres, adenosine, ablation",
+    "cluster": "narrow-complex tachycardias svt diagnosis vagal manoeuvres adenosine ablation",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1173,
+    "topicId": "f8b7571b-e583-44e2-86ba-115d48c9f245",
+    "topic": "NASH",
+    "cluster": "nash",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1174,
+    "topicId": "15f962d9-9d91-4068-8eb2-f345179438de",
+    "topic": "Nasopharyngeal Carcinoma",
+    "cluster": "nasopharyngeal carcinoma",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1175,
+    "topicId": "5689bd53-cffa-4f85-bcc5-7c9c3fb48e86",
+    "topic": "Necrotising fasciitis: diagnosis, LRINEC score, surgical debridement, polymicrobial coverage",
+    "cluster": "necrotising fasciitis diagnosis lrinec score surgical debridement polymicrobial coverage",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1176,
+    "topicId": "345b52df-7159-47ff-b936-0e9d3d0b360e",
+    "topic": "Neonatal jaundice: assessment, phototherapy and exchange transfusion",
+    "cluster": "neonatal jaundice assessment phototherapy and exchange transfusion",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1177,
+    "topicId": "89f17911-f790-411a-90c1-3d36df3f0fa2",
+    "topic": "Neonatal Lupus and Congenital Heart Block",
+    "cluster": "neonatal lupus and congenital heart block",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1178,
+    "topicId": "94acdc1e-9701-4cba-9c4c-9bc0b68921ab",
+    "topic": "Neonatal lupus: anti-Ro, anti-La, congenital heart block, counselling",
+    "cluster": "neonatal lupus anti-ro anti-la congenital heart block counselling",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1179,
+    "topicId": "fba50519-9331-4408-ba96-a3cc0522cc50",
+    "topic": "Nephrogenic Diabetes Insipidus",
+    "cluster": "nephrogenic diabetes insipidus",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1180,
+    "topicId": "5f95b8ae-2130-470a-8488-d8ce87d9e7d3",
+    "topic": "Nephrolithiasis: Calcium Stones",
+    "cluster": "nephrolithiasis calcium stones",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1181,
+    "topicId": "f5bc90c2-1e38-4442-9449-aab524f11648",
+    "topic": "Nephrolithiasis: Uric Acid and Struvite Stones",
+    "cluster": "nephrolithiasis uric acid and struvite stones",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1182,
+    "topicId": "90cc7be9-4b0c-4243-9051-5343b5228a87",
+    "topic": "Nephrotic Syndrome: Overview and Workup",
+    "cluster": "nephrotic syndrome overview and workup",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1183,
+    "topicId": "ef01d12f-48f8-48e8-b2ce-887d94e8eeb4",
+    "topic": "Neurocritical care: management of aneurysmal subarachnoid haemorrhage",
+    "cluster": "neurocritical care management of aneurysmal subarachnoid haemorrhage",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1184,
+    "topicId": "9baaa62a-575f-4c1b-b36b-2609ba046d58",
+    "topic": "Neuroendocrine tumours: WHO grading G1/G2/G3, Ki-67, somatostatin receptor imaging",
+    "cluster": "neuroendocrine tumours who grading g1 g2 g3 ki-67 somatostatin receptor imaging",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1185,
+    "topicId": "787272c1-61a7-46be-b7e0-ec33d172733e",
+    "topic": "Neuromuscular blocking agents in the ICU: indications and monitoring",
+    "cluster": "neuromuscular blocking agents in the icu indications and monitoring",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1186,
+    "topicId": "7938e02a-7b77-44c9-b74c-af385aa364b8",
+    "topic": "Neuromuscular Respiratory Failure",
+    "cluster": "neuromuscular respiratory failure",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1187,
+    "topicId": "e482e34f-9c17-4952-a926-3eb8d3828a8d",
+    "topic": "neuromyelitis optica spectrum disorder biologic therapy",
+    "cluster": "neuromyelitis optica spectrum disorder biologic therapy",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1188,
+    "topicId": "3f651909-46ed-4283-b2d8-06357cbd187a",
+    "topic": "Neuromyelitis Optica Spectrum Disorder (NMOSD): AQP4-IgG, long extensive transverse myelitis",
+    "cluster": "neuromyelitis optica spectrum disorder nmosd aqp4-igg long extensive transverse myelitis",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1189,
+    "topicId": "31c73ee8-fc5d-4666-ad4b-c237f079fbc1",
+    "topic": "neuropathic leg ulcer",
+    "cluster": "neuropathic leg ulcer",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1190,
+    "topicId": "1af82777-d69b-4dfc-b0fb-e92abc712707",
+    "topic": "Neuropathic pain pharmacotherapy",
+    "cluster": "neuropathic pain pharmacotherapy",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1191,
+    "topicId": "0ba3e7d1-7c6a-4df7-9a2d-a3b56c3ffbdf",
+    "topic": "Neurosarcoidosis: cranial neuropathies, meningeal enhancement, CSF profile",
+    "cluster": "neurosarcoidosis cranial neuropathies meningeal enhancement csf profile",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1192,
+    "topicId": "dcb97ef9-ce58-4f45-ad02-bde6a3b8a0a1",
+    "topic": "Neutropenic sepsis: MASCC score, empirical piperacillin-tazobactam, antifungal escalation",
+    "cluster": "neutropenic sepsis mascc score empirical piperacillin-tazobactam antifungal escalation",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1193,
+    "topicId": "eb228570-6745-48a4-82b7-98a5f7d4c877",
+    "topic": "new airway devices",
+    "cluster": "new airway devices",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1194,
+    "topicId": "a18de414-dcec-40b8-896f-9204f3680ac3",
+    "topic": "New-onset seizure in adults: diagnostic workup, EEG patterns, imaging",
+    "cluster": "new-onset seizure in adults diagnostic workup eeg patterns imaging",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1195,
+    "topicId": "8843c8ec-4136-4497-b12c-5d20838cd34f",
+    "topic": "Nitrate therapy: GTN, isosorbide mononitrate, tolerance, combination use",
+    "cluster": "nitrate therapy gtn isosorbide mononitrate tolerance combination use",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1196,
+    "topicId": "67a1f11f-c768-4c8d-aa40-19ff214538cb",
+    "topic": "nivolumab ipilimumab advanced melanoma overall survival",
+    "cluster": "nivolumab ipilimumab advanced melanoma overall survival",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1197,
+    "topicId": "3998fe7c-367e-4fd4-b899-2912b3a2dbb5",
+    "topic": "non-alcoholic fatty liver disease",
+    "cluster": "non-alcoholic fatty liver disease",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1198,
+    "topicId": "9ee350e9-a9e2-4330-ac4f-d8f5e6b74285",
+    "topic": "nonalcoholic fatty liver disease management",
+    "cluster": "nonalcoholic fatty liver disease management",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1199,
+    "topicId": "c8683d47-70f4-41f6-a8ae-c21682bcfd05",
+    "topic": "Non-alcoholic fatty liver disease NAFLD: insulin resistance link, FIB-4 score, management",
+    "cluster": "non-alcoholic fatty liver disease nafld insulin resistance link fib-4 score management",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1200,
+    "topicId": "c5055f58-aa61-4ee3-9a28-8b667c4520ee",
+    "topic": "Non-alcoholic fatty liver disease pharmacotherapy",
+    "cluster": "non-alcoholic fatty liver disease pharmacotherapy",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1201,
+    "topicId": "95a4109c-c392-48c2-8964-fa0921b2a854",
+    "topic": "Non-functioning pituitary adenoma: chiasmal compression, surveillance vs surgery",
+    "cluster": "non-functioning pituitary adenoma chiasmal compression surveillance vs surgery",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1202,
+    "topicId": "ef941033-8844-4ff8-9e82-40fe23cdbca7",
+    "topic": "noninfectious uveitis biologic therapy",
+    "cluster": "noninfectious uveitis biologic therapy",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1203,
+    "topicId": "d80ec706-369d-4dac-b3e7-793f2aa62925",
+    "topic": "Noninvasive ventilation for acute respiratory failure",
+    "cluster": "noninvasive ventilation for acute respiratory failure",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1204,
+    "topicId": "287c1c34-c7ed-44be-8acc-eb755c4225ee",
+    "topic": "Noninvasive ventilation for COPD hypercapnic failure",
+    "cluster": "noninvasive ventilation for copd hypercapnic failure",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1205,
+    "topicId": "c907a139-c349-4bf6-bfad-bcf5408e172a",
+    "topic": "Non-small cell lung cancer immunotherapy",
+    "cluster": "non-small cell lung cancer immunotherapy",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1206,
+    "topicId": "4733adc2-b017-4ab8-8803-af05db1b98c3",
+    "topic": "Nonspecific Interstitial Pneumonia",
+    "cluster": "nonspecific interstitial pneumonia",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1207,
+    "topicId": "87ed5067-2957-4b42-83f9-11df341d782e",
+    "topic": "Nontuberculous Mycobacterial Lung Disease",
+    "cluster": "nontuberculous mycobacterial lung disease",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1208,
+    "topicId": "f17b7a34-8a4d-4045-9e79-e6ef6e5fcdee",
+    "topic": "Normal pressure hydrocephalus (NPH): tap test, ventriculoperitoneal shunt selection",
+    "cluster": "normal pressure hydrocephalus nph tap test ventriculoperitoneal shunt selection",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1209,
+    "topicId": "0b1f4597-07b8-4246-8d76-1787c17ca1ad",
+    "topic": "Novel antibiotics for resistant Gram-negatives: ceftazidime-avibactam, cefiderocol, imipenem-relebactam",
+    "cluster": "novel antibiotics for resistant gram-negatives ceftazidime-avibactam cefiderocol imipenem-relebactam",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1210,
+    "topicId": "1da3309b-2894-4b83-be62-258bcb6ec5a8",
+    "topic": "NSAID therapy in axSpA: continuous vs on-demand, radiographic progression",
+    "cluster": "nsaid therapy in axspa continuous vs on-demand radiographic progression",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1211,
+    "topicId": "164d305c-588c-402e-b1fc-d50e163f67c6",
+    "topic": "Nutritional support in critical illness: enteral vs parenteral, protein targets",
+    "cluster": "nutritional support in critical illness enteral vs parenteral protein targets",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1212,
+    "topicId": "e5df0630-2978-4d94-a43b-dcc086db2fdd",
+    "topic": "Nutritional support strategy in critical illness",
+    "cluster": "nutritional support strategy in critical illness",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1213,
+    "topicId": "703a2c1c-e081-4f40-8739-20262d26f486",
+    "topic": "obesity hypoventilation syndrome",
+    "cluster": "obesity hypoventilation syndrome",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1214,
+    "topicId": "a579f8dc-296e-4520-9ce0-467c34dd1f74",
+    "topic": "obesity management",
+    "cluster": "obesity management",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1215,
+    "topicId": "e28bfc44-b8e9-4314-b687-5d58100a45ca",
+    "topic": "Obesity pharmacotherapy",
+    "cluster": "obesity pharmacotherapy",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1216,
+    "topicId": "dafde4cd-d134-429d-8b9c-dcdb442eeaa9",
+    "topic": "Obesity pharmacotherapy: orlistat, GLP-1 agonists, naltrexone-bupropion indications and outcomes",
+    "cluster": "obesity pharmacotherapy orlistat glp-1 agonists naltrexone-bupropion indications and outcomes",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1217,
+    "topicId": "82355dca-5c1d-4e71-8ac1-8f2c3ed412d5",
+    "topic": "Obscure GI Bleeding",
+    "cluster": "obscure gi bleeding",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1218,
+    "topicId": "3b588c88-28d1-48c7-8714-7ad30d5180c9",
+    "topic": "obsessive compulsive disorder ssri and erp",
+    "cluster": "obsessive compulsive disorder ssri and erp",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1219,
+    "topicId": "d20fd5a1-9be0-4c27-84a4-ccb6caa70fb1",
+    "topic": "Obsessive-compulsive disorder SSRI and ERP",
+    "cluster": "obsessive-compulsive disorder ssri and erp",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1220,
+    "topicId": "5b208427-8805-4539-84cb-9e056d741339",
+    "topic": "Obstructive Sleep Apnea",
+    "cluster": "obstructive sleep apnea",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1221,
+    "topicId": "e68ebe83-0ef6-4bb3-8c33-d71bd7009272",
+    "topic": "Obstructive sleep apnea CPAP cardiovascular outcomes",
+    "cluster": "obstructive sleep apnea cpap cardiovascular outcomes",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1222,
+    "topicId": "8518d59f-2697-4639-8967-e051069c15f6",
+    "topic": "obstructive sleep apnoea",
+    "cluster": "obstructive sleep apnoea",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1223,
+    "topicId": "a1397457-bd14-4988-8c11-c87c2cdccc1b",
+    "topic": "Obstructive sleep apnoea and obesity hypoventilation",
+    "cluster": "obstructive sleep apnoea and obesity hypoventilation",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1224,
+    "topicId": "2cfc1748-7d0e-4c2e-8851-3fbc34ce7a68",
+    "topic": "obstructive uropathy",
+    "cluster": "obstructive uropathy",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1225,
+    "topicId": "a4f35e8b-6b3c-4ae7-95dc-f9ed90e4088f",
+    "topic": "Occupational Asthma",
+    "cluster": "occupational asthma",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1226,
+    "topicId": "68c1a7da-cf54-43f4-be47-c7e8167f4316",
+    "topic": "Oesophageal Cancer",
+    "cluster": "oesophageal cancer",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1227,
+    "topicId": "aba58e8b-b5a0-475d-930d-c94b4081e66b",
+    "topic": "Oesophageal Perforation",
+    "cluster": "oesophageal perforation",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1228,
+    "topicId": "c079dfcd-275f-4594-becb-746920c2c70b",
+    "topic": "Oesophageal Strictures",
+    "cluster": "oesophageal strictures",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1229,
+    "topicId": "19997a38-9192-42bd-bb53-68d06c578708",
+    "topic": "Oesophageal Varices",
+    "cluster": "oesophageal varices",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1230,
+    "topicId": "faea13a4-07d1-4708-ab70-e0b7bd64acb4",
+    "topic": "Oligodendroglioma and Low-Grade Glioma",
+    "cluster": "oligodendroglioma and low-grade glioma",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1231,
+    "topicId": "f48a1fbb-e4ff-49a4-96d9-16e0f1a25c30",
+    "topic": "Oncology Clinical Trial Endpoints",
+    "cluster": "oncology clinical trial endpoints",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1232,
+    "topicId": "f39f4e25-6601-425f-aaef-c80730032e3b",
+    "topic": "Opioid Rotation and Equianalgesic Dosing",
+    "cluster": "opioid rotation and equianalgesic dosing",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1233,
+    "topicId": "a029990a-8377-43ba-9a6c-3af1cf024327",
+    "topic": "opioid-sparing analgesia",
+    "cluster": "opioid-sparing analgesia",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1234,
+    "topicId": "2c49fc3b-c527-49e0-8613-10144fcb21bd",
+    "topic": "opioid use disorder buprenorphine and methadone",
+    "cluster": "opioid use disorder buprenorphine and methadone",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1235,
+    "topicId": "2015b0fb-7773-4a5f-a8ea-1fd388984e27",
+    "topic": "Opioid use disorder: withdrawal, maintenance therapy and harm reduction",
+    "cluster": "opioid use disorder withdrawal maintenance therapy and harm reduction",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1236,
+    "topicId": "94294d26-2aeb-411b-ac92-96d78b136c1a",
+    "topic": "ORAL Surveillance trial: cardiovascular safety of tofacitinib vs TNFi in RA",
+    "cluster": "oral surveillance trial cardiovascular safety of tofacitinib vs tnfi in ra",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1237,
+    "topicId": "192b56f4-1ebe-4ecc-8058-f309ed54f596",
+    "topic": "Orbital and periorbital cellulitis: classification and management",
+    "cluster": "orbital and periorbital cellulitis classification and management",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1238,
+    "topicId": "53589032-6e79-4efc-b441-a22fdbfae8c4",
+    "topic": "Organ donation after brain death and DCD: ICU donor management",
+    "cluster": "organ donation after brain death and dcd icu donor management",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1239,
+    "topicId": "adc5cbba-0468-4d24-97dd-32a6bc770b98",
+    "topic": "Organophosphate poisoning: mechanism, atropine, pralidoxime",
+    "cluster": "organophosphate poisoning mechanism atropine pralidoxime",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1240,
+    "topicId": "5cdae0c5-dcaf-45dc-aa0c-37ca040cc0d2",
+    "topic": "Orthostatic hypotension: diagnosis and management in older adults",
+    "cluster": "orthostatic hypotension diagnosis and management in older adults",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1241,
+    "topicId": "7837f090-d2f4-4d7c-8c10-12a323e5449d",
+    "topic": "oseltamivir treatment influenza healthy adults",
+    "cluster": "oseltamivir treatment influenza healthy adults",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1242,
+    "topicId": "22208ee7-9e60-43cf-bc65-ec1ecc408fdd",
+    "topic": "Osteoarthritis",
+    "cluster": "osteoarthritis",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1243,
+    "topicId": "4154cf3d-2cad-4005-a5dd-3d7d13b6562f",
+    "topic": "osteoarthritis hand",
+    "cluster": "osteoarthritis hand",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1244,
+    "topicId": "e4c96991-f950-4a82-891c-32c2322a735a",
+    "topic": "osteoarthritis hip",
+    "cluster": "osteoarthritis hip",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1245,
+    "topicId": "f1bc3596-f8d5-432e-8e05-11ec87e9a3cb",
+    "topic": "osteoarthritis knee",
+    "cluster": "osteoarthritis knee",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1246,
+    "topicId": "43545e2c-1560-42d8-9794-72d181bb57c1",
+    "topic": "Osteoarthritis: pathophysiology, risk factors, radiographic grading, pharmacological management",
+    "cluster": "osteoarthritis pathophysiology risk factors radiographic grading pharmacological management",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1247,
+    "topicId": "20a93a58-81fa-49ac-a6d9-5c74512eab7f",
+    "topic": "Osteomalacia and Rickets",
+    "cluster": "osteomalacia and rickets",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1248,
+    "topicId": "2c46eb96-84bc-4b24-a677-8bb7d0f47032",
+    "topic": "Osteomyelitis: acute vs chronic, MRI, bone biopsy, oral vs IV antibiotics, OVIVA trial",
+    "cluster": "osteomyelitis acute vs chronic mri bone biopsy oral vs iv antibiotics oviva trial",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1249,
+    "topicId": "ba9eb45d-4e60-4bf1-bf0f-56fa7006993d",
+    "topic": "osteoporosis",
+    "cluster": "osteoporosis",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  },
+  {
+    "no": 1250,
+    "topicId": "032bbd66-13d9-454f-9c94-ca1563bee7f1",
+    "topic": "Osteoporosis: DEXA, FRAX, T-score thresholds, fracture risk assessment",
+    "cluster": "osteoporosis dexa frax t-score thresholds fracture risk assessment",
+    "status": "draft",
+    "dbEvidence": {
+      "totalTrials": 0,
+      "totalGuidelines": 0,
+      "totalMeta": 0,
+      "totalReviews": 0,
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {}
+  }
+]

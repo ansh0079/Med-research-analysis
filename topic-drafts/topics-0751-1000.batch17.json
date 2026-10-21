@@ -1,0 +1,1239 @@
+[
+  {
+    "no": 911,
+    "topicId": "f17b097a-96e9-4339-a04d-addd647b04bf",
+    "topic": "IgA nephropathy treatment (sparsentan and targeted therapy)",
+    "cluster": "IgA nephropathy",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 6,
+      "papersKept": [
+        {
+          "uid": "pubmed-40635379",
+          "title": "Sparsentan: a dual endothelin and angiotensin II receptor antagonist approved for IgA nephropathy.",
+          "year": "2025"
+        },
+        {
+          "uid": "pubmed-38149041",
+          "title": "Practical Considerations for the Use of Sparsentan in the Treatment of Patients with IgAN in Clinical Practice.",
+          "year": "2024"
+        },
+        {
+          "uid": "pubmed-40606442",
+          "title": "Efficacy and safety of agents for IgA nephropathy: a network meta-analysis of randomized controlled trials.",
+          "year": "2025"
+        },
+        {
+          "uid": "pubmed-42368239",
+          "title": "Recent Advances in the Management of IgA Nephropathy: From Supportive Care to Targeted Therapies.",
+          "year": "2025"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-40692723",
+          "title": "Sparsentan in IgA nephropathy: a plain language summary of publication for the PROTECT study.",
+          "reason": "Plain-language summary; not clinician-grade evidence."
+        },
+        {
+          "uid": "pubmed-40493692",
+          "title": "Clinical study outcomes in IgA nephropathy: A systematic literature review and narrative synthesis.",
+          "reason": "Narrative synthesis; network meta-analysis retained instead."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "The sparsentan story shows how fast IgA nephropathy therapy is moving: the PROTECT trial's interim proteinuria win made the dual endothelin-A/angiotensin-receptor antagonist the first non-immunosuppressive drug with regulatory approval specifically for IgAN, built on proteinuria as a validated surrogate. Used correctly it requires attention its predecessors did not: it cannot be combined with ACEi/ARB, demands liver-enzyme and pregnancy monitoring, and embeds a REMS-style hepatotoxicity framework in some jurisdictions. Network meta-analysis now lets clinicians rank the expanding armamentarium — RAS blockade, SGLT2 inhibitors, targeted-release budesonide, sparsentan — by proteinuria effect, though head-to-head trials and long-term kidney-outcome data are still maturing.",
+      "teaching_points": [
+        {
+          "claim": "Sparsentan is a dual endothelin-A and angiotensin-II receptor antagonist approved for IgAN on the strength of PROTECT's proteinuria reduction, an accepted surrogate for kidney protection.",
+          "cites": [
+            "40635379",
+            "42368239"
+          ]
+        },
+        {
+          "claim": "Because it blocks the renin-angiotensin system, sparsentan must not be combined with ACE inhibitors or ARBs; transition of care from RAS blockade is a core practical step.",
+          "cites": [
+            "38149041"
+          ]
+        },
+        {
+          "claim": "Safety monitoring includes liver enzymes, pregnancy prevention (foetotoxicity), hyperkalaemia, and oedema — with structured hepatotoxicity risk-management programmes in some regions.",
+          "cites": [
+            "38149041",
+            "40635379"
+          ]
+        },
+        {
+          "claim": "Network meta-analysis of RCTs now permits comparative ranking of IgAN agents by proteinuria lowering, supporting individualised sequencing as newer agents accumulate.",
+          "cites": [
+            "40606442"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Long-term (>5 year) eGFR and ESRD outcomes for sparsentan beyond the surrogate endpoint are pending final PROTECT results.",
+        "Optimal combination or sequencing with SGLT2 inhibitors and targeted-release budesonide is undefined."
+      ],
+      "mcq_angles": [
+        "PROTECT design: dual receptor blockade and the proteinuria surrogate.",
+        "Switching rules from ACEi/ARB to sparsentan and washout considerations.",
+        "Hepatotoxicity monitoring and pregnancy prevention requirements.",
+        "Comparative efficacy of modern IgAN agents from network meta-analysis."
+      ],
+      "case_hooks": [
+        "An IgAN patient on maximal losartan has proteinuria 1.2 g/day and normal LFTs; plan the switch to sparsentan including counselling and monitoring.",
+        "A transplant-listed IgAN patient asks how sparsentan compares with budesonide and SGLT2 inhibitors; frame the evidence hierarchy."
+      ],
+      "gaps": "The retained abstracts are reviews/meta-analysis, not the PROTECT primary report; verify interim effect sizes, eligibility thresholds, and complete safety tables before approval.",
+      "sources": [
+        {
+          "pmid": "40635379",
+          "design": "review",
+          "year": "2025",
+          "journal": null,
+          "title": "Sparsentan: a dual endothelin and angiotensin II receptor antagonist approved for IgA nephropathy."
+        },
+        {
+          "pmid": "38149041",
+          "design": "review",
+          "year": "2024",
+          "journal": null,
+          "title": "Practical Considerations for the Use of Sparsentan in the Treatment of Patients with IgAN in Clinical Practice."
+        },
+        {
+          "pmid": "40606442",
+          "design": "meta-analysis",
+          "year": "2025",
+          "journal": null,
+          "title": "Efficacy and safety of agents for IgA nephropathy: a network meta-analysis of randomized controlled trials."
+        },
+        {
+          "pmid": "42368239",
+          "design": "review",
+          "year": "2025",
+          "journal": null,
+          "title": "Recent Advances in the Management of IgA Nephropathy: From Supportive Care to Targeted Therapies."
+        }
+      ]
+    }
+  },
+  {
+    "no": 912,
+    "topicId": "c4759b53-b4d9-4054-a517-9bd1ef09f775",
+    "topic": "IgA Vasculitis",
+    "cluster": "IgA vasculitis",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 8,
+      "papersKept": [
+        {
+          "uid": "pubmed-39518760",
+          "title": "IgA Vasculitis (Henoch-Schonlein Purpura): An Update on Treatment.",
+          "year": "2023"
+        },
+        {
+          "uid": "pubmed-32803924",
+          "title": "Henoch-Schonlein Purpura (IgA Vasculitis): Rapid Evidence Review.",
+          "year": "2021"
+        },
+        {
+          "uid": "pubmed-34196893",
+          "title": "IgA Vasculitis in Adults: a Rare yet Challenging Disease.",
+          "year": "2021"
+        },
+        {
+          "uid": "pubmed-34396492",
+          "title": "Management of IgA Vasculitis with Nephritis.",
+          "year": "2021"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-41587026",
+          "title": "IgA Nephropathy in Adults: A Review.",
+          "reason": "IgA nephropathy without systemic vasculitis; wrong entity for this topic."
+        },
+        {
+          "uid": "pubmed-34556300",
+          "title": "Executive summary of the KDIGO 2021 Guideline for the Management of Glomerular Diseases.",
+          "reason": "KDIGO guideline; already cited under topic 910."
+        },
+        {
+          "uid": "pubmed-25688001",
+          "title": "IgA vasculitis (Henoch-Schonlein purpura) in adults: Diagnostic and therapeutic aspects.",
+          "reason": "Older review; superseded by retained 2021-2023 updates."
+        },
+        {
+          "uid": "pubmed-39202674",
+          "title": "Navigating Adult-Onset IgA Vasculitis-Associated Nephritis.",
+          "reason": "Renal-subset focus retained under nephritis review (34396492) instead."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "IgA vasculitis — Henoch-Schonlein purpura renamed — is a small-vessel IgA-dominant immune-complex vasculitis that is common and self-limiting in children but rarer, more severe, and more often renal in adults. The clinical skill is two-fold: recognising the tetrad of palpable purura, arthritis, abdominal pain, and renal involvement, and stratifying by organ threat, because management escalates from supportive care for skin-joint disease to immunosuppression for nephritis or severe GI disease. Adult disease behaves differently enough from paediatric disease that adult-specific evidence, though thinner, should drive treatment decisions.",
+      "teaching_points": [
+        {
+          "claim": "Diagnosis is clinical with characteristic IgA-dominant deposits on biopsy when needed; in adults, biopsy and secondary-cause work-up (infection, malignancy, drugs) carry more weight than in children.",
+          "cites": [
+            "34196893",
+            "32803924"
+          ]
+        },
+        {
+          "claim": "Skin-limited and joint disease in adults is usually managed supportively; the systemic review evidence for immunosuppression is strongest for nephritis and severe gastrointestinal involvement.",
+          "cites": [
+            "39518760",
+            "32803924"
+          ]
+        },
+        {
+          "claim": "IgAV nephritis management draws on IgA-nephropathy principles — RAS blockade for proteinuric disease, and corticosteroids/immunosuppression for higher-risk histology — extrapolated from the KDIGO framework.",
+          "cites": [
+            "34396492",
+            "39518760"
+          ]
+        },
+        {
+          "claim": "Adult-onset IgAV has more frequent and more severe renal involvement than childhood-onset disease, with a higher proportion progressing to chronic kidney disease; prognosis is organ-threat dependent.",
+          "cites": [
+            "34196893"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Randomised evidence specific to adult IgAV is scarce; most treatment recommendations are extrapolated from paediatric trials and IgA-nephropathy data.",
+        "The role of rituximab and other steroid-sparing agents in adult IgAV nephritis is not established."
+      ],
+      "mcq_angles": [
+        "Adult versus paediatric IgAV: severity and renal-risk differences.",
+        "When to biopsy and what to work up in adult-onset disease.",
+        "Management ladder: supportive care to immunosuppression by organ threat.",
+        "IgAV nephritis versus primary IgA nephropathy: shared and distinct principles."
+      ],
+      "case_hooks": [
+        "A 52-year-old presents with palpable purpura, knee arthralgia, and melena; outline the diagnostic work-up and initial management.",
+        "An adult IgAV patient has nephritic-range proteinuria with hypertension; justify the nephrology-referral threshold and treatment plan."
+      ],
+      "gaps": "The retained abstracts lack adult-specific randomised trials; verify treatment recommendations against the 2024 adult-onset IgAV evidence-based guidelines (topic 913) before approval.",
+      "sources": [
+        {
+          "pmid": "39518760",
+          "design": "review",
+          "year": "2023",
+          "journal": null,
+          "title": "IgA Vasculitis (Henoch-Schonlein Purpura): An Update on Treatment."
+        },
+        {
+          "pmid": "32803924",
+          "design": "evidence-review",
+          "year": "2021",
+          "journal": null,
+          "title": "Henoch-Schonlein Purpura (IgA Vasculitis): Rapid Evidence Review."
+        },
+        {
+          "pmid": "34196893",
+          "design": "review",
+          "year": "2021",
+          "journal": null,
+          "title": "IgA Vasculitis in Adults: a Rare yet Challenging Disease."
+        },
+        {
+          "pmid": "34396492",
+          "design": "review",
+          "year": "2021",
+          "journal": null,
+          "title": "Management of IgA Vasculitis with Nephritis."
+        }
+      ]
+    }
+  },
+  {
+    "no": 913,
+    "topicId": "ba9f7b0c-aaac-46ae-b250-d2d0c69d316d",
+    "topic": "IgA vasculitis Henoch-Schonlein: skin, joints, renal, GI involvement in adults",
+    "cluster": "IgA vasculitis",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 6,
+      "papersKept": [
+        {
+          "uid": "pubmed-42625065",
+          "title": "Evidence-based guidelines for the diagnosis and management of adult-onset IgA vasculitis.",
+          "year": "2025"
+        },
+        {
+          "uid": "pubmed-41939557",
+          "title": "Gastrointestinal Involvement in Adult IgA Vasculitis: A Comprehensive Review.",
+          "year": "2024"
+        },
+        {
+          "uid": "pubmed-37231802",
+          "title": "Adult Henoch-Schonlein Purpura: Comprehensive Assessment of Demographic, Clinical, and Histopathological Features.",
+          "year": "2022"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-28654132",
+          "title": "Henoch-Schonlein Purpura: A Literature Review.",
+          "reason": "Older literature review; superseded by the 2025 evidence-based guidelines."
+        },
+        {
+          "uid": "pubmed-34396492",
+          "title": "Management of IgA Vasculitis with Nephritis.",
+          "reason": "Nephritis-management review retained under topic 912 to avoid duplicate citation."
+        },
+        {
+          "uid": "pubmed-38236411",
+          "title": "[Immunoglobulin A vasculitis].",
+          "reason": "Non-English-bracketed record; excluded per pipeline rules."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Where topic 912 frames IgA vasculitis as a disease entity, this topic organises it by organ system — the practical way adults actually present. Skin purpura and arthralgia are the commonest manifestations; renal involvement determines long-term prognosis; and gastrointestinal disease, present in a substantial minority of adults, is the most dangerous acute threat — with intussusception, perforation, and haemorrhage described in adult cohorts. The 2025 evidence-based guidelines for adult-onset IgAV give the first dedicated, adult-specific framework covering each organ system's assessment and management.",
+      "teaching_points": [
+        {
+          "claim": "Adult-onset IgAV classically involves skin (palpable purura, lower-limb predominant), joints (arthralgia/arthritis), kidneys (haematuria, proteinuria of graded severity), and GI tract — with renal involvement the principal driver of long-term outcome.",
+          "cites": [
+            "37231802",
+            "42625065"
+          ]
+        },
+        {
+          "claim": "GI involvement in adults ranges from colicky pain and occult bleeding to intussusception, perforation, and severe haemorrhage; systematic assessment includes stool testing, cross-sectional imaging, and endoscopy when severe.",
+          "cites": [
+            "41939557"
+          ]
+        },
+        {
+          "claim": "The 2025 evidence-based adult-onset IgAV guidelines provide organ-system-specific diagnostic and treatment recommendations, replacing extrapolation from paediatric practice.",
+          "cites": [
+            "42625065"
+          ]
+        },
+        {
+          "claim": "Systemic involvement risk is harder to assess in adults than children; comprehensive cohort data emphasise demographic and histopathological features associated with renal progression for risk stratification.",
+          "cites": [
+            "37231802"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Optimal treatment of severe GI involvement (steroids, IVIG, surgery thresholds) rests on low-grade evidence.",
+        "Long-term renal surveillance schedules for adults with resolved acute disease are not standardised."
+      ],
+      "mcq_angles": [
+        "Organ-system manifestations and their relative frequency in adults.",
+        "GI red flags: when to image, scope, or operate.",
+        "2025 adult-onset IgAV guidelines: what changed from paediatric extrapolation.",
+        "Risk-stratifying renal involvement at presentation."
+      ],
+      "case_hooks": [
+        "An adult with IgAV develops severe abdominal pain and dropping haemoglobin; outline the GI-complication work-up and escalation.",
+        "Two adults present — one skin-only, one with nephritic sediment; contrast their management and follow-up intensity."
+      ],
+      "gaps": "The retained abstracts do not include the guideline's full recommendation tables; verify organ-specific treatment grades before approval.",
+      "sources": [
+        {
+          "pmid": "42625065",
+          "design": "guideline",
+          "year": "2025",
+          "journal": null,
+          "title": "Evidence-based guidelines for the diagnosis and management of adult-onset IgA vasculitis."
+        },
+        {
+          "pmid": "41939557",
+          "design": "review",
+          "year": "2024",
+          "journal": null,
+          "title": "Gastrointestinal Involvement in Adult IgA Vasculitis: A Comprehensive Review."
+        },
+        {
+          "pmid": "37231802",
+          "design": "cohort-review",
+          "year": "2022",
+          "journal": null,
+          "title": "Adult Henoch-Schonlein Purpura: Comprehensive Assessment of Demographic, Clinical, and Histopathological Features."
+        }
+      ]
+    }
+  },
+  {
+    "no": 914,
+    "topicId": "ce3d77c5-e39c-4de2-9780-666c9944c3d5",
+    "topic": "IgG4-Related Disease",
+    "cluster": "IgG4-related disease",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 8,
+      "papersKept": [
+        {
+          "uid": "pubmed-32939060",
+          "title": "IgG4-related disease: an update on pathophysiology and implications for clinical care.",
+          "year": "2020"
+        },
+        {
+          "uid": "pubmed-38574746",
+          "title": "Fibrotic phenotype of IgG4-related disease.",
+          "year": "2024"
+        },
+        {
+          "uid": "pubmed-32546500",
+          "title": "Advances in the diagnosis and management of IgG4 related disease.",
+          "year": "2019"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-28245451",
+          "title": "Pituitary Autoimmunity.",
+          "reason": "Organ-specific subset (hypophysitis); tangential to systemic IgG4-RD."
+        },
+        {
+          "uid": "pubmed-28284385",
+          "title": "IgG4-Related Tubulointerstitial Nephritis.",
+          "reason": "Renal subset; covered within broader reviews retained."
+        },
+        {
+          "uid": "pubmed-38574744",
+          "title": "Proliferative features of IgG4-related disease.",
+          "reason": "Phenotype sub-analysis; fibrotic phenotype review retained instead."
+        },
+        {
+          "uid": "pubmed-40195520",
+          "title": "IgG4-related disease and other fibro-inflammatory conditions.",
+          "reason": "Comparative fibro-inflammatory review; not IgG4-RD-specific."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "IgG4-related disease, recognised only since 2003, is a systemic fibro-inflammatory condition that can mimic malignancy, infection, and other immune disease in nearly any organ — classically autoimmune pancreatitis, sialadenitis, orbital disease, and retroperitoneal fibrosis. Pathophysiologically it is a B-cell-driven, plasmablast-rich process with characteristic histology (dense IgG4+ plasma-cell infiltrates, storiform fibrosis, obliterative phlebitis), and serum IgG4 is elevated in most but not all patients — tissue diagnosis remains the reference standard. The clinical stakes are twofold: don't miss it (steroids usually produce a dramatic response) and don't overdiagnose it (elevated IgG4 alone is non-specific, and fibrotic late-stage disease responds poorly).",
+      "teaching_points": [
+        {
+          "claim": "IgG4-RD is a multi-organ fibro-inflammatory disease with a characteristic histopathological signature — dense lymphoplasmacytic infiltrate rich in IgG4+ plasma cells, storiform fibrosis, and obliterative phlebitis.",
+          "cites": [
+            "32939060",
+            "32546500"
+          ]
+        },
+        {
+          "claim": "Pathophysiology centres on B cells and plasmablasts with oligoclonal expansions; this B-cell dependence explains the efficacy of B-cell depletion and informs biomarker development.",
+          "cites": [
+            "32939060"
+          ]
+        },
+        {
+          "claim": "A fibrotic phenotype exists in which prominent tissue fibrosis predicts reduced glucocorticoid responsiveness — recognising it early matters for treatment selection and expectations.",
+          "cites": [
+            "38574746"
+          ]
+        },
+        {
+          "claim": "Serum IgG4 concentration supports but does not establish diagnosis; tissue confirmation with IgG4/IgG ratio assessment is the reference standard, and organ-specific diagnostic criteria have been developed.",
+          "cites": [
+            "32546500",
+            "32939060"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Whether IgG4 itself is pathogenic or an epiphenomenon of underlying B-cell dysregulation is unresolved.",
+        "Optimal glucocorticoid-sparing maintenance and relapse-prevention strategies are not standardised."
+      ],
+      "mcq_angles": [
+        "Classic organ manifestations and malignancy mimics.",
+        "Histopathological triad and serum IgG4 interpretation.",
+        "Fibrotic versus proliferative phenotypes and treatment response.",
+        "B-cell pathogenesis as the rationale for rituximab."
+      ],
+      "case_hooks": [
+        "A patient with painless jaundice and a pancreatic mass has elevated IgG4; argue the biopsy strategy and the treatment response that would confirm IgG4-RD.",
+        "A patient with IgG4-RD relapses twice on tapering steroids; discuss phenotype assessment and steroid-sparing options."
+      ],
+      "gaps": "The retained abstracts do not include the 2019 ACR/EULAR classification criteria paper or the international consensus guidance on management; verify classification versus diagnostic criteria before approval.",
+      "sources": [
+        {
+          "pmid": "32939060",
+          "design": "review",
+          "year": "2020",
+          "journal": null,
+          "title": "IgG4-related disease: an update on pathophysiology and implications for clinical care."
+        },
+        {
+          "pmid": "38574746",
+          "design": "review",
+          "year": "2024",
+          "journal": null,
+          "title": "Fibrotic phenotype of IgG4-related disease."
+        },
+        {
+          "pmid": "32546500",
+          "design": "review",
+          "year": "2019",
+          "journal": null,
+          "title": "Advances in the diagnosis and management of IgG4 related disease."
+        }
+      ]
+    }
+  },
+  {
+    "no": 915,
+    "topicId": "044ce51b-13cc-4a78-adbc-585954db9b82",
+    "topic": "igg4 related disease diagnosis and b cell depletion",
+    "cluster": "IgG4-related disease",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 8,
+      "papersKept": [
+        {
+          "uid": "pubmed-40071397",
+          "title": "IgG4-related disease: lessons from the first 20 years.",
+          "year": "2024"
+        },
+        {
+          "uid": "pubmed-32348524",
+          "title": "IgG4-related disease: a clinical perspective.",
+          "year": "2021"
+        },
+        {
+          "uid": "pubmed-31555262",
+          "title": "Systematic Review of Safety and Efficacy of Rituximab in Treating Immune-Mediated Disorders.",
+          "year": "2020"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-29359118",
+          "title": "Immunoglobulin G4-related kidney diseases: An updated review.",
+          "reason": "Renal subset; diagnosis covered by broader reviews."
+        },
+        {
+          "uid": "pubmed-26481243",
+          "title": "IgG4-related disease: A relatively new concept for clinicians.",
+          "reason": "General overview; superseded by 20-year lessons review."
+        },
+        {
+          "uid": "pubmed-27429760",
+          "title": "Recognizing IgG4-related tubulointerstitial nephritis.",
+          "reason": "Renal subset; tangential to diagnosis-plus-treatment focus."
+        },
+        {
+          "uid": "pubmed-26860343",
+          "title": "Idiopathic Retroperitoneal Fibrosis.",
+          "reason": "Single-organ subset; not whole-disease diagnosis."
+        },
+        {
+          "uid": "pubmed-35224257",
+          "title": "Immunoglobulin G4-related Disease: A New Systemic Disease Emerging in Japan.",
+          "reason": "Regional descriptive report; superseded."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Diagnosis and treatment of IgG4-RD have matured together: the 2019 ACR/EULAR classification criteria gave research a common language, while two decades of experience refined the clinical approach — suspect the multi-organ pattern, confirm with tissue where feasible, and treat with glucocorticoids first, accepting that relapse on tapering is common. Because the disease is B-cell driven, B-cell depletion with rituximab has moved from rescue therapy to an established steroid-sparing option with rapid biomarker responses; systematic-review evidence across immune-mediated disorders supports its efficacy and acceptable safety in experienced hands, though IgG4-RD-specific randomised trials are still lacking.",
+      "teaching_points": [
+        {
+          "claim": "Diagnostic work-up combines compatible organ involvement, elevated serum IgG4 (supportive, not specific), characteristic imaging, and, where safe, tissue showing the classic histopathology; classification criteria formalise entry into research and trials.",
+          "cites": [
+            "40071397",
+            "32348524"
+          ]
+        },
+        {
+          "claim": "Glucocorticoids remain first-line and usually produce prompt clinical and serological response; the dominant long-term problem is relapse during or after tapering, driving maintenance strategies.",
+          "cites": [
+            "32348524",
+            "40071397"
+          ]
+        },
+        {
+          "claim": "Rituximab depletes CD20+ B cells and produces rapid falls in serum IgG4 and plasmablast populations; systematic-review evidence supports efficacy and acceptable safety across immune-mediated disorders including IgG4-RD.",
+          "cites": [
+            "31555262",
+            "40071397"
+          ]
+        },
+        {
+          "claim": "B-cell biomarkers (plasmablasts, IgG4 levels, circulating T-follicular-helper cells) enable treatment response monitoring beyond symptoms and imaging.",
+          "cites": [
+            "40071397"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Rituximab dosing schedules (fixed versus relapse-guided) and re-treatment triggers are not standardised.",
+        "Whether early rituximab in fibrotic-phenotype disease changes outcomes is unknown."
+      ],
+      "mcq_angles": [
+        "Stepwise diagnostic algorithm and the role of biopsy.",
+        "First-line therapy, tapering, and relapse patterns.",
+        "Rituximab: mechanism, monitoring, and biomarker response.",
+        "Distinguishing classification criteria from diagnostic criteria."
+      ],
+      "case_hooks": [
+        "A patient with submandibular swelling, orbital pseudotumour, and IgG4 6x ULN relapses on steroid taper; design the rituximab plan and monitoring schedule.",
+        "A patient with suspected IgG4-RD has normal serum IgG4; justify whether and where to biopsy."
+      ],
+      "gaps": "The retained rituximab evidence is a cross-disease systematic review, not an IgG4-RD-specific trial; verify regimen and response rates against IgG4-RD cohort series before approval.",
+      "sources": [
+        {
+          "pmid": "40071397",
+          "design": "review",
+          "year": "2024",
+          "journal": null,
+          "title": "IgG4-related disease: lessons from the first 20 years."
+        },
+        {
+          "pmid": "32348524",
+          "design": "review",
+          "year": "2021",
+          "journal": null,
+          "title": "IgG4-related disease: a clinical perspective."
+        },
+        {
+          "pmid": "31555262",
+          "design": "systematic-review",
+          "year": "2020",
+          "journal": null,
+          "title": "Systematic Review of Safety and Efficacy of Rituximab in Treating Immune-Mediated Disorders."
+        }
+      ]
+    }
+  },
+  {
+    "no": 916,
+    "topicId": "3a684e9f-286b-4f85-8b8e-b6fb5f633f0f",
+    "topic": "IL-6 inhibition: tocilizumab, sarilumab in RA and cytokine storm, COVID-19 trials",
+    "cluster": "IL-6 inhibition",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 12,
+      "papersKept": [
+        {
+          "uid": "pubmed-41826212",
+          "title": "EULAR recommendations for the management of rheumatoid arthritis with synthetic and biologic disease-modifying antirheumatic drugs.",
+          "year": "2026"
+        },
+        {
+          "uid": "pubmed-28778870",
+          "title": "Interleukin (IL-6) Immunotherapy.",
+          "year": "2017"
+        },
+        {
+          "uid": "pubmed-35130679",
+          "title": "Tocilizumab for COVID-19: A systematic review and meta-analysis of randomized controlled trials.",
+          "year": "2021"
+        },
+        {
+          "uid": "pubmed-33579777",
+          "title": "Systematic review and meta-analysis of anakinra, sarilumab, siltuximab and tocilizumab for COVID-19.",
+          "year": "2021"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-32845568",
+          "title": "Interleukin-6 in Covid-19: A systematic review and meta-analysis.",
+          "reason": "Redundant with retained tocilizumab COVID-19 meta-analysis."
+        },
+        {
+          "uid": "pubmed-28841363",
+          "title": "Tocilizumab (Actemra).",
+          "reason": "Drug monograph; superseded by EULAR recommendations."
+        },
+        {
+          "uid": "pubmed-30173215",
+          "title": "Rheumatoid Arthritis: A Brief Overview of the Treatment.",
+          "reason": "General RA overview; not IL-6-specific."
+        },
+        {
+          "uid": "pubmed-38008706",
+          "title": "Predicting best treatment in rheumatoid arthritis.",
+          "reason": "Prediction-methodology paper; tangential."
+        },
+        {
+          "uid": "pubmed-31958792",
+          "title": "Interleukin-6: A Masterplayer in the Cytokine Network.",
+          "reason": "Basic-science cytokine review; clinical reviews retained."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "IL-6 blockade is one of the most instructive examples of a pathway drug with dual lives. In rheumatoid arthritis, tocilizumab and sarilumab — humanised IL-6-receptor antibodies — are effective biologic DMARDs positioned by the EULAR recommendations alongside TNF inhibitors, with a distinctive side-effect signature (neutropenia, transaminitis, dyslipidaemia, bowel perforation risk). In hyperinflammatory states — cytokine-release syndromes, chimeric-antigen-receptor T-cell toxicities, and severe COVID-19 — the same blockade tames systemic inflammation, and the randomised-trial meta-analyses of COVID-19 defined exactly where benefit lies: severe, hypoxaemic, CRP-high patients, not everyone with the virus.",
+      "teaching_points": [
+        {
+          "claim": "IL-6 receptor blockade with tocilizumab or sarilumab is an established RA treatment option within the EULAR biologic-DMARD algorithm, effective as monotherapy or combination therapy.",
+          "cites": [
+            "41826212",
+            "28778870"
+          ]
+        },
+        {
+          "claim": "The IL-6 signature adverse effects — neutropenia, raised transaminases, dyslipidaemia, and serious infection — plus the bowel-perforation signal in diverticulosis define pre-treatment screening and monitoring.",
+          "cites": [
+            "28778870",
+            "41826212"
+          ]
+        },
+        {
+          "claim": "In COVID-19, meta-analysis of randomised trials shows tocilizumab reduces mortality in severe, systemically inflamed (high CRP, hypoxaemic) patients, translating IL-6-pathway biology into a targeted hyperinflammation indication.",
+          "cites": [
+            "35130679",
+            "33579777"
+          ]
+        },
+        {
+          "claim": "Across IL-6-pathway inhibitors in COVID-19 (tocilizumab, sarilumab, siltuximab, anakinra), the class signal favoured benefit in the critically ill with hyperinflammation, not in unselected infection.",
+          "cites": [
+            "33579777"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Head-to-head positioning of IL-6 blockade versus JAK inhibitors after TNF failure in RA continues to evolve.",
+        "Whether IL-6 blockade has a preventive role in cytokine-release syndrome prophylaxis is unsettled."
+      ],
+      "mcq_angles": [
+        "IL-6 pathway biology and receptor versus ligand blockade.",
+        "RA biologic sequencing per EULAR and IL-6 drug-specific monitoring.",
+        "Tocilizumab in COVID-19: patient selection from trial meta-analyses.",
+        "Cytokine-release syndrome management post-CAR-T."
+      ],
+      "case_hooks": [
+        "A RA patient failing two TNFs has high inflammatory markers; justify IL-6 blockade choice and the screening bloods.",
+        "A hypoxaemic COVID-19 patient on dexamethasone has CRP 280 mg/L and rising; argue for or against tocilizumab using trial evidence."
+      ],
+      "gaps": "The retained abstracts do not include the RECOVERY or REMAP-CAP primary reports; verify mortality effect sizes and subgroup definitions before approval.",
+      "sources": [
+        {
+          "pmid": "41826212",
+          "design": "guideline",
+          "year": "2026",
+          "journal": null,
+          "title": "EULAR recommendations for the management of rheumatoid arthritis with synthetic and biologic disease-modifying antirheumatic drugs."
+        },
+        {
+          "pmid": "28778870",
+          "design": "review",
+          "year": "2017",
+          "journal": null,
+          "title": "Interleukin (IL-6) Immunotherapy."
+        },
+        {
+          "pmid": "35130679",
+          "design": "meta-analysis",
+          "year": "2021",
+          "journal": null,
+          "title": "Tocilizumab for COVID-19: A systematic review and meta-analysis of randomized controlled trials."
+        },
+        {
+          "pmid": "33579777",
+          "design": "meta-analysis",
+          "year": "2021",
+          "journal": null,
+          "title": "Systematic review and meta-analysis of anakinra, sarilumab, siltuximab and tocilizumab for COVID-19."
+        }
+      ]
+    }
+  },
+  {
+    "no": 917,
+    "topicId": "d100ab41-3378-4da9-abdf-835ab9b0e5c0",
+    "topic": "imatinib versus interferon chronic myeloid leukemia IRIS trial",
+    "cluster": "CML",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 4,
+      "papersKept": [
+        {
+          "uid": "pubmed-32127639",
+          "title": "European LeukemiaNet 2020 recommendations for treating chronic myeloid leukemia.",
+          "year": "2020"
+        },
+        {
+          "uid": "pubmed-39093014",
+          "title": "Chronic myeloid leukemia: 2025 update on diagnosis, therapy, and monitoring.",
+          "year": "2025"
+        },
+        {
+          "uid": "pubmed-40616814",
+          "title": "Management of chronic myeloid leukemia in 2025.",
+          "year": "2025"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-27218866",
+          "title": "The treatment of CML at an environment with limited resources.",
+          "reason": "Resource-limited setting; not the imatinib-versus-interferon comparison this topic targets."
+        },
+        {
+          "uid": "pubmed-34956393",
+          "title": "Second-Generation Tyrosine Kinase Inhibitor Discontinuation in Chronic Myeloid Leukemia Patients with Stable Deep Molecular Response.",
+          "reason": "Treatment-free remission focus; historical trial comparison not addressed."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "The IRIS trial is the pivotal inflection point in modern oncology: randomising newly diagnosed chronic-phase CML between interferon-alpha plus cytarabine and imatinib, it was stopped early because imatinib produced vastly superior complete cytogenetic and major molecular responses with far better tolerability — converting CML from a fatal disease into a chronic, often near-normal-life-expectancy condition. The legacy is visible in the ELN 2020 recommendations and 2025 updates: first-line choice among imatinib and second/third-generation TKIs is now individualised by comorbidity, risk score, and treatment goal — including the modern ambition of treatment-free remission after sustained deep molecular response.",
+      "teaching_points": [
+        {
+          "claim": "IRIS established imatinib, the first BCR::ABL1 tyrosine kinase inhibitor, as superior to interferon-based therapy for newly diagnosed chronic-phase CML, transforming survival.",
+          "cites": [
+            "39093014",
+            "32127639"
+          ]
+        },
+        {
+          "claim": "Modern first-line choice — imatinib versus second-generation TKIs (dasatinib, nilotinib, bosutinib) — is individualised by Sokal/ELTS risk score, comorbidities (vascular, pulmonary, hepatic), and the treatment-free-remission goal.",
+          "cites": [
+            "32127639",
+            "40616814"
+          ]
+        },
+        {
+          "claim": "Response monitoring is quantitative: BCR::ABL1 transcript by international scale with milestone targets at 3, 6, and 12 months defining optimal, warning, and failure responses that trigger therapy change.",
+          "cites": [
+            "32127639",
+            "39093014"
+          ]
+        },
+        {
+          "claim": "Sustained deep molecular response (typically MR4 or deeper for years) permits carefully monitored TKI discontinuation in selected patients, with the ELN recommendations defining eligibility and monitoring intensity.",
+          "cites": [
+            "32127639",
+            "40616814"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Long-term vascular and second-malignancy signals with second-generation TKIs influence but do not settle first-line selection.",
+        "Which patients can safely attempt treatment-free remission beyond standard eligibility criteria is an active research question."
+      ],
+      "mcq_angles": [
+        "IRIS: design, early stopping, and what it proved.",
+        "First-line TKI selection by risk score and comorbidity.",
+        "Molecular monitoring milestones and response definitions.",
+        "Treatment-free remission: eligibility and relapse management."
+      ],
+      "case_hooks": [
+        "A 45-year-old newly diagnosed chronic-phase CML has ELTS high-risk score and prior myocardial infarction; choose first-line TKI and justify.",
+        "A patient on imatinib for 6 years has sustained MR4.5 for 3 years; assess treatment-free-remission candidacy and the monitoring plan."
+      ],
+      "gaps": "The IRIS primary report (NEJM 2003) predates the pipeline's 2015+ evidence filter and is not among the retained abstracts; verify trial design details and response rates against the primary publication before approval.",
+      "sources": [
+        {
+          "pmid": "32127639",
+          "design": "guideline",
+          "year": "2020",
+          "journal": null,
+          "title": "European LeukemiaNet 2020 recommendations for treating chronic myeloid leukemia."
+        },
+        {
+          "pmid": "39093014",
+          "design": "review",
+          "year": "2025",
+          "journal": null,
+          "title": "Chronic myeloid leukemia: 2025 update on diagnosis, therapy, and monitoring."
+        },
+        {
+          "pmid": "40616814",
+          "design": "review",
+          "year": "2025",
+          "journal": null,
+          "title": "Management of chronic myeloid leukemia in 2025."
+        }
+      ]
+    }
+  },
+  {
+    "no": 918,
+    "topicId": "71026568-cc91-4b83-a808-3c96c0daba4c",
+    "topic": "immune checkpoint inhibitor kidney injury",
+    "cluster": "ICI nephrotoxicity",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 4,
+      "papersKept": [
+        {
+          "uid": "pubmed-35190109",
+          "title": "Immunotherapy-Related Acute Kidney Injury.",
+          "year": "2022"
+        },
+        {
+          "uid": "pubmed-39138117",
+          "title": "Immune checkpoint inhibitor-associated nephritis-treatment standard.",
+          "year": "2024"
+        },
+        {
+          "uid": "pubmed-39455026",
+          "title": "Diagnosis and management of immune checkpoint inhibitor-associated nephrotoxicity: a position statement from the American Society of Oncology and Nephrology.",
+          "year": "2024"
+        }
+      ],
+      "papersDropped": [],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Immune checkpoint inhibitors have made kidney injury a new frontier of onco-nephrology. The signature lesion is acute tubulointerstitial nephritis, typically presenting as abrupt creatinine rise after weeks to months of therapy, often with subnephrotic proteinuria — but the differential includes prerenal states, obstructive uropathy, and glomerular patterns such as lupus-like nephritis and podocytopathies. The ASCO-Nephrology position statement standardises the approach: hold the checkpoint inhibitor, grade the injury, biopsy for atypical or severe presentations, start corticosteroids for significant AKI, and navigate the challenge of balancing oncologic benefit against renal and immune risk.",
+      "teaching_points": [
+        {
+          "claim": "ICI-associated AKI most commonly reflects acute tubulointerstitial nephritis, with onset typically after several weeks of therapy; glomerular patterns (minimal change, lupus-like, ANCA) occur less often.",
+          "cites": [
+            "35190109",
+            "39455026"
+          ]
+        },
+        {
+          "claim": "Diagnostic work-up excludes prerenal and obstructive causes, reviews nephrotoxin and PPI exposure, and uses biopsy when atypical features (nephrotic proteinuria, active sediment, no steroid response) are present.",
+          "cites": [
+            "39455026",
+            "35190109"
+          ]
+        },
+        {
+          "claim": "Management: hold the ICI, grade severity, and treat higher-grade injury with corticosteroids (typically 0.5–1 mg/kg prednisone-equivalent, higher for severe presentations), tapering over weeks with close creatinine surveillance.",
+          "cites": [
+            "39138117",
+            "39455026"
+          ]
+        },
+        {
+          "claim": "Re-challenge decisions weigh oncology urgency against relapse risk; steroid-sparing agents (mycophenolate, infliximab) are reserved for steroid-refractory or relapsing cases.",
+          "cites": [
+            "39455026",
+            "39138117"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Optimal steroid dose and duration, and whether early biopsy-guided therapy changes outcomes, lacks randomised evidence.",
+        "ICI re-challenge after biopsy-proven nephritis: relapse rates and safety thresholds are incompletely defined."
+      ],
+      "mcq_angles": [
+        "Histological patterns and their clinical correlates.",
+        "When to biopsy versus treat empirically with steroids.",
+        "Steroid regimens and tapering by AKI grade.",
+        "Re-challenge frameworks and steroid-sparing escalation."
+      ],
+      "case_hooks": [
+        "A melanoma patient on pembrolizumab has creatinine doubling with bland sediment at week 9; outline the diagnostic and treatment pathway.",
+        "A patient with ICI nephritis relapses on steroid taper with ongoing oncologic need; discuss re-challenge versus steroid-sparing therapy."
+      ],
+      "gaps": "The retained abstracts are reviews/position statements without the underlying biopsy-cohort data; verify response and relapse rates against primary cohort studies before approval.",
+      "sources": [
+        {
+          "pmid": "35190109",
+          "design": "review",
+          "year": "2022",
+          "journal": null,
+          "title": "Immunotherapy-Related Acute Kidney Injury."
+        },
+        {
+          "pmid": "39138117",
+          "design": "review",
+          "year": "2024",
+          "journal": null,
+          "title": "Immune checkpoint inhibitor-associated nephritis-treatment standard."
+        },
+        {
+          "pmid": "39455026",
+          "design": "position-statement",
+          "year": "2024",
+          "journal": null,
+          "title": "Diagnosis and management of immune checkpoint inhibitor-associated nephrotoxicity: a position statement from the American Society of Oncology and Nephrology."
+        }
+      ]
+    }
+  },
+  {
+    "no": 919,
+    "topicId": "56a58b3f-4aed-42bc-9c34-92902889a8cb",
+    "topic": "Immune-Mediated Necrotizing Myopathy",
+    "cluster": "IMNM",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 8,
+      "papersKept": [
+        {
+          "uid": "pubmed-38801022",
+          "title": "Management of immune-mediated necrotizing myopathy.",
+          "year": "2024"
+        },
+        {
+          "uid": "pubmed-41458822",
+          "title": "Immune-Mediated Necrotizing Myopathy: A Systematic Review of Antibody-Specific Mechanisms and Treatment Outcomes.",
+          "year": "2025"
+        },
+        {
+          "uid": "pubmed-40249406",
+          "title": "Effectiveness of PCSK9 inhibitors in managing hypercholesterolemia post-statin-associated IMNM.",
+          "year": "2025"
+        },
+        {
+          "uid": "pubmed-38589696",
+          "title": "Immune-Mediated Necrotizing Myopathies: Current Landscape.",
+          "year": "2024"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-33093664",
+          "title": "Immune-mediated necrotizing myopathy: clinical features and pathogenesis.",
+          "reason": "Superseded by 2024-2025 management and systematic reviews."
+        },
+        {
+          "uid": "pubmed-29582188",
+          "title": "Immune-Mediated Necrotizing Myopathy.",
+          "reason": "Older review; superseded."
+        },
+        {
+          "uid": "pubmed-26783154",
+          "title": "Immune-mediated necrotizing myopathy.",
+          "reason": "Older review; superseded."
+        },
+        {
+          "uid": "pubmed-26515574",
+          "title": "Immune-Mediated Necrotizing Myopathy: Update on Diagnosis and Management.",
+          "reason": "Older update; superseded by current landscape review."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Immune-mediated necrotizing myopathy is the most aggressive of the idiopathic inflammatory myopathies: severe proximal weakness, creatine kinase often in the thousands, myofiber necrosis with minimal inflammation on biopsy, and a stubborn tendency to relapse. Two antibody-defined subtypes dominate — anti-SRP and anti-HMGCR — and the HMGCR story links it to statins, creating a practical problem: how to manage dyslipidaemia when the patient's own immune system attacks the drug target. Modern management is escalating immunosuppression early (often combination therapy), intravenous immunoglobulin for refractory disease, and — for anti-HMGCR patients — PCSK9 inhibitors as a statin-sparing lipid strategy that sidesteps the HMGCR antigen entirely.",
+      "teaching_points": [
+        {
+          "claim": "IMNM presents with subacute severe proximal weakness and markedly elevated CK; biopsy shows myofiber necrosis with minimal inflammatory infiltrate, distinguishing it from polymyositis and dermatomyositis.",
+          "cites": [
+            "38801022",
+            "38589696"
+          ]
+        },
+        {
+          "claim": "Anti-SRP and anti-HMGCR antibodies define the major subtypes with differing phenotypes, malignancy associations, and treatment-response profiles; antibody testing is diagnostic and prognostic.",
+          "cites": [
+            "41458822",
+            "38589696"
+          ]
+        },
+        {
+          "claim": "First-line treatment is high-dose corticosteroids with early steroid-sparing immunosuppression; IVIG and combination therapy are used for refractory disease, with treatment often prolonged because relapse on tapering is common.",
+          "cites": [
+            "38801022",
+            "41458822"
+          ]
+        },
+        {
+          "claim": "In statin-associated anti-HMGCR disease, statins must stop permanently; PCSK9 inhibitors provide effective cholesterol lowering without engaging the HMGCR antigen, making them a practical post-IMNM lipid strategy.",
+          "cites": [
+            "40249406",
+            "38801022"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Optimal induction regimen (steroid monotherapy versus early combination) and IVIG dosing schedules are not standardised.",
+        "Whether prolonged remission-maintenance therapy prevents relapse better than careful tapering is unresolved."
+      ],
+      "mcq_angles": [
+        "Antibody-defined subtypes and their distinguishing features.",
+        "Biopsy interpretation: necrosis with minimal inflammation.",
+        "Escalation ladder: steroids, immunosuppressants, IVIG, rituximab.",
+        "Managing dyslipidaemia after statin-associated IMNM."
+      ],
+      "case_hooks": [
+        "A patient on atorvastatin develops progressive hip-shoulder weakness with CK 8,000 and anti-HMGCR positivity; outline diagnosis confirmation, treatment, and future lipid management.",
+        "An anti-SRP IMNM patient relapses twice on tapering prednisone and azathioprine; design the escalation plan."
+      ],
+      "gaps": "The retained abstracts lack the primary randomised rituximab-in-myositis trial and large IVIG trials; verify effect sizes before approval.",
+      "sources": [
+        {
+          "pmid": "38801022",
+          "design": "review",
+          "year": "2024",
+          "journal": null,
+          "title": "Management of immune-mediated necrotizing myopathy."
+        },
+        {
+          "pmid": "41458822",
+          "design": "systematic-review",
+          "year": "2025",
+          "journal": null,
+          "title": "Immune-Mediated Necrotizing Myopathy: A Systematic Review of Antibody-Specific Mechanisms and Treatment Outcomes."
+        },
+        {
+          "pmid": "40249406",
+          "design": "cohort-study",
+          "year": "2025",
+          "journal": null,
+          "title": "Effectiveness of PCSK9 inhibitors in managing hypercholesterolemia post-statin-associated IMNM."
+        },
+        {
+          "pmid": "38589696",
+          "design": "review",
+          "year": "2024",
+          "journal": null,
+          "title": "Immune-Mediated Necrotizing Myopathies: Current Landscape."
+        }
+      ]
+    }
+  },
+  {
+    "no": 920,
+    "topicId": "f6829dc9-2c39-440c-8029-63a6e76cad3a",
+    "topic": "Immune-Related Adverse Events",
+    "cluster": "irAEs",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 8,
+      "papersKept": [
+        {
+          "uid": "pubmed-34724392",
+          "title": "Management of Immune-Related Adverse Events in Patients Treated With Immune Checkpoint Inhibitor Therapy: ASCO Guideline.",
+          "year": "2021"
+        },
+        {
+          "uid": "pubmed-39536465",
+          "title": "NCCN Guidelines Insights: Management of Immunotherapy-Related Toxicities, Version 2.2024.",
+          "year": "2024"
+        },
+        {
+          "uid": "pubmed-32200442",
+          "title": "Immune-Related Adverse Events (irAEs): Diagnosis, Management, and Clinical Pearls.",
+          "year": "2020"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-31922959",
+          "title": "Checkpoint Inhibitor-Induced Colitis.",
+          "reason": "Organ-specific subset; general irAE frameworks retained."
+        },
+        {
+          "uid": "pubmed-31944278",
+          "title": "A review of cancer immunotherapy toxicity.",
+          "reason": "General toxicity review; superseded by guideline versions."
+        },
+        {
+          "uid": "pubmed-35390769",
+          "title": "Management of Immunotherapy-Related Toxicities, Version 1.2022, NCCN Clinical Practice Guidelines in Oncology.",
+          "reason": "Superseded by Version 2.2024 retained here."
+        },
+        {
+          "uid": "pubmed-26765102",
+          "title": "Immune-related adverse events with immune checkpoint blockade: a comprehensive review.",
+          "reason": "Older comprehensive review; superseded by ASCO/NCCN guidance."
+        },
+        {
+          "uid": "pubmed-39370694",
+          "title": "A Review of Immunotherapy for Head and Neck Cancer.",
+          "reason": "Tumour-type review; not irAE-focused."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Immune-related adverse events are the price of unleashing T-cell immunity against cancer: any organ can be attacked, typically within weeks to months of checkpoint-inhibitor therapy, and the management grammar is now standardised by the ASCO guideline and the NCCN immunotherapy-toxicity guidelines. The core logic is immunosuppression graded to severity — hold the drug for moderate events, corticosteroids for significant events, infliximab or other steroid-sparing agents for steroid-refractory disease — with organ-specific exceptions (endocrinopathies replace rather than suppress, neurologic and cardiac events demand aggressive early treatment, and checkpoint re-challenge is individually weighed).",
+      "teaching_points": [
+        {
+          "claim": "irAEs can affect any organ system with characteristic patterns (colitis, pneumonitis, dermatitis, hypophysitis, thyroiditis, hepatitis, myocarditis); vigilance is required because presentations mimic infection, progression, and other toxicities.",
+          "cites": [
+            "34724392",
+            "32200442"
+          ]
+        },
+        {
+          "claim": "Grading drives action: grade 1 often continues therapy with monitoring, grade 2 usually holds the drug and starts corticosteroids, grades 3–4 stop therapy and require high-dose immunosuppression.",
+          "cites": [
+            "34724392",
+            "39536465"
+          ]
+        },
+        {
+          "claim": "Endocrinopathies (hypophysitis, thyroiditis, adrenalitis) are managed with hormone replacement rather than immunosuppression once the diagnosis is secure, with permanent deficits common.",
+          "cites": [
+            "32200442",
+            "39536465"
+          ]
+        },
+        {
+          "claim": "High-mortality events — myocarditis and neurologic irAEs — warrant immediate high-dose steroids and multidisciplinary care; re-challenge after serious irAEs is generally avoided.",
+          "cites": [
+            "39536465",
+            "34724392"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Whether biomarkers can predict irAE risk before checkpoint-inhibitor initiation is not clinically validated.",
+        "Optimal steroid-sparing sequencing for steroid-refractory irAEs varies by organ and lacks comparative trials."
+      ],
+      "mcq_angles": [
+        "irAE grading and the hold/continue/stop thresholds.",
+        "Corticosteroid dosing by grade and tapering principles.",
+        "Organ-specific exceptions: endocrinopathy versus colitis versus myocarditis.",
+        "Re-challenge frameworks after resolved irAEs."
+      ],
+      "case_hooks": [
+        "A patient on combination nivolumab-ipilimumab has grade 3 diarrhoea with cramping; outline grading confirmation, steroid therapy, and steroid-refractory escalation.",
+        "A checkpoint-inhibitor patient presents with fatigue, hypotension, and hyponatraemia; distinguish adrenalitis from other causes and manage accordingly."
+      ],
+      "gaps": "The retained abstracts are guideline-level; organ-specific dose tables and taper schedules should be verified against the full ASCO/NCCN documents before approval.",
+      "sources": [
+        {
+          "pmid": "34724392",
+          "design": "guideline",
+          "year": "2021",
+          "journal": null,
+          "title": "Management of Immune-Related Adverse Events in Patients Treated With Immune Checkpoint Inhibitor Therapy: ASCO Guideline."
+        },
+        {
+          "pmid": "39536465",
+          "design": "guideline",
+          "year": "2024",
+          "journal": null,
+          "title": "NCCN Guidelines Insights: Management of Immunotherapy-Related Toxicities, Version 2.2024."
+        },
+        {
+          "pmid": "32200442",
+          "design": "review",
+          "year": "2020",
+          "journal": null,
+          "title": "Immune-Related Adverse Events (irAEs): Diagnosis, Management, and Clinical Pearls."
+        }
+      ]
+    }
+  }
+]

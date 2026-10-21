@@ -1,0 +1,1397 @@
+[
+  {
+    "no": 761,
+    "topicId": "1029ddf7-0ec1-417a-a380-0a0f8bafacbe",
+    "topic": "Haemodynamic monitoring: arterial lines, CVP, PAC, PiCCO, FloTrac",
+    "cluster": "haemodynamic monitoring devices",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 19,
+      "papersKept": [
+        {
+          "uid": "pubmed-25435479",
+          "title": "Invasive hemodynamic monitoring.",
+          "year": "2015"
+        },
+        {
+          "uid": "pubmed-33769132",
+          "title": "Updates in Hemodynamic Monitoring: A Review for Pharmacists.",
+          "year": "2022"
+        },
+        {
+          "uid": "pubmed-37083621",
+          "title": "Transpulmonary thermodilution.",
+          "year": "2023"
+        },
+        {
+          "uid": "pubmed-25435477",
+          "title": "Minimally invasive monitoring.",
+          "year": "2015"
+        },
+        {
+          "uid": "pubmed-27858374",
+          "title": "Prediction of fluid responsiveness: an update.",
+          "year": "2016"
+        },
+        {
+          "uid": "pubmed-26825952",
+          "title": "Passive leg raising for predicting fluid responsiveness: a systematic review and meta-analysis.",
+          "year": "2016"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-36457089",
+          "title": "A plea for personalization of the hemodynamic management of septic shock.",
+          "reason": "Septic-shock personalization framework; does not cover the monitoring devices this topic is built around."
+        },
+        {
+          "uid": "pubmed-28625165",
+          "title": "Transpulmonary thermodilution: advantages and limits.",
+          "reason": "Duplicate coverage of transpulmonary thermodilution already provided by the newer 2023 systematic review (37083621)."
+        },
+        {
+          "uid": "pubmed-39597069",
+          "title": "PiCCO or Cardiac Ultrasound? Which Is Better for Hemodynamic Monitoring in ICU?",
+          "reason": "Niche head-to-head device comparison; insufficient scope for a curriculum topic covering all monitoring modalities."
+        },
+        {
+          "uid": "pubmed-41096080",
+          "title": "Non-Invasive Hemodynamic Monitoring in Critically Ill Patients: A Guide for Emergency Physicians.",
+          "reason": "Emergency-department non-invasive focus; tangential to the invasive-modality focus of this topic."
+        },
+        {
+          "uid": "pubmed-31582103",
+          "title": "Perioperative hemodynamic management 4.0.",
+          "reason": "Perioperative strategy review; does not address device-level interpretation of arterial lines, CVP, PAC, PiCCO or FloTrac."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Haemodynamic monitoring ranges from a simple arterial line to calibrated transpulmonary thermodilution. The common error in training is treating every number as interchangeable: each device answers a different question, carries different assumptions, and fails in predictable ways. This page builds the mental model of what arterial lines, CVP, pulmonary artery catheters, and pulse-contour systems (calibrated PiCCO vs uncalibrated FloTrac) actually measure, and when dynamic tests such as passive leg raising beat static pressure readings.",
+      "teaching_points": [
+        {
+          "claim": "Arterial catheters remain the gold standard for continuous blood pressure monitoring in the ICU; intermittent non-invasive measurement may not provide enough information to determine the cause of haemodynamic instability or guide intervention.",
+          "cites": [
+            "33769132"
+          ]
+        },
+        {
+          "claim": "Pulmonary artery catheter use has declined, but reviews highlight a striking lack of clinician knowledge of PAC-derived measurements; the technique requires considerable skill to interpret correctly.",
+          "cites": [
+            "25435479",
+            "25435477"
+          ]
+        },
+        {
+          "claim": "Pulse-contour devices estimate cardiac output from the arterial pressure waveform; calibrated methods (transpulmonary thermodilution, e.g., PiCCO) and uncalibrated methods (e.g., FloTrac) differ fundamentally in how they maintain accuracy during changing haemodynamics.",
+          "cites": [
+            "25435477"
+          ]
+        },
+        {
+          "claim": "Transpulmonary thermodilution provides calibrated cardiac output and volumetric indices, but technical aspects and validity limits must be understood before using derived parameters such as global end-diastolic volume or extravascular lung water in specific clinical settings.",
+          "cites": [
+            "37083621"
+          ]
+        },
+        {
+          "claim": "Fluid responsiveness should be predicted with dynamic tests rather than static pressures: passive leg raising-induced changes in cardiac output (and pulse pressure) predict fluid responsiveness with good diagnostic performance in adults.",
+          "cites": [
+            "27858374",
+            "26825952"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "No retained source demonstrates that any particular monitoring device or strategy improves patient outcomes; device choice remains largely expert-consensus.",
+        "How often uncalibrated pulse-contour systems should be recalibrated during rapidly changing haemodynamics is not quantified in the retained abstracts."
+      ],
+      "mcq_angles": [
+        "Static CVP vs dynamic passive-leg-raising assessment of fluid responsiveness.",
+        "Calibrated (PiCCO/transpulmonary thermodilution) vs uncalibrated (FloTrac) pulse-contour cardiac output.",
+        "What transpulmonary thermodilution volumetric indices (GEDV, EVLW) represent and their validity limits.",
+        "Why pulmonary artery catheter-derived numbers are frequently misinterpreted by trainees.",
+        "Indications and complications of arterial line insertion (continuous pressure waveform, blood sampling, damping/abnormal waveforms)."
+      ],
+      "case_hooks": [
+        "A patient in septic shock on noradrenaline has a damped arterial line tracing; interpret the waveform and decide what the reading can and cannot guide.",
+        "After major surgery, FloTrac and PiCCO cardiac outputs disagree during fluid loading; decide which to trust and why."
+      ],
+      "gaps": "Outcome-trial evidence for monitoring strategies, non-invasive modalities (bioreactance, NIRS), and CVP interpretation limits are not covered by the retained abstracts; verify against a full critical-care haemodynamics source before approval.",
+      "sources": [
+        {
+          "pmid": "25435479",
+          "design": "review",
+          "year": "2015",
+          "journal": null,
+          "title": "Invasive hemodynamic monitoring."
+        },
+        {
+          "pmid": "33769132",
+          "design": "review",
+          "year": "2022",
+          "journal": null,
+          "title": "Updates in Hemodynamic Monitoring: A Review for Pharmacists."
+        },
+        {
+          "pmid": "37083621",
+          "design": "review",
+          "year": "2023",
+          "journal": null,
+          "title": "Transpulmonary thermodilution."
+        },
+        {
+          "pmid": "25435477",
+          "design": "review",
+          "year": "2015",
+          "journal": null,
+          "title": "Minimally invasive monitoring."
+        },
+        {
+          "pmid": "27858374",
+          "design": "review",
+          "year": "2016",
+          "journal": null,
+          "title": "Prediction of fluid responsiveness: an update."
+        },
+        {
+          "pmid": "26825952",
+          "design": "meta-analysis",
+          "year": "2016",
+          "journal": null,
+          "title": "Passive leg raising for predicting fluid responsiveness: a systematic review and meta-analysis."
+        }
+      ]
+    }
+  },
+  {
+    "no": 762,
+    "topicId": "a9c69111-1750-48ec-a4da-222f1021d400",
+    "topic": "Haemoglobin Electrophoresis Interpretation",
+    "cluster": "haemoglobinopathy laboratory diagnosis",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 5,
+      "papersKept": [
+        {
+          "uid": "pubmed-25314938",
+          "title": "Advances in detection of hemoglobinopathies.",
+          "year": "2015"
+        },
+        {
+          "uid": "pubmed-32671092",
+          "title": "Update in Laboratory Diagnosis of Thalassemia.",
+          "year": "2020"
+        },
+        {
+          "uid": "pubmed-27890718",
+          "title": "Thalassaemia screening and confirmation of carriers in parents.",
+          "year": "2017"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-39513207",
+          "title": "Assessment of diagnostic accuracy of Gazelle: A point-of-care testing device for screening beta-thalassemia trait.",
+          "reason": "Single point-of-care device accuracy study; does not support general electrophoresis interpretation teaching."
+        },
+        {
+          "uid": "pubmed-40350394",
+          "title": "[Clinical feature and genetic analysis of a case of X-linked alpha-thalassemia mental retardation syndrome neonate caused by ATRX gene variant].",
+          "reason": "Single-case ATR-X report; off topic for routine haemoglobin electrophoresis interpretation."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Interpreting a haemoglobin electrophoresis (or HPLC/capillary electrophoresis) report is a pattern-recognition skill that links quantitative haemoglobin fractions to red-cell indices and, ultimately, DNA confirmation. The trainee should learn the two-step discipline: screen with haematological indices plus separation techniques, then confirm variants genetically — never diagnose a carrier from an electrophoresis trace alone.",
+      "teaching_points": [
+        {
+          "claim": "Detecting and characterising variant haemoglobins and thalassaemias depends on a combination of biophysical, biochemical and genetic assays that provide phenotypic or genotypic evidence of pathology.",
+          "cites": [
+            "25314938"
+          ]
+        },
+        {
+          "claim": "Conventional screening combines haematological indices with HPLC or capillary electrophoresis; abnormal screening results in at-risk adults require confirmatory (genetic) testing before counselling.",
+          "cites": [
+            "27890718"
+          ]
+        },
+        {
+          "claim": "Different combinations of alpha- and beta-globin gene defects produce distinct disease phenotypes (homozygous beta-thalassaemia, beta-thalassaemia/HbE, Hb Bart's hydrops), so interpretation must integrate Hb fractions such as HbA2 and HbF with red-cell indices.",
+          "cites": [
+            "32671092"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "How to resolve discordance between capillary electrophoresis and HPLC in individual carriers is not addressed in the retained abstracts.",
+        "Cost-effectiveness and choice between screening technologies varies by population prevalence and is not settled in the retained sources."
+      ],
+      "mcq_angles": [
+        "Raised HbA2 pattern and the beta-thalassaemia trait diagnosis.",
+        "Order of testing: haematological indices -> separation technique -> DNA confirmation.",
+        "Common variant co-migration problems (e.g., HbS vs other variants) and why electrophoresis alone can mislead.",
+        "Population screening and antenatal carrier counselling workflow."
+      ],
+      "case_hooks": [
+        "An antenatal couple both show microcytosis; interpret their HPLC traces and decide what confirmatory testing is needed before counselling.",
+        "An asymptomatic adult has unexplained microcytosis with normal iron studies and a subtle HPLC abnormality; work through the differential."
+      ],
+      "gaps": "Newborn-screening algorithms, quantitation cut-offs for HbA2/HbF, and rare/unstable variant patterns are not covered by the retained abstracts; verify against a laboratory-medicine reference before approval.",
+      "sources": [
+        {
+          "pmid": "25314938",
+          "design": "review",
+          "year": "2015",
+          "journal": null,
+          "title": "Advances in detection of hemoglobinopathies."
+        },
+        {
+          "pmid": "32671092",
+          "design": "review",
+          "year": "2020",
+          "journal": null,
+          "title": "Update in Laboratory Diagnosis of Thalassemia."
+        },
+        {
+          "pmid": "27890718",
+          "design": "review",
+          "year": "2017",
+          "journal": null,
+          "title": "Thalassaemia screening and confirmation of carriers in parents."
+        }
+      ]
+    }
+  },
+  {
+    "no": 763,
+    "topicId": "ae28cd18-e484-488b-b746-3832b41da16f",
+    "topic": "Haemolytic Uraemic Syndrome",
+    "cluster": "haemolytic uraemic syndrome",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 8,
+      "papersKept": [
+        {
+          "uid": "pubmed-36880929",
+          "title": "Hemolytic-Uremic Syndrome in Children.",
+          "year": "2022"
+        },
+        {
+          "uid": "pubmed-38523374",
+          "title": "Management of pediatric hemolytic uremic syndrome.",
+          "year": "2024"
+        },
+        {
+          "uid": "pubmed-30294946",
+          "title": "Atypical Hemolytic-Uremic Syndrome: An Update on Pathophysiology, Diagnosis, and Treatment.",
+          "year": "2019"
+        },
+        {
+          "uid": "pubmed-41347985",
+          "title": "Long-term outcome and management of complement-mediated thrombotic microangiopathy/aHUS.",
+          "year": "2025"
+        },
+        {
+          "uid": "pubmed-30031798",
+          "title": "Atypical hemolytic uremic syndrome: Review of clinical presentation, diagnosis and management.",
+          "year": "2018"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-37560408",
+          "title": "Atypical Hemolytic-Uremic Syndrome: Genetic Basis, Clinical Manifestations, and a Multidisciplinary Approach to Management.",
+          "reason": "Duplicate coverage of aHUS pathophysiology and management already provided by retained reviews (30294946, 30031798)."
+        },
+        {
+          "uid": "pubmed-27452363",
+          "title": "Anti-complement-factor H-associated glomerulopathies.",
+          "reason": "Narrow anti-FH autoantibody subset; insufficient breadth for the general HUS topic."
+        },
+        {
+          "uid": "pubmed-40354320",
+          "title": "Advancements in complement inhibition for PNH and primary complement-mediated thrombotic microangiopathy.",
+          "reason": "Paroxysmal nocturnal hemoglobinuria co-focus; tangential to HUS."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Haemolytic uraemic syndrome is a thrombotic microangiopathy defined by microangiopathic haemolytic anaemia, thrombocytopenia and acute kidney injury — but the label covers two very different diseases. Shiga-toxin-producing E. coli HUS in children is largely supportive care; atypical HUS is an uncontrolled-complement disorder whose natural history has been transformed by C5 inhibitors. The first clinical skill is refusing to treat the triad before you know which HUS you are looking at, and excluding TTP.",
+      "teaching_points": [
+        {
+          "claim": "HUS is characterised by the triad of microangiopathic haemolytic anaemia, thrombocytopenia and acute kidney failure; most cases are caused by Shiga-toxin-producing E. coli, transmitted through vehicles such as ground beef and unpasteurised milk, and STEC-HUS is the main cause of acute renal failure in children.",
+          "cites": [
+            "36880929"
+          ]
+        },
+        {
+          "claim": "The HUS spectrum includes triggers ranging from infection through medication to malignancy and transplantation, all converging on endothelial damage; on that spectrum atypical HUS is the complement-mediated end.",
+          "cites": [
+            "38523374"
+          ]
+        },
+        {
+          "claim": "Atypical HUS is a rare thrombotic microangiopathy driven by uncontrolled alternative-complement-pathway activation, with high morbidity and mortality without targeted treatment, so distinguishing it from STEC-HUS and TTP before committing to therapy is critical.",
+          "cites": [
+            "30294946",
+            "30031798"
+          ]
+        },
+        {
+          "claim": "Complement inhibitors such as eculizumab and ravulizumab have transformed the management of atypical HUS, changing both acute outcomes and long-term management of complement-mediated TMA.",
+          "cites": [
+            "41347985"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Optimal duration and de-escalation of eculizumab/ravulizumab therapy are not defined in the retained abstracts.",
+        "How genetics should stratify renal-transplant recurrence risk and timing of complement blockade is not detailed in the retained sources."
+      ],
+      "mcq_angles": [
+        "Differentiating STEC-HUS, atypical HUS and TTP at first presentation.",
+        "Complement biology of aHUS and the mechanism of eculizumab (C5 blockade).",
+        "The clinical triad and laboratory hallmarks of thrombotic microangiopathy (schistocytes, ADAMTS13 context).",
+        "Supportive-care priorities in paediatric STEC-HUS."
+      ],
+      "case_hooks": [
+        "A child with bloody diarrhoea, pallor, thrombocytopenia and rising creatinine; classify the HUS and outline management.",
+        "An adult with TMA features, no STEC evidence and a family history of renal disease; decide when to start complement blockade."
+      ],
+      "gaps": "Antibiotic/antimotility decisions in STEC-HUS, plasma-exchange indications, and anti-factor-H autoantibody disease management are not covered by the retained abstracts; verify against a full TMA guideline before approval.",
+      "sources": [
+        {
+          "pmid": "36880929",
+          "design": "review",
+          "year": "2022",
+          "journal": null,
+          "title": "Hemolytic-Uremic Syndrome in Children."
+        },
+        {
+          "pmid": "38523374",
+          "design": "review",
+          "year": "2024",
+          "journal": null,
+          "title": "Management of pediatric hemolytic uremic syndrome."
+        },
+        {
+          "pmid": "30294946",
+          "design": "review",
+          "year": "2019",
+          "journal": null,
+          "title": "Atypical Hemolytic-Uremic Syndrome: An Update on Pathophysiology, Diagnosis, and Treatment."
+        },
+        {
+          "pmid": "41347985",
+          "design": "review",
+          "year": "2025",
+          "journal": null,
+          "title": "Long-term outcome and management of complement-mediated thrombotic microangiopathy/aHUS."
+        },
+        {
+          "pmid": "30031798",
+          "design": "review",
+          "year": "2018",
+          "journal": null,
+          "title": "Atypical hemolytic uremic syndrome: Review of clinical presentation, diagnosis and management."
+        }
+      ]
+    }
+  },
+  {
+    "no": 764,
+    "topicId": "c661f423-ac71-4913-9473-91624e8017d5",
+    "topic": "Haemophagocytic lymphohistiocytosis HLH: HScore, ferritin, triggers, treatment",
+    "cluster": "haemophagocytic lymphohistiocytosis",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 8,
+      "papersKept": [
+        {
+          "uid": "pubmed-31151946",
+          "title": "Hemophagocytic Lymphohistiocytosis.",
+          "year": "2019"
+        },
+        {
+          "uid": "pubmed-34347856",
+          "title": "Hemophagocytic Lymphohistiocytosis.",
+          "year": "2022"
+        },
+        {
+          "uid": "pubmed-30992265",
+          "title": "Recommendations for the management of hemophagocytic lymphohistiocytosis in adults.",
+          "year": "2019"
+        },
+        {
+          "uid": "pubmed-41288529",
+          "title": "Hemophagocytic lymphohistiocytosis in adults.",
+          "year": "2026"
+        },
+        {
+          "uid": "pubmed-37426667",
+          "title": "Approaching hemophagocytic lymphohistiocytosis.",
+          "year": "2023"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-28934563",
+          "title": "Hemophagocytic Lymphohistiocytosis.",
+          "reason": "Duplicate general-review coverage already provided by retained reviews (31151946, 34347856)."
+        },
+        {
+          "uid": "pubmed-36228171",
+          "title": "Cytokine Storm Syndrome.",
+          "reason": "Umbrella hyperinflammation review spanning many syndromes; too broad for HLH-specific teaching."
+        },
+        {
+          "uid": "pubmed-31261095",
+          "title": "Neonatal Hemophagocytic Lymphohistiocytosis.",
+          "reason": "Neonatal age group; off population for this topic."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "HLH is the diagnosis trainees meet too late: a hyperinflammatory storm of cytotoxic T cells, NK cells and macrophages that mimics sepsis, flare and liver failure all at once. Recognition rests on a constellation — fever, cytopenias, hepatosplenomegaly, coagulopathy, very high ferritin — plus a determined search for the trigger. Management has two parallel tracks: control the immune activation and treat whatever provoked it.",
+      "teaching_points": [
+        {
+          "claim": "HLH is a life-threatening hyperinflammatory syndrome associated with multiple-organ dysfunction; fever, cytopenias, coagulopathy and hepatosplenomegaly are hallmark findings, and early recognition is critical.",
+          "cites": [
+            "31151946"
+          ]
+        },
+        {
+          "claim": "The disease is driven by uncontrolled activation of cytotoxic T lymphocytes, natural killer cells and macrophages, producing hypercytokinemia and immune-mediated injury of multiple organ systems.",
+          "cites": [
+            "34347856"
+          ]
+        },
+        {
+          "claim": "Primary (genetic) HLH predominates in children, whereas secondary (acquired) HLH — frequently triggered by infection — dominates in adults; management recommendations for adults emphasise trigger-directed treatment alongside immunosuppression.",
+          "cites": [
+            "30992265",
+            "37426667"
+          ]
+        },
+        {
+          "claim": "Untreated HLH carries high mortality, and a multidisciplinary approach is needed for diagnosis and management.",
+          "cites": [
+            "41288529"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Optimal sequencing and intensity of etoposide-based regimens versus biologic therapy in adult secondary HLH is not settled in the retained abstracts.",
+        "Whether ferritin trajectory can guide response monitoring is suggested clinically but not quantified in the retained sources."
+      ],
+      "mcq_angles": [
+        "HScore components and how probability is estimated from clinical and laboratory variables.",
+        "Extreme ferritin elevation as a red-flag investigation in unexplained fever plus cytopenias.",
+        "Common triggers to search for: EBV and other infections, malignancy (especially lymphoma), and rheumatologic disease.",
+        "Distinguishing HLH from sepsis, liver failure and macrophage activation syndrome."
+      ],
+      "case_hooks": [
+        "A patient on the hepatology ward with fever, cytopenias, coagulopathy and ferritin in the tens of thousands; build the differential and the diagnostic work-up.",
+        "A young adult with EBV infection and progressive cytopenias and splenomegaly; decide when HLH therapy should start."
+      ],
+      "gaps": "HScore calculation specifics, HLH-94/HLH-2004 protocol details, and ruxolitinib/anakinra positioning cannot be verified from the retained abstracts; confirm against the full adult recommendations (30992265) before approval.",
+      "sources": [
+        {
+          "pmid": "31151946",
+          "design": "review",
+          "year": "2019",
+          "journal": null,
+          "title": "Hemophagocytic Lymphohistiocytosis."
+        },
+        {
+          "pmid": "34347856",
+          "design": "review",
+          "year": "2022",
+          "journal": null,
+          "title": "Hemophagocytic Lymphohistiocytosis."
+        },
+        {
+          "pmid": "30992265",
+          "design": "guideline",
+          "year": "2019",
+          "journal": null,
+          "title": "Recommendations for the management of hemophagocytic lymphohistiocytosis in adults."
+        },
+        {
+          "pmid": "41288529",
+          "design": "review",
+          "year": "2026",
+          "journal": null,
+          "title": "Hemophagocytic lymphohistiocytosis in adults."
+        },
+        {
+          "pmid": "37426667",
+          "design": "review",
+          "year": "2023",
+          "journal": null,
+          "title": "Approaching hemophagocytic lymphohistiocytosis."
+        }
+      ]
+    }
+  },
+  {
+    "no": 765,
+    "topicId": "2e164070-1cd0-4720-ba84-2ae13a09f183",
+    "topic": "Haemophilia A and B",
+    "cluster": "haemophilia",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 8,
+      "papersKept": [
+        {
+          "uid": "pubmed-40023652",
+          "title": "Haemophilia.",
+          "year": "2025"
+        },
+        {
+          "uid": "pubmed-32744769",
+          "title": "WFH Guidelines for the Management of Hemophilia, 3rd edition.",
+          "year": "2020"
+        },
+        {
+          "uid": "pubmed-37916312",
+          "title": "Emicizumab: the hemophilia A game-changer.",
+          "year": "2024"
+        },
+        {
+          "uid": "pubmed-34197690",
+          "title": "Hemophilic arthropathy: Current knowledge and future perspectives.",
+          "year": "2021"
+        },
+        {
+          "uid": "pubmed-30592034",
+          "title": "Haemophilia and ageing.",
+          "year": "2019"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-38562115",
+          "title": "[Not Available].",
+          "reason": "Acquired bleeding disorders (AHA/AVWS) focus; a different disease from congenital haemophilia A/B."
+        },
+        {
+          "uid": "pubmed-40579682",
+          "title": "Fitusiran: First Approval.",
+          "reason": "Single-agent approval summary; too narrow for the broad A/B curriculum topic."
+        },
+        {
+          "uid": "pubmed-34509300",
+          "title": "Treatment of haemophilia: From replacement to gene therapy.",
+          "reason": "Duplicate coverage of the replacement-to-non-factor evolution already provided by retained sources (37916312, 40023652)."
+        },
+        {
+          "uid": "pubmed-28470674",
+          "title": "Acquired hemophilia A: Updated review of evidence and treatment guidance.",
+          "reason": "Acquired haemophilia A; off topic for congenital haemophilia A and B."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Haemophilia A and B are X-linked factor VIII and IX deficiencies whose modern story is a treatment revolution — from on-demand replacement to regular prophylaxis, extended half-life products, the bispecific antibody emicizumab, and now gene therapy. The trainee should anchor on three things: severity is defined by factor activity, joints are the organ that suffers, and the ageing haemophilia population now faces the same comorbidity trade-offs as everyone else.",
+      "teaching_points": [
+        {
+          "claim": "Haemophilia A and B are congenital X-linked bleeding disorders caused by deficiency of factor VIII and factor IX respectively; severe deficiency, defined as less than 1% of normal factor activity, is associated with spontaneous bleeding within the first years of life.",
+          "cites": [
+            "40023652"
+          ]
+        },
+        {
+          "claim": "Recurrent joint bleeding (haemarthrosis) is the most frequent clinical manifestation of severe haemophilia, and unless appropriately managed — including subclinical bleeds — it progresses to haemophilic arthropathy.",
+          "cites": [
+            "34197690"
+          ]
+        },
+        {
+          "claim": "The World Federation of Hemophilia 3rd-edition guidelines are the global reference standard for the management of haemophilia.",
+          "cites": [
+            "32744769"
+          ]
+        },
+        {
+          "claim": "Emicizumab, a bispecific antibody recognising FIX(a)/FX that mimics FVIIIa cofactor activity, transformed prophylaxis through subcutaneous administration and a long half-life, in patients with or without FVIII inhibitors.",
+          "cites": [
+            "37916312"
+          ]
+        },
+        {
+          "claim": "Effective treatment has increased life expectancy, creating a middle-aged and elderly population with haemophilia whose management is complicated by the opposing risks of comorbidities and bleeding.",
+          "cites": [
+            "30592034"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Long-term durability and eligibility criteria for gene therapy are still evolving and are not settled in the retained sources.",
+        "Sequencing of non-factor therapies (emicizumab, siRNA agents) relative to extended half-life factor concentrates is not standardised."
+      ],
+      "mcq_angles": [
+        "X-linked inheritance and carrier counselling.",
+        "Severity grading by factor activity level (severe <1%) and its clinical consequence.",
+        "Haemarthrosis as the hallmark of severe disease and the rationale for primary prophylaxis.",
+        "Emicizumab mechanism and why it is not measured as factor VIII.",
+        "Management tensions in elderly patients with haemophilia and cardiovascular disease."
+      ],
+      "case_hooks": [
+        "A toddler with repeated spontaneous knee swellings and a maternal family history of bleeding; outline the diagnostic pathway and first-line management.",
+        "A 68-year-old with haemophilia presents with myocardial infarction and needs antiplatelet therapy; weigh the risks."
+      ],
+      "gaps": "Inhibitor development, immune-tolerance induction, and gene-therapy specifics are not detailed in the retained abstracts; verify against WFH 3rd-edition (32744769) full text before approval.",
+      "sources": [
+        {
+          "pmid": "40023652",
+          "design": "review",
+          "year": "2025",
+          "journal": null,
+          "title": "Haemophilia."
+        },
+        {
+          "pmid": "32744769",
+          "design": "guideline",
+          "year": "2020",
+          "journal": null,
+          "title": "WFH Guidelines for the Management of Hemophilia, 3rd edition."
+        },
+        {
+          "pmid": "37916312",
+          "design": "review",
+          "year": "2024",
+          "journal": null,
+          "title": "Emicizumab: the hemophilia A game-changer."
+        },
+        {
+          "pmid": "34197690",
+          "design": "review",
+          "year": "2021",
+          "journal": null,
+          "title": "Hemophilic arthropathy: Current knowledge and future perspectives."
+        },
+        {
+          "pmid": "30592034",
+          "design": "review",
+          "year": "2019",
+          "journal": null,
+          "title": "Haemophilia and ageing."
+        }
+      ]
+    }
+  },
+  {
+    "no": 766,
+    "topicId": "e0253937-5c2d-42e7-848d-e1611a8322ba",
+    "topic": "haemophilia a factor viii prophylaxis and emicizumab for inhibitor patients",
+    "cluster": "haemophilia a prophylaxis and emicizumab",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 8,
+      "papersKept": [
+        {
+          "uid": "pubmed-37916312",
+          "title": "Emicizumab: the hemophilia A game-changer.",
+          "year": "2024"
+        },
+        {
+          "uid": "pubmed-31130012",
+          "title": "Emicizumab for hemophilia A without inhibitors.",
+          "year": "2019"
+        },
+        {
+          "uid": "pubmed-39576432",
+          "title": "Efanesoctocog Alfa Versus Emicizumab in Adolescent and Adult Patients With Haemophilia A Without Inhibitors.",
+          "year": "2025"
+        },
+        {
+          "uid": "pubmed-35985706",
+          "title": "Advances in Hemophilia A Management.",
+          "year": "2022"
+        },
+        {
+          "uid": "pubmed-32558019",
+          "title": "Substitution therapy.",
+          "year": "2021"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-36766524",
+          "title": "Acquired Hemophilia A: An Update on the Etiopathogenesis, Diagnosis, and Treatment.",
+          "reason": "Acquired haemophilia A; a different disease from congenital haemophilia A prophylaxis."
+        },
+        {
+          "uid": "pubmed-32464679",
+          "title": "Perinatal Management of Haemophilia.",
+          "reason": "Perinatal/obstetric focus; tangential to prophylaxis and emicizumab in established patients."
+        },
+        {
+          "uid": "pubmed-34509300",
+          "title": "Treatment of haemophilia: From replacement to gene therapy.",
+          "reason": "Duplicate broad-treatment coverage; the prophylaxis-specific evidence is already retained."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "For a patient with severe haemophilia A, prophylaxis is the default philosophy: keep trough factor levels high enough that joints never bleed. The modern question is no longer whether to give prophylaxis, but which agent — intravenous extended-half-life factor VIII, or subcutaneous emicizumab that works even when an inhibitor has destroyed the patient's factor VIII. This page contrasts those options and the evidence comparing them.",
+      "teaching_points": [
+        {
+          "claim": "Emicizumab is a bispecific antibody recognising FIX(a)/FX that mimics FVIIIa cofactor activity; its long half-life and subcutaneous injectability dramatically improved haemophilia A treatment regardless of FVIII inhibitor status.",
+          "cites": [
+            "32558019"
+          ]
+        },
+        {
+          "claim": "Emicizumab was developed in response to the unmet needs of adherence to prophylaxis and the lack of effective long-term prophylaxis, especially in patients with inhibitors; it is the first non-factor medicine for subcutaneous administration in severe and moderate haemophilia A with or without inhibitors.",
+          "cites": [
+            "37916312"
+          ]
+        },
+        {
+          "claim": "In the phase 3 XTEND-1 trial, efanesoctocog alfa prophylaxis provided superior bleed protection compared with pre-trial FVIII prophylaxis in patients with severe haemophilia A, and an indirect comparison addressed its efficacy relative to emicizumab in patients without inhibitors.",
+          "cites": [
+            "39576432"
+          ]
+        },
+        {
+          "claim": "Regular FVIII replacement prophylaxis remains the gold standard for moderate-to-severe haemophilia A, with extended half-life products reducing infusion burden compared with conventional treatment.",
+          "cites": [
+            "35985706"
+          ]
+        },
+        {
+          "claim": "For decades the only way to prevent bleeding was factor infusion; without it, patients face debilitating joint damage from recurrent haemarthroses and life-threatening bleeds including intracranial haemorrhage — the rationale for effective prophylaxis in both inhibitor and non-inhibitor patients.",
+          "cites": [
+            "31130012"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Management of breakthrough bleeds in patients on emicizumab, including bypassing-agent choice and dosing, is not covered in the retained abstracts.",
+        "Indirect-comparison limitations between efanesoctocog alfa and emicizumab mean head-to-head evidence is still lacking."
+      ],
+      "mcq_angles": [
+        "Emicizumab's mechanism (bispecific FIX(a)/FX antibody mimicking FVIIIa) and its implications for coagulation assays.",
+        "Which patients qualify for emicizumab — with and without inhibitors.",
+        "XTEND-1 findings for efanesoctocog alfa and what an indirect comparison can and cannot tell us.",
+        "Rationale for prophylaxis: preventing haemarthrosis and intracranial haemorrhage."
+      ],
+      "case_hooks": [
+        "A boy with high-titre FVIII inhibitors and frequent bleeds despite on-demand therapy; decide on emicizumab and counsel the family.",
+        "An adolescent on daily FVIII prophylaxis has poor venous access and declining adherence; weigh switching to emicizumab or extended half-life product."
+      ],
+      "gaps": "Breakthrough-bleed management algorithms, inhibitor eradication (ITI), and monitoring assays on emicizumab are not covered by the retained abstracts; verify against WFH guidance before approval.",
+      "sources": [
+        {
+          "pmid": "37916312",
+          "design": "review",
+          "year": "2024",
+          "journal": null,
+          "title": "Emicizumab: the hemophilia A game-changer."
+        },
+        {
+          "pmid": "31130012",
+          "design": "review",
+          "year": "2019",
+          "journal": null,
+          "title": "Emicizumab for hemophilia A without inhibitors."
+        },
+        {
+          "pmid": "39576432",
+          "design": "meta-analysis",
+          "year": "2025",
+          "journal": null,
+          "title": "Efanesoctocog Alfa Versus Emicizumab in Adolescent and Adult Patients With Haemophilia A Without Inhibitors."
+        },
+        {
+          "pmid": "35985706",
+          "design": "review",
+          "year": "2022",
+          "journal": null,
+          "title": "Advances in Hemophilia A Management."
+        },
+        {
+          "pmid": "32558019",
+          "design": "review",
+          "year": "2021",
+          "journal": null,
+          "title": "Substitution therapy."
+        }
+      ]
+    }
+  },
+  {
+    "no": 767,
+    "topicId": "5e6b9e21-9b52-451b-b859-c31e97569bef",
+    "topic": "haemorrhagic stroke",
+    "cluster": "haemorrhagic stroke",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 8,
+      "papersKept": [
+        {
+          "uid": "pubmed-35420918",
+          "title": "Cerebral Hemorrhage: Pathophysiology, Treatment, and Future Directions.",
+          "year": "2022"
+        },
+        {
+          "uid": "pubmed-33272397",
+          "title": "Hemorrhagic stroke.",
+          "year": "2021"
+        },
+        {
+          "uid": "pubmed-29791947",
+          "title": "Global Burden of Stroke.",
+          "year": "2018"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-37125534",
+          "title": "Cognitive Impairment After Ischemic and Hemorrhagic Stroke: A Scientific Statement From the American Heart Association.",
+          "reason": "Post-stroke cognitive-impairment focus; tangential to acute haemorrhagic stroke management."
+        },
+        {
+          "uid": "pubmed-32736758",
+          "title": "Perinatal stroke.",
+          "reason": "Perinatal age group; off population for this topic."
+        },
+        {
+          "uid": "pubmed-31813521",
+          "title": "Perinatal Stroke.",
+          "reason": "Duplicate perinatal-stroke coverage; off population for this topic."
+        },
+        {
+          "uid": "pubmed-30322592",
+          "title": "Telestroke.",
+          "reason": "Telemedicine delivery model; tangential to haemorrhagic stroke clinical content."
+        },
+        {
+          "uid": "pubmed-35426840",
+          "title": "Temperature Management in the ICU.",
+          "reason": "General ICU temperature management; tangential to haemorrhagic stroke."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Haemorrhagic stroke — intracerebral haemorrhage above all — carries the worst early prognosis of any stroke type, and the pace of the first hours decides the outcome. Trainees should hold three facts firmly: it is the minority of strokes but a disproportionate share of stroke deaths; untreated hypertension is its engine worldwide; and management is a race against haematoma expansion rather than a hunt for reperfusion.",
+      "teaching_points": [
+        {
+          "claim": "Hemorrhagic stroke comprises about 20% of all strokes, with intracerebral haemorrhage the most common type; its frequency is increased where hypertension is untreated, and it carries a disproportionately high risk of early mortality and long-term disability.",
+          "cites": [
+            "33272397"
+          ]
+        },
+        {
+          "claim": "Stroke is the second leading cause of death and a major cause of disability worldwide; although ischaemic stroke is more frequent, haemorrhagic stroke is responsible for more deaths.",
+          "cites": [
+            "29791947"
+          ]
+        },
+        {
+          "claim": "Intracerebral haemorrhage is a devastating form of stroke with high morbidity and mortality, and its incidence has increased worldwide over the past 40 years.",
+          "cites": [
+            "35420918"
+          ]
+        },
+        {
+          "claim": "Contemporary ICH care addresses the cause, mechanisms of injury, and current treatment strategies, including the need to limit ongoing injury after the initial bleed.",
+          "cites": [
+            "35420918"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Which patients benefit from surgical haematoma evacuation, and under what timing, is not addressed in the retained abstracts.",
+        "Optimal blood-pressure targets and anticoagulant-reversal strategies are not quantified in the retained sources."
+      ],
+      "mcq_angles": [
+        "Hypertension as the leading risk factor for spontaneous intracerebral haemorrhage.",
+        "Lobar vs deep haemorrhage locations and their implication for underlying causes (including amyloid angiopathy vs hypertension).",
+        "Priorities in anticoagulant-associated ICH.",
+        "Why haemorrhagic stroke, though less frequent than ischaemic stroke, accounts for a larger share of deaths."
+      ],
+      "case_hooks": [
+        "An elderly patient on warfarin is brought in with a lobar haemorrhage and a falling GCS; sequence the first-hour priorities.",
+        "A 45-year-old with poorly controlled hypertension has a deep basal-ganglia haemorrhage; discuss prevention of recurrence."
+      ],
+      "gaps": "Only three sources were retained. Anticoagulation-reversal specifics, surgical-trial evidence, and subarachnoid-haemorrhage content need expansion before this draft can be approved.",
+      "sources": [
+        {
+          "pmid": "35420918",
+          "design": "review",
+          "year": "2022",
+          "journal": null,
+          "title": "Cerebral Hemorrhage: Pathophysiology, Treatment, and Future Directions."
+        },
+        {
+          "pmid": "33272397",
+          "design": "review",
+          "year": "2021",
+          "journal": null,
+          "title": "Hemorrhagic stroke."
+        },
+        {
+          "pmid": "29791947",
+          "design": "review",
+          "year": "2018",
+          "journal": null,
+          "title": "Global Burden of Stroke."
+        }
+      ]
+    }
+  },
+  {
+    "no": 768,
+    "topicId": "55663a4a-6d42-4cdf-9398-5701682f47ee",
+    "topic": "Hand and erosive OA: Heberden nodes, Bouchard nodes, trapeziometacarpal OA",
+    "cluster": "hand osteoarthritis",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 8,
+      "papersKept": [
+        {
+          "uid": "pubmed-31908149",
+          "title": "2019 American College of Rheumatology/Arthritis Foundation Guideline for the Management of Osteoarthritis of the Hand, Hip, and Knee.",
+          "year": "2020"
+        },
+        {
+          "uid": "pubmed-27917634",
+          "title": "[Hand osteoarthritis].",
+          "year": "2016"
+        },
+        {
+          "uid": "pubmed-36414224",
+          "title": "Pharmaceutical treatment of osteoarthritis.",
+          "year": "2023"
+        },
+        {
+          "uid": "pubmed-39103081",
+          "title": "Osteoarthritis year in review 2024: Epidemiology and therapy.",
+          "year": "2024"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-31908163",
+          "title": "2019 American College of Rheumatology/Arthritis Foundation Guideline for the Management of Osteoarthritis of the Hand, Hip, and Knee.",
+          "reason": "Exact duplicate record of the retained guideline (31908149)."
+        },
+        {
+          "uid": "pubmed-35817916",
+          "title": "[Rhizarthrosis].",
+          "reason": "No abstract available in the fetched record; relevance could not be validated, so it cannot support the trapeziometacarpal section."
+        },
+        {
+          "uid": "pubmed-39755397",
+          "title": "Osteoarthritis.",
+          "reason": "Broad general-OA review; duplicate of coverage already provided by the hand-specific guideline and reviews."
+        },
+        {
+          "uid": "pubmed-38240280",
+          "title": "Epidemiology of osteoarthritis: literature update 2022-2023.",
+          "reason": "Epidemiology-wide update; tangential to hand-OA clinical interpretation."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Hand osteoarthritis is the commonest joint disease most trainees dismiss as untreatable. Recognise the phenotype first: Heberden's nodes at the distal interphalangeal joints, Bouchard's at the proximal, and the thumb base (trapeziometacarpal) pattern that dominates hand function. Then match treatment to the 2019 ACR/Arthritis Foundation guideline rather than reflex-prescribing — and remember the radiograph often under-reads the symptoms, or vice versa.",
+      "teaching_points": [
+        {
+          "claim": "The 2019 ACR/Arthritis Foundation guideline provides evidence-based recommendations for the comprehensive management of hand (as well as hip and knee) osteoarthritis, updating the 2012 ACR recommendations.",
+          "cites": [
+            "31908149"
+          ]
+        },
+        {
+          "claim": "Hand OA prevalence increases with age and more often affects females; clinical signs correlate poorly with radiographic findings, with symptomatic hand OA affecting roughly a quarter of adults in the cited series.",
+          "cites": [
+            "27917634"
+          ]
+        },
+        {
+          "claim": "Pharmaceutical treatment recommendations for osteoarthritis span nine classes including oral NSAIDs, with guideline recommendations that differ by mechanism, pharmacokinetics and toxicity profile.",
+          "cites": [
+            "36414224"
+          ]
+        },
+        {
+          "claim": "Contemporary osteoarthritis therapy research is an active field; curated annual reviews are a practical way to keep pace with changing recommendations.",
+          "cites": [
+            "39103081"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "The erosive (inflammatory) hand-OA phenotype — its diagnostic criteria and whether treatment should differ — is not addressed in the retained abstracts.",
+        "Surgical options for trapeziometacarpal OA (e.g., trapeziectomy) lack validated evidence in this draft because the rhizarthrosis source had no readable abstract."
+      ],
+      "mcq_angles": [
+        "Heberden's (DIP) vs Bouchard's (PIP) nodes and the thumb-base (trapeziometacarpal) pattern.",
+        "Radiograph-clinical discordance in hand OA.",
+        "First-line pharmacotherapy for hand OA per the 2019 ACR/Arthritis Foundation guideline.",
+        "Erosive OA features (sudden inflammatory episodes, 'gull-wing' change) as a distinct phenotype."
+      ],
+      "case_hooks": [
+        "A postmenopausal woman has painful DIP nodes and weak pinch grip; outline a guideline-concordant management plan.",
+        "A manual worker has thumb-base pain provoked by grip and key-turning; decide on imaging, splinting, and escalation."
+      ],
+      "gaps": "Erosive-OA specifics, intra-articular injection evidence, and trapeziometacarpal surgical options could not be validated from the retained abstracts (the rhizarthrosis source lacked an abstract); treat these sections as needing full-text evidence before approval.",
+      "sources": [
+        {
+          "pmid": "31908149",
+          "design": "guideline",
+          "year": "2020",
+          "journal": null,
+          "title": "2019 American College of Rheumatology/Arthritis Foundation Guideline for the Management of Osteoarthritis of the Hand, Hip, and Knee."
+        },
+        {
+          "pmid": "27917634",
+          "design": "review",
+          "year": "2016",
+          "journal": null,
+          "title": "[Hand osteoarthritis]."
+        },
+        {
+          "pmid": "36414224",
+          "design": "review",
+          "year": "2023",
+          "journal": null,
+          "title": "Pharmaceutical treatment of osteoarthritis."
+        },
+        {
+          "pmid": "39103081",
+          "design": "review",
+          "year": "2024",
+          "journal": null,
+          "title": "Osteoarthritis year in review 2024: Epidemiology and therapy."
+        }
+      ]
+    }
+  },
+  {
+    "no": 769,
+    "topicId": "c7d9ce9a-935f-47f2-9f95-29ab4575bea2",
+    "topic": "Head and neck squamous cell chemoradiation",
+    "cluster": "head and neck squamous cell carcinoma",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 8,
+      "papersKept": [
+        {
+          "uid": "pubmed-33243986",
+          "title": "Head and neck squamous cell carcinoma.",
+          "year": "2020"
+        },
+        {
+          "uid": "pubmed-41396597",
+          "title": "Head and Neck Cancer: A Review.",
+          "year": "2026"
+        },
+        {
+          "uid": "pubmed-26944243",
+          "title": "Head and Neck Squamous Cell Carcinoma: Update on Epidemiology, Diagnosis, and Treatment.",
+          "year": "2016"
+        },
+        {
+          "uid": "pubmed-40547025",
+          "title": "Advances and challenges in immunotherapy in head and neck cancer.",
+          "year": "2025"
+        },
+        {
+          "uid": "pubmed-25979396",
+          "title": "Cancer of the oral cavity.",
+          "year": "2015"
+        },
+        {
+          "uid": "pubmed-40907366",
+          "title": "Comparative review of KEYNOTE-689 and NIVOPOSTOP trials and their impact on perioperative immunotherapy in locally advanced head and neck squamous cell carcinoma.",
+          "year": "2025"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-33728999",
+          "title": "2021 American Thyroid Association Guidelines for Management of Patients with Anaplastic Thyroid Cancer.",
+          "reason": "Anaplastic thyroid cancer is a different disease from mucosal head and neck squamous cell carcinoma."
+        },
+        {
+          "uid": "pubmed-25979399",
+          "title": "Nasopharyngeal carcinoma.",
+          "reason": "Nasopharyngeal carcinoma is a distinct EBV-associated entity with separate treatment paradigms; not HNSCC chemoradiation teaching."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Most head and neck cancers are squamous cell carcinomas of the mucosal upper aerodigestive tract, and the biology is shifting: tobacco- and alcohol-driven oral cavity and laryngeal disease alongside HPV-driven oropharyngeal disease in younger patients. Treatment is site-specific — surgery first for the oral cavity, organ-preservation chemoradiation for larynx/hypopharynx, and now perioperative immunotherapy trials rewriting the resectable-disease playbook.",
+      "teaching_points": [
+        {
+          "claim": "Most head and neck cancers arise from the mucosal epithelium of the oral cavity, pharynx and larynx (HNSCC); oral cavity and laryngeal cancers are generally associated with tobacco and alcohol, whereas pharyngeal cancers are increasingly linked to HPV.",
+          "cites": [
+            "33243986"
+          ]
+        },
+        {
+          "claim": "Head and neck cancer is the seventh most common cancer worldwide, with approximately 71,110 individuals diagnosed in the US in 2024.",
+          "cites": [
+            "41396597"
+          ]
+        },
+        {
+          "claim": "Established risk factors include tobacco exposure and alcohol dependence, with oncogenic-virus infection increasingly associated with cancers of the pharyngeal subsites.",
+          "cites": [
+            "26944243"
+          ]
+        },
+        {
+          "claim": "For oral cavity cancer, the standard of care is primary surgical resection with or without postoperative adjuvant therapy, and despite advances in surgery, radiotherapy and chemotherapy, survival outcomes remain suboptimal.",
+          "cites": [
+            "25979396",
+            "40547025"
+          ]
+        },
+        {
+          "claim": "Positive randomised trials of perioperative immune-checkpoint inhibition (KEYNOTE-689 and NIVOPOSTOP) may redefine current and future treatment paradigms for resectable, locally advanced HNSCC.",
+          "cites": [
+            "40907366"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "De-escalation strategies for HPV-positive oropharyngeal cancer (reduced radiation or chemotherapy intensity) are not resolved in the retained abstracts.",
+        "How perioperative immunotherapy will integrate with established chemoradiation regimens for unresected disease is an open question."
+      ],
+      "mcq_angles": [
+        "HPV-driven oropharyngeal cancer epidemiology and its better prognosis.",
+        "Oral cavity SCC: why surgery is the standard of care.",
+        "Organ-preservation chemoradiation concept for laryngeal cancer.",
+        "KEYNOTE-689 and NIVOPOSTOP: what changed for resectable locally advanced HNSCC."
+      ],
+      "case_hooks": [
+        "A 52-year-old non-smoker has a HPV-positive tonsillar SCC with neck nodes; compare treatment options and discuss de-escalation questions.",
+        "A patient with oral tongue SCC returns with positive margins after resection; outline adjuvant decision-making."
+      ],
+      "gaps": "Concurrent chemoradiation specifics (cisplatin dosing/scheduling, TPF induction, cetuximab-radiation evidence) and de-escalation trial data are not covered by the retained abstracts; verify against a full HNSCC guideline before approval.",
+      "sources": [
+        {
+          "pmid": "33243986",
+          "design": "review",
+          "year": "2020",
+          "journal": null,
+          "title": "Head and neck squamous cell carcinoma."
+        },
+        {
+          "pmid": "41396597",
+          "design": "review",
+          "year": "2026",
+          "journal": null,
+          "title": "Head and Neck Cancer: A Review."
+        },
+        {
+          "pmid": "26944243",
+          "design": "review",
+          "year": "2016",
+          "journal": null,
+          "title": "Head and Neck Squamous Cell Carcinoma: Update on Epidemiology, Diagnosis, and Treatment."
+        },
+        {
+          "pmid": "40547025",
+          "design": "review",
+          "year": "2025",
+          "journal": null,
+          "title": "Advances and challenges in immunotherapy in head and neck cancer."
+        },
+        {
+          "pmid": "25979396",
+          "design": "review",
+          "year": "2015",
+          "journal": null,
+          "title": "Cancer of the oral cavity."
+        },
+        {
+          "pmid": "40907366",
+          "design": "review",
+          "year": "2025",
+          "journal": null,
+          "title": "Comparative review of KEYNOTE-689 and NIVOPOSTOP trials and their impact on perioperative immunotherapy in locally advanced head and neck squamous cell carcinoma."
+        }
+      ]
+    }
+  },
+  {
+    "no": 770,
+    "topicId": "30b5aab2-9d13-4180-9dd4-c565dd115d09",
+    "topic": "head injury",
+    "cluster": "traumatic brain injury",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 8,
+      "papersKept": [
+        {
+          "uid": "pubmed-32761068",
+          "title": "Guidelines for the Management of Severe Traumatic Brain Injury: 2020 Update of the Decompressive Craniectomy Recommendations.",
+          "year": "2020"
+        },
+        {
+          "uid": "pubmed-32227294",
+          "title": "Guidelines for the Acute Treatment of Cerebral Edema in Neurocritical Care Patients.",
+          "year": "2020"
+        },
+        {
+          "uid": "pubmed-32013721",
+          "title": "Consensus-Based Management Protocol (CREVICE Protocol) for the Treatment of Severe Traumatic Brain Injury Based on Computed Tomography Imaging in Settings Without Intracranial Pressure Monitoring.",
+          "year": "2020"
+        },
+        {
+          "uid": "pubmed-25801547",
+          "title": "Diagnosis, prognosis, and clinical management of mild traumatic brain injury.",
+          "year": "2015"
+        },
+        {
+          "uid": "pubmed-37316210",
+          "title": "Consensus statement on concussion in sport: the 6th International Conference on Concussion in Sport-Amsterdam, October 2022.",
+          "year": "2023"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-39011685",
+          "title": "Anesthesia for traumatic brain injury.",
+          "reason": "Anaesthesia-practice focus; tangential to clinical head-injury management for the general trainee."
+        },
+        {
+          "uid": "pubmed-41697053",
+          "title": "Brain Trauma Foundation Guidelines for the Management of Penetrating Traumatic Brain Injury, Second Edition.",
+          "reason": "Penetrating TBI is a distinct injury subset; the topic targets general closed head injury."
+        },
+        {
+          "uid": "pubmed-32241234",
+          "title": "Physical Therapy Evaluation and Treatment After Concussion/Mild Traumatic Brain Injury.",
+          "reason": "Rehabilitation-phase focus; tangential to acute head-injury decision-making."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Head injury spans a huge severity range, and the evidence base splits accordingly: guidelines for severe TBI built around intracranial pressure and cerebral edema, and a parallel literature on concussion and mild TBI where the challenge is recognition and safe return to activity. The trainee should learn the severe-disease framework (ICP tiers, decompressive craniectomy, what to do when no ICP monitor exists) and the mild-disease discipline (structured assessment, red flags, stepwise return to play).",
+      "teaching_points": [
+        {
+          "claim": "The Brain Trauma Foundation updated its severe-TBI decompressive-craniectomy recommendations in 2020 in light of the RESCUEicp randomised trial of decompressive craniectomy for traumatic intracranial hypertension.",
+          "cites": [
+            "32761068"
+          ]
+        },
+        {
+          "claim": "Acute cerebral edema and elevated intracranial pressure are common in neurological injury, but practical guidance on selecting and monitoring initial therapies has been lacking; the neurocritical-care guideline evaluates therapies for efficacy and safety.",
+          "cites": [
+            "32227294"
+          ]
+        },
+        {
+          "claim": "Where ICP monitoring is unavailable, the consensus-based CREVICE protocol provides a management algorithm for severe TBI based on CT imaging to identify and treat suspected intracranial hypertension.",
+          "cites": [
+            "32013721"
+          ]
+        },
+        {
+          "claim": "Concussion and mild TBI describe a common disorder with substantial public-health effects; advances in imaging, non-imaging biomarkers and neuropathology continue to reshape diagnosis, prognosis and clinical management.",
+          "cites": [
+            "25801547"
+          ]
+        },
+        {
+          "claim": "Sport-related concussion management was updated by the 6th International Conference on Concussion in Sport (Amsterdam, October 2022), whose statement summarises current processes and outcomes.",
+          "cites": [
+            "37316210"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "The efficacy of ICP-monitoring-guided therapy versus imaging-and-examination-guided care remains debated and is not resolved in the retained abstracts.",
+        "Which concussion biomarkers or imaging findings should change management is still evolving."
+      ],
+      "mcq_angles": [
+        "What RESCUEicp changed about decompressive craniectomy recommendations in severe TBI.",
+        "Tiered management of elevated ICP and acute cerebral edema.",
+        "Management of suspected intracranial hypertension when no ICP monitor is available (CT-guided protocols).",
+        "Red flags and structured assessment after mild TBI/concussion."
+      ],
+      "case_hooks": [
+        "A road-traffic-accident victim arrives with GCS 6 and a unilateral dilated pupil; sequence the first hours of management.",
+        "A club rugby player has had two concussions this season; counsel on assessment and return-to-play."
+      ],
+      "gaps": "Paediatric head injury, anticoagulated elderly patients with minor TBI, seizure prophylaxis, and mild-TBI imaging rules are not covered by the retained abstracts; verify against the full BTF guideline before approval.",
+      "sources": [
+        {
+          "pmid": "32761068",
+          "design": "guideline",
+          "year": "2020",
+          "journal": null,
+          "title": "Guidelines for the Management of Severe Traumatic Brain Injury: 2020 Update of the Decompressive Craniectomy Recommendations."
+        },
+        {
+          "pmid": "32227294",
+          "design": "guideline",
+          "year": "2020",
+          "journal": null,
+          "title": "Guidelines for the Acute Treatment of Cerebral Edema in Neurocritical Care Patients."
+        },
+        {
+          "pmid": "32013721",
+          "design": "guideline",
+          "year": "2020",
+          "journal": null,
+          "title": "Consensus-Based Management Protocol (CREVICE Protocol) for the Treatment of Severe Traumatic Brain Injury Based on Computed Tomography Imaging in Settings Without Intracranial Pressure Monitoring."
+        },
+        {
+          "pmid": "25801547",
+          "design": "review",
+          "year": "2015",
+          "journal": null,
+          "title": "Diagnosis, prognosis, and clinical management of mild traumatic brain injury."
+        },
+        {
+          "pmid": "37316210",
+          "design": "article",
+          "year": "2023",
+          "journal": null,
+          "title": "Consensus statement on concussion in sport: the 6th International Conference on Concussion in Sport-Amsterdam, October 2022."
+        }
+      ]
+    }
+  }
+]
