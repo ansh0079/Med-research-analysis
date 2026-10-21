@@ -1,0 +1,883 @@
+[
+ {
+  "no": 9000,
+  "topicId": "9396f633-4d5a-4dfa-a974-3a8c5e2d86aa",
+  "topic": "covid",
+  "cluster": "covid",
+  "status": "draft_pending_clinician_review",
+  "dbEvidence": {
+   "papersKept": [],
+   "papersDropped": [],
+   "guidelinesKept": [],
+   "guidelinesDropped": []
+  },
+  "page": {
+   "mentor_intro": "COVID-19 care is now guideline-driven and living: IDSA, WHO and NICE keep updating recommendations. Outpatient antiviral choice (nirmatrelvir/ritonavir, remdesivir, molnupiravir), pre-exposure prophylaxis in immunocompromised people, severe-disease immunomodulators and long-COVID follow-up are the main decision points.",
+   "teaching_points": [
+    {
+     "claim": "The 2025 IDSA update gives updated recommendations on nirmatrelvir/ritonavir, remdesivir and molnupiravir in adults with mild to moderate COVID-19, with an algorithm for selecting antivirals.",
+     "cites": [
+      "41920902"
+     ]
+    },
+    {
+     "claim": "A Pan-American guideline strongly recommends nirmatrelvir/ritonavir in outpatients and discourages hydroxychloroquine, chloroquine and ivermectin.",
+     "cites": [
+      "37550690"
+     ]
+    },
+    {
+     "claim": "IDSA guidance includes pre-exposure prophylaxis for immunocompromised persons (pemivibart) and treatment recommendations for severe or critical COVID-19, including infliximab and abatacept in hospitalised adults.",
+     "cites": [
+      "39471458",
+      "40757658",
+      "40831386",
+      "40923137"
+     ]
+    },
+    {
+     "claim": "The WHO living guideline added a conditional recommendation for awake prone positioning in severely ill hospitalised patients needing supplemental oxygen, high-flow nasal oxygen or non-invasive ventilation (moderate/low certainty evidence).",
+     "cites": [
+      "35917394"
+     ]
+    },
+    {
+     "claim": "The NICE rapid guideline on the long-term effects of COVID-19 uses a living approach, continuously reviewed as evidence emerges.",
+     "cites": [
+      "33555768"
+     ]
+    },
+    {
+     "claim": "A meta-analysis found cardiovascular disease risk increased significantly four weeks or more after recovering from acute COVID-19, so survivors' care should include attention to cardiovascular health.",
+     "cites": [
+      "39944605"
+     ]
+    },
+    {
+     "claim": "A Delphi consensus (ORCHESTRA) reached agreement on 23 of 24 questions and made 10 recommendations on managing SARS-CoV-2 infection in patients with rheumatological disease, in an area with insufficient evidence.",
+     "cites": [
+      "40049395"
+     ]
+    }
+   ],
+   "uncertainties": [
+    "Recommendations are living and change with variants and new trial data.",
+    "Evidence for several immunomodulators in severe disease is limited."
+   ],
+   "mcq_angles": [
+    "Outpatient antiviral choice and the IDSA selection algorithm.",
+    "Which drugs are discouraged (hydroxychloroquine, ivermectin).",
+    "Long-COVID cardiovascular risk and follow-up."
+   ],
+   "case_hooks": [
+    "Unvaccinated 70-year-old with mild COVID-19 and risk factors: which antiviral?",
+    "Immunocompromised patient asking about pre-exposure prophylaxis."
+   ],
+   "gaps": "Isolation duration, vaccine schedules and effectiveness, dosing, drug-interaction checks for nirmatrelvir/ritonavir and eligibility criteria are not stated in the retrieved abstract excerpts.",
+   "sources": [
+    {
+     "pmid": "33555768",
+     "doi": null,
+     "design": "guideline",
+     "year": "2024",
+     "journal": null,
+     "title": "COVID-19 rapid guideline: managing the long-term effects of COVID-19"
+    },
+    {
+     "pmid": "35917394",
+     "doi": null,
+     "design": "guideline",
+     "year": "2022",
+     "journal": null,
+     "title": "Clinical management of COVID-19: Living guideline"
+    },
+    {
+     "pmid": "37550690",
+     "doi": "10.1186/s12941-023-00623-w",
+     "design": "guideline",
+     "year": "2023",
+     "journal": null,
+     "title": "Pan-American Guidelines for the treatment of SARS-CoV-2/COVID-19: a joint evidence-based guideline of the Brazilian Society of Infectious Diseases (SBI) and the Pan-American Association of Infectious Diseases (API)"
+    },
+    {
+     "pmid": "39471458",
+     "doi": "10.1093/cid/ciae435",
+     "design": "guideline",
+     "year": "2026",
+     "journal": null,
+     "title": "2024 Clinical Practice Guideline Update by the Infectious Diseases Society of America on the Management of COVID-19: Anti-SARS-CoV-2 Neutralizing Antibody Pemivibart for Pre-exposure Prophylaxis"
+    },
+    {
+     "pmid": "39944605",
+     "doi": "10.3389/fcvm.2025.1450470",
+     "design": "meta-analysis",
+     "year": "2025",
+     "journal": null,
+     "title": "Cardiovascular outcomes in long COVID-19: a systematic review and meta-analysis"
+    },
+    {
+     "pmid": "40049395",
+     "doi": "10.1016/j.cmi.2025.02.030",
+     "design": "guideline",
+     "year": "2025",
+     "journal": null,
+     "title": "ORCHESTRA Delphi consensus: diagnostic and therapeutic management of SARS-CoV-2 infection in patients with rheumatological diseases"
+    },
+    {
+     "pmid": "40757658",
+     "doi": "10.1093/cid/ciaf424",
+     "design": "guideline",
+     "year": "2026",
+     "journal": null,
+     "title": "2025 Clinical Practice Guideline Update by the Infectious Diseases Society of America on the Treatment and Management of COVID-19: Pemivibart for Pre-exposure Prophylaxis, Vilobelimab for Critical Illness, and Abatacept or Infliximab for Severe or Critical Illness"
+    },
+    {
+     "pmid": "40831386",
+     "doi": "10.1093/cid/ciaf355",
+     "design": "guideline",
+     "year": "2026",
+     "journal": null,
+     "title": "2025 Clinical Practice Guideline Update by the Infectious Diseases Society of America on the Treatment and Management of COVID-19: Infliximab"
+    },
+    {
+     "pmid": "40923137",
+     "doi": "10.1093/cid/ciaf354",
+     "design": "guideline",
+     "year": "2026",
+     "journal": null,
+     "title": "2025 Clinical Practice Guideline Update by the Infectious Diseases Society of America on the Treatment and Management of COVID-19: Abatacept"
+    },
+    {
+     "pmid": "41920902",
+     "doi": "10.1093/cid/ciaf680",
+     "design": "guideline",
+     "year": "2026",
+     "journal": null,
+     "title": "2025 Clinical Practice Guideline Update by the Infectious Diseases Society of America on the Treatment and Management of COVID-19: Antiviral Treatment for Mild to Moderate COVID-19 in Adults"
+    }
+   ]
+  }
+ },
+ {
+  "no": 9001,
+  "topicId": "481c32cd-6ff9-4cab-8ae1-f7dbb58d2b8b",
+  "topic": "covid 19 critical care dexamethasone and immunomodulation",
+  "cluster": "covid_critical",
+  "status": "draft_pending_clinician_review",
+  "dbEvidence": {
+   "papersKept": [],
+   "papersDropped": [],
+   "guidelinesKept": [],
+   "guidelinesDropped": []
+  },
+  "page": {
+   "mentor_intro": "In critical COVID-19, supportive care aims at oxygenation (invasive ventilation, repeated proning), and immunomodulation centres on corticosteroids plus an IL-6 pathway agent. Steroid meta-analyses disagree on dose and drug, so the choice should follow guidelines and trial context.",
+   "teaching_points": [
+    {
+     "claim": "The German S1 guideline states the main goal of supportive treatment is adequate oxygenation, with invasive mechanical ventilation and repeated prone positioning key elements for severely hypoxaemic patients.",
+     "cites": [
+      "33245382"
+     ]
+    },
+    {
+     "claim": "Meta-analyses found tocilizumab reduced 28-day mortality (RR 0.83, 95% CI 0.71-0.97) and progression to mechanical ventilation in moderate-to-severe COVID-19, whereas sarilumab showed no significant difference.",
+     "cites": [
+      "35343397"
+     ]
+    },
+    {
+     "claim": "A further meta-analysis found tocilizumab reduced all-cause mortality and mechanical ventilation in hospitalised patients, with increased neutropenia risk in randomised trials.",
+     "cites": [
+      "35657993",
+      "34605114"
+     ]
+    },
+    {
+     "claim": "Among hospitalised patients treated with corticosteroids, baricitinib and sarilumab have high probability of mortality reductions similar to tocilizumab in a Bayesian network analysis.",
+     "cites": [
+      "35863630"
+     ]
+    },
+    {
+     "claim": "A corticosteroid meta-analysis reported increased mortality with methylprednisolone and a non-significant increase with dexamethasone, possibly explained by high-dose early steroids, so steroid findings across reviews are not uniform.",
+     "cites": [
+      "35971278"
+     ]
+    },
+    {
+     "claim": "A comparison found methylprednisolone equivalent to dexamethasone on most outcomes in severe COVID-19, with an advantage for moderate-dose methylprednisolone in RCT subgroups but at higher equivalent doses.",
+     "cites": [
+      "37147596"
+     ]
+    },
+    {
+     "claim": "Tracheostomy timing and technique did not clearly affect outcomes in ventilated COVID-19 patients; common complications were stoma infection, ulcers or necrosis and bleeding.",
+     "cites": [
+      "36182551"
+     ]
+    }
+   ],
+   "uncertainties": [
+    "Dose and agent of corticosteroid in severe disease.",
+    "Which IL-6 or JAK agent to add."
+   ],
+   "mcq_angles": [
+    "Corticosteroid plus IL-6 antagonist in hospitalised hypoxaemic patients.",
+    "Prone positioning and ventilation priorities."
+   ],
+   "case_hooks": [
+    "Ventilated COVID-19 patient on dexamethasone, still worsening: add tocilizumab or baricitinib?"
+   ],
+   "gaps": "The RECOVERY dexamethasone trial results (6 mg for 10 days), oxygen thresholds and timing of immunomodulators are not stated in the retrieved abstract excerpts.",
+   "sources": [
+    {
+     "pmid": "33245382",
+     "doi": "10.1007/s00101-020-00879-3",
+     "design": "guideline",
+     "year": "2021",
+     "journal": null,
+     "title": "Recommendations for treatment of critically ill patients with COVID-19 : Version 3 S1 guideline"
+    },
+    {
+     "pmid": "34605114",
+     "doi": "10.1111/resp.14152",
+     "design": "meta-analysis",
+     "year": "2021",
+     "journal": null,
+     "title": "Tocilizumab administration for the treatment of hospitalized patients with COVID-19: A systematic review and meta-analysis"
+    },
+    {
+     "pmid": "35343397",
+     "doi": "10.1080/22221751.2022.2059405",
+     "design": "meta-analysis",
+     "year": "2022",
+     "journal": null,
+     "title": "Clinical efficacy and safety of interleukin-6 receptor antagonists (tocilizumab and sarilumab) in patients with COVID-19: a systematic review and meta-analysis"
+    },
+    {
+     "pmid": "35657993",
+     "doi": "10.1371/journal.pone.0269368",
+     "design": "meta-analysis",
+     "year": "2022",
+     "journal": null,
+     "title": "Efficacy and harms of tocilizumab for the treatment of COVID-19 patients: A systematic review and meta-analysis"
+    },
+    {
+     "pmid": "35863630",
+     "doi": "10.1016/j.cmi.2022.07.008",
+     "design": "meta-analysis",
+     "year": "2023",
+     "journal": null,
+     "title": "Effect of tocilizumab, sarilumab, and baricitinib on mortality among patients hospitalized for COVID-19 treated with corticosteroids: a systematic review and meta-analysis"
+    },
+    {
+     "pmid": "35971278",
+     "doi": "10.1002/rmv.2386",
+     "design": "meta-analysis",
+     "year": "2022",
+     "journal": null,
+     "title": "Effect of corticosteroid therapy on mortality in COVID-19 patients-A systematic review and meta-analysis"
+    },
+    {
+     "pmid": "36182551",
+     "doi": "10.1016/j.bja.2022.07.032",
+     "design": "meta-analysis",
+     "year": "2022",
+     "journal": null,
+     "title": "Tracheostomy outcomes in critically ill patients with COVID-19: a systematic review, meta-analysis, and meta-regression"
+    },
+    {
+     "pmid": "37147596",
+     "doi": "10.1186/s12879-023-08280-2",
+     "design": "meta-analysis",
+     "year": "2023",
+     "journal": null,
+     "title": "A systematic review and meta-analysis of glucocorticoids treatment in severe COVID-19: methylprednisolone versus dexamethasone"
+    }
+   ]
+  }
+ },
+ {
+  "no": 9002,
+  "topicId": "ca55ea50-8ca1-426f-b929-69ddab8b5b32",
+  "topic": "Angiotensin II for catecholamine-refractory vasodilatory shock",
+  "cluster": "angiotensin2",
+  "status": "draft_pending_clinician_review",
+  "dbEvidence": {
+   "papersKept": [],
+   "papersDropped": [],
+   "guidelinesKept": [],
+   "guidelinesDropped": []
+  },
+  "page": {
+   "mentor_intro": "Angiotensin II raises blood pressure and spares catecholamines in vasodilatory shock without clearly lowering mortality. It is a rescue (third-line) vasopressor, and patients with high renin may respond best.",
+   "teaching_points": [
+    {
+     "claim": "A meta-analysis of distributive shock found angiotensin II did not reduce mortality but allowed significant adjunctive vasopressor reduction at 3 hours without more reported adverse events.",
+     "cites": [
+      "38888542"
+     ]
+    },
+    {
+     "claim": "In vasoplegic shock, angiotensin II showed comparable in-hospital mortality to standard therapy but produced a significant mean arterial pressure rise.",
+     "cites": [
+      "39337869"
+     ]
+    },
+    {
+     "claim": "A systematic review suggests angiotensin II may be a third-line vasopressor if the target MAP is not reached after noradrenaline above 200 ng/kg/min for more than 6 hours.",
+     "cites": [
+      "36636460"
+     ]
+    },
+    {
+     "claim": "Expert consensus recognises angiotensin II as useful to reduce catecholamine requirements in vasopressor-resistant septic shock, while stressing the need for more trials.",
+     "cites": [
+      "39152516"
+     ]
+    },
+    {
+     "claim": "An exploratory analysis found a greater response in patients with elevated baseline plasma renin and a reduction in renal replacement therapy initiation.",
+     "cites": [
+      "40548153"
+     ]
+    },
+    {
+     "claim": "Safety concerns include thromboembolism with angiotensin II, and in cardiogenic shock reported adverse events included hepatic injury, digital ischaemia and thrombotic events.",
+     "cites": [
+      "30563433",
+      "36753927"
+     ]
+    },
+    {
+     "claim": "An overview of reviews found angiotensin II consistently improved MAP by more than 10 mmHg, with gaps in the definition of catecholamine-resistant shock, initiation thresholds and biomarker-guided treatment.",
+     "cites": [
+      "41942842"
+     ]
+    }
+   ],
+   "uncertainties": [
+    "Optimal initiation threshold and renin-guided selection.",
+    "Effect on hard outcomes beyond MAP and catecholamine sparing."
+   ],
+   "mcq_angles": [
+    "Angiotensin II as rescue vasopressor.",
+    "Thromboembolic risk as a key adverse effect."
+   ],
+   "case_hooks": [
+    "Septic shock on noradrenaline 0.5 microgram/kg/min with MAP still 55."
+   ],
+   "gaps": "ATHOS-3 trial detail, dosing and titration, and thromboprophylaxis requirements are not stated in the retrieved abstract excerpts.",
+   "sources": [
+    {
+     "pmid": "30563433",
+     "doi": "10.1177/0885066618818460",
+     "design": "systematic review",
+     "year": "2020",
+     "journal": null,
+     "title": "Novel Vasopressors in the Treatment of Vasodilatory Shock: A Systematic Review of Angiotensin II, Selepressin, and Terlipressin"
+    },
+    {
+     "pmid": "36636460",
+     "doi": "10.2147/oaem.s391167",
+     "design": "systematic review",
+     "year": "2023",
+     "journal": null,
+     "title": "How Effective is Angiotensin II in Decreasing Mortality of Vasodilatory Shock? A Systematic Review"
+    },
+    {
+     "pmid": "36753927",
+     "doi": "10.1016/j.ajem.2023.01.050",
+     "design": "systematic review",
+     "year": "2023",
+     "journal": null,
+     "title": "Efficacy and safety of angiotensin II in cardiogenic shock: A systematic review"
+    },
+    {
+     "pmid": "38888542",
+     "doi": "10.1097/shk.0000000000002384",
+     "design": "meta-analysis",
+     "year": "2024",
+     "journal": null,
+     "title": "ANGIOTENSIN II IN THE TREATMENT OF DISTRIBUTIVE SHOCK: A SYSTEMATIC-REVIEW AND META-ANALYSIS"
+    },
+    {
+     "pmid": "39152516",
+     "doi": "10.1186/s44158-024-00186-y",
+     "design": "guideline",
+     "year": "2024",
+     "journal": null,
+     "title": "The use of angiotensin II for the management of distributive shock: expert consensus statements"
+    },
+    {
+     "pmid": "39337869",
+     "doi": "10.3390/life14091085",
+     "design": "meta-analysis",
+     "year": "2024",
+     "journal": null,
+     "title": "Clinical Outcomes of Angiotensin II Therapy in Vasoplegic Shock: A Systematic Review and Meta-Analysis"
+    },
+    {
+     "pmid": "40548153",
+     "doi": "10.7759/cureus.86546",
+     "design": "systematic review",
+     "year": "2025",
+     "journal": null,
+     "title": "Angiotensin II in Catecholamine-Refractory Shock: A Systematic Review and Exploratory Analysis of the Angiotensin II for the Treatment of High-Output Shock (ATHOS-3) Trial"
+    },
+    {
+     "pmid": "41942842",
+     "doi": "10.1186/s12871-026-03797-w",
+     "design": "systematic review",
+     "year": "2026",
+     "journal": null,
+     "title": "An overview of reviews of Angiotensin II in distributive shock"
+    }
+   ]
+  }
+ },
+ {
+  "no": 9003,
+  "topicId": "c9b692a4-e336-4a94-865e-5158fc1a229f",
+  "topic": "Autoimmune haemolytic anaemia: steroids and rituximab",
+  "cluster": "aiha",
+  "status": "draft_pending_clinician_review",
+  "dbEvidence": {
+   "papersKept": [],
+   "papersDropped": [],
+   "guidelinesKept": [],
+   "guidelinesDropped": []
+  },
+  "page": {
+   "mentor_intro": "Warm AIHA is treated first with glucocorticoids, and rituximab is an established add-on with durable remission in many studies, although randomised evidence is sparse and graded very uncertain by Cochrane. Secondary causes, especially SLE and antiphospholipid antibodies, need excluding.",
+   "teaching_points": [
+    {
+     "claim": "A Cochrane review found very uncertain evidence on adding rituximab to glucocorticoids for partial haematological response at 12 months (one study, GRADE very low certainty).",
+     "cites": [
+      "33786812"
+     ]
+    },
+    {
+     "claim": "A systematic review and meta-analysis of rituximab long-term outcomes reported prolonged remission benefits with a good safety profile, while calling for detailed randomised trials.",
+     "cites": [
+      "40510077"
+     ]
+    },
+    {
+     "claim": "A Japanese guideline-based review notes cold agglutinin disease treatment with a complement-targeting agent is effective against haemolysis but not against agglutination symptoms, and elderly patients with AIHA should be assessed for malignancy.",
+     "cites": [
+      "39358288"
+     ]
+    },
+    {
+     "claim": "Nearly half of warm AIHA cases are secondary (mean 49%), most often to systemic lupus erythematosus.",
+     "cites": [
+      "33802848"
+     ]
+    },
+    {
+     "claim": "In SLE, antiphospholipid antibodies are associated with haemolytic anaemia (pooled OR 2.83), highest for lupus anticoagulant and anti-beta2-glycoprotein I antibodies.",
+     "cites": [
+      "34371159"
+     ]
+    },
+    {
+     "claim": "Therapeutic plasma exchange improved short-term haematological parameters in acute AIHA onset, with unclear bias risk and no separate cold or warm data.",
+     "cites": [
+      "32384203"
+     ]
+    },
+    {
+     "claim": "Mixed AIHA is refractory, often needing multiple lines including rituximab and cytotoxic agents.",
+     "cites": [
+      "40392014"
+     ]
+    },
+    {
+     "claim": "AIHA can develop or worsen after mRNA COVID-19 vaccination in rare cases.",
+     "cites": [
+      "36208056"
+     ]
+    }
+   ],
+   "uncertainties": [
+    "Optimal timing of rituximab (first-line versus steroid-refractory)."
+   ],
+   "mcq_angles": [
+    "Steroids first, then rituximab in refractory or relapsed disease.",
+    "Underlying SLE or lymphoproliferative disease screening."
+   ],
+   "case_hooks": [
+    "Older patient with anaemia, high LDH and positive direct antiglobulin test."
+   ],
+   "gaps": "Diagnostic workup (DAT, haptoglobin), steroid dosing and taper, transfusion rules, splenectomy and second-line options are not stated in the retrieved abstract excerpts. The phase III trial of steroid monotherapy versus steroid plus rituximab (the topic's original citation) was not part of this evidence set.",
+   "sources": [
+    {
+     "pmid": "32384203",
+     "doi": "10.1002/jca.21790",
+     "design": "meta-analysis",
+     "year": "2020",
+     "journal": null,
+     "title": "Efficacy of therapeutic plasma exchange for treatment of autoimmune hemolytic anemia: A systematic review and meta-analysis of randomized controlled trials"
+    },
+    {
+     "pmid": "33786812",
+     "doi": "10.1002/14651858.cd012493.pub2",
+     "design": "meta-analysis",
+     "year": "2021",
+     "journal": null,
+     "title": "Disease-modifying treatments for primary autoimmune haemolytic anaemia"
+    },
+    {
+     "pmid": "33802848",
+     "doi": "10.3390/jcm10061244",
+     "design": "meta-analysis",
+     "year": "2021",
+     "journal": null,
+     "title": "Epidemiology of Secondary Warm Autoimmune Haemolytic Anaemia-A Systematic Review and Meta-Analysis"
+    },
+    {
+     "pmid": "34371159",
+     "doi": "10.1016/j.autrev.2021.102913",
+     "design": "meta-analysis",
+     "year": "2022",
+     "journal": null,
+     "title": "Antiphospholipid antibodies and the risk of autoimmune hemolytic anemia in patients with systemic lupus erythematosus: A systematic review and meta-analysis"
+    },
+    {
+     "pmid": "36208056",
+     "doi": "10.1111/ijlh.13978",
+     "design": "systematic review",
+     "year": "2023",
+     "journal": null,
+     "title": "Development and exacerbation of autoimmune hemolytic anemia following COVID-19 vaccination: A systematic review"
+    },
+    {
+     "pmid": "39358288",
+     "doi": "10.11406/rinketsu.65.892",
+     "design": "guideline",
+     "year": "2024",
+     "journal": null,
+     "title": "[Current recommendations for the diagnosis and treatment of autoimmune hemolytic anemia based on etiology and pathology]"
+    },
+    {
+     "pmid": "40392014",
+     "doi": "10.1002/ajh.27721",
+     "design": "systematic review",
+     "year": "2025",
+     "journal": null,
+     "title": "Mixed Autoimmune Hemolytic Anemia: A Systematic Review of Epidemiology, Clinical Characteristics, Therapies, and Outcomes"
+    },
+    {
+     "pmid": "40510077",
+     "doi": "10.7759/cureus.83962",
+     "design": "meta-analysis",
+     "year": "2025",
+     "journal": null,
+     "title": "Long-Term Outcomes of Rituximab Therapy in Autoimmune Hemolytic Anemia: A Systematic Review and Meta-Analysis"
+    }
+   ]
+  }
+ },
+ {
+  "no": 9004,
+  "topicId": "22fb2615-dee0-40ad-bb62-fa5b9f21f0f0",
+  "topic": "asthma",
+  "cluster": "asthma",
+  "status": "draft_pending_clinician_review",
+  "dbEvidence": {
+   "papersKept": [],
+   "papersDropped": [],
+   "guidelinesKept": [],
+   "guidelinesDropped": []
+  },
+  "page": {
+   "mentor_intro": "Modern asthma care favours inhaled corticosteroid-containing regimens, with as-needed ICS-formoterol or maintenance-and-reliever therapy rather than SABA alone. Severe asthma needs phenotyping and consideration of biologics, macrolides or triple inhaler therapy.",
+   "teaching_points": [
+    {
+     "claim": "The 2025 VA/DoD guideline strongly recommends inhaled corticosteroids and suggests ICS combined with a rapid-onset long-acting beta-agonist as both reliever and controller, with step-up by increasing ICS or adding a long-acting anticholinergic.",
+     "cites": [
+      "41698207"
+     ]
+    },
+    {
+     "claim": "In poorly controlled asthma at GINA step 3 or 4, budesonide-formoterol maintenance and reliever therapy lengthened time to first severe exacerbation compared with stepping up or continuing maintenance ICS-LABA with SABA reliever.",
+     "cites": [
+      "35230437"
+     ]
+    },
+    {
+     "claim": "Triple versus dual inhaler therapy in moderate to severe asthma was associated with fewer severe exacerbations and modest control gains, without differences in quality of life or mortality.",
+     "cites": [
+      "34009257"
+     ]
+    },
+    {
+     "claim": "The ERS/ATS severe asthma guideline suggests a trial of chronic macrolide therapy for persistent symptoms at GINA step 5 and anti-IL-4/13 for severe eosinophilic or corticosteroid-dependent asthma.",
+     "cites": [
+      "31558662"
+     ]
+    },
+    {
+     "claim": "Licensed asthma biologics reduce exacerbations and hospitalisations, improve lung function, control and quality of life, and limit systemic corticosteroid use, with greater effect in T2 inflammation.",
+     "cites": [
+      "38657997"
+     ]
+    },
+    {
+     "claim": "The ACCP 2026 guideline gives seven recommendations on choosing a biologic, based on quality of life, lung function, exacerbation frequency, oral steroid use, endotype, biomarkers and comorbidities, while noting no comparative effectiveness trials.",
+     "cites": [
+      "41005695"
+     ]
+    },
+    {
+     "claim": "Clinical remission is achievable for a minority on biologics, with lower rates in those with worse FEV1, longer disease, maintenance oral corticosteroids, depression or obesity.",
+     "cites": [
+      "39549709"
+     ]
+    },
+    {
+     "claim": "A Spanish study found most guideline quality indicators of asthma care are not followed in practice.",
+     "cites": [
+      "39309478"
+     ]
+    }
+   ],
+   "uncertainties": [
+    "Head-to-head comparative efficacy of biologics.",
+    "Definition of clinical remission."
+   ],
+   "mcq_angles": [
+    "SMART/MART regimen.",
+    "Choosing a biologic by endotype and biomarkers."
+   ],
+   "case_hooks": [
+    "Adult on SABA alone with frequent night-time symptoms."
+   ],
+   "gaps": "Diagnostic criteria (spirometry, FeNO), GINA step table, inhaler technique, exacerbation management and acute severity classification are not stated in the retrieved abstract excerpts.",
+   "sources": [
+    {
+     "pmid": "31558662",
+     "doi": "10.1183/13993003.00588-2019",
+     "design": "guideline",
+     "year": "2020",
+     "journal": null,
+     "title": "Management of severe asthma: a European Respiratory Society/American Thoracic Society guideline"
+    },
+    {
+     "pmid": "34009257",
+     "doi": "10.1001/jama.2021.7872",
+     "design": "meta-analysis",
+     "year": "2021",
+     "journal": null,
+     "title": "Triple vs Dual Inhaler Therapy and Asthma Outcomes in Moderate to Severe Asthma: A Systematic Review and Meta-analysis"
+    },
+    {
+     "pmid": "35230437",
+     "doi": "10.1001/jamanetworkopen.2022.0615",
+     "design": "meta-analysis",
+     "year": "2022",
+     "journal": null,
+     "title": "Evaluation of Budesonide-Formoterol for Maintenance and Reliever Therapy Among Patients With Poorly Controlled Asthma: A Systematic Review and Meta-analysis"
+    },
+    {
+     "pmid": "38657997",
+     "doi": "10.1183/16000617.0238-2023",
+     "design": "meta-analysis",
+     "year": "2024",
+     "journal": null,
+     "title": "Biologic agents licensed for severe asthma: a systematic review and meta-analysis of randomised controlled trials"
+    },
+    {
+     "pmid": "39309478",
+     "doi": "10.2147/jaa.s433291",
+     "design": "guideline",
+     "year": "2024",
+     "journal": null,
+     "title": "Level of Compliance with Spanish Guideline Recommendations in the Management of Asthma"
+    },
+    {
+     "pmid": "39549709",
+     "doi": "10.1016/s2213-2600(24)00293-5",
+     "design": "meta-analysis",
+     "year": "2025",
+     "journal": null,
+     "title": "Clinical remission attainment, definitions, and correlates among patients with severe asthma treated with biologics: a systematic review and meta-analysis"
+    },
+    {
+     "pmid": "41005695",
+     "doi": "10.1016/j.chest.2025.08.042",
+     "design": "guideline",
+     "year": "2026",
+     "journal": null,
+     "title": "Biologic Management in Severe Asthma for Adults: An American College of Chest Physicians Clinical Practice Guideline"
+    },
+    {
+     "pmid": "41698207",
+     "doi": "10.7326/annals-25-03080",
+     "design": "guideline",
+     "year": "2026",
+     "journal": null,
+     "title": "A Synopsis of the 2025 U.S. Department of Veterans Affairs and U.S. Department of Defense Clinical Practice Guideline for the Primary Care Management of Asthma"
+    }
+   ]
+  }
+ },
+ {
+  "no": 9005,
+  "topicId": "7d6dee7d-e46c-4ba9-b759-4ecb15cb57d5",
+  "topic": "Endoscopy in the Anticoagulated Patient",
+  "cluster": "endoscopy_anticoag",
+  "status": "draft_pending_clinician_review",
+  "dbEvidence": {
+   "papersKept": [],
+   "papersDropped": [],
+   "guidelinesKept": [],
+   "guidelinesDropped": []
+  },
+  "page": {
+   "mentor_intro": "Management of antithrombotics around endoscopy balances thrombotic risk against bleeding risk from the procedure. BSG/ESGE and international consensus guidelines categorise procedure and thrombotic risk, with DOAC interruption timed to procedure risk and renal function; cold snare polypectomy may allow continuing some agents.",
+   "teaching_points": [
+    {
+     "claim": "The 2021 BSG/ESGE update refined risk categories for endoscopic procedures and for thrombosis, with more detailed atrial fibrillation risk analysis, strengthened DOAC recommendations and a new section on acute GI haemorrhage.",
+     "cites": [
+      "34362780"
+     ]
+    },
+    {
+     "claim": "The 2016 BSG/ESGE guideline recommends the last DOAC dose be at least 48 hours before high-risk endoscopic procedures, and 72 hours for dabigatran with CrCl 30-50 mL/min, with haematology input if renal function is deteriorating.",
+     "cites": [
+      "26873868"
+     ]
+    },
+    {
+     "claim": "The International Digestive Endoscopy Network consensus makes 14 GRADE recommendations on antithrombotics for diagnostic and elective therapeutic endoscopy.",
+     "cites": [
+      "39223080"
+     ]
+    },
+    {
+     "claim": "An adapted clinical practice guideline gives 13 statements for patients on antithrombotic agents requiring diagnostic or elective therapeutic endoscopy.",
+     "cites": [
+      "33242928"
+     ]
+    },
+    {
+     "claim": "Uninterrupted single antiplatelet therapy may increase immediate and delayed post-polypectomy bleeding, but evidence is very uncertain, and aspirin alone may make little difference.",
+     "cites": [
+      "35028736"
+     ]
+    },
+    {
+     "claim": "Post-ERCP bleeding was not significantly higher with dual antiplatelet therapy than with aspirin alone (OR 1.14), suggesting bleeding is related more to the procedure than to antiplatelet agents.",
+     "cites": [
+      "34028396"
+     ]
+    },
+    {
+     "claim": "Cold snare resection for polyps under 10 mm has a better safety profile and could allow antithrombotics to be maintained, though interruption raises thrombotic events.",
+     "cites": [
+      "39549819"
+     ]
+    },
+    {
+     "claim": "A review stresses balancing the patient's thromboembolism risk against post-polypectomy bleeding and shared decision-making on temporary interruption.",
+     "cites": [
+      "35361337"
+     ]
+    },
+    {
+     "claim": "A critical appraisal of periendoscopic antithrombotic guidelines found variable methodological quality, with scope to improve rigour and applicability.",
+     "cites": [
+      "38251803"
+     ]
+    }
+   ],
+   "uncertainties": [
+    "Whether DOACs can be continued with cold snare polypectomy."
+   ],
+   "mcq_angles": [
+    "High-risk versus low-risk endoscopic procedures.",
+    "DOAC hold times by renal function."
+   ],
+   "case_hooks": [
+    "Patient on apixaban for AF scheduled for colonoscopy with polypectomy."
+   ],
+   "gaps": "Warfarin INR targets, bridging indications, aspirin and P2Y12 handling, and restart timing are not stated in the retrieved abstract excerpts.",
+   "sources": [
+    {
+     "pmid": "26873868",
+     "doi": "10.1136/gutjnl-2015-311110",
+     "design": "guideline",
+     "year": "2016",
+     "journal": null,
+     "title": "Endoscopy in patients on antiplatelet or anticoagulant therapy, including direct oral anticoagulants: British Society of Gastroenterology (BSG) and European Society of Gastrointestinal Endoscopy (ESGE) guidelines"
+    },
+    {
+     "pmid": "33242928",
+     "doi": "10.5946/ce.2020.192",
+     "design": "guideline",
+     "year": "2020",
+     "journal": null,
+     "title": "Clinical Practice Guideline for the Management of Antithrombotic Agents in Patients Undergoing Gastrointestinal Endoscopy"
+    },
+    {
+     "pmid": "34028396",
+     "doi": "10.1097/mcg.0000000000001559",
+     "design": "meta-analysis",
+     "year": "2022",
+     "journal": null,
+     "title": "No Significant Difference in Post-ERCP Bleeding Rates Between Dual Antiplatelet Agents and Aspirin Alone: A Systematic Review and Meta-analysis"
+    },
+    {
+     "pmid": "34362780",
+     "doi": "10.1136/gutjnl-2021-325184",
+     "design": "guideline",
+     "year": "2021",
+     "journal": null,
+     "title": "Endoscopy in patients on antiplatelet or anticoagulant therapy: British Society of Gastroenterology (BSG) and European Society of Gastrointestinal Endoscopy (ESGE) guideline update"
+    },
+    {
+     "pmid": "35028736",
+     "doi": "10.1007/s00464-021-08975-0",
+     "design": "meta-analysis",
+     "year": "2022",
+     "journal": null,
+     "title": "Risk of colonoscopic post-polypectomy bleeding in patients on single antiplatelet therapy: systematic review with meta-analysis"
+    },
+    {
+     "pmid": "35361337",
+     "doi": "10.1016/j.giec.2021.12.006",
+     "design": "review",
+     "year": "2022",
+     "journal": null,
+     "title": "Management of Antiplatelet and Anticoagulant Agents before and after Polypectomy"
+    },
+    {
+     "pmid": "38251803",
+     "doi": "10.1111/jgh.16485",
+     "design": "guideline",
+     "year": "2024",
+     "journal": null,
+     "title": "A systematic critical appraisal of clinical practice guidelines of antithrombotic agents in gastrointestinal endoscopy using the AGREE II tool"
+    },
+    {
+     "pmid": "39223080",
+     "doi": "10.5009/gnl240176",
+     "design": "guideline",
+     "year": "2024",
+     "journal": null,
+     "title": "International Digestive Endoscopy Network Consensus on the Management of Antithrombotic Agents in Patients Undergoing Gastrointestinal Endoscopy"
+    },
+    {
+     "pmid": "39549819",
+     "doi": "10.1016/j.gastrohep.2024.502286",
+     "design": "review",
+     "year": "2025",
+     "journal": null,
+     "title": "Periendoscopic management of antithrombotic drugs: Is cold snare polypectomy the answer?"
+    }
+   ]
+  }
+ }
+]
