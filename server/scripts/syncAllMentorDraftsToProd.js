@@ -15,6 +15,13 @@ loadEnv();
 
 const args = process.argv.slice(2);
 const APPLY = args.includes('--apply');
+// This script force-publishes drafts and marks topic_knowledge human_reviewed with no clinician
+// decision. deploy.sh runs it on every deploy, which overwrote reviewed/pending drafts on prod.
+// Refuse to write unless the operator explicitly accepts publishing unreviewed content.
+if (APPLY && !args.includes('--publish-unreviewed')) {
+    console.log('Skipping sync: drafts are published only through clinician review. Pass --publish-unreviewed to force.');
+    process.exit(0);
+}
 
 const RANGE_FILES = [
     'topics-0001-0250.json',
