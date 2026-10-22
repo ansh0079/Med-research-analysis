@@ -82,7 +82,7 @@ async function policyHasDenseGlobalData(db, policyType, fallbackArm, armIds) {
 }
 
 function selectBootstrapArm(armIds, fallbackArm, density = {}, {
-    explorationRate = Number(process.env.BANDIT_BOOTSTRAP_EXPLORATION_RATE || 0.1),
+    explorationRate = Number(process.env.BANDIT_BOOTSTRAP_EXPLORATION_RATE || 0.15),
     random = Math.random,
     minGlobalPulls = MIN_GLOBAL_PULLS_FOR_POLICY,
 } = {}) {
@@ -90,8 +90,14 @@ function selectBootstrapArm(armIds, fallbackArm, density = {}, {
     const fallback = ids.includes(fallbackArm) ? fallbackArm : ids[0];
     const propensityByArm = Object.fromEntries(ids.map((armId) => [armId, armId === fallback ? 1 : 0]));
     const globalPulls = Math.max(0, Number(density.globalPulls) || 0);
-    if (!fallback || globalPulls < minGlobalPulls) {
-        return { armId: fallback, propensity: 1, propensityByArm, selectionSource: 'density_gate' };
+    const minControlPulls = Math.min(5, minGlobalPulls);
+
+    if (!fallback) {
+        return { armId: ids[0] || 'fallback', propensity: 1, propensityByArm, selectionSource: 'density_gate' };
+    }
+    // Allow an initial 5 control pulls on the fallback arm before opening exploration.
+    if (globalPulls < minControlPulls) {
+        return { armId: fallback, propensity: 1, propensityByArm, selectionSource: 'density_control_warmup' };
     }
 
     const rows = Array.isArray(density.rows) ? density.rows : [];

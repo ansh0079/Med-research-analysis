@@ -348,31 +348,40 @@ async function buildSearchLearningContext({ db, userId, query, sessionId, previo
                 || context.misconceptionBoost?.misconceptionPhrases?.length > 0) {
                 context.shouldPersonalize = true;
             }
-            const banditContext = {
-                profile: context.profile,
-                topicMastery: context.topicMastery,
-                hasDangerousMisconception: context.hasDangerousMisconception,
+        }
+
+        const banditContext = {
+            profile: context.profile,
+            topicMastery: context.topicMastery,
+            hasDangerousMisconception: context.hasDangerousMisconception,
+            query,
+            sessionDepth: previousQueries.length,
+        };
+        const defaultPropensityByArm = Object.fromEntries(Object.keys(SEARCH_RANKING_ARMS).map((id) => [id, id === 'heuristic_default' ? 1 : 0]));
+        context.banditSelection = await selectSearchRankingArm(db, userId, banditContext).catch((err) => {
+            logger.debug({ err }, 'selectSearchRankingArm failed');
+            return {
+                armId: 'heuristic_default',
+                weights: SEARCH_RANKING_ARMS.heuristic_default,
+                propensity: 1,
+                propensityByArm: defaultPropensityByArm,
+                selectionSource: 'fallback_default',
             };
-            context.banditSelection = await selectSearchRankingArm(db, userId, banditContext).catch((err) => {
-                logger.debug({ err }, 'selectSearchRankingArm failed');
-                return { armId: 'heuristic_default', weights: SEARCH_RANKING_ARMS.heuristic_default };
-            });
-            // Safety override: dangerous misconception = user is confidently wrong on this topic.
-            // Bypass the bandit and force misconception_heavy arm to surface contradicting evidence first.
-            if (context.hasDangerousMisconception) {
-                const armIds = Object.keys(SEARCH_RANKING_ARMS);
-                context.banditSelection = {
-                    ...context.banditSelection,
-                    armId: 'misconception_heavy',
-                    weights: SEARCH_RANKING_ARMS.misconception_heavy,
-                    propensity: 1,
-                    propensityByArm: Object.fromEntries(armIds.map((armId) => [armId, armId === 'misconception_heavy' ? 1 : 0])),
-                    selectionSource: 'safety_override',
-                    calibrationOverride: 'dangerous_misconception',
-                };
-            }
-        } else {
-            context.banditSelection = { armId: 'heuristic_default', weights: SEARCH_RANKING_ARMS.heuristic_default };
+        });
+
+        // Safety override: dangerous misconception = user is confidently wrong on this topic.
+        // Bypass the bandit and force misconception_heavy arm to surface contradicting evidence first.
+        if (context.hasDangerousMisconception) {
+            const armIds = Object.keys(SEARCH_RANKING_ARMS);
+            context.banditSelection = {
+                ...context.banditSelection,
+                armId: 'misconception_heavy',
+                weights: SEARCH_RANKING_ARMS.misconception_heavy,
+                propensity: 1,
+                propensityByArm: Object.fromEntries(armIds.map((armId) => [armId, armId === 'misconception_heavy' ? 1 : 0])),
+                selectionSource: 'safety_override',
+                calibrationOverride: 'dangerous_misconception',
+            };
         }
         return context;
     } catch {

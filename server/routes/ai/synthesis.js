@@ -354,7 +354,8 @@ function registerSynthesisRoutes(app, {
         }
     });
 
-    app.post('/api/ai/synopsis/feedback', limitBodySize(128 * 1024), requireJson, requireAiAuth, rateLimit(60, 60), async (req, res) => {
+    // Open to both authenticated physicians and anonymous readers with session tracking.
+    app.post('/api/ai/synopsis/feedback', limitBodySize(128 * 1024), requireJson, rateLimit(60, 60), async (req, res) => {
         const {
             article,
             articleUid,

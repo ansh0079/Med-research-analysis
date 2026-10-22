@@ -17,7 +17,13 @@ const RECOMMENDATION_REWARDS = {
     default: 0.4,
 };
 
-function impressionEngagementReward(impression = {}) {
+function positionDebiasWeight(position) {
+    const pos = Math.max(1, Number(position) || 1);
+    // Inverse examination propensity: p(exam|pos) ~ 1/sqrt(pos), bounded at [1.0, 3.5]
+    return Math.min(3.5, Math.sqrt(pos));
+}
+
+function impressionEngagementReward(impression = {}, { debiasPosition = true } = {}) {
     impression = impression || {};
     let reward = 0;
     // Keep click/dwell small so quiz/mastery outcomes dominate arm learning.
@@ -25,6 +31,10 @@ function impressionEngagementReward(impression = {}) {
     else if (impression.was_clicked === 1 || impression.was_clicked === true) reward += 0.02;
     if ((impression.dwell_time_ms || 0) >= 30000) reward += 0.03;
     else if ((impression.dwell_time_ms || 0) >= 12000) reward += 0.01;
+
+    if (debiasPosition && reward > 0 && impression.position != null) {
+        reward *= positionDebiasWeight(impression.position);
+    }
     return Math.min(1, reward);
 }
 
@@ -111,4 +121,5 @@ module.exports = {
     combineSearchQuizReward,
     recommendationFollowThroughReward,
     explainInteractionReward,
+    positionDebiasWeight,
 };

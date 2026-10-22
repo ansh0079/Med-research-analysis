@@ -351,6 +351,11 @@ function registerUnifiedSearchRoutes(app, deps) {
                                 };
                                 lowRecallLearning.appliedReformulation = queryAutoRepair.winner;
                                 lowRecallLearning.resultCount = articles.length;
+                                if (db?.mergeTopicKnowledgeAliases) {
+                                    db.mergeTopicKnowledgeAliases(queryValidation.sanitized, [winnerQ], {
+                                        reason: 'query_auto_repair_winner',
+                                    }).catch((err) => { logger.warn({ err }, 'mergeTopicKnowledgeAliases for winner failed'); });
+                                }
                             }
                         } catch (repairErr) {
                             logger.warn({ err: repairErr }, 'same-request query auto-repair re-fetch failed');
@@ -433,8 +438,18 @@ function registerUnifiedSearchRoutes(app, deps) {
                     // excluded: a monitor never clicks, so every row it writes is a
                     // permanently-unrewarded impression that biases offline eval.
                     const effectiveBanditMeta = banditMeta?.armId
-                        ? { ...banditMeta, forceLog: true }
-                        : { armId: 'heuristic_default', forceLog: true };
+                        ? {
+                            ...banditMeta,
+                            propensity: banditMeta.propensity != null ? Number(banditMeta.propensity) : 1,
+                            forceLog: true,
+                        }
+                        : {
+                            armId: 'heuristic_default',
+                            propensity: 1,
+                            propensityByArm: { heuristic_default: 1 },
+                            selectionSource: 'default_fallback',
+                            forceLog: true,
+                        };
                     const logged = await recordSearchRankingDecisions(db, {
                         userId: req.user?.id ?? null,
                         sessionId: req.sessionId ?? null,
