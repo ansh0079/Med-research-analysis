@@ -141,11 +141,22 @@ async function collectJobStats(db, days) {
         [sinceIso(days)]
     );
 
+    // A PDF lookup that finds no open-access copy is recorded as failed so the flagship retry logic can try again,
+    // but it is an expected outcome, not a fault. Report it apart so failure-rate alerts reflect real errors.
+    const expectedMissRow = await safeGet(
+        db,
+        `SELECT COUNT(*) AS count
+         FROM ai_generation_jobs
+         WHERE status = 'failed' AND error_message = 'pdf_index:no_open_access_pdf' AND updated_at >= ?`,
+        [sinceIso(days)]
+    );
+    const expectedMisses = countValue(expectedMissRow);
     return {
         queued: countByStatus(statusRows, 'queued'),
         running: countByStatus(statusRows, 'running'),
         completed: countByStatus(statusRows, 'completed'),
-        failed: countByStatus(statusRows, 'failed'),
+        failed: Math.max(0, countByStatus(statusRows, 'failed') - expectedMisses),
+        expectedMisses,
         deadLetter: countValue(deadLetterRow),
         total: statusRows.reduce((sum, row) => sum + Number(row.count || 0), 0) + countValue(deadLetterRow),
     };

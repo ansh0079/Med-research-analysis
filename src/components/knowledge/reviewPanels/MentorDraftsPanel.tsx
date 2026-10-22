@@ -89,6 +89,23 @@ function DraftDetail({ draft, onReview, onPublish, reviewing }: { draft: TopicMe
         </div>
       )}
 
+      {(page.clinical_overview || (page.clinical_detail && page.clinical_detail.length > 0)) && (
+        <div className="rounded-lg border border-amber-200 bg-amber-50/60 p-3 dark:border-amber-900/50 dark:bg-amber-950/20">
+          <p className="mb-1 text-[10px] font-bold uppercase tracking-widest text-amber-700">Clinical detail from earlier version (not for publishing until verified)</p>
+          {page.clinical_overview && <p className="mb-2 text-slate-600 dark:text-slate-400">{page.clinical_overview}</p>}
+          <ul className="list-disc space-y-1 pl-5 text-slate-600 dark:text-slate-400">
+            {(page.clinical_detail || []).map((d, i) => (
+              <li key={i}>
+                {d.claim}{' '}
+                <span className="whitespace-nowrap text-[10px] font-semibold text-amber-700">
+                  {d.possible_support_pmid ? `[possible support: PMID ${d.possible_support_pmid}]` : '[unreferenced]'}
+                </span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
       <div>
         <p className="mb-1 text-[10px] font-bold uppercase tracking-widest text-slate-400">Sources</p>
         <ul className="space-y-1 text-xs text-slate-500">

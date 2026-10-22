@@ -33,6 +33,9 @@ export type TopicMentorDraftPage = {
   mcq_angles: string[];
   case_hooks: string[];
   gaps: string;
+  /** Earlier-version clinical text with no verified source; shown to reviewers only, never published. */
+  clinical_overview?: string;
+  clinical_detail?: Array<{ claim: string; support: 'unreferenced' | 'matched_in_cited_source'; possible_support_pmid?: string }>;
   sources: TopicMentorDraftSource[];
 };
 
