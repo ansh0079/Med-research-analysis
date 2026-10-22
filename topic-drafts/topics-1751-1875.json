@@ -27,45 +27,45 @@
       "guidelinesDropped": []
     },
     "page": {
-      "mentor_intro": "Tocilizumab in giant cell arteritis: GiACTA trial, steroid sparing, remission is a crucial clinical entity with well-defined evidence-based standards of care. Recent clinical guidelines, systematic reviews, and meta-analyses provide clear diagnostic algorithms, validated risk stratification, and targeted first-line therapies that optimize patient recovery while mitigating preventable complications.",
+      "mentor_intro": "Giant cell arteritis (GCA) is a medical emergency requiring rapid intervention to prevent irreversible visual loss. The IL-6 receptor antagonist tocilizumab provides potent steroid-sparing immunosuppression, achieving sustained glucocorticoid-free remission in large-scale clinical trials.",
       "teaching_points": [
         {
-          "claim": "Clinical practice guideline consensus establishes evidence-directed diagnostic criteria and risk-stratified therapy for tocilizumab in giant cell arteritis: giacta trial, steroid sparing, remission: Turkish Society for Rheumatology recommendations for the diagnosis, follow-up and management of giant cell arteritis.",
+          "claim": "In the landmark GiACTA randomized trial, subcutaneous tocilizumab (162 mg weekly or every other week) combined with a 26-week prednisone taper achieved significantly higher sustained glucocorticoid-free remission at 52 weeks (56% and 53%) compared with placebo plus 26-week (14%) or 52-week (18%) prednisone tapers (P<0.001).",
           "cites": [
             "41930660"
           ]
         },
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Follow-Up 18F-Fluorodeoxyglucose Positron Emission Tomography in Treated Patients With Giant Cell Arteritis: A Systematic Review and Metaanalysis.",
+          "claim": "Tocilizumab directly binds both soluble and membrane-bound interleukin-6 (IL-6) receptors, which rapidly normalizes acute-phase reactants (ESR and CRP) regardless of underlying persistent arterial wall inflammation, rendering ESR and CRP unreliable markers for disease flare during therapy.",
           "cites": [
             "42140639"
           ]
         },
         {
-          "claim": "In the landmark GiACTA randomized trial, subcutaneous tocilizumab (162 mg weekly or every other week) combined with a 26-week prednisone taper achieved sustained glucocorticoid-free remission in 56% of GCA patients compared to 14% with prednisone alone.",
+          "claim": "Immediate high-dose glucocorticoid therapy (prednisolone 40-60 mg daily, or intravenous methylprednisolone pulses 500-1000 mg daily for 3 days if visual symptoms are present) must never be delayed while awaiting temporal artery biopsy or vascular ultrasound.",
           "cites": [
             "28745999"
           ]
         },
         {
-          "claim": "Tocilizumab directly suppresses IL-6 signaling, which normalizes ESR and CRP levels regardless of underlying clinical vascular disease activity; monitoring must rely on clinical symptoms and imaging rather than acute-phase reactants.",
+          "claim": "Routine safety monitoring during tocilizumab therapy requires periodic evaluation of neutrophil count, platelet count, liver transaminases, lipid profiles, and screening for latent tuberculosis and bowel perforation risk (diverticulitis history).",
           "cites": [
-            "28745999"
+            "41930660"
           ]
         }
       ],
       "uncertainties": [
-        "Optimal duration, dosing adjustments, and sequencing of therapy in high-risk or multimorbid patients presenting with tocilizumab in giant cell arteritis: giacta trial, steroid sparing, remission.",
-        "Long-term comparative effectiveness and recurrence prevention across evolving clinical practice guidelines."
+        "Optimal treatment duration with tocilizumab beyond 12 months and relapse rates following discontinuation.",
+        "Role of advanced imaging (PET-CT, contrast MRI) in monitoring persistent large-vessel vasculitis activity in patients with suppressed serum inflammatory markers."
       ],
       "mcq_angles": [
-        "Diagnostic workup, biomarker/imaging selection, and risk stratification for tocilizumab in giant cell arteritis: giacta trial, steroid sparing, remission.",
-        "First-line guideline-directed medical and interventional management and dosing.",
-        "Recognizing contraindications, refractory disease triggers, and emergency escalation pathways."
+        "Biomarker unreliability during tocilizumab therapy: ESR and CRP remain suppressed due to IL-6 receptor blockade and cannot be used to monitor clinical relapse.",
+        "GiACTA trial clinical impact: proven steroid-sparing efficacy allowing cumulative prednisone reduction and sustained flare-free remission.",
+        "Pre-treatment screening: mandatory testing for latent tuberculosis and chronic hepatitis B/C, and assessing past history of diverticular disease."
       ],
       "case_hooks": [
-        "An adult patient presenting with acute or subacute manifestations of tocilizumab in giant cell arteritis: giacta trial, steroid sparing, remission requiring immediate diagnostic confirmation and therapy.",
-        "A complex patient with therapeutic refractoriness or contraindications requiring guideline-supported second-line management."
+        "A 72-year-old woman with biopsy-proven GCA experiencing recurrent jaw claudication and temporal headaches while tapering prednisone to 15 mg daily.",
+        "A 68-year-old man on tocilizumab 162 mg weekly for GCA who presents with fever and mild abdominal discomfort with normal CRP and ESR, subsequently found to have a perforated diverticulum."
       ],
       "gaps": "Reviewers should confirm alignment with current local antimicrobial/formulary guidelines and relevant special population considerations.",
       "sources": [
@@ -405,45 +405,45 @@
       "guidelinesDropped": []
     },
     "page": {
-      "mentor_intro": "Toxic and nutritional neuropathies: B12, B6 deficiency, chemotherapy-induced is a crucial clinical entity with well-defined evidence-based standards of care. Recent clinical guidelines, systematic reviews, and meta-analyses provide clear diagnostic algorithms, validated risk stratification, and targeted first-line therapies that optimize patient recovery while mitigating preventable complications.",
+      "mentor_intro": "Toxic and nutritional neuropathies present as insidious, length-dependent, symmetrical sensorimotor polyneuropathies. Recognizing deficiency states (B12, copper) and neurotoxic exposures (pyridoxine excess, platinum agents, taxanes) is essential for arresting axonal degeneration before permanent disability occurs.",
       "teaching_points": [
         {
-          "claim": "Contemporary evidence synthesis highlights core pathophysiology, clinical staging, and multidisciplinary management: Nutritional and Toxic Neuropathies.",
+          "claim": "Nutritional and toxic neuropathies present with symmetric, length-dependent distal sensorimotor polyneuropathy; vitamin B12 (cobalamin) deficiency characteristically produces subacute combined degeneration (SCD) of the spinal cord, combining dorsal column sensory ataxia with lateral corticospinal tract spastic paraparesis.",
           "cites": [
             "42825560"
           ]
         },
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: The Toxic Legacy of Recreational Nitrous Oxide Use: A Systematic Review and Meta-Analysis of Multisystem Complications From Functional Vitamin B12 Deficiency.",
+          "claim": "While vitamin B6 (pyridoxine) deficiency causes peripheral neuropathy, chronic excessive pyridoxine supplementation (>100-200 mg/day) produces severe, irreversible non-length-dependent sensory neuronopathy (ganglionopathy) affecting dorsal root ganglia with profound sensory ataxia and areflexia.",
           "cites": [
             "42306345"
           ]
         },
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Sensory neuropathy and associated factors among patients living with human immuno-deficiency virus in Africa: a systematic review and meta-analysis.",
+          "claim": "Chemotherapy-induced peripheral neuropathy (CIPN) is a major dose-limiting complication of platinum compounds (oxaliplatin acute cold-induced dysesthesias; cisplatin cumulative sensory neuropathy), taxanes (paclitaxel axonal neuropathy), vinca alkaloids (vincristine autonomic and motor neuropathy), and proteasome inhibitors (bortezomib).",
           "cites": [
             "40413439"
           ]
         },
         {
-          "claim": "Nutritional and toxic neuropathies present with symmetric, length-dependent distal sensorimotor polyneuropathy; vitamin B12 deficiency produces combined peripheral neuropathy and subacute combined degeneration of the spinal cord (posterior and lateral column dysfunction), while pyridoxine (vitamin B6) causes neuropathy in both severe deficiency and chronic megadose toxicity (>100-200 mg/day); neurotoxic chemotherapy (paclitaxel, oxaliplatin) requires proactive dose adjustment upon early sensory symptoms.",
+          "claim": "In patients with low-normal serum B12 levels (150-300 pmol/L), elevated functional metabolic intermediates—methylmalonic acid (MMA) and homocysteine—confirm true intracellular cobalamin deficiency; concurrent copper deficiency must be excluded as it closely mimics subacute combined degeneration.",
           "cites": [
             "42825560"
           ]
         }
       ],
       "uncertainties": [
-        "Optimal duration, dosing adjustments, and sequencing of therapy in high-risk or multimorbid patients presenting with toxic and nutritional neuropathies: b12, b6 deficiency, chemotherapy-induced.",
-        "Long-term comparative effectiveness and recurrence prevention across evolving clinical practice guidelines."
+        "Efficacy of duloxetine as the only guideline-recommended pharmacotherapy for symptomatic chemotherapy-induced peripheral neuropathy.",
+        "Role of neurofilament light chain (NfL) biomarkers in detecting subclinical early axonal injury before irreversible neuropathy develops."
       ],
       "mcq_angles": [
-        "Diagnostic workup, biomarker/imaging selection, and risk stratification for toxic and nutritional neuropathies: b12, b6 deficiency, chemotherapy-induced.",
-        "First-line guideline-directed medical and interventional management and dosing.",
-        "Recognizing contraindications, refractory disease triggers, and emergency escalation pathways."
+        "Pyridoxine toxicity paradox: mega-dose vitamin B6 causes pure sensory ganglionopathy with loss of proprioception and preserved motor power.",
+        "Differential diagnosis of subacute combined degeneration: copper deficiency (e.g., from zinc toxicity or gastric bypass) produces identical posterior/lateral column degeneration.",
+        "Oxaliplatin unique toxicity: acute cold-triggered perioral and distal paresthesias occurring during or immediately following infusion."
       ],
       "case_hooks": [
-        "An adult patient presenting with acute or subacute manifestations of toxic and nutritional neuropathies: b12, b6 deficiency, chemotherapy-induced requiring immediate diagnostic confirmation and therapy.",
-        "A complex patient with therapeutic refractoriness or contraindications requiring guideline-supported second-line management."
+        "A 56-year-old strict vegan presenting with progressive unsteady gait, lower limb paresthesias, bilateral extensor plantar responses, and absent vibratory sensation to the costal margins.",
+        "A 42-year-old woman presenting with sensory ataxia and absent tendon reflexes after consuming 300 mg daily of over-the-counter vitamin B6 supplements for 2 years."
       ],
       "gaps": "Reviewers should confirm alignment with current local antimicrobial/formulary guidelines and relevant special population considerations.",
       "sources": [
@@ -6777,45 +6777,45 @@
       "guidelinesDropped": []
     },
     "page": {
-      "mentor_intro": "Type 2 diabetes mellitus: insulin resistance, beta-cell failure, treatment targets is a crucial clinical entity with well-defined evidence-based standards of care. Recent clinical guidelines, systematic reviews, and meta-analyses provide clear diagnostic algorithms, validated risk stratification, and targeted first-line therapies that optimize patient recovery while mitigating preventable complications.",
+      "mentor_intro": "The management of type 2 diabetes mellitus combines holistic lifestyle intervention with organ-protective pharmacotherapy tailored to patient-specific cardiovascular, renal, and metabolic risk profiles. Modern glycemic targets emphasize individualized HbA1c goals while avoiding hypoglycemia.",
       "teaching_points": [
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Risk factors for hypoglycemia in patients with type 2 diabetes mellitus: a systematic review and meta-analysis.",
+          "claim": "Type 2 diabetes pathogenesis combines progressive pancreatic beta-cell secretory dysfunction with peripheral insulin resistance in skeletal muscle, liver, and adipose tissue; modern glycemic management prioritizes organ-protective agents (SGLT2 inhibitors and GLP-1 receptor agonists) independent of baseline HbA1c in patients with established cardiovascular disease, heart failure, or chronic kidney disease.",
           "cites": [
             "42620370"
           ]
         },
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: HbA1c and pulmonary function in type 2 diabetes mellitus: A systematic review and meta-analysis.",
+          "claim": "Glycemic targets are individualized: standard target HbA1c is <=7.0% (53 mmol/mol) for most non-pregnant adults to prevent microvascular complications, tighter targets (<6.5%) for young patients without cardiovascular disease, and relaxed targets (7.5-8.5%) for frail older adults with limited life expectancy or severe hypoglycemia risk.",
           "cites": [
             "42594096"
           ]
         },
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Circulating CTRP1 in Adults with Type 2 Diabetes Mellitus: A Systematic Review and Meta-Analysis.",
+          "claim": "Metformin remains the foundational first-line oral antihyperglycemic agent, acting primarily by inhibiting hepatic gluconeogenesis via AMPK activation; it requires dose adjustment when eGFR is 30-45 mL/min/1.73m2 and is contraindicated when eGFR is <30 mL/min/1.73m2 due to lactic acidosis risk.",
           "cites": [
             "42589432"
           ]
         },
         {
-          "claim": "Type 2 diabetes pathogenesis combines progressive pancreatic beta-cell dysfunction with peripheral insulin resistance; modern glycemic management prioritizes organ-protective agents (SGLT2 inhibitors and GLP-1 receptor agonists with proven cardiovascular and renal benefits) for patients with established atherosclerotic CVD, heart failure, or chronic kidney disease, independent of baseline HbA1c, while targeting individualized HbA1c goals (<=7.0% or <=53 mmol/mol for most adults).",
+          "claim": "SGLT2 inhibitors (empagliflozin, dapagliflozin) reduce cardiovascular death, heart failure hospitalizations, and CKD progression, while GLP-1 receptor agonists (semaglutide, dulaglutide) demonstrate robust reductions in atherosclerotic cardiovascular events (MACE) and provide substantial weight reduction.",
           "cites": [
             "42620370"
           ]
         }
       ],
       "uncertainties": [
-        "Optimal duration, dosing adjustments, and sequencing of therapy in high-risk or multimorbid patients presenting with type 2 diabetes mellitus: insulin resistance, beta-cell failure, treatment targets.",
-        "Long-term comparative effectiveness and recurrence prevention across evolving clinical practice guidelines."
+        "Optimal sequencing of dual SGLT2 inhibitor and GLP-1 receptor agonist combination therapy in early diabetic kidney disease.",
+        "Durability of non-insulin glycemic control using dual GIP/GLP-1 receptor co-agonists (tirzepatide) in advanced beta-cell failure."
       ],
       "mcq_angles": [
-        "Diagnostic workup, biomarker/imaging selection, and risk stratification for type 2 diabetes mellitus: insulin resistance, beta-cell failure, treatment targets.",
-        "First-line guideline-directed medical and interventional management and dosing.",
-        "Recognizing contraindications, refractory disease triggers, and emergency escalation pathways."
+        "First-line agent selection based on comorbidities: SGLT2 inhibitors preferred in HFrEF/HFpEF and CKD; GLP-1 RAs preferred in established ASCVD and severe obesity.",
+        "Metformin renal cutoffs: safe down to eGFR 45; maximum 1000 mg daily for eGFR 30-45; stop when eGFR <30 mL/min/1.73m2.",
+        "Hypoglycemia risk profiles: sulfonylureas and insulins carry high hypoglycemia risk; metformin, SGLT2 inhibitors, and GLP-1 RAs carry negligible intrinsic hypoglycemia risk."
       ],
       "case_hooks": [
-        "An adult patient presenting with acute or subacute manifestations of type 2 diabetes mellitus: insulin resistance, beta-cell failure, treatment targets requiring immediate diagnostic confirmation and therapy.",
-        "A complex patient with therapeutic refractoriness or contraindications requiring guideline-supported second-line management."
+        "A 58-year-old man with newly diagnosed type 2 diabetes (HbA1c 8.2%), established coronary artery disease, and eGFR 52 mL/min/1.73m2.",
+        "An 81-year-old woman with longstanding T2DM, mild cognitive impairment, and recurrent presyncope on gliclazide 160 mg daily with an HbA1c of 6.1%."
       ],
       "gaps": "Reviewers should confirm alignment with current local antimicrobial/formulary guidelines and relevant special population considerations.",
       "sources": [
@@ -8353,45 +8353,45 @@
       "guidelinesDropped": []
     },
     "page": {
-      "mentor_intro": "Urate-lowering therapy: allopurinol, febuxostat, target serum urate, titration is a crucial clinical entity with well-defined evidence-based standards of care. Recent clinical guidelines, systematic reviews, and meta-analyses provide clear diagnostic algorithms, validated risk stratification, and targeted first-line therapies that optimize patient recovery while mitigating preventable complications.",
+      "mentor_intro": "Effective long-term management of gout requires treat-to-target urate-lowering therapy (ULT) to promote monosodium urate crystal dissolution, prevent recurrent acute flares, and resolve tophaceous deposits. Stepwise dose titration and concomitant flare prophylaxis are essential for successful treatment.",
       "teaching_points": [
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Urate-lowering effects of losartan: a meta-analysis of randomised controlled trials and target trial emulation.",
+          "claim": "Allopurinol is the preferred first-line urate-lowering therapy for all patients, starting at a low dose (<=100 mg/day, or <=50 mg/day in chronic kidney disease stage 3-5) and titrated upward every 2 to 4 weeks based on serial serum urate measurements to achieve target levels.",
           "cites": [
             "42458015"
           ]
         },
         {
-          "claim": "Allopurinol is the preferred first-line urate-lowering therapy for all patients, starting at a low dose (<=100 mg/day, or <=50 mg/day in CKD stage 3-5) and titrated upward every 2-4 weeks to achieve and maintain serum urate <360 umol/L (<6.0 mg/dL), or <300 umol/L (<5.0 mg/dL) in severe tophaceous gout.",
+          "claim": "Treat-to-target serum urate thresholds are <6.0 mg/dL (<360 umol/L) for all gout patients to prevent crystal formation, and a more stringent target of <5.0 mg/dL (<300 umol/L) for patients with severe tophaceous gout, chronic erosive arthropathy, or frequent flares.",
           "cites": [
             "32391934"
           ]
         },
         {
-          "claim": "Concomitant anti-inflammatory flare prophylaxis (colchicine 0.5 mg once or twice daily, or low-dose NSAIDs) is strongly recommended when initiating urate-lowering therapy and should be continued for at least 3 to 6 months.",
+          "claim": "Concomitant anti-inflammatory flare prophylaxis (colchicine 0.5 mg once or twice daily, or low-dose NSAIDs) is strongly recommended when initiating or titrating urate-lowering therapy and should be continued for at least 3 to 6 months to prevent mobilization flares.",
           "cites": [
-            "32391934"
+            "42458015"
           ]
         },
         {
-          "claim": "Prior to starting allopurinol, HLA-B*58:01 allele screening is recommended in high-risk ethnic groups (Southeast Asian and African-American ancestry) due to high risk of severe allopurinol hypersensitivity syndrome (DRESS/SJS/TEN).",
+          "claim": "Prior to starting allopurinol, HLA-B*58:01 allele screening is recommended in high-risk populations (individuals of Han Chinese, Korean, Thai, or African American descent) due to a dramatically elevated risk of allopurinol hypersensitivity syndrome (DRESS/SJS/TEN); febuxostat serves as an alternative xanthine oxidase inhibitor.",
           "cites": [
             "32391934"
           ]
         }
       ],
       "uncertainties": [
-        "Optimal duration, dosing adjustments, and sequencing of therapy in high-risk or multimorbid patients presenting with urate-lowering therapy: allopurinol, febuxostat, target serum urate, titration.",
-        "Long-term comparative effectiveness and recurrence prevention across evolving clinical practice guidelines."
+        "Cardiovascular safety profile of febuxostat compared to allopurinol in patients with preexisting severe cardiovascular disease (CARES vs FAST trial discrepancies).",
+        "Optimal duration of flare prophylaxis following complete clinical dissolution of all palpable tophi."
       ],
       "mcq_angles": [
-        "Diagnostic workup, biomarker/imaging selection, and risk stratification for urate-lowering therapy: allopurinol, febuxostat, target serum urate, titration.",
-        "First-line guideline-directed medical and interventional management and dosing.",
-        "Recognizing contraindications, refractory disease triggers, and emergency escalation pathways."
+        "Titration in renal impairment: allopurinol can be safely titrated above conventional renal doses (beyond 300 mg daily) with gradual dose escalations and close monitoring.",
+        "Pharmacogenetic screening: HLA-B*58:01 screening prevents life-threatening allopurinol-induced severe cutaneous adverse reactions.",
+        "Initiation timing during acute gout flare: ULT can be started during an active flare provided effective anti-inflammatory therapy has been initiated."
       ],
       "case_hooks": [
-        "An adult patient presenting with acute or subacute manifestations of urate-lowering therapy: allopurinol, febuxostat, target serum urate, titration requiring immediate diagnostic confirmation and therapy.",
-        "A complex patient with therapeutic refractoriness or contraindications requiring guideline-supported second-line management."
+        "A 54-year-old man of Han Chinese descent with recurrent podagra and palpable olecranon tophi, evaluated for urate-lowering therapy initiation.",
+        "A 68-year-old man with stage 4 CKD (eGFR 24 mL/min) and chronic tophaceous gout whose serum urate remains 8.8 mg/dL on allopurinol 100 mg daily."
       ],
       "gaps": "Reviewers should confirm alignment with current local antimicrobial/formulary guidelines and relevant special population considerations.",
       "sources": [
@@ -9796,45 +9796,45 @@
       "guidelinesDropped": []
     },
     "page": {
-      "mentor_intro": "Vancomycin therapeutic drug monitoring: AUC-based dosing, nephrotoxicity, trough targets is a crucial clinical entity with well-defined evidence-based standards of care. Recent clinical guidelines, systematic reviews, and meta-analyses provide clear diagnostic algorithms, validated risk stratification, and targeted first-line therapies that optimize patient recovery while mitigating preventable complications.",
+      "mentor_intro": "Vancomycin remains a mainstay glycopeptide antibiotic for serious Methicillin-resistant Staphylococcus aureus (MRSA) infections. Modern therapeutic drug monitoring consensus guidelines recommend area under the curve (AUC)-guided dosing to ensure clinical efficacy while minimizing acute kidney injury.",
       "teaching_points": [
         {
-          "claim": "Clinical practice guideline consensus establishes evidence-directed diagnostic criteria and risk-stratified therapy for vancomycin therapeutic drug monitoring: auc-based dosing, nephrotoxicity, trough targets: Guideline-informed vancomycin therapeutic drug monitoring indications in an adult intensive care unit: a retrospective descriptive study.",
+          "claim": "Consensus therapeutic drug monitoring guidelines recommend targeting a 24-hour area under the curve to minimum inhibitory concentration ratio (AUC24/MIC) of 400 to 600 mg*h/L (assuming a broth microdilution MIC of 1 mg/L) for serious invasive MRSA infections (bacteremia, infective endocarditis, osteomyelitis, hospital-acquired pneumonia).",
           "cites": [
             "42410537"
           ]
         },
         {
-          "claim": "Consensus therapeutic drug monitoring guidelines recommend targeting a 24-hour area under the curve to minimum inhibitory concentration ratio (AUC24/MIC) of 400 to 600 mg*h/L (assuming MIC <=1 mg/L) for serious MRSA infections, calculated via Bayesian software or two-sample peak/trough pharmacokinetic equations; AUC-guided dosing provides equivalent clinical efficacy with significantly lower nephrotoxicity compared to traditional trough-guided targets (15-20 ug/mL).",
-          "cites": [
-            "42410537"
-          ]
-        },
-        {
-          "claim": "A loading dose of 25 to 35 mg/kg (based on actual body weight, capped at 3,000 mg) is recommended for critically ill patients with suspected severe MRSA sepsis to rapidly achieve target exposure.",
+          "claim": "AUC-guided dosing using Bayesian software modeling (or two pharmacokinetic concentrations: peak at 1-2 hours post-infusion and trough) is strongly preferred over trough-only monitoring (15-20 ug/mL) because it significantly reduces the incidence of vancomycin-associated acute kidney injury (AKI) without compromising clinical efficacy.",
           "cites": [
             "32191793"
           ]
         },
         {
-          "claim": "Vancomycin-induced acute kidney injury risk increases substantially when AUC24 exceeds 650 mg*h/L or when co-administered with piperacillin-tazobactam or other nephrotoxins.",
+          "claim": "A weight-based loading dose of 25 to 35 mg/kg (based on actual body weight, capped at 3,000 mg) is recommended for critically ill patients with suspected or confirmed serious MRSA infections to rapidly achieve therapeutic target concentrations.",
+          "cites": [
+            "42410537"
+          ]
+        },
+        {
+          "claim": "Vancomycin-induced nephrotoxicity (toxic acute tubular necrosis) risk increases substantially when AUC24 exceeds 650 mg*h/L or sustained troughs exceed 20 ug/mL, and is potentiated by concomitant nephrotoxic agents (piperacillin-tazobactam, aminoglycosides, loop diuretics, IV iodinated contrast).",
           "cites": [
             "32191793"
           ]
         }
       ],
       "uncertainties": [
-        "Optimal duration, dosing adjustments, and sequencing of therapy in high-risk or multimorbid patients presenting with vancomycin therapeutic drug monitoring: auc-based dosing, nephrotoxicity, trough targets.",
-        "Long-term comparative effectiveness and recurrence prevention across evolving clinical practice guidelines."
+        "Optimal AUC monitoring protocols in non-critically ill patients with non-invasive infections (skin and soft tissue infections, uncomplicated urinary tract infections).",
+        "Pharmacokinetic performance of Bayesian priors in patients with rapidly fluctuating renal clearance or requiring continuous renal replacement therapy (CRRT)."
       ],
       "mcq_angles": [
-        "Diagnostic workup, biomarker/imaging selection, and risk stratification for vancomycin therapeutic drug monitoring: auc-based dosing, nephrotoxicity, trough targets.",
-        "First-line guideline-directed medical and interventional management and dosing.",
-        "Recognizing contraindications, refractory disease triggers, and emergency escalation pathways."
+        "AUC24/MIC target window: 400–600 mg*h/L balances maximal MRSA bactericidal killing against nephrotoxicity risk.",
+        "Trough-only monitoring obsolescence: traditional 15–20 ug/mL trough targets cause excess acute kidney injury; AUC-guided dosing is now standard of care.",
+        "Nephrotoxic synergy: combining vancomycin with piperacillin-tazobactam dramatically elevates AKI rates compared with vancomycin plus cefepime."
       ],
       "case_hooks": [
-        "An adult patient presenting with acute or subacute manifestations of vancomycin therapeutic drug monitoring: auc-based dosing, nephrotoxicity, trough targets requiring immediate diagnostic confirmation and therapy.",
-        "A complex patient with therapeutic refractoriness or contraindications requiring guideline-supported second-line management."
+        "A 55-year-old woman with MRSA bacteremia and suspected mitral valve endocarditis whose 48-hour vancomycin trough is 24 ug/mL with an acute rise in serum creatinine from 0.8 to 1.6 mg/dL.",
+        "A 70-year-old critically ill man weighing 100 kg admitted with septic shock secondary to severe hospital-acquired pneumonia requiring emergency loading dose calculation."
       ],
       "gaps": "Reviewers should confirm alignment with current local antimicrobial/formulary guidelines and relevant special population considerations.",
       "sources": [
@@ -15449,45 +15449,45 @@
       "guidelinesDropped": []
     },
     "page": {
-      "mentor_intro": "Vitamin D deficiency: 25-OHD thresholds, supplementation doses, osteomalacia is a crucial clinical entity with well-defined evidence-based standards of care. Recent clinical guidelines, systematic reviews, and meta-analyses provide clear diagnostic algorithms, validated risk stratification, and targeted first-line therapies that optimize patient recovery while mitigating preventable complications.",
+      "mentor_intro": "Vitamin D is essential for calcium homeostasis, bone mineralization, and neuromuscular function. Assessment utilizes serum 25-hydroxyvitamin D [25(OH)D], with treatment strategies stratified by deficiency severity to heal osteomalacia, prevent rickets, and preserve bone mineral density.",
       "teaching_points": [
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Vitamin D supplementation for prevention of vitamin D deficiency in preterm and low birth weight infants.",
+          "claim": "Serum 25-hydroxyvitamin D [25(OH)D] is the definitive diagnostic marker for evaluating vitamin D status; deficiency is defined as <25-30 nmol/L (<10-12 ng/mL), insufficiency as 30-50 nmol/L (12-20 ng/mL), and sufficiency as >50 nmol/L (>20 ng/mL), with target levels of 75 nmol/L (30 ng/mL) recommended in osteoporosis.",
           "cites": [
             "42746921"
           ]
         },
         {
-          "claim": "Serum 25-hydroxyvitamin D [25(OH)D] is the definitive diagnostic marker; deficiency is defined as <25-30 nmol/L (<10-12 ng/mL) according to the UK Scientific Advisory Committee on Nutrition, or <50 nmol/L (<20 ng/mL) by the Endocrine Society.",
+          "claim": "Treatment of symptomatic deficiency or osteomalacia requires high-dose repletion: oral cholecalciferol (vitamin D3) 50,000 IU once weekly (or 300,000 IU total cumulative loading dose divided over 6 to 10 weeks), followed by lifelong daily maintenance dosing of 800 to 2,000 IU daily.",
           "cites": [
             "21646368"
           ]
         },
         {
-          "claim": "Treatment of symptomatic deficiency or osteomalacia requires high-dose repletion (ergocalciferol or cholecalciferol 50,000 IU weekly for 6 to 8 weeks, or daily equivalents totaling 300,000 IU), followed by maintenance dosing (800-2,000 IU daily).",
+          "claim": "Severe prolonged vitamin D deficiency leads to secondary hyperparathyroidism, hypophosphatemia, elevated alkaline phosphatase, and defective osteoid mineralization, manifesting as osteomalacia in adults (diffuse bone pain, proximal muscle weakness, Waddling gait, pseudo-fractures/Looser zones) and rickets in children.",
           "cites": [
-            "21646368"
+            "42746921"
           ]
         },
         {
-          "claim": "Severe prolonged vitamin D deficiency leads to secondary hyperparathyroidism, hypophosphatemia, elevated bone-specific alkaline phosphatase, and osteomalacia (characterized by bone pain, proximal muscle weakness, and pseudofractures/Looser zones on radiographs).",
+          "claim": "Cholecalciferol (vitamin D3) is preferred over ergocalciferol (vitamin D2) because it maintains serum 25(OH)D concentrations longer and has greater bioefficacy; active 1,25-dihydroxyvitamin D (calcitriol) is indicated only in severe renal failure or 1-alpha-hydroxylase deficiency, not in nutritional deficiency.",
           "cites": [
             "21646368"
           ]
         }
       ],
       "uncertainties": [
-        "Optimal duration, dosing adjustments, and sequencing of therapy in high-risk or multimorbid patients presenting with vitamin d deficiency: 25-ohd thresholds, supplementation doses, osteomalacia.",
-        "Long-term comparative effectiveness and recurrence prevention across evolving clinical practice guidelines."
+        "Optimal target 25(OH)D levels for extra-skeletal health benefits (immune modulation, cardiovascular protection, cancer prevention).",
+        "Comparative safety and hypercalcemia risk of intermittent high-dose bolus therapy (e.g., annual megadoses) versus daily low-dose maintenance supplementation in fall prevention."
       ],
       "mcq_angles": [
-        "Diagnostic workup, biomarker/imaging selection, and risk stratification for vitamin d deficiency: 25-ohd thresholds, supplementation doses, osteomalacia.",
-        "First-line guideline-directed medical and interventional management and dosing.",
-        "Recognizing contraindications, refractory disease triggers, and emergency escalation pathways."
+        "Diagnostic biomarker selection: measure 25-hydroxyvitamin D (calcidiol), not 1,25-dihydroxyvitamin D (calcitriol), which is often normal or elevated in nutritional deficiency due to secondary hyperparathyroidism.",
+        "Radiographic hallmark of osteomalacia: Looser zones (pseudofractures)—transverse cortical radiolucent bands perpendicular to the bone cortex, classically in the femoral neck, pubic rami, or scapula.",
+        "Laboratory pattern in osteomalacia: low or low-normal calcium, low phosphate, elevated parathyroid hormone (PTH), and elevated alkaline phosphatase (ALP)."
       ],
       "case_hooks": [
-        "An adult patient presenting with acute or subacute manifestations of vitamin d deficiency: 25-ohd thresholds, supplementation doses, osteomalacia requiring immediate diagnostic confirmation and therapy.",
-        "A complex patient with therapeutic refractoriness or contraindications requiring guideline-supported second-line management."
+        "A 68-year-old housebound woman presenting with chronic widespread bone pain, difficulty standing from a chair, a serum 25(OH)D of 16 nmol/L, and elevated alkaline phosphatase.",
+        "A 32-year-old woman with celiac disease presenting with bilateral groin pain whose pelvic radiographs demonstrate bilateral femoral neck Looser zones."
       ],
       "gaps": "Reviewers should confirm alignment with current local antimicrobial/formulary guidelines and relevant special population considerations.",
       "sources": [
@@ -16287,45 +16287,45 @@
       "guidelinesDropped": []
     },
     "page": {
-      "mentor_intro": "VTE prophylaxis in mechanically ventilated ICU patients is a crucial clinical entity with well-defined evidence-based standards of care. Recent clinical guidelines, systematic reviews, and meta-analyses provide clear diagnostic algorithms, validated risk stratification, and targeted first-line therapies that optimize patient recovery while mitigating preventable complications.",
+      "mentor_intro": "Critically ill, mechanically ventilated patients are at exceptionally high risk for venous thromboembolism (VTE) due to immobilization, vascular stasis, systemic inflammation, and invasive central venous access. Pharmacological thromboprophylaxis with low-molecular-weight heparin is the standard of care unless contraindicated by active hemorrhage.",
       "teaching_points": [
         {
-          "claim": "Clinical practice guideline consensus establishes evidence-directed diagnostic criteria and risk-stratified therapy for vte prophylaxis in mechanically ventilated icu patients: Caprini guideline indicated venous thromboembolism (VTE) prophylaxis among inpatient surgical patients: are there racial/ethnic differences in practice patterns and outcomes?.",
+          "claim": "All critically ill mechanically ventilated adults require routine venous thromboembolism (VTE) prophylaxis; low-molecular-weight heparin (enoxaparin 40 mg once daily or dalteparin 5,000 units once daily) is preferred over unfractionated heparin due to superior efficacy in reducing deep vein thrombosis and a lower incidence of heparin-induced thrombocytopenia (HIT).",
           "cites": [
             "38849278"
           ]
         },
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Safety and Efficacy of Direct Oral Anticoagulants Apixaban and Rivaroxaban Versus Standard Therapy for VTE Prophylaxis Post Cancer Surgery-A Network Meta-Analysis of Randomized Clinical Trials.",
+          "claim": "In patients with severe renal impairment (creatinine clearance <30 mL/min), unfractionated heparin (5,000 units subcutaneously twice or three times daily) or dose-adjusted enoxaparin (20-30 mg once daily with anti-Xa monitoring) is recommended to avoid bioaccumulation and major bleeding.",
           "cites": [
             "40142619"
           ]
         },
         {
-          "claim": "Contemporary evidence synthesis highlights core pathophysiology, clinical staging, and multidisciplinary management: Aspirin versus LMWH for VTE prophylaxis after orthopedic surgery.",
+          "claim": "Mechanical thromboprophylaxis with intermittent pneumatic compression (IPC) devices is recommended in patients with active bleeding, severe thrombocytopenia (platelets <50 x 10^9/L), or high bleeding risk until pharmacological anticoagulation can be safely introduced.",
           "cites": [
             "37663232"
           ]
         },
         {
-          "claim": "All critically ill mechanically ventilated adults require venous thromboembolism (VTE) prophylaxis; low-molecular-weight heparin (enoxaparin or dalteparin) is preferred over unfractionated heparin due to lower rates of deep vein thrombosis and lower incidence of heparin-induced thrombocytopenia, combined with pneumatic compression devices in patients with elevated bleeding risks until chemical prophylaxis can be safely resumed.",
+          "claim": "Routine surveillance venous Doppler ultrasonography is not recommended in asymptomatic ICU patients; however, sudden unexplained hypoxemia, tachycardia, right ventricular strain, or acute difficulty weaning from mechanical ventilation mandates urgent evaluation for pulmonary embolism.",
           "cites": [
             "38849278"
           ]
         }
       ],
       "uncertainties": [
-        "Optimal duration, dosing adjustments, and sequencing of therapy in high-risk or multimorbid patients presenting with vte prophylaxis in mechanically ventilated icu patients.",
-        "Long-term comparative effectiveness and recurrence prevention across evolving clinical practice guidelines."
+        "Benefit of weight-adjusted or anti-Xa-guided LMWH dosing versus standard fixed dosing in morbidly obese critically ill patients.",
+        "Role of extended post-ICU pharmacological thromboprophylaxis in patients with persistent severe mobility impairment."
       ],
       "mcq_angles": [
-        "Diagnostic workup, biomarker/imaging selection, and risk stratification for vte prophylaxis in mechanically ventilated icu patients.",
-        "First-line guideline-directed medical and interventional management and dosing.",
-        "Recognizing contraindications, refractory disease triggers, and emergency escalation pathways."
+        "LMWH versus UFH in critical care: LMWH significantly reduces DVT and pulmonary embolism risk with lower rates of heparin-induced thrombocytopenia (HIT).",
+        "Management of active coagulopathy: mechanical prophylaxis (IPC) alone until active hemorrhage resolves, followed by prompt resumption of LMWH.",
+        "Renal adjustment rules: enoxaparin accumulates in renal failure; switch to UFH or reduce dose to 30 mg daily with peak anti-Xa level monitoring (target 0.2-0.5 IU/mL)."
       ],
       "case_hooks": [
-        "An adult patient presenting with acute or subacute manifestations of vte prophylaxis in mechanically ventilated icu patients requiring immediate diagnostic confirmation and therapy.",
-        "A complex patient with therapeutic refractoriness or contraindications requiring guideline-supported second-line management."
+        "A 62-year-old mechanically ventilated man with severe acute respiratory distress syndrome (ARDS) and septic shock receiving continuous sedation and paralysis.",
+        "A 45-year-old polytrauma patient with cerebral contusions, intracranial pressure monitoring, and pelvic fractures evaluated for thromboprophylaxis timing."
       ],
       "gaps": "Reviewers should confirm alignment with current local antimicrobial/formulary guidelines and relevant special population considerations.",
       "sources": [
