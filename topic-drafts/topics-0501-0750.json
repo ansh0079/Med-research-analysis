@@ -25071,14 +25071,17 @@
         }
       ],
       "uncertainties": [
-        "Optimal duration and de-escalation strategy."
+        "Optimal duration and de-escalation strategy.",
+        "Safety and timing of de-escalating or discontinuing empiric antibacterial therapy in persistently febrile, clinically stable patients before absolute neutrophil count recovery."
       ],
       "mcq_angles": [
         "Time-to-antibiotic target in febrile neutropenia.",
-        "Who is low risk (MASCC/CISNE) and eligible for outpatient therapy."
+        "Who is low risk (MASCC/CISNE) and eligible for outpatient therapy.",
+        "Indications for adding empiric vancomycin/glycopeptide (hemodynamic instability, catheter tunnel infection, pneumonia, or known MRSA colonization)."
       ],
       "case_hooks": [
-        "Day 10 after chemotherapy, temperature 38.6 C, neutrophils 0.2."
+        "Day 10 after chemotherapy, temperature 38.6 C, neutrophils 0.2.",
+        "54-year-old female with AML receiving induction chemotherapy develops rigors and BP 85/50 with persistent fever at 72 hours despite piperacillin-tazobactam."
       ],
       "gaps": "The time target (within 60 minutes), standard anti-pseudomonal beta-lactam choices and antifungal triggers are not in the retrieved abstracts.",
       "sources": [
@@ -25131,7 +25134,8 @@
           "title": "Consensus guidelines for antibacterial prophylaxis in patients with neutropenia"
         }
       ]
-    }
+    },
+    "publishedAt": "2026-10-20T15:34:46.257327+00:00"
   },
   {
     "no": 674,

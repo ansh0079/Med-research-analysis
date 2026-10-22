@@ -3813,6 +3813,12 @@
           "title": "Antiinflammatory Therapy with Canakinumab for Atherosclerotic Disease (CANTOS Trial).",
           "year": 2017,
           "design": "trial"
+        },
+        {
+          "pmid": "34789506",
+          "title": "From RESCUE to ZEUS: will inhibition of interleukin-6 lead to a new era of cardiovascular therapeutics?",
+          "year": 2021,
+          "design": "review"
         }
       ],
       "uncertainties": [

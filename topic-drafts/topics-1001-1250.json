@@ -1010,6 +1010,12 @@
           "year": "2022",
           "journal": "Blood",
           "title": "Diagnosis and Management of AML in Adults: 2022 Recommendations from an International Expert Panel on Behalf of the ELN"
+        },
+        {
+          "pmid": "32115161",
+          "title": "Acute adult myeloblastic leukaemia: ESMO Clinical Practice Guidelines for diagnosis, treatment and follow-up.",
+          "year": 2020,
+          "design": "guideline"
         }
       ],
       "uncertainties": [
@@ -1026,7 +1032,8 @@
         "A 35-year-old female presenting with severe gingival bleeding, bruising, low fibrinogen, elevated D-dimer, and 60% promyelocytes with Auer rods on peripheral smear."
       ],
       "gaps": "Overcoming primary and acquired resistance mechanisms to BCL-2 and menin inhibitors in high-risk leukemic clones."
-    }
+    },
+    "publishedAt": "2026-10-21T08:39:55.099627+00:00"
   },
   {
     "no": 1014,
@@ -5028,6 +5035,12 @@
           "year": "2018",
           "journal": "Curr Hypertens Rep",
           "title": "Posterior Reversible Encephalopathy Syndrome: Clinical and Radiological Findings, Pathophysiology, and Treatment"
+        },
+        {
+          "pmid": "28058533",
+          "title": "Posterior reversible encephalopathy syndrome (PRES): pathophysiology, diagnosis and treatment.",
+          "year": 2017,
+          "design": "review"
         }
       ],
       "uncertainties": [
@@ -5044,7 +5057,8 @@
         "A 52-year-old renal transplant recipient on tacrolimus who presents with confusion, visual hallucinations, and bilateral parieto-occipital white matter edema on brain MRI."
       ],
       "gaps": "Establishing diagnostic biomarker criteria that predict which PRES patients will progress to secondary cytotoxic infarction and permanent neurological disability."
-    }
+    },
+    "publishedAt": "2026-10-21T17:05:24.153366+00:00"
   },
   {
     "no": 1066,
@@ -6839,6 +6853,12 @@
           "year": "2002",
           "journal": "N Engl J Med",
           "title": "Dexamethasone in Adults with Bacterial Meningitis (de Gans Trial)"
+        },
+        {
+          "pmid": "26841577",
+          "title": "ESCMID guideline: diagnosis and treatment of acute bacterial meningitis.",
+          "year": 2016,
+          "design": "guideline"
         }
       ],
       "uncertainties": [
@@ -6855,7 +6875,8 @@
         "A 24-year-old college student with suspected meningitis who has no focal deficits or papilledema, undergoing immediate bedside lumbar puncture prior to antimicrobial administration."
       ],
       "gaps": "Deploying multiplex PCR cerebrospinal fluid syndromic panels that detect viral, bacterial, and fungal pathogens within 60 minutes of lumbar puncture."
-    }
+    },
+    "publishedAt": "2026-10-22T06:54:48.714886+00:00"
   },
   {
     "no": 1090,

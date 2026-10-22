@@ -1598,14 +1598,17 @@
         }
       ],
       "uncertainties": [
-        "Optimal target ranges are not given in the retrieved abstracts."
+        "Optimal target ranges are not given in the retrieved abstracts.",
+        "Permissive hypoxaemia vs conservative oxygenation targets in critically ill patients with acute respiratory distress syndrome and acute myocardial infarction."
       ],
       "mcq_angles": [
         "Different target saturations in COPD with hypercapnia versus other patients.",
-        "Fire and burn hazards of oxygen."
+        "Fire and burn hazards of oxygen.",
+        "Target oxygen saturation ranges: 94-98% for most acutely ill patients vs 88-92% in patients at risk of hypercapnic respiratory failure (BTS guideline)."
       ],
       "case_hooks": [
-        "COPD patient with SpO2 84% on arrival: initial oxygen prescription."
+        "COPD patient with SpO2 84% on arrival: initial oxygen prescription.",
+        "72-year-old male with severe COPD (FEV1 35%) presents drowsy and tachypnoeic on an 80% non-rebreather mask with pH 7.21, PaCO2 9.4 kPa, and PaO2 18 kPa."
       ],
       "gaps": "Specific target ranges (94-98% general, 88-92% at risk of hypercapnia) are standard but not stated in the retrieved abstracts.",
       "sources": [
@@ -1650,7 +1653,8 @@
           "title": "Thoracic Society of Australia and New Zealand clinical practice guideline on adult home oxygen therapy"
         }
       ]
-    }
+    },
+    "publishedAt": "2026-10-19T18:12:34.885319+00:00"
   },
   {
     "no": 1262,
@@ -1843,14 +1847,17 @@
         }
       ],
       "uncertainties": [
-        "Observation period after adrenaline is not covered in the abstracts."
+        "Observation period after adrenaline is not covered in the abstracts.",
+        "Minimum mandatory observation duration (4 vs 8 vs 12 hours) following epinephrine administration to safely exclude biphasic reactions."
       ],
       "mcq_angles": [
         "Intramuscular adrenaline is first-line; antihistamines are adjuncts.",
-        "Auto-injector dose by weight."
+        "Auto-injector dose by weight.",
+        "Refractory anaphylaxis management: timing of second dose of IM adrenaline at 5-15 minutes and initiation of IV fluid boluses and adrenaline infusion."
       ],
       "case_hooks": [
-        "Child with urticaria, wheeze and hypotension minutes after eating peanut."
+        "Child with urticaria, wheeze and hypotension minutes after eating peanut.",
+        "6-year-old boy with known tree-nut allergy develops facial swelling and biphasic stridor 4 hours after initial resolution following single-dose epinephrine."
       ],
       "gaps": "Recognition criteria, dose per kg, repeat dosing and biphasic reaction observation are not stated in the retrieved abstracts.",
       "sources": [
@@ -1895,7 +1902,8 @@
           "title": "Anaphylaxis: A 2023 practice parameter update"
         }
       ]
-    }
+    },
+    "publishedAt": "2026-10-19T18:12:34.885319+00:00"
   },
   {
     "no": 1264,
@@ -4694,14 +4702,17 @@
         }
       ],
       "uncertainties": [
-        "Optimal surgical option for vision-threatening disease."
+        "Optimal surgical option for vision-threatening disease.",
+        "Optic nerve sheath fenestration vs ventriculoperitoneal/lumboperitoneal shunting vs venous sinus stenting for medically refractory visual loss in idiopathic intracranial hypertension."
       ],
       "mcq_angles": [
         "IIH: young obese woman with headache, pulsatile tinnitus and papilloedema, normal imaging.",
-        "Visual field monitoring."
+        "Visual field monitoring.",
+        "Differentiating optic disc drusen from true papilloedema: autofluorescence, B-scan ultrasound calcification, and absence of peripapillary flame haemorrhages."
       ],
       "case_hooks": [
-        "Woman with headache, transient visual obscurations and bilateral disc swelling."
+        "Woman with headache, transient visual obscurations and bilateral disc swelling.",
+        "32-year-old female with BMI 38 presents with progressive bilateral visual field constriction and Frisén grade 4 papilloedema refractory to maximum-dose acetazolamide."
       ],
       "gaps": "Frisén grading, pseudopapilloedema (optic disc drusen) distinction and lumbar puncture opening pressure are not stated in the retrieved abstracts.",
       "sources": [
@@ -4746,7 +4757,8 @@
           "title": "Efficacy and Safety of GLP-1 and Dual GIP/GLP-1 Receptor Agonists in Idiopathic Intracranial Hypertension: A Systematic Review and Meta-Analysis"
         }
       ]
-    }
+    },
+    "publishedAt": "2026-10-19T18:12:34.885319+00:00"
   },
   {
     "no": 1284,
@@ -6340,14 +6352,17 @@
         }
       ],
       "uncertainties": [
-        "Levodopa dosing strategy and management of motor fluctuations are not covered by the retrieved abstracts."
+        "Levodopa dosing strategy and management of motor fluctuations are not covered by the retrieved abstracts.",
+        "Optimal therapeutic timing for initiating device-aided therapies (subcutaneous apomorphine, levodopa intestinal gel, DBS) before irreversible motor decline."
       ],
       "mcq_angles": [
         "Referral for DBS when motor complications persist despite optimised medication.",
-        "Psychosis in Parkinson disease: avoid typical antipsychotics (not in abstracts)."
+        "Psychosis in Parkinson disease: avoid typical antipsychotics (not in abstracts).",
+        "Differentiating idiopathic Parkinson disease from atypical parkinsonian syndromes (PSP, MSA, DLB) based on early falls, autonomic failure, and symmetrical poor levodopa response."
       ],
       "case_hooks": [
-        "Patient on levodopa 6 years with wearing-off and dyskinesia."
+        "Patient on levodopa 6 years with wearing-off and dyskinesia.",
+        "70-year-old male with a 2-year history of resting tremor develops vivid visual hallucinations and orthostatic syncope shortly after escalating ropinirole."
       ],
       "gaps": "Levodopa and dopamine agonist therapy, COMT/MAO-B inhibitors, motor complication management and DBS outcomes are not stated in the retrieved abstracts; needs a core Parkinson guideline (NICE NG71 or MDS) before approval.",
       "sources": [
@@ -6400,7 +6415,8 @@
           "title": "Parkinson's disease in the United Arab Emirates (UAE): Emirates Neurology Society consensus guidelines"
         }
       ]
-    }
+    },
+    "publishedAt": "2026-10-19T18:12:34.885319+00:00"
   },
   {
     "no": 1294,
@@ -10792,14 +10808,17 @@
         }
       ],
       "uncertainties": [
-        "Role of routine biomarkers and stress testing."
+        "Role of routine biomarkers and stress testing.",
+        "Utility and cost-effectiveness of routine preoperative cardiac MRI or CT coronary angiography versus clinical risk stratification in intermediate-risk surgery."
       ],
       "mcq_angles": [
         "RCRI items: ischaemic heart disease, heart failure, cerebrovascular disease, insulin treatment, creatinine above 2 mg/dL, high-risk surgery (not in abstracts).",
-        "Functional capacity of 4 METs."
+        "Functional capacity of 4 METs.",
+        "Preoperative management of cardioprotective medications: continuation of statins, holding ACEi/ARBs on morning of surgery, and antiplatelet bridging strategies."
       ],
       "case_hooks": [
-        "68-year-old with diabetes and prior MI before an elective hernia repair."
+        "68-year-old with diabetes and prior MI before an elective hernia repair.",
+        "75-year-old male scheduled for emergency open AAA repair with unknown cardiac history, poor exercise tolerance (<4 METs), and preoperative elevated high-sensitivity troponin."
       ],
       "gaps": "Numeric RCRI risk by score, stress testing indications and specific optimisation steps are not stated in the retrieved abstracts.",
       "sources": [
@@ -10852,7 +10871,8 @@
           "title": "ESPEN guideline on clinical nutrition in surgery - Update 2025"
         }
       ]
-    }
+    },
+    "publishedAt": "2026-10-19T18:12:34.885319+00:00"
   },
   {
     "no": 1322,
@@ -15632,14 +15652,17 @@
         }
       ],
       "uncertainties": [
-        "Which patients benefit most from steroids."
+        "Which patients benefit most from steroids.",
+        "Procalcitonin-guided discontinuation versus fixed short-course (5-day) antibiotic regimens in hospitalized non-ICU community-acquired pneumonia."
       ],
       "mcq_angles": [
         "Severity scores CURB-65 and PSI (not in abstracts).",
-        "Duration of antibiotics."
+        "Duration of antibiotics.",
+        "Diagnostic microbiological workup in severe community-acquired pneumonia: blood cultures, sputum Gram stain/culture, and urinary Legionella and pneumococcal antigen testing."
       ],
       "case_hooks": [
-        "Hospitalised patient with severe CAP and respiratory failure."
+        "Hospitalised patient with severe CAP and respiratory failure.",
+        "62-year-old smoker presents with high fever, hyponatraemia, diarrhoea, and dense right lower lobe consolidation with clinical failure on amoxicillin."
       ],
       "gaps": "Severity assessment, empirical regimens and microbiological testing details are not stated in the retrieved abstracts.",
       "sources": [
@@ -15692,7 +15715,8 @@
           "title": "European stroke organisation guideline on stroke-associated pneumonia"
         }
       ]
-    }
+    },
+    "publishedAt": "2026-10-19T18:12:34.885319+00:00"
   },
   {
     "no": 1354,
@@ -16965,14 +16989,17 @@
         }
       ],
       "uncertainties": [
-        "Place of ruxolitinib after hydroxyurea resistance."
+        "Place of ruxolitinib after hydroxyurea resistance.",
+        "Ruxolitinib vs interferon-alfa for symptom control and disease-modification in hydroxyurea-intolerant or resistant polycythemia vera."
       ],
       "mcq_angles": [
         "Haematocrit target below 45% (not in abstracts).",
-        "Thrombosis prevention with aspirin."
+        "Thrombosis prevention with aspirin.",
+        "Cytoreductive therapy indications: age >= 60 years or prior thrombosis (high risk); hydroxyurea as first-line cytoreduction and pegylated interferon-alpha in younger patients."
       ],
       "case_hooks": [
-        "50-year-old with haematocrit 0.58, itch after hot baths and JAK2 V617F."
+        "50-year-old with haematocrit 0.58, itch after hot baths and JAK2 V617F.",
+        "64-year-old male with PV on phlebotomy presents with acute portal vein thrombosis and persistent splenomegaly despite hematocrit maintained at 44%."
       ],
       "gaps": "Haematocrit target, aspirin evidence, venesection, hydroxyurea and ruxolitinib (RESPONSE) are not stated in the retrieved abstracts.",
       "sources": [
@@ -17025,7 +17052,8 @@
           "title": "NCCN Guidelines® Insights: Myeloproliferative Neoplasms, Version 2.2026"
         }
       ]
-    }
+    },
+    "publishedAt": "2026-10-19T18:12:34.885319+00:00"
   },
   {
     "no": 1363,
@@ -23721,14 +23749,17 @@
         }
       ],
       "uncertainties": [
-        "Who should have AVS."
+        "Who should have AVS.",
+        "Adrenal venous sampling (AVS) cutoffs with ACTH stimulation vs non-stimulated protocols, and concordance with dedicated adrenal CT."
       ],
       "mcq_angles": [
         "Aldosterone-renin ratio screening.",
-        "Adrenal vein sampling for lateralisation."
+        "Adrenal vein sampling for lateralisation.",
+        "Medical therapy with mineralocorticoid receptor antagonists (spironolactone vs eplerenone) in bilateral adrenal hyperplasia or non-surgical candidates."
       ],
       "case_hooks": [
-        "Young hypertensive patient with hypokalaemia."
+        "Young hypertensive patient with hypokalaemia.",
+        "45-year-old female with treatment-resistant hypertension on 4 agents and unprovoked hypokalaemia (K+ 2.9 mmol/L) with ARR > 30 and non-suppressible post-saline aldosterone."
       ],
       "gaps": "Screening ratio cut-offs and the surgical versus MRA decision are not stated in the retrieved abstract excerpts.",
       "sources": [
@@ -23781,7 +23812,8 @@
           "title": "Broadening Primary Aldosteronism Screening: Alignment Across Contemporary Guidelines"
         }
       ]
-    }
+    },
+    "publishedAt": "2026-10-19T18:12:34.885319+00:00"
   },
   {
     "no": 1409,
@@ -31970,14 +32002,17 @@
         }
       ],
       "uncertainties": [
-        "Randomised benefit of PAC."
+        "Randomised benefit of PAC.",
+        "PAC hemodynamic guidance versus echocardiography and dynamic stroke volume variation (Vigileo/PiCCO) in complex cardiorenal and RV failure."
       ],
       "mcq_angles": [
         "PAC in cardiogenic shock.",
-        "Fluid responsiveness tests."
+        "Fluid responsiveness tests.",
+        "Hemodynamic differentiation of shock states: distinguishing cardiogenic (high PCWP, low CI, high SVR) from septic/distributive shock (low PCWP, high CI, low SVR)."
       ],
       "case_hooks": [
-        "Patient in cardiogenic shock with uncertain filling pressures on inotropes."
+        "Patient in cardiogenic shock with uncertain filling pressures on inotropes.",
+        "65-year-old male with acute anterior STEMI complicated by acute mitral regurgitation, pulmonary oedema, and mixed shock requiring PAC-guided inotropic and vasopressor titration."
       ],
       "gaps": "Historical RCTs (ESCAPE, PAC-Man) and waveform interpretation are not stated in the retrieved abstract excerpts.",
       "sources": [
@@ -32030,7 +32065,8 @@
           "title": "Cardiac output monitors in septic shock: do they deliver what matters? A systematic review and meta-analysis"
         }
       ]
-    }
+    },
+    "publishedAt": "2026-10-19T18:12:34.885319+00:00"
   },
   {
     "no": 1463,
@@ -36319,14 +36355,17 @@
         }
       ],
       "uncertainties": [
-        "Which patients benefit most from bevacizumab versus LITT."
+        "Which patients benefit most from bevacizumab versus LITT.",
+        "Comparative efficacy and cognitive safety of laser interstitial thermal therapy (LITT) versus medical therapy with bevacizumab and high-dose dexamethasone."
       ],
       "mcq_angles": [
         "Perfusion MRI and PET to differentiate necrosis from progression.",
-        "Bevacizumab for symptomatic radionecrosis."
+        "Bevacizumab for symptomatic radionecrosis.",
+        "Distinguishing cerebral radiation necrosis from recurrent glioblastoma/metastasis: relative cerebral blood volume (rCBV) hypoperfusion on DSC-MRI vs amino acid PET (18F-FET/11C-MET) uptake."
       ],
       "case_hooks": [
-        "Patient 8 months after radiosurgery with an enlarging enhancing lesion and oedema."
+        "Patient 8 months after radiosurgery with an enlarging enhancing lesion and oedema.",
+        "58-year-old female with resected lung adenocarcinoma brain metastasis treated with SRS 9 months ago presents with focal seizures and a ring-enhancing lesion with extensive vasogenic oedema."
       ],
       "gaps": "Perfusion MRI metrics and steroid dosing are not stated in the retrieved abstract excerpts.",
       "sources": [
@@ -36395,7 +36434,8 @@
           "title": "A Systematic Review Informing the Management of Symptomatic Brain Radiation Necrosis After Stereotactic Radiosurgery and International Stereotactic Radiosurgery Society Recommendations"
         }
       ]
-    }
+    },
+    "publishedAt": "2026-10-19T18:12:34.885319+00:00"
   },
   {
     "no": 1490,
@@ -37674,14 +37714,17 @@
         }
       ],
       "uncertainties": [
-        "Role of routine biomarkers and stress testing."
+        "Role of routine biomarkers and stress testing.",
+        "RCRI vs NSQIP surgical risk calculator: performance variability across vascular, orthopaedic, and intra-abdominal procedures."
       ],
       "mcq_angles": [
         "RCRI items: ischaemic heart disease, heart failure, cerebrovascular disease, insulin treatment, creatinine above 2 mg/dL, high-risk surgery (not in abstracts).",
-        "Functional capacity of 4 METs."
+        "Functional capacity of 4 METs.",
+        "Postoperative troponin surveillance indications and management of perioperative myocardial injury (MINS) in patients with RCRI >= 2."
       ],
       "case_hooks": [
-        "68-year-old with diabetes and prior MI before an elective hernia repair."
+        "68-year-old with diabetes and prior MI before an elective hernia repair.",
+        "71-year-old woman with chronic kidney disease (eGFR 28 mL/min), insulin-treated type 2 diabetes, and transient ischemic attack undergoing elective hip arthroplasty."
       ],
       "gaps": "Numeric RCRI risk by score, stress testing indications and specific optimisation steps are not stated in the retrieved abstracts.",
       "sources": [
@@ -37734,7 +37777,8 @@
           "title": "ESPEN guideline on clinical nutrition in surgery - Update 2025"
         }
       ]
-    }
+    },
+    "publishedAt": "2026-10-19T18:12:34.885319+00:00"
   },
   {
     "no": 1499,

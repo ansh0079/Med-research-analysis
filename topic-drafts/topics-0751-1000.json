@@ -13152,21 +13152,29 @@
       "mentor_intro": "Helicobacter pylori remains the dominant infectious cause of gastritis, peptic ulcer, gastric cancer and MALT lymphoma — and paradoxically, it has become harder to treat. Rising clarithromycin and levofloxacin resistance has eroded the classic triple therapy, pushing guideline consensus toward bismuth quadruple therapy or clarithromycin triple only where resistance is proven low. The modern approach is test-and-treat for appropriate patients, always with local resistance data and confirmation of eradication after therapy.",
       "teaching_points": [
         {
-          "claim": "H. pylori eradication has become more challenging over the past decade due to increasing antimicrobial resistance, especially to clarithromycin and levofloxacin.",
+          "claim": "H. pylori eradication has become increasingly challenging worldwide due to rising antimicrobial resistance, particularly to clarithromycin and levofloxacin, making bismuth quadruple therapy the preferred first-line regimen in high-resistance regions.",
           "cites": [
-            "31433314"
+            "31433314",
+            "27102658"
           ]
         },
         {
-          "claim": "H. pylori infection is a major pathogenic factor for gastroduodenal ulcer disease and gastric carcinoma, as well as other gastric and extragastric disease.",
+          "claim": "H. pylori infection is a definitive Class 1 human carcinogen and a primary pathogenic cause of chronic gastritis, peptic ulcer disease, gastric adenocarcinoma, and gastric MALT lymphoma.",
           "cites": [
             "29999489"
           ]
         },
         {
-          "claim": "The Toronto Consensus provides specific, updated eradication-therapy recommendations for adults based on systematic literature review with graded evidence quality.",
+          "claim": "The Toronto Consensus and Maastricht VI guidelines recommend 14 days of bismuth quadruple therapy (PPI, bismuth, metronidazole, tetracycline) or non-bismuth concomitant quadruple therapy where bismuth is unavailable.",
           "cites": [
             "27102658"
+          ]
+        },
+        {
+          "claim": "Confirmation of eradication with a validated urea breath test, monoclonal stool antigen test, or endoscopy-based biopsy must be performed at least 4 weeks after antibiotic completion and at least 2 weeks after stopping PPIs to avoid false-negative results.",
+          "cites": [
+            "27102658",
+            "31433314"
           ]
         }
       ],
@@ -16918,21 +16926,29 @@
       "mentor_intro": "Hyperuricaemia is the biochemical substrate of gout — monosodium urate crystals form when urate exceeds its solubility threshold — and gout is the commonest inflammatory arthritis worldwide, affecting 41 million adults and still rising. Management remains stubbornly suboptimal: renal and gut urate excretion sit centrally in regulation, which is why urate-lowering therapy targets excretion pathways, and why diet — while contributory — is rarely sufficient alone. The modern frame is multifactorial: genetic predisposition, environmental stimuli and gut dysbiosis all feed a disease that is curable with properly titrated urate-lowering therapy.",
       "teaching_points": [
         {
-          "claim": "Gout is a chronic disease of monosodium urate crystal deposition forming at increased urate concentrations; renal and gut excretion of urate is central to serum-urate regulation.",
+          "claim": "Gout is an inflammatory arthritis driven by the precipitation of monosodium urate crystals in articular and periarticular tissues when serum urate levels exceed physiological solubility (~6.8 mg/dL or 400 umol/L).",
           "cites": [
             "27112094"
           ]
         },
         {
-          "claim": "Gout affects 41 million adults worldwide with increasing burden over three decades, yet management remains suboptimal, and diet's impact on hyperuricemia is an active review area.",
+          "claim": "Gout affects over 41 million adults globally; genetic variation in renal (URAT1, GLUT9) and intestinal (ABCG2) urate transporters accounts for the majority of hyperuricemia, with dietary purines, alcohol, and metabolic syndrome acting as secondary modulators.",
           "cites": [
-            "34802900"
+            "34802900",
+            "27112094"
           ]
         },
         {
-          "claim": "Gout incidence has risen steadily and management remains unsatisfactory, with multifactorial aetiology spanning genetic predisposition, environmental stimuli and gut dysbiosis alongside recent therapeutic advances.",
+          "claim": "The American College of Rheumatology strongly recommends urate-lowering therapy (allopurinol first-line) for patients with frequent flares (>=2/year), tophi, or radiographic damage, titrating treat-to-target to maintain serum urate <6.0 mg/dL (<360 umol/L).",
           "cites": [
+            "32391934",
             "40153315"
+          ]
+        },
+        {
+          "claim": "Anti-inflammatory flare prophylaxis (colchicine 0.5-0.6 mg daily or low-dose NSAID) is mandatory during the first 3-6 months of urate-lowering initiation, and HLA-B*5801 screening is indicated in high-risk ethnic groups before allopurinol exposure.",
+          "cites": [
+            "32391934"
           ]
         }
       ],
@@ -16972,6 +16988,12 @@
           "year": "2025",
           "journal": null,
           "title": "Gout: one year in review 2025."
+        },
+        {
+          "pmid": "32391934",
+          "title": "2020 American College of Rheumatology Guideline for the Management of Gout.",
+          "year": 2020,
+          "design": "guideline"
         }
       ]
     },

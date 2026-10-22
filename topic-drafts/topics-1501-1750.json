@@ -7473,12 +7473,31 @@
       "guidelinesDropped": []
     },
     "page": {
-      "mentor_intro": "rosuvastatin primary prevention elevated C-reactive protein is a crucial clinical entity with well-defined evidence-based standards of care. Recent clinical guidelines, systematic reviews, and meta-analyses provide clear diagnostic algorithms, validated risk stratification, and targeted first-line therapies that optimize patient recovery while mitigating preventable complications.",
+      "mentor_intro": "The landmark JUPITER trial demonstrated that in apparently healthy adults with normal LDL cholesterol but elevated high-sensitivity C-reactive protein (hsCRP >= 2 mg/L), rosuvastatin 20 mg significantly reduced major cardiovascular events and all-cause mortality, establishing systemic inflammation as a treatable risk enhancer in primary prevention.",
       "teaching_points": [
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Pharmacological lipid-lowering therapies for primary and secondary prevention of cardiovascular disease in adults with dyslipidaemia: a systematic review and network meta-analysis.",
+          "claim": "In the landmark JUPITER trial (Ridker et al., NEJM), rosuvastatin (20 mg daily) significantly reduced the primary composite endpoint of myocardial infarction, stroke, arterial revascularization, hospitalization for unstable angina, or death from cardiovascular causes by 44% (HR 0.56, 95% CI 0.46-0.69) in individuals with LDL-C <130 mg/dL and hsCRP >=2.0 mg/dL.",
           "cites": [
-            "42746925"
+            "18997196"
+          ]
+        },
+        {
+          "claim": "Rosuvastatin therapy resulted in a median reduction in LDL cholesterol of 50% (down to 55 mg/dL) and a median reduction in hsCRP of 37% (down to 2.2 mg/L) at 12 months, demonstrating simultaneous profound lipid and inflammatory suppression.",
+          "cites": [
+            "18997196"
+          ]
+        },
+        {
+          "claim": "JUPITER demonstrated a significant 20% reduction in all-cause mortality (HR 0.80, 95% CI 0.67-0.97, P=0.02) without significant increases in myopathy or cancer, leading to trial termination at a median follow-up of 1.9 years due to unequivocal efficacy.",
+          "cites": [
+            "18997196"
+          ]
+        },
+        {
+          "claim": "Contemporary multi-society cholesterol guidelines recognize persistently elevated hsCRP (>=2.0 mg/dL) as a validated risk-enhancing factor supporting the initiation or intensification of statin therapy in intermediate-risk primary prevention, while monitoring for a small absolute increase in physician-reported incident diabetes.",
+          "cites": [
+            "18997196",
+            "30422998"
           ]
         }
       ],
@@ -7504,9 +7523,22 @@
           "design": "meta-analysis",
           "doi": "10.1002/14651858.cd016387",
           "journal": "The Cochrane database of systematic reviews"
+        },
+        {
+          "pmid": "18997196",
+          "title": "Rosuvastatin to prevent vascular events in men and women with elevated C-reactive protein (JUPITER Trial).",
+          "year": 2008,
+          "design": "trial"
+        },
+        {
+          "pmid": "30422998",
+          "title": "2018 AHA/ACC/AACVPR/AAPA/ABC/ACPM/ADA/AGS/APhA/ASPC/NLA/PCNA Guideline on the Management of Blood Cholesterol.",
+          "year": 2019,
+          "design": "guideline"
         }
       ]
-    }
+    },
+    "publishedAt": "2026-10-19T15:10:36.586985+00:00"
   },
   {
     "no": 1555,
@@ -15419,18 +15451,32 @@
       "guidelinesDropped": []
     },
     "page": {
-      "mentor_intro": "should I start an SGLT2 inhibitor for my patient with HFrEF? is a crucial clinical entity with well-defined evidence-based standards of care. Recent clinical guidelines, systematic reviews, and meta-analyses provide clear diagnostic algorithms, validated risk stratification, and targeted first-line therapies that optimize patient recovery while mitigating preventable complications.",
+      "mentor_intro": "SGLT2 inhibitors (dapagliflozin and empagliflozin) are established as one of the four foundational pillars of guideline-directed medical therapy (GDMT) for patients with heart failure with reduced ejection fraction (HFrEF, LVEF <= 40%), delivering substantial reductions in cardiovascular death, heart failure hospitalizations, and all-cause mortality regardless of baseline glycemic status.",
       "teaching_points": [
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: The Impact of Early In-Hospital Use of SGLT2 Inhibitors on Outcomes in Patients With Acute Heart Failure: An Updated Systematic Review and Meta-Analysis.",
+          "claim": "SGLT2 inhibitors (dapagliflozin 10 mg or empagliflozin 10 mg once daily) are a Class 1A guideline recommendation as foundational therapy in all symptomatic HFrEF patients (LVEF <=40%), irrespective of type 2 diabetes status.",
           "cites": [
-            "41923732"
+            "35363499"
           ]
         },
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: SGLT2 Inhibitors in Autosomal Dominant Polycystic Kidney Disease: A Systematic Review and Meta-Analysis.",
+          "claim": "In landmark randomized trials (DAPA-HF and EMPEROR-Reduced), SGLT2 inhibitors reduced the composite risk of cardiovascular death or heart failure hospitalization by 25-26% (HR 0.74, 95% CI 0.65-0.85), with clinical divergence emerging within 28 days of initiation.",
           "cites": [
-            "42186629"
+            "31535829",
+            "35363499"
+          ]
+        },
+        {
+          "claim": "SGLT2 inhibitors can be safely initiated down to an estimated GFR of 20-25 mL/min/1.73m2; a transient hemodynamic eGFR decline of up to 30% reflects reduction in intraglomerular hypertension and should not trigger drug discontinuation.",
+          "cites": [
+            "35363499"
+          ]
+        },
+        {
+          "claim": "SGLT2 inhibitors carry minimal hypoglycemia risk in non-diabetic patients, require no dose uptitration, and demonstrate additive mortality and hospitalization benefits alongside ARNI/ACEi, beta-blockers, and mineralocorticoid receptor antagonists (MRAs).",
+          "cites": [
+            "31535829",
+            "35363499"
           ]
         }
       ],
@@ -15464,9 +15510,22 @@
           "design": "meta-analysis",
           "doi": "10.7759/cureus.107653",
           "journal": "Cureus"
+        },
+        {
+          "pmid": "31535829",
+          "title": "Dapagliflozin in Patients with Heart Failure and Reduced Ejection Fraction (DAPA-HF Trial).",
+          "year": 2019,
+          "design": "trial"
+        },
+        {
+          "pmid": "35363499",
+          "title": "2022 AHA/ACC/HFSA Guideline for the Management of Heart Failure: A Report of the American College of Cardiology/American Heart Association Joint Committee on Clinical Practice Guidelines.",
+          "year": 2022,
+          "design": "guideline"
         }
       ]
-    }
+    },
+    "publishedAt": "2026-10-19T15:10:36.586985+00:00"
   },
   {
     "no": 1615,
