@@ -5372,28 +5372,28 @@
       "guidelinesDropped": []
     },
     "page": {
-      "mentor_intro": "Turner syndrome 45X: HRT timing, cardiac surveillance, growth hormone therapy is a crucial clinical entity with well-defined evidence-based standards of care. Recent clinical guidelines, systematic reviews, and meta-analyses provide clear diagnostic algorithms, validated risk stratification, and targeted first-line therapies that optimize patient recovery while mitigating preventable complications.",
+      "mentor_intro": "Turner syndrome (45,X) needs lifelong multidisciplinary care: cardiac surveillance, growth hormone in childhood, and timed oestrogen for puberty and long-term replacement.",
       "teaching_points": [
         {
-          "claim": "Clinical practice guideline consensus establishes evidence-directed diagnostic criteria and risk-stratified therapy for turner syndrome 45x: hrt timing, cardiac surveillance, growth hormone therapy: Evidence-Based Clinical Practice and Multi-Society Consensus on Turner syndrome 45X: HRT timing, cardiac surveillance, growth hormone therapy.",
+          "claim": "Cardiovascular assessment with echocardiography and, in adults, cardiac MRI is done at diagnosis because of bicuspid aortic valve (about 30%), aortic coarctation (about 10 to 12%) and aortic dilatation with dissection risk.",
           "cites": [
             "42001789"
           ]
         },
         {
-          "claim": "Cardiovascular screening with transthoracic echocardiography and cardiac MRI is mandatory at diagnosis to evaluate for bicuspid aortic valve (30%), coarctation of the aorta (10-12%), and aortic root dilatation conferring lifetime aortic dissection risk.",
+          "claim": "Growth hormone is started in early childhood (from about age 4 to 6) to improve adult height and continued until near-final height.",
           "cites": [
             "28742763"
           ]
         },
         {
-          "claim": "Recombinant human growth hormone (rhGH) therapy is initiated in early childhood (around age 4-6) to optimize adult height, continued until epiphyseal fusion.",
+          "claim": "Puberty is induced from about age 11 to 12 with low-dose transdermal 17-beta-oestradiol, increased gradually over 2 to 3 years, with progestogen added after about 2 years or with breakthrough bleeding.",
           "cites": [
             "28742763"
           ]
         },
         {
-          "claim": "Pubertal induction begins around age 11-12 with very low-dose transdermal estradiol, titrated upward over 2-3 years, followed by cyclical progesterone addition once breakthrough bleeding occurs or after 2 years of estrogen to preserve uterine development and bone density.",
+          "claim": "Most girls have primary ovarian insufficiency; fertility preservation and donor oocytes are discussed, and surveillance covers thyroid disease, coeliac disease, hearing, renal anomalies, diabetes and bone health.",
           "cites": [
             "28742763"
           ]
@@ -5404,9 +5404,9 @@
         "Long-term comparative effectiveness and recurrence prevention across evolving clinical practice guidelines."
       ],
       "mcq_angles": [
-        "Diagnostic workup, biomarker/imaging selection, and risk stratification for turner syndrome 45x: hrt timing, cardiac surveillance, growth hormone therapy.",
-        "First-line guideline-directed medical and interventional management and dosing.",
-        "Recognizing contraindications, refractory disease triggers, and emergency escalation pathways."
+        "Cardiac anomalies and surveillance.",
+        "Growth hormone timing.",
+        "Pubertal induction regimen."
       ],
       "case_hooks": [
         "An adult patient presenting with acute or subacute manifestations of turner syndrome 45x: hrt timing, cardiac surveillance, growth hormone therapy requiring immediate diagnostic confirmation and therapy.",
@@ -6202,28 +6202,28 @@
       "guidelinesDropped": []
     },
     "page": {
-      "mentor_intro": "Type 1 vs Type 2 MI: universal definition and clinical differentiation is a crucial clinical entity with well-defined evidence-based standards of care. Recent clinical guidelines, systematic reviews, and meta-analyses provide clear diagnostic algorithms, validated risk stratification, and targeted first-line therapies that optimize patient recovery while mitigating preventable complications.",
+      "mentor_intro": "The Fourth Universal Definition separates Type 1 myocardial infarction (atherothrombotic plaque event) from Type 2 (oxygen supply-demand mismatch) and from myocardial injury without ischaemia.",
       "teaching_points": [
         {
-          "claim": "Clinical practice guideline consensus establishes evidence-directed diagnostic criteria and risk-stratified therapy for type 1 vs type 2 mi: universal definition and clinical differentiation: Evidence-Based Clinical Practice and Multi-Society Consensus on Type 1 vs Type 2 MI: universal definition and clinical differentiation.",
+          "claim": "Type 1 MI results from atherothrombotic plaque rupture, erosion or dissection with coronary thrombus.",
           "cites": [
             "42001794"
           ]
         },
         {
-          "claim": "According to the Fourth Universal Definition of Myocardial Infarction, Type 1 MI is caused by acute atherothrombotic coronary plaque rupture, erosion, or dissection resulting in intracoronary thrombus formation, whereas Type 2 MI results from a mismatch between myocardial oxygen supply and demand without acute plaque disruption (triggered by tachyarrhythmia, severe hypotension, severe anemia, hypoxemia, or coronary spasm).",
+          "claim": "Type 2 MI results from supply-demand mismatch without acute plaque disruption (tachyarrhythmia, severe hypotension, anaemia, hypoxaemia, vasospasm).",
           "cites": [
             "42001794"
           ]
         },
         {
-          "claim": "Management of Type 2 MI centers on correcting the underlying hemodynamic trigger (treating tachyarrhythmia, severe anemia, hypoxemia, or shock) rather than routine invasive catheterization or dual antiplatelet therapy.",
+          "claim": "Treatment of Type 2 MI targets the precipitant; routine antithrombotic therapy and invasive angiography are not indicated unless coronary disease is suspected.",
           "cites": [
             "30140224"
           ]
         },
         {
-          "claim": "Myocardial injury without infarction is defined by elevated troponin above the 99th percentile upper reference limit in the absence of overt clinical, ECG, or imaging signs of acute myocardial ischemia.",
+          "claim": "Myocardial injury is troponin above the 99th percentile without evidence of ischaemia; a rise and/or fall indicates acute injury, a stable elevation chronic injury.",
           "cites": [
             "30140224"
           ]
@@ -6234,9 +6234,9 @@
         "Long-term comparative effectiveness and recurrence prevention across evolving clinical practice guidelines."
       ],
       "mcq_angles": [
-        "Diagnostic workup, biomarker/imaging selection, and risk stratification for type 1 vs type 2 mi: universal definition and clinical differentiation.",
-        "First-line guideline-directed medical and interventional management and dosing.",
-        "Recognizing contraindications, refractory disease triggers, and emergency escalation pathways."
+        "Mechanism of Type 1 versus Type 2 MI.",
+        "Management difference.",
+        "Definition of myocardial injury."
       ],
       "case_hooks": [
         "An adult patient presenting with acute or subacute manifestations of type 1 vs type 2 mi: universal definition and clinical differentiation requiring immediate diagnostic confirmation and therapy.",
@@ -9879,28 +9879,28 @@
       "guidelinesDropped": []
     },
     "page": {
-      "mentor_intro": "Vapor Gas Dust and Fume exposures is a crucial clinical entity with well-defined evidence-based standards of care. Recent clinical guidelines, systematic reviews, and meta-analyses provide clear diagnostic algorithms, validated risk stratification, and targeted first-line therapies that optimize patient recovery while mitigating preventable complications.",
+      "mentor_intro": "Occupational vapours, gases, dusts and fumes cause work-related asthma, COPD and acute inhalational injury. The diagnosis depends on exposure history and serial peak flow at and away from work.",
       "teaching_points": [
         {
-          "claim": "Clinical practice guideline consensus establishes evidence-directed diagnostic criteria and risk-stratified therapy for vapor gas dust and fume exposures: Evidence-Based Clinical Practice and Multi-Society Consensus on Vapor Gas Dust and Fume exposures.",
+          "claim": "Diagnosis needs a detailed occupational history, spirometry and serial peak expiratory flow at work and away from work; specific inhalation challenge is done in specialist centres.",
           "cites": [
             "42001820"
           ]
         },
         {
-          "claim": "Occupational and environmental exposures to vapors, gases, dusts, and fumes (VGDF) are established causes of work-exacerbated asthma, occupational COPD, and acute inhalation toxic lung injury; clinical diagnosis requires a detailed lifetime occupational history, serial peak expiratory flow monitoring (at work versus away from work), spirometry, and identifying specific airborne agents (isocyanates, silica, welding fumes) to implement primary industrial hygiene controls.",
+          "claim": "Occupational asthma from high-molecular-weight agents (flour, grain dust, laboratory animals) is IgE-mediated; low-molecular-weight chemicals (isocyanates, glutaraldehyde) act by non-IgE or irritant mechanisms.",
           "cites": [
             "42001820"
           ]
         },
         {
-          "claim": "Occupational asthma induced by high-molecular-weight agents (grain dust, flour) involves IgE-mediated sensitization, whereas low-molecular-weight chemicals (isocyanates, glutaraldehyde) act via immunological and toxic non-IgE pathways.",
+          "claim": "Early removal from the causative exposure is the most important prognostic factor; prolonged exposure after symptoms leads to persistent airway hyperresponsiveness.",
           "cites": [
             "31562236"
           ]
         },
         {
-          "claim": "Early removal of the worker from continued workplace exposure to the causative sensitizer is the single most important prognostic determinant for preventing permanent airway hyperresponsiveness.",
+          "claim": "Acute high-dose exposures (chlorine, ammonia, nitrogen oxides, smoke) cause chemical pneumonitis and ARDS and need supportive care.",
           "cites": [
             "31562236"
           ]
@@ -9911,9 +9911,9 @@
         "Long-term comparative effectiveness and recurrence prevention across evolving clinical practice guidelines."
       ],
       "mcq_angles": [
-        "Diagnostic workup, biomarker/imaging selection, and risk stratification for vapor gas dust and fume exposures.",
-        "First-line guideline-directed medical and interventional management and dosing.",
-        "Recognizing contraindications, refractory disease triggers, and emergency escalation pathways."
+        "Peak flow pattern in occupational asthma.",
+        "High versus low molecular weight agents.",
+        "Prognosis and removal from exposure."
       ],
       "case_hooks": [
         "An adult patient presenting with acute or subacute manifestations of vapor gas dust and fume exposures requiring immediate diagnostic confirmation and therapy.",
@@ -14148,28 +14148,28 @@
       "guidelinesDropped": []
     },
     "page": {
-      "mentor_intro": "Viral encephalitis: HSV encephalitis, aciclovir, CSF PCR, MRI findings, empirical approach is a crucial clinical entity with well-defined evidence-based standards of care. Recent clinical guidelines, systematic reviews, and meta-analyses provide clear diagnostic algorithms, validated risk stratification, and targeted first-line therapies that optimize patient recovery while mitigating preventable complications.",
+      "mentor_intro": "Herpes simplex encephalitis is a medical emergency. Intravenous aciclovir is started before confirmation; MRI and CSF HSV PCR confirm the diagnosis.",
       "teaching_points": [
         {
-          "claim": "Clinical practice guideline consensus establishes evidence-directed diagnostic criteria and risk-stratified therapy for viral encephalitis: hsv encephalitis, aciclovir, csf pcr, mri findings, empirical approach: Evidence-Based Clinical Practice and Multi-Society Consensus on Viral encephalitis: HSV encephalitis, aciclovir, CSF PCR, MRI findings, empirical approach.",
+          "claim": "Start IV aciclovir 10 mg/kg every 8 hours immediately on suspicion, without waiting for imaging or lumbar puncture results; adjust for renal function and hydrate.",
           "cites": [
             "42001849"
           ]
         },
         {
-          "claim": "Emergency empirical intravenous aciclovir (10 mg/kg every 8 hours) must be initiated immediately upon clinical suspicion of viral encephalitis without waiting for lumbar puncture or neuroimaging results.",
+          "claim": "MRI shows asymmetric temporal and inferior frontal T2/FLAIR hyperintensity with restricted diffusion and is more sensitive than CT.",
           "cites": [
             "22404980"
           ]
         },
         {
-          "claim": "Cranial MRI is the most sensitive imaging modality, characteristically demonstrating asymmetric T2/FLAIR hyperintensity and restricted diffusion in the temporal lobes and inferior frontal lobes in HSV encephalitis.",
+          "claim": "CSF shows a lymphocytic pleocytosis with raised protein and normal or low glucose; HSV PCR is about 96% sensitive, but can be falsely negative in the first 72 hours, so repeat if suspicion persists.",
           "cites": [
             "22404980"
           ]
         },
         {
-          "claim": "CSF examination reveals lymphocytic pleocytosis, elevated protein, and normal glucose; CSF HSV-1/2 PCR possesses >95% sensitivity, and therapy is maintained for a full 14 to 21 days with re-testing in immunocompromised hosts prior to stopping.",
+          "claim": "Treat for at least 14 days (longer, up to 21 days, in some guidance or if immunocompromised) and confirm negative PCR before stopping in at-risk patients; consider autoimmune encephalitis if there is no response.",
           "cites": [
             "22404980"
           ]
@@ -14180,9 +14180,9 @@
         "Long-term comparative effectiveness and recurrence prevention across evolving clinical practice guidelines."
       ],
       "mcq_angles": [
-        "Diagnostic workup, biomarker/imaging selection, and risk stratification for viral encephalitis: hsv encephalitis, aciclovir, csf pcr, mri findings, empirical approach.",
-        "First-line guideline-directed medical and interventional management and dosing.",
-        "Recognizing contraindications, refractory disease triggers, and emergency escalation pathways."
+        "Empirical aciclovir dose and timing.",
+        "MRI distribution.",
+        "CSF findings and PCR limits."
       ],
       "case_hooks": [
         "An adult patient presenting with acute or subacute manifestations of viral encephalitis: hsv encephalitis, aciclovir, csf pcr, mri findings, empirical approach requiring immediate diagnostic confirmation and therapy.",
@@ -16829,28 +16829,28 @@
       "guidelinesDropped": []
     },
     "page": {
-      "mentor_intro": "Wellens syndrome and left main equivalent ECG patterns is a crucial clinical entity with well-defined evidence-based standards of care. Recent clinical guidelines, systematic reviews, and meta-analyses provide clear diagnostic algorithms, validated risk stratification, and targeted first-line therapies that optimize patient recovery while mitigating preventable complications.",
+      "mentor_intro": "Wellens syndrome is a pain-free ECG pattern of proximal LAD stenosis; diffuse ST depression with ST elevation in aVR suggests left main or multivessel disease. Both need early angiography.",
       "teaching_points": [
         {
-          "claim": "Clinical practice guideline consensus establishes evidence-directed diagnostic criteria and risk-stratified therapy for wellens syndrome and left main equivalent ecg patterns: Evidence-Based Clinical Practice and Multi-Society Consensus on Wellens syndrome and left main equivalent ECG patterns.",
+          "claim": "Wellens syndrome shows biphasic (type A, about 25%) or deeply inverted symmetric (type B, about 75%) T waves in V2 to V3 during pain-free periods, with no significant ST elevation or Q waves.",
           "cites": [
             "42001870"
           ]
         },
         {
-          "claim": "Wellens syndrome is an electrocardiographic sign indicating critical proximal left anterior descending (LAD) coronary artery stenosis, characterized by biphasic T waves (Type A, 25%) or deeply inverted symmetric T waves (Type B, 75%) in leads V2-V3 during pain-free intervals without significant ST elevation or loss of R-wave progression; patients require urgent coronary angiography and revascularization, with provocative stress testing strictly contraindicated.",
+          "claim": "It indicates critical proximal LAD stenosis with high risk of anterior infarction; urgent angiography is needed and exercise stress testing is contraindicated.",
           "cites": [
             "42001870"
           ]
         },
         {
-          "claim": "Type A Wellens pattern displays biphasic T waves with initial positivity and terminal negativity in leads V2-V3, while Type B displays deeply inverted, symmetric T waves across V1-V4.",
+          "claim": "Diffuse ST depression in 6 or more leads with ST elevation in aVR (and sometimes V1) suggests left main or severe multivessel disease and calls for emergency cardiology review and angiography.",
           "cites": [
             "30140224"
           ]
         },
         {
-          "claim": "Left main equivalent ECG pattern (diffuse ST depression >=1 mm in 6 or more leads with ST elevation in aVR and/or V1) signifies severe multivessel or left main coronary occlusion requiring emergent catheterization.",
+          "claim": "In those patients management follows the NSTE-ACS pathway with antithrombotic therapy, but immediate angiography is warranted when haemodynamically unstable.",
           "cites": [
             "30140224"
           ]
@@ -16861,9 +16861,9 @@
         "Long-term comparative effectiveness and recurrence prevention across evolving clinical practice guidelines."
       ],
       "mcq_angles": [
-        "Diagnostic workup, biomarker/imaging selection, and risk stratification for wellens syndrome and left main equivalent ecg patterns.",
-        "First-line guideline-directed medical and interventional management and dosing.",
-        "Recognizing contraindications, refractory disease triggers, and emergency escalation pathways."
+        "Wellens types and leads.",
+        "Why stress testing is avoided.",
+        "Left main equivalent pattern."
       ],
       "case_hooks": [
         "An adult patient presenting with acute or subacute manifestations of wellens syndrome and left main equivalent ecg patterns requiring immediate diagnostic confirmation and therapy.",
@@ -17134,28 +17134,28 @@
       "guidelinesDropped": []
     },
     "page": {
-      "mentor_intro": "Wolfram syndrome DIDMOAD: diabetes insipidus, DM, optic atrophy, deafness is a crucial clinical entity with well-defined evidence-based standards of care. Recent clinical guidelines, systematic reviews, and meta-analyses provide clear diagnostic algorithms, validated risk stratification, and targeted first-line therapies that optimize patient recovery while mitigating preventable complications.",
+      "mentor_intro": "Wolfram syndrome is an autosomal recessive neurodegenerative disorder from WFS1 mutations, presenting with diabetes mellitus and optic atrophy, later diabetes insipidus, deafness, and neurological and urinary problems. Care is supportive.",
       "teaching_points": [
         {
-          "claim": "Clinical practice guideline consensus establishes evidence-directed diagnostic criteria and risk-stratified therapy for wolfram syndrome didmoad: diabetes insipidus, dm, optic atrophy, deafness: Evidence-Based Clinical Practice and Multi-Society Consensus on Wolfram syndrome DIDMOAD: diabetes insipidus, DM, optic atrophy, deafness.",
+          "claim": "Wolfram syndrome (DIDMOAD) is usually caused by recessive WFS1 mutations; childhood-onset non-autoimmune insulin-requiring diabetes is typically first, followed by optic atrophy, central diabetes insipidus and sensorineural deafness.",
           "cites": [
             "42001873"
           ]
         },
         {
-          "claim": "Wolfram syndrome (DIDMOAD) is an autosomal recessive neurodegenerative disorder caused by loss-of-function mutations in the WFS1 gene (encoding wolframin, an endoplasmic reticulum membrane protein); clinical onset classically begins in early childhood with non-autoimmune insulin-deficient diabetes mellitus, followed by progressive bilateral optic atrophy (causing visual loss), central diabetes insipidus, and sensorineural high-frequency deafness.",
+          "claim": "Later features include neurogenic bladder with hydronephrosis, ataxia, central hypoventilation and cognitive or psychiatric problems, often in the second to third decade.",
           "cites": [
             "42001873"
           ]
         },
         {
-          "claim": "Neurogenic bladder (atonic bladder, hydronephrosis) and neurological symptoms (ataxia, central hypoventilation, cognitive decline) develop in the second to third decade due to progressive brainstem and cerebellar atrophy.",
+          "claim": "Management is supportive: insulin, desmopressin, hearing aids or cochlear implant, visual aids, and bladder care; there is no disease-modifying treatment.",
           "cites": [
             "31037637"
           ]
         },
         {
-          "claim": "Annual surveillance requires multi-system evaluation: comprehensive ophthalmologic visual field and OCT testing, audiometry, urodynamic studies, and renal ultrasound to detect early upper tract dilatation.",
+          "claim": "Surveillance covers ophthalmology, audiometry, urodynamics and renal ultrasound, plus neurological follow-up.",
           "cites": [
             "31037637"
           ]
@@ -17166,9 +17166,9 @@
         "Long-term comparative effectiveness and recurrence prevention across evolving clinical practice guidelines."
       ],
       "mcq_angles": [
-        "Diagnostic workup, biomarker/imaging selection, and risk stratification for wolfram syndrome didmoad: diabetes insipidus, dm, optic atrophy, deafness.",
-        "First-line guideline-directed medical and interventional management and dosing.",
-        "Recognizing contraindications, refractory disease triggers, and emergency escalation pathways."
+        "Gene and inheritance.",
+        "Order of appearance of the features.",
+        "Supportive management."
       ],
       "case_hooks": [
         "An adult patient presenting with acute or subacute manifestations of wolfram syndrome didmoad: diabetes insipidus, dm, optic atrophy, deafness requiring immediate diagnostic confirmation and therapy.",

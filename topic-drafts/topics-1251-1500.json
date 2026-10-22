@@ -10936,28 +10936,28 @@
       ]
     },
     "page": {
-      "mentor_intro": "Patients on long-term supraphysiological glucocorticoids or with confirmed primary or secondary adrenal insufficiency are at high risk of perioperative adrenal crisis due to suppression of the hypothalamic-pituitary-adrenal axis during surgical stress. Evidence-based guidelines stratify stress-dose hydrocortisone cover by procedural magnitude, balancing hemodynamics against infection and hyperglycemic risks.",
+      "mentor_intro": "Patients on long-term supraphysiological glucocorticoids, or with adrenal insufficiency, can develop adrenal crisis under surgical stress. Cover is graded by the size of the operation: usual dose for minor procedures, intravenous hydrocortisone for major surgery.",
       "teaching_points": [
         {
-          "claim": "Patients receiving supraphysiological glucocorticoids (prednisolone >=5 mg/day or equivalent for >3-4 weeks) within the preceding 6-12 months are considered at risk of HPA axis suppression and require structured perioperative management.",
+          "claim": "Patients taking prednisolone 5 mg/day or more (or equivalent) for more than 3 to 4 weeks within the preceding 6 to 12 months may have HPA axis suppression and need a perioperative plan.",
           "cites": [
             "32001734"
           ]
         },
         {
-          "claim": "For minor procedures under local anesthesia or conscious sedation, patients should take their usual morning oral glucocorticoid dose without supplemental parenteral hydrocortisone.",
+          "claim": "For minor procedures under local anaesthesia or sedation, patients take their usual morning glucocorticoid dose without extra parenteral hydrocortisone.",
           "cites": [
             "32001734"
           ]
         },
         {
-          "claim": "For major surgical procedures under general anesthesia, intravenous hydrocortisone (100 mg at induction, followed by 200 mg/24h continuous infusion or 50 mg IV every 6 hours) is maintained until oral intake and baseline oral maintenance dosing resume.",
+          "claim": "For major surgery under general anaesthesia, give hydrocortisone 100 mg IV at induction, then 200 mg over 24 hours by infusion (or 50 mg IV every 6 hours) until oral dosing resumes.",
           "cites": [
             "32001734"
           ]
         },
         {
-          "claim": "Acute perioperative adrenal crisis manifests with unexplained hypotension refractory to fluids and vasopressors, requiring immediate bolus intravenous hydrocortisone (100 mg) and isotonic saline resuscitation.",
+          "claim": "Adrenal crisis presents as hypotension unresponsive to fluids and vasopressors; treat at once with hydrocortisone 100 mg IV and isotonic saline.",
           "cites": [
             "26963499"
           ]
@@ -10968,9 +10968,9 @@
         "Optimal treatment duration, monitoring thresholds, and comparative effectiveness of second-line therapies in high-risk subgroups of Perioperative steroid management: hydrocortisone cover for adrenal insufficiency in surgery."
       ],
       "mcq_angles": [
-        "Diagnostic criteria, risk stratification, and biomarker interpretation in Perioperative steroid management: hydrocortisone cover for adrenal insufficiency in surgery.",
-        "Diagnostic criteria, risk stratification, and biomarker interpretation in Perioperative steroid management: hydrocortisone cover for adrenal insufficiency in surgery.",
-        "Diagnostic criteria, risk stratification, and biomarker interpretation in Perioperative steroid management: hydrocortisone cover for adrenal insufficiency in surgery."
+        "Who is at risk of HPA axis suppression.",
+        "Hydrocortisone cover for major versus minor surgery.",
+        "Recognising and treating perioperative adrenal crisis."
       ],
       "case_hooks": [
         "A complex multimorbid patient with Perioperative steroid management: hydrocortisone cover for adrenal insufficiency in surgery presenting with disease progression or treatment intolerance requiring multidisciplinary escalation.",

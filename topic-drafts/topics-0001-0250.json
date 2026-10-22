@@ -5624,30 +5624,30 @@
       "guidelinesDropped": []
     },
     "page": {
-      "mentor_intro": "Acute phosphate nephropathy is a form of kidney injury caused by the deposition of calcium phosphate crystals within the renal tubules and interstitium, typically following the ingestion of oral sodium phosphate (OSP) bowel purgatives for colonoscopy. Patients present with either acute kidney injury shortly after exposure or insidious, irreversible chronic kidney disease diagnosed weeks to months later. Advanced age, pre-existing chronic kidney disease (CKD), volume depletion, and concurrent therapy with renin-angiotensin-aldosterone system (RAAS) inhibitors, NSAIDs, or diuretics are major risk factors; PEG-based bowel preparations are the safer standard of care.",
+      "mentor_intro": "Acute phosphate nephropathy follows oral sodium phosphate bowel preparation, with calcium phosphate deposition in the kidney and often irreversible loss of function; polyethylene glycol preparations are safer.",
       "teaching_points": [
         {
-          "claim": "Markowitz et al. established that acute phosphate nephropathy is characterized histopathologically by abundant calcium phosphate tubular deposition, tubular epithelial atrophy, and interstitial fibrosis in the absence of significant glomerular disease.",
+          "claim": "Acute phosphate nephropathy is characterised histologically by calcium phosphate deposition in tubules with tubular atrophy and interstitial fibrosis, without significant glomerular disease (Markowitz).",
           "cites": [
             "16299385"
           ]
         },
         {
-          "claim": "The clinical course is frequently biphasic: an early acute asymptomatic rise in creatinine followed by progressive irreversible renal dysfunction, with fewer than 20% of affected patients recovering back to their baseline serum creatinine.",
+          "claim": "The course is often biphasic: an early asymptomatic rise in creatinine followed by progressive loss of renal function, and full recovery to baseline is uncommon.",
           "cites": [
             "16299385",
             "18285573"
           ]
         },
         {
-          "claim": "Major clinical risk factors include baseline CKD (eGFR < 60 mL/min/1.73m2), volume contraction, hypertension, advanced age (> 65 years), and concurrent medications that compromise renal hemodynamics: ACE inhibitors, ARBs, diuretics, and NSAIDs.",
+          "claim": "Risk factors are baseline CKD (eGFR below 60), volume depletion, hypertension, older age, and ACE inhibitors, ARBs, diuretics or NSAIDs.",
           "cites": [
             "18285573",
             "22890468"
           ]
         },
         {
-          "claim": "KDIGO and FDA guidelines strongly discourage the use of oral sodium phosphate formulations for colonoscopy bowel cleansing in patients with CKD, congestive heart failure, liver cirrhosis, or electrolyte disturbances, mandating safer isosmotic polyethylene glycol (PEG) solutions.",
+          "claim": "Oral sodium phosphate bowel preparations carry an FDA boxed warning; they should be avoided in CKD, heart failure, cirrhosis and electrolyte disturbance, and polyethylene glycol preparations are used instead.",
           "cites": [
             "22890468"
           ]
@@ -5678,9 +5678,9 @@
         "Role of urinary calcium phosphate supersaturation indices in identifying patients susceptible to subclinical tubulointerstitial damage."
       ],
       "mcq_angles": [
+        "Risk factors and prevention.",
         "Characteristic biopsy findings of acute phosphate nephropathy (calcium phosphate tubular casts with Von Kossa positivity).",
-        "Medications and clinical comorbid conditions conferring the highest risk of developing phosphate nephropathy after sodium phosphate purgatives.",
-        "Rationale for utilizing isosmotic polyethylene glycol (PEG) solutions over oral sodium phosphate in high-risk patients."
+        "Medications and clinical comorbid conditions conferring the highest risk of developing phosphate nephropathy after sodium phosphate purgatives."
       ],
       "case_hooks": [
         "A 68-year-old female on lisinopril and hydrochlorothiazide for hypertension who undergoes screening colonoscopy with OSP prep and presents 6 weeks later with creatinine 2.8 mg/dL (baseline 0.9 mg/dL).",
@@ -5957,28 +5957,34 @@
       "guidelinesDropped": []
     },
     "page": {
-      "mentor_intro": "Acute red eye is one of the most frequent ophthalmic presentations in primary care and emergency departments. Accurate differential diagnosis hinges on distinguishing benign, self-limiting superficial conditions (viral/bacterial conjunctivitis, episcleritis, subconjunctival hemorrhage) from sight-threatening emergencies requiring immediate ophthalmologic consultation: acute angle-closure glaucoma, acute anterior uveitis, bacterial/fungal keratitis, and endophthalmitis. The presence of 'red flag' symptoms—severe ocular pain, decreased visual acuity, photophobia, ciliary flush (perilimbal injection), corneal opacity, or a fixed mid-dilated pupil—mandates urgent specialist evaluation.",
+      "mentor_intro": "Acute red eye ranges from benign conjunctivitis to sight-threatening angle-closure glaucoma, keratitis and uveitis; red flags decide who needs urgent ophthalmology.",
       "teaching_points": [
         {
-          "claim": "American Academy of Ophthalmology (AAO) Preferred Practice Patterns emphasize identifying red flags: deep boring pain, photophobia, reduced visual acuity, ciliary flush, and corneal abnormalities, which rule out benign conjunctivitis and require immediate specialist care.",
+          "claim": "Red flags for sight-threatening disease are deep or boring pain, photophobia, reduced visual acuity, ciliary flush, a hazy cornea, a fixed mid-dilated pupil or trauma; these need same-day ophthalmology review.",
           "cites": [
             "30580948"
           ]
         },
         {
-          "claim": "Acute angle-closure glaucoma presents with severe unilateral ocular pain, headache, nausea, steamy/hazy cornea, and a fixed mid-dilated pupil, requiring emergency medical lowering of intraocular pressure (timolol, apraclonidine, IV acetazolamide, and topical pilocarpine) followed by bilateral laser peripheral iridotomy.",
+          "claim": "Acute angle-closure glaucoma causes severe unilateral pain, headache, nausea, a hazy cornea and a fixed mid-dilated pupil; treat with timolol, apraclonidine, IV acetazolamide and, once pressure falls, pilocarpine, followed by laser peripheral iridotomy.",
           "cites": [
             "30580948"
           ]
         },
         {
-          "claim": "Corneal fluorescein staining under cobalt blue light is essential in contact lens wearers presenting with acute red eye to detect Pseudomonas or Acanthamoeba keratitis; topical corticosteroids must never be prescribed empirically without slit-lamp examination due to catastrophic corneal melting or herpes simplex worsening.",
+          "claim": "Fluorescein staining under cobalt blue light is essential in contact lens wearers to detect keratitis (Pseudomonas, Acanthamoeba); topical steroids must not be started without slit-lamp examination.",
           "cites": [
             "30580948"
           ]
         },
         {
-          "claim": "Viral conjunctivitis (adenovirus) is characterized by watery discharge, preauricular lymphadenopathy, and follicular conjunctival response; it is self-limiting and requires strict hand hygiene rather than topical antibiotic therapy.",
+          "claim": "Adenoviral conjunctivitis causes watery discharge, follicles and preauricular lymphadenopathy; it is self-limiting and managed with hygiene, not topical antibiotics.",
+          "cites": [
+            "30580948"
+          ]
+        },
+        {
+          "claim": "Acute anterior uveitis causes photophobia, pain and ciliary flush with a small or irregular pupil; scleritis causes severe boring pain and violaceous redness. Both need ophthalmology assessment.",
           "cites": [
             "30580948"
           ]
@@ -6003,9 +6009,9 @@
         "Comparative efficacy of topical NSAIDs versus low-potency topical steroids in non-necrotizing anterior episcleritis."
       ],
       "mcq_angles": [
+        "Red flags that exclude benign conjunctivitis.",
         "Cardinal red flag features distinguishing sight-threatening ocular pathology from uncomplicated superficial conjunctivitis.",
-        "Emergency pharmacological cocktail and definitive surgical procedure (laser peripheral iridotomy) for acute angle-closure glaucoma.",
-        "Contraindication of topical corticosteroid eyedrops in undifferentiated acute red eye in primary care settings."
+        "Emergency pharmacological cocktail and definitive surgical procedure (laser peripheral iridotomy) for acute angle-closure glaucoma."
       ],
       "case_hooks": [
         "A 64-year-old hyperopic female presenting with sudden severe left eye pain, nausea, halos around lights, visual acuity 20/200, cloudy cornea, and IOP of 55 mmHg.",
