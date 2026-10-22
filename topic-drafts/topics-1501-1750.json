@@ -40,51 +40,51 @@
       "guidelinesDropped": []
     },
     "page": {
-      "mentor_intro": "Rectal cancer: total mesorectal excision, neoadjuvant chemoradiotherapy is a crucial clinical entity with well-defined evidence-based standards of care. Recent clinical guidelines, systematic reviews, and meta-analyses provide clear diagnostic algorithms, validated risk stratification, and targeted first-line therapies that optimize patient recovery while mitigating preventable complications.",
+      "mentor_intro": "The management of locally advanced rectal cancer (cT3-T4 or node-positive) requires precise pelvic MRI staging and multidisciplinary Heart Team/Tumor Board coordination. Total mesorectal excision (TME) with negative circumferential resection margins (CRM) combined with total neoadjuvant therapy (TNT) maximizes pathological complete response and locoregional control.",
       "teaching_points": [
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Impact of lateral lymph node dissection on urogenital function and surgical outcomes following neoadjuvant chemoradiotherapy and total mesorectal excision for rectal cancer: a systematic review and meta-analysis.",
+          "claim": "Total mesorectal excision (TME)—en bloc resection of the rectum along with intact surrounding mesorectal fat within the visceral fascia of the rectum—is the gold standard surgical principle, drastically reducing local recurrence from >25% to <5–8%.",
           "cites": [
             "42557488"
           ]
         },
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Total neoadjuvant therapy versus standard neoadjuvant chemoradiotherapy for locally advanced rectal cancer: A systematic review and meta-analysis of long-term outcomes.",
+          "claim": "High-resolution pelvic MRI is the definitive imaging modality to determine relationship to the mesorectal fascia (MRF), tumor height from the anal verge, extramural venous invasion (EMVI), and status of the circumferential resection margin (threatened if tumor <=1 mm from MRF).",
           "cites": [
             "42378863"
           ]
         },
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Neoadjuvant Radiation Versus Upfront Surgery for Upper Rectal Cancer: A Systematic Review and Meta-Analysis of the Evidence.",
+          "claim": "Total Neoadjuvant Therapy (TNT)—delivering systemic consolidation or induction chemotherapy (FOLFIRINOX or CAPOX) alongside short-course radiotherapy (5x5 Gy) or long-course chemoradiotherapy (45-50.4 Gy with fluoropyrimidine)—achieves higher pathological complete response rates (~25-30%) and lower distant metastasis rates compared with standard preoperative chemoradiotherapy alone.",
           "cites": [
             "42574955"
           ]
         },
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Totally robotic low anterior resection versus conventional laparoscopic surgery for rectal cancer: a systematic review and meta-analysis.",
+          "claim": "In patients achieving a clinical complete response (cCR) following TNT, an organ-preserving 'Watch-and-Wait' non-operative surveillance protocol (frequent digital rectal examination, endoscopy, and pelvic MRI every 3 months for 2 years) offers equivalent oncological survival while avoiding permanent stoma morbidity.",
           "cites": [
             "42579032"
           ]
         },
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Restorative resection in robot-assisted versus laparoscopic total mesorectal excision: systematic review and meta-analysis.",
+          "claim": "For upper rectal cancers (tumors >10-12 cm from the anal verge), the mesorectal fat tapers, and a partial mesorectal excision (PME) with a 5-cm distal mesorectal margin provides oncological equivalence without necessitating complete pelvic floor dissection.",
           "cites": [
             "42837183"
           ]
         }
       ],
       "uncertainties": [
-        "Optimal duration, dosing adjustments, and sequencing of therapy in high-risk or multimorbid patients presenting with rectal cancer: total mesorectal excision, neoadjuvant chemoradiotherapy.",
-        "Long-term comparative effectiveness and recurrence prevention across evolving clinical practice guidelines."
+        "Optimal sequencing of TNT: induction chemotherapy before chemoradiotherapy versus consolidation chemotherapy after radiotherapy (RAPIDO vs PRODIGE 23 regimens).",
+        "Oncological safety and functional outcomes of robotic lateral pelvic lymph node dissection for persistent MRI-enlarged obturator/internal iliac nodes."
       ],
       "mcq_angles": [
-        "Diagnostic workup, biomarker/imaging selection, and risk stratification for rectal cancer: total mesorectal excision, neoadjuvant chemoradiotherapy.",
-        "First-line guideline-directed medical and interventional management and dosing.",
-        "Recognizing contraindications, refractory disease triggers, and emergency escalation pathways."
+        "Circumferential resection margin (CRM) threshold: tumor involvement or proximity <=1 mm from the mesorectal fascia on MRI predicts high local recurrence and mandates neoadjuvant downstaging.",
+        "Total Neoadjuvant Therapy (TNT) superiority: higher compliance, doubled rates of pathological complete response (pCR), and improved disease-free survival over post-op adjuvant therapy.",
+        "Watch-and-Wait protocol criteria: normal digital rectal exam, white scar on endoscopy with no mucosal irregularity, and no residual signal on diffusion-weighted pelvic MRI."
       ],
       "case_hooks": [
-        "An adult patient presenting with acute or subacute manifestations of rectal cancer: total mesorectal excision, neoadjuvant chemoradiotherapy requiring immediate diagnostic confirmation and therapy.",
-        "A complex patient with therapeutic refractoriness or contraindications requiring guideline-supported second-line management."
+        "A 56-year-old man diagnosed with cT3bN1 mid-rectal adenocarcinoma 6 cm from the anal verge, with tumor extending within 0.5 mm of the mesorectal fascia on pelvic MRI.",
+        "A 68-year-old woman with low rectal cancer achieving complete mucosal normalization on flexible sigmoidoscopy and normal MRI following completion of total neoadjuvant therapy."
       ],
       "gaps": "Reviewers should confirm alignment with current local antimicrobial/formulary guidelines and relevant special population considerations.",
       "sources": [
@@ -195,51 +195,51 @@
       "guidelinesDropped": []
     },
     "page": {
-      "mentor_intro": "Rectal Prolapse is a crucial clinical entity with well-defined evidence-based standards of care. Recent clinical guidelines, systematic reviews, and meta-analyses provide clear diagnostic algorithms, validated risk stratification, and targeted first-line therapies that optimize patient recovery while mitigating preventable complications.",
+      "mentor_intro": "Full-thickness rectal prolapse (procidentia) involves circumferential protrusion of all rectal wall layers through the anal sphincter. Management is fundamentally surgical, with operative approaches broadly divided into abdominal rectopexy (preferred in fit individuals due to lower recurrence) and perineal procedures (Delorme or Altemeier, reserved for frail or high-risk patients).",
       "teaching_points": [
         {
-          "claim": "Clinical practice guideline consensus establishes evidence-directed diagnostic criteria and risk-stratified therapy for rectal prolapse: Mesh rectopexy in rectal prolapse: toward consensus or continued controversy?.",
+          "claim": "Full-thickness rectal prolapse (procidentia) must be distinguished clinically from mucosal prolapse and prolapsing hemorrhoids by identifying concentric circular mucosal folds around the protruding mass, rather than radial sulci.",
           "cites": [
             "42126460"
           ]
         },
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Surgical outcomes on health-related quality of life in rectal prolapse: A systematic review and meta-analysis.",
+          "claim": "Laparoscopic or robotic ventral mesh rectopexy (VMR) is the preferred abdominal approach in physiologically fit patients, securing the distal rectum to the sacral promontory while preserving lateral ligaments to minimize postoperative denervation constipation.",
           "cites": [
             "40813512"
           ]
         },
         {
-          "claim": "Systematic review evidence supports protocolized evaluation and targeted therapeutic intervention: Rectal prolapse as an initial presentation of colorectal cancer: a systematic review.",
+          "claim": "Perineal approaches—specifically the Delorme procedure (mucosal sleeve stripping and muscular plication) and the Altemeier procedure (perineal rectosigmoidectomy)—carry lower perioperative morbidity but higher recurrence rates (10–30% vs 2–5% for abdominal rectopexy), making them ideal for frail, elderly patients with significant comorbidities.",
           "cites": [
             "40148836"
           ]
         },
         {
-          "claim": "Contemporary evidence synthesis highlights core pathophysiology, clinical staging, and multidisciplinary management: Connective tissue and genetics in the pathogenesis of rectal prolapse: A scoping review.",
+          "claim": "Comprehensive preoperative evaluation includes colonoscopy to exclude synchronous colorectal neoplasms or lead points, alongside defecography and anorectal manometry to evaluate coexistent pelvic floor dyssynergia and anal sphincter tone.",
           "cites": [
             "42765168"
           ]
         },
         {
-          "claim": "Contemporary evidence synthesis highlights core pathophysiology, clinical staging, and multidisciplinary management: Rectal Prolapse.",
+          "claim": "Postoperative pelvic floor physical therapy and biofeedback are critical adjuncts, addressing persistent fecal incontinence (present in 50–70% of patients preoperatively) or baseline pelvic dysmotility following successful anatomical prolapse reduction.",
           "cites": [
             "41241455"
           ]
         }
       ],
       "uncertainties": [
-        "Optimal duration, dosing adjustments, and sequencing of therapy in high-risk or multimorbid patients presenting with rectal prolapse.",
-        "Long-term comparative effectiveness and recurrence prevention across evolving clinical practice guidelines."
+        "Choice of synthetic versus biological mesh in ventral rectopexy regarding long-term erosion risk and anatomical durability.",
+        "Optimal timing and utility of routine lateral pelvic lymph node evaluation in patients presenting with rectal prolapse secondary to a low rectal malignancy."
       ],
       "mcq_angles": [
-        "Diagnostic workup, biomarker/imaging selection, and risk stratification for rectal prolapse.",
-        "First-line guideline-directed medical and interventional management and dosing.",
-        "Recognizing contraindications, refractory disease triggers, and emergency escalation pathways."
+        "Physical examination differentiation: concentric circular folds signify full-thickness rectal procidentia, whereas radial grooves characterize prolapsing internal hemorrhoids.",
+        "Surgical procedure selection: abdominal mesh rectopexy provides lowest recurrence rates (approx. 2-5%) compared to perineal procedures (10-30%).",
+        "Indication for perineal rectosigmoidectomy (Altemeier): frail elderly patients with incarcerated or strangulated rectal prolapse unfit for general anesthesia."
       ],
       "case_hooks": [
-        "An adult patient presenting with acute or subacute manifestations of rectal prolapse requiring immediate diagnostic confirmation and therapy.",
-        "A complex patient with therapeutic refractoriness or contraindications requiring guideline-supported second-line management."
+        "An 78-year-old frail woman residing in a nursing home presenting with an irreducible 7-cm circumferential rectal mass with ulceration and fecal incontinence.",
+        "A 42-year-old multiparous woman with chronic constipation presenting with recurrent rectal protrusion on defecation that reduces spontaneously upon recumbency."
       ],
       "gaps": "Reviewers should confirm alignment with current local antimicrobial/formulary guidelines and relevant special population considerations.",
       "sources": [
@@ -444,51 +444,51 @@
       "guidelinesDropped": []
     },
     "page": {
-      "mentor_intro": "Recurrent Clostridioides difficile infection is a crucial clinical entity with well-defined evidence-based standards of care. Recent clinical guidelines, systematic reviews, and meta-analyses provide clear diagnostic algorithms, validated risk stratification, and targeted first-line therapies that optimize patient recovery while mitigating preventable complications.",
+      "mentor_intro": "Recurrent Clostridioides difficile infection (rCDI) represents a significant therapeutic challenge driven by persistent intestinal dysbiosis and spore germination. Current clinical practice guidelines prioritize fidaxomicin and fecal microbiota-based therapeutics over repeated courses of vancomycin to restore colonization resistance and prevent further recurrences.",
       "teaching_points": [
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Secondary vancomycin prophylaxis during antibiotic re-exposure for the prevention of recurrent &lt;i&gt;Clostridioides difficile&lt;/i&gt; infections: a systematic review and Bayesian meta-analysis.",
+          "claim": "Fidaxomicin (200 mg orally twice daily for 10 days, or extended-pulsed regimen) is the guideline-preferred first-line treatment for initial CDI and first recurrence, demonstrating equivalent clinical cure but significantly lower 30-day recurrence rates (approx. 15% vs 25%) compared with oral vancomycin due to narrow-spectrum sparing of normal Bacteroidetes and Firmicutes flora.",
           "cites": [
             "42495450"
           ]
         },
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Efficacy of Fecal Microbiota Transplantation (FMT) Versus Standard Antibiotic Therapy in Recurrent Clostridioides difficile (CDI/rCDI) Infection: A Systematic Review and Meta-Analysis.",
+          "claim": "For patients with a second or subsequent CDI recurrence (>=2 prior recurrences), fecal microbiota transplantation (FMT) or FDA-approved live biotherapeutic products (fecal microbiota spores, live-brpk or fecal microbiota, live-jslm) achieve >80–90% sustained clinical resolution by reconstituting competitive microbial colonization resistance.",
           "cites": [
             "40978956"
           ]
         },
         {
-          "claim": "Systematic review evidence supports protocolized evaluation and targeted therapeutic intervention: Effectiveness and Safety of Fecal Microbiota Transplantation for Recurrent Clostridioides difficile Infection in Immunocompromised Patients.",
+          "claim": "Oral vancomycin taper and pulse regimens (e.g., 125 mg 4 times daily for 10-14 days, twice daily for 7 days, once daily for 7 days, then every 2-3 days for 2-8 weeks) remain an evidence-based alternative when fidaxomicin or microbiota products are unavailable.",
           "cites": [
             "40759389"
           ]
         },
         {
-          "claim": "Contemporary evidence synthesis highlights core pathophysiology, clinical staging, and multidisciplinary management: Fecal Microbiota Transplantation for Recurrent Clostridioides difficile Infection.",
+          "claim": "Bezlotoxumab—a fully human monoclonal antibody that binds and neutralizes C. difficile toxin B—administered as a single intravenous infusion (10 mg/kg) during antibiotic therapy significantly reduces recurrence in patients at high risk (age >=65, immunocompromised, severe CDI), but carries a cautionary warning in patients with underlying congestive heart failure.",
           "cites": [
             "42538091"
           ]
         },
         {
-          "claim": "Contemporary evidence synthesis highlights core pathophysiology, clinical staging, and multidisciplinary management: Non-Fecal Microbiota Transplantation Strategies for Treatment of Recurrent Clostridioides difficile Infection.",
+          "claim": "Metronidazole is strictly obsolete as first-line therapy for CDI due to inferior clinical cure rates and higher rates of recurrence and neurotoxicity, retaining utility only as adjunctive IV therapy (500 mg IV q8h) combined with high-dose oral/rectal vancomycin in fulminant CDI.",
           "cites": [
             "42538092"
           ]
         }
       ],
       "uncertainties": [
-        "Optimal duration, dosing adjustments, and sequencing of therapy in high-risk or multimorbid patients presenting with recurrent clostridioides difficile infection.",
-        "Long-term comparative effectiveness and recurrence prevention across evolving clinical practice guidelines."
+        "Efficacy and duration of secondary vancomycin or fidaxomicin prophylaxis during unavoidable systemic antibiotic re-exposure in patients with prior rCDI.",
+        "Long-term metabolic and immune effects of standardized oral capsule-based microbiome restoration versus colonoscopic infusion."
       ],
       "mcq_angles": [
-        "Diagnostic workup, biomarker/imaging selection, and risk stratification for recurrent clostridioides difficile infection.",
-        "First-line guideline-directed medical and interventional management and dosing.",
-        "Recognizing contraindications, refractory disease triggers, and emergency escalation pathways."
+        "First recurrence treatment selection: fidaxomicin preferred over vancomycin; if vancomycin was used initially, use prolonged vancomycin taper or fidaxomicin.",
+        "Indication for fecal microbiota transplantation (FMT): second or subsequent recurrence of CDI despite guideline-directed antibiotic therapy.",
+        "Bezlotoxumab mechanism and contraindication: neutralizes toxin B to prevent recurrence; caution in heart failure due to increased heart failure-related events."
       ],
       "case_hooks": [
-        "An adult patient presenting with acute or subacute manifestations of recurrent clostridioides difficile infection requiring immediate diagnostic confirmation and therapy.",
-        "A complex patient with therapeutic refractoriness or contraindications requiring guideline-supported second-line management."
+        "A 72-year-old woman completing a 10-day course of oral vancomycin for CDI who presents 14 days later with profuse watery diarrhea and repeat positive C. difficile PCR and toxin EIA.",
+        "An 80-year-old man with stage 3 CKD and severe recurrent CDI (3rd episode) evaluated for oral fecal microbiota live biotherapeutic delivery."
       ],
       "gaps": "Reviewers should confirm alignment with current local antimicrobial/formulary guidelines and relevant special population considerations.",
       "sources": [
@@ -642,51 +642,51 @@
       "guidelinesDropped": []
     },
     "page": {
-      "mentor_intro": "Recurrent Disease in the Transplant is a crucial clinical entity with well-defined evidence-based standards of care. Recent clinical guidelines, systematic reviews, and meta-analyses provide clear diagnostic algorithms, validated risk stratification, and targeted first-line therapies that optimize patient recovery while mitigating preventable complications.",
+      "mentor_intro": "Recurrence of primary glomerular and systemic diseases in kidney transplant allografts is the third leading cause of graft loss after rejection and death with a functioning graft. Understanding disease-specific recurrence risks, histological patterns, and early therapeutic interventions is vital for long-term allograft survival.",
       "teaching_points": [
         {
-          "claim": "Contemporary evidence synthesis highlights core pathophysiology, clinical staging, and multidisciplinary management: Effect of urgent treatment of transient ischaemic attack and minor stroke on early recurrent stroke (EXPRESS study): a prospective population-based sequential comparison.",
+          "claim": "Focal segmental glomerulosclerosis (FSGS) has the highest acute recurrence rate (30–40% in first grafts, >80% in second grafts with prior recurrence), classically manifesting with massive nephrotic-range proteinuria within hours to days post-transplantation; emergency therapeutic plasma exchange (PEX) combined with high-dose calcineurin inhibitors can induce remission.",
           "cites": [
             "17928046"
           ]
         },
         {
-          "claim": "Clinical practice guideline consensus establishes evidence-directed diagnostic criteria and risk-stratified therapy for recurrent disease in the transplant: Thai Transplant Care Practice Guideline on Immunosuppressive Therapy for Adult Kidney Transplantation.",
+          "claim": "Membranoproliferative glomerulonephritis (MPGN) and C3 glomerulopathy (C3G) carry exceptionally high recurrence rates (up to 70–80%), driven by persistent alternative complement pathway dysregulation; anticomplement therapies (eculizumab, ravulizumab, or novel factor B/D inhibitors) are increasingly utilized.",
           "cites": [
             "42813300"
           ]
         },
         {
-          "claim": "Clinical practice guideline consensus establishes evidence-directed diagnostic criteria and risk-stratified therapy for recurrent disease in the transplant: American Association for Thoracic Surgery/International Society for Heart and Lung Transplantation guidelines on selected topics in mechanical circulatory support.",
+          "claim": "Immunoglobulin A (IgA) nephropathy has histological recurrence in 40–60% of grafts on protocol biopsies, though clinically significant graft loss occurs in only 10–15% at 10 years, characterized by recurrent microscopic hematuria and mesangial IgA deposition.",
           "cites": [
             "31983666"
           ]
         },
         {
-          "claim": "Clinical practice guideline consensus establishes evidence-directed diagnostic criteria and risk-stratified therapy for recurrent disease in the transplant: Updated international consensus guidelines on the management of cytomegalovirus in solid-organ transplantation.",
+          "claim": "Atypical hemolytic uremic syndrome (aHUS) secondary to complement factor H, I, or B mutations carries a >80% recurrence risk without terminal complement blockade; prophylactic initiation of eculizumab at the time of transplantation prevents catastrophic microvascular thrombotic graft loss.",
           "cites": [
             "23896556"
           ]
         },
         {
-          "claim": "Clinical practice guideline consensus establishes evidence-directed diagnostic criteria and risk-stratified therapy for recurrent disease in the transplant: KDIGO clinical practice guideline for the care of kidney transplant recipients.",
+          "claim": "Anti-glomerular basement membrane (anti-GBM) disease requires complete serological clearance of circulating anti-GBM antibodies (undetectable for at least 6 to 12 months) prior to transplantation, which reduces graft recurrence to <5%.",
           "cites": [
             "19845597"
           ]
         }
       ],
       "uncertainties": [
-        "Optimal duration, dosing adjustments, and sequencing of therapy in high-risk or multimorbid patients presenting with recurrent disease in the transplant.",
-        "Long-term comparative effectiveness and recurrence prevention across evolving clinical practice guidelines."
+        "Targeting the soluble urokinase plasminogen activator receptor (suPAR) or autoantibody panels as reliable pre-transplant biomarkers for FSGS recurrence.",
+        "Optimal maintenance duration of complement C5 inhibitors to prevent late C3G and aHUS recurrence without excess encapsulated bacterial infection risks."
       ],
       "mcq_angles": [
-        "Diagnostic workup, biomarker/imaging selection, and risk stratification for recurrent disease in the transplant.",
-        "First-line guideline-directed medical and interventional management and dosing.",
-        "Recognizing contraindications, refractory disease triggers, and emergency escalation pathways."
+        "Immediate post-transplant nephrotic proteinuria: hallmark of recurrent FSGS, requiring prompt diagnostic biopsy and immediate initiation of plasma exchange.",
+        "Prerequisite before transplanting in anti-GBM disease: strict documentation of negative circulating anti-GBM titers for >=6-12 months.",
+        "Prophylactic strategy in complement-mediated aHUS: preemptive terminal complement C5 inhibition (eculizumab) prevents catastrophic graft thrombosis."
       ],
       "case_hooks": [
-        "An adult patient presenting with acute or subacute manifestations of recurrent disease in the transplant requiring immediate diagnostic confirmation and therapy.",
-        "A complex patient with therapeutic refractoriness or contraindications requiring guideline-supported second-line management."
+        "A 24-year-old man with end-stage renal disease secondary to idiopathic FSGS who develops 8 g/day of proteinuria and lower limb edema on postoperative day 3 following live-donor kidney transplantation.",
+        "A 45-year-old woman with prior graft failure from recurrent C3 glomerulopathy undergoing pre-transplant complement pathway genetic and serological evaluation."
       ],
       "gaps": "Reviewers should confirm alignment with current local antimicrobial/formulary guidelines and relevant special population considerations.",
       "sources": [
@@ -1044,51 +1044,51 @@
       "guidelinesDropped": []
     },
     "page": {
-      "mentor_intro": "Red blood cell transfusion threshold in critical illness is a crucial clinical entity with well-defined evidence-based standards of care. Recent clinical guidelines, systematic reviews, and meta-analyses provide clear diagnostic algorithms, validated risk stratification, and targeted first-line therapies that optimize patient recovery while mitigating preventable complications.",
+      "mentor_intro": "Blood management in critically ill patients balances oxygen delivery against the known infectious, immunomodulatory, and circulatory risks of allogeneic blood transfusion. Multiple landmark randomized trials establish that a restrictive transfusion threshold (hemoglobin <70 g/L / 7 g/dL) is safe and superior or non-inferior to liberal strategies across most ICU cohorts.",
       "teaching_points": [
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Efficacy and safety of intraoperative red blood cell salvage transfusion for spinal deformity surgery: a systematic review and meta-analysis.",
+          "claim": "A restrictive red blood cell (RBC) transfusion strategy—transfusing only when hemoglobin drops below 70 g/L (7.0 g/dL) to maintain target 70–90 g/L—is non-inferior or superior to liberal transfusion (threshold <90-100 g/L) in critically ill adults, significantly reducing blood utilization, transfusion reactions, and Transfusion-Associated Circulatory Overload (TACO).",
           "cites": [
             "42850454"
           ]
         },
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Red blood cell transfusion to treat or prevent complications in sickle cell disease: an overview of Cochrane reviews.",
+          "claim": "In patients with acute coronary syndromes (acute myocardial infarction), recent multicenter trial evidence (e.g., MINT trial) demonstrates that a more liberal threshold (transfusing for Hb <100 g/L / 10 g/dL) may reduce recurrent myocardial infarction and 30-day mortality compared with restrictive strategies.",
           "cites": [
             "42781846"
           ]
         },
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Red blood cell transfusion in neurocritical patients: an updated systematic review and meta-analysis.",
+          "claim": "In traumatic brain injury (TBI) and acute neurocritical illness, consensus guidelines recommend a target hemoglobin threshold of 80 to 90 g/L (8–9 g/dL) to balance cerebral oxygen delivery (critical in preventing secondary ischemic brain injury) against hyperviscosity and secondary inflammatory damage.",
           "cites": [
             "41918075"
           ]
         },
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Artificial intelligence in the prediction of intraoperative red blood cell transfusion in cardiac surgery: a systematic review and diagnostic test accuracy meta-analysis.",
+          "claim": "Transfusion should be prescribed as single units of packed RBCs in hemodynamically stable patients, with immediate post-transfusion clinical and laboratory reassessment before considering additional units ('transfuse one unit and re-evaluate').",
           "cites": [
             "42349832"
           ]
         },
         {
-          "claim": "Contemporary evidence synthesis highlights core pathophysiology, clinical staging, and multidisciplinary management: Red Blood Cell Transfusion for Preterm and Term Infants in the NICU.",
+          "claim": "Allogeneic RBC transfusion carries well-established risks including Transfusion-Related Acute Lung Injury (TRALI, non-cardiogenic pulmonary edema within 6 hours), TACO (cardiogenic hydrostatic pulmonary edema with elevated BNP and positive fluid balance), and transfusion-related immunomodulation (TRIM).",
           "cites": [
             "42674613"
           ]
         }
       ],
       "uncertainties": [
-        "Optimal duration, dosing adjustments, and sequencing of therapy in high-risk or multimorbid patients presenting with red blood cell transfusion threshold in critical illness.",
-        "Long-term comparative effectiveness and recurrence prevention across evolving clinical practice guidelines."
+        "Optimal personalized transfusion thresholds based on continuous regional tissue oxygenation monitoring (near-infrared spectroscopy NIRS or jugular venous bulb oxygen saturation SjvO2).",
+        "Comparative clinical outcomes of fresh versus standard storage-duration RBC units in massive resuscitation and prolonged ICU admission."
       ],
       "mcq_angles": [
-        "Diagnostic workup, biomarker/imaging selection, and risk stratification for red blood cell transfusion threshold in critical illness.",
-        "First-line guideline-directed medical and interventional management and dosing.",
-        "Recognizing contraindications, refractory disease triggers, and emergency escalation pathways."
+        "Standard critical care transfusion threshold: Hb <70 g/L (7.0 g/dL) for general ICU and septic shock patients; liberal thresholds provide no survival benefit and increase complications.",
+        "Exception to restrictive strategy: acute coronary syndrome / active myocardial ischemia, where maintaining Hb >=100 g/L (10 g/dL) is supported by randomized evidence.",
+        "Distinguishing TRALI from TACO: TACO features elevated BNP, response to diuretics, and signs of left atrial hypertension; TRALI features normal wedge pressure and transient neutropenia."
       ],
       "case_hooks": [
-        "An adult patient presenting with acute or subacute manifestations of red blood cell transfusion threshold in critical illness requiring immediate diagnostic confirmation and therapy.",
-        "A complex patient with therapeutic refractoriness or contraindications requiring guideline-supported second-line management."
+        "A 66-year-old mechanically ventilated man with severe septic shock and multi-organ failure whose morning hemoglobin is 74 g/L with stable hemodynamics on low-dose noradrenaline.",
+        "A 72-year-old woman admitted with non-ST-elevation myocardial infarction and acute heart failure whose hemoglobin is 82 g/L."
       ],
       "gaps": "Reviewers should confirm alignment with current local antimicrobial/formulary guidelines and relevant special population considerations.",
       "sources": [
@@ -1316,33 +1316,51 @@
       "guidelinesDropped": []
     },
     "page": {
-      "mentor_intro": "Refeeding Syndrome is a crucial clinical entity with well-defined evidence-based standards of care. Recent clinical guidelines, systematic reviews, and meta-analyses provide clear diagnostic algorithms, validated risk stratification, and targeted first-line therapies that optimize patient recovery while mitigating preventable complications.",
+      "mentor_intro": "Refeeding syndrome is a life-threatening metabolic complication that occurs upon reintroducing nutrition to severely malnourished, starved, or metabolically stressed individuals. Carbohydrate reintroduction triggers a sudden surge in insulin release, driving phosphate, potassium, and magnesium into cells and precipitating severe hypophosphatemia, arrhythmias, and cardiac arrest.",
       "teaching_points": [
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Incidence and risk factors of refeeding syndrome in critically ill patients: A systematic review and meta-analysis.",
+          "claim": "Refeeding syndrome is triggered by rapid carbohydrate reintroduction in a starved individual, precipitating sudden endogenous insulin secretion that drives cellular uptake of phosphate, potassium, and magnesium, while simultaneously inducing renal sodium and water retention.",
           "cites": [
             "42624024"
           ]
         },
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Incidence and mortality of refeeding syndrome in critically ill patients: a systematic review and meta-analysis.",
+          "claim": "Severe hypophosphatemia (<0.32 mmol/L or <1.0 mg/dL) is the hallmark biochemical derangement, causing ATP depletion and impaired oxygen unloading (decreased 2,3-DPG), manifesting as acute heart failure, lethal ventricular arrhythmias, diaphragmatic respiratory muscle weakness, rhabdomyolysis, and encephalopathy.",
           "cites": [
             "41735500"
+          ]
+        },
+        {
+          "claim": "High-risk patient populations include chronic anorexia nervosa, chronic alcohol use disorder, prolonged fasting/hunger strikes, severe malabsorption (short bowel syndrome, bariatric surgery), and critically ill patients unfed for >=5–7 days.",
+          "cites": [
+            "42624024"
+          ]
+        },
+        {
+          "claim": "Prevention mandates prophylactic administration of high-dose intravenous thiamine (200–300 mg IV daily) and B-complex vitamins before caloric intake begins, as carbohydrate metabolism rapidly exhausts residual thiamine stores and can precipitate acute Wernicke encephalopathy or cardiovascular beriberi.",
+          "cites": [
+            "41735500"
+          ]
+        },
+        {
+          "claim": "Caloric reintroduction must be initiated cautiously at a reduced rate of 10 to 15 kcal/kg/day (or 5–10 kcal/kg/day in extreme high-risk cases), slowly titrated upward over 4 to 7 days alongside proactive electrolyte replacement (phosphate, potassium, magnesium) and strict fluid monitoring.",
+          "cites": [
+            "42624024"
           ]
         }
       ],
       "uncertainties": [
-        "Optimal duration, dosing adjustments, and sequencing of therapy in high-risk or multimorbid patients presenting with refeeding syndrome.",
-        "Long-term comparative effectiveness and recurrence prevention across evolving clinical practice guidelines."
+        "Efficacy and safety of newer 'higher-calorie' refeeding protocols in adolescents with mild-to-moderate anorexia nervosa under intense electrolyte monitoring.",
+        "Role of continuous biochemical telemetry versus scheduled interval venous blood draws in non-ICU ward refeeding management."
       ],
       "mcq_angles": [
-        "Diagnostic workup, biomarker/imaging selection, and risk stratification for refeeding syndrome.",
-        "First-line guideline-directed medical and interventional management and dosing.",
-        "Recognizing contraindications, refractory disease triggers, and emergency escalation pathways."
+        "Earliest and most dangerous electrolyte disturbance: severe hypophosphatemia, leading to cellular ATP depletion and acute neuromuscular/cardiac collapse.",
+        "Sequence of preventive interventions: IV thiamine administration MUST precede the initiation of any carbohydrate/caloric intake.",
+        "Caloric repletion pace: initial caloric prescription must not exceed 10–15 kcal/kg/day in high-risk patients, advancing gradually over 5–7 days."
       ],
       "case_hooks": [
-        "An adult patient presenting with acute or subacute manifestations of refeeding syndrome requiring immediate diagnostic confirmation and therapy.",
-        "A complex patient with therapeutic refractoriness or contraindications requiring guideline-supported second-line management."
+        "A 19-year-old woman with severe anorexia nervosa (BMI 12.5 kg/m2) admitted for inpatient refeeding who develops sudden dyspnea, confusion, and serum phosphate 0.28 mmol/L 48 hours after starting enteral nutrition.",
+        "A 54-year-old man with chronic alcohol dependence and severe malnutrition receiving IV dextrose infusions in the ED who acutely develops ophthalmoplegia, nystagmus, and profound ataxia."
       ],
       "gaps": "Reviewers should confirm alignment with current local antimicrobial/formulary guidelines and relevant special population considerations.",
       "sources": [
@@ -1604,51 +1622,51 @@
       "guidelinesDropped": []
     },
     "page": {
-      "mentor_intro": "Refractory ventricular fibrillation: double sequential defibrillation, amiodarone is a crucial clinical entity with well-defined evidence-based standards of care. Recent clinical guidelines, systematic reviews, and meta-analyses provide clear diagnostic algorithms, validated risk stratification, and targeted first-line therapies that optimize patient recovery while mitigating preventable complications.",
+      "mentor_intro": "Refractory ventricular fibrillation (RVF)—ventricular fibrillation or pulseless ventricular tachycardia that persists despite multiple standard shocks, high-quality CPR, and guideline-directed antiarrhythmics—carries dismal survival. Novel rescue strategies, including double sequential external defibrillation (DSED) and vector change (VC) defibrillation, have revolutionized management.",
       "teaching_points": [
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Double sequential external defibrillation versus standard defibrillation in refractory ventricular fibrillation: A systematic review and meta-analysis.",
+          "claim": "Refractory ventricular fibrillation (RVF) is defined as persistent VF or pulseless VT following three or more consecutive standard defibrillation attempts, epinephrine administration, and appropriate antiarrhythmic therapy.",
           "cites": [
             "36505388"
           ]
         },
         {
-          "claim": "Systematic review evidence supports protocolized evaluation and targeted therapeutic intervention: Enhancing Patient Safety in Refractory Ventricular Fibrillation: A Systematic Review of Double Sequential and Vector Change Defibrillation Barriers.",
+          "claim": "The landmark DOSE VF randomized controlled trial demonstrated that Double Sequential External Defibrillation (DSED—rapid sequential delivery of two shocks from two defibrillators with anterior-posterior and anterolateral pads) and Vector Change (VC) defibrillation significantly improved survival to hospital discharge (30.4% with DSED, 21.7% with VC, vs 13.3% with standard defibrillation) in refractory out-of-hospital VF.",
           "cites": [
             "41154325"
           ]
         },
         {
-          "claim": "Contemporary evidence synthesis highlights core pathophysiology, clinical staging, and multidisciplinary management: Double sequential external defibrillation for refractory ventricular fibrillation: the science, the controversies and the future.",
+          "claim": "Amiodarone (first dose 300 mg IV/IO bolus, second dose 150 mg) or lidocaine (first dose 1.0–1.5 mg/kg IV/IO, second dose 0.5–0.75 mg/kg) are evidence-based first-line antiarrhythmic agents in cardiac arrest, with randomized trials showing equivalent rates of survival to hospital admission.",
           "cites": [
             "40483934"
           ]
         },
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Defibrillation strategies for patients with refractory ventricular fibrillation: A systematic review and meta-analysis.",
+          "claim": "Correctable reversible causes ('Hs and Ts') must be aggressively investigated and treated concurrently, with particular emphasis on acute myocardial ischemia (mandating emergency mechanical circulatory support / ECMO-facilitated PCI), hyperkalemia, severe hypomagnesemia, and accidental hypothermia.",
           "cites": [
             "39127020"
           ]
         },
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Defibrillation strategies for refractory ventricular fibrillation out-of-hospital cardiac arrest: A systematic review and network meta-analysis.",
+          "claim": "Extracorporeal cardiopulmonary resuscitation (ECPR)—instituting veno-arterial ECMO in the cardiac catheterization laboratory during active arrest—provides definitive hemodynamic rescue and allows emergency coronary reperfusion in refractory VF arrest.",
           "cites": [
             "37482919"
           ]
         }
       ],
       "uncertainties": [
-        "Optimal duration, dosing adjustments, and sequencing of therapy in high-risk or multimorbid patients presenting with refractory ventricular fibrillation: double sequential defibrillation, amiodarone.",
-        "Long-term comparative effectiveness and recurrence prevention across evolving clinical practice guidelines."
+        "Optimal shock interval timing (simultaneous vs 10-100 millisecond delay) during double sequential external defibrillation.",
+        "Standardization of patient selection criteria for pre-hospital field initiation of ECPR versus expedited transport for refractory VF."
       ],
       "mcq_angles": [
-        "Diagnostic workup, biomarker/imaging selection, and risk stratification for refractory ventricular fibrillation: double sequential defibrillation, amiodarone.",
-        "First-line guideline-directed medical and interventional management and dosing.",
-        "Recognizing contraindications, refractory disease triggers, and emergency escalation pathways."
+        "DOSE VF trial primary finding: double sequential external defibrillation (DSED) and vector-change (VC) defibrillation both significantly improve neurologically intact survival to hospital discharge over standard defibrillation in RVF.",
+        "Antiarrhythmic equivalence: the ALPS trial confirmed that amiodarone and lidocaine have equivalent efficacy in shock-refractory out-of-hospital cardiac arrest.",
+        "Technical execution of DSED: two separate defibrillators with separate pad pairs (anterolateral and anteroposterior), firing in rapid sequential succession (<1 second apart)."
       ],
       "case_hooks": [
-        "An adult patient presenting with acute or subacute manifestations of refractory ventricular fibrillation: double sequential defibrillation, amiodarone requiring immediate diagnostic confirmation and therapy.",
-        "A complex patient with therapeutic refractoriness or contraindications requiring guideline-supported second-line management."
+        "A 52-year-old man in out-of-hospital cardiac arrest who remains in coarse ventricular fibrillation after 4 standard 200J biphasic shocks, 3 mg epinephrine, and 300 mg amiodarone.",
+        "A 60-year-old woman undergoing catheterization for acute STEMI who develops recurrent VF storms despite repeated standard defibrillation."
       ],
       "gaps": "Reviewers should confirm alignment with current local antimicrobial/formulary guidelines and relevant special population considerations.",
       "sources": [
@@ -1949,51 +1967,51 @@
       "guidelinesDropped": []
     },
     "page": {
-      "mentor_intro": "Rehabilitation after stroke: principles and evidence is a crucial clinical entity with well-defined evidence-based standards of care. Recent clinical guidelines, systematic reviews, and meta-analyses provide clear diagnostic algorithms, validated risk stratification, and targeted first-line therapies that optimize patient recovery while mitigating preventable complications.",
+      "mentor_intro": "Stroke rehabilitation is a coordinated multidisciplinary process aimed at promoting neuroplasticity, optimizing functional independence, and preventing secondary complications. Early, high-intensity, task-specific training in dedicated stroke rehabilitation units forms the evidence-based foundation of recovery.",
       "teaching_points": [
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Comparative efficacy of virtual reality, robotics, and brain-computer interface interventions for upper limb rehabilitation after stroke: a systematic review and network meta-analysis.",
+          "claim": "Organized stroke unit care provides significant reductions in death, dependency, and the need for institutional care; rehabilitation delivered by a dedicated multidisciplinary team (physiotherapy, occupational therapy, speech and language therapy, clinical neuropsychology) is a Class I recommendation.",
           "cites": [
             "42780484"
           ]
         },
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: From Neurophysiological Mechanisms to Rehabilitation After Botulinum Toxin Type A in Post-Stroke Spasticity.",
+          "claim": "Task-specific, repetitive motor training and constraint-induced movement therapy (CIMT)—restraining the unaffected upper limb to force intensive use of the paretic limb—significantly enhance cortical motor reorganization and functional recovery in patients with residual active wrist and finger extension.",
           "cites": [
             "42784326"
           ]
         },
         {
-          "claim": "Systematic review evidence supports protocolized evaluation and targeted therapeutic intervention: Effectiveness of telemedicine-based rehabilitation after stroke: a systematic review.",
+          "claim": "Very early high-dose mobilization within 24 hours of acute stroke was shown in the AVERT trial to reduce favorable functional outcomes at 3 months; current guidelines recommend early mobilization only after physiological stability is achieved, avoiding aggressive protocols within the first 24 hours.",
           "cites": [
             "42171799"
           ]
         },
         {
-          "claim": "Systematic review evidence supports protocolized evaluation and targeted therapeutic intervention: Therapeutic potential of galvanic vestibular stimulation for postural and spatial rehabilitation after stroke: A systematic review.",
+          "claim": "Post-stroke spasticity is managed with a tiered algorithm: first-line physical therapy and splinting, followed by focal intramuscular botulinum toxin type A injections combined with physical training for focal spasticity, avoiding systemic sedating antispasmodics (baclofen, tizanidine) where possible.",
           "cites": [
             "42766343"
           ]
         },
         {
-          "claim": "Clinical practice guideline consensus establishes evidence-directed diagnostic criteria and risk-stratified therapy for rehabilitation after stroke: principles and evidence: Guidelines for Adult Stroke Rehabilitation and Recovery: A Guideline for Healthcare Professionals From the American Heart Association/American Stroke Association.",
+          "claim": "Comprehensive screening for post-stroke depression (affecting ~30% of stroke survivors) and post-stroke cognitive impairment is mandatory; selective serotonin reuptake inhibitors (SSRIs) effectively treat post-stroke depression, although routine prophylactic SSRI administration to promote motor recovery (AFFINITY, EFFECTS, FOCUS trials) is not supported.",
           "cites": [
             "27145936"
           ]
         }
       ],
       "uncertainties": [
-        "Optimal duration, dosing adjustments, and sequencing of therapy in high-risk or multimorbid patients presenting with rehabilitation after stroke: principles and evidence.",
-        "Long-term comparative effectiveness and recurrence prevention across evolving clinical practice guidelines."
+        "Comparative long-term clinical utility of robotic gait trainers and virtual reality immersion versus therapist-delivered overground locomotor training.",
+        "Therapeutic window and patient stratification for non-invasive brain stimulation (repetitive transcranial magnetic stimulation rTMS or tDCS) in aphasia recovery."
       ],
       "mcq_angles": [
-        "Diagnostic workup, biomarker/imaging selection, and risk stratification for rehabilitation after stroke: principles and evidence.",
-        "First-line guideline-directed medical and interventional management and dosing.",
-        "Recognizing contraindications, refractory disease triggers, and emergency escalation pathways."
+        "Timing of mobilization after acute stroke: AVERT trial showed very early, high-intensity mobilization within 24 hours is harmful; initiate mobilization after 24 hours when stable.",
+        "Constraint-induced movement therapy (CIMT) eligibility: requires baseline active extension of at least 10 degrees at the MCP/interphalangeal joints and 20 degrees at the wrist.",
+        "Focal spasticity management: intramuscular botulinum toxin type A injections combined with occupational therapy provide targeted tone reduction without systemic sedation."
       ],
       "case_hooks": [
-        "An adult patient presenting with acute or subacute manifestations of rehabilitation after stroke: principles and evidence requiring immediate diagnostic confirmation and therapy.",
-        "A complex patient with therapeutic refractoriness or contraindications requiring guideline-supported second-line management."
+        "A 64-year-old man 2 weeks post-ischemic MCA stroke who exhibits severe left spastic hemiplegia, flexed wrist posturing, and painful biceps spasms interfering with hygiene.",
+        "A 58-year-old woman 1 month following lacunar stroke presenting with profound apathy, emotional lability, tearfulness, and poor participation in physical therapy sessions."
       ],
       "gaps": "Reviewers should confirm alignment with current local antimicrobial/formulary guidelines and relevant special population considerations.",
       "sources": [
@@ -2092,51 +2110,51 @@
       "guidelinesDropped": []
     },
     "page": {
-      "mentor_intro": "Relapsed and Refractory DLBCL is a crucial clinical entity with well-defined evidence-based standards of care. Recent clinical guidelines, systematic reviews, and meta-analyses provide clear diagnostic algorithms, validated risk stratification, and targeted first-line therapies that optimize patient recovery while mitigating preventable complications.",
+      "mentor_intro": "The therapeutic paradigm for relapsed or refractory diffuse large B-cell lymphoma (R/R DLBCL) has been transformed by chimeric antigen receptor (CAR) T-cell therapy and novel targeted bispecific antibodies. Rapid cellular therapy assessment is now standard of care for early relapses following first-line chemoimmunotherapy.",
       "teaching_points": [
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: CAR-T Cell Therapy Versus Salvage Chemotherapy in Relapsed/Refractory DLBCL: A Systematic Review and Meta-Analysis Integrating Radiologic, Laboratory, and Histopathologic Correlates.",
+          "claim": "In patients with DLBCL refractory to first-line therapy or relapsing within 12 months of chemoimmunotherapy (R-CHOP), autologous anti-CD19 CAR T-cell therapy (axicabtagene ciloleucel or lisocabtagene maraleucel) demonstrated superior event-free survival and overall survival compared with platinum-based salvage chemoimmunotherapy and autologous stem cell transplantation (ZUMA-7 and TRANSFORM trials).",
           "cites": [
             "42340791"
           ]
         },
         {
-          "claim": "Systematic review evidence supports protocolized evaluation and targeted therapeutic intervention: Loncastuximab Tesirine Versus Polatuzumab Vedotin Plus Bendamustine and Rituximab in Relapsed/Refractory DLBCL After ≥ 2 Lines of Therapy: Matching-Adjusted Indirect Comparison.",
+          "claim": "High-dose chemotherapy and autologous stem cell transplantation (ASCT) retain clinical utility primarily in chemo-sensitive late relapses occurring greater than 12 months following initial treatment.",
           "cites": [
             "40153222"
           ]
         },
         {
-          "claim": "Contemporary evidence synthesis highlights core pathophysiology, clinical staging, and multidisciplinary management: Management of relapsed/refractory DLBCL in the era of novel agents and new approaches.",
+          "claim": "Bispecific T-cell engager (BiTE) antibodies targeting CD20 and CD3 (glofitamab and epcoritamab) induce deep and durable complete responses in patients with heavily pretreated DLBCL who have failed CAR T-cell therapy or are ineligible for cellular therapies.",
           "cites": [
             "41489148"
           ]
         },
         {
-          "claim": "Contemporary evidence synthesis highlights core pathophysiology, clinical staging, and multidisciplinary management: Custom CARs: Leveraging the Adaptability of Allogeneic CAR Therapies to Address Current Challenges in Relapsed/Refractory DLBCL.",
+          "claim": "Polatuzumab vedotin (antibody-drug conjugate targeting CD79b conjugated to monomethyl auristatin E) combined with bendamustine and rituximab (Pola-BR), and loncastuximab tesirine (anti-CD19 ADC with pyrrolobenzodiazepine dimer toxin), are approved effective options for transplant-ineligible R/R DLBCL.",
           "cites": [
             "35663947"
           ]
         },
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Efficacy and safety of loncastuximab tesirine in relapsed or refractory diffuse large B-cell lymphoma: a systematic review and meta-analysis.",
+          "claim": "Immune effector cell-associated toxicities following CAR T-cell therapy require standardized management: Cytokine Release Syndrome (CRS, manifesting with fever, hypoxia, and hypotension) is treated with the IL-6 receptor antagonist tocilizumab +/- corticosteroids; Immune Effector Cell-Associated Neurotoxicity Syndrome (ICANS) requires high-dose corticosteroids (dexamethasone), as tocilizumab does not cross the blood-brain barrier.",
           "cites": [
             "42244006"
           ]
         }
       ],
       "uncertainties": [
-        "Optimal duration, dosing adjustments, and sequencing of therapy in high-risk or multimorbid patients presenting with relapsed and refractory dlbcl.",
-        "Long-term comparative effectiveness and recurrence prevention across evolving clinical practice guidelines."
+        "Optimal salvage sequencing between CD20xCD3 bispecific antibodies and allogeneic CAR-T/stem cell transplantation following autologous CAR T-cell failure.",
+        "Role of circulating tumor DNA (ctDNA) molecular response monitoring in guiding early CAR T-cell referral during second-line therapy."
       ],
       "mcq_angles": [
-        "Diagnostic workup, biomarker/imaging selection, and risk stratification for relapsed and refractory dlbcl.",
-        "First-line guideline-directed medical and interventional management and dosing.",
-        "Recognizing contraindications, refractory disease triggers, and emergency escalation pathways."
+        "Indication for upfront CAR T-cell therapy over ASCT: primary refractory disease or relapse occurring <=12 months following completion of first-line R-CHOP.",
+        "Cytokine Release Syndrome (CRS) specific antidote: tocilizumab (anti-IL-6 receptor antagonist); corticosteroids added for grade >=2 CRS.",
+        "ICANS management distinction: dexamethasone is first-line; tocilizumab does not cross blood-brain barrier and can paradoxically raise CSF IL-6 levels if used alone."
       ],
       "case_hooks": [
-        "An adult patient presenting with acute or subacute manifestations of relapsed and refractory dlbcl requiring immediate diagnostic confirmation and therapy.",
-        "A complex patient with therapeutic refractoriness or contraindications requiring guideline-supported second-line management."
+        "A 58-year-old man with DLBCL who demonstrates disease progression on PET-CT within 3 months of completing 6 cycles of R-CHOP chemoimmunotherapy.",
+        "A 65-year-old woman on day 5 post-axicabtagene ciloleucel infusion who develops high fever (39.5 C), systolic blood pressure of 82 mmHg, and expressive dysphasia."
       ],
       "gaps": "Reviewers should confirm alignment with current local antimicrobial/formulary guidelines and relevant special population considerations.",
       "sources": [
@@ -2591,51 +2609,51 @@
       "guidelinesDropped": []
     },
     "page": {
-      "mentor_intro": "Renal Biopsy: Indications and Interpretation is a crucial clinical entity with well-defined evidence-based standards of care. Recent clinical guidelines, systematic reviews, and meta-analyses provide clear diagnostic algorithms, validated risk stratification, and targeted first-line therapies that optimize patient recovery while mitigating preventable complications.",
+      "mentor_intro": "Percutaneous native renal biopsy is the gold-standard diagnostic procedure in nephrology, providing definitive diagnosis, prognostic assessment, and guidance for immunosuppressive therapy. Systematic histological processing combining light microscopy, immunofluorescence, and electron microscopy is mandatory.",
       "teaching_points": [
         {
-          "claim": "Contemporary evidence synthesis highlights core pathophysiology, clinical staging, and multidisciplinary management: Electron Microscopy in Renal Biopsy Interpretation: When and Why It Still Matters.",
+          "claim": "Major clinical indications for native percutaneous renal biopsy include unexplained acute kidney injury, rapidly progressive glomerulonephritis (RPGN), nephrotic-range proteinuria, persistent glomerular hematuria with proteinuria, and systemic autoimmune diseases with suspected renal involvement (e.g., lupus nephritis).",
           "cites": [
             "41367485"
           ]
         },
         {
-          "claim": "Clinical practice guideline consensus establishes evidence-directed diagnostic criteria and risk-stratified therapy for renal biopsy: indications and interpretation: Consensus on core competencies for simulation training in ultrasound-guided renal biopsy.",
+          "claim": "Absolute contraindications include uncorrectable bleeding diathesis, refractory severe hypertension (blood pressure >160/100 mmHg), severe uncooperative patient behavior, and skin infection over the biopsy site; solitary native kidney is a relative contraindication requiring experienced operator ultrasound guidance.",
           "cites": [
             "40343944"
           ]
         },
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Effect of desmopressin on bleeding outcomes after native renal biopsy: a systematic review and meta-analysis.",
+          "claim": "Comprehensive pathological interpretation mandates three complementary modalities: light microscopy (H&E, PAS for basement membranes, Jones silver for spikes/holes, Masson trichrome for interstitial fibrosis), immunofluorescence (detecting IgG, IgA, IgM, C3, C1q, kappa, lambda), and electron microscopy (identifying subepithelial, subendothelial, or mesangial deposit ultrastructure and podocyte foot process effacement).",
           "cites": [
             "41203719"
           ]
         },
         {
-          "claim": "Systematic review evidence supports protocolized evaluation and targeted therapeutic intervention: Kidney involvement in VEXAS syndrome: insights from a rare case of secondary amyloidosis and systematic review of renal biopsy-confirmed reports.",
+          "claim": "Adequacy criteria for a native renal biopsy typically require a core containing a minimum of 8 to 10 glomeruli with at least one interlobular artery to assess both glomerular and vascular pathology accurately.",
           "cites": [
             "40445522"
           ]
         },
         {
-          "claim": "Contemporary evidence synthesis highlights core pathophysiology, clinical staging, and multidisciplinary management: From fundus to filtration: AI-driven retinal phenotyping as a framework for non-invasive prediction of kidney pathological categories (the \"virtual renal biopsy\" concept)- a narrative review.",
+          "claim": "Post-biopsy monitoring mandates 4 to 6 hours of strict bed rest, serial blood pressure/pulse monitoring, and routine post-procedure urine inspection; gross hematuria occurs in 2–5% of patients, while major perinephric hematomas requiring transfusion or angiographic embolization occur in <1%.",
           "cites": [
             "42736511"
           ]
         }
       ],
       "uncertainties": [
-        "Optimal duration, dosing adjustments, and sequencing of therapy in high-risk or multimorbid patients presenting with renal biopsy: indications and interpretation.",
-        "Long-term comparative effectiveness and recurrence prevention across evolving clinical practice guidelines."
+        "Diagnostic yield and bleeding risk of transjugular renal biopsy versus ultrasound-guided percutaneous biopsy in patients with high-risk bleeding diatheses.",
+        "Integration of spatial transcriptomics and automated machine-learning digital pathology into standard renal biopsy scoring systems."
       ],
       "mcq_angles": [
-        "Diagnostic workup, biomarker/imaging selection, and risk stratification for renal biopsy: indications and interpretation.",
-        "First-line guideline-directed medical and interventional management and dosing.",
-        "Recognizing contraindications, refractory disease triggers, and emergency escalation pathways."
+        "Mandatory triad of renal biopsy examination: light microscopy, direct immunofluorescence, and transmission electron microscopy are all essential for accurate glomerulopathy classification.",
+        "Prerequisite blood pressure threshold: systolic BP must be controlled below 140-160 mmHg and diastolic below 90-100 mmHg before biopsy to prevent life-threatening subcapsular hemorrhage.",
+        "Distinguishing minimal change disease from FSGS on electron microscopy: minimal change shows diffuse podocyte foot process effacement with completely negative immunofluorescence and no light microscopic sclerosis."
       ],
       "case_hooks": [
-        "An adult patient presenting with acute or subacute manifestations of renal biopsy: indications and interpretation requiring immediate diagnostic confirmation and therapy.",
-        "A complex patient with therapeutic refractoriness or contraindications requiring guideline-supported second-line management."
+        "A 29-year-old woman with systemic lupus erythematosus who develops new-onset proteinuria of 3.2 g/24h and microscopic hematuria with RBC casts.",
+        "A 62-year-old man presenting with acute oliguria, serum creatinine rising from 1.0 to 4.8 mg/dL over 2 weeks, and positive p-ANCA (anti-MPO) serology."
       ],
       "gaps": "Reviewers should confirm alignment with current local antimicrobial/formulary guidelines and relevant special population considerations.",
       "sources": [
@@ -2751,51 +2769,51 @@
       "guidelinesDropped": []
     },
     "page": {
-      "mentor_intro": "Renal Cell Carcinoma is a crucial clinical entity with well-defined evidence-based standards of care. Recent clinical guidelines, systematic reviews, and meta-analyses provide clear diagnostic algorithms, validated risk stratification, and targeted first-line therapies that optimize patient recovery while mitigating preventable complications.",
+      "mentor_intro": "Renal cell carcinoma (RCC) comprises a heterogeneous group of malignancies arising from renal tubular epithelium, predominantly clear cell RCC (75–80%). Treatment paradigms for localized disease prioritize nephron-sparing surgery, while metastatic disease management has been revolutionized by combinations of immune checkpoint inhibitors and VEGF receptor tyrosine kinase inhibitors.",
       "teaching_points": [
         {
-          "claim": "Clinical practice guideline consensus establishes evidence-directed diagnostic criteria and risk-stratified therapy for renal cell carcinoma: [Update renal cell carcinoma : Guideline update on small renal masses].",
+          "claim": "Clear cell renal cell carcinoma (ccRCC) is the most common histological subtype (75-80%), characterized pathologically by loss of chromosome 3p and biallelic inactivation of the von Hippel-Lindau (VHL) tumor suppressor gene, leading to accumulation of hypoxia-inducible factors (HIF-1a/2a) and overexpression of VEGF and PDGF.",
           "cites": [
             "42726211"
           ]
         },
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Salvage therapies for local recurrence of renal cell carcinoma: a systematic review and meta-analysis.",
+          "claim": "For localized T1 renal tumors (<=7 cm), partial nephrectomy (nephron-sparing surgery) is the preferred standard of care over radical nephrectomy, preserving long-term renal function and reducing cardiovascular mortality with oncological equivalence.",
           "cites": [
             "42604476"
           ]
         },
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Circulating KIM-1 and survival outcomes in renal cell carcinoma: A systematic review and meta-analysis.",
+          "claim": "Active surveillance is an evidence-based management strategy for small renal masses (<3 cm) in elderly or comorbid patients, given the slow median growth rate (approx. 0.1–0.3 cm/year) and very low metastatic potential during initial monitoring.",
           "cites": [
             "42493401"
           ]
         },
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Progression-free survival and objective response rate as a surrogate end point for overall survival in metastatic renal cell carcinoma: A systematic review and meta-analysis.",
+          "claim": "For treatment-naive metastatic clear cell RCC, risk-stratified combination therapy based on the IMDC (International Metastatic RCC Database Consortium) criteria is standard: dual immune checkpoint inhibition (nivolumab plus ipilimumab) or ICI-TKI combinations (pembrolizumab plus axitinib, nivolumab plus cabozantinib, or pembrolizumab plus lenvatinib) achieve superior overall survival over sunitinib.",
           "cites": [
             "42779347"
           ]
         },
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Prognosis Comparison Between Synchronous and Metachronous Metastasis of Renal Cell Carcinoma: A Meta-Analysis and Systematic Review.",
+          "claim": "RCC is historically refractory to cytotoxic chemotherapy and conventional radiotherapy; targeted therapies include multi-targeted receptor tyrosine kinase inhibitors (cabozantinib, axitinib), mTOR inhibitors (everolimus), and the first-in-class HIF-2alpha inhibitor belzutifan for VHL-associated RCC.",
           "cites": [
             "42722945"
           ]
         }
       ],
       "uncertainties": [
-        "Optimal duration, dosing adjustments, and sequencing of therapy in high-risk or multimorbid patients presenting with renal cell carcinoma.",
-        "Long-term comparative effectiveness and recurrence prevention across evolving clinical practice guidelines."
+        "Role of adjuvant pembrolizumab in intermediate-high risk resected ccRCC balancing disease-free survival benefits against immune-related toxicities (KEYNOTE-564).",
+        "Optimal second-line sequencing following progression on first-line IO-TKI combinations in metastatic clear cell RCC."
       ],
       "mcq_angles": [
-        "Diagnostic workup, biomarker/imaging selection, and risk stratification for renal cell carcinoma.",
-        "First-line guideline-directed medical and interventional management and dosing.",
-        "Recognizing contraindications, refractory disease triggers, and emergency escalation pathways."
+        "Surgical choice for T1a renal mass: partial nephrectomy is strongly preferred over radical nephrectomy to preserve nephron mass and renal function.",
+        "Molecular pathophysiology of clear cell RCC: VHL gene inactivation on chromosome 3p leading to constitutive activation of HIF pathways and hypervascularity.",
+        "First-line systemic therapy for poor/intermediate-risk metastatic ccRCC: combination immunotherapy with nivolumab plus ipilimumab or pembrolizumab plus axitinib/lenvatinib."
       ],
       "case_hooks": [
-        "An adult patient presenting with acute or subacute manifestations of renal cell carcinoma requiring immediate diagnostic confirmation and therapy.",
-        "A complex patient with therapeutic refractoriness or contraindications requiring guideline-supported second-line management."
+        "A 62-year-old man found to have an incidental 3.2-cm solid, enhancing, exophytic mass in the lower pole of the right kidney on an abdominal ultrasound for gallstones.",
+        "A 54-year-old woman presenting with left flank pain, microscopic hematuria, and multiple cannonball pulmonary metastases on chest CT."
       ],
       "gaps": "Reviewers should confirm alignment with current local antimicrobial/formulary guidelines and relevant special population considerations.",
       "sources": [
@@ -3076,45 +3094,51 @@
       "guidelinesDropped": []
     },
     "page": {
-      "mentor_intro": "Renal Hypertension: Secondary Causes is a crucial clinical entity with well-defined evidence-based standards of care. Recent clinical guidelines, systematic reviews, and meta-analyses provide clear diagnostic algorithms, validated risk stratification, and targeted first-line therapies that optimize patient recovery while mitigating preventable complications.",
+      "mentor_intro": "Renal disease is the single most common cause of secondary hypertension, divided into renal parenchymal disease and renovascular hypertension. Identifying renovascular stenosis, particularly in young females (fibromuscular dysplasia) or older atherosclerotic patients, allows targeted medical and interventional management.",
       "teaching_points": [
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Biochemical and renal-metabolic profiles distinguishing primary aldosteronism from essential hypertension: a systematic review and meta-analysis with implications for endocrine hypertension screening.",
+          "claim": "Renal parenchymal disease causes hypertension through impaired sodium excretion, intravascular volume expansion, and secondary activation of the renin-angiotensin-aldosterone system (RAAS); blood pressure target is <130/80 mmHg using ACE inhibitors or ARBs as first-line therapy to reduce proteinuria and slow CKD progression.",
           "cites": [
             "42812167"
           ]
         },
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Combined traditional Chinese medicine and anti-hypertensive treatments for renal hypertension: A network meta-analysis and systematic review.",
+          "claim": "Renovascular hypertension is caused by renal artery stenosis (RAS), which is divided into atherosclerotic RAS (>90% of cases, typically affecting older males at the ostium/proximal third of the artery) and fibromuscular dysplasia (FMD, ~10%, classically affecting young females aged 15-50 in the mid-to-distal artery with a 'string-of-beads' appearance).",
           "cites": [
             "39465780"
           ]
         },
         {
-          "claim": "Contemporary evidence synthesis highlights core pathophysiology, clinical staging, and multidisciplinary management: Non-invasive methods for diagnosing portal hypertension and variceal bleeding due to liver cirrhosis secondary to NAFLD/MASLD: systematic review.",
+          "claim": "Clinical clues indicating renovascular hypertension include severe or resistant hypertension, acute elevation of serum creatinine >30% following initiation of an ACE inhibitor or ARB, recurrent unprovoked flash pulmonary edema, an abdominal systolic-diastolic bruit, and asymmetric kidney sizes (>1.5 cm length discrepancy).",
           "cites": [
             "39911662"
           ]
         },
         {
-          "claim": "Contemporary evidence synthesis highlights core pathophysiology, clinical staging, and multidisciplinary management: Acute renal failure - definition, outcome measures, animal models, fluid therapy and information technology needs: the Second International Consensus Conference of the Acute Dialysis Quality Initiative (ADQI) Group.",
+          "claim": "Catheter-based percutaneous transluminal angioplasty (PTA) without stenting is the curative treatment of choice for fibromuscular dysplasia, achieving high rates of blood pressure normalization; in contrast, routine stenting for atherosclerotic RAS (ASTRAL and CORAL trials) does not improve blood pressure or renal outcomes over medical therapy alone.",
           "cites": [
             "15312219"
+          ]
+        },
+        {
+          "claim": "Initial non-invasive screening for suspected renal artery stenosis utilizes renal duplex ultrasonography (peak systolic velocity >200 cm/s, renal-to-aortic velocity ratio >3.5), CT angiography (avoided in advanced renal impairment), or contrast-enhanced magnetic resonance angiography (MRA).",
+          "cites": [
+            "42812167"
           ]
         }
       ],
       "uncertainties": [
-        "Optimal duration, dosing adjustments, and sequencing of therapy in high-risk or multimorbid patients presenting with renal hypertension: secondary causes.",
-        "Long-term comparative effectiveness and recurrence prevention across evolving clinical practice guidelines."
+        "Compelling criteria for revascularization in atherosclerotic RAS (refractory flash pulmonary edema, rapidly progressive ischemic nephropathy).",
+        "Screening algorithms and diagnostic criteria for non-atherosclerotic renal artery aneurysms and spontaneous renal artery dissections in patients with FMD."
       ],
       "mcq_angles": [
-        "Diagnostic workup, biomarker/imaging selection, and risk stratification for renal hypertension: secondary causes.",
-        "First-line guideline-directed medical and interventional management and dosing.",
-        "Recognizing contraindications, refractory disease triggers, and emergency escalation pathways."
+        "FMD versus Atherosclerotic RAS: FMD responds curative to percutaneous balloon angioplasty without stenting, whereas atherosclerotic RAS is primarily managed with optimal medical therapy.",
+        "ACE inhibitor hemodynamic effect: acute rise in serum creatinine >30% upon starting ACEi/ARB suggests bilateral renal artery stenosis or stenosis of a solitary functioning kidney.",
+        "Preferred non-invasive screening test: Doppler ultrasonography of renal arteries evaluates hemodynamic velocity shifts without exposing patients to iodinated contrast or gadolinium."
       ],
       "case_hooks": [
-        "An adult patient presenting with acute or subacute manifestations of renal hypertension: secondary causes requiring immediate diagnostic confirmation and therapy.",
-        "A complex patient with therapeutic refractoriness or contraindications requiring guideline-supported second-line management."
+        "A 28-year-old previously healthy woman with newly diagnosed severe hypertension (BP 185/110 mmHg) and an epigastric bruit on physical examination.",
+        "A 72-year-old man with peripheral vascular disease and baseline creatinine 1.4 mg/dL whose creatinine spikes to 2.8 mg/dL 10 days after starting lisinopril 10 mg daily."
       ],
       "gaps": "Reviewers should confirm alignment with current local antimicrobial/formulary guidelines and relevant special population considerations.",
       "sources": [
@@ -3207,51 +3231,51 @@
       "guidelinesDropped": []
     },
     "page": {
-      "mentor_intro": "Renal Imaging in Nephrology is a crucial clinical entity with well-defined evidence-based standards of care. Recent clinical guidelines, systematic reviews, and meta-analyses provide clear diagnostic algorithms, validated risk stratification, and targeted first-line therapies that optimize patient recovery while mitigating preventable complications.",
+      "mentor_intro": "Radiological imaging is integral to the diagnosis, staging, and monitoring of kidney disorders. Selecting the appropriate modality—renal ultrasound, computed tomography (CT), magnetic resonance imaging (MRI), or radionuclide scintigraphy—requires balancing anatomical resolution against potential nephrotoxic and systemic risks.",
       "teaching_points": [
         {
-          "claim": "Clinical practice guideline consensus establishes evidence-directed diagnostic criteria and risk-stratified therapy for renal imaging in nephrology: ESR Essentials: renal imaging in children-practice recommendations by the European Society of Paediatric Radiology.",
+          "claim": "Renal ultrasonography is the first-line imaging modality in nephrology, accurately evaluating kidney size, cortical echogenicity, corticomedullary differentiation, and excluding post-renal obstructive uropathy (hydronephrosis) without radiation exposure or nephrotoxicity.",
           "cites": [
             "41348211"
           ]
         },
         {
-          "claim": "Systematic review evidence supports protocolized evaluation and targeted therapeutic intervention: Advancements in Renal Imaging: A Comprehensive Systematic Review of PET Probes for Enhanced GFR and Renal Perfusion Assessment.",
+          "claim": "Bilateral small (<9 cm), hyperechoic kidneys with thin cortices and poor corticomedullary differentiation indicate irreversible chronic kidney disease; normal or enlarged kidneys in renal failure suggest diabetic nephropathy, amyloidosis, polycystic kidney disease, HIV-associated nephropathy, or acute glomerulonephritis.",
           "cites": [
             "41464210"
           ]
         },
         {
-          "claim": "Contemporary evidence synthesis highlights core pathophysiology, clinical staging, and multidisciplinary management: Renal Imaging Characteristics Predicting Percutaneous Access for Staghorn Stone Management.",
+          "claim": "Non-contrast low-dose CT of the kidneys, ureters, and bladder (CT KUB) is the gold standard imaging modality for suspected nephrolithiasis, boasting >95% sensitivity and specificity and detecting all stone types (including radiolucent uric acid stones) except rare indinavir-induced stones.",
           "cites": [
             "42758233"
           ]
         },
         {
-          "claim": "Contemporary evidence synthesis highlights core pathophysiology, clinical staging, and multidisciplinary management: Radiopharmaceuticals in Renal Imaging: A Comprehensive Review of Current Applications and Future Prospects.",
+          "claim": "Contrast-induced nephropathy (CIN) and post-contrast acute kidney injury (PC-AKI) risk with modern low-osmolar or iso-osmolar iodinated contrast is low, but rises in severe CKD (eGFR <30 mL/min/1.73m2); preventive measures center on volume expansion with isotonic crystalloids (saline), while sodium bicarbonate and N-acetylcysteine are no longer routinely recommended.",
           "cites": [
             "41552567"
           ]
         },
         {
-          "claim": "Contemporary evidence synthesis highlights core pathophysiology, clinical staging, and multidisciplinary management: State of the art review of AI in renal imaging.",
+          "claim": "Gadolinium-based contrast agents carry a risk of Nephrogenic Systemic Fibrosis (NSF) in severe kidney failure (eGFR <15-30 mL/min/1.73m2); modern macrocyclic Class II agents (e.g., gadobutrol, gadoterate) carry negligible risk and can be safely administered when clinically indicated.",
           "cites": [
             "40293518"
           ]
         }
       ],
       "uncertainties": [
-        "Optimal duration, dosing adjustments, and sequencing of therapy in high-risk or multimorbid patients presenting with renal imaging in nephrology.",
-        "Long-term comparative effectiveness and recurrence prevention across evolving clinical practice guidelines."
+        "Clinical utility of ultrasound shear-wave elastography in quantifying renal cortical interstitial fibrosis non-invasively.",
+        "True incidence of post-contrast acute kidney injury in stable outpatients with eGFR 20-30 mL/min receiving modern iso-osmolar contrast."
       ],
       "mcq_angles": [
-        "Diagnostic workup, biomarker/imaging selection, and risk stratification for renal imaging in nephrology.",
-        "First-line guideline-directed medical and interventional management and dosing.",
-        "Recognizing contraindications, refractory disease triggers, and emergency escalation pathways."
+        "Kidney size in chronic renal failure: kidneys are typically shrunken (<9 cm), but enlarged/normal sized in diabetic nephropathy, amyloidosis, and myeloma kidney.",
+        "Imaging test of choice for acute flank pain and suspected ureteric colic: non-contrast CT KUB, which detects stone location, diameter, and secondary signs of obstruction.",
+        "Nephrogenic Systemic Fibrosis risk profile: high-risk linear gadolinium chelates are contraindicated in severe CKD; macrocyclic Class II agents have an exemplary safety profile."
       ],
       "case_hooks": [
-        "An adult patient presenting with acute or subacute manifestations of renal imaging in nephrology requiring immediate diagnostic confirmation and therapy.",
-        "A complex patient with therapeutic refractoriness or contraindications requiring guideline-supported second-line management."
+        "A 48-year-old man presenting with acute severe left flank pain radiating to the groin with microscopic hematuria, evaluated for optimal diagnostic imaging.",
+        "A 65-year-old woman with stage 4 CKD (eGFR 22 mL/min/1.73m2) requiring an urgent contrast-enhanced CT to stage newly diagnosed colon cancer."
       ],
       "gaps": "Reviewers should confirm alignment with current local antimicrobial/formulary guidelines and relevant special population considerations.",
       "sources": [
@@ -3365,51 +3389,51 @@
       "guidelinesDropped": []
     },
     "page": {
-      "mentor_intro": "Renal Manifestations of Systemic Disease is a crucial clinical entity with well-defined evidence-based standards of care. Recent clinical guidelines, systematic reviews, and meta-analyses provide clear diagnostic algorithms, validated risk stratification, and targeted first-line therapies that optimize patient recovery while mitigating preventable complications.",
+      "mentor_intro": "The kidneys are frequently involved in multi-organ systemic disorders including diabetes mellitus, systemic lupus erythematosus (SLE), systemic vasculitis, amyloidosis, and multiple myeloma. Recognizing distinct clinical and urinalysis signatures enables early diagnosis and targeted therapy to preserve renal function.",
       "teaching_points": [
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Multisystem Burden of Paediatric Systemic Lupus Erythematosus: A Systematic Review and Meta-Analysis of Neuropsychiatric, Renal, Ocular, and Immunological Outcomes.",
+          "claim": "Diabetic kidney disease (DKD) is the leading cause of end-stage renal disease worldwide, characterized histologically by glomerular basement membrane thickening, mesangial expansion, and nodular glomerulosclerosis (Kimmelstiel-Wilson nodules); comprehensive therapy incorporates ACEi/ARB, SGLT2 inhibitors, and non-steroidal mineralocorticoid antagonists (finerenone).",
           "cites": [
             "42664148"
           ]
         },
         {
-          "claim": "Contemporary evidence synthesis highlights core pathophysiology, clinical staging, and multidisciplinary management: Stereotactic body radiotherapy for primary renal cell carcinoma: a systematic review and practice guideline from the International Society of Stereotactic Radiosurgery (ISRS).",
+          "claim": "Lupus nephritis affects up to 50% of SLE patients and is classified by ISN/RPS criteria into Classes I through VI; Class III (focal) and Class IV (diffuse proliferative) represent aggressive glomerulonephritides requiring urgent induction immunosuppression with mycophenolate mofetil or low-dose IV cyclophosphamide combined with high-dose corticosteroids.",
           "cites": [
             "38181809"
           ]
         },
         {
-          "claim": "Contemporary evidence synthesis highlights core pathophysiology, clinical staging, and multidisciplinary management: SGLT2 inhibitors and renal outcomes in type 2 diabetes with or without renal impairment: A systematic review and meta-analysis.",
+          "claim": "Renal amyloidosis (AL and AA) typically manifests as heavy, nephrotic-range proteinuria and progressive renal failure with normal or enlarged kidneys on ultrasound; diagnosis is confirmed by Congo red staining demonstrating apple-green birefringence under polarized light.",
           "cites": [
             "29482993"
           ]
         },
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Toxicities of Fruquintinib in Gastrointestinal Malignancies: A Systematic Review and Meta-Analysis.",
+          "claim": "Myeloma kidney (light chain cast nephropathy) presents with acute or subacute kidney injury caused by excessive monoclonal immunoglobulin free light chains precipitating with Tamm-Horsfall protein in distal tubules; diagnosis requires serum free light chain (sFLC) ratio, and dipstick urinalysis is falsely negative for proteinuria as it only detects albumin.",
           "cites": [
             "42769859"
           ]
         },
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Rituximab as Rescue or Add-On Therapy for Relapsing or Refractory Lupus Nephritis: A Systematic Review and Meta-Analysis.",
+          "claim": "Systemic sclerosis can cause scleroderma renal crisis (SRC), characterized by abrupt new-onset accelerated hypertension, oliguric acute kidney injury, and microangiopathic hemolytic anemia, which must be treated immediately with titrated ACE inhibitors (captopril).",
           "cites": [
             "42806593"
           ]
         }
       ],
       "uncertainties": [
-        "Optimal duration, dosing adjustments, and sequencing of therapy in high-risk or multimorbid patients presenting with renal manifestations of systemic disease.",
-        "Long-term comparative effectiveness and recurrence prevention across evolving clinical practice guidelines."
+        "Role of dual targeted B-cell therapies (belimumab plus rituximab) in refractory proliferative lupus nephritis.",
+        "Optimal threshold for emergency extracorporeal light chain removal (high-cutoff hemodialysis or plasma exchange) in severe cast nephropathy."
       ],
       "mcq_angles": [
-        "Diagnostic workup, biomarker/imaging selection, and risk stratification for renal manifestations of systemic disease.",
-        "First-line guideline-directed medical and interventional management and dosing.",
-        "Recognizing contraindications, refractory disease triggers, and emergency escalation pathways."
+        "Urinalysis discrepancy in myeloma kidney: routine urine dipstick detects only albumin and will be negative or trace despite massive Bence-Jones proteinuria, requiring 24-hr protein electrophoresis or serum free light chains.",
+        "Scleroderma renal crisis management: emergency ACE inhibitor titration (captopril) is life-saving; corticosteroids are contraindicated as high doses trigger SRC.",
+        "Pathognomonic histology in diabetic nephropathy: Kimmelstiel-Wilson nodules (nodular intercapillary glomerulosclerosis) on PAS and silver stains."
       ],
       "case_hooks": [
-        "An adult patient presenting with acute or subacute manifestations of renal manifestations of systemic disease requiring immediate diagnostic confirmation and therapy.",
-        "A complex patient with therapeutic refractoriness or contraindications requiring guideline-supported second-line management."
+        "A 68-year-old man presenting with acute kidney injury, normocytic anemia, bone pain, hypercalcemia, and a urine dipstick that is completely negative for protein.",
+        "A 36-year-old woman with diffuse systemic sclerosis who presents with new-onset blood pressure 210/120 mmHg, headache, and serum creatinine doubling to 2.4 mg/dL."
       ],
       "gaps": "Reviewers should confirm alignment with current local antimicrobial/formulary guidelines and relevant special population considerations.",
       "sources": [
@@ -3497,51 +3521,51 @@
       "guidelinesDropped": []
     },
     "page": {
-      "mentor_intro": "Renal Manifestations of Vasculitis is a crucial clinical entity with well-defined evidence-based standards of care. Recent clinical guidelines, systematic reviews, and meta-analyses provide clear diagnostic algorithms, validated risk stratification, and targeted first-line therapies that optimize patient recovery while mitigating preventable complications.",
+      "mentor_intro": "Systemic vasculitis involving the kidneys typically manifests as rapidly progressive glomerulonephritis (RPGN), demanding urgent recognition and immunosuppression to prevent end-stage renal disease. ANCA-associated vasculitis and anti-GBM disease represent the most common and destructive etiologies.",
       "teaching_points": [
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Multisystem Burden of Paediatric Systemic Lupus Erythematosus: A Systematic Review and Meta-Analysis of Neuropsychiatric, Renal, Ocular, and Immunological Outcomes.",
+          "claim": "ANCA-associated vasculitis (AAV—granulomatosis with polyangiitis GPA, microscopic polyangiitis MPA, and eosinophilic GPA) typically causes a pauci-immune necrotizing and crescentic glomerulonephritis, characterized serologically by antibodies against proteinase 3 (PR3-ANCA / c-ANCA) or myeloperoxidase (MPO-ANCA / p-ANCA).",
           "cites": [
             "42664148"
           ]
         },
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Efficacy and safety of various immunosuppressive agents for pediatric Henoch-Schönlein purpura nephritis (IgA vasculitis nephritis) in Chinese children: a systematic review and network meta-analysis.",
+          "claim": "Urgent induction therapy for organ- or life-threatening AAV combines high-dose intravenous glucocorticoids with either rituximab (375 mg/m2 weekly for 4 weeks or 1,000 mg on days 1 and 15) or intravenous cyclophosphamide; the ADVOCATE trial established that the oral C5a receptor antagonist avacopan can effectively replace high-dose oral prednisone tapers.",
           "cites": [
             "42602030"
           ]
         },
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Clinical manifestations, prognostic impact, and relapse in polyarteritis nodosa: a systematic review and meta-analysis.",
+          "claim": "The landmark PEXIVAS trial demonstrated that routine therapeutic plasma exchange (PEX) did not reduce the composite endpoint of all-cause mortality or end-stage renal disease in severe AAV, although plasma exchange remains standard of care for concurrent anti-GBM disease or severe pulmonary hemorrhage.",
           "cites": [
             "41711936"
           ]
         },
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Efficacy and safety of traditional Chinese medicine in treating pediatric IgA vasculitis nephritis: A systematic review and meta-analysis of randomized controlled trials.",
+          "claim": "Anti-GBM disease (Goodpasture disease) is characterized by circulating autoantibodies against the alpha-3 chain of type IV collagen, presenting with severe crescentic glomerulonephritis and pulmonary hemorrhage; urgent daily plasma exchange combined with cyclophosphamide and glucocorticoids must be initiated before oliguria develops.",
           "cites": [
             "42260845"
           ]
         },
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Association of the Angiotensin-Converting Enzyme Insertion/Deletion Polymorphism with Increased Susceptibility to Vasculitis: A Systematic Review and Meta-Analysis.",
+          "claim": "Immunofluorescence examination of the renal biopsy is crucial: AAV demonstrates a 'pauci-immune' pattern (scant or absent immunoglobulin/complement staining), whereas anti-GBM disease displays pathognomonic bright linear IgG staining along glomerular capillary walls.",
           "cites": [
             "42756361"
           ]
         }
       ],
       "uncertainties": [
-        "Optimal duration, dosing adjustments, and sequencing of therapy in high-risk or multimorbid patients presenting with renal manifestations of vasculitis.",
-        "Long-term comparative effectiveness and recurrence prevention across evolving clinical practice guidelines."
+        "Optimal duration of rituximab maintenance therapy (2 years vs extended 4-5 years) in PR3-ANCA patients at high risk of late relapse.",
+        "Safety and efficacy of avacopan in patients with severe renal impairment (eGFR <15 mL/min/1.73m2), who were excluded from the pivotal ADVOCATE trial."
       ],
       "mcq_angles": [
-        "Diagnostic workup, biomarker/imaging selection, and risk stratification for renal manifestations of vasculitis.",
-        "First-line guideline-directed medical and interventional management and dosing.",
-        "Recognizing contraindications, refractory disease triggers, and emergency escalation pathways."
+        "PEXIVAS trial finding: routine plasma exchange does not reduce death or ESKD in ANCA-associated vasculitis, reserving PEX for severe pulmonary hemorrhage or dual ANCA/anti-GBM positivity.",
+        "Immunofluorescence differentiation: linear IgG along capillary walls indicates anti-GBM disease; granular capillary/mesangial deposits indicate immune-complex GN (lupus, cryoglobulinemia); pauci-immune indicates AAV.",
+        "Avacopan mechanism of action: selective oral C5a receptor antagonist that allows elimination or significant reduction of toxic systemic glucocorticoid exposure in AAV induction."
       ],
       "case_hooks": [
-        "An adult patient presenting with acute or subacute manifestations of renal manifestations of vasculitis requiring immediate diagnostic confirmation and therapy.",
-        "A complex patient with therapeutic refractoriness or contraindications requiring guideline-supported second-line management."
+        "A 64-year-old man presenting with malaise, purpuric skin rash, hemoptysis, dark brown urine with red cell casts, and serum creatinine 4.5 mg/dL with positive c-ANCA/PR3 titers.",
+        "A 22-year-old male smoker presenting with sudden-onset hemoptysis, anuric acute kidney injury, and linear IgG deposition on emergent renal biopsy."
       ],
       "gaps": "Reviewers should confirm alignment with current local antimicrobial/formulary guidelines and relevant special population considerations.",
       "sources": [
@@ -3692,51 +3716,51 @@
       "guidelinesDropped": []
     },
     "page": {
-      "mentor_intro": "Renal Osteodystrophy is a crucial clinical entity with well-defined evidence-based standards of care. Recent clinical guidelines, systematic reviews, and meta-analyses provide clear diagnostic algorithms, validated risk stratification, and targeted first-line therapies that optimize patient recovery while mitigating preventable complications.",
+      "mentor_intro": "Renal osteodystrophy refers to the spectrum of bone morphological alterations occurring in chronic kidney disease-mineral and bone disorder (CKD-MBD). Derangements in calcium, phosphate, FGF23, parathyroid hormone (PTH), and active vitamin D lead to high-turnover bone disease (osteitis fibrosa cystica) or low-turnover states (adynamic bone disease).",
       "teaching_points": [
         {
-          "claim": "Clinical practice guideline consensus establishes evidence-directed diagnostic criteria and risk-stratified therapy for renal osteodystrophy: Bone histomorphometry for the diagnosis of renal osteodystrophy - a European consensus statement.",
+          "claim": "Chronic kidney disease-mineral and bone disorder (CKD-MBD) encompasses biochemical abnormalities (calcium, phosphate, PTH, FGF23, vitamin D), skeletal abnormalities (renal osteodystrophy), and vascular/soft-tissue calcification.",
           "cites": [
             "40446949"
           ]
         },
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Renal osteodystrophy in pediatric patients. A systematic review and meta-analysis.",
+          "claim": "As GFR declines below 60 mL/min/1.73m2, impaired phosphate excretion stimulates osteocytes to secrete Fibroblast Growth Factor 23 (FGF23); FGF23 promotes phosphaturia but downregulates renal 1-alpha-hydroxylase, reducing active 1,25-dihydroxyvitamin D (calcitriol), causing hypocalcemia and driving secondary hyperparathyroidism.",
           "cites": [
             "42081926"
           ]
         },
         {
-          "claim": "Systematic review evidence supports protocolized evaluation and targeted therapeutic intervention: Vitamin D Receptor (VDR) Gene Polymorphisms and High-Turnover Renal Osteodystrophy or Secondary Hyperparathyroidism in End-Stage Renal Disease: A Systematic Review.",
+          "claim": "High-turnover bone disease (osteitis fibrosa cystica) is driven by elevated PTH, characterized by accelerated osteoclastic bone resorption, osteoblastic marrow fibrosis, and classic subperiosteal bone resorption on radial phalanges; treatment involves dietary phosphate restriction, non-calcium phosphate binders, and calcimimetics (cinacalcet) or vitamin D sterols.",
           "cites": [
             "39156357"
           ]
         },
         {
-          "claim": "Contemporary evidence synthesis highlights core pathophysiology, clinical staging, and multidisciplinary management: Gut-derived uremic toxin indoxyl sulfate and aryl hydrocarbon receptor in renal osteodystrophy.",
+          "claim": "Adynamic bone disease (ABD) is a low-turnover state characterized by markedly suppressed bone formation and resorption, thin osteoid seams, and cellular hypoplasia, classically provoked by over-suppression of PTH (intact PTH <100 pg/mL) from excessive calcium-containing binders, high-dose active vitamin D, or previous aluminum toxicity.",
           "cites": [
             "42214784"
           ]
         },
         {
-          "claim": "Contemporary evidence synthesis highlights core pathophysiology, clinical staging, and multidisciplinary management: Advances in noninvasive diagnosis of renal osteodystrophy.",
+          "claim": "In dialysis-dependent CKD (G5D), target intact PTH is maintained within 2 to 9 times the upper limit of normal for the specific assay (approx. 130–600 pg/mL), balancing prevention of osteitis fibrosa cystica against adynamic bone disease.",
           "cites": [
             "41309376"
           ]
         }
       ],
       "uncertainties": [
-        "Optimal duration, dosing adjustments, and sequencing of therapy in high-risk or multimorbid patients presenting with renal osteodystrophy.",
-        "Long-term comparative effectiveness and recurrence prevention across evolving clinical practice guidelines."
+        "Diagnostic accuracy of bone-specific alkaline phosphatase and serum markers compared to gold-standard tetracycline double-labeled bone biopsy in guiding CKD-MBD therapy.",
+        "Cardiovascular mortality impact of calcimimetic therapy (cinacalcet/etelcalcetide) versus surgical subtotal parathyroidectomy in severe refractory secondary hyperparathyroidism."
       ],
       "mcq_angles": [
-        "Diagnostic workup, biomarker/imaging selection, and risk stratification for renal osteodystrophy.",
-        "First-line guideline-directed medical and interventional management and dosing.",
-        "Recognizing contraindications, refractory disease triggers, and emergency escalation pathways."
+        "Target intact PTH in dialysis (KDIGO guidelines): 2 to 9 times the assay upper limit of normal (~130–600 pg/mL); normal PTH values in dialysis indicate adynamic bone disease.",
+        "Pathophysiological cascade in early CKD: FGF23 elevation is the earliest detectable mineral metabolism change, occurring before overt hyperphosphatemia or hypocalcemia.",
+        "Radiographic sign of severe secondary hyperparathyroidism: subperiosteal bone resorption along the radial aspect of the middle phalanges and 'rugger-jersey' spine appearance."
       ],
       "case_hooks": [
-        "An adult patient presenting with acute or subacute manifestations of renal osteodystrophy requiring immediate diagnostic confirmation and therapy.",
-        "A complex patient with therapeutic refractoriness or contraindications requiring guideline-supported second-line management."
+        "A 54-year-old man on maintenance hemodialysis for 5 years presenting with diffuse bone pain, an intact PTH of 1,250 pg/mL, serum calcium 2.65 mmol/L, and serum phosphate 2.1 mmol/L.",
+        "A 68-year-old woman on peritoneal dialysis on high-dose calcitriol and calcium carbonate whose intact PTH drops to 35 pg/mL, experiencing an atraumatic femoral neck fracture."
       ],
       "gaps": "Reviewers should confirm alignment with current local antimicrobial/formulary guidelines and relevant special population considerations.",
       "sources": [
@@ -3842,51 +3866,51 @@
       "guidelinesDropped": []
     },
     "page": {
-      "mentor_intro": "Renal Replacement Therapy Modality Choice is a crucial clinical entity with well-defined evidence-based standards of care. Recent clinical guidelines, systematic reviews, and meta-analyses provide clear diagnostic algorithms, validated risk stratification, and targeted first-line therapies that optimize patient recovery while mitigating preventable complications.",
+      "mentor_intro": "Selecting the optimal renal replacement therapy (RRT) modality for end-stage kidney disease requires collaborative shared decision-making. Hemodialysis, peritoneal dialysis, and kidney transplantation offer distinct lifestyle, clinical, and physiological trade-offs.",
       "teaching_points": [
         {
-          "claim": "Clinical practice guideline consensus establishes evidence-directed diagnostic criteria and risk-stratified therapy for renal replacement therapy modality choice: [Clinical practice guideline for renal replacement therapy in critically ill patients with acute kidney injury (2026 edition)].",
+          "claim": "Kidney transplantation (especially preemptive living-donor transplantation) is the definitive gold-standard renal replacement therapy for eligible patients, providing vastly superior long-term survival, reduced cardiovascular morbidity, and improved quality of life compared with chronic dialysis.",
           "cites": [
             "42203644"
           ]
         },
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Comparing the efficacy and safety of nafamostat mesylate versus citrate for anticoagulation in continuous renal replacement therapy: a systematic review and meta-analysis.",
+          "claim": "In-center hemodialysis (ICHD) and peritoneal dialysis (PD) demonstrate equivalent 1- to 2-year survival; PD offers greater preservation of residual kidney function, flexibility, independence, and needle-free therapy, while ICHD provides scheduled, clinician-delivered dialysis without patient self-care burden.",
           "cites": [
             "42519780"
           ]
         },
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Timing of renal-replacement therapy in patients with acute kidney injury and sepsis: a systematic review and meta-analysis.",
+          "claim": "Peritoneal dialysis is contraindicated in patients with severe peritoneal fibrosis, extensive abdominal adhesions, uncorrectable mechanical abdominal wall or diaphragmatic hernias, or inability to perform sterile exchanges (unless assisted by a caregiver).",
           "cites": [
             "42316052"
           ]
         },
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Diffusive Versus Convective Continuous Renal Replacement Therapy for Acute Kidney Injury: A Systematic Review and Meta-Analysis.",
+          "claim": "Vascular access planning for hemodialysis prioritizes native arteriovenous fistulas (AVF) over prosthetic arteriovenous grafts (AVG) and central venous catheters (CVC); AVFs have superior long-term patency and lower infection and mortality rates, though require 6 to 12 weeks of maturation before cannulation.",
           "cites": [
             "41715948"
           ]
         },
         {
-          "claim": "Contemporary evidence synthesis highlights core pathophysiology, clinical staging, and multidisciplinary management: Timing of Initiation of Renal-Replacement Therapy in Acute Kidney Injury.",
+          "claim": "Conservative (non-dialytic) kidney management is a structured, palliative care-aligned therapeutic option for frail, elderly patients with significant multimorbidity and severe functional impairment, in whom starting dialysis does not prolong life or improve symptom control compared with comprehensive medical management.",
           "cites": [
             "32668114"
           ]
         }
       ],
       "uncertainties": [
-        "Optimal duration, dosing adjustments, and sequencing of therapy in high-risk or multimorbid patients presenting with renal replacement therapy modality choice.",
-        "Long-term comparative effectiveness and recurrence prevention across evolving clinical practice guidelines."
+        "Survival and technique durability trade-offs of incremental (once- or twice-weekly) hemodialysis in patients with substantial residual kidney function.",
+        "Optimal patient selection criteria for urgent-start peritoneal dialysis versus temporary central venous catheter-based hemodialysis in acute presentation of ESKD."
       ],
       "mcq_angles": [
-        "Diagnostic workup, biomarker/imaging selection, and risk stratification for renal replacement therapy modality choice.",
-        "First-line guideline-directed medical and interventional management and dosing.",
-        "Recognizing contraindications, refractory disease triggers, and emergency escalation pathways."
+        "Vascular access hierarchy: native arteriovenous fistula (AVF, e.g. radiocephalic or brachiocephalic) is preferred over grafts and catheters due to lowest bacteremia and thrombosis rates.",
+        "Preservation of residual renal function: peritoneal dialysis preserves residual GFR and daily urine volume significantly longer than conventional intermittent hemodialysis.",
+        "Conservative kidney management candidacy: elderly patients (>75-80 years) with high comorbidity (Charlson comorbidity index >=8) and severe frailty derive minimal survival benefit from dialysis."
       ],
       "case_hooks": [
-        "An adult patient presenting with acute or subacute manifestations of renal replacement therapy modality choice requiring immediate diagnostic confirmation and therapy.",
-        "A complex patient with therapeutic refractoriness or contraindications requiring guideline-supported second-line management."
+        "A 32-year-old active accountant with stage 5 CKD seeking a dialysis modality that allows continued full-time employment and travel while awaiting a deceased-donor kidney transplant.",
+        "An 82-year-old nursing home resident with severe vascular dementia, heart failure, and eGFR 8 mL/min evaluated for shared decision-making regarding conservative care vs dialysis."
       ],
       "gaps": "Reviewers should confirm alignment with current local antimicrobial/formulary guidelines and relevant special population considerations.",
       "sources": [
@@ -3987,51 +4011,51 @@
       "guidelinesDropped": []
     },
     "page": {
-      "mentor_intro": "Renal replacement therapy timing in acute kidney injury is a crucial clinical entity with well-defined evidence-based standards of care. Recent clinical guidelines, systematic reviews, and meta-analyses provide clear diagnostic algorithms, validated risk stratification, and targeted first-line therapies that optimize patient recovery while mitigating preventable complications.",
+      "mentor_intro": "Determining the optimal timing for initiating renal replacement therapy (RRT) in acute kidney injury (AKI) balances preventing life-threatening uremic complications against avoiding unnecessary invasive procedures in patients who might recover spontaneously. Landmark randomized trials have firmly established that conservative, demand-driven strategies are safe.",
       "teaching_points": [
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Timing of renal-replacement therapy in patients with acute kidney injury and sepsis: a systematic review and meta-analysis.",
+          "claim": "Multiple landmark multicenter randomized clinical trials (AKIKI, IDEAL-ICU, STARRT-AKI, and AKIKI-2) consistently demonstrate that an accelerated or early RRT strategy in critically ill patients with AKI does not reduce 60- or 90-day mortality compared with a standard, delayed/demand-driven strategy.",
           "cites": [
             "42316052"
           ]
         },
         {
-          "claim": "Contemporary evidence synthesis highlights core pathophysiology, clinical staging, and multidisciplinary management: Timing of Initiation of Renal-Replacement Therapy in Acute Kidney Injury.",
+          "claim": "Delayed, demand-driven RRT initiation avoids invasive dialysis catheterization and extracorporeal circulation in approximately 40–50% of AKI patients who recover intrinsic renal function with medical management alone.",
           "cites": [
             "32668114"
           ]
         },
         {
-          "claim": "Contemporary evidence synthesis highlights core pathophysiology, clinical staging, and multidisciplinary management: Timing of Renal-Replacement Therapy in Patients with Acute Kidney Injury and Sepsis.",
+          "claim": "Absolute, conventional emergency indications for immediate RRT initiation ('AEIOU') include: Refractory severe hyperkalemia (K >6.5 mmol/L or with ECG changes), Refractory severe metabolic acidosis (pH <7.15-7.20), Refractory fluid overload / pulmonary edema unresponsive to high-dose loop diuretics, and Overt uremic complications (uremic pericarditis, uremic encephalopathy, uremic bleeding).",
           "cites": [
             "30304656"
           ]
         },
         {
-          "claim": "Clinical practice guideline consensus establishes evidence-directed diagnostic criteria and risk-stratified therapy for renal replacement therapy timing in acute kidney injury: [Clinical practice guideline for renal replacement therapy in critically ill patients with acute kidney injury (2026 edition)].",
+          "claim": "In the absence of emergency indications, waiting until persistent Stage 3 AKI or progressive physiological deterioration occurs is safe; however, waiting until severe uremia (BUN >112-140 mg/dL / urea >40-50 mmol/L) develops (as observed in AKIKI-2) carries increased complications and should be avoided.",
           "cites": [
             "42203644"
           ]
         },
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Effect of Albumin Concentration and Timing on Acute Kidney Injury After Adult Cardiac Surgery: A Systematic Review and Meta-analysis.",
+          "claim": "Continuous renal replacement therapy (CRRT) and intermittent hemodialysis (IHD) demonstrate equivalent patient survival; CRRT is guideline-preferred in hemodynamically unstable critically ill patients and patients with acute brain injury / elevated intracranial pressure.",
           "cites": [
             "42054520"
           ]
         }
       ],
       "uncertainties": [
-        "Optimal duration, dosing adjustments, and sequencing of therapy in high-risk or multimorbid patients presenting with renal replacement therapy timing in acute kidney injury.",
-        "Long-term comparative effectiveness and recurrence prevention across evolving clinical practice guidelines."
+        "Utility of the Furosemide Stress Test (FST—urine output <200 mL within 2 hours of a 1.0–1.5 mg/kg furosemide bolus) in identifying patients destined to require RRT.",
+        "Impact of delayed RRT on long-term development of chronic kidney disease and persistent renal functional recovery at 1 year."
       ],
       "mcq_angles": [
-        "Diagnostic workup, biomarker/imaging selection, and risk stratification for renal replacement therapy timing in acute kidney injury.",
-        "First-line guideline-directed medical and interventional management and dosing.",
-        "Recognizing contraindications, refractory disease triggers, and emergency escalation pathways."
+        "Trial evidence on RRT timing: the STARRT-AKI and AKIKI trials confirmed that accelerated/early RRT initiation does NOT improve survival and increases dialysis dependence and adverse events.",
+        "Absolute indications for emergent RRT: refractory hyperkalemia, refractory pulmonary edema, severe refractory metabolic acidosis (pH <7.15), and uremic pericarditis/encephalopathy.",
+        "Hemodynamic stability and modality choice: CRRT is indicated in septic shock and acute liver failure / cerebral edema to minimize rapid fluid shifts and maintain cerebral perfusion pressure."
       ],
       "case_hooks": [
-        "An adult patient presenting with acute or subacute manifestations of renal replacement therapy timing in acute kidney injury requiring immediate diagnostic confirmation and therapy.",
-        "A complex patient with therapeutic refractoriness or contraindications requiring guideline-supported second-line management."
+        "A 62-year-old critically ill man with septic shock on mechanical ventilation who is oliguric for 24 hours with creatinine 3.8 mg/dL, K 4.8 mmol/L, bicarbonate 18 mmol/L, and no pulmonary edema.",
+        "A 55-year-old woman with acute tubular necrosis who develops a distinct pericardial friction rub and confusion on day 4 of admission with blood urea nitrogen 120 mg/dL."
       ],
       "gaps": "Reviewers should confirm alignment with current local antimicrobial/formulary guidelines and relevant special population considerations.",
       "sources": [
@@ -4142,51 +4166,51 @@
       "guidelinesDropped": []
     },
     "page": {
-      "mentor_intro": "Renal Transplantation: Workup and Donor Selection is a crucial clinical entity with well-defined evidence-based standards of care. Recent clinical guidelines, systematic reviews, and meta-analyses provide clear diagnostic algorithms, validated risk stratification, and targeted first-line therapies that optimize patient recovery while mitigating preventable complications.",
+      "mentor_intro": "Renal transplantation candidate and donor workup requires rigorous multidisciplinary evaluation to confirm immunological compatibility, identify cardiovascular and infectious risks, and ensure donor safety. Living-donor kidney transplantation provides superior graft and patient longevity.",
       "teaching_points": [
         {
-          "claim": "Clinical practice guideline consensus establishes evidence-directed diagnostic criteria and risk-stratified therapy for renal transplantation: workup and donor selection: American Association for Thoracic Surgery/International Society for Heart and Lung Transplantation guidelines on selected topics in mechanical circulatory support.",
+          "claim": "Pre-transplant evaluation for potential recipients focuses on screening for cardiovascular disease (the leading cause of post-transplant mortality), occult malignancy, active systemic infection (TB, hepatitis B/C, HIV, CMV, EBV), and uncorrectable lower urinary tract abnormalities.",
           "cites": [
             "31983666"
           ]
         },
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Outcomes of renal transplantation in Africa: a systematic review and meta-analysis.",
+          "claim": "Immunological assessment incorporates ABO blood group typing, HLA typing (HLA-A, -B, -C, -DR, -DQ, -DP), panel reactive antibody (PRA) or calculated PRA (cPRA) to determine sensitization, and donor-specific antibody (DSA) detection via Luminex single-antigen bead assays.",
           "cites": [
             "42866756"
           ]
         },
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Impact of Intrapatient Immunosuppression Variability in Renal Transplantation Outcomes: A Systematic Review and Meta-analysis.",
+          "claim": "A prospective negative T-cell and B-cell crossmatch (complement-dependent cytotoxicity [CDC] or flow cytometry crossmatch) is mandatory before deceased-donor kidney transplantation to prevent catastrophic hyperacute rejection mediated by preformed anti-HLA antibodies.",
           "cites": [
             "42318931"
           ]
         },
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Multiple Renal Arteries in Renal Transplantation: A Systematic Review and Meta-Analysis.",
+          "claim": "Living kidney donor evaluation requires comprehensive assessment to ensure donor safety: confirming normal GFR (>90 mL/min/1.73m2), excluding hypertension, proteinuria (<150 mg/24h), diabetes mellitus, nephrolithiasis, and vascular abnormalities on CT renal angiography; long-term lifetime donor ESRD risk remains exceptionally low (<0.5-1%).",
           "cites": [
             "41293797"
           ]
         },
         {
-          "claim": "Systematic review evidence supports protocolized evaluation and targeted therapeutic intervention: Renal transplantation in congenital heart diseases: A systematic review of outcomes and challenges.",
+          "claim": "Cardiovascular screening in asymptomatic high-risk recipients (diabetes, age >50, dialysis vintage >2 years) requires non-invasive functional cardiac stress testing (dobutamine stress echocardiography or myocardial perfusion scintigraphy) with coronary angiography indicated for positive tests.",
           "cites": [
             "42803339"
           ]
         }
       ],
       "uncertainties": [
-        "Optimal duration, dosing adjustments, and sequencing of therapy in high-risk or multimorbid patients presenting with renal transplantation: workup and donor selection.",
-        "Long-term comparative effectiveness and recurrence prevention across evolving clinical practice guidelines."
+        "Safety and long-term allograft survival thresholds for accepting expanded-criteria kidneys from donors with acute kidney injury or hepatitis C viremia treated with direct-acting antivirals.",
+        "Optimal desensitization protocols (plasmapheresis, IVIG, and rituximab) for highly sensitized patients with positive donor-specific antibodies in living-donor paired exchange programs."
       ],
       "mcq_angles": [
-        "Diagnostic workup, biomarker/imaging selection, and risk stratification for renal transplantation: workup and donor selection.",
-        "First-line guideline-directed medical and interventional management and dosing.",
-        "Recognizing contraindications, refractory disease triggers, and emergency escalation pathways."
+        "Hyperacute rejection mechanism: preformed donor-specific anti-HLA Class I or ABO antibodies causing complement activation, endothelial thrombosis, and graft necrosis within minutes; prevented by prospective crossmatching.",
+        "Living donor GFR threshold: living donor candidates must have an age-adjusted measured or estimated GFR >=90 mL/min/1.73m2 and no persistent microalbuminuria or proteinuria.",
+        "Leading cause of death with a functioning graft: ischemic heart disease, necessitating rigorous pre-transplant cardiovascular risk stratification."
       ],
       "case_hooks": [
-        "An adult patient presenting with acute or subacute manifestations of renal transplantation: workup and donor selection requiring immediate diagnostic confirmation and therapy.",
-        "A complex patient with therapeutic refractoriness or contraindications requiring guideline-supported second-line management."
+        "A 48-year-old man with polycystic kidney disease whose 45-year-old wife volunteers for living kidney donation, evaluated for ABO compatibility and donor-recipient crossmatching.",
+        "A 62-year-old diabetic woman on hemodialysis evaluated for kidney transplant waitlisting who has a history of asymptomatic inferior Q waves on baseline ECG."
       ],
       "gaps": "Reviewers should confirm alignment with current local antimicrobial/formulary guidelines and relevant special population considerations.",
       "sources": [
@@ -4290,51 +4314,51 @@
       "guidelinesDropped": []
     },
     "page": {
-      "mentor_intro": "Renal Tubular Acidosis is a crucial clinical entity with well-defined evidence-based standards of care. Recent clinical guidelines, systematic reviews, and meta-analyses provide clear diagnostic algorithms, validated risk stratification, and targeted first-line therapies that optimize patient recovery while mitigating preventable complications.",
+      "mentor_intro": "Renal tubular acidosis (RTA) comprises a group of transport defects in renal tubular acid-base handling, causing normal anion gap (hyperchloremic) metabolic acidosis with preserved glomerular filtration. Diagnosing Type 1 (distal), Type 2 (proximal), and Type 4 (hypoaldosteronism) guides specific targeted repletion.",
       "teaching_points": [
         {
-          "claim": "Contemporary evidence synthesis highlights core pathophysiology, clinical staging, and multidisciplinary management: Approach to Renal Tubular Acidosis - A Review.",
+          "claim": "All renal tubular acidoses are characterized by a normal anion gap (hyperchloremic) metabolic acidosis (anion gap = Na - [Cl + HCO3] = 8 to 12 mEq/L) in the absence of diarrhea or renal failure.",
           "cites": [
             "41918597"
           ]
         },
         {
-          "claim": "Contemporary evidence synthesis highlights core pathophysiology, clinical staging, and multidisciplinary management: Sjögren's Disease-Associated Renal Tubular Acidosis: An Integrated Immuno-Tubular Model of Tubular Dysfunction.",
+          "claim": "Type 1 (distal) RTA is caused by impaired alpha-intercalated cell H+-ATPase or H+/K+-ATPase excretion, resulting in an inability to acidify urine below pH 5.3 despite systemic acidemia; it is associated with hypokalemia, nephrocalcinosis, calcium phosphate nephrolithiasis, and Sjogren syndrome.",
           "cites": [
             "42694869"
           ]
         },
         {
-          "claim": "Contemporary evidence synthesis highlights core pathophysiology, clinical staging, and multidisciplinary management: ATP6V1B1-Associated Inherited Distal Renal Tubular Acidosis in Children: Insights from a Literature Review.",
+          "claim": "Type 2 (proximal) RTA is caused by defective proximal tubular bicarbonate reabsorption (isolated or part of Fanconi syndrome with glucosuria, phosphaturia, aminoaciduria, and uricosuria); urine pH is variable (>5.5 during initial wasting, but <5.3 when serum bicarbonate drops below the lowered proximal reabsorptive threshold), accompanied by hypokalemia and osteomalacia.",
           "cites": [
             "41897147"
           ]
         },
         {
-          "claim": "Contemporary evidence synthesis highlights core pathophysiology, clinical staging, and multidisciplinary management: Renal Tubular Acidosis: Core Curriculum 2025.",
+          "claim": "Type 4 (hyperkalemic) RTA is the most common form, caused by aldosterone deficiency or tubular aldosterone resistance (diabetic nephropathy, interstitial nephritis, NSAIDs, ACEi/ARBs, trimethoprim, spironolactone); impaired distal sodium reabsorption decreases the negative lumen potential, impairing potassium and H+ excretion and resulting in hyperkalemia with acidic urine (pH <5.3).",
           "cites": [
             "39864011"
           ]
         },
         {
-          "claim": "Contemporary evidence synthesis highlights core pathophysiology, clinical staging, and multidisciplinary management: Underestimated reason of hyperkalemia in diabetic patients: type IV renal tubular acidosis- mini review.",
+          "claim": "The urine net charge / urine anion gap (UAG = [Na+ + K+] - Cl-) differentiates gastrointestinal from renal causes of normal anion gap acidosis: a negative UAG (indicating high unmeasured ammonium NH4+ excretion) signifies GI bicarbonate loss (diarrhea), whereas a positive UAG (impaired NH4+ excretion) signifies distal RTA.",
           "cites": [
             "40717832"
           ]
         }
       ],
       "uncertainties": [
-        "Optimal duration, dosing adjustments, and sequencing of therapy in high-risk or multimorbid patients presenting with renal tubular acidosis.",
-        "Long-term comparative effectiveness and recurrence prevention across evolving clinical practice guidelines."
+        "Diagnostic accuracy of the furosemide plus fludrocortisone test versus traditional ammonium chloride loading in confirming subclinical distal RTA.",
+        "Long-term therapeutic management of refractory Fanconi syndrome associated with nucleotide reverse transcriptase inhibitors (tenofovir disoproxil)."
       ],
       "mcq_angles": [
-        "Diagnostic workup, biomarker/imaging selection, and risk stratification for renal tubular acidosis.",
-        "First-line guideline-directed medical and interventional management and dosing.",
-        "Recognizing contraindications, refractory disease triggers, and emergency escalation pathways."
+        "Urine anion gap interpretation: negative UAG indicates intact renal ammoniagenesis (diarrhea); positive UAG indicates defective distal acidification (Type 1 RTA).",
+        "Potassium status across RTA subtypes: Type 1 and Type 2 RTA feature hypokalemia; Type 4 RTA is uniquely characterized by hyperkalemia.",
+        "Nephrolithiasis association: Type 1 RTA causes calcium phosphate stones and nephrocalcinosis due to persistent alkaline urine and hypercalciuria; Type 2 RTA does NOT cause nephrolithiasis."
       ],
       "case_hooks": [
-        "An adult patient presenting with acute or subacute manifestations of renal tubular acidosis requiring immediate diagnostic confirmation and therapy.",
-        "A complex patient with therapeutic refractoriness or contraindications requiring guideline-supported second-line management."
+        "A 35-year-old woman with Sjogren syndrome presenting with severe muscle weakness, serum potassium 2.3 mmol/L, serum bicarbonate 14 mmol/L, chloride 115 mmol/L, and urine pH 6.8.",
+        "A 64-year-old man with diabetic nephropathy presenting with asymptomatic persistent hyperkalemia (K 5.8 mmol/L), serum bicarbonate 18 mmol/L, and mild renal impairment."
       ],
       "gaps": "Reviewers should confirm alignment with current local antimicrobial/formulary guidelines and relevant special population considerations.",
       "sources": [
@@ -4428,51 +4452,51 @@
       "guidelinesDropped": []
     },
     "page": {
-      "mentor_intro": "Renal Vein Thrombosis is a crucial clinical entity with well-defined evidence-based standards of care. Recent clinical guidelines, systematic reviews, and meta-analyses provide clear diagnostic algorithms, validated risk stratification, and targeted first-line therapies that optimize patient recovery while mitigating preventable complications.",
+      "mentor_intro": "Renal vein thrombosis (RVT) is a venous thromboembolic disorder characteristically associated with nephrotic syndrome (most commonly membranous nephropathy). Clinical presentation ranges from acute flank pain and hematuria to insidious, asymptomatic renal functional decline and pulmonary embolism.",
       "teaching_points": [
         {
-          "claim": "Contemporary evidence synthesis highlights core pathophysiology, clinical staging, and multidisciplinary management: Renal Vein Thrombosis: A Narrative Review.",
+          "claim": "Renal vein thrombosis (RVT) has a strong association with nephrotic syndrome, occurring in up to 20–30% of adults with membranous nephropathy, driven by urinary loss of natural anticoagulants (antithrombin III, protein C and S) and hepatic hyperfibrinogenemia.",
           "cites": [
             "42351464"
           ]
         },
         {
-          "claim": "Contemporary evidence synthesis highlights core pathophysiology, clinical staging, and multidisciplinary management: Antiphospholipid syndrome presenting as isolated renal vein thrombosis: a case report and review of the literature.",
+          "claim": "Severe hypoalbuminemia (serum albumin <20–25 g/L / 2.0–2.5 g/dL) is the primary predictor of thromboembolic risk in nephrotic syndrome, serving as an indication for prophylactic anticoagulation in high-risk patients with membranous nephropathy.",
           "cites": [
             "40108618"
           ]
         },
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: A Systematic Review and Meta-Analysis on the Use of Rivaroxaban as Thromboprophylaxis Following Bariatric Surgery.",
+          "claim": "Acute RVT presents with acute severe flank pain, gross hematuria, a palpable tender flank mass, and acute decline in kidney function, classically seen in young patients, trauma, or renal allografts; chronic RVT is more common in nephrotic adults and is characteristically asymptomatic until detected on routine screening or post-pulmonary embolism workup.",
           "cites": [
             "42380548"
           ]
         },
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Incidence of neonatal venous thromboembolism: a systematic review and meta-analysis of the literature.",
+          "claim": "Diagnostic imaging of choice is contrast-enhanced CT angiography / CT venography of the abdomen or magnetic resonance venography (MRV); Doppler ultrasonography is operator-dependent but valuable as a non-invasive bedside initial test.",
           "cites": [
             "42293732"
           ]
         },
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Screening rates and geographical disparities shape venous thromboembolism risk after cardiac surgery: a systematic review and meta-analysis.",
+          "claim": "Therapeutic anticoagulation (unfractionated heparin or LMWH transitioned to direct oral anticoagulants DOACs or warfarin) is the primary treatment, continued for at least 3 to 6 months or for the duration of severe nephrotic-range proteinuria and hypoalbuminemia.",
           "cites": [
             "42035171"
           ]
         }
       ],
       "uncertainties": [
-        "Optimal duration, dosing adjustments, and sequencing of therapy in high-risk or multimorbid patients presenting with renal vein thrombosis.",
-        "Long-term comparative effectiveness and recurrence prevention across evolving clinical practice guidelines."
+        "Comparative efficacy and safety of direct oral anticoagulants (apixaban, rivaroxaban) versus vitamin K antagonists in severe nephrotic syndrome with extreme hypoalbuminemia.",
+        "Indications and clinical benefit of catheter-directed pharmacomechanical thrombectomy in acute bilateral renal vein thrombosis with acute kidney injury."
       ],
       "mcq_angles": [
-        "Diagnostic workup, biomarker/imaging selection, and risk stratification for renal vein thrombosis.",
-        "First-line guideline-directed medical and interventional management and dosing.",
-        "Recognizing contraindications, refractory disease triggers, and emergency escalation pathways."
+        "Glomerulopathy most commonly linked with RVT: membranous nephropathy carries the highest risk among all nephrotic syndromes.",
+        "Serum albumin threshold for prophylactic anticoagulation: albumin <20-25 g/L in membranous nephropathy warrants primary thromboprophylaxis.",
+        "Triad of acute RVT: flank pain, gross hematuria, and an acutely enlarged, congested kidney on imaging."
       ],
       "case_hooks": [
-        "An adult patient presenting with acute or subacute manifestations of renal vein thrombosis requiring immediate diagnostic confirmation and therapy.",
-        "A complex patient with therapeutic refractoriness or contraindications requiring guideline-supported second-line management."
+        "A 42-year-old man with biopsy-proven membranous nephropathy and serum albumin 18 g/L who presents with acute left-sided loin pain, microscopic hematuria, and worsening proteinuria.",
+        "A 5-day-old dehydrated neonate presenting with gross hematuria, thrombocytopenia, and an enlarged palpable right flank mass."
       ],
       "gaps": "Reviewers should confirm alignment with current local antimicrobial/formulary guidelines and relevant special population considerations.",
       "sources": [
@@ -4999,45 +5023,51 @@
       "guidelinesDropped": []
     },
     "page": {
-      "mentor_intro": "Resistant hypertension: aldosterone antagonism, renal denervation, workup is a crucial clinical entity with well-defined evidence-based standards of care. Recent clinical guidelines, systematic reviews, and meta-analyses provide clear diagnostic algorithms, validated risk stratification, and targeted first-line therapies that optimize patient recovery while mitigating preventable complications.",
+      "mentor_intro": "Evaluating resistant hypertension demands a systematic approach to unmask pseudo-resistance, screen for secondary etiologies (primarily primary aldosteronism and obstructive sleep apnea), and optimize pharmacotherapy. Spironolactone represents the proven fourth-line pharmacological agent of choice.",
       "teaching_points": [
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Single Interventions (Pharmacological or Renal Denervation) Are Not Sufficient to Achieve Blood Pressure Control in Resistant Hypertension: A Systematic Review and Meta-Analysis.",
+          "claim": "True resistant hypertension requires confirmation with 24-hour ambulatory blood pressure monitoring (ABPM) to rule out white-coat effect, alongside assessment of medication adherence; primary aldosteronism is the most common identifiable secondary etiology, present in 15–22% of resistant hypertension patients.",
           "cites": [
             "42299672"
           ]
         },
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Efficacy of Aldosterone synthase inhibitors in uncontrolled and resistant hypertension: A systematic review and updated meta-analysis with grade assessment.",
+          "claim": "Initial secondary workup includes plasma aldosterone-to-renin ratio (ARR) for primary aldosteronism, serum creatinine and urinalysis for renal parenchymal disease, renal duplex Doppler for renovascular disease, and screening for obstructive sleep apnea.",
           "cites": [
             "42031624"
           ]
         },
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Biochemical and renal-metabolic profiles distinguishing primary aldosteronism from essential hypertension: a systematic review and meta-analysis with implications for endocrine hypertension screening.",
+          "claim": "In the landmark PATHWAY-2 randomized crossover trial, the mineralocorticoid receptor antagonist (MRA) spironolactone (25–50 mg daily) was substantially superior to bisoprolol, doxazosin, and placebo as fourth-line add-on therapy for resistant hypertension.",
           "cites": [
             "42812167"
           ]
         },
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Aldosterone synthase inhibitors in uncontrolled and resistant hypertension: A phenotype-stratified systematic review and network meta-analysis of randomized trials.",
+          "claim": "Serum potassium and renal function must be monitored closely during spironolactone initiation; spironolactone is generally avoided or used with extreme caution if baseline potassium exceeds 4.5 mmol/L or eGFR is <45 mL/min/1.73m2 due to hyperkalemia risk.",
           "cites": [
             "42234700"
+          ]
+        },
+        {
+          "claim": "Novel aldosterone synthase inhibitors (ASIs, such as baxdrostat and lorundrostat) selectively block CYP11B2 without inhibiting cortisol synthesis (CYP11B1), showing substantial blood pressure reductions in resistant hypertension with lower sexual side-effect rates than spironolactone.",
+          "cites": [
+            "42299672"
           ]
         }
       ],
       "uncertainties": [
-        "Optimal duration, dosing adjustments, and sequencing of therapy in high-risk or multimorbid patients presenting with resistant hypertension: aldosterone antagonism, renal denervation, workup.",
-        "Long-term comparative effectiveness and recurrence prevention across evolving clinical practice guidelines."
+        "Head-to-head clinical efficacy and safety of selective aldosterone synthase inhibitors (baxdrostat) versus spironolactone in CKD stage 3b patients.",
+        "Optimal timing of catheter-based renal denervation relative to fourth- and fifth-line pharmacological escalation."
       ],
       "mcq_angles": [
-        "Diagnostic workup, biomarker/imaging selection, and risk stratification for resistant hypertension: aldosterone antagonism, renal denervation, workup.",
-        "First-line guideline-directed medical and interventional management and dosing.",
-        "Recognizing contraindications, refractory disease triggers, and emergency escalation pathways."
+        "PATHWAY-2 trial gold standard 4th-line drug: spironolactone (25-50 mg daily) provides greatest systolic blood pressure reduction in resistant hypertension.",
+        "Primary aldosteronism screening rule: measure plasma aldosterone and renin ratio (ARR); hypokalemia is absent in over 50% of confirmed primary aldosteronism cases.",
+        "Ambulatory BP monitoring criteria for resistant hypertension: 24-hour mean BP >=130/80 mmHg or daytime mean >=135/85 mmHg despite three concurrent classes."
       ],
       "case_hooks": [
-        "An adult patient presenting with acute or subacute manifestations of resistant hypertension: aldosterone antagonism, renal denervation, workup requiring immediate diagnostic confirmation and therapy.",
-        "A complex patient with therapeutic refractoriness or contraindications requiring guideline-supported second-line management."
+        "A 52-year-old man taking perindopril 10 mg, indapamide 2.5 mg, and amlodipine 10 mg with clinic BP 162/98 mmHg whose ARR is markedly elevated with suppressed renin.",
+        "A 60-year-old woman with true resistant hypertension whose serum potassium is 4.1 mmol/L and eGFR is 62 mL/min, initiated on spironolactone 25 mg daily."
       ],
       "gaps": "Reviewers should confirm alignment with current local antimicrobial/formulary guidelines and relevant special population considerations.",
       "sources": [
@@ -5128,51 +5158,51 @@
       "guidelinesDropped": []
     },
     "page": {
-      "mentor_intro": "Resistant hypertension renal denervation is a crucial clinical entity with well-defined evidence-based standards of care. Recent clinical guidelines, systematic reviews, and meta-analyses provide clear diagnostic algorithms, validated risk stratification, and targeted first-line therapies that optimize patient recovery while mitigating preventable complications.",
+      "mentor_intro": "Catheter-based renal sympathetic denervation (RDN) has emerged as an evidence-based device therapy for uncontrolled and resistant hypertension. Disrupting renal efferent and afferent sympathetic nerves reduces central sympathetic tone and lowers blood pressure across sham-controlled trials.",
       "teaching_points": [
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Single Interventions (Pharmacological or Renal Denervation) Are Not Sufficient to Achieve Blood Pressure Control in Resistant Hypertension: A Systematic Review and Meta-Analysis.",
+          "claim": "True resistant hypertension is defined as blood pressure that remains uncontrolled (>=140/90 mmHg clinic or >=130/80 mmHg 24-hr ambulatory) despite concurrent use of three antihypertensive drug classes at maximally tolerated doses, one of which must be a diuretic.",
           "cites": [
             "42299672"
           ]
         },
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Baxdrostat in Resistant and Uncontrolled Hypertension: A Systematic Review and Meta-Analysis.",
+          "claim": "Pseudo-resistance—including poor medication adherence, white-coat hypertension, improper cuff sizing, and heavy sodium or alcohol intake—must be rigorously excluded using 24-hour ambulatory blood pressure monitoring (ABPM) and adherence testing before considering device interventions.",
           "cites": [
             "42837060"
           ]
         },
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Blood pressure and renal outcomes after renal denervation in patients with chronic kidney disease: A systematic review and meta-analysis.",
+          "claim": "Second-generation sham-controlled randomized trials (SPYRAL HTN-OFF MED, SPYRAL HTN-ON MED, and RADIANCE-HTN) utilizing radiofrequency ablation of main and branch renal arteries or endovascular ultrasound demonstrated statistically significant, sustained 24-hour ambulatory blood pressure reductions of 5 to 10 mmHg compared with sham procedures.",
           "cites": [
             "42601755"
           ]
         },
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Biochemical and renal-metabolic profiles distinguishing primary aldosteronism from essential hypertension: a systematic review and meta-analysis with implications for endocrine hypertension screening.",
+          "claim": "Catheter-based RDN lowers blood pressure by ablating both post-ganglionic sympathetic efferent fibers (reducing renin release, renal vascular resistance, and sodium reabsorption) and sensory afferent fibers (reducing central hypothalamic and vasomotor sympathetic outflow).",
           "cites": [
             "42812167"
           ]
         },
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Cost-effectiveness of renal denervation: a systematic review and meta-analysis.",
+          "claim": "Pre-procedural imaging (CT or MR angiography) is mandatory to verify suitable renal artery anatomy, excluding hemodynamically significant renal artery stenosis, severe tortuosity, prior stenting, or main renal artery diameter <3 mm.",
           "cites": [
             "41882328"
           ]
         }
       ],
       "uncertainties": [
-        "Optimal duration, dosing adjustments, and sequencing of therapy in high-risk or multimorbid patients presenting with resistant hypertension renal denervation.",
-        "Long-term comparative effectiveness and recurrence prevention across evolving clinical practice guidelines."
+        "Biomarkers predicting individualized blood pressure response magnitude following catheter-based renal denervation.",
+        "Long-term structural durability of denervation and whether renal nerve reinnervation occurs after 5 to 10 years."
       ],
       "mcq_angles": [
-        "Diagnostic workup, biomarker/imaging selection, and risk stratification for resistant hypertension renal denervation.",
-        "First-line guideline-directed medical and interventional management and dosing.",
-        "Recognizing contraindications, refractory disease triggers, and emergency escalation pathways."
+        "Requirement before RDN consideration: confirmation of true resistance with 24-hour ambulatory blood pressure monitoring (ABPM) and exclusion of non-adherence and secondary causes.",
+        "Anatomical ablation target in modern RDN: circumferential ablation in both main renal artery and distal branches/accessory vessels maximizes denervation efficacy.",
+        "Clinical magnitude of blood pressure reduction: modern sham-controlled trials show an average 24-hour ambulatory SBP reduction of approx. 5–9 mmHg, translating into ~15-20% cardiovascular risk reduction."
       ],
       "case_hooks": [
-        "An adult patient presenting with acute or subacute manifestations of resistant hypertension renal denervation requiring immediate diagnostic confirmation and therapy.",
-        "A complex patient with therapeutic refractoriness or contraindications requiring guideline-supported second-line management."
+        "A 54-year-old man with documented adherence to amlodipine 10 mg, valsartan 320 mg, and chlorthalidone 25 mg whose 24-hour ABPM shows persistent mean BP of 152/94 mmHg.",
+        "A 48-year-old woman with severe treatment-resistant hypertension undergoing renal CT angiography to evaluate renal artery caliber and branch anatomy prior to planned radiofrequency RDN."
       ],
       "gaps": "Reviewers should confirm alignment with current local antimicrobial/formulary guidelines and relevant special population considerations.",
       "sources": [
@@ -5524,51 +5554,51 @@
       "guidelinesDropped": []
     },
     "page": {
-      "mentor_intro": "Restless legs syndrome treatment is a crucial clinical entity with well-defined evidence-based standards of care. Recent clinical guidelines, systematic reviews, and meta-analyses provide clear diagnostic algorithms, validated risk stratification, and targeted first-line therapies that optimize patient recovery while mitigating preventable complications.",
+      "mentor_intro": "Restless legs syndrome (RLS / Willis-Ekbom disease) is a sensorimotor neurological disorder characterized by an irresistible urge to move the legs, typically accompanied by uncomfortable dysesthesias that worsen at rest and during evenings. Modern management has shifted away from dopamine agonists toward alpha-2-delta ligands and iron optimization to avoid drug-induced augmentation.",
       "teaching_points": [
         {
-          "claim": "Clinical practice guideline consensus establishes evidence-directed diagnostic criteria and risk-stratified therapy for restless legs syndrome treatment: An Updated Algorithm for the Management of Restless Legs Syndrome.",
+          "claim": "Diagnostic criteria for RLS require four essential clinical features: an urge to move the legs accompanied by unpleasant sensations, symptoms beginning or worsening during rest/inactivity, partial or temporary relief with movement, and worsening exclusively in the evening or night.",
           "cites": [
             "42203073"
           ]
         },
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Neurostimulation for restless legs syndrome: A systematic review and meta-analysis.",
+          "claim": "Initial diagnostic workup mandates checking morning fasting serum ferritin and transferrin saturation (TSAT); central nervous system iron deficiency in the substantia nigra impairs dopaminergic signaling, and oral iron supplementation (ferrous sulfate with vitamin C) is indicated when ferritin is <=75 ug/L, with intravenous iron (ferric carboxymaltose) indicated if ferritin is <=100 ug/L or oral iron is not tolerated.",
           "cites": [
             "42001819"
           ]
         },
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Global Prevalence of Restless Legs Syndrome and Its Associated Factors in Pregnant Women: A Systematic Review and Meta-Analysis.",
+          "claim": "Alpha-2-delta ligands (pregabalin 75–300 mg daily or gabapentin 300–1200 mg taken 1–2 hours before bedtime) are now guideline-recommended first-line pharmacotherapy over dopamine agonists, achieving high efficacy without the debilitating risk of clinical augmentation.",
           "cites": [
             "42688659"
           ]
         },
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Prevalence of restless legs syndrome in Pakistan: a systematic review and meta-analysis across diverse study populations.",
+          "claim": "Dopamine receptor agonists (pramipexole, ropinirole, rotigotine patch) provide rapid symptomatic relief but carry an alarming 40–70% long-term risk of 'augmentation'—a paradoxical worsening of RLS characterized by earlier symptom onset in the day, faster onset at rest, and spread to upper limbs.",
           "cites": [
             "42298475"
           ]
         },
         {
-          "claim": "Contemporary evidence synthesis highlights core pathophysiology, clinical staging, and multidisciplinary management: Restless legs syndrome and periodic limb movement disorders.",
+          "claim": "Management of dopamine agonist augmentation requires checking iron stores, gradually tapering the dopamine agonist under close specialist supervision, and transitioning to an alpha-2-delta ligand or low-dose prolonged-release opioids (oxycodone-naloxone) in refractory severe disease.",
           "cites": [
             "42754326"
           ]
         }
       ],
       "uncertainties": [
-        "Optimal duration, dosing adjustments, and sequencing of therapy in high-risk or multimorbid patients presenting with restless legs syndrome treatment.",
-        "Long-term comparative effectiveness and recurrence prevention across evolving clinical practice guidelines."
+        "Comparative central nervous system repletion kinetics of high-dose intravenous iron formulations in refractory non-anemic RLS.",
+        "Safety and efficacy of non-invasive high-frequency spinal cord and peroneal nerve neurostimulation devices."
       ],
       "mcq_angles": [
-        "Diagnostic workup, biomarker/imaging selection, and risk stratification for restless legs syndrome treatment.",
-        "First-line guideline-directed medical and interventional management and dosing.",
-        "Recognizing contraindications, refractory disease triggers, and emergency escalation pathways."
+        "First-line drug class of choice in contemporary RLS: alpha-2-delta ligands (pregabalin, gabapentin), replacing dopamine agonists due to augmentation risk.",
+        "Serum ferritin threshold for iron replacement in RLS: initiate iron repletion when ferritin is <=75 ug/L (higher than routine hematological thresholds).",
+        "Definition of RLS augmentation: earlier daily onset of symptoms, increased intensity, shorter latency during rest, and anatomical spread to trunk/arms caused by dopaminergic drugs."
       ],
       "case_hooks": [
-        "An adult patient presenting with acute or subacute manifestations of restless legs syndrome treatment requiring immediate diagnostic confirmation and therapy.",
-        "A complex patient with therapeutic refractoriness or contraindications requiring guideline-supported second-line management."
+        "A 44-year-old woman on pramipexole 0.5 mg daily for 3 years who notes that her severe leg restlessness now begins at 1:00 PM and has spread to involve her forearms.",
+        "A 32-year-old pregnant woman in her third trimester presenting with severe sleep-disrupting restless legs whose serum ferritin is 22 ug/L."
       ],
       "gaps": "Reviewers should confirm alignment with current local antimicrobial/formulary guidelines and relevant special population considerations.",
       "sources": [
@@ -5677,51 +5707,51 @@
       "guidelinesDropped": []
     },
     "page": {
-      "mentor_intro": "Retinal detachment: presentation and emergency management is a crucial clinical entity with well-defined evidence-based standards of care. Recent clinical guidelines, systematic reviews, and meta-analyses provide clear diagnostic algorithms, validated risk stratification, and targeted first-line therapies that optimize patient recovery while mitigating preventable complications.",
+      "mentor_intro": "Rhegmatogenous retinal detachment (RRD) is an ophthalmic emergency where neurosensory retina separates from the underlying retinal pigment epithelium due to a full-thickness retinal tear. Prompt diagnosis and emergency vitreo-retinal surgical intervention are essential to preserve visual acuity.",
       "teaching_points": [
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Outcomes of surgical intervention in retinal detachment in stickler syndrome: a systematic review and meta analysis.",
+          "claim": "Rhegmatogenous retinal detachment (RRD) is the most common form, developing when acute posterior vitreous detachment (PVD) produces vitreoretinal traction, causing a full-thickness retinal break that allows liquefied vitreous humor to enter the subretinal space.",
           "cites": [
             "42760409"
           ]
         },
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Postoperative hypotony after retinectomy in rhegmatogenous retinal detachment surgery: A systematic review and meta-analysis.",
+          "claim": "Classic clinical presentation features sudden-onset photopsia (flashes of light caused by mechanical vitreoretinal traction), a sudden shower of floaters (often dark specks or 'cobwebs' representing microvascular hemorrhage), followed by a progressive, dark, non-painful visual field curtain or shadow advancing from the periphery.",
           "cites": [
             "42251867"
           ]
         },
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Prophylactic Retinopexy in Fellow Eyes After Contralateral Retinal Detachment: A Systematic Review and Meta-Analysis.",
+          "claim": "Immediate funduscopic assessment must determine macular status: 'macula-on' retinal detachment (fovea remains attached with preserved central visual acuity) represents an absolute ocular emergency requiring surgical reattachment within 24 to 72 hours to prevent irreversible visual loss; 'macula-off' detachment carries worse visual prognosis and can be scheduled semi-electively within 7 to 10 days.",
           "cites": [
             "42722234"
           ]
         },
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Risk of Retinal Detachment After Intravitreal Injection of Anti-VEGF: A Systematic Review and Meta-Analysis.",
+          "claim": "Primary surgical interventions include pars plana vitrectomy (PPV, excision of vitreous with internal gas or silicone oil tamponade and endolaser), pneumatic retinopexy (intravitreal gas bubble injection with outpatient positioning for superior single breaks), and scleral buckling (external silicon band indentation to relieve traction in young, phakic eyes).",
           "cites": [
             "42219076"
           ]
         },
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Acute Retinal Necrosis Associated Rhegmatogenous Retinal Detachment: A Systematic Review and Meta-Analysis.",
+          "claim": "Urgent management while awaiting emergency surgical transfer includes keeping the patient strictly fasting, maintaining positioning that keeps the retinal tear dependent to prevent gravitational progression toward the macula, and avoiding eye rubbing.",
           "cites": [
             "42044482"
           ]
         }
       ],
       "uncertainties": [
-        "Optimal duration, dosing adjustments, and sequencing of therapy in high-risk or multimorbid patients presenting with retinal detachment: presentation and emergency management.",
-        "Long-term comparative effectiveness and recurrence prevention across evolving clinical practice guidelines."
+        "Efficacy of prophylactic laser retinopexy to asymptomatic peripheral lattice degeneration in fellow eyes of patients with giant retinal tears.",
+        "Long-term visual outcomes of pneumatic retinopexy versus primary pars plana vitrectomy for uncomplicated superior rhegmatogenous detachments (PIVOT trial data)."
       ],
       "mcq_angles": [
-        "Diagnostic workup, biomarker/imaging selection, and risk stratification for retinal detachment: presentation and emergency management.",
-        "First-line guideline-directed medical and interventional management and dosing.",
-        "Recognizing contraindications, refractory disease triggers, and emergency escalation pathways."
+        "Surgical urgency determination: 'macula-on' retinal detachment requires emergency repair within 24–72 hours to preserve central vision; 'macula-off' has lower surgical urgency.",
+        "Premonitory symptoms of retinal tear/detachment: photopsia (flashes) and a sudden shower of floaters, followed by a curtain-like peripheral visual field defect.",
+        "Surgical modality in young phakic patients: scleral buckling preserves the natural crystalline lens and avoids vitrectomy-induced nuclear sclerotic cataract progression."
       ],
       "case_hooks": [
-        "An adult patient presenting with acute or subacute manifestations of retinal detachment: presentation and emergency management requiring immediate diagnostic confirmation and therapy.",
-        "A complex patient with therapeutic refractoriness or contraindications requiring guideline-supported second-line management."
+        "A 58-year-old highly myopic man presenting with 2 days of temporal flashes of light and a dark shadow progressing across his inferior visual field, with visual acuity intact at 20/20.",
+        "A 68-year-old pseudophakic woman presenting with sudden loss of central reading vision in the right eye following a week of dense floaters."
       ],
       "gaps": "Reviewers should confirm alignment with current local antimicrobial/formulary guidelines and relevant special population considerations.",
       "sources": [
