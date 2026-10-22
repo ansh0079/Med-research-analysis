@@ -180,6 +180,7 @@ services:
       OTEL_EXPORTER_OTLP_HEADERS: ${OTEL_EXPORTER_OTLP_HEADERS:-}
     volumes:
       - medsearch_data:/app/data
+      - ./topic-drafts:/app/topic-drafts:ro
     restart: always
     # A crash loop writes stack traces fast (1.3 GB in ~25 min on 2026-10-02). Cap them.
     logging:
@@ -273,6 +274,7 @@ services:
     command: ["node", "server/worker.js"]
     volumes:
       - medsearch_data:/app/data
+      - ./topic-drafts:/app/topic-drafts:ro
     restart: always
     # A crash loop writes stack traces fast (1.3 GB in ~25 min on 2026-10-02). Cap them.
     logging:

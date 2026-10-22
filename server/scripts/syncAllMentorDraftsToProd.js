@@ -28,7 +28,16 @@ const RANGE_FILES = [
 ];
 
 (async () => {
-    const draftsDir = path.join(__dirname, '../../topic-drafts');
+    const candidateDirs = [
+        path.join(__dirname, '../../topic-drafts'),
+        path.join(process.cwd(), 'topic-drafts'),
+        path.resolve('/app/topic-drafts')
+    ];
+    let draftsDir = candidateDirs.find((d) => fs.existsSync(d) && fs.existsSync(path.join(d, RANGE_FILES[0])));
+    if (!draftsDir) {
+        draftsDir = candidateDirs[0];
+    }
+    console.log(`Using drafts directory: ${draftsDir}`);
     const allDrafts = [];
 
     for (const rf of RANGE_FILES) {

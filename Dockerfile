@@ -81,6 +81,8 @@ COPY --from=builder /app/tests/fixtures ./tests/fixtures
 COPY --from=builder /app/scripts ./scripts
 # Verification gates run against the live database after deploy (topic reachability)
 COPY --from=builder /app/tools ./tools
+# Topic mentor drafts and synopses for clinical curriculum ingestion
+COPY --from=builder /app/topic-drafts ./topic-drafts
 
 # Fix ownership
 RUN chown -R nodejs:nodejs /app
