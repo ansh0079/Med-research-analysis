@@ -29712,51 +29712,45 @@
       "guidelinesDropped": []
     },
     "page": {
-      "mentor_intro": "terlipressin hepatorenal syndrome is a crucial clinical entity with well-defined evidence-based standards of care. Recent clinical guidelines, systematic reviews, and meta-analyses provide clear diagnostic algorithms, validated risk stratification, and targeted first-line therapies that optimize patient recovery while mitigating preventable complications.",
+      "mentor_intro": "Hepatorenal syndrome (HRS, now classified as HRS-AKI) is a severe form of functional renal failure in advanced cirrhosis, driven by splanchnic arterial vasodilation, systemic arterial underfilling, and profound renal vasoconstriction. Terlipressin—a synthetic vasopressin V1a receptor agonist—induces potent splanchnic arterial vasoconstriction, redirecting blood volume to the systemic and renal circulations. The CONFIRM trial established terlipressin combined with intravenous albumin as the standard of care for reversing HRS-AKI; however, therapy carries significant risks of ischemic complications and respiratory failure from fluid overload, requiring baseline oxygenation and volume monitoring.",
       "teaching_points": [
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Continuous Versus Bolus Terlipressin for Acute Oesophageal Variceal Bleeding and Hepatorenal Syndrome in Cirrhosis: Meta-Analysis.",
+          "claim": "Terlipressin combined with intravenous albumin (1 g/kg on day 1, followed by 20-40 g/day) is the first-line pharmacotherapy for HRS-AKI, achieving significantly higher rates of verified renal reversal compared to placebo or midodrine/octreotide (CONFIRM trial).",
           "cites": [
             "41853888"
           ]
         },
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Terlipressin for the treatment of hepatorenal syndrome: a meta-analysis of randomized controlled trials.",
+          "claim": "Continuous intravenous infusion of terlipressin (starting at 2 mg/day and titrating up to 12 mg/day) delivers equivalent renal reversal with significantly fewer ischemic and gastrointestinal adverse events compared to intermittent intravenous bolus dosing.",
           "cites": [
             "40207491"
           ]
         },
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Terlipressin versus placebo or noradrenalin in the treatment of hepatorenal syndrome: a systematic review and meta-analysis.",
+          "claim": "Respiratory failure is a major risk of terlipressin therapy; terlipressin is strictly contraindicated in patients with severe hypoxemia (SpO2 <90% on room air), acute pulmonary oedema, or active fluid overload, and patients must be screened for volume overload before initiating therapy.",
           "cites": [
             "39295934"
           ]
         },
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Efficacy and safety of terlipressin and albumin vs. noradrenaline and albumin in adult patients with hepatorenal syndrome: A systematic review and meta-analysis.",
+          "claim": "Complete response to terlipressin is defined by a decrease in serum creatinine to <=1.5 mg/dL (or return to within 0.3 mg/dL of baseline); treatment is typically continued until creatinine reversal or for a maximum of 14 days.",
           "cites": [
             "38460713"
-          ]
-        },
-        {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Incidence and type of adverse events in patients with cirrhosis receiving terlipressin: A systematic review and meta-analysis.",
-          "cites": [
-            "39298544"
           ]
         }
       ],
       "uncertainties": [
-        "Optimal duration, dosing adjustments, and sequencing of therapy in high-risk or multimorbid patients presenting with terlipressin hepatorenal syndrome.",
-        "Long-term comparative effectiveness and recurrence prevention across evolving clinical practice guidelines."
+        "Comparative long-term post-liver-transplantation survival among patients reversed with terlipressin versus norepinephrine infusions in the ICU.",
+        "Predictive role of novel urinary biomarkers (NGAL) in distinguishing acute tubular necrosis from pure functional HRS-AKI to predict terlipressin responsiveness."
       ],
       "mcq_angles": [
-        "Diagnostic workup, biomarker/imaging selection, and risk stratification for terlipressin hepatorenal syndrome.",
-        "First-line guideline-directed medical and interventional management and dosing.",
-        "Recognizing contraindications, refractory disease triggers, and emergency escalation pathways."
+        "Recognizing major adverse effects and contraindications of terlipressin: respiratory failure/pulmonary oedema and peripheral ischemic necrosis.",
+        "Advantages of continuous IV terlipressin infusion over intermittent IV boluses in reducing adverse events while maintaining reversal rates.",
+        "Combining terlipressin with albumin (synergistic oncotic expansion and vasoconstriction) versus vasoconstrictor monotherapy."
       ],
       "case_hooks": [
-        "An adult patient presenting with acute or subacute manifestations of terlipressin hepatorenal syndrome requiring immediate diagnostic confirmation and therapy.",
-        "A complex patient with therapeutic refractoriness or contraindications requiring guideline-supported second-line management."
+        "A 56-year-old male with decompensated alcoholic cirrhosis and refractory ascites develops an increase in serum creatinine from 1.1 to 2.8 mg/dL over 48 hours without proteinuria; after fluid challenge fails, terlipressin plus albumin is initiated.",
+        "A cirrhotic patient receiving terlipressin boluses develops progressive dyspnoea, bilateral crackles, and an oxygen saturation of 86% on room air on day 3 of therapy."
       ],
       "gaps": "Reviewers should confirm alignment with current local antimicrobial/formulary guidelines and relevant special population considerations.",
       "sources": [
@@ -30628,51 +30622,45 @@
       "guidelinesDropped": []
     },
     "page": {
-      "mentor_intro": "thrombectomy criteria is a crucial clinical entity with well-defined evidence-based standards of care. Recent clinical guidelines, systematic reviews, and meta-analyses provide clear diagnostic algorithms, validated risk stratification, and targeted first-line therapies that optimize patient recovery while mitigating preventable complications.",
+      "mentor_intro": "Mechanical endovascular thrombectomy (EVT) is the standard of care for acute ischaemic stroke caused by emergent large vessel occlusion (LVO) of the intracranial anterior circulation. Patient selection criteria have rapidly expanded from the historic 0-6 hour window (based on non-contrast CT ASPECTS >=6) to the extended 6-24 hour window. Extended-window selection (DAWN and DEFUSE-3 trials) relies on advanced CT/MRI perfusion imaging to demonstrate a clinical-core or target mismatch (small ischemic core with substantial salvageable ischemic penumbra and robust collateral circulation).",
       "teaching_points": [
         {
-          "claim": "Clinical practice guideline consensus establishes evidence-directed diagnostic criteria and risk-stratified therapy for thrombectomy criteria: The 2019 American College of Rheumatology/European League Against Rheumatism Classification Criteria for IgG4-Related Disease.",
+          "claim": "Standard anterior circulation thrombectomy criteria within 0-6 hours include: pre-stroke mRS 0-1, causative occlusion of the internal carotid artery (ICA) or proximal middle cerebral artery (MCA-M1), age >=18 years, baseline NIHSS >=6, and non-contrast CT ASPECTS >=6.",
           "cites": [
             "31793250"
           ]
         },
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Post-endovascular thrombectomy perfusion imaging (CT and MR) as a prognostic biomarker and patient-selection tool for adjuvant therapy: A systematic review, meta-analysis, and clinical threshold framework.",
+          "claim": "Extended window thrombectomy (6-24 hours from last known well) requires physiological tissue imaging demonstrating salvageable penumbra: DAWN criteria (mismatch between clinical severity [NIHSS] and infarct core volume) or DEFUSE-3 criteria (ischemic core <70 mL, mismatch ratio >=1.8, and mismatch volume >=15 mL on CT perfusion or diffusion MRI).",
           "cites": [
             "42607786"
           ]
         },
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: The role of collateral circulation in extended-window mechanical thrombectomy: a systematic review and meta-analysis.",
+          "claim": "Robust intracranial collateral circulation on multi-phase CTA predicts slower infarct core growth, lower hemorrhagic transformation rates, and improved functional independence post-recanalization.",
           "cites": [
             "41849993"
           ]
         },
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Safety and efficacy of idarucizumab-assisted thrombolysis in dabigatran-related acute ischemic stroke: a systematic review and single-arm meta-analysis.",
+          "claim": "Recent randomized clinical trials (RESCUE-Japan LIMIT, SELECT2, ANGEL-ASPECT) have established that EVT also benefits patients with large ischemic core infarcts (ASPECTS 3-5 or core >=50 mL), extending eligibility beyond conventional restricted criteria.",
           "cites": [
             "42694037"
-          ]
-        },
-        {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Intravenous thrombolysis use before interhospital transfer for thrombectomy: a systematic review and meta-analysis.",
-          "cites": [
-            "42803981"
           ]
         }
       ],
       "uncertainties": [
-        "Optimal duration, dosing adjustments, and sequencing of therapy in high-risk or multimorbid patients presenting with thrombectomy criteria.",
-        "Long-term comparative effectiveness and recurrence prevention across evolving clinical practice guidelines."
+        "Efficacy and safety of mechanical thrombectomy in distal medium vessel occlusions (MeVOs: M2/M3 MCA, A2/A3 ACA, P2/P3 PCA).",
+        "Optimal post-thrombectomy blood pressure targets following complete TICI 2b/3 recanalization versus partial recanalization."
       ],
       "mcq_angles": [
-        "Diagnostic workup, biomarker/imaging selection, and risk stratification for thrombectomy criteria.",
-        "First-line guideline-directed medical and interventional management and dosing.",
-        "Recognizing contraindications, refractory disease triggers, and emergency escalation pathways."
+        "Applying DAWN and DEFUSE-3 criteria for patient selection in the 6-24 hour extended window.",
+        "Calculating and interpreting the ASPECTS score on non-contrast CT (10-point scale evaluating 10 designated middle cerebral artery territory regions).",
+        "Expanding criteria: identifying the evidence supporting thrombectomy in large core infarctions (ASPECTS 3-5)."
       ],
       "case_hooks": [
-        "An adult patient presenting with acute or subacute manifestations of thrombectomy criteria requiring immediate diagnostic confirmation and therapy.",
-        "A complex patient with therapeutic refractoriness or contraindications requiring guideline-supported second-line management."
+        "A 71-year-old woman is found with dense left hemiplegia 11 hours after last known well (wake-up stroke); CT perfusion shows an ischemic core of 22 mL with a total hypoperfused territory of 115 mL and right MCA-M1 occlusion.",
+        "An 80-year-old male arrives 3 hours post-stroke onset with an NIHSS of 16; non-contrast head CT shows early ischemic changes in the insular ribbon and lentiform nucleus (ASPECTS = 8) with terminal ICA 'T' occlusion."
       ],
       "gaps": "Reviewers should confirm alignment with current local antimicrobial/formulary guidelines and relevant special population considerations.",
       "sources": [
@@ -30760,51 +30748,45 @@
       "guidelinesDropped": []
     },
     "page": {
-      "mentor_intro": "thrombocytopenia is a crucial clinical entity with well-defined evidence-based standards of care. Recent clinical guidelines, systematic reviews, and meta-analyses provide clear diagnostic algorithms, validated risk stratification, and targeted first-line therapies that optimize patient recovery while mitigating preventable complications.",
+      "mentor_intro": "Thrombocytopenia (platelet count <150 x 10^9/L) is a frequent haematologic abnormality resulting from decreased bone marrow production, increased peripheral destruction, splenic sequestration, or dilution. The initial clinical priority is excluding pseudothrombocytopenia (EDTA-dependent platelet clumping, ruled out by examining a peripheral blood smear and repeating the count in a citrated or heparinized tube). Urgent differentiation is required for life-threatening microangiopathic syndromes (TTP, HUS, DIC) and drug-induced etiologies (heparin-induced thrombocytopenia [HIT]), while distinguishing primary immune thrombocytopenia (ITP) from bone marrow failure.",
       "teaching_points": [
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Platelet Transfusion in Dengue-Associated Thrombocytopenia: A Systematic Review and Meta-Analysis.",
+          "claim": "Pseudothrombocytopenia must always be ruled out by peripheral blood smear review showing platelet satellitism or clumping in EDTA; repeat analysis using a sodium citrate or heparin anticoagulant tube confirms the true platelet count.",
           "cites": [
             "42561330"
           ]
         },
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Association between the interleukin 17F rs763780 polymorphism and immune thrombocytopenia risk: A systematic review and meta-analysis.",
+          "claim": "A peripheral blood smear is mandatory in acute thrombocytopenia to evaluate for schistocytes (MAHA: TTP, HUS, DIC), blasts (acute leukaemia), dysplastic cells (myelodysplasia), or giant platelets (inherited thrombocytopenias or peripheral destruction).",
           "cites": [
             "42603394"
           ]
         },
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Heparin-induced thrombocytopenia in patients with mechanical circulatory support: a systematic review and meta-analysis.",
+          "claim": "Immune thrombocytopenia (ITP) is a diagnosis of exclusion; frontline treatment for newly diagnosed active adult ITP with bleeding or platelets <20-30 x 10^9/L consists of oral corticosteroids (dexamethasone 40 mg daily for 4 days or prednisone 1 mg/kg/day) with or without IVIG.",
           "cites": [
             "42751504"
           ]
         },
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Serum interleukin-10 levels and mortality in severe fever with thrombocytopenia syndrome: a systematic review and meta-analysis.",
+          "claim": "Heparin-induced thrombocytopenia (HIT) is evaluated via the 4Ts score (Thrombocytopenia magnitude, Timing of fall [days 5-10], Thrombosis, and absence of oTher causes); a high 4Ts score warrants immediate cessation of all heparin and initiation of a non-heparin anticoagulant (argatroban, fondaparinux).",
           "cites": [
             "42630216"
-          ]
-        },
-        {
-          "claim": "Contemporary evidence synthesis highlights core pathophysiology, clinical staging, and multidisciplinary management: Congenital amegakaryocytic thrombocytopenia - Not a single disease.",
-          "cites": [
-            "34404532"
           ]
         }
       ],
       "uncertainties": [
-        "Optimal duration, dosing adjustments, and sequencing of therapy in high-risk or multimorbid patients presenting with thrombocytopenia.",
-        "Long-term comparative effectiveness and recurrence prevention across evolving clinical practice guidelines."
+        "Predictive value of novel thrombopoietin receptor agonists (TPO-RAs: romiplostim, eltrombopag, avatrombopag) as upfront therapy alongside steroids in adult ITP.",
+        "Safety and efficacy of direct oral anticoagulants (DOACs) as alternatives to parenteral argatroban in acute HIT."
       ],
       "mcq_angles": [
-        "Diagnostic workup, biomarker/imaging selection, and risk stratification for thrombocytopenia.",
-        "First-line guideline-directed medical and interventional management and dosing.",
-        "Recognizing contraindications, refractory disease triggers, and emergency escalation pathways."
+        "Stepwise exclusion of pseudothrombocytopenia before invasive bone marrow testing.",
+        "Applying the 4Ts score in suspected heparin-induced thrombocytopenia and selecting non-heparin anticoagulation.",
+        "Platelet transfusion thresholds: prophylactic threshold of 10 x 10^9/L in stable hypoproliferative patients, 20 x 10^9/L in febrile/septic patients, 50 x 10^9/L for major surgery, and 100 x 10^9/L for neurosurgery."
       ],
       "case_hooks": [
-        "An adult patient presenting with acute or subacute manifestations of thrombocytopenia requiring immediate diagnostic confirmation and therapy.",
-        "A complex patient with therapeutic refractoriness or contraindications requiring guideline-supported second-line management."
+        "An asymptomatic 35-year-old male routine blood test shows a platelet count of 12 x 10^9/L; peripheral blood smear displays extensive large platelet aggregates in EDTA, which disperses in a citrated tube with normal count (220 x 10^9/L).",
+        "A 68-year-old post-cardiac surgery patient on enoxaparin prophylaxis experiences a 55% drop in platelets from 260 to 110 x 10^9/L on postoperative day 7, with new pain and swelling in his left calf."
       ],
       "gaps": "Reviewers should confirm alignment with current local antimicrobial/formulary guidelines and relevant special population considerations.",
       "sources": [
@@ -31849,51 +31831,45 @@
       "guidelinesDropped": []
     },
     "page": {
-      "mentor_intro": "thyroid disease is a crucial clinical entity with well-defined evidence-based standards of care. Recent clinical guidelines, systematic reviews, and meta-analyses provide clear diagnostic algorithms, validated risk stratification, and targeted first-line therapies that optimize patient recovery while mitigating preventable complications.",
+      "mentor_intro": "Thyroid disease spans disorders of hormone synthesis and function (hypothyroidism, hyperthyroidism/thyrotoxicosis) and structural pathology (goitre, thyroiditis, benign nodules, and thyroid malignancies). Third-generation serum thyroid-stimulating hormone (TSH) serves as the primary, most sensitive screening test, with reflexive free thyroxine (FT4) and free triiodothyronine (FT3) determining overt versus subclinical disease. Etiologic evaluation utilizes thyroid autoantibodies (anti-TPO and anti-Tg for Hashimoto thyroiditis; TSH receptor antibodies [TRAb/TSI] for Graves' disease) and radioactive iodine uptake/scintigraphy to guide targeted antithyroid medications, radioiodine ablation, or surgery.",
       "teaching_points": [
         {
-          "claim": "Clinical practice guideline consensus establishes evidence-directed diagnostic criteria and risk-stratified therapy for thyroid disease: Image-Guided Thyroid Ablation versus Surgery for T1N0M0 Papillary Thyroid Carcinoma: A Consensus-Aligned Systematic Review and Meta-Analysis.",
+          "claim": "Serum TSH is the single most sensitive first-line test for evaluating thyroid functional status due to the logarithmic inverse relationship between TSH and circulating free thyroid hormones.",
           "cites": [
             "42644737"
           ]
         },
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Sociodemographic and clinical predictors of malignancy in thyroid nodules: a systematic review and meta-analysis.",
+          "claim": "Subclinical hypothyroidism (elevated TSH with normal free T4) carries risks of progression to overt failure, dyslipidemia, and adverse pregnancy outcomes; levothyroxine treatment is strongly indicated for TSH >=10 mIU/L, during pregnancy, or in symptomatic younger individuals with positive anti-TPO antibodies.",
           "cites": [
             "42718662"
           ]
         },
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Serum 25-hydroxyvitamin D levels are associated with thyroid diseases: A systematic review and meta-analysis.",
+          "claim": "Graves' disease is distinguished from destructive thyroiditis (subacute, painless, or postpartum thyroiditis) by positive TSH receptor antibodies (TRAb) and diffuse high uptake on radioactive iodine scanning, whereas destructive thyroiditis exhibits low or absent uptake.",
           "cites": [
             "42826330"
           ]
         },
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Folate concentrations in thyroid disorders: a systematic review and meta-analysis.",
+          "claim": "Amiodarone-induced thyrotoxicosis is categorized into Type 1 (iodine-induced hyperthyroidism in underlying latent thyroid autonomy, treated with thionamides) and Type 2 (destructive thyroiditis in normal glands, treated with systemic corticosteroids); differentiating via color flow Doppler ultrasound is essential.",
           "cites": [
             "42710387"
-          ]
-        },
-        {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Thyroid-joint crosstalk: a systematic review and meta-analysis of thyroid autoimmunity and dysfunction in juvenile idiopathic arthritis.",
-          "cites": [
-            "42306887"
           ]
         }
       ],
       "uncertainties": [
-        "Optimal duration, dosing adjustments, and sequencing of therapy in high-risk or multimorbid patients presenting with thyroid disease.",
-        "Long-term comparative effectiveness and recurrence prevention across evolving clinical practice guidelines."
+        "Cardiovascular risk-benefit balance of treating subclinical hyperthyroidism (TSH <0.1 mIU/L) in asymptomatic individuals aged <65 years.",
+        "Optimal timing and thresholds for radioiodine versus long-term low-dose thionamide maintenance in relapsed Graves' disease."
       ],
       "mcq_angles": [
-        "Diagnostic workup, biomarker/imaging selection, and risk stratification for thyroid disease.",
-        "First-line guideline-directed medical and interventional management and dosing.",
-        "Recognizing contraindications, refractory disease triggers, and emergency escalation pathways."
+        "Differentiating Graves' disease from subacute thyroiditis based on radioactive iodine uptake (high/diffuse vs suppressed/absent) and vascularity on Doppler ultrasound.",
+        "Treatment thresholds for subclinical hypothyroidism: universally treating when TSH >=10 mIU/L or during pregnancy/conception.",
+        "Managing amiodarone-induced thyrotoxicosis: distinguishing Type 1 (thionamides + potassium perchlorate) from Type 2 (corticosteroids)."
       ],
       "case_hooks": [
-        "An adult patient presenting with acute or subacute manifestations of thyroid disease requiring immediate diagnostic confirmation and therapy.",
-        "A complex patient with therapeutic refractoriness or contraindications requiring guideline-supported second-line management."
+        "A 28-year-old woman presents with palpitations, weight loss, heat intolerance, bilateral proptosis, and pretibial myxoedema; TSH is <0.01 mIU/L and free T4 is 42 pmol/L.",
+        "A 42-year-old female presents with neck tenderness, fever, palpitations, and an elevated ESR of 85 mm/h following a viral upper respiratory infection; radioactive iodine uptake is <1%."
       ],
       "gaps": "Reviewers should confirm alignment with current local antimicrobial/formulary guidelines and relevant special population considerations.",
       "sources": [
@@ -32285,51 +32261,45 @@
       "guidelinesDropped": []
     },
     "page": {
-      "mentor_intro": "thyroid nodule evaluation and fna is a crucial clinical entity with well-defined evidence-based standards of care. Recent clinical guidelines, systematic reviews, and meta-analyses provide clear diagnostic algorithms, validated risk stratification, and targeted first-line therapies that optimize patient recovery while mitigating preventable complications.",
+      "mentor_intro": "Thyroid nodules are exceptionally common, detected in up to 50-60% of healthy adults on high-resolution ultrasonography, but fewer than 5-10% harbor malignancy. The initial evaluation mandates serum TSH measurement: a suppressed TSH warrants radionuclide scintigraphy (hot/hyperfunctioning nodules rarely represent malignancy and do not require biopsy). Euthyroid or hypothyroid nodules are risk-stratified using standardized ultrasound systems (ACR TI-RADS or EU-TIRADS), which dictate the size thresholds for fine-needle aspiration (FNA) biopsy classified by the Bethesda System for Reporting Thyroid Cytopathology.",
       "teaching_points": [
         {
-          "claim": "Clinical practice guideline consensus establishes evidence-directed diagnostic criteria and risk-stratified therapy for thyroid nodule evaluation and fna: EFSUMB Guidelines on Multiparametric Ultrasound Thyroid Nodule Evaluation: PART I.",
+          "claim": "Initial laboratory evaluation of a thyroid nodule must begin with serum TSH; if TSH is subnormal, a radionuclide thyroid scan (technetium-99m or I-123) should be performed to detect autonomous hyperfunctioning ('hot') nodules, which are rarely malignant and do not require FNA.",
           "cites": [
             "41330556"
           ]
         },
         {
-          "claim": "Clinical practice guideline consensus establishes evidence-directed diagnostic criteria and risk-stratified therapy for thyroid nodule evaluation and fna: EFSUMB Guidelines on Multiparametric Ultrasound Thyroid Nodule Evaluation: PART II.",
+          "claim": "Ultrasound features conferring high risk of malignancy include: solid composition, hypoechogenicity, taller-than-wide shape, irregular/infiltrative margins, and punctate echogenic foci (microcalcifications).",
           "cites": [
             "41330557"
           ]
         },
         {
-          "claim": "Systematic review evidence supports protocolized evaluation and targeted therapeutic intervention: Raman Spectroscopy as a Potential Adjunct of Thyroid Nodule Evaluation: A Systematic Review.",
+          "claim": "According to ACR TI-RADS, FNA thresholds are based on cumulative feature points: TR3 (mildly suspicious) FNA at >=2.5 cm; TR4 (moderately suspicious) FNA at >=1.5 cm; and TR5 (highly suspicious) FNA at >=1.0 cm, safely reducing unnecessary biopsies of benign nodules.",
           "cites": [
             "37894812"
           ]
         },
         {
-          "claim": "Contemporary evidence synthesis highlights core pathophysiology, clinical staging, and multidisciplinary management: Current Perspectives on Thyroid Nodule Evaluation: Integrating Cytomorphology, Ultrasound Risk Stratification, and Molecular Testing.",
+          "claim": "The Bethesda System categorizes FNA cytology into six tiers (I: Non-diagnostic; II: Benign; III: AUS/FLUS; IV: Follicular neoplasm; V: Suspicious for malignancy; VI: Malignant); molecular testing (e.g., Afirma, ThyroSeq) is indicated for indeterminate categories (Bethesda III and IV) to rule in or rule out malignancy.",
           "cites": [
             "42468828"
-          ]
-        },
-        {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Diagnostic performance of contrast-enhanced ultrasound for thyroid nodule characterization: a systematic review and meta-analysis.",
-          "cites": [
-            "42262145"
           ]
         }
       ],
       "uncertainties": [
-        "Optimal duration, dosing adjustments, and sequencing of therapy in high-risk or multimorbid patients presenting with thyroid nodule evaluation and fna.",
-        "Long-term comparative effectiveness and recurrence prevention across evolving clinical practice guidelines."
+        "Role of contrast-enhanced ultrasound (CEUS) and shear-wave elastography as adjuncts to refine FNA selection in indeterminate nodules.",
+        "Cost-effectiveness and long-term diagnostic accuracy of next-generation sequencing molecular panels in diverse non-Caucasian populations."
       ],
       "mcq_angles": [
-        "Diagnostic workup, biomarker/imaging selection, and risk stratification for thyroid nodule evaluation and fna.",
-        "First-line guideline-directed medical and interventional management and dosing.",
-        "Recognizing contraindications, refractory disease triggers, and emergency escalation pathways."
+        "Applying ACR TI-RADS points and size thresholds for recommending FNA versus ultrasound surveillance.",
+        "Management of Bethesda Category III (AUS/FLUS) and IV (Follicular neoplasm): utilizing molecular diagnostic testing or repeat FNA versus immediate diagnostic lobectomy.",
+        "Recognizing benign ultrasound patterns (purely cystic nodules or spongiform nodules >50%) that do not require biopsy."
       ],
       "case_hooks": [
-        "An adult patient presenting with acute or subacute manifestations of thyroid nodule evaluation and fna requiring immediate diagnostic confirmation and therapy.",
-        "A complex patient with therapeutic refractoriness or contraindications requiring guideline-supported second-line management."
+        "A 46-year-old woman has an incidental 1.4 cm solid, markedly hypoechoic thyroid nodule with microcalcifications and irregular margins on ultrasound (ACR TI-RADS 5, 8 points); TSH is 2.1 mIU/L.",
+        "A 52-year-old male undergoes FNA of a 2.2 cm nodule, yielding Bethesda Category III (Atypia of Undetermined Significance); the clinician discusses molecular testing versus repeat FNA."
       ],
       "gaps": "Reviewers should confirm alignment with current local antimicrobial/formulary guidelines and relevant special population considerations.",
       "sources": [
@@ -32453,51 +32423,45 @@
       "guidelinesDropped": []
     },
     "page": {
-      "mentor_intro": "thyroid nodules is a crucial clinical entity with well-defined evidence-based standards of care. Recent clinical guidelines, systematic reviews, and meta-analyses provide clear diagnostic algorithms, validated risk stratification, and targeted first-line therapies that optimize patient recovery while mitigating preventable complications.",
+      "mentor_intro": "Thyroid nodules represent discrete lesions within the thyroid gland that are radiologically distinct from surrounding parenchyma, encompassing benign follicular adenomas, colloid nodules, cysts, Hashimoto thyroiditis pseudonodules, and primary or metastatic malignancies. Clinical evaluation balances avoiding invasive over-investigation of indolent benign disease with ensuring early detection of clinically significant carcinomas. High-risk clinical history—including childhood head/neck ionizing radiation exposure, rapid painless growth, vocal cord paralysis, family history of familial medullary thyroid cancer/MEN2—significantly amplifies malignancy probability and mandates urgent comprehensive evaluation.",
       "teaching_points": [
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Sociodemographic and clinical predictors of malignancy in thyroid nodules: a systematic review and meta-analysis.",
+          "claim": "Clinical red flags for thyroid nodule malignancy include: history of childhood head/neck external beam irradiation, total body irradiation for bone marrow transplant, family history of thyroid carcinoma or syndromes (MEN2, Cowden, FAP), rapid nodule growth, firm/fixed texture, and associated hoarseness or cervical lymphadenopathy.",
           "cites": [
             "42718662"
           ]
         },
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: EIF1AX Mutations in thyroid nodules and advanced thyroid carcinoma: a systematic review and meta-analysis.",
+          "claim": "Purely cystic nodules are virtually always benign (<1% malignancy risk) and can be managed with therapeutic needle aspiration if symptomatic, without requiring formal cytologic biopsy unless solid mural nodules are present.",
           "cites": [
             "42814126"
           ]
         },
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Predictors of thyroid cancer in paediatric patients with thyroid nodules: A systematic review and meta-analysis.",
+          "claim": "Isthmic thyroid nodules carry a significantly higher rate of extrathyroidal extension and lymph node metastasis compared to lobar nodules of equivalent size, warranting lower thresholds for surgical consultation if malignant features are present.",
           "cites": [
             "42162290"
           ]
         },
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Western versus Asian utilization of molecular testing for indeterminate thyroid nodules: A meta-analysis of divergent clinical impact.",
+          "claim": "Nodule surveillance protocols recommend repeat ultrasound at 12-24 months for low-to-intermediate risk nodules; significant growth is defined as a >=20% increase in at least two dimensions with a minimum 2 mm increase, or a >=50% increase in volume.",
           "cites": [
             "42779170"
-          ]
-        },
-        {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Do thyroid nodules in the isthmus carry a higher risk of malignancy? A systematic review and meta-analysis.",
-          "cites": [
-            "42228113"
           ]
         }
       ],
       "uncertainties": [
-        "Optimal duration, dosing adjustments, and sequencing of therapy in high-risk or multimorbid patients presenting with thyroid nodules.",
-        "Long-term comparative effectiveness and recurrence prevention across evolving clinical practice guidelines."
+        "Role of thermal ablation (radiofrequency ablation [RFA], microwave ablation, laser ablation) as an alternative to surgery for symptomatic, enlarging benign solid thyroid nodules.",
+        "Clinical significance and oncologic impact of EIF1AX and other non-BRAF driver mutations in cytologically indeterminate thyroid nodules."
       ],
       "mcq_angles": [
-        "Diagnostic workup, biomarker/imaging selection, and risk stratification for thyroid nodules.",
-        "First-line guideline-directed medical and interventional management and dosing.",
-        "Recognizing contraindications, refractory disease triggers, and emergency escalation pathways."
+        "Identifying high-risk clinical history and physical examination features that lower the threshold for biopsy.",
+        "Definition of clinically significant thyroid nodule growth on serial ultrasound surveillance.",
+        "Management of symptomatic benign simple thyroid cysts: therapeutic aspiration and role of ethanol ablation for recurrent fluid collection."
       ],
       "case_hooks": [
-        "An adult patient presenting with acute or subacute manifestations of thyroid nodules requiring immediate diagnostic confirmation and therapy.",
-        "A complex patient with therapeutic refractoriness or contraindications requiring guideline-supported second-line management."
+        "A 32-year-old male who received mantle radiation for Hodgkin lymphoma at age 14 presents with a palpable 1.2 cm firm nodule in the right thyroid lobe.",
+        "A 58-year-old woman with a known 1.8 cm spongiform thyroid nodule undergoes surveillance ultrasound 18 months later, showing stability in all three dimensions."
       ],
       "gaps": "Reviewers should confirm alignment with current local antimicrobial/formulary guidelines and relevant special population considerations.",
       "sources": [
@@ -33012,51 +32976,45 @@
       "guidelinesDropped": []
     },
     "page": {
-      "mentor_intro": "ticagrelor versus clopidogrel acute coronary syndromes is a crucial clinical entity with well-defined evidence-based standards of care. Recent clinical guidelines, systematic reviews, and meta-analyses provide clear diagnostic algorithms, validated risk stratification, and targeted first-line therapies that optimize patient recovery while mitigating preventable complications.",
+      "mentor_intro": "Dual antiplatelet therapy (DAPT) combining aspirin with an oral P2Y12 inhibitor is the cornerstone of secondary prevention in acute coronary syndromes (ACS: STEMI, NSTEMI, and unstable angina) undergoing percutaneous coronary intervention (PCI) or medical management. Ticagrelor is a direct-acting, reversibly binding P2Y12 receptor antagonist that does not require hepatic metabolic bioactivation, offering faster onset, higher and more consistent platelet inhibition than clopidogrel. The landmark PLATO trial demonstrated that ticagrelor significantly reduces ischemic events, stent thrombosis, and vascular/all-cause mortality compared to clopidogrel, establishing ticagrelor (or prasugrel) as the preferred guideline-directed P2Y12 inhibitor in ACS.",
       "teaching_points": [
         {
-          "claim": "Contemporary evidence synthesis highlights core pathophysiology, clinical staging, and multidisciplinary management: Ticagrelor versus clopidogrel in patients with acute coronary syndromes.",
+          "claim": "In the landmark PLATO trial, ticagrelor (180 mg loading dose, then 90 mg twice daily) significantly reduced the primary composite outcome of death from vascular causes, myocardial infarction, or stroke (9.8% vs 11.7%, p < 0.001) and all-cause mortality compared to clopidogrel in ACS patients.",
           "cites": [
             "19717846"
           ]
         },
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: The efficacy and safety of ticagrelor and prasugrel versus clopidogrel in post-PCI dual antiplatelet therapy in chronic coronary syndrome: a systematic review and meta-analysis.",
+          "claim": "Unlike clopidogrel (a prodrug requiring two-step hepatic CYP2C19 activation susceptible to loss-of-function polymorphisms and drug interactions), ticagrelor binds reversibly to the P2Y12 receptor and provides consistent, rapid platelet inhibition without metabolic pharmacogenetic variability.",
           "cites": [
             "41888664"
           ]
         },
         {
-          "claim": "Contemporary evidence synthesis highlights core pathophysiology, clinical staging, and multidisciplinary management: Effects of clopidogrel in addition to aspirin in patients with acute coronary syndromes without ST-segment elevation.",
+          "claim": "Ticagrelor-specific adverse effects include dyspnoea (occurring in 10-15% of patients due to adenosine reuptake inhibition, typically self-limiting and not reflecting bronchospasm or heart failure) and asymptomatic ventricular pauses/bradyarrhythmias.",
           "cites": [
             "11519503"
           ]
         },
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: 'Aspirin versus ticagrelor for the management after coronary revascularization - a systematic review and meta‑analysis of randomised trials'.",
+          "claim": "Ticagrelor carries an increased risk of non-CABG major bleeding compared to clopidogrel, and is strictly contraindicated in patients with prior intracranial haemorrhage or active severe bleeding; aspirin maintenance dosing with ticagrelor must not exceed 100 mg daily (as high-dose aspirin attenuates ticagrelor efficacy).",
           "cites": [
             "42380776"
-          ]
-        },
-        {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Ultrashort vs Standard-Duration Dual Antiplatelet Therapy in Acute Coronary Syndrome Patients Undergoing PCI: A Meta-Analysis.",
-          "cites": [
-            "42735966"
           ]
         }
       ],
       "uncertainties": [
-        "Optimal duration, dosing adjustments, and sequencing of therapy in high-risk or multimorbid patients presenting with ticagrelor versus clopidogrel acute coronary syndromes.",
-        "Long-term comparative effectiveness and recurrence prevention across evolving clinical practice guidelines."
+        "Head-to-head superiority of prasugrel over ticagrelor in ACS patients undergoing invasive PCI (ISAR-REACT 5 trial findings and real-world applicability).",
+        "Optimal timing and clinical safety of guided versus unguided DAPT de-escalation from ticagrelor to clopidogrel after 1-3 months in high-bleeding-risk patients."
       ],
       "mcq_angles": [
-        "Diagnostic workup, biomarker/imaging selection, and risk stratification for ticagrelor versus clopidogrel acute coronary syndromes.",
-        "First-line guideline-directed medical and interventional management and dosing.",
-        "Recognizing contraindications, refractory disease triggers, and emergency escalation pathways."
+        "PLATO trial outcomes: vascular mortality reduction with ticagrelor over clopidogrel in ACS.",
+        "Managing ticagrelor-induced dyspnoea: recognizing its benign adenosine-mediated mechanism vs genuine cardiopulmonary decompensation.",
+        "Drug-drug interactions and aspirin dosing limits: avoiding aspirin doses >100 mg daily with ticagrelor."
       ],
       "case_hooks": [
-        "An adult patient presenting with acute or subacute manifestations of ticagrelor versus clopidogrel acute coronary syndromes requiring immediate diagnostic confirmation and therapy.",
-        "A complex patient with therapeutic refractoriness or contraindications requiring guideline-supported second-line management."
+        "A 58-year-old man undergoes primary PCI with a drug-eluting stent for acute STEMI and is initiated on aspirin and ticagrelor 90 mg bid; on day 2 he complains of sudden mild breathlessness with clear lungs and normal oxygen saturation.",
+        "A 64-year-old diabetic patient with NSTEMI has CYP2C19*2 loss-of-function allele carriage; the cardiology team selects the appropriate P2Y12 inhibitor to avoid antiplatelet resistance."
       ],
       "gaps": "Reviewers should confirm alignment with current local antimicrobial/formulary guidelines and relevant special population considerations.",
       "sources": [
@@ -33251,51 +33209,45 @@
       "guidelinesDropped": []
     },
     "page": {
-      "mentor_intro": "tick borne rickettsial disease empiric doxycycline is a crucial clinical entity with well-defined evidence-based standards of care. Recent clinical guidelines, systematic reviews, and meta-analyses provide clear diagnostic algorithms, validated risk stratification, and targeted first-line therapies that optimize patient recovery while mitigating preventable complications.",
+      "mentor_intro": "Tick-borne rickettsial diseases (TBRDs)—including Rocky Mountain spotted fever (RMSF, Rickettsia rickettsii), human monocytic ehrlichiosis (Ehrlichia chaffeensis), and human granulocytic anaplasmosis (Anaplasma phagocytophilum)—are potentially fatal vector-borne infections. These obligate intracellular bacteria infect vascular endothelial cells (RMSF) or leukocytes, causing microvascular leakage, non-cardiogenic pulmonary oedema, acute kidney injury, encephalopathy, and fatal multi-organ failure. Because clinical diagnosis is challenging and confirmatory serologies are universally negative during early acute infection, empiric oral or IV doxycycline therapy must be initiated immediately upon suspicion; delaying treatment beyond day 5 of illness exponentially increases mortality.",
       "teaching_points": [
         {
-          "claim": "Clinical practice guideline consensus establishes evidence-directed diagnostic criteria and risk-stratified therapy for tick borne rickettsial disease empiric doxycycline: Diagnosis and Management of Tickborne Rickettsial Diseases: Rocky Mountain Spotted Fever and Other Spotted Fever Group Rickettsioses, Ehrlichioses, and Anaplasmosis - United States.",
+          "claim": "Empiric doxycycline (100 mg orally or IV twice daily for adults; 2.2 mg/kg twice daily for children) is the definitive drug of choice for suspected tick-borne rickettsial diseases and must NEVER be withheld while awaiting diagnostic confirmation.",
           "cites": [
             "27172113"
           ]
         },
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Systematic review and meta-regression analysis of the prevalence of tick-borne pathogens in ticks and livestock in Uganda from 1980 to 2024.",
+          "claim": "Short-course doxycycline (<14-21 days) does not cause tooth staining or enamel hypoplasia in children under 8 years of age; the American Academy of Pediatrics and CDC explicitly designate doxycycline as first-line therapy for TBRDs across ALL age groups.",
           "cites": [
             "41469448"
           ]
         },
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: A systematic review and meta-analysis of the prevalence of tick-borne SFGR in China from 2000 to 2022.",
+          "claim": "The classic triad of fever, headache, and rash is present in fewer than 60% of patients at initial presentation; the characteristic petechial rash of RMSF typically appears only on days 3 to 5, and up to 10-15% of cases present without a rash (spotless RMSF).",
           "cites": [
             "39383137"
           ]
         },
         {
-          "claim": "Systematic review evidence supports protocolized evaluation and targeted therapeutic intervention: Tick Diversity, Emerging Tick-Borne Pathogens, and Public Health Implications Across Africa: A Systematic Review.",
+          "claim": "Routine laboratory abnormalities that provide vital diagnostic clues include thrombocytopenia, leukopenia or normal WBC with profound left shift, elevated serum transaminases, and hyponatraemia.",
           "cites": [
             "41238920"
-          ]
-        },
-        {
-          "claim": "Systematic review evidence supports protocolized evaluation and targeted therapeutic intervention: Human tick biting and tick-borne disease risk in Türkiye: Systematic review.",
-          "cites": [
-            "40489549"
           ]
         }
       ],
       "uncertainties": [
-        "Optimal duration, dosing adjustments, and sequencing of therapy in high-risk or multimorbid patients presenting with tick borne rickettsial disease empiric doxycycline.",
-        "Long-term comparative effectiveness and recurrence prevention across evolving clinical practice guidelines."
+        "Alternative antimicrobial options in patients with documented life-threatening anaphylaxis to tetracyclines (chloramphenicol has high failure and mortality rates in RMSF).",
+        "Clinical significance and management of serologically confirmed coinfections (e.g., Borrelia, Anaplasma, and Babesia) following a single Ixodes tick bite."
       ],
       "mcq_angles": [
-        "Diagnostic workup, biomarker/imaging selection, and risk stratification for tick borne rickettsial disease empiric doxycycline.",
-        "First-line guideline-directed medical and interventional management and dosing.",
-        "Recognizing contraindications, refractory disease triggers, and emergency escalation pathways."
+        "First-line treatment of suspected RMSF in a paediatric patient: doxycycline is the undisputed choice regardless of age.",
+        "Timing of therapy: initiating treatment before day 5 of illness to prevent mortality from microvascular collapse.",
+        "Diagnostic utility of acute vs convalescent IFA serologies (acute serology is typically negative; diagnosis must be clinical/empiric)."
       ],
       "case_hooks": [
-        "An adult patient presenting with acute or subacute manifestations of tick borne rickettsial disease empiric doxycycline requiring immediate diagnostic confirmation and therapy.",
-        "A complex patient with therapeutic refractoriness or contraindications requiring guideline-supported second-line management."
+        "A 5-year-old girl in Oklahoma presents with high fever, malaise, myalgias, and thrombocytopenia (75 x 10^9/L) 5 days after a tick exposure; the physician considers whether doxycycline can be safely prescribed in young children.",
+        "A 62-year-old hiker presents with fever, confusion, AST 210 U/L, ALT 185 U/L, and platelets 45 x 10^9/L; peripheral blood smear reveals intracytoplasmic morulae in peripheral blood monocytes."
       ],
       "gaps": "Reviewers should confirm alignment with current local antimicrobial/formulary guidelines and relevant special population considerations.",
       "sources": [
@@ -33538,51 +33490,45 @@
       "guidelinesDropped": []
     },
     "page": {
-      "mentor_intro": "tissue plasminogen activator acute ischemic stroke is a crucial clinical entity with well-defined evidence-based standards of care. Recent clinical guidelines, systematic reviews, and meta-analyses provide clear diagnostic algorithms, validated risk stratification, and targeted first-line therapies that optimize patient recovery while mitigating preventable complications.",
+      "mentor_intro": "Intravenous recombinant tissue plasminogen activator (rtPA, alteplase) was the first pharmacologic reperfusion therapy approved for acute ischaemic stroke, established by the landmark NINDS rt-PA Stroke Study in 1995. Alteplase converts plasminogen to active plasmin on the thrombus surface, catalyzing fibrin degradation and restoring downstream cerebral perfusion. Administration must occur within the validated 0 to 4.5 hour time window in eligible patients without absolute contraindications, under strict blood pressure control (<185/110 mmHg pre-infusion; <180/105 mmHg post-infusion) to minimize fatal symptomatic intracranial haemorrhage.",
       "teaching_points": [
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Efficacy and safety of tirofiban plus recombinant tissue plasminogen activator versus recombinant tissue plasminogen activator alone in acute ischemic stroke patients: a meta-analysis.",
+          "claim": "Alteplase is dosed at 0.9 mg/kg (maximum total dose 90 mg), administered as a 10% intravenous bolus over 1 minute followed by the remaining 90% infused continuously over 60 minutes.",
           "cites": [
             "39500477"
           ]
         },
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Aspirin versus recombinant tissue plasminogen activator for acute minor stroke: a systematic review and meta-analysis.",
+          "claim": "The therapeutic window is 0 to 4.5 hours from symptom onset (or last known well); earlier administration delivers significantly greater odds of functional independence at 3 months (NNT ~4.5 within 90 minutes; NNT ~9 within 3-4.5 hours).",
           "cites": [
             "40621890"
           ]
         },
         {
-          "claim": "Contemporary evidence synthesis highlights core pathophysiology, clinical staging, and multidisciplinary management: Tissue Plasminogen Activator as an Approved Strategy for Ischemic Stroke: A Review of tPA's Structure, Mechanism of Action and the Novel Targeting Methods.",
+          "claim": "Major absolute contraindications include: acute intracranial haemorrhage, active internal bleeding, severe uncontrolled hypertension (>185/110 mmHg despite antihypertensive therapy), infective endocarditis, aortic arch dissection, platelet count <100 x 10^9/L, INR >1.7, or use of therapeutic DOACs within the past 48 hours.",
           "cites": [
             "41243045"
           ]
         },
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Concomitant systemic thrombolytic therapy with tissue plasminogen activator for acute pulmonary embolism: a systematic review and meta-analysis.",
+          "claim": "Symptomatic intracranial haemorrhage (sICH) occurs in approximately 6% of patients treated with alteplase; sudden neurological deterioration, headache, nausea, or acute hypertension during infusion warrants immediate infusion termination and urgent non-contrast head CT.",
           "cites": [
             "40514760"
-          ]
-        },
-        {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: COMPARABLE RESULTS OF SUBRETINAL INJECTION AND INTRAVITREAL INJECTION OF TISSUE PLASMINOGEN ACTIVATOR IN THE TREATMENT OF SUBMACULAR HEMORRHAGE: A Meta-Analysis of Efficacy.",
-          "cites": [
-            "41564280"
           ]
         }
       ],
       "uncertainties": [
-        "Optimal duration, dosing adjustments, and sequencing of therapy in high-risk or multimorbid patients presenting with tissue plasminogen activator acute ischemic stroke.",
-        "Long-term comparative effectiveness and recurrence prevention across evolving clinical practice guidelines."
+        "Benefit of IV alteplase versus oral aspirin in patients presenting with minor, non-disabling ischemic stroke deficits (NIHSS 0-5) in the PRISMS trial.",
+        "Utility of idarucizumab-assisted thrombolysis with alteplase in acute ischemic stroke patients taking dabigatran."
       ],
       "mcq_angles": [
-        "Diagnostic workup, biomarker/imaging selection, and risk stratification for tissue plasminogen activator acute ischemic stroke.",
-        "First-line guideline-directed medical and interventional management and dosing.",
-        "Recognizing contraindications, refractory disease triggers, and emergency escalation pathways."
+        "Correct dosing and administration breakdown of IV alteplase (0.9 mg/kg total; 10% bolus over 1 min, 90% infusion over 1 hour; max 90 mg).",
+        "Emergency protocol for managing suspected acute intracranial haemorrhage during rtPA infusion (stop infusion, STAT head CT, check fibrinogen, infuse cryoprecipitate and tranexamic acid).",
+        "Contraindications relating to concurrent anticoagulation (warfarin with INR >1.7; therapeutic DOAC within 48 hours unless specific reversal agent is given)."
       ],
       "case_hooks": [
-        "An adult patient presenting with acute or subacute manifestations of tissue plasminogen activator acute ischemic stroke requiring immediate diagnostic confirmation and therapy.",
-        "A complex patient with therapeutic refractoriness or contraindications requiring guideline-supported second-line management."
+        "A 68-year-old male arrives 2 hours after acute right hemiparesis and dysarthria; BP is 198/112 mmHg; IV labetalol is titrated to achieve BP 178/102 mmHg prior to alteplase initiation.",
+        "Forty minutes into an alteplase infusion, a 55-year-old woman develops severe headache, vomiting, and her NIHSS worsens from 8 to 18; the infusion is immediately halted."
       ],
       "gaps": "Reviewers should confirm alignment with current local antimicrobial/formulary guidelines and relevant special population considerations.",
       "sources": [
@@ -34138,51 +34084,45 @@
       "guidelinesDropped": []
     },
     "page": {
-      "mentor_intro": "tocilizumab COVID-19 hospitalized patients is a crucial clinical entity with well-defined evidence-based standards of care. Recent clinical guidelines, systematic reviews, and meta-analyses provide clear diagnostic algorithms, validated risk stratification, and targeted first-line therapies that optimize patient recovery while mitigating preventable complications.",
+      "mentor_intro": "Severe and critical COVID-19 is characterized by a hyperinflammatory host response ('cytokine release storm') driven by excessive interleukin-6 (IL-6), leading to acute respiratory distress syndrome (ARDS), systemic microthrombosis, and multi-organ failure. Tocilizumab—a humanized monoclonal antibody targeting the soluble and membrane-bound IL-6 receptor—dampens this hyperinflammatory cascade. The landmark RECOVERY and REMAP-CAP randomized platform trials demonstrated that adding tocilizumab to baseline systemic corticosteroids significantly reduces 28-day mortality, progression to mechanical ventilation, and ICU length of stay in hospitalized patients with rapid respiratory deterioration and systemic inflammation.",
       "teaching_points": [
         {
-          "claim": "Clinical practice guideline consensus establishes evidence-directed diagnostic criteria and risk-stratified therapy for tocilizumab covid-19 hospitalized patients: 2025 Clinical Practice Guideline Update by the Infectious Diseases Society of America on the Treatment and Management of COVID-19: Baricitinib vs. Tocilizumab.",
+          "claim": "Tocilizumab (single IV dose of 8 mg/kg actual body weight, maximum 800 mg) is indicated in hospitalized patients with COVID-19 exhibiting rapid respiratory decompensation (requiring high-flow nasal oxygen, non-invasive ventilation, or mechanical ventilation) and marked systemic inflammation (serum CRP >=75 mg/L), administered in combination with dexamethasone.",
           "cites": [
             "41920901"
           ]
         },
         {
-          "claim": "Contemporary evidence synthesis highlights core pathophysiology, clinical staging, and multidisciplinary management: Tocilizumab in patients admitted to hospital with COVID-19 (RECOVERY): a randomised, controlled, open-label, platform trial.",
+          "claim": "The survival benefit of tocilizumab is strictly dependent on co-administration with systemic corticosteroids (dexamethasone 6 mg daily); tocilizumab monotherapy without corticosteroids confers no clear clinical advantage (RECOVERY trial).",
           "cites": [
             "33933206"
           ]
         },
         {
-          "claim": "Clinical practice guideline consensus establishes evidence-directed diagnostic criteria and risk-stratified therapy for tocilizumab covid-19 hospitalized patients: Dexamethasone in Hospitalized Patients with Covid-19.",
+          "claim": "Baricitinib (an oral JAK1/JAK2 inhibitor) provides equivalent clinical efficacy to tocilizumab when added to corticosteroids; guidelines recommend either tocilizumab OR baricitinib as preferred second immunomodulator, avoiding simultaneous combination of both due to severe immunosuppressive risks.",
           "cites": [
             "32678530"
           ]
         },
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: COVID-19 AND IBD: LOOK BEYOND THE VIRUS. A SYSTEMATIC REVIEW AND META-ANALYSIS FOCUSED ON BIOLOGIC THERAPY CONTINUITY.",
+          "claim": "Tocilizumab administration results in an immediate, profound suppression of serum C-reactive protein (CRP) and fever, which can mask secondary bacterial or fungal superinfections; clinical monitoring must focus on new fever, hemodynamic instability, or worsening leukocytosis.",
           "cites": [
             "42788521"
-          ]
-        },
-        {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Remdesivir for the treatment of children hospitalized with COVID-19: a systematic review and meta-analysis.",
-          "cites": [
-            "42129712"
           ]
         }
       ],
       "uncertainties": [
-        "Optimal duration, dosing adjustments, and sequencing of therapy in high-risk or multimorbid patients presenting with tocilizumab covid-19 hospitalized patients.",
-        "Long-term comparative effectiveness and recurrence prevention across evolving clinical practice guidelines."
+        "Indications for a second dose of tocilizumab at 12-24 hours in patients with persistent or worsening respiratory failure.",
+        "Comparative long-term safety regarding opportunistic fungal infections (e.g., COVID-19-associated pulmonary aspergillosis [CAPA]) between tocilizumab and baricitinib."
       ],
       "mcq_angles": [
-        "Diagnostic workup, biomarker/imaging selection, and risk stratification for tocilizumab covid-19 hospitalized patients.",
-        "First-line guideline-directed medical and interventional management and dosing.",
-        "Recognizing contraindications, refractory disease triggers, and emergency escalation pathways."
+        "RECOVERY trial criteria for tocilizumab eligibility: hospitalized COVID-19 with oxygen requirement + CRP >=75 mg/L, co-prescribed with dexamethasone.",
+        "Masking of secondary infections: understanding why CRP cannot be used to monitor secondary bacterial sepsis following IL-6 receptor blockade.",
+        "Choosing between baricitinib (JAK inhibitor) and tocilizumab (IL-6 inhibitor) as interchangeable second immunomodulatory agents."
       ],
       "case_hooks": [
-        "An adult patient presenting with acute or subacute manifestations of tocilizumab covid-19 hospitalized patients requiring immediate diagnostic confirmation and therapy.",
-        "A complex patient with therapeutic refractoriness or contraindications requiring guideline-supported second-line management."
+        "A 58-year-old male hospitalized with COVID-19 pneumonia on day 4 of dexamethasone requires escalation to high-flow nasal cannula (FiO2 0.60, flow 50 L/min); serum CRP is 142 mg/L.",
+        "A patient treated with dexamethasone and tocilizumab 5 days ago for severe COVID-19 develops new hypotension and purulent sputum; CRP remains 2 mg/L despite blood cultures growing Pseudomonas aeruginosa."
       ],
       "gaps": "Reviewers should confirm alignment with current local antimicrobial/formulary guidelines and relevant special population considerations.",
       "sources": [

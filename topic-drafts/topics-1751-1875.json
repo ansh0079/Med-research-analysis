@@ -666,51 +666,45 @@
       "guidelinesDropped": []
     },
     "page": {
-      "mentor_intro": "Tracheobronchomalacia is a crucial clinical entity with well-defined evidence-based standards of care. Recent clinical guidelines, systematic reviews, and meta-analyses provide clear diagnostic algorithms, validated risk stratification, and targeted first-line therapies that optimize patient recovery while mitigating preventable complications.",
+      "mentor_intro": "Tracheobronchomalacia (TBM) is a pathological condition characterized by dynamic structural weakness and excessive collapsibility of the tracheal and bronchial cartilaginous rings and posterior membranous wall during expiration. It is classified into congenital (primary) forms in infants—often linked to tracheoesophageal fistula or prematurity—and acquired (secondary) forms in adults, triggered by chronic airway inflammation (COPD, relapsing polychondritis), prolonged endotracheal intubation, or trauma. Dynamic flexible bronchoscopy during active forced expiration or coughing is the gold standard for definitive diagnosis, identifying >=50% (and often >=70-80%) dynamic airway lumen collapse.",
       "teaching_points": [
         {
-          "claim": "Clinical practice guideline consensus establishes evidence-directed diagnostic criteria and risk-stratified therapy for tracheobronchomalacia: ACR Appropriateness Criteria® Tracheobronchial Disease.",
+          "claim": "Definitive diagnosis of tracheobronchomalacia requires dynamic flexible bronchoscopy during tidal breathing, deep expiration, and forced coughing, documenting >=50% reduction in luminal cross-sectional area (with severe disease defined as >=70-80% collapse).",
           "cites": [
             "39488358"
           ]
         },
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Posterior tracheopexy for pediatric tracheomalacia: A global evidence synthesis and meta-analysis.",
+          "claim": "Dynamic multi-detector paired inspiratory-expiratory computed tomography (dynamic CT) serves as the primary non-invasive imaging modality of choice, capturing the 'frown sign' of dynamic crescentic airway narrowing on end-expiratory phases.",
           "cites": [
             "42409109"
           ]
         },
         {
-          "claim": "Systematic review evidence supports protocolized evaluation and targeted therapeutic intervention: Interventions for primary pediatric tracheomalacia: A systematic review of the therapeutic landscape and evidence quality.",
+          "claim": "Conservative medical management includes non-invasive positive pressure ventilation (CPAP/BiPAP), which acts as a 'pneumatic stent' to maintain dynamic airway patency during exhalation, paired with aggressive pulmonary clearance and treatment of underlying COPD.",
           "cites": [
             "42679771"
           ]
         },
         {
-          "claim": "Systematic review evidence supports protocolized evaluation and targeted therapeutic intervention: Robotic-assisted tracheobronchoplasty for excessive central airway collapse: a systematic review of clinical outcomes, safety, and functional recovery.",
+          "claim": "In severe, highly symptomatic adult TBM refractory to conservative therapy, surgical tracheobronchoplasty (posterior membranous wall stabilization using polypropylene mesh, performed open or robotic-assisted) provides durable symptomatic and functional improvement following a successful temporary stent trial.",
           "cites": [
             "41553634"
-          ]
-        },
-        {
-          "claim": "Contemporary evidence synthesis highlights core pathophysiology, clinical staging, and multidisciplinary management: Bronchoscopic and interventional management of tracheobronchomalacia in children with bronchopulmonary dysplasia: a review of evidence.",
-          "cites": [
-            "42364941"
           ]
         }
       ],
       "uncertainties": [
-        "Optimal duration, dosing adjustments, and sequencing of therapy in high-risk or multimorbid patients presenting with tracheobronchomalacia.",
-        "Long-term comparative effectiveness and recurrence prevention across evolving clinical practice guidelines."
+        "Long-term complication rates (granulation tissue, stent migration, mucus plugging) of silicone versus self-expanding metallic stents in adult central airway collapse.",
+        "Efficacy and patient selection for posterior tracheopexy versus aortopexy in paediatric severe tracheomalacia."
       ],
       "mcq_angles": [
-        "Diagnostic workup, biomarker/imaging selection, and risk stratification for tracheobronchomalacia.",
-        "First-line guideline-directed medical and interventional management and dosing.",
-        "Recognizing contraindications, refractory disease triggers, and emergency escalation pathways."
+        "Diagnostic gold standard for TBM: dynamic flexible bronchoscopy during forced expiration or coughing.",
+        "Pneumatic stenting mechanism: explaining how continuous positive airway pressure (CPAP) prevents dynamic expiratory collapse.",
+        "Preoperative evaluation for surgical tracheobronchoplasty: utility of a temporary silicone or metallic Y-stent trial to confirm symptomatic reversibility."
       ],
       "case_hooks": [
-        "An adult patient presenting with acute or subacute manifestations of tracheobronchomalacia requiring immediate diagnostic confirmation and therapy.",
-        "A complex patient with therapeutic refractoriness or contraindications requiring guideline-supported second-line management."
+        "A 62-year-old male with severe COPD and recurrent lower respiratory infections presents with a harsh, barking ('seal-like') cough and inability to clear secretions; dynamic expiratory CT reveals 85% collapse of the distal trachea and both mainstem bronchi.",
+        "An 8-month-old infant with a history of repaired esophageal atresia presents with persistent stridor, barking cough, and recurrent reflex apnoeic spells ('dying spells') during feeding."
       ],
       "gaps": "Reviewers should confirm alignment with current local antimicrobial/formulary guidelines and relevant special population considerations.",
       "sources": [
@@ -798,51 +792,45 @@
       "guidelinesDropped": []
     },
     "page": {
-      "mentor_intro": "Tracheostomy: indications, timing, percutaneous vs surgical technique is a crucial clinical entity with well-defined evidence-based standards of care. Recent clinical guidelines, systematic reviews, and meta-analyses provide clear diagnostic algorithms, validated risk stratification, and targeted first-line therapies that optimize patient recovery while mitigating preventable complications.",
+      "mentor_intro": "Tracheostomy is one of the most common surgical procedures performed in critically ill patients requiring prolonged mechanical ventilation, acute airway obstruction, or chronic pulmonary toilet impairment. Timing of tracheostomy—traditionally categorized into early (within 7-10 days) versus late (>10-14 days)—balances the risks of prolonged translaryngeal intubation (glottic injury, subglottic stenosis) against procedural complications and unnecessary operations in rapidly weaning patients. Percutaneous dilatational tracheostomy (PDT) performed at the bedside in the ICU has largely superseded open surgical tracheostomy (OST) for elective adult patients due to reduced wound infections and comparable safety when guided by real-time bronchoscopy.",
       "teaching_points": [
         {
-          "claim": "Contemporary evidence synthesis highlights core pathophysiology, clinical staging, and multidisciplinary management: Update on Pediatric Tracheostomy: Indications, Technique, Education, and Decannulation.",
+          "claim": "Major indications for tracheostomy in the ICU include: anticipated prolonged mechanical ventilation, failed extubation, severe neurological deficit with loss of protective airway reflexes, and acute or chronic upper airway obstruction.",
           "cites": [
             "33875932"
           ]
         },
         {
-          "claim": "Contemporary evidence synthesis highlights core pathophysiology, clinical staging, and multidisciplinary management: Surgical Management of Infective Endocarditis: Indications, Techniques, and Outcomes.",
+          "claim": "The landmark TracMan trial demonstrated that early tracheostomy (within day 4) does not improve 30-day or 1-year mortality compared to late tracheostomy (after day 10), but significantly reduces the duration of sedation and ICU length of stay.",
           "cites": [
             "41040762"
           ]
         },
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Percutaneous dilatational tracheostomy with versus without bronchoscopic guidance: a systematic review and meta-analysis of randomized controlled trials.",
+          "claim": "Percutaneous dilatational tracheostomy (PDT) at the bedside is associated with lower surgical site infection rates, smaller incisions, less tissue trauma, and reduced hospital costs compared to open surgical tracheostomy, provided anatomical contraindications are absent.",
           "cites": [
             "41845239"
           ]
         },
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Tracheostomy in Flap-Based Head and Neck Cancer Surgery: A Meta-Analysis of Indications and Adverse Outcomes.",
+          "claim": "Real-time bronchoscopic visualization during percutaneous dilatational tracheostomy significantly reduces catastrophic procedural complications, including posterior tracheal wall laceration, paratracheal false-passage placement, and pneumothorax.",
           "cites": [
             "41273066"
-          ]
-        },
-        {
-          "claim": "Systematic review evidence supports protocolized evaluation and targeted therapeutic intervention: Mediastinal tracheostomy: techniques, outcomes and quality of life-a systematic review.",
-          "cites": [
-            "42763627"
           ]
         }
       ],
       "uncertainties": [
-        "Optimal duration, dosing adjustments, and sequencing of therapy in high-risk or multimorbid patients presenting with tracheostomy: indications, timing, percutaneous vs surgical technique.",
-        "Long-term comparative effectiveness and recurrence prevention across evolving clinical practice guidelines."
+        "Optimal timing of tracheostomy in acute cervical spinal cord injury (day 3-5 vs later) to prevent pulmonary complications and facilitate diaphragm weaning.",
+        "Standardized protocols for decannulation readiness using peak cough flow, blue dye testing, and capping trials in ICU survivors."
       ],
       "mcq_angles": [
-        "Diagnostic workup, biomarker/imaging selection, and risk stratification for tracheostomy: indications, timing, percutaneous vs surgical technique.",
-        "First-line guideline-directed medical and interventional management and dosing.",
-        "Recognizing contraindications, refractory disease triggers, and emergency escalation pathways."
+        "TracMan trial findings: early vs late tracheostomy impact on mortality (no difference) vs sedation requirements and ICU stay (improved with early).",
+        "Anatomical contraindications to bedside percutaneous tracheostomy favoring open surgical tracheostomy (morbid obesity with unidentifiable landmarks, gross thyroid goitre, cervical spine instability, severe coagulopathy).",
+        "Role of continuous bronchoscopic guidance during percutaneous dilational tracheostomy."
       ],
       "case_hooks": [
-        "An adult patient presenting with acute or subacute manifestations of tracheostomy: indications, timing, percutaneous vs surgical technique requiring immediate diagnostic confirmation and therapy.",
-        "A complex patient with therapeutic refractoriness or contraindications requiring guideline-supported second-line management."
+        "A 52-year-old male with severe traumatic brain injury remains comatose (GCS 6) on mechanical ventilation on day 8; the ICU team plans elective tracheostomy for airway protection and weaning.",
+        "During a bedside percutaneous dilatational tracheostomy, the intensivist utilizes dynamic bronchoscopy to guide needle puncture between the second and third tracheal cartilages."
       ],
       "gaps": "Reviewers should confirm alignment with current local antimicrobial/formulary guidelines and relevant special population considerations.",
       "sources": [
@@ -963,51 +951,45 @@
       "guidelinesDropped": []
     },
     "page": {
-      "mentor_intro": "Tranexamic acid and damage control resuscitation in trauma is a crucial clinical entity with well-defined evidence-based standards of care. Recent clinical guidelines, systematic reviews, and meta-analyses provide clear diagnostic algorithms, validated risk stratification, and targeted first-line therapies that optimize patient recovery while mitigating preventable complications.",
+      "mentor_intro": "Damage control resuscitation (DCR) is the modern paradigm for resuscitating severe trauma patients with life-threatening haemorrhagic shock, targeting the lethal triad of coagulopathy, hypothermia, and acidosis. DCR integrates permissive hypotension (MAP ~50-65 mmHg pending surgical haemostasis), balanced blood component transfusion ratios (1:1:1 of packed RBCs, fresh frozen plasma, and platelets), and early antifibrinolytic therapy. Tranexamic acid (TXA)—a synthetic lysine analogue that competitively blocks plasminogen activation—was proven by the CRASH-2 trial to reduce trauma mortality when administered within 3 hours of injury, while administration after 3 hours increases mortality.",
       "teaching_points": [
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Perioperative tranexamic acid in burn surgery: systematic review and meta-analysis of randomized controlled trials.",
+          "claim": "The landmark CRASH-2 trial demonstrated that early administration of tranexamic acid (1 g IV bolus over 10 minutes followed by 1 g IV infusion over 8 hours) significantly reduces all-cause mortality and death due to bleeding in trauma patients with significant haemorrhage.",
           "cites": [
             "41453514"
           ]
         },
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Is tranexamic acid effective for all traumatic brain injury patients? a severity based systematic review and meta-analysis.",
+          "claim": "Tranexamic acid must be administered within 3 hours of injury; administration after 3 hours is associated with increased bleeding-related mortality and is strictly contraindicated.",
           "cites": [
             "41446790"
           ]
         },
         {
-          "claim": "Clinical practice guideline consensus establishes evidence-directed diagnostic criteria and risk-stratified therapy for tranexamic acid and damage control resuscitation in trauma: Explosive Weapons Trauma Care Collective (EXTRACCT) Clinical Practice Guideline: Resuscitation of Pediatric Blast Injury Patient.",
+          "claim": "Damage control resuscitation prioritizes balanced 1:1:1 transfusion ratios of packed red blood cells, plasma, and platelets, minimizing large-volume crystalloid infusions to prevent dilutional coagulopathy and endothelial glycocalyx disruption (PROPPR trial).",
           "cites": [
             "41423257"
           ]
         },
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Tranexamic Acid Administration in Laparoscopic Sleeve Gastrectomy.",
+          "claim": "In patients with traumatic brain injury (TBI), the CRASH-3 trial demonstrated that TXA reduces head injury-related death in mild-to-moderate TBI (GCS 9-15) when given within 3 hours of trauma, with negligible benefit in severe TBI (GCS 3-8).",
           "cites": [
             "42711637"
-          ]
-        },
-        {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Efficacy and Safety of Tranexamic Acid in Abdominoplasty: A Systematic Review and Meta-Analysis.",
-          "cites": [
-            "42739888"
           ]
         }
       ],
       "uncertainties": [
-        "Optimal duration, dosing adjustments, and sequencing of therapy in high-risk or multimorbid patients presenting with tranexamic acid and damage control resuscitation in trauma.",
-        "Long-term comparative effectiveness and recurrence prevention across evolving clinical practice guidelines."
+        "Efficacy and vascular thromboembolism risks of pre-hospital TXA administration versus in-hospital administration (PATCH-Trauma trial findings).",
+        "Individualized viscoelastometric testing (TEG / ROTEM) guided TXA dosing versus standardized empiric 2 g bolus protocols."
       ],
       "mcq_angles": [
-        "Diagnostic workup, biomarker/imaging selection, and risk stratification for tranexamic acid and damage control resuscitation in trauma.",
-        "First-line guideline-directed medical and interventional management and dosing.",
-        "Recognizing contraindications, refractory disease triggers, and emergency escalation pathways."
+        "CRASH-2 timing rule: explaining why TXA must be given within 3 hours of trauma injury and why post-3-hour administration increases mortality.",
+        "Dosing regimen of TXA in trauma resuscitation: 1 g IV loading dose over 10 minutes, followed by 1 g IV infusion over 8 hours.",
+        "Damage control resuscitation components: permissive hypotension, 1:1:1 transfusion ratio, and limitation of crystalloids."
       ],
       "case_hooks": [
-        "An adult patient presenting with acute or subacute manifestations of tranexamic acid and damage control resuscitation in trauma requiring immediate diagnostic confirmation and therapy.",
-        "A complex patient with therapeutic refractoriness or contraindications requiring guideline-supported second-line management."
+        "A 28-year-old male sustains multiple gunshot wounds to the abdomen, presenting 45 minutes post-injury with BP 74/42 mmHg, HR 135 bpm, and massive external haemorrhage; the trauma team initiates the massive transfusion protocol and TXA bolus.",
+        "A motorcyclist presents 4 hours after a severe highway collision with pelvic fractures and bleeding; the junior trainee asks whether IV tranexamic acid should still be infused."
       ],
       "gaps": "Reviewers should confirm alignment with current local antimicrobial/formulary guidelines and relevant special population considerations.",
       "sources": [
@@ -1402,51 +1384,45 @@
       "guidelinesDropped": []
     },
     "page": {
-      "mentor_intro": "Transcatheter aortic valve implantation (TAVI): patient selection, access, complications is a crucial clinical entity with well-defined evidence-based standards of care. Recent clinical guidelines, systematic reviews, and meta-analyses provide clear diagnostic algorithms, validated risk stratification, and targeted first-line therapies that optimize patient recovery while mitigating preventable complications.",
+      "mentor_intro": "Transcatheter aortic valve implantation (TAVI, or TAVR) has revolutionized the treatment of severe symptomatic native aortic stenosis across prohibitive, high, intermediate, and low surgical risk patients. Multidisciplinary 'Heart Team' evaluation integrates anatomical suitability on ECG-gated multidetector CT (annulus dimensions, coronary ostial heights, calcification distribution, and transfemoral access caliber) with clinical risk scores (STS, EuroSCORE II) and patient life expectancy. Although transfemoral TAVI achieves outstanding hemodynamics and rapid recovery, operators must anticipate and manage specific complications: high-degree atrioventricular conduction block requiring permanent pacemaker, paravalvular regurgitation, vascular access injury, and stroke.",
       "teaching_points": [
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Redo-Transcatheter Aortic Valve Implantation Versus Surgical Explantation in Patients With Previous Transcatheter Aortic Valve Implantation: A Systematic Review and Meta-Analysis.",
+          "claim": "Transfemoral access is the preferred first-line vascular approach for TAVI (>90% of cases), requiring minimum iliofemoral luminal diameters (typically >=5.0-5.5 mm depending on sheath size) without circumferential calcification or severe tortuosity.",
           "cites": [
             "42622107"
           ]
         },
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Incidence and Predictors of Complications After Transcatheter Aortic Valve Implantation According to VARC-3 Criteria: A Systematic Review and Meta-Analysis.",
+          "claim": "Pre-procedural ECG-gated multislice cardiac CT is mandatory to measure the aortic valve annulus area/perimeter, evaluate coronary artery take-off heights (distance <10-12 mm from annulus confers risk of acute coronary ostial obstruction), and plan coplanar fluoroscopic angles.",
           "cites": [
             "42808440"
           ]
         },
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Short-Term Complications of Transcatheter Aortic Valve Replacement: A Systematic Review and Meta-Analysis (PROLONG-TAVR).",
+          "claim": "New-onset high-degree atrioventricular block and permanent pacemaker (PPM) implantation remain frequent complications, occurring more often with self-expanding valves (15-25%) than balloon-expandable valves (5-10%), due to mechanical compression of the membranous septum and His bundle.",
           "cites": [
             "42876001"
           ]
         },
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Expanding indications for transcatheter aortic valve implantation: time for valve-in-valve in mechanical prosthesis? A systematic review and meta-analysis.",
+          "claim": "Paravalvular aortic regurgitation (PVL)—arising from incomplete frame sealing in heavily calcified commissures—is associated with increased long-term mortality and is classified by VARC-3 criteria using Doppler echocardiography.",
           "cites": [
             "42846256"
-          ]
-        },
-        {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Safety and Efficacy of Transcatheter Aortic Valve Implantation at Centres With Versus Without On-Site Cardiac Surgery: A Systematic Review and Meta-Analysis.",
-          "cites": [
-            "42498619"
           ]
         }
       ],
       "uncertainties": [
-        "Optimal duration, dosing adjustments, and sequencing of therapy in high-risk or multimorbid patients presenting with transcatheter aortic valve implantation (tavi): patient selection, access, complications.",
-        "Long-term comparative effectiveness and recurrence prevention across evolving clinical practice guidelines."
+        "Long-term structural valve deterioration (SVD) and durability of transcatheter bioprostheses beyond 10 years compared to surgical bioprosthetic valves.",
+        "Optimal antithrombotic therapy post-TAVI in patients without baseline anticoagulation indications (single antiplatelet therapy [SAPT] with aspirin vs DAPT vs oral anticoagulants)."
       ],
       "mcq_angles": [
-        "Diagnostic workup, biomarker/imaging selection, and risk stratification for transcatheter aortic valve implantation (tavi): patient selection, access, complications.",
-        "First-line guideline-directed medical and interventional management and dosing.",
-        "Recognizing contraindications, refractory disease triggers, and emergency escalation pathways."
+        "Identifying risk factors for acute coronary ostial obstruction during TAVI (coronary height <10-12 mm and shallow sinuses of Valsalva).",
+        "Predictors and rates of permanent pacemaker requirement comparing self-expanding vs balloon-expandable prostheses.",
+        "Patient selection: transcatheter versus surgical aortic valve replacement (SAVR) in younger low-risk patients (<65-70 years) where valve durability, bicuspid anatomy, and lifetime coronary access are primary concerns."
       ],
       "case_hooks": [
-        "An adult patient presenting with acute or subacute manifestations of transcatheter aortic valve implantation (tavi): patient selection, access, complications requiring immediate diagnostic confirmation and therapy.",
-        "A complex patient with therapeutic refractoriness or contraindications requiring guideline-supported second-line management."
+        "An 82-year-old female with severe symptomatic aortic stenosis (mean gradient 48 mmHg, valve area 0.6 cm2) and STS score 6.2% is evaluated for transfemoral TAVI; CT shows coronary ostia at 14 mm and femoral arteries measuring 6.5 mm.",
+        "Following successful deployment of a self-expanding transcatheter aortic valve, a patient develops new right bundle branch block with first-degree AV block and intermittent 2:1 Mobitz II block on telemetry."
       ],
       "gaps": "Reviewers should confirm alignment with current local antimicrobial/formulary guidelines and relevant special population considerations.",
       "sources": [
@@ -1693,51 +1669,45 @@
       "guidelinesDropped": []
     },
     "page": {
-      "mentor_intro": "Transfusion-Associated Circulatory Overload is a crucial clinical entity with well-defined evidence-based standards of care. Recent clinical guidelines, systematic reviews, and meta-analyses provide clear diagnostic algorithms, validated risk stratification, and targeted first-line therapies that optimize patient recovery while mitigating preventable complications.",
+      "mentor_intro": "Transfusion-Associated Circulatory Overload (TACO) is an acute, hydrostatic pulmonary oedema precipitated by the transfusion of blood products, and represents the leading cause of transfusion-related morbidity and mortality in high-income countries. Pathophysiology involves excessive volume, rapid infusion rate, or impaired cardiovascular/renal compensation, leading to elevated left atrial pressures and fluid extravasation into lung alveoli. Differentiating TACO from Transfusion-Related Acute Lung Injury (TRALI)—which is non-cardiogenic and mediated by neutrophil activation—is critical, as TACO responds dramatically to diuresis and positive pressure ventilation whereas TRALI does not.",
       "teaching_points": [
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Estimating the incidence of transfusion-associated circulatory overload using active surveillance: A systematic review and meta-analysis.",
+          "claim": "TACO is defined clinically by acute respiratory distress developing within 6 (or up to 12) hours of blood product transfusion, with evidence of hydrostatic cardiac overload (tachycardia, hypertension, elevated JVP, peripheral oedema, cardiomegaly/pulmonary oedema on CXR, and marked elevation in BNP or NT-proBNP).",
           "cites": [
             "40342068"
           ]
         },
         {
-          "claim": "Contemporary evidence synthesis highlights core pathophysiology, clinical staging, and multidisciplinary management: Oncology Patients Who Develop Transfusion-Associated Circulatory Overload: An Observational Study.",
+          "claim": "Major risk factors for TACO include advanced age (>70 years), pre-existing congestive heart failure, chronic kidney disease, hypoalbuminaemia, rapid infusion rates, and large-volume transfusion.",
           "cites": [
             "35285900"
           ]
         },
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Platelet Transfusion in Dengue-Associated Thrombocytopenia: A Systematic Review and Meta-Analysis.",
+          "claim": "TACO is distinguished from TRALI by the presence of systemic hypertension (versus hypotension in TRALI), elevated jugular venous pressure, responsive diuresis with loop diuretics, and post-transfusion BNP elevation >1.5-fold baseline.",
           "cites": [
             "42561330"
           ]
         },
         {
-          "claim": "Contemporary evidence synthesis highlights core pathophysiology, clinical staging, and multidisciplinary management: Hepatitis E in Thailand: From Seroprevalence to Foodborne and Transfusion-Associated Risks.",
+          "claim": "Prevention requires pre-transfusion risk assessment, restrictive single-unit red cell transfusion strategies, slowing infusion rates (transfusing a single unit over 3 to 4 hours), and prophylactic pre- or mid-transfusion loop diuretics (e.g., IV furosemide 20-40 mg) in high-risk patients.",
           "cites": [
             "42074640"
-          ]
-        },
-        {
-          "claim": "Contemporary evidence synthesis highlights core pathophysiology, clinical staging, and multidisciplinary management: From metabolomics to transfusion-associated immunomodulation.",
-          "cites": [
-            "40848579"
           ]
         }
       ],
       "uncertainties": [
-        "Optimal duration, dosing adjustments, and sequencing of therapy in high-risk or multimorbid patients presenting with transfusion-associated circulatory overload.",
-        "Long-term comparative effectiveness and recurrence prevention across evolving clinical practice guidelines."
+        "Diagnostic accuracy and specific cutoff thresholds for pre- versus post-transfusion NT-proBNP in differentiating mixed TACO/TRALI presentations.",
+        "Effectiveness of automated electronic health record clinical decision support alerts in prompting prophylactic diuretic orders for high-risk patients."
       ],
       "mcq_angles": [
-        "Diagnostic workup, biomarker/imaging selection, and risk stratification for transfusion-associated circulatory overload.",
-        "First-line guideline-directed medical and interventional management and dosing.",
-        "Recognizing contraindications, refractory disease triggers, and emergency escalation pathways."
+        "Differentiating TACO from TRALI: hypertension, elevated JVP, high post-transfusion BNP/NT-proBNP, and rapid response to IV furosemide definitively favor TACO.",
+        "Immediate emergency management of suspected TACO: stop transfusion, sit patient upright, administer high-flow oxygen/CPAP, and give intravenous loop diuretics.",
+        "Prophylactic strategies for TACO in high-risk patients (pre-transfusion IV furosemide, single-unit transfusion over 3-4 hours)."
       ],
       "case_hooks": [
-        "An adult patient presenting with acute or subacute manifestations of transfusion-associated circulatory overload requiring immediate diagnostic confirmation and therapy.",
-        "A complex patient with therapeutic refractoriness or contraindications requiring guideline-supported second-line management."
+        "A 78-year-old woman with ischemic cardiomyopathy and CKD stage 3 receives 2 units of packed RBCs over 2 hours for anaemia; 45 minutes after the second unit, she develops acute dyspnoea, BP rises to 185/100 mmHg, and JVP is 8 cm.",
+        "A hospital transfusion committee reviews an adverse reaction where an elderly oncology patient developed pulmonary infiltrates after plasma infusion; the team analyzes post-transfusion BNP and hemodynamic parameters."
       ],
       "gaps": "Reviewers should confirm alignment with current local antimicrobial/formulary guidelines and relevant special population considerations.",
       "sources": [
@@ -2001,51 +1971,45 @@
       "guidelinesDropped": []
     },
     "page": {
-      "mentor_intro": "Transoesophageal echocardiography: indications, LA thrombus, valve assessment is a crucial clinical entity with well-defined evidence-based standards of care. Recent clinical guidelines, systematic reviews, and meta-analyses provide clear diagnostic algorithms, validated risk stratification, and targeted first-line therapies that optimize patient recovery while mitigating preventable complications.",
+      "mentor_intro": "Transoesophageal echocardiography (TOE/TEE) provides high-resolution ultrasonic visualization of posterior cardiac structures unobstructed by chest wall, ribs, or lung parenchyma. Because the transducer sits in the mid-oesophagus directly posterior to the left atrium, TOE is the undisputed gold standard for detecting left atrial appendage (LAA) thrombi, ruling out infective endocarditis vegetations and perivalvular abscesses, and guiding transcatheter structural heart interventions. Safe performance demands pre-procedure evaluation of oesophageal pathology contraindications, conscious sedation monitoring, and multiplane probe manipulation.",
       "teaching_points": [
         {
-          "claim": "Clinical practice guideline consensus establishes evidence-directed diagnostic criteria and risk-stratified therapy for transoesophageal echocardiography: indications, la thrombus, valve assessment: Transoesophageal echocardiography beyond the echo-laboratory. An expert consensus paper of the working group of echocardiography of the hellenic society of cardiology.",
+          "claim": "TOE is the gold standard modality for excluding left atrial appendage (LAA) thrombus prior to direct current cardioversion or catheter ablation for atrial fibrillation/flutter, exhibiting sensitivity and specificity approaching 99-100%.",
           "cites": [
             "38901557"
           ]
         },
         {
-          "claim": "Contemporary evidence synthesis highlights core pathophysiology, clinical staging, and multidisciplinary management: Transoesophageal echocardiography during cardiopulmonary resuscitation for cardiac arrest: a scoping review.",
+          "claim": "In suspected infective endocarditis (IE), TOE is strongly indicated when transthoracic echo (TTE) is negative or non-diagnostic despite high clinical suspicion, in all patients with prosthetic valves or intracardiac devices, and to detect invasive perivalvular complications (root abscess, fistula, leaflet perforation).",
           "cites": [
             "42603603"
           ]
         },
         {
-          "claim": "Contemporary evidence synthesis highlights core pathophysiology, clinical staging, and multidisciplinary management: Anaesthesia and perioperative transoesophageal echocardiography in obstructive hypertrophic cardiomyopathy.",
+          "claim": "Comprehensive prosthetic valve assessment by TOE evaluates mechanism of dysfunction (structural leaflet degeneration, pannus ingrowth vs mobile thrombus, paravalvular regurgitant jets, rocking of the sewing ring in dehiscence).",
           "cites": [
             "41613485"
           ]
         },
         {
-          "claim": "Contemporary evidence synthesis highlights core pathophysiology, clinical staging, and multidisciplinary management: Perioperative 3D transoesophageal echocardiography. Part 2: clinical applications.",
+          "claim": "Absolute contraindications to TOE include oesophageal pathology with risk of perforation: oesophageal stricture, oesophageal carcinoma, active upper gastrointestinal bleeding, oesophageal perforation, Zenker diverticulum, and recent oesophageal surgery.",
           "cites": [
             "39099755"
-          ]
-        },
-        {
-          "claim": "Contemporary evidence synthesis highlights core pathophysiology, clinical staging, and multidisciplinary management: Transoesophageal echocardiography in cardiac arrest: From the emergency department to the intensive care unit.",
-          "cites": [
-            "39174004"
           ]
         }
       ],
       "uncertainties": [
-        "Optimal duration, dosing adjustments, and sequencing of therapy in high-risk or multimorbid patients presenting with transoesophageal echocardiography: indications, la thrombus, valve assessment.",
-        "Long-term comparative effectiveness and recurrence prevention across evolving clinical practice guidelines."
+        "Diagnostic equivalence of modern 4D cardiac CT angiography compared to TOE for pre-procedural left atrial appendage thrombus exclusion.",
+        "Routine utility of TOE versus surface POCUS during active cardiopulmonary resuscitation in out-of-hospital cardiac arrest."
       ],
       "mcq_angles": [
-        "Diagnostic workup, biomarker/imaging selection, and risk stratification for transoesophageal echocardiography: indications, la thrombus, valve assessment.",
-        "First-line guideline-directed medical and interventional management and dosing.",
-        "Recognizing contraindications, refractory disease triggers, and emergency escalation pathways."
+        "Mandatory TOE indications in infective endocarditis: prosthetic valves, intracardiac electronic devices, and suspected perivalvular abscess.",
+        "Excluding LAA thrombus before cardioversion: identifying 'smoke' (spontaneous echo contrast, a precursor of stasis) versus discrete mobile thrombus in the pectinate muscles.",
+        "Identifying absolute contraindications to TOE probe insertion (active GI bleeding, oesophageal malignancy/stricture, Zenker diverticulum)."
       ],
       "case_hooks": [
-        "An adult patient presenting with acute or subacute manifestations of transoesophageal echocardiography: indications, la thrombus, valve assessment requiring immediate diagnostic confirmation and therapy.",
-        "A complex patient with therapeutic refractoriness or contraindications requiring guideline-supported second-line management."
+        "A 64-year-old male with persistent atrial fibrillation of unknown duration is scheduled for electrical cardioversion; TOE is performed, demonstrating a 1.2 cm hyperechoic mobile mass in the left atrial appendage apex.",
+        "A 55-year-old female with a mechanical aortic valve presents with persistent Enterococcus faecalis bacteraemia and new-onset PR-interval prolongation; TTE is inconclusive, prompting urgent TOE."
       ],
       "gaps": "Reviewers should confirm alignment with current local antimicrobial/formulary guidelines and relevant special population considerations.",
       "sources": [
@@ -2154,51 +2118,45 @@
       "guidelinesDropped": []
     },
     "page": {
-      "mentor_intro": "Transthyretin amyloidosis treatment is a crucial clinical entity with well-defined evidence-based standards of care. Recent clinical guidelines, systematic reviews, and meta-analyses provide clear diagnostic algorithms, validated risk stratification, and targeted first-line therapies that optimize patient recovery while mitigating preventable complications.",
+      "mentor_intro": "Transthyretin amyloidosis (ATTR) is a progressive, fatal systemic protein-misfolding disorder caused by the dissociation of transthyretin tetramers into misfolded monomers that aggregate as insoluble amyloid fibrils in myocardial and neural tissues. ATTR manifests as ATTR cardiomyopathy (ATTR-CM) and/or ATTR polyneuropathy (ATTR-PN), occurring in both wild-type (ATTRwt, predominantly in older men) and hereditary variant (ATTRv) forms. The therapeutic landscape has undergone a revolutionary shift from purely supportive care to targeted disease-modifying therapies: kinetic tetramer stabilizers (tafamidis, acoramidis) and hepatic gene-silencing therapies (RNA interference: patisiran, vutrisiran; antisense oligonucleotides: inotersen, eplontersen).",
       "teaching_points": [
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Mortality in octogenarian patients with transthyretin amyloidosis treated with tafamidis: a systematic review and meta-analysis.",
+          "claim": "Tafamidis is a kinetic stabilizer that binds with high affinity to the thyroxine-binding sites of the TTR tetramer, preventing dissociation into amyloidogenic monomers; the landmark ATTR-ACT trial established that tafamidis reduces all-cause mortality by 30% and cardiovascular hospitalizations in ATTR cardiomyopathy.",
           "cites": [
             "42265773"
           ]
         },
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Clinical outcomes with vutrisiran in transthyretin amyloidosis: a systematic review and meta-analysis of randomized trials.",
+          "claim": "Non-invasive diagnostic criteria for ATTR cardiomyopathy allow diagnosis without endomyocardial biopsy if patients have typical heart failure/echo findings, Grade 2 or 3 cardiac uptake on 99mTc-pyrophosphate (PYP) or DPND bone scintigraphy, AND completely negative serum/urine monoclonal protein studies (immunofixation and free light chains).",
           "cites": [
             "42544292"
           ]
         },
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: A Network Meta-Analysis of Hereditary Transthyretin Amyloidosis With Polyneuropathy Supports a Class Effect, Not a Ranking of Individual Drugs.",
+          "claim": "RNA interference (RNAi) therapeutics—specifically patisiran (IV every 3 weeks) and vutrisiran (subcutaneous every 3 months)—target hepatic TTR mRNA, degrading the transcript and reducing serum transthyretin production by >80-85%, halting or reversing polyneuropathy progression (APOLLO and HELIOS-A trials).",
           "cites": [
             "42549565"
           ]
         },
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Reply to: \"A Network Meta-Analysis of Hereditary Transthyretin Amyloidosis With Polyneuropathy Supports a Class Effect, Not a Ranking of Individual Drugs\".",
+          "claim": "The HELIOS-B trial demonstrated that vutrisiran significantly reduces all-cause mortality and recurrent cardiovascular events in patients with ATTR cardiomyopathy, establishing subcutaneous gene silencers as potent disease-modifying agents in cardiac disease.",
           "cites": [
             "42572428"
-          ]
-        },
-        {
-          "claim": "Contemporary evidence synthesis highlights core pathophysiology, clinical staging, and multidisciplinary management: Vutrisiran in Transthyretin Amyloidosis: A Narrative Review.",
-          "cites": [
-            "42623005"
           ]
         }
       ],
       "uncertainties": [
-        "Optimal duration, dosing adjustments, and sequencing of therapy in high-risk or multimorbid patients presenting with transthyretin amyloidosis treatment.",
-        "Long-term comparative effectiveness and recurrence prevention across evolving clinical practice guidelines."
+        "Long-term combination therapy: whether combining a TTR gene silencer (vutrisiran) with a tetramer stabilizer (tafamidis) provides additive clinical benefit over monotherapy.",
+        "Role of emerging in vivo CRISPR-Cas9 gene editing (e.g., nexiguran ziclumeran) in achieving permanent single-dose suppression of mutant and wild-type TTR."
       ],
       "mcq_angles": [
-        "Diagnostic workup, biomarker/imaging selection, and risk stratification for transthyretin amyloidosis treatment.",
-        "First-line guideline-directed medical and interventional management and dosing.",
-        "Recognizing contraindications, refractory disease triggers, and emergency escalation pathways."
+        "ATTR-ACT trial landmark findings: tafamidis reduces 30-month mortality and cardiovascular hospitalizations in ATTR-CM.",
+        "Non-invasive diagnosis requirements: positive 99mTc-PYP/DPD scan (grade 2-3) PLUS strict exclusion of AL amyloidosis via serum and urine immunofixation and serum free light chains.",
+        "Mechanism of action of gene silencers (vutrisiran, patisiran: mRNA degradation) versus stabilizers (tafamidis, acoramidis: tetramer stabilization)."
       ],
       "case_hooks": [
-        "An adult patient presenting with acute or subacute manifestations of transthyretin amyloidosis treatment requiring immediate diagnostic confirmation and therapy.",
-        "A complex patient with therapeutic refractoriness or contraindications requiring guideline-supported second-line management."
+        "A 76-year-old male presents with HFpEF, bilateral carpal tunnel syndrome, and low-voltage QRS on ECG despite marked concentric LV wall thickening (16 mm); 99mTc-PYP scan shows intense Grade 3 myocardial uptake with normal light chains.",
+        "A 54-year-old woman with confirmed hereditary ATTR (Val30Met mutation) presents with progressive sensorimotor peripheral neuropathy and orthostatic hypotension, evaluated for subcutaneous vutrisiran initiation."
       ],
       "gaps": "Reviewers should confirm alignment with current local antimicrobial/formulary guidelines and relevant special population considerations.",
       "sources": [
@@ -2629,51 +2587,45 @@
       "guidelinesDropped": []
     },
     "page": {
-      "mentor_intro": "Trauma resuscitation and head injury is a crucial clinical entity with well-defined evidence-based standards of care. Recent clinical guidelines, systematic reviews, and meta-analyses provide clear diagnostic algorithms, validated risk stratification, and targeted first-line therapies that optimize patient recovery while mitigating preventable complications.",
+      "mentor_intro": "The coexistence of severe traumatic brain injury (TBI) and systemic haemorrhagic shock represents a formidable clinical resuscitation dilemma. While damage control resuscitation for systemic trauma advocates permissive hypotension (systolic BP ~80-90 mmHg) to limit clot disruption, systemic hypotension in severe TBI doubles mortality by precipitating secondary cerebral ischemic injury. Resuscitation must aggressively prioritize cerebral perfusion pressure (CPP) maintenance—strictly avoiding systolic BP <100-110 mmHg—alongside rapid haemostasis, normoxia, normocarbia, and timely surgical intracranial decompression.",
       "teaching_points": [
         {
-          "claim": "Clinical practice guideline consensus establishes evidence-directed diagnostic criteria and risk-stratified therapy for trauma resuscitation and head injury: Explosive Weapons Trauma Care Collective (EXTRACCT) Clinical Practice Guideline: Resuscitation of Pediatric Blast Injury Patient.",
+          "claim": "In patients with combined severe TBI and systemic haemorrhagic trauma, 'permissive hypotension' is strictly contraindicated; the Brain Trauma Foundation guidelines mandate maintaining systolic BP >=100 mmHg for patients aged 50-69 years and >=110 mmHg for patients aged 15-49 or >70 years to prevent secondary ischemic brain injury.",
           "cites": [
             "41423257"
           ]
         },
         {
-          "claim": "Clinical practice guideline consensus establishes evidence-directed diagnostic criteria and risk-stratified therapy for trauma resuscitation and head injury: Explosive Weapons Trauma Care Collective (EXTRACCT) Clinical Practice Guideline: Transfer of Critically Injured Casualties.",
+          "claim": "A single documented episode of systemic hypotension (SBP <90 mmHg) or hypoxemia (PaO2 <60 mmHg / SpO2 <90%) in severe TBI is independently associated with a doubling of mortality.",
           "cites": [
             "42423140"
           ]
         },
         {
-          "claim": "Clinical practice guideline consensus establishes evidence-directed diagnostic criteria and risk-stratified therapy for trauma resuscitation and head injury: Intraoperative Sensory Signals Predict Prognosis for Patients with Traumatic Cervical Spinal Cord Injury.",
+          "claim": "Damage control fluid resuscitation in concomitant TBI requires balanced blood components (1:1:1 pRBC, FFP, platelets) or whole blood; hypotonic crystalloids (such as 0.9% normal saline with low osmolarity relative to injured brain, and especially Ringer's lactate with osmolarity ~273 mOsm/L) must be avoided to prevent worsening cerebral oedema.",
           "cites": [
             "36272729"
           ]
         },
         {
-          "claim": "Clinical practice guideline consensus establishes evidence-directed diagnostic criteria and risk-stratified therapy for trauma resuscitation and head injury: Guidelines for the Management of Severe Traumatic Brain Injury, Fourth Edition.",
+          "claim": "Tranexamic acid (TXA) should be administered within 3 hours of injury in polytrauma patients with significant bleeding; in head injury (CRASH-3 trial), TXA reduces mortality in mild-to-moderate TBI without expanding intracranial hematomas.",
           "cites": [
             "27654000"
-          ]
-        },
-        {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Impacts of intracranial pressure monitoring on mortality and length of stay in severe traumatic brain injury: a systematic review and meta-analysis.",
-          "cites": [
-            "42584695"
           ]
         }
       ],
       "uncertainties": [
-        "Optimal duration, dosing adjustments, and sequencing of therapy in high-risk or multimorbid patients presenting with trauma resuscitation and head injury.",
-        "Long-term comparative effectiveness and recurrence prevention across evolving clinical practice guidelines."
+        "Optimal blood pressure targets guided by non-invasive cerebral autoregulation monitoring (PRx) versus standardized SBP cutoffs in multi-trauma TBI.",
+        "Use of pre-hospital whole blood transfusion versus component therapy in polytrauma patients with blunt intracranial hemorrhage."
       ],
       "mcq_angles": [
-        "Diagnostic workup, biomarker/imaging selection, and risk stratification for trauma resuscitation and head injury.",
-        "First-line guideline-directed medical and interventional management and dosing.",
-        "Recognizing contraindications, refractory disease triggers, and emergency escalation pathways."
+        "Modifying permissive hypotension targets when severe traumatic brain injury coexists with torso haemorrhage (maintaining SBP >=100-110 mmHg).",
+        "Why hypotonic fluids (like Ringer's lactate) are avoided in severe TBI (hypotonicity increases brain tissue water content and elevates ICP).",
+        "Impact of secondary physiological insults (hypotension, hypoxia, hyperthermia, hypocapnia) on TBI mortality."
       ],
       "case_hooks": [
-        "An adult patient presenting with acute or subacute manifestations of trauma resuscitation and head injury requiring immediate diagnostic confirmation and therapy.",
-        "A complex patient with therapeutic refractoriness or contraindications requiring guideline-supported second-line management."
+        "A 24-year-old unrestrained driver sustains blunt abdominal trauma with pelvic fracture and severe closed head injury (GCS 6); BP is 82/46 mmHg, and the trauma team must choose blood pressure targets and resuscitation fluids.",
+        "An intubated TBI patient in the trauma bay has a sudden drop in PaCO2 to 24 mmHg due to accidental hyperventilation on the transport ventilator, causing cerebral vasoconstriction."
       ],
       "gaps": "Reviewers should confirm alignment with current local antimicrobial/formulary guidelines and relevant special population considerations.",
       "sources": [
@@ -2804,51 +2756,45 @@
       "guidelinesDropped": []
     },
     "page": {
-      "mentor_intro": "Traumatic brain injury ICU management is a crucial clinical entity with well-defined evidence-based standards of care. Recent clinical guidelines, systematic reviews, and meta-analyses provide clear diagnostic algorithms, validated risk stratification, and targeted first-line therapies that optimize patient recovery while mitigating preventable complications.",
+      "mentor_intro": "Intensive care management of severe traumatic brain injury (TBI, defined as post-resuscitation GCS <=8) focuses on the prevention, prompt detection, and aggressive mitigation of secondary brain injury. Secondary insults—ischemia, cellular energy failure, cerebral oedema, intracranial hypertension, and non-convulsive seizures—occur hours to days after the primary mechanical injury. A structured tier-based protocol coordinates mechanical ventilation, hemodynamic optimization targeting cerebral perfusion pressure (CPP 60-70 mmHg), automated pupillometry, temperature control, and multi-modality neuromonitoring.",
       "teaching_points": [
         {
-          "claim": "Clinical practice guideline consensus establishes evidence-directed diagnostic criteria and risk-stratified therapy for traumatic brain injury icu management: Guidelines for the Management of Severe Traumatic Brain Injury, Fourth Edition.",
+          "claim": "Continuous intracranial pressure (ICP) monitoring is recommended in severe TBI patients (GCS <=8) with an abnormal admission head CT (hematomas, contusions, swelling, compressed basal cisterns) or normal CT with >=2 clinical risk factors (age >40, motor posturing, SBP <90 mmHg).",
           "cites": [
             "27654000"
           ]
         },
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Sleep-Wake Disturbances in Pediatric Traumatic Brain Injury: A Systematic Review and Meta-Analysis of Interventions.",
+          "claim": "Guideline-directed management targets an ICP threshold <22 mmHg and a cerebral perfusion pressure (CPP = MAP - ICP) between 60 and 70 mmHg; avoiding CPP <60 mmHg prevents cerebral ischemia, while avoiding CPP >70 mmHg prevents hyperperfusion and ARDS.",
           "cites": [
             "42768896"
           ]
         },
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Effectiveness of hyperbaric oxygen in traumatic brain injury patients: A systematic review and meta-analysis.",
+          "claim": "Prophylactic post-traumatic seizure prevention with levetiracetam or phenytoin is recommended for the first 7 days following severe TBI to decrease early post-traumatic seizures; routine extension beyond 7 days is not recommended as it does not prevent late epilepsy.",
           "cites": [
             "42575227"
           ]
         },
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Personality change after traumatic brain injury: a systematic review and meta-analysis.",
+          "claim": "Automated quantitative pupillometry (Neurological Pupil Index [NPI]) provides objective, operator-independent measurement of pupillary reactivity, detecting impending brain herniation and elevated ICP hours before gross clinical changes.",
           "cites": [
             "42547613"
-          ]
-        },
-        {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Prognostic value of automated pupillometry in traumatic brain injury: a systematic review and meta-analysis.",
-          "cites": [
-            "42477220"
           ]
         }
       ],
       "uncertainties": [
-        "Optimal duration, dosing adjustments, and sequencing of therapy in high-risk or multimorbid patients presenting with traumatic brain injury icu management.",
-        "Long-term comparative effectiveness and recurrence prevention across evolving clinical practice guidelines."
+        "Utility of advanced multi-modality neuromonitoring (brain tissue oxygen tension [PbtO2] and microdialysis) in improving neurological recovery (BOOST-3 trial).",
+        "Optimal timing and patient selection for secondary decompressive craniectomy in medically refractory intracranial hypertension (RESCUEicp trial)."
       ],
       "mcq_angles": [
-        "Diagnostic workup, biomarker/imaging selection, and risk stratification for traumatic brain injury icu management.",
-        "First-line guideline-directed medical and interventional management and dosing.",
-        "Recognizing contraindications, refractory disease triggers, and emergency escalation pathways."
+        "Therapeutic target ranges for ICP (<22 mmHg) and CPP (60-70 mmHg) per Brain Trauma Foundation guidelines.",
+        "Duration and drug selection for post-traumatic seizure prophylaxis (7 days of levetiracetam or phenytoin; lack of benefit beyond 7 days).",
+        "Avoiding aggressive routine hyperventilation (PaCO2 <30-35 mmHg) due to profound cerebral vasoconstriction and secondary ischemic necrosis."
       ],
       "case_hooks": [
-        "An adult patient presenting with acute or subacute manifestations of traumatic brain injury icu management requiring immediate diagnostic confirmation and therapy.",
-        "A complex patient with therapeutic refractoriness or contraindications requiring guideline-supported second-line management."
+        "A 30-year-old male with severe TBI post-evacuation of an acute subdural hematoma has an external ventricular drain placed; monitor displays ICP 26 mmHg and MAP 82 mmHg (CPP = 56 mmHg).",
+        "A patient with severe TBI on day 3 in the neuro-ICU demonstrates a decline in automated pupillometry NPI from 4.2 to 2.1 in the left eye despite stable sedation."
       ],
       "gaps": "Reviewers should confirm alignment with current local antimicrobial/formulary guidelines and relevant special population considerations.",
       "sources": [
@@ -2985,51 +2931,45 @@
       "guidelinesDropped": []
     },
     "page": {
-      "mentor_intro": "Traumatic brain injury intracranial pressure management is a crucial clinical entity with well-defined evidence-based standards of care. Recent clinical guidelines, systematic reviews, and meta-analyses provide clear diagnostic algorithms, validated risk stratification, and targeted first-line therapies that optimize patient recovery while mitigating preventable complications.",
+      "mentor_intro": "Elevated intracranial pressure (ICP >22 mmHg) following severe traumatic brain injury reflects the Monro-Kellie doctrine: within the rigid cranium, expanding volume (hematoma, brain oedema, vascular engorgement) compromises compensatory reserve, resulting in brain tissue herniation and death. Management utilizes a structured, tiered protocol escalating from basic neuroprotective foundations to advanced surgical and medical interventions. Tier 1 interventions include head elevation (30 degrees), midline neck positioning, analgesia/sedation, and CSF drainage; Tier 2 incorporates hyperosmolar therapy (mannitol or hypertonic saline); Tier 3 reserves decompressive craniectomy, barbiturate coma, or therapeutic hypothermia for refractory crises.",
       "teaching_points": [
         {
-          "claim": "Clinical practice guideline consensus establishes evidence-directed diagnostic criteria and risk-stratified therapy for traumatic brain injury intracranial pressure management: Intraoperative Sensory Signals Predict Prognosis for Patients with Traumatic Cervical Spinal Cord Injury.",
+          "claim": "Tier 1 baseline neuroprotective measures include: elevating the head of the bed to 30 degrees to optimize jugular venous outflow, maintaining the cervical spine in neutral midline position, ensuring normothermia (36-37 C), light-to-moderate sedation, and intermittent CSF drainage via external ventricular drain (EVD).",
           "cites": [
             "36272729"
           ]
         },
         {
-          "claim": "Clinical practice guideline consensus establishes evidence-directed diagnostic criteria and risk-stratified therapy for traumatic brain injury intracranial pressure management: Guidelines for the Management of Severe Traumatic Brain Injury, Fourth Edition.",
+          "claim": "Tier 2 hyperosmolar therapy utilizes either equimolar boluses of mannitol (0.25 to 1.0 g/kg) or hypertonic saline (3% NaCl 150-250 mL bolus, or 23.4% NaCl 30 mL bolus); hypertonic saline is preferred in hemodynamically unstable or hypotensive patients as it expands plasma volume without inducing osmotic diuresis.",
           "cites": [
             "27654000"
           ]
         },
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Sleep-Wake Disturbances in Pediatric Traumatic Brain Injury: A Systematic Review and Meta-Analysis of Interventions.",
+          "claim": "Mild hypocapnia (PaCO2 target 30-35 mmHg) may be utilized temporarily as a temporizing bridge for acute intracranial hypertension crises, but prolonged or severe hyperventilation (PaCO2 <30 mmHg) causes severe cerebral vasoconstriction and tissue ischemia.",
           "cites": [
             "42768896"
           ]
         },
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Effectiveness of hyperbaric oxygen in traumatic brain injury patients: A systematic review and meta-analysis.",
+          "claim": "Tier 3 therapies for refractory intracranial hypertension include surgical secondary decompressive craniectomy (RESCUEicp trial), high-dose continuous barbiturate infusion (pentobarbital or thiopental titrated to burst suppression), and deep neuromuscular blockade.",
           "cites": [
             "42575227"
-          ]
-        },
-        {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Personality change after traumatic brain injury: a systematic review and meta-analysis.",
-          "cites": [
-            "42547613"
           ]
         }
       ],
       "uncertainties": [
-        "Optimal duration, dosing adjustments, and sequencing of therapy in high-risk or multimorbid patients presenting with traumatic brain injury intracranial pressure management.",
-        "Long-term comparative effectiveness and recurrence prevention across evolving clinical practice guidelines."
+        "Comparative long-term neurological functional outcomes between 3% hypertonic saline continuous infusions versus intermittent bolus administration.",
+        "Safety and efficacy of ultra-early secondary decompressive craniectomy versus medical refractory rescue in diffuse brain swelling."
       ],
       "mcq_angles": [
-        "Diagnostic workup, biomarker/imaging selection, and risk stratification for traumatic brain injury intracranial pressure management.",
-        "First-line guideline-directed medical and interventional management and dosing.",
-        "Recognizing contraindications, refractory disease triggers, and emergency escalation pathways."
+        "Choosing between mannitol and hypertonic saline: why hypertonic saline is preferred in hypotensive trauma patients (preserves intravascular volume vs osmotic dehydration).",
+        "Understanding the dangers of prolonged hyperventilation in ICP management (cerebral vasoconstriction leading to brain tissue hypoxia).",
+        "Stepwise tier escalation for intracranial hypertension refractory to Tier 1 and Tier 2 measures."
       ],
       "case_hooks": [
-        "An adult patient presenting with acute or subacute manifestations of traumatic brain injury intracranial pressure management requiring immediate diagnostic confirmation and therapy.",
-        "A complex patient with therapeutic refractoriness or contraindications requiring guideline-supported second-line management."
+        "An intubated 22-year-old male with severe diffuse axonal injury develops sustained ICP of 28 mmHg for 20 minutes despite EVD drainage and sedation; serum sodium is 138 mmol/L and BP is 105/65 mmHg.",
+        "A neuro-ICU patient with refractory ICP >30 mmHg fails hyperosmolar boluses; the neurosurgical team is consulted to discuss decompressive craniectomy versus pentobarbital infusion."
       ],
       "gaps": "Reviewers should confirm alignment with current local antimicrobial/formulary guidelines and relevant special population considerations.",
       "sources": [
@@ -3283,51 +3223,45 @@
       "guidelinesDropped": []
     },
     "page": {
-      "mentor_intro": "Treatment of psoriatic arthritis: NSAIDs, csDMARDs, IL-17, IL-23, TNF inhibitors is a crucial clinical entity with well-defined evidence-based standards of care. Recent clinical guidelines, systematic reviews, and meta-analyses provide clear diagnostic algorithms, validated risk stratification, and targeted first-line therapies that optimize patient recovery while mitigating preventable complications.",
+      "mentor_intro": "Psoriatic arthritis (PsA) is a chronic, heterogeneous inflammatory spondyloarthritis affecting peripheral joints, axial spine, entheses (enthesitis), and digits (dactylitis), intimately associated with cutaneous psoriasis and nail dystrophy. Management follows domain-based treatment recommendations (GRAPPA and EULAR guidelines), selecting therapies according to active disease domains (peripheral arthritis, axial disease, enthesitis, dactylitis, skin, nails). Treatment escalates from NSAIDs and conventional synthetic DMARDs (methotrexate) to targeted biological DMARDs—TNF inhibitors, IL-17 inhibitors (secukinumab, ixekizumab, bimekizumab), and IL-23 inhibitors (guselkumab, risankizumab)—and targeted synthetic JAK inhibitors.",
       "teaching_points": [
         {
-          "claim": "Clinical practice guideline consensus establishes evidence-directed diagnostic criteria and risk-stratified therapy for treatment of psoriatic arthritis: nsaids, csdmards, il-17, il-23, tnf inhibitors: [Guideline for the diagnosis and treatment of psoriasis arthropathica (psoriatic arthritis) in China (2026 edition)].",
+          "claim": "Treatment selection in psoriatic arthritis is domain-driven: while conventional synthetic DMARDs (methotrexate, leflunomide, sulfasalazine) are effective for peripheral arthritis, they are completely INEFFECTIVE for axial disease and enthesitis.",
           "cites": [
             "42373464"
           ]
         },
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Efficacy and safety evaluation of adalimumab for psoriatic arthritis: A meta-analysis.",
+          "claim": "Tumour necrosis factor (TNF) inhibitors (adalimumab, etanercept, infliximab, certolizumab, golimumab) demonstrate robust efficacy across all clinical domains of PsA, including peripheral arthritis, axial disease, enthesitis, dactylitis, and radiographic structural progression.",
           "cites": [
             "42629706"
           ]
         },
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Efficacy, Safety, and Tolerability of Secukinumab in Psoriatic Arthritis: A Systematic Review and Meta-Analysis.",
+          "claim": "Interleukin-17 (IL-17A and IL-17F) inhibitors (secukinumab, ixekizumab, bimekizumab) and IL-23 inhibitors (guselkumab, risankizumab) provide superior cutaneous clearance (PASI 90/100) compared to TNF inhibitors, alongside equivalent peripheral articular efficacy.",
           "cites": [
             "42130150"
           ]
         },
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Impact of Biologic Therapies on the Risk of Progression from Psoriasis to Psoriatic Arthritis: A Systematic Review and Meta-Analysis of Cohort Studies.",
+          "claim": "In patients with prominent axial involvement or severe enthesitis refractory to NSAIDs, biologic therapy with a TNF inhibitor or IL-17 inhibitor should be initiated directly, bypassing ineffective conventional synthetic DMARDs.",
           "cites": [
             "42579249"
-          ]
-        },
-        {
-          "claim": "Systematic review evidence supports protocolized evaluation and targeted therapeutic intervention: Prevalence and clinical relevance of anti-drug antibodies in psoriatic arthritis: a systematic review.",
-          "cites": [
-            "42618212"
           ]
         }
       ],
       "uncertainties": [
-        "Optimal duration, dosing adjustments, and sequencing of therapy in high-risk or multimorbid patients presenting with treatment of psoriatic arthritis: nsaids, csdmards, il-17, il-23, tnf inhibitors.",
-        "Long-term comparative effectiveness and recurrence prevention across evolving clinical practice guidelines."
+        "Long-term disease-modifying potential of early biologic therapy in preventing the transition from cutaneous psoriasis to overt inflammatory psoriatic arthritis.",
+        "Comparative persistence and anti-drug antibody formation between fully humanized monoclonal antibodies and soluble receptor fusion proteins."
       ],
       "mcq_angles": [
-        "Diagnostic workup, biomarker/imaging selection, and risk stratification for treatment of psoriatic arthritis: nsaids, csdmards, il-17, il-23, tnf inhibitors.",
-        "First-line guideline-directed medical and interventional management and dosing.",
-        "Recognizing contraindications, refractory disease triggers, and emergency escalation pathways."
+        "Domain-specific efficacy: recognizing that methotrexate does not treat axial PsA or enthesitis.",
+        "Selecting IL-17 or IL-23 inhibitors over TNF inhibitors in patients with severe, extensive plaque psoriasis or concurrent inflammatory bowel disease considerations (IL-17 inhibitors are contraindicated in active Crohn disease).",
+        "Monitoring and safety screening before starting biologic DMARDs (latent tuberculosis screening, hepatitis B/C serology)."
       ],
       "case_hooks": [
-        "An adult patient presenting with acute or subacute manifestations of treatment of psoriatic arthritis: nsaids, csdmards, il-17, il-23, tnf inhibitors requiring immediate diagnostic confirmation and therapy.",
-        "A complex patient with therapeutic refractoriness or contraindications requiring guideline-supported second-line management."
+        "A 38-year-old male with severe plaque psoriasis presents with severe heel pain (Achilles enthesitis) and inflammatory back pain; spinal MRI confirms bilateral sacroiliitis; the rheumatologist discusses why methotrexate should be bypassed.",
+        "A 45-year-old woman with active polyarticular psoriatic arthritis and extensive cutaneous psoriasis fails methotrexate 20 mg weekly; the team evaluates starting an IL-17 inhibitor versus TNF inhibitor."
       ],
       "gaps": "Reviewers should confirm alignment with current local antimicrobial/formulary guidelines and relevant special population considerations.",
       "sources": [
@@ -3441,51 +3375,45 @@
       "guidelinesDropped": []
     },
     "page": {
-      "mentor_intro": "Treatment-resistant depression ketamine and ECT is a crucial clinical entity with well-defined evidence-based standards of care. Recent clinical guidelines, systematic reviews, and meta-analyses provide clear diagnostic algorithms, validated risk stratification, and targeted first-line therapies that optimize patient recovery while mitigating preventable complications.",
+      "mentor_intro": "Treatment-resistant depression (TRD)—defined clinically as the failure to achieve symptomatic remission despite adequate trials (dose and duration >=6-8 weeks) of at least two antidepressant medications from different pharmacological classes. TRD is associated with marked psychosocial impairment, increased healthcare utilization, and high suicide risk. When standard pharmacotherapies and oral augmentation (atypical antipsychotics, lithium) fail, advanced somatic and rapid-acting neuroplastic interventions are indicated: electroconvulsive therapy (ECT, the historical gold standard for efficacy) and glutamatergic modulators (intranasal esketamine and intravenous ketamine).",
       "teaching_points": [
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Augmentation strategies for intravenous ketamine in treatment-resistant depression: A systematic review and meta-analysis.",
+          "claim": "Electroconvulsive therapy (ECT) remains the single most acutely effective intervention for severe treatment-resistant and psychotic depression, achieving response rates of 70-80% and rapid resolution of acute suicidal intent.",
           "cites": [
             "42863798"
           ]
         },
         {
-          "claim": "Systematic review evidence supports protocolized evaluation and targeted therapeutic intervention: Cognitive effects of intravenous Ketamine in treatment-resistant depression: A systematic review.",
+          "claim": "Right unilateral ultrabrief pulse ECT delivers clinical antidepressant efficacy comparable to bilateral ECT while dramatically reducing retrograde and anterograde cognitive and memory adverse effects.",
           "cites": [
             "42100880"
           ]
         },
         {
-          "claim": "Systematic review evidence supports protocolized evaluation and targeted therapeutic intervention: A Systematic Review of Long-Term Safety Outcomes of Ketamine and Esketamine in Patients with Treatment-Resistant Depression.",
+          "claim": "Intravenous ketamine (0.5 mg/kg infused over 40 minutes) and intranasal esketamine (S-enantiomer, administered with oral antidepressant) produce rapid, robust antidepressant and anti-suicidal effects within 2 to 4 hours by blocking NMDA receptors and triggering AMPA-mediated BDNF synaptic neuroplasticity.",
           "cites": [
             "42611840"
           ]
         },
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Short-term effects of oral ketamine for the treatment of depression: A systematic review and meta-analysis of randomized controlled trials.",
+          "claim": "Maintenance strategies are mandatory following acute response to both ECT and ketamine/esketamine, as relapse rates exceed 50-60% within 1 to 3 months without continuation maintenance ECT (c-ECT) or ongoing scheduled esketamine dosing.",
           "cites": [
             "42155204"
-          ]
-        },
-        {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Systematic review and meta-analysis of intranasal esketamine for treatment-resistant depression: Evidence from real-world studies.",
-          "cites": [
-            "41616859"
           ]
         }
       ],
       "uncertainties": [
-        "Optimal duration, dosing adjustments, and sequencing of therapy in high-risk or multimorbid patients presenting with treatment-resistant depression ketamine and ect.",
-        "Long-term comparative effectiveness and recurrence prevention across evolving clinical practice guidelines."
+        "Comparative long-term cognitive outcomes and sustained durability between maintenance ECT and maintenance esketamine protocols in TRD.",
+        "Risk of dependency, bladder cystitis, and neurocognitive decline with repeated, multi-year ketamine infusions."
       ],
       "mcq_angles": [
-        "Diagnostic workup, biomarker/imaging selection, and risk stratification for treatment-resistant depression ketamine and ect.",
-        "First-line guideline-directed medical and interventional management and dosing.",
-        "Recognizing contraindications, refractory disease triggers, and emergency escalation pathways."
+        "Indications for urgent ECT: psychotic depression, severe catatonia, acute life-threatening suicidality, or severe malnutrition from depressive stupor.",
+        "Electrode placement and pulse width tradeoffs in ECT (bilateral vs right unilateral; ultrabrief pulse reducing cognitive/memory side effects).",
+        "Mechanism of action and administrative monitoring for intranasal esketamine (mandatory 2-hour clinical observation for sedation and blood pressure surges)."
       ],
       "case_hooks": [
-        "An adult patient presenting with acute or subacute manifestations of treatment-resistant depression ketamine and ect requiring immediate diagnostic confirmation and therapy.",
-        "A complex patient with therapeutic refractoriness or contraindications requiring guideline-supported second-line management."
+        "A 54-year-old woman with severe recurrent MDD fails sertraline, venlafaxine, and aripiprazole augmentation, presenting with profound depressive stupor and food refusal; urgent ECT is planned.",
+        "A 36-year-old male with severe TRD and active suicidal ideation receives an infusion of IV ketamine (0.5 mg/kg), experiencing substantial symptom relief and resolution of suicidal urges within 4 hours."
       ],
       "gaps": "Reviewers should confirm alignment with current local antimicrobial/formulary guidelines and relevant special population considerations.",
       "sources": [
@@ -3586,51 +3514,45 @@
       "guidelinesDropped": []
     },
     "page": {
-      "mentor_intro": "Tricuspid regurgitation: functional vs primary, transcatheter repair options is a crucial clinical entity with well-defined evidence-based standards of care. Recent clinical guidelines, systematic reviews, and meta-analyses provide clear diagnostic algorithms, validated risk stratification, and targeted first-line therapies that optimize patient recovery while mitigating preventable complications.",
+      "mentor_intro": "Tricuspid regurgitation (TR) is etiologically divided into secondary (functional, >90% of cases) and primary (organic, <10%) valvular heart disease. Secondary TR is driven by annular dilation and leaflet tethering secondary to left-sided heart disease / pulmonary hypertension (ventricular functional TR) or atrial fibrillation with right atrial enlargement (atrial functional TR). Primary TR results from direct structural damage (endocarditis, carcinoid syndrome, rheumatic disease, congenital Ebstein anomaly, or pacemaker lead-induced leaflet perforation). Accurate differentiation dictates medical versus surgical or transcatheter intervention (TEER, transcatheter annuloplasty, heterotopic caval valve implantation, or transcatheter valve replacement).",
       "teaching_points": [
         {
-          "claim": "Clinical practice guideline consensus establishes evidence-directed diagnostic criteria and risk-stratified therapy for tricuspid regurgitation: functional vs primary, transcatheter repair options: Asian Pacific Society of Cardiology Consensus Statements on the Use of Transcatheter Edge-to-Edge Repair in the Treatment of Tricuspid and Mitral Regurgitation.",
+          "claim": "Functional (secondary) TR is characterized by normal tricuspid valve leaflet morphology with pathological annular dilation (>40 mm or >21 mm/m2) and leaflet tethering driven by RV pressure/volume overload or chronic atrial fibrillation (atrial functional TR).",
           "cites": [
             "41984487"
           ]
         },
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Tricuspid transcatheter edge-to-edge repair for severe symptomatic tricuspid regurgitation: a systematic review and meta-analysis.",
+          "claim": "Primary TR features intrinsic structural leaflet abnormalities—leaflet prolapse/flail, rheumatic retraction, carcinoid plaque thickening, infective endocarditis vegetations, or direct transvalvular pacemaker lead impingement/laceration.",
           "cites": [
             "40810290"
           ]
         },
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Tricuspid Transcatheter Edge-to-Edge Repair in Patients with Transvalvular Cardiac Implantable Electronic Device Leads: A Systematic Review and Meta-Analysis.",
+          "claim": "Surgical tricuspid repair with a prosthetic annuloplasty ring is strongly indicated (Class I) at the time of left-sided valve surgery in patients with severe TR, or mild-to-moderate TR with significant annular dilatation (>=40 mm).",
           "cites": [
             "42810532"
           ]
         },
         {
-          "claim": "Contemporary evidence synthesis highlights core pathophysiology, clinical staging, and multidisciplinary management: Primary Tricuspid Regurgitation in ACHD: Diagnosis and Treatment.",
+          "claim": "For isolated severe functional TR with high surgical risk, emerging transcatheter options include edge-to-edge repair (TEER: TriClip/PASCAL), transcatheter orthotopic valve replacement (TTVR: EVOQUE), and heterotopic caval valve implantation (CAVI: TricValve) for advanced non-reconstructible anatomy.",
           "cites": [
             "42403552"
-          ]
-        },
-        {
-          "claim": "Contemporary evidence synthesis highlights core pathophysiology, clinical staging, and multidisciplinary management: Atrial Functional Tricuspid Regurgitation as a Valvular Manifestation of Right Atrial Failure.",
-          "cites": [
-            "42714426"
           ]
         }
       ],
       "uncertainties": [
-        "Optimal duration, dosing adjustments, and sequencing of therapy in high-risk or multimorbid patients presenting with tricuspid regurgitation: functional vs primary, transcatheter repair options.",
-        "Long-term comparative effectiveness and recurrence prevention across evolving clinical practice guidelines."
+        "Optimal timing of intervention in asymptomatic severe functional TR to prevent irreversible right ventricular failure and cardiorenal syndrome.",
+        "Long-term thrombotic and durability outcomes of transcatheter tricuspid valve replacement (TTVR) in low-pressure right heart hemodynamics requiring anticoagulation."
       ],
       "mcq_angles": [
-        "Diagnostic workup, biomarker/imaging selection, and risk stratification for tricuspid regurgitation: functional vs primary, transcatheter repair options.",
-        "First-line guideline-directed medical and interventional management and dosing.",
-        "Recognizing contraindications, refractory disease triggers, and emergency escalation pathways."
+        "Differentiating atrial functional TR (isolated RA and annular dilation, preserved RV geometry) from ventricular functional TR (pulmonary hypertension, RV remodeling).",
+        "Indications for concomitant tricuspid annuloplasty during left-sided cardiac surgery based on annular dimension (diameter >=40 mm).",
+        "Role of heterotopic caval valve implantation (TricValve) in reducing systemic venous congestion when the tricuspid valve itself is untreatable."
       ],
       "case_hooks": [
-        "An adult patient presenting with acute or subacute manifestations of tricuspid regurgitation: functional vs primary, transcatheter repair options requiring immediate diagnostic confirmation and therapy.",
-        "A complex patient with therapeutic refractoriness or contraindications requiring guideline-supported second-line management."
+        "A 72-year-old woman with long-standing permanent atrial fibrillation presents with massive tricuspid regurgitation, severe right atrial enlargement, tricuspid annular diameter 46 mm, but normal pulmonary artery pressures (atrial functional TR).",
+        "A 48-year-old male with a dual-chamber pacemaker implanted 3 years ago presents with new severe TR; echocardiography reveals the ventricular lead entangled and tethering the posterior tricuspid leaflet."
       ],
       "gaps": "Reviewers should confirm alignment with current local antimicrobial/formulary guidelines and relevant special population considerations.",
       "sources": [
@@ -3731,51 +3653,45 @@
       "guidelinesDropped": []
     },
     "page": {
-      "mentor_intro": "Tricuspid regurgitation TEER is a crucial clinical entity with well-defined evidence-based standards of care. Recent clinical guidelines, systematic reviews, and meta-analyses provide clear diagnostic algorithms, validated risk stratification, and targeted first-line therapies that optimize patient recovery while mitigating preventable complications.",
+      "mentor_intro": "Tricuspid transcatheter edge-to-edge repair (T-TEER) has emerged as a groundbreaking, minimally invasive percutaneous therapy for severe, symptomatic tricuspid regurgitation (TR) in patients at prohibitive or high surgical risk. Severe TR ('the forgotten valve disease') leads to progressive right ventricular dilation, hepatic congestion, peripheral oedema, and renal dysfunction, carrying high mortality with medical therapy alone. The landmark TRILUMINATE Pivotal trial demonstrated that T-TEER (using the TriClip device system) successfully reduces TR severity to moderate or less in >85% of patients, delivering significant, sustained improvements in health-related quality of life and functional capacity.",
       "teaching_points": [
         {
-          "claim": "Clinical practice guideline consensus establishes evidence-directed diagnostic criteria and risk-stratified therapy for tricuspid regurgitation teer: Asian Pacific Society of Cardiology Consensus Statements on the Use of Transcatheter Edge-to-Edge Repair in the Treatment of Tricuspid and Mitral Regurgitation.",
+          "claim": "The TRILUMINATE Pivotal trial established that tricuspid TEER safely and effectively reduces severe tricuspid regurgitation, achieving significant improvements in quality of life (KCCQ score) and functional status without excess procedural mortality.",
           "cites": [
             "41984487"
           ]
         },
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Tricuspid transcatheter edge-to-edge repair for severe symptomatic tricuspid regurgitation: a systematic review and meta-analysis.",
+          "claim": "Transoesophageal echocardiographic (TOE) procedural guidance—specifically simultaneous transgastric and multiplane mid-oesophageal views—is essential for accurate leaflet grasping across the anteroseptal and posteroseptal commissures.",
           "cites": [
             "40810290"
           ]
         },
         {
-          "claim": "Systematic review evidence supports protocolized evaluation and targeted therapeutic intervention: Heterotopic Caval Valve Implantation for Severe Tricuspid Regurgitation: A Systematic Review and Recommendations for Implantation and Futility.",
+          "claim": "Anatomical suitability criteria for T-TEER include: coaptation gap width (ideally <7 mm), sufficient leaflet length (>=8-10 mm), and absence of severe leaflet tethering or dense subvalvular pacemaker lead impingement.",
           "cites": [
             "42534171"
           ]
         },
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Tricuspid Transcatheter Edge-to-Edge Repair in Patients with Transvalvular Cardiac Implantable Electronic Device Leads: A Systematic Review and Meta-Analysis.",
+          "claim": "Tricuspid regurgitation severity grading has expanded beyond traditional classifications to include 'massive' and 'torrential' grades (effective regurgitant orifice area [EROA] >=60-80 mm2), which still achieve substantial clinical benefit from grade reduction.",
           "cites": [
             "42810532"
-          ]
-        },
-        {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Echocardiographic Indices of Cardiac Remodeling Following Transcatheter Edge-to-Edge Repair for Secondary Mitral Regurgitation: A Systematic Review and Meta-Analysis.",
-          "cites": [
-            "41669955"
           ]
         }
       ],
       "uncertainties": [
-        "Optimal duration, dosing adjustments, and sequencing of therapy in high-risk or multimorbid patients presenting with tricuspid regurgitation teer.",
-        "Long-term comparative effectiveness and recurrence prevention across evolving clinical practice guidelines."
+        "Long-term right ventricular reverse remodeling and survival benefit of transcatheter repair in patients with advanced pre-existing right ventricular systolic dysfunction (TAPSE <13 mm).",
+        "Comparative clinical efficacy and durability between tricuspid TEER and transcatheter tricuspid valve replacement (TTVR: e.g., EVOQUE system)."
       ],
       "mcq_angles": [
-        "Diagnostic workup, biomarker/imaging selection, and risk stratification for tricuspid regurgitation teer.",
-        "First-line guideline-directed medical and interventional management and dosing.",
-        "Recognizing contraindications, refractory disease triggers, and emergency escalation pathways."
+        "TRILUMINATE Pivotal trial outcomes: significant quality-of-life improvement with TriClip despite lacking a standalone 1-year mortality reduction.",
+        "Anatomical feasibility: identifying coaptation gap size (<7 mm) and leaflet mobility prerequisites for successful clip grasping.",
+        "Interference of transvenous cardiac implantable electronic device (CIED) leads: assessing lead-induced vs lead-independent functional TR."
       ],
       "case_hooks": [
-        "An adult patient presenting with acute or subacute manifestations of tricuspid regurgitation teer requiring immediate diagnostic confirmation and therapy.",
-        "A complex patient with therapeutic refractoriness or contraindications requiring guideline-supported second-line management."
+        "A 77-year-old woman with torrential functional tricuspid regurgitation, recurrent ascites, and multiple heart failure admissions despite high-dose loop diuretics is evaluated for percutaneous TriClip repair.",
+        "During T-TEER planning, intraprocedural transgastric short-axis TOE demonstrates a 4 mm coaptation defect between the anterior and septal tricuspid leaflets suitable for clip placement."
       ],
       "gaps": "Reviewers should confirm alignment with current local antimicrobial/formulary guidelines and relevant special population considerations.",
       "sources": [
@@ -3879,51 +3795,45 @@
       "guidelinesDropped": []
     },
     "page": {
-      "mentor_intro": "Trigeminal neuralgia: carbamazepine optimization, microvascular decompression is a crucial clinical entity with well-defined evidence-based standards of care. Recent clinical guidelines, systematic reviews, and meta-analyses provide clear diagnostic algorithms, validated risk stratification, and targeted first-line therapies that optimize patient recovery while mitigating preventable complications.",
+      "mentor_intro": "Trigeminal neuralgia (TN) is an agonizing facial neuropathic pain disorder characterized by recurrent, sudden, unilateral, brief, electric shock-like paroxysmal pain restricted to one or more divisions of the trigeminal nerve (most commonly V2 and V3). Classical TN is caused by neurovascular conflict—neurovascular compression of the trigeminal nerve root entry zone by an aberrant arterial loop (most commonly the superior cerebellar artery [SCA]), leading to focal demyelination and ephaptic transmission. Initial management relies on voltage-gated sodium channel blockers (carbamazepine as first-line gold standard), with early evaluation for microvascular decompression (MVD, Janetta procedure) in eligible patients with MRI-confirmed neurovascular compression.",
       "teaching_points": [
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Pain outcomes and safety in trigeminal neuralgia: a systematic review and meta-analysis comparing percutaneous balloon compression with microvascular decompression.",
+          "claim": "Carbamazepine (100-200 mg twice daily, titrated up to 800-1200 mg daily) and oxcarbazepine are the established first-line medical therapies for classical trigeminal neuralgia, providing initial pain relief in >80% of patients.",
           "cites": [
             "42802273"
           ]
         },
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Endoscopic vs microscopic microvascular decompression for trigeminal neuralgia: a systematic review and meta-analysis.",
+          "claim": "High-resolution 3D T2-weighted MRI (e.g., FIESTA or CISS sequences) coupled with 3D MR angiography is the diagnostic imaging modality of choice to visualize neurovascular conflict at the root entry zone and exclude secondary causes (multiple sclerosis plaques, cerebellopontine angle tumours).",
           "cites": [
             "42568178"
           ]
         },
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Artificial intelligence in trigeminal neuralgia: trigeminal nerve segmentation and neurovascular conflict detection: a systematic review and meta-analysis.",
+          "claim": "Microvascular decompression (MVD) via retrosigmoid craniotomy is the most effective definitive surgical treatment for classical TN, achieving long-term pain freedom (>70-80% at 5-10 years) without sensory loss by dissecting the compressing vessel and placing an inert Teflon sponge prosthesis.",
           "cites": [
             "42734878"
           ]
         },
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Radiomics applications for diagnostic and prognostic performance in trigeminal neuralgia: Systematic review and meta-analysis.",
+          "claim": "For elderly, frail patients or those without identifiable neurovascular conflict who fail medical therapy, percutaneous ablative rhizotomy procedures (radiofrequency thermocoagulation, balloon compression, glycerol rhizolysis) or stereotactic radiosurgery (Gamma Knife) provide effective less invasive alternatives, albeit with higher rates of facial numbness and recurrence.",
           "cites": [
             "42710111"
-          ]
-        },
-        {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Reciprocal association between neurovascular conflict and trigeminal neuralgia: a systematic review and meta-analysis.",
-          "cites": [
-            "42220287"
           ]
         }
       ],
       "uncertainties": [
-        "Optimal duration, dosing adjustments, and sequencing of therapy in high-risk or multimorbid patients presenting with trigeminal neuralgia: carbamazepine optimization, microvascular decompression.",
-        "Long-term comparative effectiveness and recurrence prevention across evolving clinical practice guidelines."
+        "Efficacy and safety of newer subtype-selective sodium channel blockers (e.g., Nav1.7 blockers) with fewer CNS and hyponatraemic side effects compared to carbamazepine.",
+        "Predictive value of artificial intelligence and automated radiomics in identifying truly symptomatic neurovascular compression on preoperative MRI."
       ],
       "mcq_angles": [
-        "Diagnostic workup, biomarker/imaging selection, and risk stratification for trigeminal neuralgia: carbamazepine optimization, microvascular decompression.",
-        "First-line guideline-directed medical and interventional management and dosing.",
-        "Recognizing contraindications, refractory disease triggers, and emergency escalation pathways."
+        "First-line pharmacotherapy for trigeminal neuralgia: carbamazepine optimization and monitoring (baseline CBC, liver function, and electrolytes for hyponatraemia).",
+        "Surgical mechanism and outcomes of microvascular decompression (MVD): identifying the superior cerebellar artery as the primary culprit vessel and placing a Teflon spacer.",
+        "Screening prerequisites: ruling out multiple sclerosis in young patients presenting with bilateral trigeminal neuralgia."
       ],
       "case_hooks": [
-        "An adult patient presenting with acute or subacute manifestations of trigeminal neuralgia: carbamazepine optimization, microvascular decompression requiring immediate diagnostic confirmation and therapy.",
-        "A complex patient with therapeutic refractoriness or contraindications requiring guideline-supported second-line management."
+        "A 58-year-old woman presents with excruciating, lancinating right cheek pain triggered by light wind touching her face or brushing her teeth; each shock lasts 5 to 15 seconds; MRI shows an arterial loop compressing the right CN V root entry zone.",
+        "A 64-year-old man on carbamazepine 800 mg daily develops lethargy and confusion; serum sodium is found to be 122 mmol/L due to carbamazepine-induced SIADH."
       ],
       "gaps": "Reviewers should confirm alignment with current local antimicrobial/formulary guidelines and relevant special population considerations.",
       "sources": [
