@@ -47,6 +47,8 @@ export interface AgentGuidance {
   mentorMessage: string;
   /** Present when knowledge came from landmark/curriculum stub backfill rather than full enrichment. */
   seededFrom?: string | null;
+  /** True while a corrected summary for this topic is waiting for clinician review; the stored text is unverified. */
+  awaitingReview?: boolean;
   clinicalAnswer?: ClinicalAnswer;
   contradictions?: Contradiction[];
   seminalPapers: Array<{

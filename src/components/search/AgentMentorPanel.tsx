@@ -76,7 +76,7 @@ export const AgentMentorPanel: React.FC<AgentMentorPanelProps> = ({
             ? `${agentGuidance.teachingPoints.length} teaching point${agentGuidance.teachingPoints.length === 1 ? '' : 's'}`
             : 'Seminal papers'}
           {' · '}
-          {agentGuidance.status === 'human_reviewed' ? 'clinician reviewed' : 'AI generated'}
+          {agentGuidance.awaitingReview ? 'summary requires review' : agentGuidance.status === 'human_reviewed' ? 'clinician reviewed' : 'AI generated'}
         </span>
       </span>
       <i className={`fas fa-chevron-down text-[11px] text-slate-400 transition-transform ${open ? 'rotate-180' : ''}`} />
@@ -116,12 +116,17 @@ export const AgentMentorPanel: React.FC<AgentMentorPanelProps> = ({
           </span>
         )}
         <span className={`rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider ${
-          agentGuidance.status === 'human_reviewed'
+          agentGuidance.status === 'human_reviewed' && !agentGuidance.awaitingReview
             ? 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-300'
             : 'bg-amber-50 text-amber-700 dark:bg-amber-950/40 dark:text-amber-300'
         }`}>
-          {agentGuidance.status === 'human_reviewed' ? 'Clinician reviewed' : 'AI generated'}
+          {agentGuidance.awaitingReview ? 'Summary requires review' : agentGuidance.status === 'human_reviewed' ? 'Clinician reviewed' : 'AI generated'}
         </span>
+        {agentGuidance.awaitingReview && (
+          <span className="text-[11px] text-amber-700 dark:text-amber-300">
+            This summary is under clinician review and may contain citations that do not support the claim. Check the linked papers before relying on it.
+          </span>
+        )}
         <span className="text-[11px] text-slate-400">
           confidence {Math.round((agentGuidance.confidence || 0) * 100)}%
         </span>

@@ -22,6 +22,7 @@ function createSearchTopicHelpers({ db, logger, serverConfig }) {
             lastRefreshedAt: topicKnowledge.lastRefreshedAt,
             mentorMessage: k.mentorMessage || `I have a stored evidence map for ${topicKnowledge.topic}. Start with the seminal papers, then use cases or MCQs to test application.`,
             seededFrom: k.seededFrom || null,
+            awaitingReview: k.awaitingReview === true,
             seminalPapers,
             teachingPoints,
             verifiedAnchors,
