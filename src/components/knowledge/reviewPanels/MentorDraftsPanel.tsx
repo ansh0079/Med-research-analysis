@@ -46,7 +46,7 @@ function DraftDetail({ draft, onReview, onPublish, reviewing }: { draft: TopicMe
         <ul className="list-disc space-y-1 pl-5 text-slate-700 dark:text-slate-300">
           {page.teaching_points.map((tp, i) => (
             <li key={i}>
-              {tp.claim}{' '}
+              {tp.tier && <span className="mr-1 rounded bg-slate-100 px-1 text-[9px] font-bold uppercase text-slate-500">{tp.tier}</span>}{tp.claim}{' '}
               <span className="whitespace-nowrap text-[10px] font-semibold text-indigo-500">
                 {tp.cites.map((c) => `[PMID ${c}]`).join(' ')}
               </span>
@@ -89,17 +89,15 @@ function DraftDetail({ draft, onReview, onPublish, reviewing }: { draft: TopicMe
         </div>
       )}
 
-      {(page.clinical_overview || (page.clinical_detail && page.clinical_detail.length > 0)) && (
+      {((page.standard_knowledge && page.standard_knowledge.length > 0) || page.standard_overview) && (
         <div className="rounded-lg border border-amber-200 bg-amber-50/60 p-3 dark:border-amber-900/50 dark:bg-amber-950/20">
-          <p className="mb-1 text-[10px] font-bold uppercase tracking-widest text-amber-700">Clinical detail from earlier version (not for publishing until verified)</p>
-          {page.clinical_overview && <p className="mb-2 text-slate-600 dark:text-slate-400">{page.clinical_overview}</p>}
+          <p className="mb-1 text-[10px] font-bold uppercase tracking-widest text-amber-700">Standard reference (textbook), no literature citation. Confirm against a current text or guideline before approving.</p>
+          {page.standard_overview && <p className="mb-2 text-slate-600 dark:text-slate-400">{page.standard_overview}</p>}
           <ul className="list-disc space-y-1 pl-5 text-slate-600 dark:text-slate-400">
-            {(page.clinical_detail || []).map((d, i) => (
+            {(page.standard_knowledge || []).map((d, i) => (
               <li key={i}>
                 {d.claim}{' '}
-                <span className="whitespace-nowrap text-[10px] font-semibold text-amber-700">
-                  {d.possible_support_pmid ? `[possible support: PMID ${d.possible_support_pmid}]` : '[unreferenced]'}
-                </span>
+                {d.possible_support_pmid && <span className="whitespace-nowrap text-[10px] font-semibold text-amber-700">[possible support: PMID {d.possible_support_pmid}]</span>}
               </li>
             ))}
           </ul>

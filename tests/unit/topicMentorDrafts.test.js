@@ -63,6 +63,14 @@ describe('topic mentor drafts', () => {
         expect(knowledge.controversies[0].issue).toBe('U.');
     });
 
+    test('textbook points follow the cited points and are labelled as standard reference with no sources', () => {
+        const page = { mentor_intro: 'x', sources: [{ pmid: '1', title: 't', design: 'guideline', year: 2024 }], teaching_points: [{ claim: 'cited', cites: ['1'] }],
+            standard_knowledge: [{ claim: 'textbook fact', basis: 'textbook' }], case_hooks: [], mcq_angles: [], uncertainties: [], gaps: '' };
+        const { knowledge } = draftToKnowledge(page);
+        expect(knowledge.teachingPoints.map((t) => t.claim)).toEqual(['cited', 'textbook fact']);
+        expect(knowledge.teachingPoints[1]).toMatchObject({ sourceIndices: [], confidence: 'LOW', basis: 'standard_reference' });
+    });
+
     test('publish needs approval, writes human_reviewed knowledge once, and keeps the previous content', async () => {
         await upsertDrafts(db, [draft({ topicId: 'topic-3', topic: 'gout' })]);
         const calls = [];

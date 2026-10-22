@@ -118,7 +118,15 @@ function draftToKnowledge(page) {
                 sourceIndices: (t.cites || []).map((c) => indexOf.get(String(c))).filter(Boolean),
                 guidelineIndices: [],
                 confidence: hasGuideline(t.cites || []) ? 'HIGH' : 'MODERATE',
-            })),
+            }))
+                // Textbook knowledge follows the literature-backed points, labelled so learners can tell the difference.
+                .concat((page.standard_knowledge || []).map((t) => ({
+                    claim: t.claim,
+                    sourceIndices: [],
+                    guidelineIndices: [],
+                    confidence: 'LOW',
+                    basis: 'standard_reference',
+                }))),
             caseGenerationHooks: page.case_hooks || [],
             mcqAngles: page.mcq_angles || [],
             controversies: (page.uncertainties || []).map((issue) => ({ issue, sourceIndices: [], guidelineIndices: [] })),
@@ -136,7 +144,7 @@ async function publishDraft(db, { topicId, userId = null, now = new Date().toISO
     if (row.review_decision !== 'approved') throw new Error('Invalid state: only an approved draft can be published');
     if (row.published_at) throw new Error('Invalid state: draft is already published');
     const page = parse(row.page_json, {});
-    if (!Array.isArray(page.teaching_points) || !page.teaching_points.length) throw new Error('Invalid state: draft has no teaching points');
+    if (!Array.isArray(page.teaching_points) || !(page.teaching_points.length || (page.standard_knowledge || []).length)) throw new Error('Invalid state: draft has no teaching points');
 
     const previous = await db.getTopicKnowledge(row.topic);
     const { knowledge, sourceArticles } = draftToKnowledge(page);

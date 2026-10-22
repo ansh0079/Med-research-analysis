@@ -28,14 +28,14 @@ export type TopicMentorDraftSource = {
 
 export type TopicMentorDraftPage = {
   mentor_intro: string;
-  teaching_points: Array<{ claim: string; cites: string[] }>;
+  teaching_points: Array<{ claim: string; cites: string[]; tier?: 'guideline' | 'review' | 'meta-analysis' | 'other' }>;
   uncertainties: string[];
   mcq_angles: string[];
   case_hooks: string[];
   gaps: string;
-  /** Earlier-version clinical text with no verified source; shown to reviewers only, never published. */
-  clinical_overview?: string;
-  clinical_detail?: Array<{ claim: string; support: 'unreferenced' | 'matched_in_cited_source'; possible_support_pmid?: string }>;
+  /** Textbook knowledge with no literature citation; published after the cited points, labelled as standard reference. */
+  standard_overview?: string;
+  standard_knowledge?: Array<{ claim: string; basis: 'textbook'; possible_support_pmid?: string }>;
   sources: TopicMentorDraftSource[];
 };
 
