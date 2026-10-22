@@ -4,6 +4,7 @@ const { safeJsonParse } = require('../lib/helpers');
 const { expandNormalizedTopicKeys, resolveCanonicalNormalized } = require('../../server/utils/topicSynonyms');
 const { applyWritePolicy } = require('../../server/services/policy/writePolicyEngine');
 const { normalizeTopic: normalizeTopicKey } = require('../../server/utils/topicKey');
+const { buildTopicKnowledgeAliasesJson: buildClinicalAliasesJson } = require('../../server/utils/topicClinicalAliases');
 
 module.exports = (Sup) => class extends Sup {
 
@@ -15,23 +16,7 @@ module.exports = (Sup) => class extends Sup {
      * Normalized strings for JSON `aliases_normalized` (synonyms + model keywords).
      */
     buildTopicKnowledgeAliasesJson(displayTopic, knowledge) {
-        const set = new Set();
-        const canon = resolveCanonicalNormalized(String(displayTopic || '').trim(), (s) => this.normalizeTopic(s));
-        if (canon) set.add(canon);
-        const primary = this.normalizeTopic(displayTopic);
-        if (primary) set.add(primary);
-        expandNormalizedTopicKeys(primary, (s) => this.normalizeTopic(s)).forEach((k) => set.add(k));
-        const kw = knowledge && typeof knowledge === 'object' ? knowledge.keywords : null;
-        if (Array.isArray(kw)) {
-            for (const item of kw) {
-                if (typeof item === 'string' && item.trim()) {
-                    const n = this.normalizeTopic(item.trim());
-                    if (n) set.add(n);
-                    expandNormalizedTopicKeys(n, (s) => this.normalizeTopic(s)).forEach((k) => set.add(k));
-                }
-            }
-        }
-        return JSON.stringify([...set].filter(Boolean).slice(0, 80));
+        return buildClinicalAliasesJson(displayTopic, knowledge);
     }
 
     mergeNormalizedAliasesJson(existingAliases = [], aliases = []) {
