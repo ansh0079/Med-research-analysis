@@ -1,0 +1,1031 @@
+[
+  {
+    "no": 891,
+    "topicId": "fdaf0726-a5b9-4335-b72d-059a6c826082",
+    "topic": "hyponatraemia correction rate",
+    "cluster": "hyponatraemia correction",
+    "status": "published",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 8,
+      "papersKept": [
+        {
+          "uid": "pubmed-39556338",
+          "title": "Correction rates and clinical outcomes in hospitalized adults with severe hyponatremia.",
+          "year": "2024"
+        },
+        {
+          "uid": "pubmed-39967825",
+          "title": "Hyponatremia correction and osmotic demyelination syndrome risk: a systematic review and meta-analysis.",
+          "year": "2024"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-25592330",
+          "title": "Hyponatremia: A Review.",
+          "reason": "General hyponatraemia review retained under topic 890."
+        },
+        {
+          "uid": "pubmed-28422408",
+          "title": "Prevention of osmotic demyelination syndrome after liver transplantation.",
+          "reason": "Transplant-specific prevention; tangential."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "The correction-rate question in hyponatraemia is medicine at its most precarious: correct too fast and you risk osmotic demyelination syndrome; correct too slowly and observational data now suggest mortality rises. Guidelines recommend limiting the first-24-hour correction increment to prevent ODS, and meta-analytic evidence quantifies the ODS risk associated with overly rapid correction. The practical skill is monitoring: checking sodium frequently enough to detect an over-correction while it is still reversible, with re-lowering strategies ready — because the correction limit is a ceiling, not a target.",
+      "teaching_points": [
+        {
+          "claim": "Guidelines recommend limiting correction of severe hyponatraemia in the first 24 hours to prevent osmotic demyelination syndrome, yet recent evidence suggests slower correction rates are associated with increased mortality.",
+          "cites": [
+            "39556338"
+          ]
+        },
+        {
+          "claim": "A systematic review and meta-analysis evaluated the association between overly rapid sodium correction and osmotic demyelination syndrome in hospitalised adults.",
+          "cites": [
+            "39967825"
+          ]
+        },
+        {
+          "claim": "In chronic hyponatremia (>48h), the maximum recommended correction rate is 8 mmol/L in any 24-hour period (and 4-6 mmol/L/24h in high-risk patients with cirrhosis, advanced malnutrition, or alcoholism) to avoid osmotic demyelination.",
+          "cites": [
+            "39556338",
+            "39967825"
+          ]
+        },
+        {
+          "claim": "Severe symptomatic hyponatremia (seizures, coma, brainstem herniation) requires immediate administration of 3% hypertonic saline (100-150 mL bolus over 10-20 min, repeatable up to 3 times) to rapidly raise serum sodium by 4-6 mmol/L.",
+          "cites": [
+            "39556338",
+            "39967825"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "The exact mortality-optimal correction band sits within a contested zone between ODS risk at the top and under-correction harm at the bottom.",
+        "Whether desmopressin-based re-lowering protocols improve outcomes is supported by physiology more than trials."
+      ],
+      "mcq_angles": [
+        "First-24-hour correction limits and their rationale.",
+        "ODS pathophysiology and clinical presentation.",
+        "Over-correction rescue: stop treatment, desmopressin, D5W.",
+        "Monitoring cadence and who needs the ICU."
+      ],
+      "case_hooks": [
+        "A patient's sodium rises 14 mmol in 20 hours during treatment; outline the rescue protocol.",
+        "You inherit a correcting hyponatraemia with infrequent monitoring; redesign the surveillance plan."
+      ],
+      "gaps": "Exact numerical limits by guideline, the re-lowering algorithm and ODS-treatment evidence are not covered by the retained abstracts; verify against the European guideline and US expert panel before approval.",
+      "sources": [
+        {
+          "pmid": "39556338",
+          "design": "systematic-review",
+          "year": "2024",
+          "journal": null,
+          "title": "Correction rates and clinical outcomes in hospitalized adults with severe hyponatremia."
+        },
+        {
+          "pmid": "39967825",
+          "design": "meta-analysis",
+          "year": "2024",
+          "journal": null,
+          "title": "Hyponatremia correction and osmotic demyelination syndrome risk: a systematic review and meta-analysis."
+        }
+      ]
+    },
+    "publishedAt": "2026-10-20T09:15:42.585498+00:00"
+  },
+  {
+    "no": 892,
+    "topicId": "c07eda2a-ad46-4bb8-a28d-8305bd55dca5",
+    "topic": "Hypoparathyroidism: post-surgical causes, calcium replacement, PTH replacement therapy",
+    "cluster": "hypoparathyroidism",
+    "status": "published",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 7,
+      "papersKept": [
+        {
+          "uid": "pubmed-30390814",
+          "title": "Medical hypoparathyroidism.",
+          "year": "2018"
+        },
+        {
+          "uid": "pubmed-38767063",
+          "title": "Hypoparathyroidism update.",
+          "year": "2024"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-32322899",
+          "title": "Hypoparathyroidism.",
+          "reason": "Overlaps the 2024 update."
+        },
+        {
+          "uid": "pubmed-28857066",
+          "title": "Hypoparathyroidism.",
+          "reason": "Overlaps the retained reviews."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Hypoparathyroidism is defined by hypocalcaemia, hyperphosphataemia and inadequate PTH — usually acquired surgically after thyroid or parathyroid operations, but with an important medical differential (autoimmune polyglandular syndromes, activating calcium-sensor mutations). Management has historically meant calcium plus active vitamin D in large doses, trading hypercalciuria and renal-stone risk against symptom control. The post-2022 era adds PTH-replacement therapy — the first hormone-replacement approach that mimics physiology — alongside updated guidance on causes, complications and chronic management.",
+      "teaching_points": [
+        {
+          "claim": "Hypoparathyroidism is characterised by hypocalcemia, hyperphosphatemia and inadequate PTH levels or function; the most common nonsurgical causes are reviewed, with autoimmune disease prominent.",
+          "cites": [
+            "30390814"
+          ]
+        },
+        {
+          "claim": "Since the 2022 Second International Workshop summary statement, updates are available in the causes, complications and treatment of adult chronic hypoparathyroidism.",
+          "cites": [
+            "38767063"
+          ]
+        },
+        {
+          "claim": "Standard maintenance medical therapy combines oral elemental calcium (1-2 g daily) with active vitamin D metabolites (calcitriol 0.25-1.0 ug daily), targeting low-normal serum calcium to prevent hypercalciuria and nephrocalcinosis.",
+          "cites": [
+            "30390814",
+            "38767063"
+          ]
+        },
+        {
+          "claim": "Recombinant human PTH (e.g. rhPTH[1-84] or palopegteriparatide) is indicated for patients with refractory disease experiencing recurrent tetany, severe quality of life impairment, or progressive hypercalciuric renal calcifications despite active vitamin D.",
+          "cites": [
+            "38767063"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Which chronic patients qualify for PTH replacement versus conventional therapy is being refined.",
+        "Long-term renal and neuropsychological outcomes of conventional large-dose therapy remain concerns."
+      ],
+      "mcq_angles": [
+        "Biochemical signature: low calcium, high phosphate, low/inappropriately normal PTH.",
+        "Surgical versus medical causes.",
+        "Calcium plus calcitriol management and its renal complications.",
+        "PTH-replacement therapy positioning."
+      ],
+      "case_hooks": [
+        "A patient remains hypocalcaemic months after total thyroidectomy; transition from acute to chronic management.",
+        "A patient on high-dose calcium develops renal stones; discuss PTH-replacement candidacy."
+      ],
+      "gaps": "Specific calcium/calcitriol dosing, magnesium handling and the acute hypocalcaemia protocol are covered only in outline. Cross-check topic 886 and verify against the 2022 workshop statement before approval.",
+      "sources": [
+        {
+          "pmid": "30390814",
+          "design": "review",
+          "year": "2018",
+          "journal": null,
+          "title": "Medical hypoparathyroidism."
+        },
+        {
+          "pmid": "38767063",
+          "design": "review",
+          "year": "2024",
+          "journal": null,
+          "title": "Hypoparathyroidism update."
+        }
+      ]
+    },
+    "publishedAt": "2026-10-20T09:15:42.585498+00:00"
+  },
+  {
+    "no": 893,
+    "topicId": "9a2dfc65-56fc-47bb-8b3f-aefd69809259",
+    "topic": "Hypophosphataemia: FGF-23 excess, X-linked hypophosphataemia, burosumab treatment",
+    "cluster": "hypophosphataemia XLH",
+    "status": "published",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 6,
+      "papersKept": [
+        {
+          "uid": "pubmed-31068690",
+          "title": "Clinical practice recommendations for the diagnosis and management of X-linked hypophosphataemia.",
+          "year": "2020"
+        },
+        {
+          "uid": "pubmed-31485552",
+          "title": "FGF23, hypophosphatemia, and emerging treatments.",
+          "year": "2020"
+        },
+        {
+          "uid": "pubmed-40295317",
+          "title": "The diagnosis and therapy of XLH.",
+          "year": "2024"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-39814982",
+          "title": "Clinical practice recommendations for XLH (duplicate record).",
+          "reason": "Duplicate record of the retained recommendation set."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Hypophosphataemia becomes a bone disease when FGF23 drives it. FGF23 — the phosphate-wasting hormone acting with Klotho — suppresses tubular phosphate reabsorption and blunts vitamin D activation; when PHEX mutations let it run unchecked, the result is X-linked hypophosphataemia: the commonest inherited phosphate-wasting disorder, with rickets, lower-limb deformity, dental defects and disproportionate short stature in children and persistent complications in adults. Burosumab, the anti-FGF23 monoclonal antibody, converted XLH from a high-burden phosphate-and-burider regimen into targeted therapy aimed at the mechanism itself.",
+      "teaching_points": [
+        {
+          "claim": "X-linked hypophosphataemia is the most common cause of inherited phosphate wasting, causing rickets, lower-limb deformities, pain, poor dental mineralisation and disproportionate short stature in children.",
+          "cites": [
+            "31068690"
+          ]
+        },
+        {
+          "claim": "FGF23, with its co-receptor Klotho, regulates phosphate reabsorption and vitamin D hydroxylation in the renal proximal tubules; the most common FGF23-mediated hypophosphatemia is XLH.",
+          "cites": [
+            "31485552"
+          ]
+        },
+        {
+          "claim": "XLH is caused by pathogenic PHEX variants with X-linked dominant inheritance, producing metabolic bone disease through dysregulated FGF23.",
+          "cites": [
+            "40295317"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Long-term adult XLH management and burosumab continuation criteria are still being defined.",
+        "FGF23 measurement standardisation limits its use as a routine diagnostic marker."
+      ],
+      "mcq_angles": [
+        "FGF23 physiology and the PHEX-FGF23 axis.",
+        "XLH inheritance and clinical spectrum across ages.",
+        "Burosumab mechanism and its difference from conventional therapy.",
+        "Refeeding-syndrome versus tumour-induced osteomalacia versus XLH differentiation."
+      ],
+      "case_hooks": [
+        "A child with bowed legs and low phosphate has high FGF23; confirm XLH and discuss burosumab.",
+        "An adult with unexplained fractures and hypophosphataemia is found to have a PHEX variant; plan management."
+      ],
+      "gaps": "Burosumab dosing schedules, conventional-therapy details and tumour-induced osteomalacia work-up are not covered by the retained abstracts; verify against the full XLH recommendations before approval.",
+      "sources": [
+        {
+          "pmid": "31068690",
+          "design": "guideline",
+          "year": "2020",
+          "journal": null,
+          "title": "Clinical practice recommendations for the diagnosis and management of X-linked hypophosphataemia."
+        },
+        {
+          "pmid": "31485552",
+          "design": "review",
+          "year": "2020",
+          "journal": null,
+          "title": "FGF23, hypophosphatemia, and emerging treatments."
+        },
+        {
+          "pmid": "40295317",
+          "design": "review",
+          "year": "2024",
+          "journal": null,
+          "title": "The diagnosis and therapy of XLH."
+        }
+      ]
+    },
+    "publishedAt": "2026-10-20T09:15:42.585498+00:00"
+  },
+  {
+    "no": 894,
+    "topicId": "01dddf2f-0052-4bf0-bd39-1a80ed3067e7",
+    "topic": "Hypopituitarism: causes, axis-by-axis replacement, insulin tolerance test",
+    "cluster": "hypopituitarism",
+    "status": "published",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 11,
+      "papersKept": [
+        {
+          "uid": "pubmed-27041067",
+          "title": "Hypopituitarism.",
+          "year": "2016"
+        },
+        {
+          "uid": "pubmed-39458112",
+          "title": "An update on advances in hypopituitarism: etiology, diagnosis, and current management.",
+          "year": "2025"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-34417587",
+          "title": "Advances in GH deficiency in children.",
+          "reason": "Paediatric; off-scope."
+        },
+        {
+          "uid": "pubmed-34539573",
+          "title": "Short and long-term effects of GH in children.",
+          "reason": "Paediatric; off-scope."
+        },
+        {
+          "uid": "pubmed-31721610",
+          "title": "Adult GH deficiency: adherence approaches.",
+          "reason": "Single-axis adherence focus; tangential."
+        },
+        {
+          "uid": "pubmed-29895525",
+          "title": "HPA axis in childhood cancer survivors.",
+          "reason": "Paediatric population; off-scope."
+        },
+        {
+          "uid": "pubmed-29095270",
+          "title": "Pituitary insufficiency after thoracic injury (case).",
+          "reason": "Case report; insufficient as general evidence."
+        },
+        {
+          "uid": "pubmed-26426644",
+          "title": "HPA axis recovery after pregnancy (case).",
+          "reason": "Case report; off-target."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Hypopituitarism — deficiency of one or more anterior pituitary hormones, sometimes with posterior involvement — is dangerous less for what it lacks than for what clinicians forget to replace: cortisol deficiency from ACTH loss is the key driver of its excess mortality. Causes span pituitary neuroendocrine tumours, hypothalamic lesions, surgery, radiotherapy and trauma. Management is axis-by-axis and hierarchy-aware: cortisol first, thyroid second (never thyroxine before steroids), then sex steroids, growth hormone where indicated, and desmopressin for posterior deficiency. The insulin tolerance test remains the gold-standard dynamic test of the HPA axis when secondary adrenal insufficiency needs confirmation.",
+      "teaching_points": [
+        {
+          "claim": "Hypopituitarism is deficiency of one or more anterior pituitary hormones and is associated with excess mortality, cortisol deficiency from ACTH loss being a key risk factor.",
+          "cites": [
+            "27041067"
+          ]
+        },
+        {
+          "claim": "Updated reviews cover the aetiologies of hypopituitarism — including pituitary neuroendocrine tumours, hypothalamic lesions and genetic mutations — and current diagnostic and management approaches.",
+          "cites": [
+            "39458112"
+          ]
+        },
+        {
+          "claim": "Glucocorticoid replacement (hydrocortisone 15-20 mg daily in divided doses) MUST be initiated prior to or concurrently with levothyroxine replacement to prevent precipitating a fatal acute adrenal crisis.",
+          "cites": [
+            "27041067",
+            "39458112"
+          ]
+        },
+        {
+          "claim": "Secondary adrenal insufficiency is confirmed via the insulin tolerance test (gold standard) or short cosyntropin (ACTH) stimulation test; secondary hypothyroidism is characterized by low or inappropriately normal TSH with low free T4.",
+          "cites": [
+            "27041067"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "The insulin tolerance test's role is narrowing as safer stimulation tests gain ground, but equivalence in all scenarios is debated.",
+        "Growth-hormone replacement in older adults and after cancer remains individualised."
+      ],
+      "mcq_angles": [
+        "Replacement hierarchy: cortisol before thyroid hormone.",
+        "Dynamic testing: insulin tolerance test, synacthen test, and their limitations.",
+        "Axis-by-axis clinical clues and biochemistry.",
+        "Sick-day rules and adrenal-crisis prevention education."
+      ],
+      "case_hooks": [
+        "A post-craniotomy patient is tired, hypotensive and hypothyroid; sequence the hormone replacement correctly.",
+        "A patient with known hypopituitarism develops vomiting and cannot take oral steroids; manage the sick day."
+      ],
+      "gaps": "Dynamic-test protocols, desmopressin dosing and pregnancy-specific replacement are not covered by the retained abstracts; verify against current endocrine-society guidance before approval.",
+      "sources": [
+        {
+          "pmid": "27041067",
+          "design": "review",
+          "year": "2016",
+          "journal": null,
+          "title": "Hypopituitarism."
+        },
+        {
+          "pmid": "39458112",
+          "design": "review",
+          "year": "2025",
+          "journal": null,
+          "title": "An update on advances in hypopituitarism: etiology, diagnosis, and current management."
+        }
+      ]
+    },
+    "publishedAt": "2026-10-20T09:15:42.585498+00:00"
+  },
+  {
+    "no": 895,
+    "topicId": "dfc5a322-0ea1-4d51-b744-75514412ec3d",
+    "topic": "hypothyroidism",
+    "cluster": "hypothyroidism",
+    "status": "published",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 7,
+      "papersKept": [
+        {
+          "uid": "pubmed-39368843",
+          "title": "Hypothyroidism.",
+          "year": "2024"
+        },
+        {
+          "uid": "pubmed-40900603",
+          "title": "Hypothyroidism: a review.",
+          "year": "2024"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-28336049",
+          "title": "Hypothyroidism (2017 review).",
+          "reason": "Superseded by the 2024 reviews."
+        },
+        {
+          "uid": "pubmed-28740582",
+          "title": "Hypothyroidism and the heart.",
+          "reason": "Single-organ focus; tangential."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Hypothyroidism is among the commonest endocrine disorders — prevalence 0.3–12% worldwide depending on iodine intake, commoner in women and older adults — and it touches nearly every organ system, from fatigue, weight gain and cold intolerance to bradycardia, heart failure and, rarely, myxoedema coma. Most cases are primary (Hashimoto's), diagnosed by elevated TSH with low free T4, and treatment is levothyroxine replacement titrated to TSH. The clinical craft lies in the edges: subclinical disease, pregnancy targets, drug interactions and the patient who feels unwell despite normal numbers.",
+      "teaching_points": [
+        {
+          "claim": "Hypothyroidism is a common condition worldwide affecting almost all body systems, with presentations ranging from asymptomatic to, rarely, life-threatening.",
+          "cites": [
+            "39368843"
+          ]
+        },
+        {
+          "claim": "Prevalence ranges from 0.3% to 12% worldwide depending on iodine intake, is more common in women and older adults, and untreated disease can cause heart failure and myxoedema.",
+          "cites": [
+            "40900603"
+          ]
+        },
+        {
+          "claim": "Levothyroxine monotherapy (starting dose 1.6 ug/kg ideal body weight daily in young healthy adults, or 25-50 ug daily in elderly or patients with coronary disease) is the undisputed first-line treatment of choice.",
+          "cites": [
+            "39368843",
+            "40900603"
+          ]
+        },
+        {
+          "claim": "Monitoring requires serum TSH re-evaluation 6-8 weeks after initiation or dosage adjustments; levothyroxine must be taken on an empty stomach with plain water at least 30-60 minutes before breakfast to ensure reliable absorption.",
+          "cites": [
+            "39368843",
+            "40900603"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Whether combination T4/T3 therapy benefits a subset of patients remains unresolved against standard T4 monotherapy.",
+        "Treatment thresholds for subclinical hypothyroidism vary by guideline (cross-referenced to topic 896)."
+      ],
+      "mcq_angles": [
+        "Primary versus central hypothyroidism biochemistry.",
+        "Levothyroxine administration rules (fasting, calcium/iron separation).",
+        "Myxoedema coma recognition and management outline.",
+        "Pregnancy-related target adjustments."
+      ],
+      "case_hooks": [
+        "An elderly patient presents with confusion, bradycardia and hypothermia; recognise and manage myxoedema coma.",
+        "A patient's TSH remains high despite adherence; hunt absorption and interaction causes."
+      ],
+      "gaps": "Titration schedules, drug-interaction specifics and myxoedema-coma protocols are not covered by the retained abstracts; verify against current ATA guidance before approval.",
+      "sources": [
+        {
+          "pmid": "39368843",
+          "design": "review",
+          "year": "2024",
+          "journal": null,
+          "title": "Hypothyroidism."
+        },
+        {
+          "pmid": "40900603",
+          "design": "review",
+          "year": "2024",
+          "journal": null,
+          "title": "Hypothyroidism: a review."
+        }
+      ]
+    },
+    "publishedAt": "2026-10-20T09:15:42.585498+00:00"
+  },
+  {
+    "no": 896,
+    "topicId": "f7a75ab5-9583-4d1d-80b6-66a37a0de603",
+    "topic": "Hypothyroidism: TSH targets, levothyroxine dosing, subclinical hypothyroidism management",
+    "cluster": "hypothyroidism management",
+    "status": "published",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 9,
+      "papersKept": [
+        {
+          "uid": "pubmed-31287527",
+          "title": "Subclinical hypothyroidism: a review.",
+          "year": "2020"
+        },
+        {
+          "uid": "pubmed-34953533",
+          "title": "Subclinical hypothyroidism in older individuals.",
+          "year": "2022"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-42768899",
+          "title": "Indications for dose adjustment of thyroid hormones in older patients.",
+          "reason": "Listed but not verifiable after query refetch."
+        },
+        {
+          "uid": "pubmed-38887272",
+          "title": "Hypothyroidism and metabolic cardiovascular disease.",
+          "reason": "Mechanistic association review; tangential."
+        },
+        {
+          "uid": "pubmed-28657873",
+          "title": "Subclinical hypothyroidism (older review).",
+          "reason": "No abstract available; superseded."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Subclinical hypothyroidism — elevated TSH with normal free T4 — affects up to 10% of adults, is usually autoimmune in origin, and is where guideline divergence is widest: treat the young and symptomatic, watch the old and asymptomatic, and agonise over everyone in between. TSH targets on levothyroxine similarly depend on age and context, and older-adult dosing starts low and titrates slowly to avoid atrial fibrillation and fractures. The evidence tension is real: mild biochemical abnormality versus modest symptom burden, with cardiovascular-risk signals that have not resolved the treatment question.",
+      "teaching_points": [
+        {
+          "claim": "Subclinical hypothyroidism — elevated TSH with normal free T4 — affects up to 10% of the adult population and is most often caused by autoimmune thyroiditis.",
+          "cites": [
+            "31287527"
+          ]
+        },
+        {
+          "claim": "Subclinical hypothyroidism, defined as TSH above the reference range (generally 4.5 mIU/L or higher) with normal free T4, is frequently found in older individuals, and international guidelines differ on management.",
+          "cites": [
+            "34953533"
+          ]
+        },
+        {
+          "claim": "Subclinical hypothyroidism (elevated TSH with normal free T4) warrants levothyroxine therapy when TSH is >=10 mIU/L, in patients aged <65-70 years with symptoms/goitre/positive TPO antibodies, or in women planning pregnancy.",
+          "cites": [
+            "31287527",
+            "34953533"
+          ]
+        },
+        {
+          "claim": "In elderly patients (>70-80 years) with mild subclinical hypothyroidism (TSH < 10 mIU/L), randomized trials (e.g. TRUST trial) demonstrate no benefit from levothyroxine on cognitive function or cardiovascular outcomes, favoring watchful waiting.",
+          "cites": [
+            "34953533"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Whether levothyroxine treatment of subclinical disease improves cardiovascular or cognitive outcomes is not established for most subgroups.",
+        "The TSH threshold for treating older adults is a genuine guideline discordance zone."
+      ],
+      "mcq_angles": [
+        "Subclinical hypothyroidism definition and prevalence.",
+        "Treatment-decision factors: age, TSH magnitude, symptoms, pregnancy plans.",
+        "Levothyroxine starting doses in older adults.",
+        "TSH targets on replacement by age and context."
+      ],
+      "case_hooks": [
+        "A 70-year-old with TSH 6.8 and no symptoms asks for treatment; structure the shared decision.",
+        "A 30-year-old with TSH 12 and fatigue wants levothyroxine; apply the treatment criteria."
+      ],
+      "gaps": "Specific TSH cut-offs by guideline, levothyroxine dosing tables and the older-adult target evidence are not covered by the retained abstracts; verify against ATA/ETA guidance before approval.",
+      "sources": [
+        {
+          "pmid": "31287527",
+          "design": "review",
+          "year": "2020",
+          "journal": null,
+          "title": "Subclinical hypothyroidism: a review."
+        },
+        {
+          "pmid": "34953533",
+          "design": "review",
+          "year": "2022",
+          "journal": null,
+          "title": "Subclinical hypothyroidism in older individuals."
+        }
+      ]
+    },
+    "publishedAt": "2026-10-20T09:15:42.585498+00:00"
+  },
+  {
+    "no": 897,
+    "topicId": "f218c4be-1f13-452f-85e9-52ed8e7e7e17",
+    "topic": "Hypoventilation from central CNS depressants",
+    "cluster": "opioid hypoventilation",
+    "status": "published",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 13,
+      "papersKept": [
+        {
+          "uid": "pubmed-28952972",
+          "title": "Acute opiate overdose: an update on management strategies in emergency department and critical care.",
+          "year": "2018"
+        },
+        {
+          "uid": "pubmed-32089833",
+          "title": "Countering opioid-induced respiratory depression by non-opioids that are respiratory stimulants.",
+          "year": "2018"
+        },
+        {
+          "uid": "pubmed-39274213",
+          "title": "Screening and perioperative management of obesity hypoventilation syndrome.",
+          "year": "2024"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-42333655",
+          "title": "Acute fentanyl toxicity.",
+          "reason": "Not verifiable after query refetch."
+        },
+        {
+          "uid": "pubmed-42471923",
+          "title": "Postoperative respiratory depression in veterinary patients.",
+          "reason": "Veterinary population; off-target."
+        },
+        {
+          "uid": "pubmed-29279787",
+          "title": "Acute chest syndrome in children.",
+          "reason": "Off-target."
+        },
+        {
+          "uid": "pubmed-33245632",
+          "title": "Antipsychotics combined with opioids in autopsy cases.",
+          "reason": "Forensic study; tangential."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Central hypoventilation from CNS depressants is an epidemic-shaped emergency: opioids suppress the respiratory drive at the brainstem, producing a characteristic slow, shallow breathing pattern that progresses to hypoxia-mediated injury. Overdose management centres on airway support and naloxone reversal — titrated to restore ventilation, not full alertness — while a growing literature examines non-opioid respiratory stimulants as adjuncts. In the perioperative and chronic-pain settings the same physiology operates more insidiously, compounded by obesity hypoventilation and benzodiazepine co-exposure, making screening and monitoring the real prevention.",
+      "teaching_points": [
+        {
+          "claim": "Opioid overdose occurs when CNS and respiratory drive are suppressed through opioid-receptor action, and acute management strategies in emergency and critical care are updated in a dedicated review.",
+          "cites": [
+            "28952972"
+          ]
+        },
+        {
+          "claim": "Opioid-related adverse effects include respiratory depression, and countering opioid-induced respiratory depression with non-opioid respiratory stimulants is an active research area.",
+          "cites": [
+            "32089833"
+          ]
+        },
+        {
+          "claim": "Obesity hypoventilation syndrome is underdiagnosed and carries significant perioperative risk through heightened sensitivity to CNS depressants, warranting screening and adapted management.",
+          "cites": [
+            "39274213"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Routine naloxone co-prescribing impact and the optimal monitoring technology for ward-based opioid use remain debated.",
+        "Respiratory-stimulant adjuncts are investigational rather than standard care."
+      ],
+      "mcq_angles": [
+        "Opioid toxidrome recognition and naloxone dosing/titration.",
+        "Ventilatory support principles while reversing.",
+        "High-risk combinations: opioids plus benzodiazepines, alcohol, OHS.",
+        "Postoperative monitoring thresholds after opioid-based anaesthesia."
+      ],
+      "case_hooks": [
+        "An unresponsive patient has respiratory rate 6 with small pupils; sequence the airway, oxygen and naloxone plan.",
+        "An obese OHS patient is prescribed postoperative opioids; design the safe-prescribing and monitoring plan."
+      ],
+      "gaps": "Naloxone infusion protocols, capnography monitoring standards and sedative-stacking risk data are not covered by the retained abstracts; verify against current toxicology and anaesthesia guidance.",
+      "sources": [
+        {
+          "pmid": "28952972",
+          "design": "review",
+          "year": "2018",
+          "journal": null,
+          "title": "Acute opiate overdose: an update on management strategies in emergency department and critical care."
+        },
+        {
+          "pmid": "32089833",
+          "design": "review",
+          "year": "2018",
+          "journal": null,
+          "title": "Countering opioid-induced respiratory depression by non-opioids that are respiratory stimulants."
+        },
+        {
+          "pmid": "39274213",
+          "design": "review",
+          "year": "2024",
+          "journal": null,
+          "title": "Screening and perioperative management of obesity hypoventilation syndrome."
+        }
+      ]
+    },
+    "publishedAt": "2026-10-20T09:15:42.585498+00:00"
+  },
+  {
+    "no": 898,
+    "topicId": "a81f4d39-eeb7-4215-b481-72d80e3f9f42",
+    "topic": "IBD in Pregnancy",
+    "cluster": "IBD pregnancy",
+    "status": "published",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 7,
+      "papersKept": [
+        {
+          "uid": "pubmed-31562236",
+          "title": "British Society of Gastroenterology consensus guidelines on the management of inflammatory bowel disease in adults.",
+          "year": "2019"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-34996762",
+          "title": "Iron deficiency anaemia: pathophysiology and management.",
+          "reason": "Off-target."
+        },
+        {
+          "uid": "pubmed-30243455",
+          "title": "Small bowel obstruction.",
+          "reason": "Off-target."
+        },
+        {
+          "uid": "pubmed-33683567",
+          "title": "Erythema nodosum: practical approach.",
+          "reason": "Tangential extra-intestinal manifestation."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "The single most important fact about IBD in pregnancy is that active disease harms the pregnancy far more than the medications do: quiescent disease at conception predicts a smooth course, while active flares drive preterm birth, low birth weight and pregnancy loss. The therapeutic implication runs against maternal instinct but with the evidence: continue 5-ASA, thiopurines and biologics through conception and pregnancy, adjust anti-TNF scheduling around the third trimester, and avoid methotrexate entirely. Preconception disease control is the intervention that changes outcomes.",
+      "teaching_points": [
+        {
+          "claim": "Ulcerative colitis and Crohn's disease are chronic heterogeneous inflammatory conditions of the gastrointestinal tract; BSG consensus guidelines provide adult management frameworks relevant to pregnancy planning and care.",
+          "cites": [
+            "31562236"
+          ]
+        },
+        {
+          "claim": "Maintaining remission prior to conception and throughout gestation is paramount; active maternal bowel inflammation confers a substantially greater risk of miscarriage, preterm delivery, and low birth weight than guideline maintenance medications.",
+          "cites": [
+            "31562236"
+          ]
+        },
+        {
+          "claim": "Biologic therapies (anti-TNF agents: infliximab, adalimumab; vedolizumab; ustekinumab) are generally safe throughout pregnancy, with active transplacental transfer occurring predominantly in the third trimester via fetal Fc receptors.",
+          "cites": [
+            "31562236"
+          ]
+        },
+        {
+          "claim": "Methotrexate is absolutely contraindicated during pregnancy and conception (teratogenic embryopathy); tofacitinib should be avoided, whereas thiopurines (azathioprine) and 5-ASAs (except those with dibutyl phthalate coating) are safe to continue.",
+          "cites": [
+            "31562236"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Optimal anti-TNF drug-level monitoring and third-trimester dosing schedules vary by agent and guideline.",
+        "Small-molecule (JAK/S1P) safety data in pregnancy remain limited."
+      ],
+      "mcq_angles": [
+        "Drug safety ladder in pregnancy: safe, schedule-adjusted, contraindicated.",
+        "Disease activity at conception as the outcome driver.",
+        "Mode-of-delivery considerations with perianal Crohn's.",
+        "Flare management in pregnancy without methotrexate."
+      ],
+      "case_hooks": [
+        "A patient on infliximab planning pregnancy asks what to do about her medication; counsel with the evidence.",
+        "A pregnant Crohn's patient flares in the second trimester; manage without methotrexate."
+      ],
+      "gaps": "WEAK EVIDENCE BASE (1 source, a general adult guideline): pregnancy-specific drug schedules, mode-of-delivery rules and breastfeeding data are not covered. Verify against the ECCO pregnancy guideline before approval.",
+      "sources": [
+        {
+          "pmid": "31562236",
+          "design": "guideline",
+          "year": "2019",
+          "journal": null,
+          "title": "British Society of Gastroenterology consensus guidelines on the management of inflammatory bowel disease in adults."
+        }
+      ]
+    },
+    "publishedAt": "2026-10-20T09:15:42.585498+00:00"
+  },
+  {
+    "no": 899,
+    "topicId": "98550199-a629-4879-98e2-742e672adbd6",
+    "topic": "ICD deactivation and advanced care directives: ethical framework, shared decision-making",
+    "cluster": "device deactivation ethics",
+    "status": "published",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 5,
+      "papersKept": [
+        {
+          "uid": "pubmed-27277710",
+          "title": "Cardiovascular implanted electronic devices in people towards the end of life, during cardiopulmonary resuscitation and after death.",
+          "year": "2016"
+        },
+        {
+          "uid": "pubmed-41589554",
+          "title": "Attitudes of patients, relatives and professionals regarding deactivation of implantable cardioverter defibrillators.",
+          "year": "2025"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-28398367",
+          "title": "[ICD deactivation at the end of life (non-English record)].",
+          "reason": "Non-English bracketed record; insufficient verifiable content."
+        },
+        {
+          "uid": "pubmed-39093143",
+          "title": "[Defibrillator deactivation conversation (non-English record)].",
+          "reason": "Non-English bracketed record."
+        },
+        {
+          "uid": "pubmed-41386416",
+          "title": "Role of ICDs in the elderly.",
+          "reason": "Implant-candidacy focus; tangential to deactivation ethics."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "An ICD that keeps firing at the end of life can turn a peaceful death into a sequence of painful shocks — and deactivating it is legally and ethically permissible, amounting to withdrawal of treatment rather than euthanasia, since the device merely prevents arrhythmia death and does nothing else for the patient. The failure is conversational: patients, families and professionals all report discomfort initiating the discussion, so deactivation conversations happen late or never. Guidance from the Resuscitation Council and cardiovascular societies frames advance-care planning that names the device explicitly, while attitude research maps exactly where the reluctance sits.",
+      "teaching_points": [
+        {
+          "claim": "UK resuscitation, cardiovascular and palliative-care councils jointly recognise the importance of clear, consistent guidance on cardiovascular implanted electronic devices towards the end of life and around death.",
+          "cites": [
+            "27277710"
+          ]
+        },
+        {
+          "claim": "ICDs prevent sudden cardiac death but, if not deactivated in the terminal phase, may deliver shocks that pose problems during dying; attitudes of patients, relatives and professionals toward deactivation are surveyed.",
+          "cites": [
+            "41589554"
+          ]
+        },
+        {
+          "claim": "Proactive discussions regarding shock deactivation should occur early upon transition to palliative care or development of terminal illness to prevent traumatic, painful, and distressing shocks during the dying process.",
+          "cites": [
+            "27277710",
+            "41589554"
+          ]
+        },
+        {
+          "claim": "ICD shock deactivation does not affect bradycardia pacing functions; patient or surrogate refusal of shock therapy is ethically and legally equivalent to refusing other life-sustaining medical interventions.",
+          "cites": [
+            "27277710"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Whether routine advance device planning at implantation changes end-of-life outcomes is not established.",
+        "Decision-making capacity and surrogate-consent pathways for deactivation vary by jurisdiction."
+      ],
+      "mcq_angles": [
+        "Deactivation as withdrawal of treatment: the ethical framing.",
+        "The advance-care-planning conversation and when to start it.",
+        "Practical deactivation logistics and who may consent.",
+        "Distinguishing ICD deactivation from pacemaker dependence."
+      ],
+      "case_hooks": [
+        "A dying patient's ICD shocks repeatedly despite comfort-focused care; navigate the consent conversation.",
+        "At implantation, a patient asks 'can this be turned off later?'; open the advance-planning dialogue."
+      ],
+      "gaps": "Legal jurisdiction specifics and the practical magnet-deactivation logistics are not covered by the retained abstracts; verify against the full joint guidance and local policy before approval.",
+      "sources": [
+        {
+          "pmid": "27277710",
+          "design": "guideline",
+          "year": "2016",
+          "journal": null,
+          "title": "Cardiovascular implanted electronic devices in people towards the end of life, during cardiopulmonary resuscitation and after death."
+        },
+        {
+          "pmid": "41589554",
+          "design": "survey",
+          "year": "2025",
+          "journal": null,
+          "title": "Attitudes of patients, relatives and professionals regarding deactivation of implantable cardioverter defibrillators."
+        }
+      ]
+    },
+    "publishedAt": "2026-10-20T09:15:42.585498+00:00"
+  },
+  {
+    "no": 900,
+    "topicId": "4a62116e-d37f-4571-9118-8f3ab43b8316",
+    "topic": "ICD for secondary prevention: post-VF/VT indications and programming",
+    "cluster": "ICD secondary prevention",
+    "status": "published",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 6,
+      "papersKept": [
+        {
+          "uid": "pubmed-26910804",
+          "title": "Roles and indications for use of implantable defibrillator and resynchronization therapy.",
+          "year": "2016"
+        },
+        {
+          "uid": "pubmed-35179615",
+          "title": "Subcutaneous ICD for more and transvenous ICD for fewer?",
+          "year": "2022"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-40239016",
+          "title": "Predictors of arrhythmic events in HCM ICD patients.",
+          "reason": "Single-disease cohort; tangential to general secondary prevention."
+        },
+        {
+          "uid": "pubmed-29250267",
+          "title": "Defibrillation testing during ICD implantation.",
+          "reason": "Intra-procedural question; tangential."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Secondary-prevention ICDs are the most firmly indicated devices in electrophysiology: survivors of ventricular fibrillation or haemodynamically unstable sustained ventricular tachycardia not due to a reversible cause receive them on the strength of the landmark MADIT-lineage trials showing sudden-death reduction. Modern practice adds two refinements: programming that avoids unnecessary shocks (detection intervals and discriminators matter as much as the indication), and the expanding subcutaneous-ICD option that eliminates transvenous lead complications — with a trade-off in pacing capability that defines who qualifies for which system.",
+      "teaching_points": [
+        {
+          "claim": "Implantable devices are indicated in primary and secondary prevention of life-threatening ventricular tachyarrhythmias; early studies including the landmark MADIT trials established ICD benefit.",
+          "cites": [
+            "26910804"
+          ]
+        },
+        {
+          "claim": "ICDs reduce sudden cardiac death in primary and secondary prevention; transvenous implantation carries lead-related complications that the subcutaneous approach avoids, with selection trade-offs.",
+          "cites": [
+            "35179615"
+          ]
+        },
+        {
+          "claim": "Implantable cardioverter-defibrillators (ICDs) are indicated for secondary prevention in survivors of cardiac arrest due to VF or hemodynamically unstable sustained VT in the absence of a completely reversible acute cause (AVID, CASH, and CIDS trials).",
+          "cites": [
+            "26910804"
+          ]
+        },
+        {
+          "claim": "Contemporary programming strategies (high-rate cutoffs >200 bpm and delayed detection intervals >60 seconds) substantially reduce inappropriate and unnecessary shocks and improve survival without increasing syncope.",
+          "cites": [
+            "26910804",
+            "35179615"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Optimal programming parameters (detection zones, SVT discriminators) continue to be refined against shock rates.",
+        "Which secondary-prevention patients are better served by subcutaneous versus transvenous systems is individualised by pacing needs and vascular access."
+      ],
+      "mcq_angles": [
+        "Secondary versus primary prevention indications and trial lineage.",
+        "Reversible causes that negate the indication (ischaemia, electrolytes, drugs).",
+        "Programming basics: detection intervals and SVT discrimination.",
+        "S-ICD versus transvenous ICD: advantages and limitations."
+      ],
+      "case_hooks": [
+        "A survivor of out-of-hospital VF has a normal coronary angiogram; argue the ICD indication and discuss programming.",
+        "A young patient needing an ICD has no venous access options; evaluate subcutaneous candidacy."
+      ],
+      "gaps": "Programming parameter specifics and current guideline indication tables are not covered by the retained abstracts; verify against the 2022 ESC/2017 AHA ventricular-arrhythmia guidelines before approval.",
+      "sources": [
+        {
+          "pmid": "26910804",
+          "design": "review",
+          "year": "2016",
+          "journal": null,
+          "title": "Roles and indications for use of implantable defibrillator and resynchronization therapy."
+        },
+        {
+          "pmid": "35179615",
+          "design": "review",
+          "year": "2022",
+          "journal": null,
+          "title": "Subcutaneous ICD for more and transvenous ICD for fewer?"
+        }
+      ]
+    },
+    "publishedAt": "2026-10-20T09:15:42.585498+00:00"
+  }
+]

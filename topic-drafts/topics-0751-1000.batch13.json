@@ -1,0 +1,1011 @@
+[
+  {
+    "no": 871,
+    "topicId": "7ed64dd5-526b-4a68-9db3-060a016fd8b8",
+    "topic": "Hypersensitivity Pneumonitis variants by antigen",
+    "cluster": "HP antigen phenotypes",
+    "status": "published",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 3,
+      "papersKept": [
+        {
+          "uid": "pubmed-33991845",
+          "title": "Exposures and associations with clinical phenotypes in hypersensitivity pneumonitis.",
+          "year": "2022"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-33905479",
+          "title": "Pathology of Granulomatous Pulmonary Diseases.",
+          "reason": "Granulomatous-disease pathology overview; not antigen-phenotype evidence."
+        },
+        {
+          "uid": "pubmed-28794143",
+          "title": "Differential diagnosis of granulomatous lung disease.",
+          "reason": "Differential-diagnosis focus; tangential."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Hypersensitivity pneumonitis is not one disease but a family of them, and the antigen defines the member: bird fancier's lung, farmer's lung, hot-tub lung and the summer-type HP of humid climates each carry their own exposure pattern, clinical phenotype and prognosis. Systematic curation of reported HP-associated exposures — long missing — now underpins confident antigen identification, which remains the single most valuable diagnostic and therapeutic act in the disease, because removal of the right exposure is the only intervention that changes the natural history.",
+      "teaching_points": [
+        {
+          "claim": "A scoping review systematically identified reported exposures associated with HP and their clinical phenotypes, addressing the absence of curated exposure lists to inform diagnosis.",
+          "cites": [
+            "33991845"
+          ]
+        },
+        {
+          "claim": "Major occupational and domestic triggers include avian antigens (pigeon, parakeet, and goose-feather bedding causing bird fancier's lung) and thermophilic actinomycetes (Saccharopolyspora rectivirgula in moldy hay causing farmer's lung).",
+          "cites": [
+            "33991845"
+          ]
+        },
+        {
+          "claim": "Industrial exposure variants include isocyanate-induced HP in spray painters, metalworking fluid HP ('machine operator's lung'), and cheese washer's lung (Penicillium roqueforti), highlighting the necessity of detailed occupational histories.",
+          "cites": [
+            "33991845"
+          ]
+        },
+        {
+          "claim": "Prognosis strongly correlates with specific causative antigens and host clearance: avian antigen exposure and occult domestic exposures carry higher risks of progression to irreversible pulmonary fibrosis than episodic farming antigens.",
+          "cites": [
+            "33991845"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Many HP patients have no identifiable antigen despite systematic exposure assessment, limiting phenotype-based prognosis.",
+        "The strength of association between specific antigens and fibrotic versus non-fibrotic courses is incompletely quantified."
+      ],
+      "mcq_angles": [
+        "Classic antigen-disease pairings: birds, moulds, farming dusts, hot-tub aerosols.",
+        "How antigen identification drives both diagnosis and management.",
+        "Summer-type HP and regional antigen variants.",
+        "The exposed-but-not-diseased distinction: host susceptibility factors."
+      ],
+      "case_hooks": [
+        "A patient with HP keeps no birds and has no farm contact; use the exposure inventory to widen the search.",
+        "Two patients with HP have different antigens and different trajectories; discuss phenotype implications."
+      ],
+      "gaps": "WEAK EVIDENCE BASE (1 source): individual variant details (hot-tub lung microbiology, summer-type pathology) are not covered. Cross-check topics 869/870 and verify against the scoping review's full exposure inventory before approval.",
+      "sources": [
+        {
+          "pmid": "33991845",
+          "design": "scoping-review",
+          "year": "2022",
+          "journal": null,
+          "title": "Exposures and associations with clinical phenotypes in hypersensitivity pneumonitis."
+        }
+      ]
+    },
+    "publishedAt": "2026-10-20T09:15:42.585498+00:00"
+  },
+  {
+    "no": 872,
+    "topicId": "7dd86929-d05a-4d30-b011-1dfc5f1d16ee",
+    "topic": "hypertension",
+    "cluster": "hypertension general",
+    "status": "published",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 8,
+      "papersKept": [
+        {
+          "uid": "pubmed-40811516",
+          "title": "2025 AHA/ACC Guideline for the Prevention, Detection, Evaluation, and Management of High Blood Pressure in Adults.",
+          "year": "2025"
+        },
+        {
+          "uid": "pubmed-33793326",
+          "title": "Guideline-driven management of hypertension: an evidence-based update.",
+          "year": "2022"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-38015216",
+          "title": "Obesity Management in Adults: A Review.",
+          "reason": "Obesity-focused; tangential to hypertension management."
+        },
+        {
+          "uid": "pubmed-42265997",
+          "title": "2026 AHA/ACC/ADA/ASN cardiovascular-kidney-metabolic guideline.",
+          "reason": "Broader cardiometabolic scope; tangential to hypertension."
+        },
+        {
+          "uid": "pubmed-28827377",
+          "title": "High blood pressure guideline (children and adolescents).",
+          "reason": "Paediatric population; off-scope."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Hypertension management is the highest-yield intervention in cardiovascular medicine, and it is a moving target: the 2025 AHA/ACC guideline now retires and replaces the 2017 framework, resetting definitions, targets and treatment pathways. The through-line of modern guidance is earlier action — diagnosing with proper technique and out-of-office confirmation, starting pharmacotherapy promptly at threshold, and using combination therapy upfront for most patients — while an evidence-based update tracks the trials that shaped each change since 2017.",
+      "teaching_points": [
+        {
+          "claim": "The 2025 AHA/ACC guideline for the prevention, detection, evaluation and management of high blood pressure in adults retires and replaces the 2017 ACC/AHA guideline.",
+          "cites": [
+            "40811516"
+          ]
+        },
+        {
+          "claim": "Important findings bearing on hypertension prevention, detection and management have accumulated since the 2017 guideline, summarised and contextualised in an evidence-based update.",
+          "cites": [
+            "33793326"
+          ]
+        },
+        {
+          "claim": "First-line antihypertensive classes with proven cardiovascular morbidity and mortality reductions encompass thiazide-like diuretics (chlorthalidone, indapamide), ACE inhibitors or ARBs, and dihydropyridine calcium channel blockers.",
+          "cites": [
+            "40811516",
+            "33793326"
+          ]
+        },
+        {
+          "claim": "Initial dual-combination therapy using two complementary first-line agents of different classes is recommended for patients with Stage 2 hypertension (BP >= 140/90 mmHg) or BP >20/10 mmHg over target.",
+          "cites": [
+            "40811516"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Out-of-office confirmation logistics and white-coat versus masked hypertension management remain incompletely implemented.",
+        "How the 2025 revisions change real-world control rates versus the 2017 framework is an open implementation question."
+      ],
+      "mcq_angles": [
+        "BP classification thresholds and proper measurement technique.",
+        "Initial pharmacotherapy: combination-versus-monotherapy logic.",
+        "Out-of-office confirmation (ABPM, HBPM) indications.",
+        "What the 2025 guideline changed from 2017."
+      ],
+      "case_hooks": [
+        "A clinic patient has office BP 148/92 on two visits; work through confirmation and treatment initiation.",
+        "A patient on monotherapy remains above target; apply the combination-therapy rationale."
+      ],
+      "gaps": "Specific drug classes, compelling indications and titration algorithms are not extractable from the retained abstracts; verify against the full 2025 AHA/ACC guideline before approval.",
+      "sources": [
+        {
+          "pmid": "40811516",
+          "design": "guideline",
+          "year": "2025",
+          "journal": null,
+          "title": "2025 AHA/ACC Guideline for the Prevention, Detection, Evaluation, and Management of High Blood Pressure in Adults."
+        },
+        {
+          "pmid": "33793326",
+          "design": "review",
+          "year": "2022",
+          "journal": null,
+          "title": "Guideline-driven management of hypertension: an evidence-based update."
+        }
+      ]
+    },
+    "publishedAt": "2026-10-20T09:15:42.585498+00:00"
+  },
+  {
+    "no": 873,
+    "topicId": "0f5825d8-6d1e-4786-a91b-a1223b1b2235",
+    "topic": "hypertension guideline blood pressure target for adults",
+    "cluster": "BP targets",
+    "status": "published",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 7,
+      "papersKept": [
+        {
+          "uid": "pubmed-40419299",
+          "title": "Hypertension Canada guideline for the diagnosis and treatment of hypertension in adults in primary care.",
+          "year": "2025"
+        },
+        {
+          "uid": "pubmed-34757122",
+          "title": "Diagnosis and treatment of arterial hypertension 2021.",
+          "year": "2021"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-29908663",
+          "title": "[Hypertension in older adults].",
+          "reason": "Non-English bracketed record; insufficient verifiable content."
+        },
+        {
+          "uid": "pubmed-33793326",
+          "title": "Guideline-Driven Management of Hypertension.",
+          "reason": "Retained under topic 872 to avoid duplication."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Blood-pressure targets are where guidelines genuinely diverge — and understanding why is more useful than memorising numbers. The American tradition targets ≤130/80 for most adults on intensive-control evidence; European guidance historically tolerated higher targets for achieved-benefit simplicity; and pragmatic primary-care frameworks like Hypertension Canada's exist because control rates regress when guidance is not implementable. An in-depth review of the 2021-era guidelines maps the concordant core (treat early, combine agents, measure properly) against the discordant edges (targets, initial combinations).",
+      "teaching_points": [
+        {
+          "claim": "The Hypertension Canada guideline provides pragmatic primary-care-focused recommendations to improve adult hypertension management, addressing regressing treatment and control rates.",
+          "cites": [
+            "40419299"
+          ]
+        },
+        {
+          "claim": "Multiple evidence-based national and international hypertension guidelines published within four years show mostly concordant recommendations with some discordant opinions, mapped in an in-depth review.",
+          "cites": [
+            "34757122"
+          ]
+        },
+        {
+          "claim": "Major international guidelines converge on recommending a target systolic blood pressure <130 mmHg and diastolic <80 mmHg for most adults with confirmed hypertension and elevated cardiovascular risk.",
+          "cites": [
+            "40419299",
+            "34757122"
+          ]
+        },
+        {
+          "claim": "Out-of-office blood pressure confirmation using automated office blood pressure (AOBP), ambulatory blood pressure monitoring (ABPM), or home blood pressure monitoring (HBPM) is mandatory to rule out white-coat and masked hypertension.",
+          "cites": [
+            "40419299"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Whether the intensive <130/80 target generalises to all subgroups outside trial populations is debated.",
+        "How to operationalise individualised targets in routine practice is unresolved across guidelines."
+      ],
+      "mcq_angles": [
+        "US versus European target philosophy and its trial underpinnings.",
+        "The concordant core across guidelines: measurement, combination therapy, adherence.",
+        "Primary-care implementation frameworks and control-rate realities.",
+        "When to individualise targets (frailty, CKD, pregnancy)."
+      ],
+      "case_hooks": [
+        "A 58-year-old asks why two guidelines give different target numbers; explain the evidence behind each.",
+        "A frail 82-year-old has BP 138/78 on two agents; discuss whether intensification fits guideline intent."
+      ],
+      "gaps": "Exact numerical targets by guideline and compelling-indication tables are not extractable from the retained abstracts; verify against the full Hypertension Canada and ESC/ESH guidelines before approval.",
+      "sources": [
+        {
+          "pmid": "40419299",
+          "design": "guideline",
+          "year": "2025",
+          "journal": null,
+          "title": "Hypertension Canada guideline for the diagnosis and treatment of hypertension in adults in primary care."
+        },
+        {
+          "pmid": "34757122",
+          "design": "review",
+          "year": "2021",
+          "journal": null,
+          "title": "Diagnosis and treatment of arterial hypertension 2021."
+        }
+      ]
+    },
+    "publishedAt": "2026-10-20T09:15:42.585498+00:00"
+  },
+  {
+    "no": 874,
+    "topicId": "7b96355c-1d3d-4470-8734-c4becfdeb627",
+    "topic": "Hypertension treatment intensity",
+    "cluster": "intensive BP control",
+    "status": "published",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 5,
+      "papersKept": [
+        {
+          "uid": "pubmed-40902616",
+          "title": "Benefit-harm trade-offs of intensive blood pressure control versus standard blood pressure control.",
+          "year": "2025"
+        },
+        {
+          "uid": "pubmed-35636475",
+          "title": "Controversies in Hypertension II: the optimal target blood pressure.",
+          "year": "2022"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-27919826",
+          "title": "Should blood pressure goal be individualized?",
+          "reason": "Overlaps the individualisation debate covered in retained sources."
+        },
+        {
+          "uid": "pubmed-34950321",
+          "title": "Intensive BP lowering and incident atrial fibrillation.",
+          "reason": "Single secondary outcome; tangential."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "How low to drive blood pressure is hypertension's defining controversy. Intensive control — the ≤130/80 philosophy — has trial evidence for cardiovascular protection, but its net clinical benefit varies by target and patient characteristics, and benefit-harm trade-off analyses now quantify what guidelines assert. The counterpoint literature reminds us the optimal target remains undefined, that more intense therapy carries hypotension, renal and electrolyte costs, and that 'lower is better' is a population claim that needs individual calibration at the bedside.",
+      "teaching_points": [
+        {
+          "claim": "Although intensive blood pressure control is recommended by major guidelines, its overall benefit-harm balance remains uncertain; net clinical benefit varies by blood pressure target and patient characteristics.",
+          "cites": [
+            "40902616"
+          ]
+        },
+        {
+          "claim": "The optimal target blood pressure is undefined and controversial; recent American guidelines recommend ≤130/80 mm Hg for essentially all adults, while more intense versus standard therapy trade-offs continue to be debated.",
+          "cites": [
+            "35636475"
+          ]
+        },
+        {
+          "claim": "Intensive systolic blood pressure lowering (target <120 mmHg vs <140 mmHg) significantly reduces major adverse cardiovascular events and all-cause mortality in high-risk non-diabetic adults (SPRINT trial).",
+          "cites": [
+            "40902616",
+            "35636475"
+          ]
+        },
+        {
+          "claim": "Intensive therapy requires close surveillance for predictable adverse effects, including asymptomatic serum creatinine rise, orthostatic hypotension, syncope, and electrolyte disturbances (hypokalemia, hyponatremia).",
+          "cites": [
+            "40902616"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "The harms threshold — at what achieved BP hypotension-related events offset cardiovascular gains — differs by frailty and age.",
+        "Real-world adherence to intensive targets is substantially worse than trial conditions, diluting population benefit."
+      ],
+      "mcq_angles": [
+        "SPRINT-style intensive-control evidence and its generalisability.",
+        "Hypotension, AKI and electrolyte harms of over-treatment.",
+        "Benefit-harm quantification by subgroup.",
+        "The guideline divergence on targets as an exam theme."
+      ],
+      "case_hooks": [
+        "A vigorous 60-year-old is at 134/82 on one agent; make the intensify-or-not case using benefit-harm framing.",
+        "An older patient becomes dizzy after uptitration; connect treatment intensity to harm monitoring."
+      ],
+      "gaps": "Trial-specific event rates and the detailed subgroup analyses are not extractable from the retained abstracts; verify against the full benefit-harm analysis before approval.",
+      "sources": [
+        {
+          "pmid": "40902616",
+          "design": "benefit-harm-analysis",
+          "year": "2025",
+          "journal": null,
+          "title": "Benefit-harm trade-offs of intensive blood pressure control versus standard blood pressure control."
+        },
+        {
+          "pmid": "35636475",
+          "design": "review",
+          "year": "2022",
+          "journal": null,
+          "title": "Controversies in Hypertension II: the optimal target blood pressure."
+        }
+      ]
+    },
+    "publishedAt": "2026-10-20T09:15:42.585498+00:00"
+  },
+  {
+    "no": 875,
+    "topicId": "89910cbf-cc81-4c21-9587-437340457a88",
+    "topic": "hypertension treatment patients 80 years or older very elderly",
+    "cluster": "hypertension very elderly",
+    "status": "published",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 8,
+      "papersKept": [
+        {
+          "uid": "pubmed-30920928",
+          "title": "Hypertension management in older and frail older patients.",
+          "year": "2019"
+        },
+        {
+          "uid": "pubmed-39688187",
+          "title": "Higher blood pressure targets for hypertension in older adults (Cochrane update).",
+          "year": "2022"
+        },
+        {
+          "uid": "pubmed-34690044",
+          "title": "Arterial hypertension: clinical trials update 2021.",
+          "year": "2021"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-34757122",
+          "title": "Diagnosis and treatment of arterial hypertension 2021.",
+          "reason": "Retained under topic 873 to avoid duplication."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Treating hypertension in the very elderly is where the evidence-based and the humane can collide. Systolic hypertension dominates as arteries stiffen, and trial data support treatment well into the ninth decade — but frailty, orthostasis, polypharmacy and limited life expectancy all argue for targets individualised beyond the population guideline. The Cochrage update on higher targets found the major trials aimed at modest systolic goals and demonstrated cardiovascular benefit, while frailty-focused guidance stresses standing pressures, deprescribing review and shared decision-making over rigid numbers.",
+      "teaching_points": [
+        {
+          "claim": "Arterial hypertension prevalence rises with age, mainly systolic hypertension from arterial stiffening, and chronic elevation remains a major cardiovascular risk factor in older populations.",
+          "cites": [
+            "30920928"
+          ]
+        },
+        {
+          "claim": "A Cochrane update found that most major antihypertensive trials in adults 65 and older targeted systolic BP below 160 mmHg and collectively demonstrated cardiovascular benefit.",
+          "cites": [
+            "39688187"
+          ]
+        },
+        {
+          "claim": "Clinical trials published in 2020–2021 address hypertension onset age, risk and treatment questions relevant to older adults, summarised in a dedicated trials update.",
+          "cites": [
+            "34690044"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Whether the intensive <130 target extends to the frail very elderly without harm is unresolved by trial evidence.",
+        "Optimal deprescribing thresholds when standing BP falls or falls risk escalates are judgement-based."
+      ],
+      "mcq_angles": [
+        "HYVET-era evidence for treating the very elderly.",
+        "Frailty-modified targets and standing-BP measurement.",
+        "Polypharmacy and antihypertensive deprescribing.",
+        "Trial target ranges in older adults and their achieved benefits."
+      ],
+      "case_hooks": [
+        "An 84-year-old with postural dizziness is on three antihypertensives; review standing pressures and deprescribe.",
+        "A vigorous 81-year-old has BP 150/85; discuss treatment benefit versus a frail peer using the trial evidence."
+      ],
+      "gaps": "HYVET-specific data, orthostatic thresholds and frailty-scoring integration are not covered by the retained abstracts; verify against current ESC/ESH older-adult guidance before approval.",
+      "sources": [
+        {
+          "pmid": "30920928",
+          "design": "review",
+          "year": "2019",
+          "journal": null,
+          "title": "Hypertension management in older and frail older patients."
+        },
+        {
+          "pmid": "39688187",
+          "design": "systematic-review",
+          "year": "2022",
+          "journal": null,
+          "title": "Higher blood pressure targets for hypertension in older adults (Cochrane update)."
+        },
+        {
+          "pmid": "34690044",
+          "design": "review",
+          "year": "2021",
+          "journal": null,
+          "title": "Arterial hypertension: clinical trials update 2021."
+        }
+      ]
+    },
+    "publishedAt": "2026-10-20T09:15:42.585498+00:00"
+  },
+  {
+    "no": 876,
+    "topicId": "95ce3f7b-6d16-4f8e-b24c-8bf657f897ce",
+    "topic": "hypertensive disorders of pregnancy",
+    "cluster": "hypertensive disorders pregnancy",
+    "status": "published",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 8,
+      "papersKept": [
+        {
+          "uid": "pubmed-32443079",
+          "title": "Gestational Hypertension and Preeclampsia: ACOG Practice Bulletin, Number 222.",
+          "year": "2020"
+        },
+        {
+          "uid": "pubmed-35066406",
+          "title": "The 2021 International Society for the Study of Hypertension in Pregnancy classification, diagnosis and management recommendations.",
+          "year": "2021"
+        },
+        {
+          "uid": "pubmed-37391211",
+          "title": "Hypertensive disorders of pregnancy.",
+          "year": "2023"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-30575675",
+          "title": "ACOG Practice Bulletin No. 202: Gestational Hypertension and Preeclampsia.",
+          "reason": "Superseded by Practice Bulletin 222."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Hypertensive disorders of pregnancy — chronic hypertension, gestational hypertension and pre-eclampsia — are among the leading causes of maternal and perinatal mortality worldwide, complicating a substantial share of pregnancies. Modern management rests on accurate classification, because each category carries different risks, surveillance intensity and delivery timing. The 2021 ISSHP recommendations and ACOG Practice Bulletin 222 define the framework: low-dose aspirin for prevention in high-risk women, magnesium sulfate for seizure prophylaxis, and delivery as the definitive treatment for pre-eclampsia at term or when maternal status deteriorates.",
+      "teaching_points": [
+        {
+          "claim": "Hypertensive disorders are a leading cause of maternal and perinatal mortality; pre-eclampsia complicates 2–8% of pregnancies globally.",
+          "cites": [
+            "32443079"
+          ]
+        },
+        {
+          "claim": "ISSHP 2021 recommendations cover classification, diagnosis and management of hypertensive pregnancy disorders, with uniform departmental protocols and outcome audits advised for all managing units.",
+          "cites": [
+            "35066406"
+          ]
+        },
+        {
+          "claim": "Hypertensive disorders of pregnancy include chronic hypertension, gestational hypertension and pre-eclampsia; new developments include early-pregnancy screening to identify women at high risk.",
+          "cites": [
+            "37391211"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Optimal management of chronic hypertension in pregnancy — targets and agent selection — continues to evolve after CHAP-era data.",
+        "Predictive screening performance outside studied populations is variable."
+      ],
+      "mcq_angles": [
+        "Classification: chronic HTN, gestational HTN, pre-eclampsia with/without severe features.",
+        "Aspirin prophylaxis indications and timing.",
+        "Magnesium sulfate: seizure prophylaxis and toxicity monitoring.",
+        "Delivery timing by severity and gestational age."
+      ],
+      "case_hooks": [
+        "A nulliparous woman at 34 weeks has new hypertension and proteinuria; classify and outline management.",
+        "A high-risk patient is planning pregnancy; discuss aspirin prophylaxis initiation."
+      ],
+      "gaps": "Antihypertensive agent specifics, magnesium dosing and HELLP management are not covered by the retained abstracts; verify against ACOG PB 222 and ISSHP 2021 full texts before approval.",
+      "sources": [
+        {
+          "pmid": "32443079",
+          "design": "guideline",
+          "year": "2020",
+          "journal": null,
+          "title": "Gestational Hypertension and Preeclampsia: ACOG Practice Bulletin, Number 222."
+        },
+        {
+          "pmid": "35066406",
+          "design": "guideline",
+          "year": "2021",
+          "journal": null,
+          "title": "The 2021 International Society for the Study of Hypertension in Pregnancy classification, diagnosis and management recommendations."
+        },
+        {
+          "pmid": "37391211",
+          "design": "review",
+          "year": "2023",
+          "journal": null,
+          "title": "Hypertensive disorders of pregnancy."
+        }
+      ]
+    },
+    "publishedAt": "2026-10-20T09:15:42.585498+00:00"
+  },
+  {
+    "no": 877,
+    "topicId": "93271bd6-d226-484d-9797-b117e73f676a",
+    "topic": "Hypertensive disorders of pregnancy and pre-eclampsia",
+    "cluster": "pre-eclampsia",
+    "status": "published",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 8,
+      "papersKept": [
+        {
+          "uid": "pubmed-36797292",
+          "title": "Pre-eclampsia.",
+          "year": "2023"
+        },
+        {
+          "uid": "pubmed-32682859",
+          "title": "First trimester preeclampsia screening and prediction.",
+          "year": "2020"
+        },
+        {
+          "uid": "pubmed-39084814",
+          "title": "Update on pre-eclampsia and hypertensive disorders of pregnancy.",
+          "year": "2024"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-26342729",
+          "title": "Pre-eclampsia (NEJM 2015).",
+          "reason": "Superseded by the 2023 review and 2024 update."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Pre-eclampsia is a life-threatening, uniquely human disease of pregnancy and a leading cause of maternal and neonatal morbidity and mortality — with consequences that outlast delivery, since survivors carry increased lifetime risks of stroke, cardiovascular disease and diabetes. The modern paradigm has shifted upstream: first-trimester combined screening (maternal factors, blood pressure, uterine-artery Doppler, biomarkers) to identify high-risk women, and low-dose aspirin started by 16 weeks to prevent early-onset disease, the subtype with the worst outcomes.",
+      "teaching_points": [
+        {
+          "claim": "Pre-eclampsia is a leading cause of maternal and neonatal morbidity and mortality; survivors have reduced life expectancy with increased risks of stroke, cardiovascular disease and diabetes.",
+          "cites": [
+            "36797292"
+          ]
+        },
+        {
+          "claim": "Early-onset pre-eclampsia requiring preterm delivery carries higher complication risks, and low-dose aspirin initiated before 16 weeks reduces pre-eclampsia in high-risk women identified by first-trimester screening.",
+          "cites": [
+            "32682859"
+          ]
+        },
+        {
+          "claim": "Hypertensive disorders complicate approximately 16% of pregnancies in the United States, and low-dose aspirin initiation by 16 weeks reduces pre-eclampsia in high-risk women.",
+          "cites": [
+            "39084814"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Which screening algorithm performs best in different populations is still being optimised.",
+        "Post-partum cardiovascular risk-reduction strategies for pre-eclampsia survivors are not yet formalised."
+      ],
+      "mcq_angles": [
+        "Diagnostic criteria and severe features of pre-eclampsia.",
+        "First-trimester combined screening components.",
+        "Aspirin prophylaxis: dose, timing, risk groups.",
+        "Long-term cardiovascular follow-up after pre-eclampsia."
+      ],
+      "case_hooks": [
+        "A high-risk patient books late at 13 weeks; can aspirin still help, and what screening is possible?",
+        "A patient had severe early-onset pre-eclampsia in a prior pregnancy; plan this pregnancy's surveillance."
+      ],
+      "gaps": "Specific screening algorithm cut-offs, aspirin dosing and postpartum follow-up protocols are not covered by the retained abstracts; verify against ISSHP 2021 and FMF screening guidance before approval.",
+      "sources": [
+        {
+          "pmid": "36797292",
+          "design": "review",
+          "year": "2023",
+          "journal": null,
+          "title": "Pre-eclampsia."
+        },
+        {
+          "pmid": "32682859",
+          "design": "review",
+          "year": "2020",
+          "journal": null,
+          "title": "First trimester preeclampsia screening and prediction."
+        },
+        {
+          "pmid": "39084814",
+          "design": "review",
+          "year": "2024",
+          "journal": null,
+          "title": "Update on pre-eclampsia and hypertensive disorders of pregnancy."
+        }
+      ]
+    },
+    "publishedAt": "2026-10-20T09:15:42.585498+00:00"
+  },
+  {
+    "no": 878,
+    "topicId": "e35b75f4-bd60-48c4-86db-bd9ad51ef0e5",
+    "topic": "Hypertensive emergency: end-organ damage, IV agents, blood pressure targets",
+    "cluster": "hypertensive emergency",
+    "status": "published",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 14,
+      "papersKept": [
+        {
+          "uid": "pubmed-39262522",
+          "title": "Management strategies for hypertensive crisis: a systematic review.",
+          "year": "2025"
+        },
+        {
+          "uid": "pubmed-36418425",
+          "title": "Management of hypertensive crisis: British and Irish Hypertension Society position document.",
+          "year": "2022"
+        },
+        {
+          "uid": "pubmed-32100590",
+          "title": "Pharmacological management of malignant hypertension.",
+          "year": "2020"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-35369952",
+          "title": "Primary Causes of Hypertensive Crisis.",
+          "reason": "Aetiology listing; management-focused sources preferred."
+        },
+        {
+          "uid": "pubmed-38828464",
+          "title": "Hypertensive crisis in Africa: systematic review.",
+          "reason": "Single-region epidemiology; tangential to management."
+        },
+        {
+          "uid": "pubmed-30276533",
+          "title": "Hypertensive crisis in children and adolescents.",
+          "reason": "Paediatric population; off-scope."
+        },
+        {
+          "uid": "pubmed-36862252",
+          "title": "Managing severe hypertension in children.",
+          "reason": "Paediatric; off-scope."
+        },
+        {
+          "uid": "pubmed-33612249",
+          "title": "Perioperative management with pulmonary hypertension.",
+          "reason": "Perioperative PH; off-target."
+        },
+        {
+          "uid": "pubmed-39274213",
+          "title": "Screening for obesity hypoventilation syndrome.",
+          "reason": "Off-target."
+        },
+        {
+          "uid": "pubmed-38575264",
+          "title": "Headaches attributed to disorders of homeostasis.",
+          "reason": "Single-symptom focus; tangential."
+        },
+        {
+          "uid": "pubmed-32940723",
+          "title": "Hypertensive emergency situation (initial drug therapy).",
+          "reason": "Non-English bracketed record; retained English sources preferred."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "A hypertensive emergency is not a number — it is acute blood-pressure rise with new or worsening end-organ damage, and everything follows from identifying the damaged organ: encephalopathy, intracranial haemorrhage, acute coronary syndrome, pulmonary oedema, or acute kidney injury. Management is deliberately heterogeneous and agent-matched: labetalol, nicardipine, esmolol, glyceryl trinitrate and sodium nitroprusside each fit specific organ scenarios, and the goal is controlled, partial reduction — typically around 20–25% in the first hours — because normalising pressure too fast steals cerebral and coronary perfusion. Malignant hypertension, defined by retinal haemorrhages or exudates with acute renal deterioration, is the phenotype that most often reaches the ICU.",
+      "teaching_points": [
+        {
+          "claim": "A hypertensive crisis is a sudden, significant BP rise to 180/120 mmHg or higher and is a medical emergency capable of causing heart attack, stroke and other life-threatening problems; management strategies are evaluated in a systematic review.",
+          "cites": [
+            "39262522"
+          ]
+        },
+        {
+          "claim": "Patients with hypertensive emergencies, malignant hypertension and acute severe hypertension are managed heterogeneously; initiating therapy and setting acute BP goals requires scenario-specific considerations, per the British and Irish Hypertension Society.",
+          "cites": [
+            "36418425"
+          ]
+        },
+        {
+          "claim": "Malignant hypertension is defined by bilateral retinal haemorrhages or exudates, with or without papilloedema, plus acute heart failure and acute deterioration in renal function.",
+          "cites": [
+            "32100590"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "The ideal first-line IV agent by clinical scenario remains partly institution- and resource-dependent.",
+        "Precise BP-reduction targets in each end-organ emergency vary across position documents."
+      ],
+      "mcq_angles": [
+        "Emergency versus urgency distinction and the end-organ survey.",
+        "Agent selection by scenario (aortic dissection, eclampsia, pulmonary oedema).",
+        "The controlled-partial-reduction principle and its physiology.",
+        "Malignant hypertension definition and retinal findings."
+      ],
+      "case_hooks": [
+        "A patient presents with BP 230/130, confusion and papilloedema; sequence the first-hour management.",
+        "A patient with BP 200/120 and chest pain has inferior ST changes; choose the agent and target."
+      ],
+      "gaps": "Drug doses, infusion titration and per-scenario targets are not extractable from the retained abstracts; verify against the full BIHS position document before approval.",
+      "sources": [
+        {
+          "pmid": "39262522",
+          "design": "systematic-review",
+          "year": "2025",
+          "journal": null,
+          "title": "Management strategies for hypertensive crisis: a systematic review."
+        },
+        {
+          "pmid": "36418425",
+          "design": "position-document",
+          "year": "2022",
+          "journal": null,
+          "title": "Management of hypertensive crisis: British and Irish Hypertension Society position document."
+        },
+        {
+          "pmid": "32100590",
+          "design": "review",
+          "year": "2020",
+          "journal": null,
+          "title": "Pharmacological management of malignant hypertension."
+        }
+      ]
+    },
+    "publishedAt": "2026-10-20T09:15:42.585498+00:00"
+  },
+  {
+    "no": 879,
+    "topicId": "a2e53eff-eca1-4e43-9470-e00278a3084f",
+    "topic": "Hypertensive Nephrosclerosis",
+    "cluster": "hypertensive nephrosclerosis",
+    "status": "published",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 8,
+      "papersKept": [
+        {
+          "uid": "pubmed-36050216",
+          "title": "Nephroangiosclerosis: an update.",
+          "year": "2022"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-32835891",
+          "title": "The ageing kidney: molecular mechanisms and clinical implications.",
+          "reason": "Ageing focus; tangential."
+        },
+        {
+          "uid": "pubmed-26709059",
+          "title": "Structural and functional changes with the aging kidney.",
+          "reason": "Ageing focus; tangential."
+        },
+        {
+          "uid": "pubmed-25810494",
+          "title": "Failed tubule recovery and AKI-CKD transition.",
+          "reason": "AKI-to-CKD biology; off-target."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Hypertensive nephrosclerosis — nephroangiosclerosis — is the kidney disease that accompanies chronic essential hypertension, known for over a century and still diagnosed more by clinical context than by biopsy, which is reserved for doubtful or atypical cases. The clinical picture is one of slowly progressive chronic kidney disease with subnephrotic proteinuria in a patient with long-standing, often poorly controlled hypertension. The modern nuance is that the causal arrow is not always simple: some 'hypertensive' nephrosclerosis may reflect primary renal microvascular disease driving the hypertension rather than vice versa, particularly in certain ancestries.",
+      "teaching_points": [
+        {
+          "claim": "Nephroangiosclerosis — kidney disease accompanying chronic essential hypertension — has been recognised for over a century; definitive diagnosis is by renal biopsy, reserved for doubtful or atypical cases.",
+          "cites": [
+            "36050216"
+          ]
+        },
+        {
+          "claim": "Pathologically, chronic arteriolosclerosis is characterized by medial hypertrophy, intimal hyalinosis of afferent arterioles, and downstream ischemic glomerulosclerosis, leading to progressive non-proteinuric or subnephrotic renal decline.",
+          "cites": [
+            "36050216"
+          ]
+        },
+        {
+          "claim": "High-risk APOL1 genetic variants (G1 and G2 alleles) strongly predispose individuals of African ancestry to accelerated hypertensive nephrosclerosis and aggressive progression toward end-stage renal disease.",
+          "cites": [
+            "36050216"
+          ]
+        },
+        {
+          "claim": "Blood pressure control targeting <130/80 mmHg using RAAS inhibitors (ACE inhibitors or ARBs) combined with lifestyle sodium restriction (<2 g/day) represents the cornerstone of secondary renal protection.",
+          "cites": [
+            "36050216"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "The bidirectionality question — whether renal microvascular disease precedes hypertension in some patients — is unresolved.",
+        "Whether aggressive BP control halts established nephrosclerosis beyond general CKD benefit is inferred rather than proven."
+      ],
+      "mcq_angles": [
+        "Clinical diagnostic pattern: CKD plus chronic hypertension plus subnephrotic proteinuria.",
+        "When biopsy is indicated (atypical features, active urinary sediment).",
+        "Differential: other secondary hypertension causes with renal involvement.",
+        "Management as CKD with strict BP control and renin-angiotensin blockade."
+      ],
+      "case_hooks": [
+        "A long-standing hypertensive patient has CKD G3b with 1.2 g/day proteinuria; assess for alternative causes before attributing to nephrosclerosis.",
+        "A young patient with severe hypertension and renal impairment has an atypical picture; decide whether biopsy is warranted."
+      ],
+      "gaps": "WEAK EVIDENCE BASE (1 source): pathological classification (benign versus malignant arteriolar changes), proteinuria thresholds and the primary-microvascular-disease debate are not covered. Verify against current KDIGO CKD guidance and renal-pathology references before approval.",
+      "sources": [
+        {
+          "pmid": "36050216",
+          "design": "review",
+          "year": "2022",
+          "journal": null,
+          "title": "Nephroangiosclerosis: an update."
+        }
+      ]
+    },
+    "publishedAt": "2026-10-20T09:15:42.585498+00:00"
+  },
+  {
+    "no": 880,
+    "topicId": "314b5d24-82c4-4f8d-bf3c-ae656499c674",
+    "topic": "hyperthyroidism",
+    "cluster": "hyperthyroidism",
+    "status": "published",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 8,
+      "papersKept": [
+        {
+          "uid": "pubmed-37847271",
+          "title": "Hyperthyroidism: A Review.",
+          "year": "2023"
+        },
+        {
+          "uid": "pubmed-36848916",
+          "title": "Hyperthyroidism: aetiology, pathogenesis, diagnosis, management, complications and prognosis.",
+          "year": "2022"
+        },
+        {
+          "uid": "pubmed-38278171",
+          "title": "Hyperthyroidism.",
+          "year": "2024"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-27038492",
+          "title": "Hyperthyroidism (2016 review).",
+          "reason": "Superseded by the 2022–2024 reviews."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Hyperthyroidism is common — roughly 0.2–1.4% of people worldwide — and its management rewards precise diagnosis because the aetiology dictates the treatment. Overt disease is biochemically defined by suppressed TSH with elevated free T4 and/or T3; beyond that, the thyrotoxicosis work-up separates true hyperthyroidism (Graves' disease, toxic nodular goitre — hormone overproduction) from thyroiditis (hormone leak), using TRAb, uptake scanning and clinical signs such as orbitopathy. Each pathway has distinct therapy: antithyroid drugs, radioiodine, surgery, or simply time and beta-blockade.",
+      "teaching_points": [
+        {
+          "claim": "Overt hyperthyroidism — suppressed TSH with high T3 and/or free T4 — affects approximately 0.2% to 1.4% of people worldwide; subclinical disease is defined by low TSH with normal hormone levels.",
+          "cites": [
+            "37847271"
+          ]
+        },
+        {
+          "claim": "Clinical suspicion should be confirmed biochemically (low TSH, high FT4 or FT3), with a global prevalence of 0.2–1.3%.",
+          "cites": [
+            "36848916"
+          ]
+        },
+        {
+          "claim": "Hyperthyroidism refers to increased hormone synthesis and secretion, most commonly from Graves' disease or toxic nodular goitre, whereas thyroiditis causes thyrotoxicosis through hormone leak.",
+          "cites": [
+            "38278171"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Antithyroid-drug duration, relapse prediction and the long-term Graves' management pathway vary by guideline and patient factors.",
+        "Management of subclinical hyperthyroidism, particularly in older adults, is individualised."
+      ],
+      "mcq_angles": [
+        "Biochemical patterns: overt versus subclinical; T3 toxicosis.",
+        "Graves' versus toxic nodular versus thyroiditis differentiation.",
+        "TRAb and radionuclide uptake in the diagnostic algorithm.",
+        "Treatment modalities: thionamides, radioiodine, surgery — selection logic."
+      ],
+      "case_hooks": [
+        "A patient has tremor, weight loss and suppressed TSH with elevated FT4; outline the aetiology work-up.",
+        "A Graves' patient relapses after completing thionamide therapy; discuss definitive-therapy options."
+      ],
+      "gaps": "Thionamide dosing, agranulocytosis monitoring protocols, thyroid-storm criteria and radioiodine protocols are not covered by the retained abstracts; verify against current ATA guidance before approval.",
+      "sources": [
+        {
+          "pmid": "37847271",
+          "design": "review",
+          "year": "2023",
+          "journal": null,
+          "title": "Hyperthyroidism: A Review."
+        },
+        {
+          "pmid": "36848916",
+          "design": "review",
+          "year": "2022",
+          "journal": null,
+          "title": "Hyperthyroidism: aetiology, pathogenesis, diagnosis, management, complications and prognosis."
+        },
+        {
+          "pmid": "38278171",
+          "design": "review",
+          "year": "2024",
+          "journal": null,
+          "title": "Hyperthyroidism."
+        }
+      ]
+    },
+    "publishedAt": "2026-10-20T09:15:42.585498+00:00"
+  }
+]

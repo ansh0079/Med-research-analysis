@@ -1,0 +1,1377 @@
+[
+  {
+    "no": 771,
+    "topicId": "bf7e3215-de8a-4ae3-8e09-5207f029c613",
+    "topic": "healthcare associated mrsa decolonization and prevention",
+    "cluster": "MRSA decolonization and prevention",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 8,
+      "papersKept": [
+        {
+          "uid": "pubmed-42624765",
+          "title": "The Role of Decolonization in Prevention of Staphylococcus aureus Infection.",
+          "year": "2026"
+        },
+        {
+          "uid": "pubmed-39481681",
+          "title": "Interventions targeting the nasal microbiome to eradicate methicillin-resistant Staphylococcus aureus.",
+          "year": "2025"
+        },
+        {
+          "uid": "pubmed-29190327",
+          "title": "Control of healthcare- and community-associated MRSA: recent progress and persisting challenges.",
+          "year": "2018"
+        },
+        {
+          "uid": "pubmed-27424948",
+          "title": "Staphylococcus aureus and surgical site infections: benefits of screening and decolonization before surgery.",
+          "year": "2016"
+        },
+        {
+          "uid": "pubmed-26836053",
+          "title": "Is Staphylococcal Screening and Suppression an Effective Interventional Strategy for Reduction of Surgical Site Infections?",
+          "year": "2016"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-28507731",
+          "title": "Patient engagement with surgical site infection prevention: an expert panel perspective.",
+          "reason": "Behavioural/patient-engagement focus; tangential to decolonization decision-making."
+        },
+        {
+          "uid": "pubmed-40005530",
+          "title": "Molecular Epidemiology Clinical Manifestations, Decolonization Strategies, and Treatment Options of Methicillin-resistant Staphylococcus aureus in Neonates.",
+          "reason": "Neonatal population; off scope for general healthcare-associated MRSA prevention."
+        },
+        {
+          "uid": "pubmed-30859379",
+          "title": "Prevention Strategies for Recurrent Community-Associated Staphylococcus aureus Skin and Soft Tissue Infections.",
+          "reason": "Community-associated recurrent SSTI focus; tangential to healthcare-associated prevention."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "S. aureus is a leading cause of healthcare-associated infection — central-line bloodstream infections, surgical site infections, and more — and nasal carriage is the reservoir most interventions target. Decolonization (topical antiseptics, intranasal antibiotic regimens, and targeted screening) sits alongside contact precautions and bundles as the core preventive toolkit. The trainee should understand who to screen, what regimens exist, and where the evidence is strongest — cardiac and orthopaedic surgery — versus where it is weaker.",
+      "teaching_points": [
+        {
+          "claim": "S. aureus is a common skin commensal and a leading cause of healthcare-associated infections including central-line-associated bloodstream infection and surgical site infection, which makes decolonization a central prevention strategy.",
+          "cites": [
+            "42624765"
+          ]
+        },
+        {
+          "claim": "Nasal colonization with MRSA is the key target for eradication interventions, and multiple interventions targeting the nasal microbiome have been developed for this purpose.",
+          "cites": [
+            "39481681"
+          ]
+        },
+        {
+          "claim": "Healthcare-adapted MRSA spread globally over 50 years, and community strains capable of infecting healthy individuals have since emerged; control requires strategies for both healthcare- and community-associated spread.",
+          "cites": [
+            "29190327"
+          ]
+        },
+        {
+          "claim": "S. aureus is the most common microbial cause of surgical site infections, and screening with decolonization before surgery is used to reduce SSI risk, particularly in high-risk procedures.",
+          "cites": [
+            "27424948"
+          ]
+        },
+        {
+          "claim": "Staphylococcal screening and suppression is an interventional strategy aimed at reduction of surgical site infections; its effectiveness depends on the screening strategy and agent used.",
+          "cites": [
+            "26836053"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Optimal decolonization regimen, duration, and the role of systemic versus topical agents are not settled in the retained abstracts.",
+        "How decolonization interacts with antimicrobial stewardship and resistance selection is not quantified in the retained sources."
+      ],
+      "mcq_angles": [
+        "Screen-then-decolonize workflow for elective surgery (who, when, with what).",
+        "Nasal carriage as the reservoir for healthcare-associated S. aureus infection.",
+        "Healthcare-associated vs community-associated MRSA epidemiology and control measures.",
+        "Which procedures have the strongest evidence for decolonization benefit."
+      ],
+      "case_hooks": [
+        "A patient due for elective knee replacement is found to be MRSA-positive on pre-admission screening; outline the decolonization plan.",
+        "A ward has a cluster of MRSA bacteraemias; design a prevention bundle incorporating decolonization and contact precautions."
+      ],
+      "gaps": "Specific agent regimens (mupirocin vs povidone-iodine vs octenidine), chlorhexidine bathing evidence, and ICU-wide universal decolonization trial data are not detailed in the retained abstracts; verify against an IDSA/SHEA prevention guideline before approval.",
+      "sources": [
+        {
+          "pmid": "42624765",
+          "design": "review",
+          "year": "2026",
+          "journal": null,
+          "title": "The Role of Decolonization in Prevention of Staphylococcus aureus Infection."
+        },
+        {
+          "pmid": "39481681",
+          "design": "review",
+          "year": "2025",
+          "journal": null,
+          "title": "Interventions targeting the nasal microbiome to eradicate methicillin-resistant Staphylococcus aureus."
+        },
+        {
+          "pmid": "29190327",
+          "design": "review",
+          "year": "2018",
+          "journal": null,
+          "title": "Control of healthcare- and community-associated MRSA: recent progress and persisting challenges."
+        },
+        {
+          "pmid": "27424948",
+          "design": "review",
+          "year": "2016",
+          "journal": null,
+          "title": "Staphylococcus aureus and surgical site infections: benefits of screening and decolonization before surgery."
+        },
+        {
+          "pmid": "26836053",
+          "design": "review",
+          "year": "2016",
+          "journal": null,
+          "title": "Is Staphylococcal Screening and Suppression an Effective Interventional Strategy for Reduction of Surgical Site Infections?"
+        }
+      ]
+    }
+  },
+  {
+    "no": 772,
+    "topicId": "78a64fb1-6a75-4b1b-855e-5870511292e3",
+    "topic": "heart failure",
+    "cluster": "heart failure",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 8,
+      "papersKept": [
+        {
+          "uid": "pubmed-35363499",
+          "title": "2022 AHA/ACC/HFSA Guideline for the Management of Heart Failure.",
+          "year": "2022"
+        },
+        {
+          "uid": "pubmed-38806171",
+          "title": "2024 update in heart failure.",
+          "year": "2025"
+        },
+        {
+          "uid": "pubmed-32749493",
+          "title": "Heart Failure With Reduced Ejection Fraction: A Review.",
+          "year": "2020"
+        },
+        {
+          "uid": "pubmed-38367642",
+          "title": "Heart failure with preserved ejection fraction: everything the clinician needs to know.",
+          "year": "2024"
+        },
+        {
+          "uid": "pubmed-28460827",
+          "title": "Heart failure.",
+          "year": "2017"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-35379503",
+          "title": "2022 AHA/ACC/HFSA Guideline for the Management of Heart Failure: A Report of the American College of Cardiology/American Heart Association Joint Committee on Clinical Practice Guidelines.",
+          "reason": "Duplicate record of the retained 2022 AHA/ACC/HFSA guideline (35363499)."
+        },
+        {
+          "uid": "pubmed-35378257",
+          "title": "2022 AHA/ACC/HFSA Guideline for the Management of Heart Failure.",
+          "reason": "Third duplicate record of the same 2022 guideline."
+        },
+        {
+          "uid": "pubmed-40789597",
+          "title": "Pharmacotherapy for obesity management in adults: 2025 clinical practice guideline update.",
+          "reason": "Obesity pharmacotherapy guideline; tangential to heart failure management."
+        },
+        {
+          "uid": "pubmed-31504429",
+          "title": "2019 ESC Guidelines for the diagnosis and management of acute pulmonary embolism developed in collaboration with the European Respiratory Society (ERS).",
+          "reason": "Pulmonary embolism is a different disease; wrong-topic guideline."
+        },
+        {
+          "uid": "pubmed-26596665",
+          "title": "Heart Failure: Pathophysiology, Diagnosis, Medical Treatment Guidelines, and Nursing Management.",
+          "reason": "Nursing-management focus; tangential to medical curriculum content."
+        },
+        {
+          "uid": "pubmed-30974015",
+          "title": "ACVIM consensus guidelines for the diagnosis and treatment of myxomatous mitral valve disease in dogs.",
+          "reason": "Veterinary (canine) guideline; wrong species for this curriculum."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Heart failure is a clinical syndrome — dyspnoea or exertional limitation from impaired ventricular filling or ejection — that now divides by ejection fraction, because therapy that transforms HFrEF does little or nothing for HFpEF beyond SGLT2 inhibitors. Anchor on the 2022 AHA/ACC/HFSA guideline as the framework, then learn the phenotype split (roughly half of all HF is preserved EF) and the four pillars of HFrEF disease-modifying therapy.",
+      "teaching_points": [
+        {
+          "claim": "The 2022 AHA/ACC/HFSA guideline replaces both the 2013 ACCF/AHA guideline and the 2017 focused update, and is the current American framework for heart failure management.",
+          "cites": [
+            "35363499"
+          ]
+        },
+        {
+          "claim": "The 2023 ESC focused update introduced key new recommendations led by SGLT2 inhibitors across the ejection-fraction spectrum, reflecting major recent progress in HF management.",
+          "cites": [
+            "38806171"
+          ]
+        },
+        {
+          "claim": "Worldwide HF burden has grown to an estimated 23 million people, with approximately half of cases being HFrEF; HF is a clinical syndrome of dyspnoea or exertional limitation from impaired ventricular filling or ejection.",
+          "cites": [
+            "32749493"
+          ]
+        },
+        {
+          "claim": "HFpEF represents at least half of all heart failure cases, and its recognition is rising with population ageing and comorbidity burden such as obesity and diabetes.",
+          "cites": [
+            "38367642"
+          ]
+        },
+        {
+          "claim": "HF prevalence is increasing because of population ageing and improved survival after acute cardiovascular events, despite effective therapies — making long-term management a growing clinical load.",
+          "cites": [
+            "28460827"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "HFpEF treatment beyond SGLT2 inhibitors remains an active research area with no established disease-modifying standard comparable to HFrEF quadruple therapy.",
+        "Optimal transitions of care and the role of remote monitoring in routine HF management are not settled in the retained sources."
+      ],
+      "mcq_angles": [
+        "EF-based phenotyping (HFrEF vs HFmrEF vs HFpEF) and why it drives therapy.",
+        "The four pillars of HFrEF therapy and the guideline evidence behind each.",
+        "SGLT2 inhibitors as the one class spanning all EF categories.",
+        "Distinguishing HFpEF clinically (comorbidity pattern, diastolic dysfunction) from HFrEF."
+      ],
+      "case_hooks": [
+        "A 70-year-old with dyspnoea, EF 30% and diabetes; structure guideline-directed therapy and sequencing.",
+        "A patient with obesity, hypertension and EF 55% has exertional dyspnoea; work through the HFpEF diagnostic pathway."
+      ],
+      "gaps": "Acute heart failure management, device therapy indications (ICD/CRT), and transition-of-care models are not covered by the retained abstracts; verify against the full 2022 AHA/ACC/HFSA guideline before approval.",
+      "sources": [
+        {
+          "pmid": "35363499",
+          "design": "guideline",
+          "year": "2022",
+          "journal": null,
+          "title": "2022 AHA/ACC/HFSA Guideline for the Management of Heart Failure."
+        },
+        {
+          "pmid": "38806171",
+          "design": "review",
+          "year": "2025",
+          "journal": null,
+          "title": "2024 update in heart failure."
+        },
+        {
+          "pmid": "32749493",
+          "design": "review",
+          "year": "2020",
+          "journal": null,
+          "title": "Heart Failure With Reduced Ejection Fraction: A Review."
+        },
+        {
+          "pmid": "38367642",
+          "design": "review",
+          "year": "2024",
+          "journal": null,
+          "title": "Heart failure with preserved ejection fraction: everything the clinician needs to know."
+        },
+        {
+          "pmid": "28460827",
+          "design": "review",
+          "year": "2017",
+          "journal": null,
+          "title": "Heart failure."
+        }
+      ]
+    }
+  },
+  {
+    "no": 773,
+    "topicId": "1caf1452-6490-488b-bc50-c07b6375ba08",
+    "topic": "Heart failure landmark trials: PARADIGM-HF, DAPA-HF, EMPEROR-Reduced insights",
+    "cluster": "heart failure landmark trials",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 4,
+      "papersKept": [
+        {
+          "uid": "pubmed-33277825",
+          "title": "Heart failure in the last year: progress and perspective.",
+          "year": "2020"
+        },
+        {
+          "uid": "pubmed-33074526",
+          "title": "Relative Efficacy of Sacubitril-Valsartan, Vericiguat, and SGLT2 Inhibitors in Heart Failure with Reduced Ejection Fraction: A Network Meta-Analysis.",
+          "year": "2021"
+        },
+        {
+          "uid": "pubmed-37952788",
+          "title": "Application of eligibility criteria from DAPA-HF, EMPEROR-Reduced, and PARADIGM-HF trials to a population with heart failure.",
+          "year": "2024"
+        },
+        {
+          "uid": "pubmed-42741561",
+          "title": "Estimating the Benefits of the Comprehensive Disease-modifying Pharmacological Treatment in Patients with Heart Failure with Reduced Ejection Fraction.",
+          "year": "2026"
+        }
+      ],
+      "papersDropped": [],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Three trials reset HFrEF practice. PARADIGM-HF showed sacubitril/valsartan beat enalapril; DAPA-HF and EMPEROR-Reduced showed SGLT2 inhibitors cut cardiovascular death and heart-failure hospitalisation in patients with and without diabetes. Together they form the spine of modern guideline-directed therapy — and this page reads them as a set, including the sobering finding that real-world patients often fail the trials' eligibility criteria.",
+      "teaching_points": [
+        {
+          "claim": "Landmark trials established new treatments for HFrEF: sacubitril/valsartan was superior to enalapril in PARADIGM-HF, and SGLT2 inhibitors were added to the therapeutic armamentarium.",
+          "cites": [
+            "33277825"
+          ]
+        },
+        {
+          "claim": "A network meta-analysis compared the treatment arms of sacubitril/valsartan, vericiguat and the SGLT2 inhibitors dapagliflozin and empagliflozin, each proven effective in phase 3 HFrEF trials, allowing relative efficacy to be estimated across drugs.",
+          "cites": [
+            "33074526"
+          ]
+        },
+        {
+          "claim": "When eligibility criteria from DAPA-HF, EMPEROR-Reduced and PARADIGM-HF are applied to real outpatient populations with chronic heart failure, a substantial proportion of routine patients fall outside trial inclusion criteria — a key caveat when extrapolating trial effect sizes to clinic practice.",
+          "cites": [
+            "37952788"
+          ]
+        },
+        {
+          "claim": "Cross-trial aggregate-data analyses estimate the expected combined benefit of comprehensive (quintuple) disease-modifying pharmacological treatment in HFrEF, suggesting effects accumulate when therapies are combined.",
+          "cites": [
+            "42741561"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Cross-trial and network meta-analyses carry indirect-comparison limitations; true head-to-head outcome data between individual agents are lacking.",
+        "How trial-ineligible patients (eGFR limits, blood-pressure floors, recent hospitalisation) respond to the same drugs is less certain."
+      ],
+      "mcq_angles": [
+        "What PARADIGM-HF compared and what the primary outcome showed (ARNI vs ACE inhibitor).",
+        "DAPA-HF and EMPEROR-Reduced: the populations, primary endpoints, and diabetes-independence of SGLT2 benefit.",
+        "Why real-world eligibility for landmark trials matters when applying effect sizes.",
+        "How relative efficacy estimates from network meta-analyses should (and should not) be read."
+      ],
+      "case_hooks": [
+        "A 68-year-old with HFrEF, eGFR 42 and SBP 98 asks whether the 'four pillars' apply to him; use trial eligibility thinking.",
+        "An exam question quotes PARADIGM-HF, DAPA-HF and EMPEROR-Reduced hazard ratios; rank the therapies and justify combination."
+      ],
+      "gaps": "Exact hazard ratios and subgroup findings for each trial are not in the retained abstracts; verify numerical details against the primary trial publications before writing numeric MCQs.",
+      "sources": [
+        {
+          "pmid": "33277825",
+          "design": "review",
+          "year": "2020",
+          "journal": null,
+          "title": "Heart failure in the last year: progress and perspective."
+        },
+        {
+          "pmid": "33074526",
+          "design": "meta-analysis",
+          "year": "2021",
+          "journal": null,
+          "title": "Relative Efficacy of Sacubitril-Valsartan, Vericiguat, and SGLT2 Inhibitors in Heart Failure with Reduced Ejection Fraction: A Network Meta-Analysis."
+        },
+        {
+          "pmid": "37952788",
+          "design": "review",
+          "year": "2024",
+          "journal": null,
+          "title": "Application of eligibility criteria from DAPA-HF, EMPEROR-Reduced, and PARADIGM-HF trials to a population with heart failure."
+        },
+        {
+          "pmid": "42741561",
+          "design": "review",
+          "year": "2026",
+          "journal": null,
+          "title": "Estimating the Benefits of the Comprehensive Disease-modifying Pharmacological Treatment in Patients with Heart Failure with Reduced Ejection Fraction."
+        }
+      ]
+    }
+  },
+  {
+    "no": 774,
+    "topicId": "f1681e6a-b17b-41f2-b4af-d94ec62e223d",
+    "topic": "heart failure preserved ejection fraction SGLT2 inhibitor mortality",
+    "cluster": "HFpEF SGLT2 inhibitors",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 8,
+      "papersKept": [
+        {
+          "uid": "pubmed-36216487",
+          "title": "SGLT2 Inhibitors and Heart Failure with Preserved Ejection Fraction.",
+          "year": "2022"
+        },
+        {
+          "uid": "pubmed-38806171",
+          "title": "2024 update in heart failure.",
+          "year": "2025"
+        },
+        {
+          "uid": "pubmed-38944348",
+          "title": "Heart failure with preserved ejection fraction epidemiology, pathophysiology, diagnosis and treatment strategies.",
+          "year": "2024"
+        },
+        {
+          "uid": "pubmed-33197224",
+          "title": "Effects of SGLT2 Inhibitors on Kidney and Cardiovascular Function.",
+          "year": "2021"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-33813813",
+          "title": "Epidemiology, Pathophysiology, Diagnosis and Treatment of Heart Failure in Diabetes.",
+          "reason": "Diabetes-centric cardiovascular continuum review; tangential to the HFpEF SGLT2 question."
+        },
+        {
+          "uid": "pubmed-34915125",
+          "title": "Current and future therapeutic perspective in chronic heart failure.",
+          "reason": "Broad chronic-HF therapeutics; duplicate of coverage already retained."
+        },
+        {
+          "uid": "pubmed-34489589",
+          "title": "Heart failure with mid-range or mildly reduced ejection fraction.",
+          "reason": "HFmrEF (EF 40-49%) is a different EF category from the HFpEF (EF >=50%) focus of this topic."
+        },
+        {
+          "uid": "pubmed-39815071",
+          "title": "Initiation and sequencing of guideline-directed medical therapy for heart failure across the ejection fraction spectrum.",
+          "reason": "HFrEF-focused initiation/sequencing content; SGLT2-in-HFpEF detail already covered by retained sources."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "For years HFpEF had no therapy that moved outcomes — every trial failed until SGLT2 inhibitors. EMPEROR-Preserved showed empagliflozin reduced the composite of cardiovascular death or heart-failure hospitalisation in HFpEF, driven by fewer worsening-HF events, positioning SGLT2 inhibitors as the new standard of care in this phenotype. Understand both the result and its texture: the benefit is real, but it is hospitalisation-driven rather than a clear mortality signal.",
+      "teaching_points": [
+        {
+          "claim": "In EMPEROR-Preserved, empagliflozin reduced the risk of cardiovascular death or hospitalization for heart failure in HFpEF (HR 0.79, 95% CI 0.69-0.90, P<.001), an effect driven by a reduction in worsening HF events; SGLT2 inhibitors are therefore likely to become the new standard of care in HFpEF.",
+          "cites": [
+            "36216487"
+          ]
+        },
+        {
+          "claim": "The 2023 ESC focused update introduced SGLT2 inhibitors as a key new recommendation across the heart-failure spectrum, reflecting the drug class's progress from diabetes trials into HFpEF management.",
+          "cites": [
+            "38806171"
+          ]
+        },
+        {
+          "claim": "HFpEF prevalence is increasing across all populations with high rates of hospitalization and mortality (up to 80% and 50% respectively within 5 years in the cited review), and comorbidity-driven systemic inflammation underlies its pathophysiology.",
+          "cites": [
+            "38944348"
+          ]
+        },
+        {
+          "claim": "SGLT2 inhibitors protect the heart and kidneys of patients with or without type 2 diabetes and with preserved or reduced kidney function, through both glucose-dependent and glucose-independent mechanisms.",
+          "cites": [
+            "33197224"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Whether SGLT2 inhibitors reduce cardiovascular or all-cause mortality specifically in HFpEF (versus hospitalisation-driven composite benefit) is not resolved in the retained sources.",
+        "Which HFpEF subphenotypes (obesity-driven, atrial-fibrillation-driven) benefit most remains an open question."
+      ],
+      "mcq_angles": [
+        "EMPEROR-Preserved: population, primary endpoint, hazard ratio, and what drove the benefit.",
+        "Why SGLT2 benefit in HFpEF is considered diabetes-independent.",
+        "The clinical-diagnostic pathway confirming HFpEF before therapy.",
+        "Distinguishing composite-endpoint benefit from a mortality claim in HFpEF trials."
+      ],
+      "case_hooks": [
+        "A 74-year-old woman with hypertension, BMI 34 and EF 58% is hospitalised with pulmonary congestion; decide on SGLT2 inhibitor therapy and counsel on expected benefit.",
+        "An exam vignette gives EMPEROR-Preserved's HR 0.79 and asks what the result does and does not prove about mortality."
+      ],
+      "gaps": "EMPEROR-Preserved subgroup analyses (EF strata, sex, diabetes status) and DELIVER-trial corroboration are not in the retained abstracts; verify against the primary trial publication before approval.",
+      "sources": [
+        {
+          "pmid": "36216487",
+          "design": "review",
+          "year": "2022",
+          "journal": null,
+          "title": "SGLT2 Inhibitors and Heart Failure with Preserved Ejection Fraction."
+        },
+        {
+          "pmid": "38806171",
+          "design": "review",
+          "year": "2025",
+          "journal": null,
+          "title": "2024 update in heart failure."
+        },
+        {
+          "pmid": "38944348",
+          "design": "review",
+          "year": "2024",
+          "journal": null,
+          "title": "Heart failure with preserved ejection fraction epidemiology, pathophysiology, diagnosis and treatment strategies."
+        },
+        {
+          "pmid": "33197224",
+          "design": "review",
+          "year": "2021",
+          "journal": null,
+          "title": "Effects of SGLT2 Inhibitors on Kidney and Cardiovascular Function."
+        }
+      ]
+    }
+  },
+  {
+    "no": 775,
+    "topicId": "fc907cb8-c7c5-43bb-92bf-aa8942a3fcbd",
+    "topic": "heart failure reduced ejection fraction management guideline SGLT2 ARNI MRA beta blocker",
+    "cluster": "HFrEF guideline-directed therapy",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 5,
+      "papersKept": [
+        {
+          "uid": "pubmed-35239201",
+          "title": "Renal effects of guideline-directed medical therapies in heart failure: a consensus document from the Heart Failure Association of the European Society of Cardiology.",
+          "year": "2022"
+        },
+        {
+          "uid": "pubmed-36198840",
+          "title": "Sex-specific differences in the efficacy of heart failure therapies: a meta-analysis of 84,818 patients.",
+          "year": "2023"
+        },
+        {
+          "uid": "pubmed-33634543",
+          "title": "Pharmacotherapy for heart failure with reduced ejection fraction and health-related quality of life: a systematic review and meta-analysis.",
+          "year": "2021"
+        },
+        {
+          "uid": "pubmed-33850913",
+          "title": "Updates in pharmacotherapy of heart failure with reduced ejection fraction.",
+          "year": "2021"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-41802118",
+          "title": "Weight loss as the optimal cardiometabolic management strategy for preventing and treating heart failure.",
+          "reason": "Obesity/weight-loss prevention thesis; tangential to GDMT drug components of this topic."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "HFrEF management is now built from four mechanistically distinct drug classes — beta-blocker, ARNI (or ACEi/ARB), MRA, and SGLT2 inhibitor — each with its own mortality or hospitalisation evidence. The guideline skill is not naming the four pillars but sequencing them: start low, titrate fast, watch renal function and potassium, and remember that each class also carries renal effects that matter when eGFR is borderline.",
+      "teaching_points": [
+        {
+          "claim": "Novel pharmacologic treatment options reduce mortality and morbidity in a cost-effective manner in heart failure, and effective implementation of these agents is an essential element of good clinical practice endorsed by the European Society of Cardiology — with renal effects that must be monitored for each class.",
+          "cites": [
+            "35239201"
+          ]
+        },
+        {
+          "claim": "Women have been historically underrepresented in heart-failure trials; a meta-analysis of 84,818 patients assessed sex-specific differences in patient characteristics and the efficacy of guideline-directed medical therapy.",
+          "cites": [
+            "36198840"
+          ]
+        },
+        {
+          "claim": "HFrEF pharmacotherapy improves health-related quality of life as well as hard outcomes, supporting symptom-driven as well as prognosis-driven prescribing.",
+          "cites": [
+            "33634543"
+          ]
+        },
+        {
+          "claim": "Recent advances in pharmacotherapy have produced novel therapies with mortality benefits and improvement in symptoms and hospitalisations for HFrEF, defining the modern treatment classes.",
+          "cites": [
+            "33850913"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Whether efficacy or titration targets differ between men and women on GDMT components needs interpretation of sex-specific meta-analytic data.",
+        "Optimal sequencing (rapid simultaneous vs stepwise titration) in patients with borderline blood pressure or renal function is not resolved in the retained abstracts."
+      ],
+      "mcq_angles": [
+        "The four pillars of HFrEF therapy and the evidence class behind each.",
+        "Renal-function and potassium monitoring when up-titrating ARNI/MRA.",
+        "What to do with GDMT when eGFR falls (class-specific renal effects).",
+        "Sex differences in trial representation and response to HF therapies."
+      ],
+      "case_hooks": [
+        "A new HFrEF diagnosis (EF 28%) with potassium 4.8 and eGFR 52; construct a 3-month titration plan across the four pillars.",
+        "A patient's creatinine rises after MRA initiation; interpret and decide whether to continue, reduce, or stop."
+      ],
+      "gaps": "The 2022 AHA/ACC/HFSA and 2023 ESC focused-update recommendation wording, and specific drug dosing tables, are not in the retained abstracts; verify against the full guideline before approval.",
+      "sources": [
+        {
+          "pmid": "35239201",
+          "design": "article",
+          "year": "2022",
+          "journal": null,
+          "title": "Renal effects of guideline-directed medical therapies in heart failure: a consensus document from the Heart Failure Association of the European Society of Cardiology."
+        },
+        {
+          "pmid": "36198840",
+          "design": "meta-analysis",
+          "year": "2023",
+          "journal": null,
+          "title": "Sex-specific differences in the efficacy of heart failure therapies: a meta-analysis of 84,818 patients."
+        },
+        {
+          "pmid": "33634543",
+          "design": "meta-analysis",
+          "year": "2021",
+          "journal": null,
+          "title": "Pharmacotherapy for heart failure with reduced ejection fraction and health-related quality of life: a systematic review and meta-analysis."
+        },
+        {
+          "pmid": "33850913",
+          "design": "review",
+          "year": "2021",
+          "journal": null,
+          "title": "Updates in pharmacotherapy of heart failure with reduced ejection fraction."
+        }
+      ]
+    }
+  },
+  {
+    "no": 776,
+    "topicId": "54bf8102-c036-4c01-8756-d6cfb9526420",
+    "topic": "heart failure reduced ejection fraction treatment",
+    "cluster": "HFrEF treatment",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 8,
+      "papersKept": [
+        {
+          "uid": "pubmed-35363499",
+          "title": "2022 AHA/ACC/HFSA Guideline for the Management of Heart Failure.",
+          "year": "2022"
+        },
+        {
+          "uid": "pubmed-34895860",
+          "title": "A Systematic Review and Network Meta-Analysis of Pharmacological Treatment of Heart Failure With Reduced Ejection Fraction.",
+          "year": "2022"
+        },
+        {
+          "uid": "pubmed-40892608",
+          "title": "Pharmacologic Treatment of Heart Failure With Reduced Ejection Fraction: An Updated Systematic Review and Network Meta-Analysis.",
+          "year": "2025"
+        },
+        {
+          "uid": "pubmed-32749493",
+          "title": "Heart Failure With Reduced Ejection Fraction: A Review.",
+          "year": "2020"
+        },
+        {
+          "uid": "pubmed-38768620",
+          "title": "Effect of SGLT2 inhibitors on heart failure outcomes and cardiovascular death across the cardiometabolic disease spectrum.",
+          "year": "2024"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-35379503",
+          "title": "2022 AHA/ACC/HFSA Guideline for the Management of Heart Failure: A Report of the American College of Cardiology/American Heart Association Joint Committee on Clinical Practice Guidelines.",
+          "reason": "Duplicate record of the retained 2022 AHA/ACC/HFSA guideline (35363499)."
+        },
+        {
+          "uid": "pubmed-35379504",
+          "title": "2022 AHA/ACC/HFSA Guideline for the Management of Heart Failure: Executive Summary.",
+          "reason": "Executive summary of the same guideline; duplicate coverage."
+        },
+        {
+          "uid": "pubmed-40637782",
+          "title": "Impact of GLP-1 receptor agonists on cardiovascular outcomes in heart failure with preserved ejection fraction.",
+          "reason": "HFpEF (not HFrEF) EF category; off the treatment target of this topic."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "HFrEF is the phenotype where drugs reliably save lives. Network meta-analyses of the contemporary trials converge on the same message: the combination of beta-blocker, ARNI, MRA and SGLT2 inhibitor is the most effective pharmacological strategy for reducing mortality. The clinical gap is implementation — most eligible patients never reach target doses of all four classes. Learn the evidence hierarchy, then learn how to actually get the drugs in.",
+      "teaching_points": [
+        {
+          "claim": "The 2022 AHA/ACC/HFSA guideline is the current American management framework for heart failure including HFrEF, replacing the 2013 guideline and 2017 focused update.",
+          "cites": [
+            "35363499"
+          ]
+        },
+        {
+          "claim": "A 2022 network meta-analysis estimated and compared aggregate treatment benefits of pharmacological therapy combinations in HFrEF, because the effects of contemporary therapy combinations were not well characterised.",
+          "cites": [
+            "34895860"
+          ]
+        },
+        {
+          "claim": "The 2025 updated network meta-analysis found that a combination of beta-blockers, ARNi, mineralocorticoid receptor antagonists and SGLT2 inhibitors was the most effective pharmacological approach for reducing all-cause mortality.",
+          "cites": [
+            "40892608"
+          ]
+        },
+        {
+          "claim": "HFrEF makes up approximately half of the worldwide heart-failure burden (an estimated 23 million people), and presents as dyspnoea or exertional limitation from impaired ventricular ejection.",
+          "cites": [
+            "32749493"
+          ]
+        },
+        {
+          "claim": "SGLT2 inhibitors have been studied across the cardiometabolic spectrum (heart failure, type 2 diabetes, chronic kidney disease, atherosclerotic cardiovascular disease, post-myocardial infarction), with heart-failure outcome benefits that extend beyond any single disease context.",
+          "cites": [
+            "38768620"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "How quickly each component can be uptitrated in hypotensive or renal-impaired patients, and the safety of simultaneous initiation, is not quantified in the retained abstracts.",
+        "Whether newer agents (vericiguat, omecamtiv) add to quadruple therapy in routine practice is not resolved in the retained sources."
+      ],
+      "mcq_angles": [
+        "Ranked mortality benefit of GDMT components from network meta-analysis evidence.",
+        "Why combination therapy beats any single agent escalation in HFrEF.",
+        "SGLT2 inhibitor benefits across cardiometabolic comorbidity contexts.",
+        "Clinical inertia: why eligible patients miss target doses and how to structure titration."
+      ],
+      "case_hooks": [
+        "A man with new EF 25% is already on a beta-blocker for atrial fibrillation; plan addition of ARNI, MRA and SGLT2i with monitoring.",
+        "An exam question lists monotherapy hazard ratios and asks which combination shows the greatest mortality reduction."
+      ],
+      "gaps": "Device therapy (ICD/CRT) indications, acute decompensated HFrEF management, and specific dosing/titration tables are not covered by the retained abstracts; verify against the full guideline before approval.",
+      "sources": [
+        {
+          "pmid": "35363499",
+          "design": "guideline",
+          "year": "2022",
+          "journal": null,
+          "title": "2022 AHA/ACC/HFSA Guideline for the Management of Heart Failure."
+        },
+        {
+          "pmid": "34895860",
+          "design": "meta-analysis",
+          "year": "2022",
+          "journal": null,
+          "title": "A Systematic Review and Network Meta-Analysis of Pharmacological Treatment of Heart Failure With Reduced Ejection Fraction."
+        },
+        {
+          "pmid": "40892608",
+          "design": "meta-analysis",
+          "year": "2025",
+          "journal": null,
+          "title": "Pharmacologic Treatment of Heart Failure With Reduced Ejection Fraction: An Updated Systematic Review and Network Meta-Analysis."
+        },
+        {
+          "pmid": "32749493",
+          "design": "review",
+          "year": "2020",
+          "journal": null,
+          "title": "Heart Failure With Reduced Ejection Fraction: A Review."
+        },
+        {
+          "pmid": "38768620",
+          "design": "meta-analysis",
+          "year": "2024",
+          "journal": null,
+          "title": "Effect of SGLT2 inhibitors on heart failure outcomes and cardiovascular death across the cardiometabolic disease spectrum."
+        }
+      ]
+    }
+  },
+  {
+    "no": 777,
+    "topicId": "dd8706dd-c70c-4897-b4f7-30ae363fbfa6",
+    "topic": "Heart failure remote hemodynamic monitoring",
+    "cluster": "heart failure remote monitoring",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 8,
+      "papersKept": [
+        {
+          "uid": "pubmed-33420917",
+          "title": "Wireless Hemodynamic Monitoring in Patients with Heart Failure.",
+          "year": "2021"
+        },
+        {
+          "uid": "pubmed-38109949",
+          "title": "Benefits of remote hemodynamic monitoring in heart failure.",
+          "year": "2024"
+        },
+        {
+          "uid": "pubmed-41233030",
+          "title": "Current and Future Landscape of Remote Hemodynamic Monitoring.",
+          "year": "2025"
+        },
+        {
+          "uid": "pubmed-39131070",
+          "title": "Hemodynamic Monitoring Devices in the Management of Outpatient Heart Failure.",
+          "year": "2023"
+        },
+        {
+          "uid": "pubmed-38567948",
+          "title": "Implementation of remote monitoring strategies to improve chronic heart failure management.",
+          "year": "2024"
+        },
+        {
+          "uid": "pubmed-37070597",
+          "title": "The CardioMEMS Heart Failure System for chronic heart failure - a European perspective.",
+          "year": "2023"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-30832820",
+          "title": "Imaging Device Therapy: Essentials for the Imager.",
+          "reason": "Written for imaging specialists; tangential to clinical management of remote haemodynamic data."
+        },
+        {
+          "uid": "pubmed-30238134",
+          "title": "[Telemonitoring and pulmonary artery pressure-guided treatment of heart failure].",
+          "reason": "Older (2018) coverage of telemonitoring/PA-pressure guidance superseded by retained newer reviews."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Heart-failure admissions often follow days of silently rising filling pressures that clinic visits miss. Remote haemodynamic monitoring — led by the pulmonary-artery pressure sensor (CardioMEMS) — aims to catch that rise and act on it before the patient decompensates. The evidence landscape is mixed, however: devices are approved and clinically available, but questions about which patients benefit and how programmes should be implemented remain live.",
+      "teaching_points": [
+        {
+          "claim": "Wireless haemodynamic monitoring in heart failure allows volume assessment without physical examination, and data from these devices are used to assist patient management and avoid heart-failure hospitalisations.",
+          "cites": [
+            "33420917"
+          ]
+        },
+        {
+          "claim": "Interest in remote haemodynamic monitoring is driven by persistently high HF mortality despite treatment advances, and by the rising global prevalence of HF and its burden on hospital resources.",
+          "cites": [
+            "38109949"
+          ]
+        },
+        {
+          "claim": "Traditional management based on intermittent clinic visits and subjective symptom reporting often fails to detect early decompensation, motivating a monitoring landscape that includes both implantable and non-implantable technologies.",
+          "cites": [
+            "41233030"
+          ]
+        },
+        {
+          "claim": "Several devices are available for outpatient heart-failure management, but implementation requires practical clinical recommendations for integrating them into daily practice.",
+          "cites": [
+            "39131070",
+            "38567948"
+          ]
+        },
+        {
+          "claim": "The CardioMEMS pulmonary artery pressure sensor is FDA approved and CE marked for remote haemodynamic monitoring to reduce HF hospitalisations, though the clinical evidence base continues to be appraised.",
+          "cites": [
+            "37070597"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Which HF subpopulation (recently hospitalised vs stable chronic) gains most from PA-pressure monitoring is not settled in the retained abstracts.",
+        "Health-economic value and reimbursement vary by system; cost-effectiveness is not resolved in the retained sources."
+      ],
+      "mcq_angles": [
+        "How a pulmonary-artery pressure sensor works and what clinicians act on (PA pressure trends, not single readings).",
+        "The rationale: detecting congestion before symptoms and admission.",
+        "Evidence caveats: approval status versus outcome-trial strength (CHAMPION context).",
+        "Practical programme requirements: who reviews data, response thresholds, escalation pathways."
+      ],
+      "case_hooks": [
+        "A patient with two HF admissions in 6 months has a CardioMEMS implanted; interpret a rising PA-pressure trend and decide the intervention.",
+        "A service is designing a remote-monitoring programme; define patient selection, monitoring workflow and response protocols."
+      ],
+      "gaps": "CHAMPION trial numerical results, GUIDE-HF and MONITOR-HF trial details, and head-to-head comparisons with natriuretic-peptide-guided care are not in the retained abstracts; verify before approval.",
+      "sources": [
+        {
+          "pmid": "33420917",
+          "design": "review",
+          "year": "2021",
+          "journal": null,
+          "title": "Wireless Hemodynamic Monitoring in Patients with Heart Failure."
+        },
+        {
+          "pmid": "38109949",
+          "design": "review",
+          "year": "2024",
+          "journal": null,
+          "title": "Benefits of remote hemodynamic monitoring in heart failure."
+        },
+        {
+          "pmid": "41233030",
+          "design": "review",
+          "year": "2025",
+          "journal": null,
+          "title": "Current and Future Landscape of Remote Hemodynamic Monitoring."
+        },
+        {
+          "pmid": "39131070",
+          "design": "review",
+          "year": "2023",
+          "journal": null,
+          "title": "Hemodynamic Monitoring Devices in the Management of Outpatient Heart Failure."
+        },
+        {
+          "pmid": "38567948",
+          "design": "review",
+          "year": "2024",
+          "journal": null,
+          "title": "Implementation of remote monitoring strategies to improve chronic heart failure management."
+        },
+        {
+          "pmid": "37070597",
+          "design": "review",
+          "year": "2023",
+          "journal": null,
+          "title": "The CardioMEMS Heart Failure System for chronic heart failure - a European perspective."
+        }
+      ]
+    }
+  },
+  {
+    "no": 778,
+    "topicId": "8c680e63-e1f7-456a-8dbc-1dd22fb27891",
+    "topic": "Heart failure remote monitoring: biomarkers, implantable sensors, telemonitoring",
+    "cluster": "heart failure remote monitoring",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 8,
+      "papersKept": [
+        {
+          "uid": "pubmed-26979601",
+          "title": "A review on B-type natriuretic peptide monitoring: assays and biosensors.",
+          "year": "2016"
+        },
+        {
+          "uid": "pubmed-26663507",
+          "title": "Predicting heart failure decompensation using cardiac implantable electronic devices: a review of practices and challenges.",
+          "year": "2016"
+        },
+        {
+          "uid": "pubmed-31202743",
+          "title": "Should We Test for Diastolic Dysfunction? How and How Often?",
+          "year": "2020"
+        },
+        {
+          "uid": "pubmed-42491935",
+          "title": "Digital biomarkers in cardiovascular medicine: a scientific statement of the ESC Working Group on e-Cardiology.",
+          "year": "2026"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-35009564",
+          "title": "Multiparameter Monitoring with a Wearable Cardioverter Defibrillator.",
+          "reason": "Wearable defibrillator/sudden-death-risk focus; tangential to decompensation monitoring."
+        },
+        {
+          "uid": "pubmed-38940991",
+          "title": "Biosensors with left ventricular assist devices.",
+          "reason": "LVAD-specific sensor niche; tangential to routine HF monitoring."
+        },
+        {
+          "uid": "pubmed-41977862",
+          "title": "AI-Enabled Sensor Technologies for Remote Arrhythmic Monitoring in High-Risk Cardiomyopathy Genotypes.",
+          "reason": "Inherited-arrhythmia monitoring focus; tangential to heart-failure decompensation."
+        },
+        {
+          "uid": "pubmed-42488821",
+          "title": "Beyond glucose: wearable and implantable biosensors for continuous monitoring of metabolic, hormonal, and inflammatory markers.",
+          "reason": "Broad metabolic biosensor review; heart-failure-specific content is already covered by retained sources."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Remote HF monitoring has three lanes: blood biomarkers (BNP/NT-proBNP), device-based sensors already present in many patients (pacemakers and defibrillators that track impedance and other trends), and structured telemonitoring. Each lane detects different signals at different time horizons, and each has distinct failure modes — biomarkers fluctuate with renal function, device algorithms alarm imperfectly, and telemonitoring trials have been mixed. The skill is matching the lane to the patient.",
+      "teaching_points": [
+        {
+          "claim": "B-type natriuretic peptide, recognised since 1988 as a powerful cardiovascular biomarker, is central to heart-failure monitoring, with ongoing effort devoted to precise assay and biosensor-based measurement.",
+          "cites": [
+            "26979601"
+          ]
+        },
+        {
+          "claim": "Cardiac implantable electronic devices include remote monitoring tools intended to predict worsening heart failure and avert hospitalisations, but device measurements such as intrathoracic impedance face practical and interpretive challenges.",
+          "cites": [
+            "26663507"
+          ]
+        },
+        {
+          "claim": "HF symptoms reflect elevated ventricular filling pressures, and tests that characterise diastolic function help identify the pressure elevation that precedes decompensation — informing how often and how to test.",
+          "cites": [
+            "31202743"
+          ]
+        },
+        {
+          "claim": "Digital biomarkers derived from digital health technologies enable quantifiable, near-continuous, real-world capture of pathophysiological signals, and their role in cardiovascular medicine is formalised in an ESC Working Group scientific statement.",
+          "cites": [
+            "42491935"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Whether routine natriuretic-peptide-guided titration improves outcomes in routine practice (beyond trial settings) is not settled in the retained abstracts.",
+        "Which combinations of biomarker, device and telemonitoring signals add predictive value over any single lane is unresolved."
+      ],
+      "mcq_angles": [
+        "BNP/NT-proBNP: what raises it besides HF (renal dysfunction, age, AF) and how that limits guided therapy.",
+        "Device-measured intrathoracic impedance: promise and false-alarm limitations.",
+        "Diastolic-function testing and filling-pressure estimation in monitoring.",
+        "Digital biomarkers as a formal monitoring category (ESC framing)."
+      ],
+      "case_hooks": [
+        "A patient's BNP doubles but creatinine has also risen; decide whether this is decompensation, renal deterioration, or both.",
+        "A CRT device flags rising impedance trends in an asymptomatic patient; plan the response."
+      ],
+      "gaps": "Telemonitoring RCT evidence (e.g., TIM-HF2) and weight/blood-pressure home-monitoring trial data are not in the retained abstracts; verify before approval.",
+      "sources": [
+        {
+          "pmid": "26979601",
+          "design": "review",
+          "year": "2016",
+          "journal": null,
+          "title": "A review on B-type natriuretic peptide monitoring: assays and biosensors."
+        },
+        {
+          "pmid": "26663507",
+          "design": "review",
+          "year": "2016",
+          "journal": null,
+          "title": "Predicting heart failure decompensation using cardiac implantable electronic devices: a review of practices and challenges."
+        },
+        {
+          "pmid": "31202743",
+          "design": "review",
+          "year": "2020",
+          "journal": null,
+          "title": "Should We Test for Diastolic Dysfunction? How and How Often?"
+        },
+        {
+          "pmid": "42491935",
+          "design": "review",
+          "year": "2026",
+          "journal": null,
+          "title": "Digital biomarkers in cardiovascular medicine: a scientific statement of the ESC Working Group on e-Cardiology."
+        }
+      ]
+    }
+  },
+  {
+    "no": 779,
+    "topicId": "9af0ef7e-8756-4975-a5e5-8efa7eebf205",
+    "topic": "Heart failure SGLT2 inhibitor treatment",
+    "cluster": "SGLT2 inhibitors in heart failure",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 8,
+      "papersKept": [
+        {
+          "uid": "pubmed-32877652",
+          "title": "SGLT2 inhibitors in patients with heart failure with reduced ejection fraction: a meta-analysis of the EMPEROR-Reduced and DAPA-HF trials.",
+          "year": "2020"
+        },
+        {
+          "uid": "pubmed-40884036",
+          "title": "Dapagliflozin in Patients Hospitalized for Heart Failure: Primary Results of the DAPA ACT HF-TIMI 68 Randomized Clinical Trial and Meta-Analysis of Sodium-Glucose Cotransporter-2 Inhibitors in Patients Hospitalized for Heart Failure.",
+          "year": "2025"
+        },
+        {
+          "uid": "pubmed-38806171",
+          "title": "2024 update in heart failure.",
+          "year": "2025"
+        },
+        {
+          "uid": "pubmed-34216571",
+          "title": "SGLT2 inhibitors and GLP-1 receptor agonists: established and emerging indications.",
+          "year": "2021"
+        },
+        {
+          "uid": "pubmed-36351458",
+          "title": "Impact of diabetes on the effects of sodium glucose co-transporter-2 inhibitors on kidney outcomes: collaborative meta-analysis of large placebo-controlled trials.",
+          "year": "2022"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-41203232",
+          "title": "SGLT2 Inhibitors and Kidney Outcomes by Glomerular Filtration Rate and Albuminuria: A Meta-Analysis.",
+          "reason": "CKD-population kidney-outcome focus; tangential to heart-failure treatment decision-making."
+        },
+        {
+          "uid": "pubmed-38631776",
+          "title": "Genitourinary Tract Infections in Patients Taking SGLT2 Inhibitors: JACC Review Topic of the Week.",
+          "reason": "Adverse-event (GU infection) side topic; tangential to HF efficacy teaching."
+        },
+        {
+          "uid": "pubmed-38287703",
+          "title": "Sodium-glucose cotransporter-2 inhibitors (SGLT2) in frail or older people with type 2 diabetes and heart failure: a systematic review and meta-analysis.",
+          "reason": "Frail/older T2D subpopulation; efficacy-and-safety detail already covered by broader retained HF meta-analyses."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "SGLT2 inhibitors are the defining heart-failure drug story of this decade: a diabetes drug class that turned out to reduce cardiovascular death and HF hospitalisation in HFrEF patients with and without diabetes, then extended benefit into HFpEF. The trainee should know the trial spine (DAPA-HF, EMPEROR-Reduced), the meta-analytic consensus, the nuance that in-hospital initiation data are suggestive rather than definitive, and how diabetes status modifies — mostly by not modifying — the effect.",
+      "teaching_points": [
+        {
+          "claim": "Meta-analysis of EMPEROR-Reduced and DAPA-HF showed that SGLT2 inhibition (empagliflozin and dapagliflozin) reduced the combined risk of cardiovascular death or hospitalisation for heart failure in HFrEF patients.",
+          "cites": [
+            "32877652"
+          ]
+        },
+        {
+          "claim": "In the DAPA ACT HF-TIMI 68 trial, in-hospital initiation of dapagliflozin did not significantly reduce cardiovascular death or worsening HF through 2 months in hospitalised HF patients; however, the totality of randomised trial data suggests in-hospital SGLT2i initiation may reduce early cardiovascular death or worsening HF and all-cause mortality.",
+          "cites": [
+            "40884036"
+          ]
+        },
+        {
+          "claim": "The 2023 ESC focused update made SGLT2 inhibitors a headline recommendation in HF management, reflecting trial results that now span the ejection-fraction spectrum.",
+          "cites": [
+            "38806171"
+          ]
+        },
+        {
+          "claim": "SGLT2 inhibitors and GLP-1 receptor agonists entered cardiology from glucose-lowering therapy, with cardiovascular outcome trial evidence establishing protection beyond glycaemic control — including in heart failure.",
+          "cites": [
+            "34216571"
+          ]
+        },
+        {
+          "claim": "Collaborative meta-analysis of large placebo-controlled trials confirmed that SGLT2 inhibitors reduce adverse kidney and cardiovascular outcomes across patients with heart failure, chronic kidney disease, or type 2 diabetes with high atherosclerotic risk, informing how diabetes status modulates benefit.",
+          "cites": [
+            "36351458"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "The signal for benefit of starting SGLT2 inhibitors during an acute HF admission is suggestive from pooled data but not proven by the individual DAPA ACT HF-TIMI 68 trial.",
+        "Optimal duration and whether effects persist through advanced CKD (stage 4) are incompletely defined in the retained sources."
+      ],
+      "mcq_angles": [
+        "DAPA-HF and EMPEROR-Reduced: populations and the diabetes-independence of benefit.",
+        "Interpreting a neutral individual trial (DAPA ACT HF-TIMI 68) alongside a supportive meta-analysis.",
+        "Mechanistic shift: from glucose-lowering to cardiorenal protection drug class.",
+        "Practical initiation: who, when, and what renal thresholds allow."
+      ],
+      "case_hooks": [
+        "A hospitalised HF patient is stable and diuresing on day 2; decide whether to start dapagliflozin before discharge and what to tell the team about the evidence.",
+        "A non-diabetic patient asks why a 'diabetes drug' is being prescribed for his heart failure; explain the trial evidence."
+      ],
+      "gaps": "EMPEROR-Preserved/DELIVER HFpEF results and SGLT2i safety counselling (euglycaemic DKA, genital infections) are not detailed in the retained abstracts; verify before approval.",
+      "sources": [
+        {
+          "pmid": "32877652",
+          "design": "meta-analysis",
+          "year": "2020",
+          "journal": null,
+          "title": "SGLT2 inhibitors in patients with heart failure with reduced ejection fraction: a meta-analysis of the EMPEROR-Reduced and DAPA-HF trials."
+        },
+        {
+          "pmid": "40884036",
+          "design": "meta-analysis",
+          "year": "2025",
+          "journal": null,
+          "title": "Dapagliflozin in Patients Hospitalized for Heart Failure: Primary Results of the DAPA ACT HF-TIMI 68 Randomized Clinical Trial and Meta-Analysis of Sodium-Glucose Cotransporter-2 Inhibitors in Patients Hospitalized for Heart Failure."
+        },
+        {
+          "pmid": "38806171",
+          "design": "review",
+          "year": "2025",
+          "journal": null,
+          "title": "2024 update in heart failure."
+        },
+        {
+          "pmid": "34216571",
+          "design": "review",
+          "year": "2021",
+          "journal": null,
+          "title": "SGLT2 inhibitors and GLP-1 receptor agonists: established and emerging indications."
+        },
+        {
+          "pmid": "36351458",
+          "design": "meta-analysis",
+          "year": "2022",
+          "journal": null,
+          "title": "Impact of diabetes on the effects of sodium glucose co-transporter-2 inhibitors on kidney outcomes: collaborative meta-analysis of large placebo-controlled trials."
+        }
+      ]
+    }
+  },
+  {
+    "no": 780,
+    "topicId": "f8166854-2666-4ab9-a9fe-795b7af32f60",
+    "topic": "heart failure with preserved ejection fraction",
+    "cluster": "HFpEF",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 8,
+      "papersKept": [
+        {
+          "uid": "pubmed-38367642",
+          "title": "Heart failure with preserved ejection fraction: everything the clinician needs to know.",
+          "year": "2024"
+        },
+        {
+          "uid": "pubmed-39143132",
+          "title": "Heart failure with preserved ejection fraction.",
+          "year": "2024"
+        },
+        {
+          "uid": "pubmed-35363499",
+          "title": "2022 AHA/ACC/HFSA Guideline for the Management of Heart Failure.",
+          "year": "2022"
+        },
+        {
+          "uid": "pubmed-38928371",
+          "title": "Hypertension and Heart Failure: From Pathophysiology to Treatment.",
+          "year": "2024"
+        },
+        {
+          "uid": "pubmed-38806171",
+          "title": "2024 update in heart failure.",
+          "year": "2025"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-35379503",
+          "title": "2022 AHA/ACC/HFSA Guideline for the Management of Heart Failure: A Report of the American College of Cardiology/American Heart Association Joint Committee on Clinical Practice Guidelines.",
+          "reason": "Duplicate record of the retained 2022 AHA/ACC/HFSA guideline (35363499)."
+        },
+        {
+          "uid": "pubmed-40789597",
+          "title": "Pharmacotherapy for obesity management in adults: 2025 clinical practice guideline update.",
+          "reason": "Obesity pharmacotherapy; tangential to HFpEF management."
+        },
+        {
+          "uid": "pubmed-28460827",
+          "title": "Heart failure.",
+          "reason": "General 2017 HF review superseded by the retained HFpEF-specific and guideline sources."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "HFpEF is at least half of all heart failure and the half with the fewest proven therapies. Diagnosis is the first hurdle — symptoms and signs are nonspecific and echo evidence of elevated filling pressures is required — and comorbidity management (hypertension, obesity, diabetes, atrial fibrillation) does most of the therapeutic work. SGLT2 inhibitors are now the one class with a positive HF-outcome trial in this phenotype, so the modern HFpEF consultation is diagnosis, phenotype, comorbidity control, and a dapagliflozin or empagliflozin prescription.",
+      "teaching_points": [
+        {
+          "claim": "HFpEF represents at least half of all heart-failure cases, driven by an ageing population and rising comorbidities such as obesity and diabetes; it is increasingly recognised in clinical practice.",
+          "cites": [
+            "38367642"
+          ]
+        },
+        {
+          "claim": "HFpEF accounts for nearly half of all heart-failure cases with rising prevalence, is associated with significant morbidity and mortality, and carries specific risk factors that should structure work-up.",
+          "cites": [
+            "39143132"
+          ]
+        },
+        {
+          "claim": "The 2022 AHA/ACC/HFSA guideline is the current American management framework covering HFpEF as well as reduced-EF phenotypes.",
+          "cites": [
+            "35363499"
+          ]
+        },
+        {
+          "claim": "Hypertension is one of the primary and most common risk factors for heart failure across the entire ejection-fraction spectrum, and adequate blood-pressure control reduces HF risk — a cornerstone of HFpEF management.",
+          "cites": [
+            "38928371"
+          ]
+        },
+        {
+          "claim": "The 2023 ESC focused update introduced SGLT2 inhibitors as a key recommendation across the ejection-fraction spectrum, the first drug class with outcome evidence relevant to HFpEF.",
+          "cites": [
+            "38806171"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Disease-modifying therapy for HFpEF beyond SGLT2 inhibitors (including spironolactone, sacubitril/valsartan) has mixed or phenotype-dependent evidence not resolved in the retained abstracts.",
+        "How to phenotype HFpEF subgroups for targeted therapy (obesity-driven, atrial-fibrillation-driven) remains investigational."
+      ],
+      "mcq_angles": [
+        "Diagnostic criteria for HFpEF: symptoms plus objective evidence of elevated filling pressures (echo parameters, natriuretic peptides).",
+        "Comorbidity-first management: hypertension, obesity, diabetes, atrial fibrillation.",
+        "Where SGLT2 inhibitors fit in HFpEF and what the trial evidence showed.",
+        "Why prior HFpEF trials failed and what that teaches about phenotype heterogeneity."
+      ],
+      "case_hooks": [
+        "A breathless 72-year-old with EF 60%, hypertension, BMI 36 and borderline BNP; complete the diagnostic pathway for HFpEF.",
+        "A patient with established HFpEF asks what treatment will keep her out of hospital; build the comorbidity-control and SGLT2i plan."
+      ],
+      "gaps": "Diagnostic scoring systems (H2FPEF, HFA-PEFF), exercise-stress echo, and trial details (EMPEROR-Preserved, DELIVER, TOPCAT) are not covered by the retained abstracts; verify against the full guideline and primary trials before approval.",
+      "sources": [
+        {
+          "pmid": "38367642",
+          "design": "review",
+          "year": "2024",
+          "journal": null,
+          "title": "Heart failure with preserved ejection fraction: everything the clinician needs to know."
+        },
+        {
+          "pmid": "39143132",
+          "design": "review",
+          "year": "2024",
+          "journal": null,
+          "title": "Heart failure with preserved ejection fraction."
+        },
+        {
+          "pmid": "35363499",
+          "design": "guideline",
+          "year": "2022",
+          "journal": null,
+          "title": "2022 AHA/ACC/HFSA Guideline for the Management of Heart Failure."
+        },
+        {
+          "pmid": "38928371",
+          "design": "review",
+          "year": "2024",
+          "journal": null,
+          "title": "Hypertension and Heart Failure: From Pathophysiology to Treatment."
+        },
+        {
+          "pmid": "38806171",
+          "design": "review",
+          "year": "2025",
+          "journal": null,
+          "title": "2024 update in heart failure."
+        }
+      ]
+    }
+  }
+]

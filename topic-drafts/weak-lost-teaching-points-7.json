@@ -1,0 +1,974 @@
+[
+ {
+  "no": 9100,
+  "topicId": "658a892c-867a-43f8-93b2-23d9db0ddc19",
+  "topic": "aortic dissection",
+  "cluster": "aortic_dissection",
+  "status": "draft_pending_clinician_review",
+  "dbEvidence": {
+   "papersKept": [],
+   "papersDropped": [],
+   "guidelinesKept": [],
+   "guidelinesDropped": []
+  },
+  "page": {
+   "mentor_intro": "Retrieved evidence centres on outcomes rather than the diagnostic pathway: type A dissection carries organ-specific malperfusion risk that predicts in-hospital death, and for type B the question is whether and when to add TEVAR to medical therapy. Guideline-level recommendations were not in the retrieved set.",
+   "teaching_points": [
+    {
+     "claim": "In acute type A aortic dissection, in-hospital survival varies with the type of malperfusion; mesenteric, coronary and cerebral malperfusion carried the highest in-hospital mortality, so organ-specific malperfusion should inform perioperative risk and surgical planning.",
+     "cites": [
+      "39792052"
+     ]
+    },
+    {
+     "claim": "Women with type A dissection more often had pericardial effusion or tamponade, while in-hospital surgical mortality did not differ by sex (RR 1.02), suggesting a personalised approach.",
+     "cites": [
+      "36629802"
+     ]
+    },
+    {
+     "claim": "A meta-analysis found TEVAR was associated with lower mortality than best medical therapy in type B dissection, especially in patients aged 65 or older, at the cost of longer hospital and ICU stays, with randomised trials still needed.",
+     "cites": [
+      "39261808"
+     ]
+    },
+    {
+     "claim": "For uncomplicated type B dissection, the role of TEVAR remains debated: it improves aortic remodelling but there is no definitive survival evidence, and trials and guidelines that include high-risk features are needed.",
+     "cites": [
+      "40582458"
+     ]
+    },
+    {
+     "claim": "Meta-analyses of TEVAR timing found the subacute phase (14-90 days from onset) associated with better long-term outcomes, including lower aortic-related death and reintervention.",
+     "cites": [
+      "38142754",
+      "38590280"
+     ]
+    },
+    {
+     "claim": "Retrograde type A dissection after TEVAR is rare but carries high mortality (about 42%), especially in the first month and with proximal bare-stent grafts.",
+     "cites": [
+      "37058052"
+     ]
+    },
+    {
+     "claim": "The GERAADA score showed better calibration than EuroSCORE II for 30-day mortality after surgery for acute type A dissection, though discrimination of both was moderate.",
+     "cites": [
+      "40221854"
+     ]
+    },
+    {
+     "claim": "AI tools can feasibly detect aortic dissection on CT but do not yet demonstrate clinical applicability, and most studies were low quality.",
+     "cites": [
+      "40503985"
+     ]
+    }
+   ],
+   "uncertainties": [
+    "Whether pre-emptive TEVAR improves survival in uncomplicated type B dissection."
+   ],
+   "mcq_angles": [
+    "Malperfusion type and operative mortality in type A dissection.",
+    "Timing of TEVAR in type B dissection."
+   ],
+   "case_hooks": [
+    "Type A dissection with mesenteric malperfusion on CT angiography."
+   ],
+   "gaps": "Presentation, the diagnostic pathway (CT angiography, D-dimer), blood-pressure and heart-rate targets with beta-blockers, indications for emergency surgery and classification systems are not stated in the retrieved abstract excerpts. Needs the ESC 2024 or ACC/AHA 2022 aortic guideline before approval.",
+   "sources": [
+    {
+     "pmid": "36629802",
+     "doi": "10.1093/eurjpc/zwad009",
+     "design": "meta-analysis",
+     "year": "2023",
+     "journal": null,
+     "title": "Sex differences in type A acute aortic dissection: a systematic review and meta-analysis"
+    },
+    {
+     "pmid": "37058052",
+     "doi": "10.1097/md.0000000000032944",
+     "design": "meta-analysis",
+     "year": "2023",
+     "journal": null,
+     "title": "A systematic review and meta-analysis of retrograde type A aortic dissection after thoracic endovascular aortic repair in patients with type B aortic dissection"
+    },
+    {
+     "pmid": "38142754",
+     "doi": "10.1016/j.tcm.2023.12.005",
+     "design": "meta-analysis",
+     "year": "2024",
+     "journal": null,
+     "title": "Thoracic endovascular aortic repair for hyperacute, acute, subacute and chronic type B aortic dissection: Meta-analysis of reconstructed time-to-event data"
+    },
+    {
+     "pmid": "38590280",
+     "doi": "10.1177/15266028241245282",
+     "design": "meta-analysis",
+     "year": "2026",
+     "journal": null,
+     "title": "Optimal Timing of Pre-emptive Thoracic Endovascular Aortic Repair in Uncomplicated Type B Aortic Dissection: A Network Meta-Analysis"
+    },
+    {
+     "pmid": "39261808",
+     "doi": "10.1186/s12893-024-02555-4",
+     "design": "meta-analysis",
+     "year": "2024",
+     "journal": null,
+     "title": "Efficacy of thoracic endovascular aortic repair versus medical therapy for treatment of type B aortic dissection"
+    },
+    {
+     "pmid": "39792052",
+     "doi": "10.1093/bjsopen/zrae146",
+     "design": "meta-analysis",
+     "year": "2024",
+     "journal": null,
+     "title": "Organ-specific malperfusion in acute type A aortic dissection: epidemiological meta-analysis of incidence rates"
+    },
+    {
+     "pmid": "40221854",
+     "doi": "10.1093/ejcts/ezaf138",
+     "design": "meta-analysis",
+     "year": "2025",
+     "journal": null,
+     "title": "The German Registry of Acute Aortic Dissection Type A score for 30-day mortality prediction in Type A Acute Aortic Dissection surgery: a systematic review and meta-analysis"
+    },
+    {
+     "pmid": "40503985",
+     "doi": "10.1148/ryct.240353",
+     "design": "meta-analysis",
+     "year": "2025",
+     "journal": null,
+     "title": "Role of Artificial Intelligence in Detecting and Classifying Aortic Dissection: Where Are We? A Systematic Review and Meta-Analysis"
+    },
+    {
+     "pmid": "40582458",
+     "doi": "10.1016/j.avsg.2025.06.020",
+     "design": "meta-analysis",
+     "year": "2025",
+     "journal": null,
+     "title": "TEVAR Versus Optimal Medical Therapy for Uncomplicated Type B Aortic Dissection: A Systematic Review &amp; Meta-analysis"
+    }
+   ]
+  }
+ },
+ {
+  "no": 9101,
+  "topicId": "72e61599-48bb-40f1-ab08-de8bdfc04af5",
+  "topic": "asthma exacerbation",
+  "cluster": "asthma_exac",
+  "status": "draft_pending_clinician_review",
+  "dbEvidence": {
+   "papersKept": [],
+   "papersDropped": [],
+   "guidelinesKept": [],
+   "guidelinesDropped": []
+  },
+  "page": {
+   "mentor_intro": "Acute asthma care centres on bronchodilators and systemic corticosteroids; high-dose inhaled corticosteroids may add benefit, and IV magnesium helps children. Prevention depends on adherence, eosinophilic phenotype and inhaler technique.",
+   "teaching_points": [
+    {
+     "claim": "A meta-analysis found moderate evidence that high-dose inhaled corticosteroids added to systemic corticosteroids reduce hospital admission (OR 0.73) in ED treatment of moderate-to-severe exacerbations.",
+     "cites": [
+      "31521830"
+     ]
+    },
+    {
+     "claim": "In children, intravenous magnesium sulfate improved pulmonary function and reduced hospitalisation and further treatment, whereas nebulised magnesium had no significant effect.",
+     "cites": [
+      "29851914"
+     ]
+    },
+    {
+     "claim": "The Italian paediatric acute-asthma guideline advises against epinephrine, allows IV magnesium sulfate in severe attacks or FEV1 below 60% unresponsive to inhaled therapy, allows heliox in life-threatening attacks, and does not recommend leukotriene receptor antagonists.",
+     "cites": [
+      "29625590"
+     ]
+    },
+    {
+     "claim": "Adherence of 80% or more lowered the odds of severe exacerbation (OR 0.53), and discontinuing therapy raised it.",
+     "cites": [
+      "32192946"
+     ]
+    },
+    {
+     "claim": "Blood eosinophils of 200 cells/microlitre or more are associated with exacerbation (a modifiable factor in asthma management).",
+     "cites": [
+      "33135257"
+     ]
+    },
+    {
+     "claim": "Inhaler technique education reduced exacerbation rates in older adults with asthma or COPD (pooled risk ratio 0.71).",
+     "cites": [
+      "30291745"
+     ]
+    },
+    {
+     "claim": "Oral timolol and infusion propranolol were associated with higher asthma attack risk and should be avoided in patients at risk of asthma.",
+     "cites": [
+      "33432057"
+     ]
+    },
+    {
+     "claim": "GORD and asthma exacerbation are only weakly associated.",
+     "cites": [
+      "34448255"
+     ]
+    }
+   ],
+   "uncertainties": [
+    "Optimal role of inhaled steroids in the emergency department."
+   ],
+   "mcq_angles": [
+    "IV magnesium in children.",
+    "Beta-blockers that provoke asthma."
+   ],
+   "case_hooks": [
+    "Child with severe attack unresponsive to initial inhaled therapy."
+   ],
+   "gaps": "Severity classification, oxygen targets, nebulised salbutamol and ipratropium dosing, oral steroid doses, and escalation to ventilation are not stated in the retrieved abstract excerpts. Needs the BTS/SIGN or GINA acute asthma sections.",
+   "sources": [
+    {
+     "pmid": "29625590",
+     "doi": "10.1186/s13052-018-0481-1",
+     "design": "guideline",
+     "year": "2018",
+     "journal": null,
+     "title": "Guideline on management of the acute asthma attack in children by Italian Society of Pediatrics"
+    },
+    {
+     "pmid": "29851914",
+     "doi": "10.1097/pec.0000000000000909",
+     "design": "meta-analysis",
+     "year": "2018",
+     "journal": null,
+     "title": "Intravenous and Nebulized Magnesium Sulfate for Treating Acute Asthma in Children: A Systematic Review and Meta-Analysis"
+    },
+    {
+     "pmid": "30291745",
+     "doi": "10.1111/jgs.15602",
+     "design": "meta-analysis",
+     "year": "2019",
+     "journal": null,
+     "title": "Inhaler Technique Education and Exacerbation Risk in Older Adults with Asthma or Chronic Obstructive Pulmonary Disease: A Meta-Analysis"
+    },
+    {
+     "pmid": "31521830",
+     "doi": "10.1016/j.jaip.2019.08.051",
+     "design": "meta-analysis",
+     "year": "2020",
+     "journal": null,
+     "title": "Inhaled Corticosteroids in Acute Asthma: A Systemic Review and Meta-Analysis"
+    },
+    {
+     "pmid": "32192946",
+     "doi": "10.1016/j.japh.2020.02.010",
+     "design": "meta-analysis",
+     "year": "2020",
+     "journal": null,
+     "title": "Association between adherence and severe asthma exacerbation: A systematic review and meta-analysis"
+    },
+    {
+     "pmid": "33135257",
+     "doi": "10.1111/pai.13403",
+     "design": "meta-analysis",
+     "year": "2021",
+     "journal": null,
+     "title": "Blood eosinophil count as predictor of asthma exacerbation. A meta-analysis"
+    },
+    {
+     "pmid": "33432057",
+     "doi": "10.1038/s41598-020-79837-3",
+     "design": "meta-analysis",
+     "year": "2021",
+     "journal": null,
+     "title": "Do beta-adrenergic blocking agents increase asthma exacerbation? A network meta-analysis of randomized controlled trials"
+    },
+    {
+     "pmid": "34448255",
+     "doi": "10.1111/pai.13655",
+     "design": "meta-analysis",
+     "year": "2022",
+     "journal": null,
+     "title": "Gastroesophageal reflux disease and asthma exacerbation: A systematic review and meta-analysis"
+    }
+   ]
+  }
+ },
+ {
+  "no": 9102,
+  "topicId": "26a3ac71-94ff-4d2c-a38e-6865650161e0",
+  "topic": "best initial test for suspected pulmonary embolism in a stable patient",
+  "cluster": "pe_diag",
+  "status": "draft_pending_clinician_review",
+  "dbEvidence": {
+   "papersKept": [],
+   "papersDropped": [],
+   "guidelinesKept": [],
+   "guidelinesDropped": []
+  },
+  "page": {
+   "mentor_intro": "In a haemodynamically stable patient the first step is a pre-test probability assessment, then D-dimer in non-high probability, then imaging. Age-adjusted D-dimer and the YEARS algorithm reduce imaging while staying safe.",
+   "teaching_points": [
+    {
+     "claim": "Original and simplified Wells rules combined with age-adjusted D-dimer have similar performance for ruling out PE, and the simplified Wells rule is preferred for ease of use.",
+     "cites": [
+      "28106338"
+     ]
+    },
+    {
+     "claim": "Age-adjusted D-dimer cutoffs combined with low clinical probability rule out PE with fewer false positives than conventional D-dimer, across 47,720 patients with non-high clinical probability.",
+     "cites": [
+      "34814782"
+     ]
+    },
+    {
+     "claim": "The YEARS algorithm had pooled sensitivity of 96% and specificity of 50%, with a risk ratio of 0.78 for advanced imaging use, suggesting it is effective and safe.",
+     "cites": [
+      "39634805"
+     ]
+    },
+    {
+     "claim": "D-dimer interpretation depends on assay performance characteristics, and international guidelines differ in how they allow age-adjusted and pretest-adjusted thresholds.",
+     "cites": [
+      "38135252"
+     ]
+    },
+    {
+     "claim": "In pregnancy, introducing the pregnancy-adapted YEARS guideline increased investigation for PE, and over 5 years there were no known missed cases among women assessed with D-dimer alone.",
+     "cites": [
+      "42283136"
+     ]
+    },
+    {
+     "claim": "In cancer patients, D-dimer with clinical decision rules had failure rates similar to standard imaging, with the highest yield (26%) from revised Geneva with age-adjusted D-dimer and the YEARS algorithm.",
+     "cites": [
+      "41354153"
+     ]
+    },
+    {
+     "claim": "In COVID-19, D-dimer of at least 1000 micrograms/L may help select patients for CT pulmonary angiography.",
+     "cites": [
+      "33966132"
+     ]
+    },
+    {
+     "claim": "Double low-dose CT pulmonary angiography is feasible, with reduced radiation and contrast dose without compromising diagnostic image quality.",
+     "cites": [
+      "32008552"
+     ]
+    }
+   ],
+   "uncertainties": [
+    "Optimal D-dimer thresholds in special populations."
+   ],
+   "mcq_angles": [
+    "Pre-test probability before D-dimer.",
+    "Age-adjusted D-dimer cutoff."
+   ],
+   "case_hooks": [
+    "Stable patient with pleuritic pain and low Wells score."
+   ],
+   "gaps": "PERC, the age-adjusted formula (age x 10 micrograms/L above 50), Wells and Geneva score components, V/Q scanning and CTPA pathways are not stated in the retrieved abstract excerpts.",
+   "sources": [
+    {
+     "pmid": "28106338",
+     "doi": "10.1111/jth.13630",
+     "design": "meta-analysis",
+     "year": "2017",
+     "journal": null,
+     "title": "The original and simplified Wells rules and age-adjusted D-dimer testing to rule out pulmonary embolism: an individual patient data meta-analysis"
+    },
+    {
+     "pmid": "32008552",
+     "doi": "10.2174/1573405614666180813120619",
+     "design": "systematic review",
+     "year": "2019",
+     "journal": null,
+     "title": "A Systematic Review of Double Low-dose CT Pulmonary Angiography in Pulmonary Embolism"
+    },
+    {
+     "pmid": "33966132",
+     "doi": "10.1007/s00330-021-08003-8",
+     "design": "meta-analysis",
+     "year": "2021",
+     "journal": null,
+     "title": "Pulmonary embolism in patients with COVID-19 and value of D-dimer assessment: a meta-analysis"
+    },
+    {
+     "pmid": "34814782",
+     "doi": "10.1177/21501327211054996",
+     "design": "meta-analysis",
+     "year": "2021",
+     "journal": null,
+     "title": "Age-Adjusted D-Dimer in the Prediction of Pulmonary Embolism: Systematic Review and Meta-analysis"
+    },
+    {
+     "pmid": "38135252",
+     "doi": "10.1016/j.jtha.2023.12.015",
+     "design": "guideline",
+     "year": "2024",
+     "journal": null,
+     "title": "D-dimer Levels for the exclusion of pulmonary embolism: making sense of international guideline recommendations"
+    },
+    {
+     "pmid": "39634805",
+     "doi": "10.18295/squmj.1.2024.007",
+     "design": "meta-analysis",
+     "year": "2024",
+     "journal": null,
+     "title": "Diagnostic Test Accuracy of the YEARS Algorithm for Pulmonary Embolism: A systematic review and meta-analysis"
+    },
+    {
+     "pmid": "41354153",
+     "doi": "10.1016/j.jtha.2025.10.035",
+     "design": "meta-analysis",
+     "year": "2026",
+     "journal": null,
+     "title": "Safety and efficiency of D-dimer testing in combination with clinical decision rules to exclude pulmonary embolism in patients with cancer: individual patient data meta-analysis"
+    },
+    {
+     "pmid": "42283136",
+     "doi": "10.1111/1742-6723.70297",
+     "design": "guideline",
+     "year": "2026",
+     "journal": null,
+     "title": "Suspected Pulmonary Embolism Exclusion With D-Dimers in Emergency Departments: Pregnancy (SPEED-ED Pregnancy). A Retrospective Evaluation of the Pregnancy-Adapted YEARS Guideline"
+    }
+   ]
+  }
+ },
+ {
+  "no": 9103,
+  "topicId": "5d22d80b-ffbf-44a8-bc0c-4e34d4e3765f",
+  "topic": "Cushings disease: pituitary source, inferior petrosal sinus sampling, transsphenoidal surgery",
+  "cluster": "cushing",
+  "status": "draft_pending_clinician_review",
+  "dbEvidence": {
+   "papersKept": [],
+   "papersDropped": [],
+   "guidelinesKept": [],
+   "guidelinesDropped": []
+  },
+  "page": {
+   "mentor_intro": "Distinguishing pituitary from ectopic ACTH source relies on dynamic testing, pituitary MRI and bilateral inferior petrosal sinus sampling (BIPSS). BIPSS has high diagnostic accuracy for confirming a pituitary source but its tumour lateralisation may not predict surgical remission.",
+   "teaching_points": [
+    {
+     "claim": "A meta-analysis of BIPSS in ACTH-dependent Cushing syndrome found sensitivity 0.94 and specificity 0.89, and concluded it should be used to identify the ACTH source.",
+     "cites": [
+      "32943040"
+     ]
+    },
+    {
+     "claim": "IPSS tumour lateralisation was not clearly associated with postoperative remission or cure, questioning its use for surgical planning rather than confirming a pituitary source.",
+     "cites": [
+      "38081579"
+     ]
+    },
+    {
+     "claim": "Prolactin adjustment in BIPSS improved sensitivity for Cushing disease (difference 5.39%) but did not help identify ectopic ACTH syndrome.",
+     "cites": [
+      "36649781"
+     ]
+    },
+    {
+     "claim": "Desmopressin-stimulated IPSS shows improved diagnostic performance relative to CRH stimulation, with pooled positive predictive value trends.",
+     "cites": [
+      "35820339"
+     ]
+    },
+    {
+     "claim": "In dynamic testing, a positive ACTH response after the CRH test makes Cushing disease highly likely; high-dose dexamethasone suppression and desmopressin tests were less accurate than CRH testing.",
+     "cites": [
+      "36453141"
+     ]
+    },
+    {
+     "claim": "Detection of an adenoma on MRI improves the chance of curative resection in Cushing disease.",
+     "cites": [
+      "36759141"
+     ]
+    },
+    {
+     "claim": "The 10 microgram desmopressin test has low confidence in its estimated accuracy, as prediction intervals were wide.",
+     "cites": [
+      "38352712"
+     ]
+    },
+    {
+     "claim": "The 2008 Endocrine Society screening recommendations for Cushing syndrome are still considered valid in 2022.",
+     "cites": [
+      "35730067"
+     ]
+    },
+    {
+     "claim": "Etomidate effectively and safely reduces cortisol in severe Cushing syndrome, and mifepristone needs close monitoring for cortisol withdrawal, hypokalaemia and antiprogesterone effects.",
+     "cites": [
+      "40109876",
+      "33292727"
+     ]
+    }
+   ],
+   "uncertainties": [
+    "Value of IPSS lateralisation for surgery."
+   ],
+   "mcq_angles": [
+    "BIPSS to separate pituitary from ectopic ACTH.",
+    "Dynamic tests for ACTH-dependent Cushing."
+   ],
+   "case_hooks": [
+    "ACTH-dependent Cushing syndrome with negative pituitary MRI."
+   ],
+   "gaps": "Transsphenoidal surgery remission rates, post-operative cortisol thresholds, adrenal insufficiency management and second-line options are not stated in the retrieved abstract excerpts.",
+   "sources": [
+    {
+     "pmid": "32943040",
+     "doi": "10.1186/s12902-020-00623-3",
+     "design": "meta-analysis",
+     "year": "2020",
+     "journal": null,
+     "title": "Differential diagnostic value of bilateral inferior Petrosal sinus sampling (BIPSS) in ACTH-dependent Cushing syndrome: a systematic review and Meta-analysis"
+    },
+    {
+     "pmid": "33292727",
+     "doi": "10.1186/s40842-020-00105-4",
+     "design": "guideline",
+     "year": "2020",
+     "journal": null,
+     "title": "Clinical management of patients with Cushing syndrome treated with mifepristone: consensus recommendations"
+    },
+    {
+     "pmid": "35730067",
+     "doi": "10.1210/clinem/dgac379",
+     "design": "guideline",
+     "year": "2022",
+     "journal": null,
+     "title": "Whom Should We Screen for Cushing Syndrome? The Endocrine Society Practice Guideline Recommendations 2008 Revisited"
+    },
+    {
+     "pmid": "35820339",
+     "doi": "10.1016/j.clineuro.2022.107350",
+     "design": "meta-analysis",
+     "year": "2022",
+     "journal": null,
+     "title": "Positive predictive value and trends of inferior petrosal sinus sampling (IPSS) in diagnosing cushing disease and ectopic ACTH secretion: A systematic review and meta-analysis"
+    },
+    {
+     "pmid": "36453141",
+     "doi": "10.1210/clinem/dgac686",
+     "design": "meta-analysis",
+     "year": "2023",
+     "journal": null,
+     "title": "Dynamic Testing for Differential Diagnosis of ACTH-Dependent Cushing Syndrome: A Systematic Review and Meta-analysis"
+    },
+    {
+     "pmid": "36649781",
+     "doi": "10.1016/j.eprac.2023.01.008",
+     "design": "meta-analysis",
+     "year": "2023",
+     "journal": null,
+     "title": "Should We Use Prolactin Adjustment in Bilateral Inferior Petrosal Sinus Sampling to Diagnose Cushing Disease? A Joint Meta-Analysis of Head-to-Head Diagnostic Tests Accuracy Studies"
+    },
+    {
+     "pmid": "36759141",
+     "doi": "10.3174/ajnr.a7789",
+     "design": "systematic review",
+     "year": "2023",
+     "journal": null,
+     "title": "MRI for Cushing Disease: A Systematic Review"
+    },
+    {
+     "pmid": "38081579",
+     "doi": "10.1016/j.wneu.2023.12.024",
+     "design": "meta-analysis",
+     "year": "2024",
+     "journal": null,
+     "title": "Inferior Petrosal Sinus Sampling Tumor Lateralization and the Surgical Treatment of Cushing Disease: A Meta-Analysis and Systematic Review"
+    },
+    {
+     "pmid": "38352712",
+     "doi": "10.3389/fendo.2024.1332120",
+     "design": "meta-analysis",
+     "year": "2024",
+     "journal": null,
+     "title": "Accuracy of the 10 μg desmopressin test for differential diagnosis of Cushing syndrome: a systematic review and meta-analysis"
+    },
+    {
+     "pmid": "40109876",
+     "doi": "10.1210/jendso/bvaf039",
+     "design": "systematic review",
+     "year": "2025",
+     "journal": null,
+     "title": "Etomidate in Severe Cushing Syndrome: A Systematic Review"
+    }
+   ]
+  }
+ },
+ {
+  "no": 9104,
+  "topicId": "c7f58952-2d4d-4a4f-b187-7b770d19ec48",
+  "topic": "should I start an SGLT2 inhibitor for my patient with HFrEF?",
+  "cluster": "sglt2_hfref",
+  "status": "draft_pending_clinician_review",
+  "dbEvidence": {
+   "papersKept": [],
+   "papersDropped": [],
+   "guidelinesKept": [],
+   "guidelinesDropped": []
+  },
+  "page": {
+   "mentor_intro": "SGLT2 inhibitors reduce heart failure events and improve functional capacity, quality of life and cardiac remodelling in HFrEF. Early in-hospital initiation was associated with fewer readmissions in meta-analysis, and safety has been acceptable with MRA co-treatment.",
+   "teaching_points": [
+    {
+     "claim": "A large meta-analysis found SGLT2 inhibitors reduced heart failure events and cardiovascular death in people with heart failure, with consistent effects across a wide range of subgroups.",
+     "cites": [
+      "38768620"
+     ]
+    },
+    {
+     "claim": "SGLT2 inhibitors improved exercise capacity (6-minute walk distance) and KCCQ quality-of-life scores, regardless of sex or ejection fraction.",
+     "cites": [
+      "38573633"
+     ]
+    },
+    {
+     "claim": "In HFrEF, SGLT2 inhibitors improved cardiac structure and function, with a rise in LVEF (about 2.7%) and a fall in left atrial volume index.",
+     "cites": [
+      "38235936"
+     ]
+    },
+    {
+     "claim": "In patients recently hospitalised for acute heart failure, early SGLT2 inhibitor initiation was associated with fewer heart failure readmissions (RR 0.79) and acute kidney injury, with decongestive effects.",
+     "cites": [
+      "39843332"
+     ]
+    },
+    {
+     "claim": "The DAPA ACT HF-TIMI 68 trial found in-hospital dapagliflozin did not significantly reduce cardiovascular death or worsening heart failure at 2 months, though pooled trial data suggest early benefit.",
+     "cites": [
+      "40884036"
+     ]
+    },
+    {
+     "claim": "MRAs did not alter SGLT2 inhibitor effects, and SGLT2 inhibitors attenuated MRA-associated hyperkalaemia.",
+     "cites": [
+      "37605637"
+     ]
+    },
+    {
+     "claim": "In older or frail patients with type 2 diabetes and heart failure, SGLT2 inhibitors were linked to lower total mortality without a significant increase in ketoacidosis or acute kidney injury.",
+     "cites": [
+      "38287703"
+     ]
+    }
+   ],
+   "uncertainties": [
+    "Magnitude of benefit with in-hospital initiation."
+   ],
+   "mcq_angles": [
+    "SGLT2 inhibitors as part of HFrEF quadruple therapy.",
+    "Hyperkalaemia and MRA co-treatment."
+   ],
+   "case_hooks": [
+    "Recently hospitalised HFrEF patient on ACE inhibitor, beta-blocker and MRA."
+   ],
+   "gaps": "Eligibility thresholds (eGFR), starting doses, sick-day rules, genital infection and ketoacidosis counselling and the pivotal DAPA-HF and EMPEROR-Reduced results are not stated in the retrieved abstract excerpts.",
+   "sources": [
+    {
+     "pmid": "37605637",
+     "doi": "10.1093/eurheartj/ehad522",
+     "design": "meta-analysis",
+     "year": "2023",
+     "journal": null,
+     "title": "Mineralocorticoid receptor antagonists with sodium-glucose co-transporter-2 inhibitors in heart failure: a meta-analysis"
+    },
+    {
+     "pmid": "38235936",
+     "doi": "10.1002/ejhf.3129",
+     "design": "meta-analysis",
+     "year": "2024",
+     "journal": null,
+     "title": "The effect of sodium-glucose cotransporter 2 inhibitors on left cardiac remodelling in heart failure with reduced ejection fraction: Systematic review and meta-analysis"
+    },
+    {
+     "pmid": "38287703",
+     "doi": "10.1093/ageing/afad254",
+     "design": "meta-analysis",
+     "year": "2024",
+     "journal": null,
+     "title": "Sodium-glucose cotransporter-2 inhibitors (SGLT2) in frail or older people with type 2 diabetes and heart failure: a systematic review and meta-analysis"
+    },
+    {
+     "pmid": "38573633",
+     "doi": "10.1001/jamanetworkopen.2024.5135",
+     "design": "meta-analysis",
+     "year": "2024",
+     "journal": null,
+     "title": "SGLT2 Inhibitors, Functional Capacity, and Quality of Life in Patients With Heart Failure: A Systematic Review and Meta-Analysis"
+    },
+    {
+     "pmid": "38768620",
+     "doi": "10.1016/s2213-8587(24)00102-5",
+     "design": "meta-analysis",
+     "year": "2024",
+     "journal": null,
+     "title": "Effect of SGLT2 inhibitors on heart failure outcomes and cardiovascular death across the cardiometabolic disease spectrum: a systematic review and meta-analysis"
+    },
+    {
+     "pmid": "39843332",
+     "doi": "10.1016/j.ejim.2025.01.014",
+     "design": "meta-analysis",
+     "year": "2025",
+     "journal": null,
+     "title": "Safety and efficacy of early initiation of sodium-glucose co-transporter inhibitors 2 in patients hospitalized for acute heart failure: A meta-analysis of randomized controlled trials"
+    },
+    {
+     "pmid": "40884036",
+     "doi": "10.1161/circulationaha.125.076575",
+     "design": "meta-analysis",
+     "year": "2025",
+     "journal": null,
+     "title": "Dapagliflozin in Patients Hospitalized for Heart Failure: Primary Results of the DAPA ACT HF-TIMI 68 Randomized Clinical Trial and Meta-Analysis of Sodium-Glucose Cotransporter-2 Inhibitors in Patients Hospitalized for Heart Failure"
+    }
+   ]
+  }
+ },
+ {
+  "no": 9105,
+  "topicId": "dafde4cd-d134-429d-8b9c-dcdb442eeaa9",
+  "topic": "Obesity pharmacotherapy: orlistat, GLP-1 agonists, naltrexone-bupropion indications and outcomes",
+  "cluster": "obesity_pharm",
+  "status": "draft_pending_clinician_review",
+  "dbEvidence": {
+   "papersKept": [],
+   "papersDropped": [],
+   "guidelinesKept": [],
+   "guidelinesDropped": []
+  },
+  "page": {
+   "mentor_intro": "Pharmacotherapy is now an integral part of obesity treatment: GLP-1 receptor agonists and tirzepatide produce the largest weight loss, phentermine-topiramate is also effective, and gastrointestinal effects are the main adverse effects.",
+   "teaching_points": [
+    {
+     "claim": "The 2025 Canadian guideline update says clinicians should use pharmacotherapy as an integral part of obesity treatment and recommends against compounded medications or medications not approved for weight loss.",
+     "cites": [
+      "40789597"
+     ]
+    },
+    {
+     "claim": "A network meta-analysis found phentermine-topiramate and GLP-1 receptor agonists the best at reducing weight, with semaglutide possibly the most effective of the GLP-1 agonists.",
+     "cites": [
+      "38582569"
+     ]
+    },
+    {
+     "claim": "Tirzepatide 15 mg had the highest efficacy for achieving at least 15% weight loss (risk ratio 10.24 versus placebo), with significantly more gastrointestinal adverse effects for tirzepatide and GLP-1 agonists.",
+     "cites": [
+      "38413012"
+     ]
+    },
+    {
+     "claim": "GLP-1 receptor agonists significantly reduced weight, BMI and waist circumference, with greatest benefit in younger, female, non-diabetic patients and longer treatment.",
+     "cites": [
+      "39841962"
+     ]
+    },
+    {
+     "claim": "In non-diabetic patients with overweight or obesity, GLP-1 agonists produced several gastrointestinal adverse effects, and risk profiles differ by agent.",
+     "cites": [
+      "40804463"
+     ]
+    },
+    {
+     "claim": "Semaglutide reduced heart failure hospitalisation (76%), cardiovascular death (17%), all-cause death (21%), non-fatal MI (24%) and stroke (35% in diabetes) in a pooled analysis, with higher adverse-effect frequency.",
+     "cites": [
+      "39396098"
+     ]
+    },
+    {
+     "claim": "RCTs show no likely increase in suicide-related adverse events with GLP-1 agonists, though monitoring continues.",
+     "cites": [
+      "40105856"
+     ]
+    },
+    {
+     "claim": "In children and adolescents, GLP-1 agonists improved glycaemic, weight and cardiometabolic outcomes in a meta-analysis of 18 trials.",
+     "cites": [
+      "40952752"
+     ]
+    }
+   ],
+   "uncertainties": [
+    "Long-term durability and weight regain after stopping."
+   ],
+   "mcq_angles": [
+    "Choosing a GLP-1 agonist or tirzepatide.",
+    "Gastrointestinal adverse effects."
+   ],
+   "case_hooks": [
+    "Adult with BMI 36 and prediabetes after failed lifestyle intervention."
+   ],
+   "gaps": "Orlistat and naltrexone-bupropion are not covered by the retrieved excerpts, nor are indications and BMI thresholds, contraindications (pancreatitis, thyroid cancer history) or dosing.",
+   "sources": [
+    {
+     "pmid": "38413012",
+     "doi": "10.1002/oby.24002",
+     "design": "meta-analysis",
+     "year": "2024",
+     "journal": null,
+     "title": "Efficacy and safety of tirzepatide, GLP-1 receptor agonists, and other weight loss drugs in overweight and obesity: a network meta-analysis"
+    },
+    {
+     "pmid": "38582569",
+     "doi": "10.1016/s0140-6736(24)00351-9",
+     "design": "meta-analysis",
+     "year": "2024",
+     "journal": null,
+     "title": "Pharmacotherapy for adults with overweight and obesity: a systematic review and network meta-analysis of randomised controlled trials"
+    },
+    {
+     "pmid": "39396098",
+     "doi": "10.1038/s41366-024-01646-9",
+     "design": "meta-analysis",
+     "year": "2025",
+     "journal": null,
+     "title": "Semaglutide effects on safety and cardiovascular outcomes in patients with overweight or obesity: a systematic review and meta-analysis"
+    },
+    {
+     "pmid": "39841962",
+     "doi": "10.2337/dc24-1678",
+     "design": "meta-analysis",
+     "year": "2025",
+     "journal": null,
+     "title": "Efficacy of GLP-1 Receptor Agonists on Weight Loss, BMI, and Waist Circumference for Patients With Obesity or Overweight: A Systematic Review, Meta-analysis, and Meta-regression of 47 Randomized Controlled Trials"
+    },
+    {
+     "pmid": "40105856",
+     "doi": "10.1001/jamapsychiatry.2025.0091",
+     "design": "meta-analysis",
+     "year": "2025",
+     "journal": null,
+     "title": "Suicide and Self-Harm Events With GLP-1 Receptor Agonists in Adults With Diabetes or Obesity: A Systematic Review and Meta-Analysis"
+    },
+    {
+     "pmid": "40789597",
+     "doi": "10.1503/cmaj.250502",
+     "design": "guideline",
+     "year": "2025",
+     "journal": null,
+     "title": "Pharmacotherapy for obesity management in adults: 2025 clinical practice guideline update"
+    },
+    {
+     "pmid": "40804463",
+     "doi": "10.1038/s41366-025-01859-6",
+     "design": "meta-analysis",
+     "year": "2025",
+     "journal": null,
+     "title": "Gastrointestinal adverse events associated with GLP-1 RA in non-diabetic patients with overweight or obesity: a systematic review and network meta-analysis"
+    },
+    {
+     "pmid": "40952752",
+     "doi": "10.1001/jamapediatrics.2025.3243",
+     "design": "meta-analysis",
+     "year": "2025",
+     "journal": null,
+     "title": "Efficacy and Safety of GLP-1 RAs in Children and Adolescents With Obesity or Type 2 Diabetes: A Systematic Review and Meta-Analysis"
+    }
+   ]
+  }
+ },
+ {
+  "no": 428,
+  "topicId": "dfc07e75-2c4f-4b61-8112-42335344d4d7",
+  "topic": "Community-acquired pneumonia: CURB-65, PSI, empirical therapy, atypical pathogens",
+  "cluster": "Community-acquired pneumonia: CURB-65, PSI, empirical therapy, atypical pathogens",
+  "status": "draft_pending_clinician_review",
+  "dbEvidence": {
+   "totalTrials": 0,
+   "totalGuidelines": 2,
+   "totalMeta": 0,
+   "totalReviews": 0,
+   "guidelinesKept": [
+    "Diagnosis and Treatment of Adults with Community-acquired Pneumonia: An Official Clinical Practice Guideline of the American Thoracic Society and Infectious Diseases Society of America.",
+    "BTS guidelines for the management of community acquired pneumonia in adults: update 2009."
+   ],
+   "guidelinesDropped": []
+  },
+  "page": {
+   "mentor_intro": "Objective risk assessment in community-acquired pneumonia (CAP) guides site-of-care decisions, reducing avoidable hospital admissions and associated nosocomial complications. The two primary validated scoring systems are CURB-65 and the Pneumonia Severity Index (PSI). CURB-65 assigns 1 point each for Confusion, Urea >7 mmol/L (BUN >19 mg/dL), Respiratory rate >=30/min, Blood pressure (SBP <90 or DBP <=60 mmHg), and Age >=65; scores 0-1 indicate outpatient management, score 2 warrants short inpatient or supervised care, and scores 3-5 mandate inpatient treatment with consideration of ICU admission. PSI incorporates 20 variables and demonstrates higher sensitivity for safely triaging low-risk patients (Classes I-III) to outpatient care. Empiric therapy must cover atypical pathogens (Mycoplasma, Chlamydophila, Legionella), which lack peptidoglycan cell walls and are inherently resistant to beta-lactam antimicrobials, requiring macrolides, tetracyclines, or fluoroquinolones.",
+   "teaching_points": [
+    {
+     "claim": "The CURB-65 severity score stratifies 30-day mortality from 0.7% (score 0) to >30% (score 4-5), guiding triage: scores 0-1 are suitable for outpatient therapy, score 2 requires inpatient consideration, and scores >=3 indicate severe CAP.",
+     "cites": [
+      "12728155",
+      "19783532"
+     ]
+    },
+    {
+     "claim": "The Pneumonia Severity Index (PSI) stratifies patients into 5 mortality risk classes; the ATS/IDSA guidelines recommend PSI over CURB-65 because PSI identifies a larger proportion of low-risk patients (Classes I-II) who can be safely treated at home.",
+     "cites": [
+      "8995086",
+      "31573350"
+     ]
+    },
+    {
+     "claim": "Atypical pneumonia pathogens (Mycoplasma pneumoniae, Chlamydophila pneumoniae, Legionella pneumophila) lack peptidoglycan cell walls and are inherently resistant to all beta-lactam antibiotics, mandating protein-synthesis or DNA-gyrase inhibitors.",
+     "cites": [
+      "31573350",
+      "19783532"
+     ]
+    },
+    {
+     "claim": "In patients with severe CAP (CURB-65 >=3), combination therapy with a beta-lactam plus a macrolide reduces mortality compared to beta-lactam monotherapy, driven by atypical coverage and immunomodulatory anti-inflammatory effects of macrolides.",
+     "cites": [
+      "19783532",
+      "31573350"
+     ]
+    }
+   ],
+   "sources": [
+    {
+     "pmid": "12728155",
+     "title": "Defining community acquired pneumonia severity on presentation to hospital: an international derivation and validation study.",
+     "year": 2003,
+     "design": "literature",
+     "journal": "Thorax"
+    },
+    {
+     "pmid": "8995086",
+     "title": "A prediction rule to identify low-risk patients with community-acquired pneumonia.",
+     "year": 1997,
+     "design": "literature",
+     "journal": "N Engl J Med"
+    },
+    {
+     "pmid": "31573350",
+     "title": "Diagnosis and Treatment of Adults with Community-acquired Pneumonia: An Official Clinical Practice Guideline of the American Thoracic Society and Infectious Diseases Society of America.",
+     "year": 2019,
+     "design": "guideline",
+     "journal": "Am J Respir Crit Care Med"
+    },
+    {
+     "pmid": "19783532",
+     "title": "BTS guidelines for the management of community acquired pneumonia in adults: update 2009.",
+     "year": 2009,
+     "design": "guideline",
+     "journal": "Thorax"
+    }
+   ],
+   "uncertainties": [
+    "Prognostic performance of CRB-65 (omitting blood urea measurement) in primary care triage of acute pneumonia.",
+    "Impact of macrolide resistance in Mycoplasma pneumoniae on treatment failure with azithromycin versus switching to doxycycline."
+   ],
+   "mcq_angles": [
+    "CURB-65 score elements: Confusion, Urea >7 mmol/L, Respiratory rate >=30, Blood pressure <90/60, Age >=65.",
+    "Inherent antimicrobial resistance of atypical pathogens: complete lack of peptidoglycan cell wall makes them completely resistant to beta-lactams.",
+    "Comparative advantage of PSI over CURB-65: higher sensitivity for identifying low-risk patients who can be safely managed as outpatients."
+   ],
+   "case_hooks": [
+    "A 72-year-old female presenting with right lower lobe pneumonia whose mental status is intact, BUN is 5.8 mmol/L, RR is 22, BP is 128/76 mmHg (CURB-65 score = 1), evaluated for outpatient oral therapy.",
+    "A 45-year-old male presenting with severe Legionella pneumonia (hyponatremia, diarrhea, high fevers, confusion), initiated on IV levofloxacin."
+   ],
+   "gaps": "Define the CURB-65 30-day mortality risks: score 0 (0.6%), score 1 (2.7%), score 2 (6.8%), score 3 (14.0%), score 4 (27.8%), score 5 (31.2%)."
+  },
+  "publishedAt": "2026-10-20T15:06:23.668806+00:00"
+ }
+]

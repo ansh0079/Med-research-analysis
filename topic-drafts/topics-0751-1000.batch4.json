@@ -1,0 +1,1341 @@
+[
+  {
+    "no": 781,
+    "topicId": "dd53b98a-901f-4874-8c9f-dde4cb133bd9",
+    "topic": "Heart failure with preserved ejection fraction (HFpEF): diagnosis and emerging therapies",
+    "cluster": "HFpEF diagnosis and emerging therapies",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 8,
+      "papersKept": [
+        {
+          "uid": "pubmed-37140514",
+          "title": "How to Manage Heart Failure With Preserved Ejection Fraction: Practical Guidance for Clinicians.",
+          "year": "2023"
+        },
+        {
+          "uid": "pubmed-40843509",
+          "title": "Cardiac Magnetic Resonance Imaging in Heart Failure With Preserved Ejection Fraction.",
+          "year": "2025"
+        },
+        {
+          "uid": "pubmed-40366488",
+          "title": "Therapeutic Potential of GLP-1 Receptor Agonists in Heart Failure with Preserved Ejection Fraction (HFpEF) in Obesity.",
+          "year": "2025"
+        },
+        {
+          "uid": "pubmed-41735546",
+          "title": "HFpEF and MASLD: converging mechanisms and clinical implications.",
+          "year": "2026"
+        },
+        {
+          "uid": "pubmed-29414252",
+          "title": "Heart Failure with Preserved Ejection Fraction.",
+          "year": "2018"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-40927944",
+          "title": "Epidemiology, pathophysiology, diagnosis and management of atrial functional mitral regurgitation: An expert review.",
+          "reason": "Atrial functional mitral regurgitation is a niche valvular subtype; tangential to HFpEF diagnosis/therapy."
+        },
+        {
+          "uid": "pubmed-38358595",
+          "title": "Practice guidance for stress echocardiography.",
+          "reason": "Ischemia/hypertrophic cardiomyopathy stress-echo guidance; tangential to HFpEF diagnostic work-up."
+        },
+        {
+          "uid": "pubmed-38940991",
+          "title": "Biosensors with left ventricular assist devices.",
+          "reason": "LVAD biosensor niche; unrelated to HFpEF diagnosis or emerging therapies."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "HFpEF is the commonest form of heart failure in the community and historically the most frustrating to treat. Diagnosis requires symptoms plus objective evidence of elevated filling pressures — echo first, cardiac MRI when uncertainty persists — and management has finally gained a disease-modifying option in SGLT2 inhibitors, with GLP-1 receptor agonists emerging for the obesity-driven phenotype and comorbidity control (hypertension, MASLD) doing much of the remaining work.",
+      "teaching_points": [
+        {
+          "claim": "HFpEF patients (LVEF >=50%) comprise nearly half of those with chronic heart failure, and evidence-based treatment options for this population have historically been limited — making practical diagnostic and management guidance essential.",
+          "cites": [
+            "37140514"
+          ]
+        },
+        {
+          "claim": "HFpEF is a complex syndrome of diastolic dysfunction and elevated filling pressures with normal ejection fraction, and cardiac MRI contributes to its characterisation where echo is inconclusive.",
+          "cites": [
+            "40843509"
+          ]
+        },
+        {
+          "claim": "GLP-1 receptor agonists are an emerging therapeutic option in obesity-driven HFpEF, where metabolic dysfunction and structural cardiac remodelling dominate the phenotype.",
+          "cites": [
+            "40366488"
+          ]
+        },
+        {
+          "claim": "HFpEF and metabolic dysfunction-associated steatotic liver disease (MASLD) are increasingly prevalent, interrelated conditions driven by the global rise in obesity and metabolic syndrome, and increasingly viewed together rather than in isolation.",
+          "cites": [
+            "41735546"
+          ]
+        },
+        {
+          "claim": "In the community, HFpEF is emerging as the most common form of heart failure across the EF spectrum.",
+          "cites": [
+            "29414252"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "GLP-1 receptor agonist outcome evidence in HFpEF is still maturing; positioning relative to SGLT2 inhibitors is not settled.",
+        "Which diagnostic pathway (H2FPEF scoring, exercise echo, CMR) is most efficient for confirming HFpEF is not resolved in the retained abstracts."
+      ],
+      "mcq_angles": [
+        "Diagnostic criteria: symptoms plus elevated filling pressures (echo E/e', TR velocity, natriuretic peptides, CMR).",
+        "The obesity-driven HFpEF phenotype and why GLP-1 agonists are biologically plausible there.",
+        "SGLT2 inhibitors as the established therapy; GLP-1 RAs as emerging.",
+        "MASLD as a common comorbidity reshaping the HFpEF phenotype."
+      ],
+      "case_hooks": [
+        "A breathless 68-year-old with EF 55%, BMI 38 and ALT elevation; decide on the HFpEF diagnostic pathway and discuss MASLD interplay.",
+        "An exam vignette describes stepwise HFpEF work-up; choose the next test when echo is inconclusive."
+      ],
+      "gaps": "H2FPEF/HFA-PEFF scores, exercise-stress echo protocols, and STEP-HFpEF/DELIVER trial details are not covered by the retained abstracts; verify against primary sources before approval.",
+      "sources": [
+        {
+          "pmid": "37140514",
+          "design": "review",
+          "year": "2023",
+          "journal": null,
+          "title": "How to Manage Heart Failure With Preserved Ejection Fraction: Practical Guidance for Clinicians."
+        },
+        {
+          "pmid": "40843509",
+          "design": "review",
+          "year": "2025",
+          "journal": null,
+          "title": "Cardiac Magnetic Resonance Imaging in Heart Failure With Preserved Ejection Fraction."
+        },
+        {
+          "pmid": "40366488",
+          "design": "review",
+          "year": "2025",
+          "journal": null,
+          "title": "Therapeutic Potential of GLP-1 Receptor Agonists in Heart Failure with Preserved Ejection Fraction (HFpEF) in Obesity."
+        },
+        {
+          "pmid": "41735546",
+          "design": "review",
+          "year": "2026",
+          "journal": null,
+          "title": "HFpEF and MASLD: converging mechanisms and clinical implications."
+        },
+        {
+          "pmid": "29414252",
+          "design": "review",
+          "year": "2018",
+          "journal": null,
+          "title": "Heart Failure with Preserved Ejection Fraction."
+        }
+      ]
+    }
+  },
+  {
+    "no": 782,
+    "topicId": "1427c136-6cfa-4a92-a1f5-f8ae3f61c405",
+    "topic": "heart failure with reduced ejection fraction",
+    "cluster": "HFrEF",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 8,
+      "papersKept": [
+        {
+          "uid": "pubmed-35363499",
+          "title": "2022 AHA/ACC/HFSA Guideline for the Management of Heart Failure.",
+          "year": "2022"
+        },
+        {
+          "uid": "pubmed-41136062",
+          "title": "Heart Failure Pharmacotherapy.",
+          "year": "2025"
+        },
+        {
+          "uid": "pubmed-32749493",
+          "title": "Heart Failure With Reduced Ejection Fraction: A Review.",
+          "year": "2020"
+        },
+        {
+          "uid": "pubmed-34895860",
+          "title": "A Systematic Review and Network Meta-Analysis of Pharmacological Treatment of Heart Failure With Reduced Ejection Fraction.",
+          "year": "2022"
+        },
+        {
+          "uid": "pubmed-40892608",
+          "title": "Pharmacologic Treatment of Heart Failure With Reduced Ejection Fraction: An Updated Systematic Review and Network Meta-Analysis.",
+          "year": "2025"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-35379503",
+          "title": "2022 AHA/ACC/HFSA Guideline for the Management of Heart Failure: A Report of the American College of Cardiology/American Heart Association Joint Committee on Clinical Practice Guidelines.",
+          "reason": "Duplicate record of the retained 2022 AHA/ACC/HFSA guideline (35363499)."
+        },
+        {
+          "uid": "pubmed-35379504",
+          "title": "2022 AHA/ACC/HFSA Guideline for the Management of Heart Failure: Executive Summary.",
+          "reason": "Executive summary of the same guideline; duplicate coverage."
+        },
+        {
+          "uid": "pubmed-40637782",
+          "title": "Impact of GLP-1 receptor agonists on cardiovascular outcomes in heart failure with preserved ejection fraction.",
+          "reason": "HFpEF (not reduced-EF) EF category; off the phenotype of this topic."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "HFrEF is where modern cardiology most clearly saves lives with drugs. The phenotype is defined by an ejection fraction below 40% with a clinical HF syndrome, and its treatment rests on four mechanistically complementary pillars — beta-blocker, RAAS modulation (preferably ARNI), mineralocorticoid receptor antagonist, and SGLT2 inhibitor — supported by a convergent network meta-analytic literature showing combination therapy beats any single-agent approach.",
+      "teaching_points": [
+        {
+          "claim": "The 2022 AHA/ACC/HFSA guideline is the current American management framework, replacing the 2013 guideline and the 2017 focused update.",
+          "cites": [
+            "35363499"
+          ]
+        },
+        {
+          "claim": "Pharmacotherapy for HFrEF rests on four pillars: beta-blockers, renin-angiotensin-aldosterone system modulators, mineralocorticoid receptor antagonists, and SGLT2 inhibitors.",
+          "cites": [
+            "41136062"
+          ]
+        },
+        {
+          "claim": "HFrEF accounts for approximately half of the worldwide heart-failure burden (an estimated 23 million people), presenting as dyspnoea or exertional limitation from impaired ventricular ejection.",
+          "cites": [
+            "32749493"
+          ]
+        },
+        {
+          "claim": "Network meta-analyses estimate and compare aggregate treatment benefits of HFrEF pharmacological combinations because the effects of contemporary therapy combinations were not well characterised by individual trials.",
+          "cites": [
+            "34895860"
+          ]
+        },
+        {
+          "claim": "The 2025 updated network meta-analysis confirmed that combination beta-blocker, ARNi, MRA and SGLT2 inhibitor therapy is the most effective pharmacological approach for reducing all-cause mortality in HFrEF.",
+          "cites": [
+            "40892608"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Uptitration speed and simultaneous-versus-sequential initiation in frail or hypotensive patients are not standardised in the retained sources.",
+        "How device therapy (ICD, CRT) should be timed relative to medical therapy optimisation is not addressed in the retained abstracts."
+      ],
+      "mcq_angles": [
+        "EF thresholds defining HFrEF and the EF-based HF classification.",
+        "The four pillars and the outcome evidence behind each.",
+        "Combination-versus-monotherapy reasoning from network meta-analysis.",
+        "Diagnosis: clinical syndrome plus reduced EF and its common aetiologies."
+      ],
+      "case_hooks": [
+        "A 65-year-old presents with dyspnoea and EF 30%; outline the initial pharmacological plan and monitoring.",
+        "An exam question lists four drug classes and asks which combination carries the strongest mortality evidence."
+      ],
+      "gaps": "Acute decompensated HFrEF, device therapy indications, and aetiology-specific work-up (ischaemic vs non-ischaemic) are not covered by the retained abstracts; verify against the full guideline before approval.",
+      "sources": [
+        {
+          "pmid": "35363499",
+          "design": "guideline",
+          "year": "2022",
+          "journal": null,
+          "title": "2022 AHA/ACC/HFSA Guideline for the Management of Heart Failure."
+        },
+        {
+          "pmid": "41136062",
+          "design": "review",
+          "year": "2025",
+          "journal": null,
+          "title": "Heart Failure Pharmacotherapy."
+        },
+        {
+          "pmid": "32749493",
+          "design": "review",
+          "year": "2020",
+          "journal": null,
+          "title": "Heart Failure With Reduced Ejection Fraction: A Review."
+        },
+        {
+          "pmid": "34895860",
+          "design": "meta-analysis",
+          "year": "2022",
+          "journal": null,
+          "title": "A Systematic Review and Network Meta-Analysis of Pharmacological Treatment of Heart Failure With Reduced Ejection Fraction."
+        },
+        {
+          "pmid": "40892608",
+          "design": "meta-analysis",
+          "year": "2025",
+          "journal": null,
+          "title": "Pharmacologic Treatment of Heart Failure With Reduced Ejection Fraction: An Updated Systematic Review and Network Meta-Analysis."
+        }
+      ]
+    }
+  },
+  {
+    "no": 783,
+    "topicId": "3f57ca4a-bae0-4294-aa65-c27b10d24af1",
+    "topic": "heart failure with reduced ejection fraction management",
+    "cluster": "HFrEF management",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 8,
+      "papersKept": [
+        {
+          "uid": "pubmed-38806171",
+          "title": "2024 update in heart failure.",
+          "year": "2025"
+        },
+        {
+          "uid": "pubmed-41319669",
+          "title": "Heart failure with reduced ejection fraction.",
+          "year": "2026"
+        },
+        {
+          "uid": "pubmed-40012353",
+          "title": "Clinical management and therapeutic optimization of patients with heart failure with reduced ejection fraction.",
+          "year": "2025"
+        },
+        {
+          "uid": "pubmed-33495289",
+          "title": "Management of Heart Failure Patient with CKD.",
+          "year": "2021"
+        },
+        {
+          "uid": "pubmed-38451843",
+          "title": "Exercise-based cardiac rehabilitation for adults with heart failure.",
+          "year": "2024"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-32749493",
+          "title": "Heart Failure With Reduced Ejection Fraction: A Review.",
+          "reason": "Duplicate HFrEF overview coverage already used in adjacent HF topics of this pipeline."
+        },
+        {
+          "uid": "pubmed-38928371",
+          "title": "Hypertension and Heart Failure: From Pathophysiology to Treatment.",
+          "reason": "Hypertension-prevention focus; tangential to HFrEF management decisions."
+        },
+        {
+          "uid": "pubmed-31800034",
+          "title": "Sex differences in heart failure.",
+          "reason": "Sex-differences epidemiology; tangential to management workflow."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Managing HFrEF well is an implementation problem as much as a knowledge problem: the evidence-based drugs exist, yet real-world studies show most patients never reach target doses of all four pillars. Effective management means systematic diagnosis, rapid GDMT initiation and titration with renal monitoring, deliberate handling of the common CKD comorbidity, and structured follow-up including exercise-based cardiac rehabilitation.",
+      "teaching_points": [
+        {
+          "claim": "The 2023 ESC focused update introduced new key recommendations in HF management, with SGLT2 inhibitors central, reflecting the last years of trial science.",
+          "cites": [
+            "38806171"
+          ]
+        },
+        {
+          "claim": "Heart failure affects around 70 million individuals globally (prevalence roughly 2% in Europe and North America), and accurate diagnosis relies on typical signs and symptoms — framing the scale of the management challenge.",
+          "cites": [
+            "41319669"
+          ]
+        },
+        {
+          "claim": "Despite major advancements in HF management and guideline recommendations, real-world evidence highlights suboptimal implementation of guideline-directed medical therapy for HFrEF, with low uptake of the four pillars.",
+          "cites": [
+            "40012353"
+          ]
+        },
+        {
+          "claim": "CKD is common in patients with heart failure and is associated with high mortality and morbidity — even higher in patients on long-term dialysis — and evidence-based HF drug and device therapy remains underused in this comorbid group.",
+          "cites": [
+            "33495289"
+          ]
+        },
+        {
+          "claim": "People with heart failure carry substantial disease burden including low exercise tolerance, poor quality of life, and increased mortality and hospital admission; exercise-based cardiac rehabilitation addresses these outcomes and was updated in a 2024 systematic review.",
+          "cites": [
+            "38451843"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Optimal GDMT dosing in advanced CKD and on dialysis is not resolved in the retained sources.",
+        "How to organise care (heart-failure nurses, titration clinics, remote monitoring) to close the implementation gap is not settled in the retained abstracts."
+      ],
+      "mcq_angles": [
+        "The implementation gap: why patients miss GDMT doses and how to fix it.",
+        "Managing HFrEF with comorbid CKD: which drugs, what monitoring.",
+        "Role and evidence for exercise-based cardiac rehabilitation.",
+        "Structured follow-up: who titrates, how fast, what triggers escalation."
+      ],
+      "case_hooks": [
+        "A man with HFrEF and eGFR 34 has only a beta-blocker prescribed; build the full titration and monitoring plan.",
+        "A service audit finds 30% of HFrEF patients on zero GDMT pillars; design an improvement programme."
+      ],
+      "gaps": "Dosing tables, device therapy (ICD/CRT) indications, and palliative care transitions are not covered by the retained abstracts; verify against the full 2022 AHA/ACC/HFSA guideline before approval.",
+      "sources": [
+        {
+          "pmid": "38806171",
+          "design": "review",
+          "year": "2025",
+          "journal": null,
+          "title": "2024 update in heart failure."
+        },
+        {
+          "pmid": "41319669",
+          "design": "review",
+          "year": "2026",
+          "journal": null,
+          "title": "Heart failure with reduced ejection fraction."
+        },
+        {
+          "pmid": "40012353",
+          "design": "article",
+          "year": "2025",
+          "journal": null,
+          "title": "Clinical management and therapeutic optimization of patients with heart failure with reduced ejection fraction."
+        },
+        {
+          "pmid": "33495289",
+          "design": "review",
+          "year": "2021",
+          "journal": null,
+          "title": "Management of Heart Failure Patient with CKD."
+        },
+        {
+          "pmid": "38451843",
+          "design": "systematic review",
+          "year": "2024",
+          "journal": null,
+          "title": "Exercise-based cardiac rehabilitation for adults with heart failure."
+        }
+      ]
+    }
+  },
+  {
+    "no": 784,
+    "topicId": "a1e853ae-0744-4bdb-95ec-c4a9596603df",
+    "topic": "Heavy menstrual bleeding: assessment and management",
+    "cluster": "heavy menstrual bleeding",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 7,
+      "papersKept": [
+        {
+          "uid": "pubmed-37244746",
+          "title": "Guideline No. 437: Diagnosis and Management of Adenomyosis.",
+          "year": "2023"
+        },
+        {
+          "uid": "pubmed-36706856",
+          "title": "The relationship between heavy menstrual bleeding, iron deficiency, and iron deficiency anemia.",
+          "year": "2023"
+        },
+        {
+          "uid": "pubmed-38723935",
+          "title": "The modern management of uterine fibroids-related abnormal uterine bleeding.",
+          "year": "2024"
+        },
+        {
+          "uid": "pubmed-36182259",
+          "title": "Iron deficiency anemia: Impact on women's reproductive health.",
+          "year": "2022"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-32358028",
+          "title": "Platelet Disorders.",
+          "reason": "Platelet-pathophysiology review; tangential to HMB assessment."
+        },
+        {
+          "uid": "pubmed-35525787",
+          "title": "Abnormal uterine bleeding in adolescents.",
+          "reason": "Adolescent subpopulation; the topic targets general assessment and management."
+        },
+        {
+          "uid": "pubmed-32031903",
+          "title": "Physiology of the Endometrium and Regulation of Menstruation.",
+          "reason": "Basic-science physiology; tangential to clinical assessment and management."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Heavy menstrual bleeding is one of the commonest presentations in gynaecology and general practice, and the assessment has two tracks running at once: find the cause (PALM-COEIN framework — fibroids, adenomyosis, polyps, coagulopathy, ovulatory, endometrial, iatrogenic, not yet classified) and treat the consequence, because chronic HMB is a leading driver of iron deficiency and iron-deficiency anaemia in reproductive-aged women. Management is symptom-tailored and escalates from medical therapy to surgery.",
+      "teaching_points": [
+        {
+          "claim": "Adenomyosis diagnosis relies on transvaginal sonography and MRI, and treatment should be tailored to symptoms — with heavy menstrual bleeding a cardinal presentation.",
+          "cites": [
+            "37244746"
+          ]
+        },
+        {
+          "claim": "Heavy menstrual bleeding is highly prevalent among reproductive-aged women and is a major contributor to iron deficiency and iron deficiency anaemia; the two conditions are highly prevalent and linked.",
+          "cites": [
+            "36706856"
+          ]
+        },
+        {
+          "claim": "Uterine fibroids are the commonest benign pelvic tumours (affecting over 60% of patients aged 30-44), are often identified incidentally on transvaginal ultrasound or MRI, and are a major structural cause of abnormal uterine bleeding.",
+          "cites": [
+            "38723935"
+          ]
+        },
+        {
+          "claim": "Iron deficiency and iron deficiency anaemia are highly prevalent across women's life spans, especially during reproductive age, and carry adverse consequences affecting all aspects of reproductive health.",
+          "cites": [
+            "36182259"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "First-line medical therapy choice (tranexamic acid, hormonal contraception, LNG-IUS) and sequencing are not detailed in the retained abstracts.",
+        "When imaging-detected adenomyosis or fibroids mandates surgery versus continued medical management is not resolved in the retained sources."
+      ],
+      "mcq_angles": [
+        "PALM-COEIN classification of abnormal uterine bleeding causes.",
+        "The HMB-to-iron-deficiency pathway: always check ferritin.",
+        "Fibroids and adenomyosis: ultrasound versus MRI, and symptom correlation.",
+        "Red flags requiring endometrial assessment (age, risk factors)."
+      ],
+      "case_hooks": [
+        "A 38-year-old with flooding periods and ferritin of 6; structure assessment (cause) and management (consequence).",
+        "A transvaginal scan shows fibroids in a woman with heavy bleeding; counsel on modern management options."
+      ],
+      "gaps": "Medical therapy specifics (tranexamic acid, LNG-IUS evidence), endometrial ablation, and FIGO fibroid classification are not covered by the retained abstracts; verify against a gynaecology guideline (e.g., NICE NG88) before approval.",
+      "sources": [
+        {
+          "pmid": "37244746",
+          "design": "guideline",
+          "year": "2023",
+          "journal": null,
+          "title": "Guideline No. 437: Diagnosis and Management of Adenomyosis."
+        },
+        {
+          "pmid": "36706856",
+          "design": "review",
+          "year": "2023",
+          "journal": null,
+          "title": "The relationship between heavy menstrual bleeding, iron deficiency, and iron deficiency anemia."
+        },
+        {
+          "pmid": "38723935",
+          "design": "review",
+          "year": "2024",
+          "journal": null,
+          "title": "The modern management of uterine fibroids-related abnormal uterine bleeding."
+        },
+        {
+          "pmid": "36182259",
+          "design": "review",
+          "year": "2022",
+          "journal": null,
+          "title": "Iron deficiency anemia: Impact on women's reproductive health."
+        }
+      ]
+    }
+  },
+  {
+    "no": 785,
+    "topicId": "0ae4645b-e607-417b-adb9-0a911058c9a4",
+    "topic": "Helicobacter pylori eradication peptic ulcer bleeding recurrence",
+    "cluster": "H pylori and peptic ulcer bleeding",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 8,
+      "papersKept": [
+        {
+          "uid": "pubmed-38885678",
+          "title": "Peptic ulcer disease.",
+          "year": "2024"
+        },
+        {
+          "uid": "pubmed-39466269",
+          "title": "Peptic Ulcer Disease: A Review.",
+          "year": "2024"
+        },
+        {
+          "uid": "pubmed-37365037",
+          "title": "Peptic ulcer.",
+          "year": "2023"
+        },
+        {
+          "uid": "pubmed-29543326",
+          "title": "Non-invasive diagnostic tests for Helicobacter pylori infection.",
+          "year": "2018"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-40550526",
+          "title": "Nonsteroidal Anti-Inflammatory Drug-Induced Peptic Ulcer Disease.",
+          "reason": "NSAID-specific ulcer review; tangential to the H-pylori-eradication-and-recurrence question."
+        },
+        {
+          "uid": "pubmed-41132019",
+          "title": "Changing Epidemiology and Etiology of Upper Gastrointestinal Bleeding.",
+          "reason": "UGIB epidemiology focus; tangential to eradication preventing recurrence."
+        },
+        {
+          "uid": "pubmed-39269391",
+          "title": "AGA Clinical Practice Update on Integrating Potassium-Competitive Acid Blockers Into Clinical Practice: Expert Review.",
+          "reason": "P-CAB drug-class update; tangential to eradication strategy."
+        },
+        {
+          "uid": "pubmed-31905355",
+          "title": "Peptic Ulcer: Chapter Closed?",
+          "reason": "Historical-epidemiology essay; tangential to clinical management."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "A bleeding peptic ulcer that has stopped is not a finished problem: if H. pylori caused it, eradication is what prevents the next bleed. Peptic ulcer disease remains a major admission burden (roughly 54,000 US admissions a year for bleeding ulcers), H. pylori and NSAIDs account for most ulcers, and non-invasive testing with urea-breath or stool-antigen confirmation of cure is the backbone of post-eradication follow-up.",
+      "teaching_points": [
+        {
+          "claim": "Peptic ulcer disease affects about 1% of the US population, with approximately 54,000 patients admitted annually for bleeding peptic ulcers, and around 10% of primary-care upper-abdominal-pain presentations have a peptic ulcer.",
+          "cites": [
+            "39466269"
+          ]
+        },
+        {
+          "claim": "Peptic ulcer disease is usually attributable to Helicobacter pylori infection, aspirin or NSAID intake, or both.",
+          "cites": [
+            "38885678"
+          ]
+        },
+        {
+          "claim": "Peptic ulcer disease remains an important cause of morbidity and mortality with high healthcare costs, and its most important risk factors are H. pylori and NSAIDs.",
+          "cites": [
+            "37365037"
+          ]
+        },
+        {
+          "claim": "H. pylori is implicated in peptic ulcers and recurrent peptic ulcer bleeding among its indications, and meta-analysis evidence appraises the accuracy of non-invasive diagnostic tests for the infection.",
+          "cites": [
+            "29543326"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Optimal timing of eradication therapy relative to acute bleeding (before vs after discharge) and its effect on rebleeding are not quantified in the retained abstracts.",
+        "Test-and-treat strategy performance after recent PPI use or acute bleeding (false negatives) is not detailed in the retained sources."
+      ],
+      "mcq_angles": [
+        "Why eradicating H. pylori after a bleeding ulcer prevents recurrence.",
+        "Non-invasive tests: urea breath test and stool antigen; when PPIs cause false negatives.",
+        "Confirming eradication: test at least 4 weeks after antibiotics, off PPI.",
+        "H. pylori versus NSAIDs as ulcer causes, including overlap."
+      ],
+      "case_hooks": [
+        "A patient is admitted with a bleeding duodenal ulcer and H. pylori is found; plan eradication and post-discharge cure confirmation.",
+        "A patient rebleeds 3 months after a gastric ulcer; review whether eradication was completed and confirmed."
+      ],
+      "gaps": "Specific eradication regimens (bismuth quadruple, clarithromycin triple, rifabutin rescue), PPI duration, and rebleeding-prevention trial data are not in the retained abstracts; verify against ACG 2024 H. pylori guideline before approval.",
+      "sources": [
+        {
+          "pmid": "38885678",
+          "design": "review",
+          "year": "2024",
+          "journal": null,
+          "title": "Peptic ulcer disease."
+        },
+        {
+          "pmid": "39466269",
+          "design": "review",
+          "year": "2024",
+          "journal": null,
+          "title": "Peptic Ulcer Disease: A Review."
+        },
+        {
+          "pmid": "37365037",
+          "design": "review",
+          "year": "2023",
+          "journal": null,
+          "title": "Peptic ulcer."
+        },
+        {
+          "pmid": "29543326",
+          "design": "meta-analysis",
+          "year": "2018",
+          "journal": null,
+          "title": "Non-invasive diagnostic tests for Helicobacter pylori infection."
+        }
+      ]
+    }
+  },
+  {
+    "no": 786,
+    "topicId": "7d955f90-f3ec-4e92-b1aa-95567bfe62dd",
+    "topic": "Helicobacter pylori infection",
+    "cluster": "Helicobacter pylori infection",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 8,
+      "papersKept": [
+        {
+          "uid": "pubmed-39626064",
+          "title": "ACG Clinical Guideline: Treatment of Helicobacter pylori Infection.",
+          "year": "2024"
+        },
+        {
+          "uid": "pubmed-33765303",
+          "title": "An Overview of Helicobacter pylori Infection.",
+          "year": "2021"
+        },
+        {
+          "uid": "pubmed-40112834",
+          "title": "Management of epithelial precancerous conditions and early neoplasia of the stomach (MAPS III).",
+          "year": "2025"
+        },
+        {
+          "uid": "pubmed-38885678",
+          "title": "Peptic ulcer disease.",
+          "year": "2024"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-39148213",
+          "title": "Updated joint ESPGHAN/NASPGHAN guidelines for management of Helicobacter pylori infection in children and adolescents.",
+          "reason": "Paediatric population; the topic targets general adult management."
+        },
+        {
+          "uid": "pubmed-28631728",
+          "title": "ACG and CAG Clinical Guideline: Management of Dyspepsia.",
+          "reason": "Dyspepsia-management guideline; H. pylori content overlaps retained sources."
+        },
+        {
+          "uid": "pubmed-34454714",
+          "title": "AGA Clinical Practice Update on the Diagnosis and Management of Atrophic Gastritis: Expert Review.",
+          "reason": "Atrophic-gastritis-specific update; tangential to general H. pylori infection management."
+        },
+        {
+          "uid": "pubmed-28242110",
+          "title": "Peptic ulcer disease.",
+          "reason": "Duplicate ulcer complication coverage already provided by the retained 2024 review."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "H. pylori is one of the most widespread bacterial infections on earth and a textbook example of a treatable cause of serious disease: chronic gastritis, peptic ulcer disease, gastric adenocarcinoma and MALT lymphoma. The 2024 ACG guideline anchors management, and the MAPS III guideline extends the story into gastric-cancer prevention — endoscopic screening and surveillance in high-incidence regions.",
+      "teaching_points": [
+        {
+          "claim": "The American College of Gastroenterology commissioned its 2024 clinical practice guideline to inform evidence-based management of H. pylori, a prevalent global infectious disease.",
+          "cites": [
+            "39626064"
+          ]
+        },
+        {
+          "claim": "H. pylori is one of the most widespread bacterial infections globally; it causes chronic gastritis and increases the risk of peptic ulcer disease, gastric adenocarcinoma and mucosa-associated lymphoid tissue lymphoma.",
+          "cites": [
+            "33765303"
+          ]
+        },
+        {
+          "claim": "ESGE, EHMSG and ESP suggest endoscopic screening for gastric cancer and precancerous conditions at population level in high-incidence regions, linking H. pylori management to gastric-cancer prevention.",
+          "cites": [
+            "40112834"
+          ]
+        },
+        {
+          "claim": "Peptic ulcer disease — a major H. pylori complication — is usually attributable to H. pylori infection, aspirin/NSAID intake, or both.",
+          "cites": [
+            "38885678"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Rising antibiotic resistance increasingly dictates local regimen choice; region-specific first-line therapy is not detailed in the retained abstracts.",
+        "Whether population screening-and-treat reduces gastric cancer mortality in low-incidence regions is not resolved in the retained sources."
+      ],
+      "mcq_angles": [
+        "Disease associations: gastritis, PUD, gastric adenocarcinoma, MALT lymphoma.",
+        "ACG 2024 treatment principles: optimized first-line therapy and confirmation of eradication.",
+        "Test-and-treat in dyspepsia; who to test.",
+        "Gastric cancer prevention: screening in high-incidence regions (MAPS III)."
+      ],
+      "case_hooks": [
+        "A 55-year-old dyspeptic patient from a high gastric-cancer-incidence region tests H. pylori positive; plan treatment and discuss endoscopy.",
+        "A patient's first-line eradication fails; outline the approach to second-line therapy using the guideline framework."
+      ],
+      "gaps": "Specific eradication regimens, antibiotic-resistance patterns by region, and bismuth/rifabutin rescue strategies are not in the retained abstracts; verify against the ACG 2024 full guideline before approval.",
+      "sources": [
+        {
+          "pmid": "39626064",
+          "design": "guideline",
+          "year": "2024",
+          "journal": null,
+          "title": "ACG Clinical Guideline: Treatment of Helicobacter pylori Infection."
+        },
+        {
+          "pmid": "33765303",
+          "design": "review",
+          "year": "2021",
+          "journal": null,
+          "title": "An Overview of Helicobacter pylori Infection."
+        },
+        {
+          "pmid": "40112834",
+          "design": "guideline",
+          "year": "2025",
+          "journal": null,
+          "title": "Management of epithelial precancerous conditions and early neoplasia of the stomach (MAPS III)."
+        },
+        {
+          "pmid": "38885678",
+          "design": "review",
+          "year": "2024",
+          "journal": null,
+          "title": "Peptic ulcer disease."
+        }
+      ]
+    }
+  },
+  {
+    "no": 787,
+    "topicId": "fff7550f-02a2-4482-9a1c-67104f1bac16",
+    "topic": "Hemodialysis adequacy and frequency",
+    "cluster": "hemodialysis adequacy",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 8,
+      "papersKept": [
+        {
+          "uid": "pubmed-26498416",
+          "title": "KDOQI Clinical Practice Guideline for Hemodialysis Adequacy: 2015 update.",
+          "year": "2015"
+        },
+        {
+          "uid": "pubmed-26498415",
+          "title": "Timing of dialysis initiation, duration and frequency of hemodialysis sessions, and membrane flux: a systematic review.",
+          "year": "2015"
+        },
+        {
+          "uid": "pubmed-37609532",
+          "title": "Needle Direction and Distance of Arteriovenous Fistula Cannulation in Hemodialysis Adequacy; a Systematic Review and Meta-analysis.",
+          "year": "2023"
+        },
+        {
+          "uid": "pubmed-26712807",
+          "title": "Effect of Lowering the Dialysate Temperature in Chronic Hemodialysis: A Systematic Review and Meta-Analysis.",
+          "year": "2016"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-37379824",
+          "title": "Dialysis in Pregnancy: An Update Review.",
+          "reason": "Pregnancy-on-dialysis niche; off scope for adequacy and frequency teaching."
+        },
+        {
+          "uid": "pubmed-39258519",
+          "title": "Automated peritoneal dialysis versus continuous ambulatory peritoneal dialysis for people with kidney failure.",
+          "reason": "Peritoneal-dialysis modality comparison; not haemodialysis adequacy."
+        },
+        {
+          "uid": "pubmed-26355256",
+          "title": "Pruritus in Kidney Disease.",
+          "reason": "Uremic-pruritus symptom review; tangential to adequacy/frequency."
+        },
+        {
+          "uid": "pubmed-31242862",
+          "title": "Inequalities and outcomes: end stage kidney disease in ethnic minorities.",
+          "reason": "Health-equity epidemiology; tangential to adequacy measurement."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Haemodialysis adequacy is the discipline of delivering enough dialysis — classically quantified as Kt/V — and the evidence base is narrower than trainees assume. The KDOQI 2015 update sets the framework, a systematic review examines the levers (timing of initiation, session duration and frequency, membrane flux), and meta-analyses show even cannulation technique and dialysate temperature move the delivered dose.",
+      "teaching_points": [
+        {
+          "claim": "The National Kidney Foundation's KDOQI initiative has provided evidence-based guidelines for all CKD stages since 1997, and its 2015 update covers haemodialysis adequacy.",
+          "cites": [
+            "26498416"
+          ]
+        },
+        {
+          "claim": "A systematic review examined haemodialysis adequacy as determined by initiation timing, session duration and frequency, and membrane flux — the main modifiable levers of delivered dose.",
+          "cites": [
+            "26498415"
+          ]
+        },
+        {
+          "claim": "Meta-analysis evidence shows that arteriovenous fistula cannulation technique — needle direction and distance between needle sites — measurably affects delivered Kt/V.",
+          "cites": [
+            "37609532"
+          ]
+        },
+        {
+          "claim": "Lowering dialysate temperature in chronic haemodialysis has been evaluated in a systematic review and meta-analysis for its benefits and harms on patient outcomes.",
+          "cites": [
+            "26712807"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Whether more frequent (daily/nocturnal) haemodialysis improves hard outcomes remains debated and is not resolved in the retained abstracts.",
+        "The Kt/V target itself and what to do when adequacy is suboptimal despite schedule optimisation are not detailed in the retained sources."
+      ],
+      "mcq_angles": [
+        "Kt/V: what k, t and V each mean and the minimum delivered dose concept.",
+        "Modifiable levers of adequacy: time, frequency, membrane flux, blood flow, cannulation.",
+        "Fistula cannulation technique and its effect on delivered dose.",
+        "Dialysate temperature: haemodynamic benefits versus shivering/discomfort."
+      ],
+      "case_hooks": [
+        "A patient's delivered Kt/V keeps falling below target; work through the adequacy levers systematically.",
+        "A dialysis unit debates extending from 4 to 4.5-hour sessions; frame the evidence and trade-offs."
+      ],
+      "gaps": "Numerical Kt/V targets (spKt/V >=1.2 vs stdKt/V), frequent-dialysis trial results (FHN), and urea kinetic modelling are not in the retained abstracts; verify against KDOQI 2015 full text before approval.",
+      "sources": [
+        {
+          "pmid": "26498416",
+          "design": "guideline",
+          "year": "2015",
+          "journal": null,
+          "title": "KDOQI Clinical Practice Guideline for Hemodialysis Adequacy: 2015 update."
+        },
+        {
+          "pmid": "26498415",
+          "design": "systematic review",
+          "year": "2015",
+          "journal": null,
+          "title": "Timing of dialysis initiation, duration and frequency of hemodialysis sessions, and membrane flux: a systematic review."
+        },
+        {
+          "pmid": "37609532",
+          "design": "review",
+          "year": "2023",
+          "journal": null,
+          "title": "Needle Direction and Distance of Arteriovenous Fistula Cannulation in Hemodialysis Adequacy; a Systematic Review and Meta-analysis."
+        },
+        {
+          "pmid": "26712807",
+          "design": "meta-analysis",
+          "year": "2016",
+          "journal": null,
+          "title": "Effect of Lowering the Dialysate Temperature in Chronic Hemodialysis: A Systematic Review and Meta-Analysis."
+        }
+      ]
+    }
+  },
+  {
+    "no": 788,
+    "topicId": "e0848600-501b-45bc-be5c-63170051526a",
+    "topic": "Hemophagocytic lymphohistiocytosis diagnosis and therapy",
+    "cluster": "HLH diagnosis and therapy",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 7,
+      "papersKept": [
+        {
+          "uid": "pubmed-30992265",
+          "title": "Recommendations for the management of hemophagocytic lymphohistiocytosis in adults.",
+          "year": "2019"
+        },
+        {
+          "uid": "pubmed-34347856",
+          "title": "Hemophagocytic Lymphohistiocytosis.",
+          "year": "2022"
+        },
+        {
+          "uid": "pubmed-41288529",
+          "title": "Hemophagocytic lymphohistiocytosis in adults.",
+          "year": "2026"
+        },
+        {
+          "uid": "pubmed-41481377",
+          "title": "Pediatric hemophagocytic lymphohistiocytosis: current conceptualization, diagnosis, and treatment.",
+          "year": "2026"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-36228171",
+          "title": "Cytokine Storm Syndrome.",
+          "reason": "Umbrella hyperinflammation review spanning many syndromes; too broad for HLH-specific diagnosis/therapy."
+        },
+        {
+          "uid": "pubmed-36574088",
+          "title": "Management of Dengue: An Updated Review.",
+          "reason": "Dengue management; unrelated to HLH."
+        },
+        {
+          "uid": "pubmed-32107531",
+          "title": "Pediatric hemophagocytic lymphohistiocytosis.",
+          "reason": "Duplicate paediatric coverage superseded by the retained 2026 conceptualization review."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "HLH diagnosis is pattern recognition under pressure: unremitting fever, cytopenias, hepatosplenomegaly and characteristic biomarkers, assembled into criteria sets because no single test is decisive. Therapy has two obligatory components — immune-suppressive control of the hyperinflammatory cascade and treatment of the underlying trigger — and modern conceptualisation has moved beyond a rigid primary-versus-secondary split, especially in children where interferon-gamma-driven T-cell activation dominates.",
+      "teaching_points": [
+        {
+          "claim": "Adult HLH is a severe hyperinflammatory syndrome induced by aberrantly activated macrophages and cytotoxic T cells; the primary (genetic) form predominates in children while secondary forms dominate in adults, and dedicated adult management recommendations exist.",
+          "cites": [
+            "30992265"
+          ]
+        },
+        {
+          "claim": "HLH is a rare, life-threatening disorder of immune regulation characterised by uncontrolled activation of cytotoxic T lymphocytes, NK cells and macrophages, leading to cytokine storm, end-organ damage and death.",
+          "cites": [
+            "34347856"
+          ]
+        },
+        {
+          "claim": "HLH in adults carries high mortality when untreated, and a multidisciplinary approach to diagnosis and management is needed.",
+          "cites": [
+            "41288529"
+          ]
+        },
+        {
+          "claim": "Paediatric HLH is characterised by heightened T-cell activation and overwhelming interferon-gamma production, and is now best conceptualised along a continuum rather than a binary primary-versus-secondary framework.",
+          "cites": [
+            "41481377"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Which diagnostic pathway (HScore, HLH-2005/2004 criteria, soluble IL-2 receptor thresholds) is optimal in adults versus children is not resolved in the retained abstracts.",
+        "The place of targeted biologics (ruxolitinib, anakinra, emapalumab) relative to conventional etoposide-based protocols is not settled in the retained sources."
+      ],
+      "mcq_angles": [
+        "Diagnostic criteria sets and biomarkers: ferritin, soluble CD25 (IL-2R), fibrinogen, NK-cell activity.",
+        "The two-track treatment principle: immunosuppression plus trigger treatment.",
+        "Primary versus secondary HLH and the modern continuum conceptualisation.",
+        "Distinguishing HLH from sepsis and other hyperinflammatory states."
+      ],
+      "case_hooks": [
+        "A febrile patient has cytopenias, splenomegaly and ferritin >50,000; walk through the diagnostic algorithm and first-line therapy.",
+        "An adult with lymphoma develops HLH; explain how the malignancy changes the treatment sequence."
+      ],
+      "gaps": "HScore calculation, HLH-94/HLH-2004 protocol specifics, and biologic-agent positioning cannot be verified from the retained abstracts; confirm against the full adult recommendations (30992265) before approval.",
+      "sources": [
+        {
+          "pmid": "30992265",
+          "design": "guideline",
+          "year": "2019",
+          "journal": null,
+          "title": "Recommendations for the management of hemophagocytic lymphohistiocytosis in adults."
+        },
+        {
+          "pmid": "34347856",
+          "design": "review",
+          "year": "2022",
+          "journal": null,
+          "title": "Hemophagocytic Lymphohistiocytosis."
+        },
+        {
+          "pmid": "41288529",
+          "design": "review",
+          "year": "2026",
+          "journal": null,
+          "title": "Hemophagocytic lymphohistiocytosis in adults."
+        },
+        {
+          "pmid": "41481377",
+          "design": "review",
+          "year": "2026",
+          "journal": null,
+          "title": "Pediatric hemophagocytic lymphohistiocytosis: current conceptualization, diagnosis, and treatment."
+        }
+      ]
+    }
+  },
+  {
+    "no": 789,
+    "topicId": "909d31f9-447a-4fcc-ad37-9526747dec7f",
+    "topic": "Hemothorax",
+    "cluster": "hemothorax",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 8,
+      "papersKept": [
+        {
+          "uid": "pubmed-40604368",
+          "title": "Traumatic pneumothorax and hemothorax: What you need to know.",
+          "year": "2026"
+        },
+        {
+          "uid": "pubmed-33487403",
+          "title": "Management of simple and retained hemothorax: A practice management guideline from the Eastern Association for the Surgery of Trauma.",
+          "year": "2021"
+        },
+        {
+          "uid": "pubmed-38453306",
+          "title": "Management of Blunt Chest Trauma.",
+          "year": "2024"
+        },
+        {
+          "uid": "pubmed-37576415",
+          "title": "Focused Assessment with Sonography for Trauma (FAST).",
+          "year": "2023"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-35963513",
+          "title": "Thoracic outlet syndrome: a review.",
+          "reason": "Thoracic outlet syndrome; unrelated to traumatic hemothorax."
+        },
+        {
+          "uid": "pubmed-28958357",
+          "title": "Thoracic Trauma.",
+          "reason": "Duplicate general chest-trauma coverage already provided by the retained blunt-chest-trauma review."
+        },
+        {
+          "uid": "pubmed-29622073",
+          "title": "Lung Cancer Biopsies.",
+          "reason": "Percutaneous lung biopsy review; unrelated to hemothorax."
+        },
+        {
+          "uid": "pubmed-32417043",
+          "title": "Blunt trauma related chest wall and pulmonary injuries: An overview.",
+          "reason": "Duplicate blunt-chest-injury coverage; tangential to hemothorax decision-making."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Hemothorax — blood in the pleural space, usually after trauma — is common (a third of thoracic-trauma patients have a pneumo- or haemothorax) and occasionally lethal. The management skeleton is simple: recognise it early (extended FAST where CT is unavailable), drain it promptly with tube thoracostomy when the patient is haemodynamically abnormal, and escalate when blood does not stop or does not drain — retained haemothorax is where the EAST practice guideline earns its keep.",
+      "teaching_points": [
+        {
+          "claim": "Thoracic trauma occurs in approximately 25% of all traumas, and one third of these patients present with a pneumothorax, hemothorax, or a combination; hemodynamically abnormal patients require expeditious tube thoracostomy drainage.",
+          "cites": [
+            "40604368"
+          ]
+        },
+        {
+          "claim": "The Eastern Association for the Surgery of Trauma produced a practice management guideline for traumatic hemothorax addressing both acute and chronic (simple and retained) management questions.",
+          "cites": [
+            "33487403"
+          ]
+        },
+        {
+          "claim": "Blunt chest trauma management includes recognition and drainage of pneumothorax and hemothorax alongside rib-fracture care: supportive care, multimodal analgesia, and pulmonary toilet.",
+          "cites": [
+            "38453306"
+          ]
+        },
+        {
+          "claim": "FAST ultrasound addresses the limits of physical examination in detecting hemopericardium, hemoperitoneum and hemopneumothorax, where CT is the gold standard but not always available.",
+          "cites": [
+            "37576415"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "The volume threshold defining 'massive' haemothorax and the initial-output trigger for thoracotomy vary across protocols and are not standardised in the retained abstracts.",
+        "Optimal management of retained haemothorax (video-assisted thoracoscopic surgery timing versus additional tubes) is addressed by the EAST guideline but not detailed in the retained abstract."
+      ],
+      "mcq_angles": [
+        "Indications and technique of tube thoracostomy in traumatic hemothorax.",
+        "Massive hemothorax: initial output and ongoing-loss thresholds prompting thoracotomy.",
+        "Retained hemothorax: when to re-drain and when to go to VATS.",
+        "Role of eFAST in the trauma primary survey."
+      ],
+      "case_hooks": [
+        "A stab-wound patient arrives hypotensive with absent breath sounds; sequence the primary survey and chest-drain decisions.",
+        "A follow-up chest X-ray after rib fractures shows a retained hemothorax; decide the next step using the EAST framework."
+      ],
+      "gaps": "Massive-haemothorax thresholds, autotransfusion, and VATS-versus-thoracotomy evidence are not detailed in the retained abstracts; verify against the full EAST guideline (33487403) before approval.",
+      "sources": [
+        {
+          "pmid": "40604368",
+          "design": "review",
+          "year": "2026",
+          "journal": null,
+          "title": "Traumatic pneumothorax and hemothorax: What you need to know."
+        },
+        {
+          "pmid": "33487403",
+          "design": "guideline",
+          "year": "2021",
+          "journal": null,
+          "title": "Management of simple and retained hemothorax: A practice management guideline from the Eastern Association for the Surgery of Trauma."
+        },
+        {
+          "pmid": "38453306",
+          "design": "review",
+          "year": "2024",
+          "journal": null,
+          "title": "Management of Blunt Chest Trauma."
+        },
+        {
+          "pmid": "37576415",
+          "design": "review",
+          "year": "2023",
+          "journal": null,
+          "title": "Focused Assessment with Sonography for Trauma (FAST)."
+        }
+      ]
+    }
+  },
+  {
+    "no": 790,
+    "topicId": "44f25352-9615-498b-997c-2cc01126edf8",
+    "topic": "Heparin-Induced Thrombocytopenia",
+    "cluster": "heparin-induced thrombocytopenia",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 8,
+      "papersKept": [
+        {
+          "uid": "pubmed-39644042",
+          "title": "Practical guide to the diagnosis and management of heparin-induced thrombocytopenia.",
+          "year": "2024"
+        },
+        {
+          "uid": "pubmed-28416511",
+          "title": "Heparin-induced thrombocytopenia.",
+          "year": "2017"
+        },
+        {
+          "uid": "pubmed-37959386",
+          "title": "Autoimmune Heparin-Induced Thrombocytopenia.",
+          "year": "2023"
+        },
+        {
+          "uid": "pubmed-26539932",
+          "title": "Heparin-induced thrombocytopenia.",
+          "year": "2015"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-27866576",
+          "title": "Thrombocytopenia.",
+          "reason": "General thrombocytopenia review; tangential to HIT-specific diagnosis and management."
+        },
+        {
+          "uid": "pubmed-31443111",
+          "title": "Sepsis-Induced Coagulopathy and Disseminated Intravascular Coagulation.",
+          "reason": "DIC/sepsis coagulopathy; a key differential but tangential to HIT teaching."
+        },
+        {
+          "uid": "pubmed-30504360",
+          "title": "Drug-associated thrombocytopenia.",
+          "reason": "General drug-induced thrombocytopenia; tangential to HIT."
+        },
+        {
+          "uid": "pubmed-38841785",
+          "title": "[Heparin-Induced Thrombocytopenia].",
+          "reason": "Duplicate HIT coverage already provided by the retained practical guide (39644042)."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "HIT is the thrombocytopenia that bleeds in name only — it is, paradoxically, a profoundly prothrombotic drug reaction. Antibodies against PF4/heparin complexes activate platelets through Fc receptors, and the downstream events (arterial and venous thrombosis, limb loss, death) are driven by continued heparin exposure. The reflexes to build: suspect it on timing and thrombosis pattern, score it pre-test, stop all heparin immediately, and anticoagulate with a non-heparin agent even before confirmatory testing returns.",
+      "teaching_points": [
+        {
+          "claim": "HIT is an immune reaction to heparin associated with thrombocytopenia, thrombotic risk and high morbidity and mortality; given how commonly heparin is used and how often hospitalized patients are thrombocytopenic, a practical diagnostic and management framework is essential.",
+          "cites": [
+            "39644042"
+          ]
+        },
+        {
+          "claim": "HIT is caused by antibodies to complexes of platelet factor 4 (PF4) and heparin; pathogenic PF4/heparin antibodies bind and activate cellular Fc-gamma-RIIA on platelets and monocytes, propagating a prothrombotic state.",
+          "cites": [
+            "28416511"
+          ]
+        },
+        {
+          "claim": "Autoimmune HIT is a severe subtype with atypical clinical features caused by highly pathological IgG antibodies that activate platelets even in the absence of heparin.",
+          "cites": [
+            "37959386"
+          ]
+        },
+        {
+          "claim": "Thrombocytopenia and heparin exposure are both common in critically ill patients, yet immune HIT rarely accounts for thrombocytopenia in this population — pre-test probability assessment is what separates the few true cases from the many false alarms.",
+          "cites": [
+            "26539932"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Optimal management of autoimmune HIT, including the role of intravenous immunoglobulin and longer anticoagulation, is not settled in the retained abstracts.",
+        "When (and whether) warfarin can be safely introduced, and the duration of anticoagulation after HIT with thrombosis, are not detailed in the retained sources."
+      ],
+      "mcq_angles": [
+        "Timing: typical-onset (5-10 days) versus rapid-onset and delayed-onset HIT.",
+        "The paradox: thrombocytopenia with thrombosis, not bleeding.",
+        "4Ts pre-test probability and functional versus immunologic assays (SRA, ELISA).",
+        "Management reflexes: stop all heparin (including flushes), start a non-heparin anticoagulant, avoid warfarin alone early."
+      ],
+      "case_hooks": [
+        "A post-operative patient on unfractionated heparin develops a platelet drop from 240 to 90 on day 6 with a new leg swelling; score, test, and treat.",
+        "A COVID-19 ICU patient on heparin has a falling platelet count; decide how likely HIT really is and what to do meanwhile."
+      ],
+      "gaps": "The 4Ts scoring detail, specific non-heparin agent choice and dosing, and warfarin-transition rules are not in the retained abstracts; verify against ASH 2018 HIT guidelines or the full practical guide before approval.",
+      "sources": [
+        {
+          "pmid": "39644042",
+          "design": "review",
+          "year": "2024",
+          "journal": null,
+          "title": "Practical guide to the diagnosis and management of heparin-induced thrombocytopenia."
+        },
+        {
+          "pmid": "28416511",
+          "design": "review",
+          "year": "2017",
+          "journal": null,
+          "title": "Heparin-induced thrombocytopenia."
+        },
+        {
+          "pmid": "37959386",
+          "design": "review",
+          "year": "2023",
+          "journal": null,
+          "title": "Autoimmune Heparin-Induced Thrombocytopenia."
+        },
+        {
+          "pmid": "26539932",
+          "design": "review",
+          "year": "2015",
+          "journal": null,
+          "title": "Heparin-induced thrombocytopenia."
+        }
+      ]
+    }
+  }
+]

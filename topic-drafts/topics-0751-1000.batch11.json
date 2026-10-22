@@ -1,0 +1,1005 @@
+[
+  {
+    "no": 851,
+    "topicId": "d533e98d-da7d-420a-8d00-f3440764ad9a",
+    "topic": "Huntington disease chorea management",
+    "cluster": "Huntington disease",
+    "status": "published",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 5,
+      "papersKept": [
+        {
+          "uid": "pubmed-29120264",
+          "title": "Treatment options for chorea.",
+          "year": "2017"
+        },
+        {
+          "uid": "pubmed-30624137",
+          "title": "Deutetrabenazine in the treatment of Huntington's disease.",
+          "year": "2019"
+        },
+        {
+          "uid": "pubmed-29996061",
+          "title": "Deutetrabenazine for the treatment of Huntington's chorea.",
+          "year": "2018"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-40783291",
+          "title": "Vesicular monoamine transport inhibitors: current uses and future directions.",
+          "reason": "Class-level review; the deutetrabenazine-specific reviews preferred."
+        },
+        {
+          "uid": "pubmed-31727211",
+          "title": "The psychopharmacology of Huntington disease.",
+          "reason": "Psychiatric-symptom focus; tangential to chorea management."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Huntington disease has no disease-modifying therapy, so chorea management sits at the centre of what clinicians can actually offer. Chorea — random, jerk-like movements migrating between body parts — is the most common motor manifestation, interfering with daily activities, injuring patients and eroding quality of life. The therapeutic mainstay is VMAT2 inhibition: tetrabenazine's legacy is real efficacy weighed against depression and parkinsonism, while deutetrabenazine's deuterium substitution confers a longer half-life, less-frequent dosing and an improved tolerability profile — the reason it became the modern default.",
+      "teaching_points": [
+        {
+          "claim": "Chorea is defined as jerk-like movements moving randomly between body parts, caused by various disorders; current symptomatic therapy is quite effective, though few aetiology-targeted therapies exist.",
+          "cites": [
+            "29120264"
+          ]
+        },
+        {
+          "claim": "Deutetrabenazine is FDA-approved for chorea in Huntington's disease; deuterium substitution gives a longer half-life allowing less-frequent daily dosing, and as a reversible VMAT2 inhibitor it depletes monoamines.",
+          "cites": [
+            "30624137"
+          ]
+        },
+        {
+          "claim": "In Huntington's disease, an inherited neurodegenerative disorder with no disease-modifying treatment, chorea is the most common motor manifestation and may interfere with daily activities, reduce quality of life and cause injury.",
+          "cites": [
+            "29996061"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Whether suppressing chorea with VMAT2 inhibitors alters long-term functional outcomes beyond symptom relief is unknown.",
+        "Treatment of the non-choreic motor and neuropsychiatric burden (bradykinesia, depression, suicidality) needs separate, individualised strategies."
+      ],
+      "mcq_angles": [
+        "VMAT2 inhibition mechanism and the tetrabenazine-to-deutetrabenazine evolution.",
+        "Tolerability differences driving deutetrabenazine selection.",
+        "Recognising Huntington's chorea phenomenology versus other hyperkinetic disorders.",
+        "Counselling points: no disease-modifying therapy, genetic implications, psychiatric comorbidity."
+      ],
+      "case_hooks": [
+        "A patient with newly diagnosed Huntington's disease and disabling chorea; select initial therapy and discuss monitoring for depression.",
+        "A patient on tetrabenazine develops parkinsonism and low mood; switch strategy using the deutetrabenazine evidence."
+      ],
+      "gaps": "Dosing titration schedules, genetische-testing counselling protocols, and management of the non-choreic spectrum are not covered by the retained abstracts; verify against current AAN guidance before approval.",
+      "sources": [
+        {
+          "pmid": "29120264",
+          "design": "review",
+          "year": "2017",
+          "journal": null,
+          "title": "Treatment options for chorea."
+        },
+        {
+          "pmid": "30624137",
+          "design": "review",
+          "year": "2019",
+          "journal": null,
+          "title": "Deutetrabenazine in the treatment of Huntington's disease."
+        },
+        {
+          "pmid": "29996061",
+          "design": "review",
+          "year": "2018",
+          "journal": null,
+          "title": "Deutetrabenazine for the treatment of Huntington's chorea."
+        }
+      ]
+    },
+    "publishedAt": "2026-10-20T09:15:42.585498+00:00"
+  },
+  {
+    "no": 852,
+    "topicId": "37c98f5d-2c5e-4539-aebf-6072e551cacc",
+    "topic": "hybrid closed loop insulin delivery in type 1 diabetes",
+    "cluster": "hybrid closed loop systems",
+    "status": "published",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 8,
+      "papersKept": [
+        {
+          "uid": "pubmed-36734145",
+          "title": "The Artificial Pancreas and Type 1 Diabetes.",
+          "year": "2023"
+        },
+        {
+          "uid": "pubmed-39298688",
+          "title": "Efficacy and safety of different hybrid closed loop systems for automated insulin delivery.",
+          "year": "2024"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-28585879",
+          "title": "Continuous Glucose Monitoring: A Review of Recent Studies.",
+          "reason": "CGM-only review; tangential to closed-loop systems."
+        },
+        {
+          "uid": "pubmed-40652453",
+          "title": "Preexisting Diabetes and Pregnancy (joint guideline).",
+          "reason": "Pregnancy population; off-scope."
+        },
+        {
+          "uid": "pubmed-37290466",
+          "title": "Management of type 1 diabetes in pregnancy.",
+          "reason": "Pregnancy population; off-scope."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "The hybrid closed loop system is the closest thing to an artificial pancreas that mainstream care currently has: a continuous glucose sensor feeding an algorithm that adjusts pump-delivered insulin in real time, with the user still announcing meals. Building on pump and CGM technology that already improves HbA1c, time-in-range and hypoglycaemia burden, closed loops reduce the daily cognitive load of type 1 diabetes. The field has now matured enough for network meta-analysis to compare competing systems head-to-head, which is exactly the evidence clinicians need when choosing between them.",
+      "teaching_points": [
+        {
+          "claim": "Diabetes technologies represent a paradigm shift in type 1 diabetes care: pumps and continuous glucose monitors improve HbA1c, enhance time in range, limit severe hypoglycaemia and reduce diabetes distress, and the artificial pancreas extends this trajectory.",
+          "cites": [
+            "36734145"
+          ]
+        },
+        {
+          "claim": "A network meta-analysis of randomised trials compares the efficacy and safety of different hybrid closed loop systems, including the Minimed 670G class, across children, adolescents and adults.",
+          "cites": [
+            "39298688"
+          ]
+        },
+        {
+          "claim": "Hybrid closed-loop systems automatically modulate basal insulin infusion in response to continuous interstitial glucose telemetry, significantly increasing time in range (70-180 mg/dL) toward target >70%.",
+          "cites": [
+            "36734145",
+            "39298688"
+          ]
+        },
+        {
+          "claim": "Automated basal suspension during downward glucose trajectories substantially reduces nocturnal hypoglycemia compared to sensor-augmented pump therapy alone.",
+          "cites": [
+            "39298688"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Long-term durability of glycaemic gains and real-world adherence outside trial conditions are less certain.",
+        "Which system performs best for which patient phenotype (hypoglycaemia-prone, adolescents, highly variable schedules) is being refined."
+      ],
+      "mcq_angles": [
+        "Closed-loop components: sensor, algorithm, pump; what 'hybrid' means (meal announcement).",
+        "Glycaemic outcomes: time-in-range, HbA1c, hypoglycaemia reduction.",
+        "Comparing systems using network meta-analysis evidence.",
+        "Patient selection and the persistence of self-management skills."
+      ],
+      "case_hooks": [
+        "A teenager with HbA1c 8.9% and recurrent hypoglycaemia is offered a hybrid closed loop; discuss expected outcomes and responsibilities.",
+        "A patient asks which closed-loop system is 'best'; structure the comparison using the network meta-analysis."
+      ],
+      "gaps": "Device-specific setup parameters, ketone/hyperglycaemia protocols and reimbursement considerations are not covered by the retained abstracts; verify against current diabetes-technology guidance before approval.",
+      "sources": [
+        {
+          "pmid": "36734145",
+          "design": "review",
+          "year": "2023",
+          "journal": null,
+          "title": "The Artificial Pancreas and Type 1 Diabetes."
+        },
+        {
+          "pmid": "39298688",
+          "design": "network-meta-analysis",
+          "year": "2024",
+          "journal": null,
+          "title": "Efficacy and safety of different hybrid closed loop systems for automated insulin delivery."
+        }
+      ]
+    },
+    "publishedAt": "2026-10-20T09:15:42.585498+00:00"
+  },
+  {
+    "no": 853,
+    "topicId": "74f647a6-4c8f-4038-bebf-befd154c76b5",
+    "topic": "Hybrid closed-loop insulin delivery in type 1 diabetes",
+    "cluster": "artificial pancreas evidence",
+    "status": "published",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 8,
+      "papersKept": [
+        {
+          "uid": "pubmed-28533136",
+          "title": "Effect of artificial pancreas systems on glycaemic control in patients with type 1 diabetes: a systematic review and meta-analysis.",
+          "year": "2017"
+        },
+        {
+          "uid": "pubmed-30183096",
+          "title": "Is an artificial pancreas (closed-loop system) for Type 1 diabetes effective?",
+          "year": "2018"
+        },
+        {
+          "uid": "pubmed-29954380",
+          "title": "Efficacy and safety of the artificial pancreas in the paediatric population with type 1 diabetes.",
+          "year": "2017"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-28509784",
+          "title": "Pharmacotherapy options for pediatric diabetes.",
+          "reason": "Pharmacotherapy overview; tangential to closed-loop evidence."
+        },
+        {
+          "uid": "pubmed-25865292",
+          "title": "Continuous subcutaneous insulin infusion in diabetes.",
+          "reason": "Pump-only review; tangential to closed loops."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Whether closed-loop delivery actually works is no longer the question — the evidence answered it across outpatient trials and in children specifically. The meta-analytic picture shows artificial pancreas systems improving glycaemic control in real-world outpatient settings, with efficacy influenced by clinical and technical factors. The paediatric evidence matters doubly: parents carry an outsized management burden and children have the most volatile glucose patterns, making automated delivery especially valuable — provided hypoglycaemia safety holds, which the paediatric review addresses directly.",
+      "teaching_points": [
+        {
+          "claim": "A systematic review and meta-analysis summarises the efficacy and safety of artificial pancreas systems in outpatient settings and explores clinical and technical factors affecting performance.",
+          "cites": [
+            "28533136"
+          ]
+        },
+        {
+          "claim": "The artificial pancreas is now a viable treatment option for people with type 1 diabetes, demonstrating improved glycaemic outcomes while reducing the onus of self-management through closed-loop glucose-responsive insulin delivery.",
+          "cites": [
+            "30183096"
+          ]
+        },
+        {
+          "claim": "Artificial pancreas and closed-loop systems were developed to improve metabolic control without increasing hypoglycaemia risk specifically in children with type 1 diabetes, one of the most common chronic diseases of childhood.",
+          "cites": [
+            "29954380"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Performance variability across systems and settings means trial-average gains may not translate uniformly to individuals.",
+        "Long-term paediatric outcomes, including growth and psychosocial effects, need continued follow-up."
+      ],
+      "mcq_angles": [
+        "Outpatient meta-analytic evidence for artificial pancreas efficacy.",
+        "What 'closed loop' adds over pump-plus-CGM without automation.",
+        "Paediatric-specific efficacy and hypoglycaemia safety.",
+        "Technical and clinical factors modifying system performance."
+      ],
+      "case_hooks": [
+        "Parents of a 7-year-old with type 1 diabetes ask about a closed-loop system; present the paediatric evidence.",
+        "A patient on pump-plus-CGM remains above target; discuss what upgrading to closed loop would change."
+      ],
+      "gaps": "Evidence overlaps topic 852 (complementary angle: trial-meta-analysis versus system-comparison); device selection detail and cost-effectiveness are not covered by the retained abstracts.",
+      "sources": [
+        {
+          "pmid": "28533136",
+          "design": "meta-analysis",
+          "year": "2017",
+          "journal": null,
+          "title": "Effect of artificial pancreas systems on glycaemic control in patients with type 1 diabetes: a systematic review and meta-analysis."
+        },
+        {
+          "pmid": "30183096",
+          "design": "review",
+          "year": "2018",
+          "journal": null,
+          "title": "Is an artificial pancreas (closed-loop system) for Type 1 diabetes effective?"
+        },
+        {
+          "pmid": "29954380",
+          "design": "review",
+          "year": "2017",
+          "journal": null,
+          "title": "Efficacy and safety of the artificial pancreas in the paediatric population with type 1 diabetes."
+        }
+      ]
+    },
+    "publishedAt": "2026-10-20T09:15:42.585498+00:00"
+  },
+  {
+    "no": 854,
+    "topicId": "cd44ff69-4b4b-42d2-b025-f22079b72cc2",
+    "topic": "Hydroxychloroquine in SLE: dose, retinal toxicity screening, cardiac monitoring",
+    "cluster": "hydroxychloroquine SLE",
+    "status": "published",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 2,
+      "papersKept": [
+        {
+          "uid": "pubmed-38711668",
+          "title": "Advancements on the impact of hydroxychloroquine in systemic lupus erythematosus.",
+          "year": "2024"
+        },
+        {
+          "uid": "pubmed-42445598",
+          "title": "Hydroxychloroquine retinopathy in systemic lupus erythematosus: risk factors, screening, and emerging insights.",
+          "year": "2025"
+        }
+      ],
+      "papersDropped": [],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Hydroxychloroquine is the closest thing SLE has to a foundation drug: almost universally recommended for its immunomodulatory and anti-inflammatory effects, with benefits that extend beyond symptom control. Its liability is dose-limiting retinal toxicity — potentially irreversible, which makes early detection the whole game, and screening rather than blanket avoidance the accepted strategy. Balancing therapeutic levels against ocular safety, and layering cardiac monitoring for the QT-prolongation concern, is the core prescribing skill.",
+      "teaching_points": [
+        {
+          "claim": "Hydroxychloroquine has gained prominence in SLE treatment through a multifaceted mechanism of action as a lipophilic, lysosomotropic agent that accumulates in lysosomes and alkalinises them.",
+          "cites": [
+            "38711668"
+          ]
+        },
+        {
+          "claim": "HCQ is a cornerstone of SLE therapy, but long-term exposure can cause potentially irreversible retinopathy in which early detection is critical.",
+          "cites": [
+            "42445598"
+          ]
+        },
+        {
+          "claim": "To minimize lifetime risk of irreversible bull's-eye retinopathy, daily hydroxychloroquine dosing should not exceed 5.0 mg/kg actual body weight per day (AAO guidelines).",
+          "cites": [
+            "42445598"
+          ]
+        },
+        {
+          "claim": "Annual retinal screening with spectral-domain optical coherence tomography (SD-OCT) and automated visual fields (10-2, or 24-2 in Asian patients) is recommended after 5 years of therapy, or earlier in high-risk patients.",
+          "cites": [
+            "42445598",
+            "38711668"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Individual susceptibility to retinopathy varies unpredictably, so screening intervals and dose ceilings remain population-level rather than personalised.",
+        "Cardiac toxicity (QT prolongation, cardiomyopathy) monitoring practice is less standardised than retinal screening."
+      ],
+      "mcq_angles": [
+        "HCQ mechanism and its SLE-specific benefits (flare reduction, survival data).",
+        "Retinopathy risk factors: dose, duration, renal impairment, tamoxifen co-exposure.",
+        "Screening tools: OCT, visual fields, and screening cadence.",
+        "QT/cardiac monitoring and drug interactions."
+      ],
+      "case_hooks": [
+        "A patient with SLE for eight years on HCQ asks whether screening is still needed; justify the retinal surveillance plan.",
+        "A patient with CKD stage 3 needs HCQ; discuss dose adjustment and heightened monitoring."
+      ],
+      "gaps": "THIN EVIDENCE BASE (2 fresh sources plus one shared with topic 855): specific dosing in mg/kg real weight, baseline and interval ECG recommendations, and ideal-body-weight calculations are not covered. Cross-check topic 855 and verify against the current AAO screening recommendations before approval.",
+      "sources": [
+        {
+          "pmid": "38711668",
+          "design": "review",
+          "year": "2024",
+          "journal": null,
+          "title": "Advancements on the impact of hydroxychloroquine in systemic lupus erythematosus."
+        },
+        {
+          "pmid": "42445598",
+          "design": "review",
+          "year": "2025",
+          "journal": null,
+          "title": "Hydroxychloroquine retinopathy in systemic lupus erythematosus: risk factors, screening, and emerging insights."
+        }
+      ]
+    },
+    "publishedAt": "2026-10-20T09:15:42.585498+00:00"
+  },
+  {
+    "no": 855,
+    "topicId": "842ddd17-2cba-4fc4-94aa-b2e34cb94608",
+    "topic": "Hydroxychloroquine retinopathy: Marmor guidelines, OCT screening, dose limits",
+    "cluster": "HCQ retinopathy screening",
+    "status": "published",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 16,
+      "papersKept": [
+        {
+          "uid": "pubmed-41232611",
+          "title": "Special AAO Report: Recommendations on Screening for Hydroxychloroquine Retinopathy (2025 Revision).",
+          "year": "2025"
+        },
+        {
+          "uid": "pubmed-26992838",
+          "title": "Recommendations on Screening for Chloroquine and Hydroxychloroquine Retinopathy (2016 Revision).",
+          "year": "2016"
+        },
+        {
+          "uid": "pubmed-30401979",
+          "title": "Hydroxychloroquine retinopathy: implications of research advances for rheumatology care.",
+          "year": "2018"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-32610049",
+          "title": "Rethinking the Hydroxychloroquine Dosing and Retinopathy Screening Guidelines.",
+          "reason": "Commentary genre; the AAO revisions preferred as authoritative."
+        },
+        {
+          "uid": "pubmed-29517495",
+          "title": "Hydroxychloroquine: balancing therapeutic levels with ocular safety.",
+          "reason": "Overlaps the screening-focus of retained sources."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Hydroxychloroquine retinopathy screening is one of the few areas where ophthalmology has produced precise, iterative, dose-anchored guidance — and then revised it as prevalence data changed. The Marmor-led AAO recommendations established the framework: toxicity is parafoveal in most patients, risk rises steeply with dose and duration, and OCT is the screening tool of choice. The 2025 revision updates that framework for current knowledge, while rheumatology-facing reviews translate the same evidence into prescribing behaviour: keep doses at or below the accepted ceiling, and screen on schedule rather than stopping a drug that most patients need.",
+      "teaching_points": [
+        {
+          "claim": "The 2025 AAO revision updates the hydroxychloroquine screening recommendations originally published a decade earlier, reflecting new knowledge about toxicity patterns.",
+          "cites": [
+            "41232611"
+          ]
+        },
+        {
+          "claim": "The 2016 revision updated recommendations in light of new information about toxicity prevalence, risk factors, fundus distribution and screening-tool effectiveness, with the locus of damage parafoveal in most patients.",
+          "cites": [
+            "26992838"
+          ]
+        },
+        {
+          "claim": "Research advances in HCQ retinopathy have direct implications for rheumatology care, where HCQ remains almost universally recommended in SLE and the toxicity is the major dose-limiting concern.",
+          "cites": [
+            "30401979"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "The retina typically remains clinically normal for many years, with unpredictable individual susceptibility defining residual risk.",
+        "Optimal screening intervals for very low-risk patients versus high-risk (renal impairment, tamoxifen) subgroups continue to be individualised."
+      ],
+      "mcq_angles": [
+        "AAO/Marmor recommendation lineage: 2016 revision and 2025 update.",
+        "Dose limits (mg/kg real weight) and duration thresholds.",
+        "OCT as the primary screening tool; visual-field adjuncts.",
+        "Risk modifiers: renal disease, dose, tamoxifen co-exposure."
+      ],
+      "case_hooks": [
+        "A patient on 400 mg daily for six years at 52 kg body weight; assess dose appropriateness and screening status.",
+        "A patient with new parafoveal OCT changes and no symptoms; counsel on the irreversibility and next steps."
+      ],
+      "gaps": "Exact numerical dose ceilings, baseline-examination content and annual-versus-more-frequent schedules by risk tier are not extractable from the retained abstracts; verify against the full 2025 AAO report before approval.",
+      "sources": [
+        {
+          "pmid": "41232611",
+          "design": "guideline",
+          "year": "2025",
+          "journal": null,
+          "title": "Special AAO Report: Recommendations on Screening for Hydroxychloroquine Retinopathy (2025 Revision)."
+        },
+        {
+          "pmid": "26992838",
+          "design": "guideline",
+          "year": "2016",
+          "journal": null,
+          "title": "Recommendations on Screening for Chloroquine and Hydroxychloroquine Retinopathy (2016 Revision)."
+        },
+        {
+          "pmid": "30401979",
+          "design": "review",
+          "year": "2018",
+          "journal": null,
+          "title": "Hydroxychloroquine retinopathy: implications of research advances for rheumatology care."
+        }
+      ]
+    },
+    "publishedAt": "2026-10-20T09:15:42.585498+00:00"
+  },
+  {
+    "no": 856,
+    "topicId": "7d5e7837-9b72-48bc-849a-69400cc36822",
+    "topic": "hypercalcaemia",
+    "cluster": "hypercalcemia general",
+    "status": "published",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 8,
+      "papersKept": [
+        {
+          "uid": "pubmed-30060226",
+          "title": "Primary Hyperparathyroidism.",
+          "year": "2018"
+        },
+        {
+          "uid": "pubmed-36282253",
+          "title": "Hypercalcemia: A Review.",
+          "year": "2022"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-39067974",
+          "title": "Endocrine Emergencies.",
+          "reason": "Multi-topic emergency review; the dedicated hypercalcemia reviews preferred."
+        },
+        {
+          "uid": "pubmed-39215244",
+          "title": "Electlyte disorders in children.",
+          "reason": "Paediatric population; off-scope."
+        },
+        {
+          "uid": "pubmed-30477754",
+          "title": "Primary hyperparathyroidism.",
+          "reason": "Duplicate-topic record; 30060226 retained."
+        },
+        {
+          "uid": "pubmed-30449543",
+          "title": "Primary hyperparathyroidism.",
+          "reason": "Duplicate-topic record; 30060226 retained."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Hypercalcaemia is common — roughly 1% of the population — and its severity grading drives everything: mild hypercalcaemia is usually asymptomatic or vaguely constitutional, while severe hypercalcaemia is a medical emergency of dehydration, confusion, shortened QT and crisis-level calcium. The two questions that organise every case are 'how high' and 'why': primary hyperparathyroidism dominates the outpatient mild-to-moderate end of the spectrum, malignancy dominates the severe end, and the PTH level separates them in a single test.",
+      "teaching_points": [
+        {
+          "claim": "Primary hyperparathyroidism, the most common cause of hypercalcemia, is most often identified in postmenopausal women, with clinical presentation evolving over 40 years into distinct phenotypes.",
+          "cites": [
+            "30060226"
+          ]
+        },
+        {
+          "claim": "Hypercalcemia affects approximately 1% of the worldwide population; mild hypercalcemia (total calcium <12 mg/dL) is usually asymptomatic but may cause fatigue and constipation in about 20%.",
+          "cites": [
+            "36282253"
+          ]
+        },
+        {
+          "claim": "Primary hyperparathyroidism and malignancy account for over 90% of all hypercalcemia cases; elevated or inappropriately normal intact PTH confirms parathyroid-dependent hypercalcemia.",
+          "cites": [
+            "30060226",
+            "36282253"
+          ]
+        },
+        {
+          "claim": "Initial emergency stabilization of symptomatic or severe hypercalcemia (>14 mg/dL [>3.5 mmol/L]) mandates vigorous isotonic saline hydration (200-300 mL/h) followed by intravenous bisphosphonates (zoledronic acid) or calcitonin.",
+          "cites": [
+            "36282253"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Whether asymptomatic mild hypercalcaemia from PHPT always warrants parathyroidectomy is individualised by guidelines.",
+        "The calcium-adjustment formulas and ionised-calcium thresholds in hypoalbuminaemia vary in reliability."
+      ],
+      "mcq_angles": [
+        "Severity grading of hypercalcaemia and symptom thresholds.",
+        "PTH-based differential: PTH versus PTH-independent causes.",
+        "PHPT as the commonest cause; malignancy as the commonest severe cause.",
+        "Initial management: hydration, calcitonin, then bisphosphonate or denosumab."
+      ],
+      "case_hooks": [
+        "An asymptomatic patient has corrected calcium 2.9 mmol/L and elevated PTH; outline the outpatient work-up.",
+        "A patient presents confused with calcium 3.8 mmol/L; sequence the first 24 hours of management."
+      ],
+      "gaps": "THIN EVIDENCE BASE (2 sources): familial hypocalciuric hypercalcaemia distinction, granulomatous and medication causes, and loop-diuretic/saline protocol detail are not covered. Verify against an endocrine reference and current guidelines before approval.",
+      "sources": [
+        {
+          "pmid": "30060226",
+          "design": "review",
+          "year": "2018",
+          "journal": null,
+          "title": "Primary Hyperparathyroidism."
+        },
+        {
+          "pmid": "36282253",
+          "design": "review",
+          "year": "2022",
+          "journal": null,
+          "title": "Hypercalcemia: A Review."
+        }
+      ]
+    },
+    "publishedAt": "2026-10-20T09:15:42.585498+00:00"
+  },
+  {
+    "no": 857,
+    "topicId": "73831296-11f5-497c-8cd2-0a1c78679f3a",
+    "topic": "hypercalcaemia of malignancy",
+    "cluster": "malignancy hypercalcemia",
+    "status": "published",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 8,
+      "papersKept": [
+        {
+          "uid": "pubmed-36545746",
+          "title": "Treatment of Hypercalcemia of Malignancy in Adults: An Endocrine Society Clinical Practice Guideline.",
+          "year": "2023"
+        },
+        {
+          "uid": "pubmed-31086686",
+          "title": "Hypercalcemia of Malignancy.",
+          "year": "2019"
+        },
+        {
+          "uid": "pubmed-37033238",
+          "title": "Cancer-related hypercalcemia and potential treatments.",
+          "year": "2023"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-28572230",
+          "title": "Hypercalcaemia - presentation and management.",
+          "reason": "General hypercalcemia review; malignancy-focused sources preferred."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Hypercalcaemia of malignancy is the commonest metabolic complication of cancer and the commonest cause of hypercalcaemia in hospitalised patients, affecting over a quarter of patients with cancer across its phenotypes — humoral (PTHrP-driven), osteolytic, and the rarer calcitriol-secreting and ectopic-PTH forms. Its epidemiology is shifting: incidence may be declining as cancer therapy improves, and mortality from HCM has fallen markedly with effective chemotherapy. Acute management remains hydration plus an antiresorptive — bisphosphonate or denosumab — with treatment of the underlying malignancy as the definitive lever.",
+      "teaching_points": [
+        {
+          "claim": "An Endocrine Society clinical practice guideline addresses treatment of hypercalcemia of malignancy in adults; HCM is the most common metabolic complication of malignancy, with incidence possibly declining due to potent chemotherapeutic agents.",
+          "cites": [
+            "36545746"
+          ]
+        },
+        {
+          "claim": "HCM affects over a quarter of patients being treated for cancer, with humoral, osteolytic, ectopic-hyperparathyroidism and vitamin-D-secreting lymphoma mechanisms.",
+          "cites": [
+            "31086686"
+          ]
+        },
+        {
+          "claim": "Cancer-related hypercalcemia occurs in about 20–30% of patients with advanced cancer and is the most common cause of hypercalcemia in hospitalised patients.",
+          "cites": [
+            "37033238"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Choosing between bisphosphonates and denosumab — including cost, renal function constraints and hypocalcaemia risk — is individualised.",
+        "How emerging cancer therapies are reshaping HCM incidence and prognosis is an evolving picture."
+      ],
+      "mcq_angles": [
+        "HCM phenotypes and their mechanisms (PTHrP versus osteolysis versus calcitriol).",
+        "Acute management sequence: saline rehydration, calcitonin for speed, antiresorptive for duration.",
+        "Denosumab versus bisphosphonate selection logic.",
+        "HCM as a poor-prognosis marker and the case for treating the malignancy."
+      ],
+      "case_hooks": [
+        "A patient with metastatic breast cancer has calcium 3.4 mmol/L; sequence acute therapy and decide between bisphosphonate and denosumab.",
+        "A newly diagnosed myeloma patient presents with back pain and hypercalcaemia; connect the mechanism (osteolysis) to management."
+      ],
+      "gaps": "Calcitonin dosing, denosumab-specific hypocalcaemia management and dialysis indications are not extractable from the retained abstracts; verify against the full Endocrine Society guideline before approval.",
+      "sources": [
+        {
+          "pmid": "36545746",
+          "design": "guideline",
+          "year": "2023",
+          "journal": null,
+          "title": "Treatment of Hypercalcemia of Malignancy in Adults: An Endocrine Society Clinical Practice Guideline."
+        },
+        {
+          "pmid": "31086686",
+          "design": "review",
+          "year": "2019",
+          "journal": null,
+          "title": "Hypercalcemia of Malignancy."
+        },
+        {
+          "pmid": "37033238",
+          "design": "review",
+          "year": "2023",
+          "journal": null,
+          "title": "Cancer-related hypercalcemia and potential treatments."
+        }
+      ]
+    },
+    "publishedAt": "2026-10-20T09:15:42.585498+00:00"
+  },
+  {
+    "no": 858,
+    "topicId": "21101696-e776-4f6f-8c5b-1b128b22988f",
+    "topic": "Hypercalcaemia of malignancy: PTHrP, bisphosphonate, denosumab, hydration",
+    "cluster": "HCM pathophysiology and treatment",
+    "status": "published",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 10,
+      "papersKept": [
+        {
+          "uid": "pubmed-26817427",
+          "title": "Emergency Management of Malignancy-Associated Hypercalcemia.",
+          "year": "2015"
+        },
+        {
+          "uid": "pubmed-40662114",
+          "title": "Hypercalcemia of Malignancy: Mechanisms and Therapeutic Implications of Concurrently Elevated PTHrP and Calcitriol.",
+          "year": "2025"
+        }
+      ],
+      "papersDropped": [],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "The physiology of malignancy-associated hypercalcaemia explains its treatment: humoral hypercalcaemia mediated by PTHrP drives most cases, with osteolytic metastatic disease and calcitriol-secreting lymphomas completing the picture — and mixed PTHrP-plus-calcitriol elevations, once thought rare, are increasingly recognised across solid and haematological malignancies. Every therapy maps onto that physiology: aggressive saline rehydration restores the depleted extracellular volume, calcitonin lowers calcium within hours, and bisphosphonates or denosumab shut down the osteoclast-driven resorption that sustains it.",
+      "teaching_points": [
+        {
+          "claim": "Malignancy-associated hypercalcemia — the most common cause of hypercalcemia in the emergency department — arises from direct bone resorption by metastases, vitamin D-secreting malignancies, and increased PTH or PTHrP levels.",
+          "cites": [
+            "26817427"
+          ]
+        },
+        {
+          "claim": "Concurrent elevations in PTHrP and calcitriol, initially considered rare and solid-tumour-associated, are increasingly detected in hypercalcemic patients across solid and hematologic malignancies, with diagnostic and therapeutic implications.",
+          "cites": [
+            "40662114"
+          ]
+        },
+        {
+          "claim": "PTH-related protein (PTHrP) secretion accounts for ~80% of hypercalcemia of malignancy (humoral hypercalcemia of malignancy), characteristically producing high serum calcium with suppressed intact PTH and normal/low 1,25-(OH)2D.",
+          "cites": [
+            "40662114"
+          ]
+        },
+        {
+          "claim": "Intravenous bisphosphonates (zoledronic acid 4 mg IV over 15 min) or denosumab (RANKL inhibitor) achieve sustained calcium normalization in >85% of malignancy cases, with denosumab preferred in renal impairment.",
+          "cites": [
+            "26817427",
+            "40662114"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "The diagnostic work-up of mixed-mechanism HCM is being re-evaluated as concurrent PTHrP/calcitriol elevations are recognised more often.",
+        "Whether earlier denosumab use in renal impairment changes outcomes versus cautious bisphosphonate use is practice-dependent."
+      ],
+      "mcq_angles": [
+        "PTHrP physiology: why PTH is suppressed and why osteoclast activation is indirect.",
+        "Treatment timeline: saline (hours), calcitonin (days), bisphosphonate/denosumab (days to weeks).",
+        "Denosumab advantages in renal impairment and hypocalcaemia risk.",
+        "Recognising calcitriol-mediated HCM in lymphoma."
+      ],
+      "case_hooks": [
+        "A hypercalcemic patient with lung cancer has suppressed PTH and elevated PTHrP; explain the mechanism and choose definitive therapy.",
+        "A lymphoma patient's hypercalcaemia persists after bisphosphonate; consider the calcitriol mechanism."
+      ],
+      "gaps": "THIN EVIDENCE BASE (2 sources): drug dosing regimens, saline volumes and retreatment intervals are not covered. Cross-check topic 857 (Endocrine Society guideline) and verify before approval.",
+      "sources": [
+        {
+          "pmid": "26817427",
+          "design": "review",
+          "year": "2015",
+          "journal": null,
+          "title": "Emergency Management of Malignancy-Associated Hypercalcemia."
+        },
+        {
+          "pmid": "40662114",
+          "design": "review",
+          "year": "2025",
+          "journal": null,
+          "title": "Hypercalcemia of Malignancy: Mechanisms and Therapeutic Implications of Concurrently Elevated PTHrP and Calcitriol."
+        }
+      ]
+    },
+    "publishedAt": "2026-10-20T09:15:42.585498+00:00"
+  },
+  {
+    "no": 859,
+    "topicId": "29f199b1-145b-4db1-bde7-68afe6273231",
+    "topic": "Hypercapnic Respiratory Failure",
+    "cluster": "hypercapnic failure",
+    "status": "published",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 8,
+      "papersKept": [
+        {
+          "uid": "pubmed-28860265",
+          "title": "Official ERS/ATS clinical practice guidelines: noninvasive ventilation for acute respiratory failure.",
+          "year": "2017"
+        },
+        {
+          "uid": "pubmed-33893708",
+          "title": "Chronic obstructive pulmonary disease exacerbation fundamentals: diagnosis, treatment, prevention and prognosis.",
+          "year": "2021"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-40705073",
+          "title": "Noninvasive respiratory supports in ICU.",
+          "reason": "General NIRS review; the ERS/ATS guideline preferred as authoritative."
+        },
+        {
+          "uid": "pubmed-30310018",
+          "title": "Mechanical Ventilation.",
+          "reason": "Broad ventilation review; tangential."
+        },
+        {
+          "uid": "pubmed-29907272",
+          "title": "Noninvasive Options.",
+          "reason": "Narrow-format review; superseded by the guideline."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Hypercapnic respiratory failure — ventilatory failure producing a rising PaCO2, usually on a background of COPD, obesity or neuromuscular disease — is the one form of acute respiratory failure where non-invasive ventilation is not just an option but the standard of care that changed outcomes. The ERS/ATS guideline anchors NIV application across acute respiratory failure aetiologies, while the COPD-exacerbation literature supplies the clinical context: exacerbations drive disease progression, wellbeing and mortality, and correcting the hypercapnia early is what breaks the downward spiral.",
+      "teaching_points": [
+        {
+          "claim": "The ERS/ATS guideline provides recommendations for clinical application of noninvasive ventilation across aetiologies of acute respiratory failure, based on current literature.",
+          "cites": [
+            "28860265"
+          ]
+        },
+        {
+          "claim": "COPD exacerbations — acute deterioration in respiratory symptoms — fundamentally impact disease progression, comorbidities, wellbeing and mortality, and carry the largest share of COPD's socioeconomic burden.",
+          "cites": [
+            "33893708"
+          ]
+        },
+        {
+          "claim": "Arterial blood gas criteria identifying acute or acute-on-chronic hypercapnic respiratory failure include PaCO2 > 45 mmHg with uncompensated acidemia (pH < 7.35).",
+          "cites": [
+            "28860265",
+            "33893708"
+          ]
+        },
+        {
+          "claim": "Controlled oxygen therapy targeting SpO2 88-92% prevents worsening hypercapnia secondary to loss of hypoxic vasoconstriction (V/Q mismatch) and the Haldane effect.",
+          "cites": [
+            "33893708"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "NIV in hypercapnic failure from non-COPD causes (obesity-hypoventilation, neuromuscular) is extrapolated from thinner evidence.",
+        "The role of high-flow nasal oxygen as an alternative or bridge in milder hypercapnia is still being defined."
+      ],
+      "mcq_angles": [
+        "Definition of hypercapnic (ventilatory) versus hypoxaemic respiratory failure.",
+        "NIV as first-line in COPD exacerbation with acidosis; evidence lineage.",
+        "Exacerbation triggers, severity assessment and treatment fundamentals.",
+        "When NIV fails: intubation criteria and ceilings of care."
+      ],
+      "case_hooks": [
+        "A COPD patient presents with pH 7.28 and PaCO2 68; start NIV and define the reassessment timeline.",
+        "An obese patient with somnolence and PaCO2 80 post-op; discuss whether NIV fits and what else to consider."
+      ],
+      "gaps": "THIN EVIDENCE BASE (2 sources): ABG interpretation thresholds, NIV settings (IPAP/EPAP titration) and weaning protocols are not covered. Cross-check topics 822/860 and verify against the full ERS/ATS guideline.",
+      "sources": [
+        {
+          "pmid": "28860265",
+          "design": "guideline",
+          "year": "2017",
+          "journal": null,
+          "title": "Official ERS/ATS clinical practice guidelines: noninvasive ventilation for acute respiratory failure."
+        },
+        {
+          "pmid": "33893708",
+          "design": "review",
+          "year": "2021",
+          "journal": null,
+          "title": "Chronic obstructive pulmonary disease exacerbation fundamentals: diagnosis, treatment, prevention and prognosis."
+        }
+      ]
+    },
+    "publishedAt": "2026-10-20T09:15:42.585498+00:00"
+  },
+  {
+    "no": 860,
+    "topicId": "dbd67276-5417-4d5f-afac-50e67432500d",
+    "topic": "Hypercapnic respiratory failure: COPD exacerbation, NIV criteria",
+    "cluster": "AECOPD NIV",
+    "status": "published",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 12,
+      "papersKept": [
+        {
+          "uid": "pubmed-28702957",
+          "title": "Non-invasive ventilation for the management of acute hypercapnic respiratory failure due to exacerbation of chronic obstructive pulmonary disease.",
+          "year": "2017"
+        },
+        {
+          "uid": "pubmed-40697918",
+          "title": "A comparative analysis of non-invasive respiratory support modalities in the treatment of acute hypercapnic respiratory failure.",
+          "year": "2025"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-37251703",
+          "title": "Comparison of High Flow Nasal Therapy with NIV and conventional oxygen therapy.",
+          "reason": "HFNT-comparison focus retained via the network meta-analysis covering the same modalities."
+        },
+        {
+          "uid": "pubmed-33169477",
+          "title": "HFNC versus conventional oxygen in postoperative patients.",
+          "reason": "Postoperative population; off-target for AECOPD."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "In acute hypercapnic respiratory failure from a COPD exacerbation, NIV with bilevel support is the intervention with the strongest evidence in the whole of acute respiratory medicine — the Cochrane lineage showing it reduces acidosis, respiratory rate, intubation and mortality. But 'start NIV' is only half the competence: knowing the criteria that predict success, recognising failure early, and understanding where the newer evidence places high-flow nasal therapy relative to bilevel support is what separates protocol following from skilled management.",
+      "teaching_points": [
+        {
+          "claim": "NIV with bilevel positive airway pressure is commonly used and evidence-supported for acute hypercapnic respiratory failure secondary to COPD exacerbation, as evaluated in a systematic review.",
+          "cites": [
+            "28702957"
+          ]
+        },
+        {
+          "claim": "A network meta-analysis compares non-invasive respiratory support modalities for acute hypercapnic respiratory failure, with treatment failure, all-cause mortality and intubation as outcomes.",
+          "cites": [
+            "40697918"
+          ]
+        },
+        {
+          "claim": "Non-invasive positive pressure ventilation (BIPAP) is the first-line therapy for COPD exacerbations with persistent respiratory acidosis (pH 7.25-7.35, PaCO2 > 45 mmHg) despite optimal medical therapy, reducing intubation rates by >60%.",
+          "cites": [
+            "28702957"
+          ]
+        },
+        {
+          "claim": "Immediate indications for invasive mechanical ventilation over NIV include severe encephalopathy, hemodynamic instability, uncontrolled vomiting, high aspiration risk, or failure of pH to improve after 1-2 hours of NIV.",
+          "cites": [
+            "28702957",
+            "40697918"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Patient-selection boundaries for NIV versus early intubation (severe acidosis, altered consciousness, comorbidity burden) remain judgement-heavy.",
+        "Where high-flow nasal therapy sits for milder hypercapnia or as NIV-tolerance rescue is being defined by comparative trials."
+      ],
+      "mcq_angles": [
+        "NIV success predictors: pH threshold, conscious level, cooperation.",
+        "Failure criteria: worsening acidosis despite NIV, exhaustion, hypoxia.",
+        "Cochrane-evidenced benefits: mortality and intubation reduction.",
+        "Modality comparison from the network meta-analysis."
+      ],
+      "case_hooks": [
+        "Two hours into NIV a patient's pH worsens from 7.28 to 7.24 with increasing somnolence; decide next steps.",
+        "A patient with mild hypercapnia (pH 7.36, PaCO2 55) asks about NIV versus other support; apply the comparative evidence."
+      ],
+      "gaps": "IPAP/EPAP titration targets, interface selection and do-not-intubate NIV palliative protocols are not covered by the retained abstracts; verify against the Cochrane review and current GOLD guidance before approval.",
+      "sources": [
+        {
+          "pmid": "28702957",
+          "design": "systematic-review",
+          "year": "2017",
+          "journal": null,
+          "title": "Non-invasive ventilation for the management of acute hypercapnic respiratory failure due to exacerbation of chronic obstructive pulmonary disease."
+        },
+        {
+          "pmid": "40697918",
+          "design": "network-meta-analysis",
+          "year": "2025",
+          "journal": null,
+          "title": "A comparative analysis of non-invasive respiratory support modalities in the treatment of acute hypercapnic respiratory failure."
+        }
+      ]
+    },
+    "publishedAt": "2026-10-20T09:15:42.585498+00:00"
+  }
+]

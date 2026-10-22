@@ -1,0 +1,1242 @@
+[
+  {
+    "no": 961,
+    "topicId": "2c075527-5015-498c-ab08-d1881247cfe0",
+    "topic": "Interstitial Nephritis: Acute and Chronic",
+    "cluster": "interstitial nephritis",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 8,
+      "papersKept": [
+        {
+          "uid": "pubmed-28284381",
+          "title": "Mechanisms of Drug-Induced Interstitial Nephritis.",
+          "year": "2017"
+        },
+        {
+          "uid": "pubmed-27072818",
+          "title": "PPIs and kidney disease: from AIN to CKD.",
+          "year": "2017"
+        },
+        {
+          "uid": "pubmed-30544782",
+          "title": "Eosinophilia and Kidney Disease: More than Just an Incidental Finding?",
+          "year": "2021"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-37303818",
+          "title": "Adverse Effects Associated with Long-Term Use of Proton Pump Inhibitors.",
+          "reason": "General PPI-safety review; nephrology-specific PPI evidence retained."
+        },
+        {
+          "uid": "pubmed-33556265",
+          "title": "Current concepts and advances in biomarkers of acute kidney injury.",
+          "reason": "AKI-biomarker focus; not interstitial nephritis."
+        },
+        {
+          "uid": "pubmed-36009483",
+          "title": "Acute Kidney Injury (AKI) in Young Synthetic Cannabinoids Abusers.",
+          "reason": "Aetiology case series; tangential."
+        },
+        {
+          "uid": "pubmed-35775000",
+          "title": "Immunotherapy and the Spectrum of Kidney Disease: Should We Individualize the Treatment?",
+          "reason": "Immunotherapy-nephrotoxicity focus; covered under ICI nephritis topic 918."
+        },
+        {
+          "uid": "pubmed-32394903",
+          "title": "Proton-pump inhibitors and chronic kidney disease: Hidden consequences of an inappropriate drug use?",
+          "reason": "Duplicate PPI-CKD question; retained review covers it."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Acute interstitial nephritis is the great mimic of AKI: an idiosyncratic drug hypersensitivity reaction arriving 7-10 days after exposure to the culprit — antibiotics, PPIs, NSAIDs the commonest — with a sterile pyuria, modest proteinuria, and often systemic allergic features. The diagnostic trap is that the classic triad (fever, rash, eosinophilia) is frequently absent; eosinophiluria has fallen from favour, and biopsy remains the reference standard when suspicion is high and improvement does not follow drug withdrawal. Chronic tubulointerstitial nephritis is its insidious counterpart: progressive fibrosis from persistent insults — including long-term PPI exposure, analgesics, or aristolochic acid — presenting with concentrating defects and slowly progressive CKD.",
+      "teaching_points": [
+        {
+          "claim": "Drug-induced AIN is a delayed hypersensitivity reaction appearing 7-10 days after culprit exposure; drugs account for the overwhelming majority of AIN cases, with antibiotics, PPIs, and NSAIDs the leading causes.",
+          "cites": [
+            "28284381"
+          ]
+        },
+        {
+          "claim": "The classic allergic triad is frequently absent; diagnosis rests on clinical suspicion (AKI after a new drug, sterile pyuria, modest non-nephrotic proteinuria), and biopsy is the reference standard when suspicion persists.",
+          "cites": [
+            "28284381",
+            "30544782"
+          ]
+        },
+        {
+          "claim": "First-line treatment is withdrawal of the culprit drug with corticosteroids for persistent or biopsy-severe disease; early steroid responsiveness is the rule and delayed treatment risks incomplete recovery.",
+          "cites": [
+            "28284381",
+            "27072818"
+          ]
+        },
+        {
+          "claim": "Chronic tubulointerstitial nephritis — from prolonged PPI use, analgesics, toxins, or previous AIN — presents with tubular dysfunction (concentrating defects, acidosis, salt wasting) and progressive CKD requiring culprit withdrawal and supportive care.",
+          "cites": [
+            "27072818",
+            "30544782"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Optimal steroid dose, duration, and whether early biopsy-guided therapy improves renal recovery lacks randomised evidence.",
+        "The causal contribution of PPIs to CKD progression at population level remains debated despite consistent observational signals."
+      ],
+      "mcq_angles": [
+        "Culprit-drug timeline and the absent-triad trap.",
+        "Diagnostic work-up: when to biopsy.",
+        "Steroid indications and response expectations.",
+        "Chronic TIN versus glomerular CKD patterns."
+      ],
+      "case_hooks": [
+        "A patient on a new antibiotic develops AKI with sterile pyuria but no rash or fever; assess for AIN and plan management.",
+        "A long-term PPI user has slowly rising creatinine and bland sediment; evaluate chronic TIN and counsel on deprescribing."
+      ],
+      "gaps": "The retained evidence is mechanism-focused; verify steroid protocols and biopsy thresholds against nephrology guidelines before approval.",
+      "sources": [
+        {
+          "pmid": "28284381",
+          "design": "review",
+          "year": "2017",
+          "journal": null,
+          "title": "Mechanisms of Drug-Induced Interstitial Nephritis."
+        },
+        {
+          "pmid": "27072818",
+          "design": "review",
+          "year": "2017",
+          "journal": null,
+          "title": "PPIs and kidney disease: from AIN to CKD."
+        },
+        {
+          "pmid": "30544782",
+          "design": "review",
+          "year": "2021",
+          "journal": null,
+          "title": "Eosinophilia and Kidney Disease: More than Just an Incidental Finding?"
+        }
+      ]
+    }
+  },
+  {
+    "no": 962,
+    "topicId": "942ea065-a632-4682-b1fc-1328ebf8962b",
+    "topic": "Intestinal Lymphoma",
+    "cluster": "intestinal lymphoma",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 8,
+      "papersKept": [
+        {
+          "uid": "pubmed-31414733",
+          "title": "Gastrointestinal non-Hodgkin lymphomas.",
+          "year": "2019"
+        },
+        {
+          "uid": "pubmed-37652650",
+          "title": "Updates in the diagnosis and management of small-bowel tumors.",
+          "year": "2023"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-41782401",
+          "title": "Immune-related enteropathy.",
+          "reason": "Checkpoint-inhibitor toxicity; not lymphoma."
+        },
+        {
+          "uid": "pubmed-36137844",
+          "title": "AGA Clinical Practice Update on Management of Refractory Celiac Disease: Expert Review.",
+          "reason": "Celiac disease; lymphoma mentioned only as complication."
+        },
+        {
+          "uid": "pubmed-40455348",
+          "title": "Gastrointestinal Manifestations of Common Variable Immunodeficiency: A Mentored Review.",
+          "reason": "CVID complications review; tangential."
+        },
+        {
+          "uid": "pubmed-40936926",
+          "title": "Pediatric inflammatory bowel disease and cancer.",
+          "reason": "Paediatric IBD; excluded."
+        },
+        {
+          "uid": "pubmed-27092676",
+          "title": "[Update on celiac disease].",
+          "reason": "Non-English-bracketed record; excluded per pipeline rules."
+        },
+        {
+          "uid": "pubmed-36153115",
+          "title": "Cancer in Inflammatory Bowel Disease.",
+          "reason": "IBD-colorectal cancer focus; not lymphoma."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "The small bowel is the longest segment of the gut and the rarest site for cancer — but primary gastrointestinal lymphoma is the exception, the GI tract being the commonest extranodal site of non-Hodgkin lymphoma. The subtypes each carry a signature: diffuse large B-cell lymphoma as the dominant aggressive form; MALT lymphoma linked to Helicobacter in the stomach; enteropathy-associated T-cell lymphoma (now MEITL) as the feared complication of coeliac disease; and Burkitt-type disease in the immunocompromised. Presentation is non-specific — pain, obstruction, bleeding, weight loss — so the diagnostic route runs through CT enterography, capsule endoscopy, and deep biopsy, with specialised cross-sectional imaging for staging.",
+      "teaching_points": [
+        {
+          "claim": "The GI tract is the most common extranodal site of non-Hodgkin lymphoma, though primary GI lymphoma remains a minority of all NHL; small-bowel primaries are disproportionately lymphomatous among small-bowel malignancies.",
+          "cites": [
+            "31414733",
+            "37652650"
+          ]
+        },
+        {
+          "claim": "Principal subtypes: DLBCL (dominant aggressive form), MALT (gastric, H. pylori-associated), enteropathy-associated T-cell lymphoma (coeliac-linked), and immunodeficiency-associated lymphomas.",
+          "cites": [
+            "31414733"
+          ]
+        },
+        {
+          "claim": "Diagnosis requires endoscopic or surgical deep biopsy with immunophenotyping; cross-sectional imaging (CT/PET) and bone-marrow assessment stage the disease.",
+          "cites": [
+            "37652650",
+            "31414733"
+          ]
+        },
+        {
+          "claim": "Treatment is subtype- and stage-directed: H. pylori eradication for early gastric MALT, chemoimmunotherapy (R-CHOP-type) for DLBCL, and surgery reserved for complications (perforation, obstruction, bleeding) rather than routine therapy.",
+          "cites": [
+            "31414733",
+            "37652650"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Optimal management of refractory/relapsed enteropathy-associated T-cell lymphoma is unsatisfactory and individualised.",
+        "The role of surgery versus endoscopic management for small-bowel obstruction in lymphoma is case-based."
+      ],
+      "mcq_angles": [
+        "GI lymphoma subtypes and their associations.",
+        "Diagnostic pathway: enterography, capsule, deep biopsy.",
+        "Staging essentials.",
+        "Subtype-directed therapy including H. pylori eradication for MALT."
+      ],
+      "case_hooks": [
+        "A coeliac patient on a strict diet presents with weight loss and obstructive symptoms; evaluate for enteropathy-associated T-cell lymphoma.",
+        "A gastric MALT lymphoma patient asks whether chemotherapy is needed; apply the H. pylori-eradication paradigm."
+      ],
+      "gaps": "WEAK EVIDENCE BASE: only two sources, both reviews. The retained abstracts lack subtype-specific treatment outcome series; verify therapy selection against lymphoma guidelines before approval.",
+      "sources": [
+        {
+          "pmid": "31414733",
+          "design": "review",
+          "year": "2019",
+          "journal": null,
+          "title": "Gastrointestinal non-Hodgkin lymphomas."
+        },
+        {
+          "pmid": "37652650",
+          "design": "review",
+          "year": "2023",
+          "journal": null,
+          "title": "Updates in the diagnosis and management of small-bowel tumors."
+        }
+      ]
+    }
+  },
+  {
+    "no": 963,
+    "topicId": "3ef3cd5a-42d7-45a4-bf0d-a67ad5068964",
+    "topic": "Intestinal Pseudo-obstruction",
+    "cluster": "intestinal pseudo-obstruction",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 8,
+      "papersKept": [
+        {
+          "uid": "pubmed-32073506",
+          "title": "Update on chronic intestinal pseudo-obstruction.",
+          "year": "2020"
+        },
+        {
+          "uid": "pubmed-29877952",
+          "title": "Pathophysiology, Diagnosis, and Management of Chronic Intestinal Pseudo-Obstruction.",
+          "year": "2017"
+        },
+        {
+          "uid": "pubmed-37132128",
+          "title": "Pyridostigmine in chronic intestinal pseudo-obstruction - a systematic review.",
+          "year": "2023"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-35966377",
+          "title": "Acute Colonic Pseudo-Obstruction.",
+          "reason": "Acute colonic pseudo-obstruction (Ogilvie) is a distinct entity; topic addresses chronic intestinal pseudo-obstruction."
+        },
+        {
+          "uid": "pubmed-35482095",
+          "title": "Paediatric intestinal pseudo-obstruction: a scoping review.",
+          "reason": "Paediatric population; excluded."
+        },
+        {
+          "uid": "pubmed-29487492",
+          "title": "Chronic Intestinal Pseudo-obstruction.",
+          "reason": "Older review; superseded by retained updates."
+        },
+        {
+          "uid": "pubmed-39461088",
+          "title": "Systematic review of treatments for the gastrointestinal manifestations of systemic lupus erythematosus.",
+          "reason": "SLE-subset; tangential."
+        },
+        {
+          "uid": "pubmed-34479179",
+          "title": "ESPEN practical guideline: Clinical nutrition in chronic intestinal failure.",
+          "reason": "Nutrition-guideline focus; tangential to pseudo-obstruction management."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Chronic intestinal pseudo-obstruction is dysmotility masquerading as obstruction: coordinated propulsive activity fails without a mechanical blockage, producing recurrent distension, pain, vomiting, and malnutrition. Diagnosis is one of exclusion — imaging to rule out obstruction, then manometry, scintigraphy, and full-thickness biopsy when available to characterise the neuromuscular pathology. Secondary causes (scleroderma, amyloid, opioids, paraneoplastic) must be hunted. Management combines nutritional support, prokinetic trials, and small-bowel transplantation for intestinal failure; pyridostigmine's systematic-review evidence makes it a first-line pharmacological option.",
+      "teaching_points": [
+        {
+          "claim": "CIPO is a severe gastrointestinal dysmotility mimicking mechanical obstruction; diagnosis requires exclusion of mechanical causes followed by physiological testing (manometry, transit studies) and consideration of full-thickness biopsy.",
+          "cites": [
+            "32073506",
+            "29877952"
+          ]
+        },
+        {
+          "claim": "Aetiology is primary (visceral myopathy or neuropathy) or secondary — scleroderma, amyloidosis, endocrine disease, drugs (opioids, anticholinergics), paraneoplastic syndromes; identifying secondary causes redirects therapy.",
+          "cites": [
+            "29877952",
+            "32073506"
+          ]
+        },
+        {
+          "claim": "Management is multimodal: dietary modification and enteral/parenteral nutrition, prokinetic agents (pyridostigmine supported by systematic review), treatment of secondary causes, and decompressive or transplant surgery for intestinal failure.",
+          "cites": [
+            "37132128",
+            "32073506"
+          ]
+        },
+        {
+          "claim": "Pyridostigmine, an acetylcholinesterase inhibitor enhancing cholinergic drive, has systematic-review support as a treatment option for CIPO directed at improving colonic and gut motility.",
+          "cites": [
+            "37132128"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "The evidence base for most prokinetics and novel agents (prucalopride, mosapride) in CIPO is small and heterogeneous.",
+        "Optimal timing and candidacy for intestinal transplantation in CIPO-related intestinal failure is individualised."
+      ],
+      "mcq_angles": [
+        "Diagnostic sequence: exclusion then physiology.",
+        "Primary versus secondary causes.",
+        "Prokinetic options and pyridostigmine evidence.",
+        "Nutrition and transplantation escalation."
+      ],
+      "case_hooks": [
+        "A patient has recurrent distension and vomiting with repeatedly 'normal' CTs; structure the CIPO work-up.",
+        "A scleroderma patient develops CIPO; identify the secondary mechanism and adjust management."
+      ],
+      "gaps": "The retained abstracts do not include manometry-interpretation or transplant-candidacy criteria; verify against neurogastroenterology guidance before approval.",
+      "sources": [
+        {
+          "pmid": "32073506",
+          "design": "review",
+          "year": "2020",
+          "journal": null,
+          "title": "Update on chronic intestinal pseudo-obstruction."
+        },
+        {
+          "pmid": "29877952",
+          "design": "review",
+          "year": "2017",
+          "journal": null,
+          "title": "Pathophysiology, Diagnosis, and Management of Chronic Intestinal Pseudo-Obstruction."
+        },
+        {
+          "pmid": "37132128",
+          "design": "systematic-review",
+          "year": "2023",
+          "journal": null,
+          "title": "Pyridostigmine in chronic intestinal pseudo-obstruction - a systematic review."
+        }
+      ]
+    }
+  },
+  {
+    "no": 964,
+    "topicId": "22df1381-bf7a-4cd0-8cac-d0ff04e10c7b",
+    "topic": "Intestinal Tuberculosis",
+    "cluster": "intestinal tuberculosis",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 7,
+      "papersKept": [
+        {
+          "uid": "pubmed-27730779",
+          "title": "Abdominal Tuberculosis.",
+          "year": "2016"
+        },
+        {
+          "uid": "pubmed-36899289",
+          "title": "Evidence-based approach to diagnosis and management of abdominal tuberculosis.",
+          "year": "2022"
+        },
+        {
+          "uid": "pubmed-37468869",
+          "title": "Differentiating gastrointestinal tuberculosis and Crohn's disease - a comprehensive review.",
+          "year": "2022"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-33516423",
+          "title": "Common Infectious Diseases.",
+          "reason": "General infectious-diseases overview; not intestinal-TB-specific."
+        },
+        {
+          "uid": "pubmed-30865041",
+          "title": "Small bowel strictures.",
+          "reason": "Surgical-subset review; tangential."
+        },
+        {
+          "uid": "pubmed-37338669",
+          "title": "Inflammatory Bowel Disease in Children.",
+          "reason": "Paediatric IBD; excluded."
+        },
+        {
+          "uid": "pubmed-30526331",
+          "title": "Encapsulating Peritoneal Sclerosis: The Abdominal Cocoon.",
+          "reason": "EPS entity; tangential."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Intestinal tuberculosis returns wherever tuberculosis returns: the ileocaecal region is its favoured site, and the challenge is twofold — diagnosing a disease whose presentation (chronic abdominal pain, weight loss, ileocaecal ulceration, strictures) is near-identical to Crohn's disease, and treating it with a regimen proven for pulmonary TB but applied to sites where drug penetration and duration questions persist. The diagnostic modernisation is molecular and endoscopic: tissue PCR, biopsy culture, and endoscopic-ultrasound guided sampling raise the yield over old serology. Mistaking Crohn's for TB commits patients to unnecessary immunosuppression; mistaking TB for Crohn's delays effective therapy — the differentiating review is the clinical lifeline.",
+      "teaching_points": [
+        {
+          "claim": "The ileocaecal region is the commonest site of intestinal TB; abdominal involvement accounts for about 11% of extra-pulmonary disease, with peritoneal and gastrointestinal forms predominating.",
+          "cites": [
+            "27730779",
+            "36899289"
+          ]
+        },
+        {
+          "claim": "Diagnosis combines clinical-radiological suspicion with tissue confirmation: endoscopic biopsy for caseating granulomas, culture, and molecular (PCR) testing; peritoneal fluid analysis and ultrasound/CT-guided sampling assist in peritoneal disease.",
+          "cites": [
+            "36899289",
+            "27730779"
+          ]
+        },
+        {
+          "claim": "The Crohn's-disease mimic is the central diagnostic trap; features favouring TB include pulmonary involvement, night sweats, ascites, patulous ileocaecal valve, and transverse ulcers, while longitudinal ulcers and perianal disease favour Crohn's.",
+          "cites": [
+            "37468869"
+          ]
+        },
+        {
+          "claim": "Treatment follows standard anti-tubercular therapy (rifampicin-based multi-drug regimens); surgery is reserved for complications — obstruction, perforation, fistula, or bleeding.",
+          "cites": [
+            "36899289",
+            "27730779"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Optimal duration of therapy for intestinal versus pulmonary TB, and the role of therapeutic trials, varies by guideline.",
+        "Diagnostic-test accuracy of individual modalities (PCR versus culture versus histology) varies with prevalence and technique."
+      ],
+      "mcq_angles": [
+        "Site predilection and clinical patterns.",
+        "Diagnostic pathway and tissue confirmation.",
+        "TB versus Crohn's differentiating features.",
+        "Treatment regimen and surgical indications."
+      ],
+      "case_hooks": [
+        "A patient with ileocaecal ulceration has weight loss and night sweats; differentiate TB from Crohn's and confirm the diagnosis.",
+        "An intestinal-TB patient develops persistent obstruction on therapy; outline the surgical-decision framework."
+      ],
+      "gaps": "The retained abstracts do not include WHO tuberculosis-guideline documents; verify regimen durations against current WHO/national guidance before approval.",
+      "sources": [
+        {
+          "pmid": "27730779",
+          "design": "review",
+          "year": "2016",
+          "journal": null,
+          "title": "Abdominal Tuberculosis."
+        },
+        {
+          "pmid": "36899289",
+          "design": "review",
+          "year": "2022",
+          "journal": null,
+          "title": "Evidence-based approach to diagnosis and management of abdominal tuberculosis."
+        },
+        {
+          "pmid": "37468869",
+          "design": "review",
+          "year": "2022",
+          "journal": null,
+          "title": "Differentiating gastrointestinal tuberculosis and Crohn's disease - a comprehensive review."
+        }
+      ]
+    }
+  },
+  {
+    "no": 965,
+    "topicId": "2c2b922e-6e96-40b4-a313-241ac68bcac3",
+    "topic": "Intra-abdominal infections: source control principles, empirical antibiotics, peritonitis",
+    "cluster": "intra-abdominal infection",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 8,
+      "papersKept": [
+        {
+          "uid": "pubmed-27363829",
+          "title": "Abdominal Sepsis.",
+          "year": "2016"
+        },
+        {
+          "uid": "pubmed-26568097",
+          "title": "Basis for selecting optimum antibiotic regimens for secondary peritonitis.",
+          "year": "2016"
+        },
+        {
+          "uid": "pubmed-34037963",
+          "title": "Antimicrobial Lessons From a Large Observational Cohort on Intra-abdominal Infections in Intensive Care Units.",
+          "year": "2020"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-38136745",
+          "title": "Optimized Treatment of Nosocomial Peritonitis.",
+          "reason": "Nosocomial-subset review; general principles retained."
+        },
+        {
+          "uid": "pubmed-31291445",
+          "title": "ANTIBIOTICS FOR APPENDICECTOMY IN CHILDREN AND ADOLESCENTS DURING THE PERIOPERATIVE PERIOD: AN INTEGRATIVE REVIEW.",
+          "reason": "Paediatric perioperative subset; excluded."
+        },
+        {
+          "uid": "pubmed-31102546",
+          "title": "Intra-abdominal infections in solid organ transplant recipients: Guidelines from the American Society of Transplantation.",
+          "reason": "Transplant-population guidelines; tangential."
+        },
+        {
+          "uid": "pubmed-41464096",
+          "title": "The Evolving Microbiology and Antimicrobial Resistance in Peritonitis of Biliary Origin: An Evidence-Based Update.",
+          "reason": "Biliary-origin subset; tangential."
+        },
+        {
+          "uid": "pubmed-42725189",
+          "title": "Intra-abdominal infections caused by Achromobacter xylosoxidans: a systematic review.",
+          "reason": "Rare-organism review; tangential."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Intra-abdominal infection is a two-front war: source control and antimicrobials, with source control the non-negotiable first front — no antibiotic regimen rescues an uncontrolled leak. The principles are physical: drain the pus, control the leak, restore anatomy, often staged with damage-control surgery in the unstable. Antimicrobial therapy covers the polymicrobial flora of secondary peritonitis (enteric gram-negatives, anaerobes, enterococci) with a source-appropriate, narrowable regimen; observational ICU cohorts show outcomes are dominated by severity, source control adequacy, and resistance patterns rather than agent choice alone.",
+      "teaching_points": [
+        {
+          "claim": "Source control — drainage of infected collections, definitive control of contamination, and restoration of anatomy — is the foundation of intra-abdominal infection management; antibiotics cannot compensate for inadequate source control.",
+          "cites": [
+            "27363829",
+            "26568097"
+          ]
+        },
+        {
+          "claim": "Secondary peritonitis is polymicrobial; empirical regimens must cover enteric gram-negative bacilli and anaerobes, with anti-enterococcal cover for healthcare-associated and high-risk cases, then de-escalate on culture.",
+          "cites": [
+            "26568097",
+            "34037963"
+          ]
+        },
+        {
+          "claim": "Large ICU cohorts show mortality is driven by severity at onset, anatomical disruption extent, and inadequate source control — reinforcing early intervention and reassessment.",
+          "cites": [
+            "34037963",
+            "27363829"
+          ]
+        },
+        {
+          "claim": "Duration of therapy shortens dramatically with adequate source control: 4-7 days is supported for most controlled intra-abdominal infections, extending only for persistent foci or inadequate control.",
+          "cites": [
+            "27363829",
+            "26568097"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Optimal duration (short versus standard) in specific sources (pancreatic, biliary) continues to evolve.",
+        "The role of routine enterococcal and antifungal cover in community-acquired peritonitis is debated."
+      ],
+      "mcq_angles": [
+        "Source-control hierarchy and timing.",
+        "Empirical-coverage spectrum by acquisition type.",
+        "What drives mortality in IAI cohorts.",
+        "Short-course therapy after adequate source control."
+      ],
+      "case_hooks": [
+        "A perforated diverticulitis patient is septic on presentation; prioritise source-control sequencing and initial antibiotics.",
+        "A post-operative peritonitis patient remains febrile day 5 on appropriate antibiotics; reassess for uncontrolled source."
+      ],
+      "gaps": "The retained abstracts predate the current IDSA/SIS intra-abdominal-infection guideline update; verify duration and coverage recommendations against it before approval.",
+      "sources": [
+        {
+          "pmid": "27363829",
+          "design": "review",
+          "year": "2016",
+          "journal": null,
+          "title": "Abdominal Sepsis."
+        },
+        {
+          "pmid": "26568097",
+          "design": "review",
+          "year": "2016",
+          "journal": null,
+          "title": "Basis for selecting optimum antibiotic regimens for secondary peritonitis."
+        },
+        {
+          "pmid": "34037963",
+          "design": "cohort-study",
+          "year": "2020",
+          "journal": null,
+          "title": "Antimicrobial Lessons From a Large Observational Cohort on Intra-abdominal Infections in Intensive Care Units."
+        }
+      ]
+    }
+  },
+  {
+    "no": 966,
+    "topicId": "9314074b-9a21-4a5b-931c-7f886f8d63cc",
+    "topic": "Intra-aortic balloon pump and Impella: principles and ICU management",
+    "cluster": "mechanical circulatory support",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 8,
+      "papersKept": [
+        {
+          "uid": "pubmed-32793674",
+          "title": "Short-term mechanical circulatory support (intra-aortic balloon pump, Impella, extracorporeal membrane oxygenation).",
+          "year": "2020"
+        },
+        {
+          "uid": "pubmed-38697884",
+          "title": "Combined use of intra-aortic balloon pump and Impella in cardiogenic shock: A systematic review.",
+          "year": "2023"
+        },
+        {
+          "uid": "pubmed-32793680",
+          "title": "Complications associated with mechanical circulatory support.",
+          "year": "2020"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-38115065",
+          "title": "Mechanical circulatory support in cardiogenic shock.",
+          "reason": "General MCS review; device-specific reviews retained."
+        },
+        {
+          "uid": "pubmed-39058419",
+          "title": "Science of left ventricular unloading.",
+          "reason": "Physiology-focus review; practical device management retained."
+        },
+        {
+          "uid": "pubmed-32473281",
+          "title": "Mechanical circulatory support for Takotsubo syndrome: a systematic review and meta-analysis.",
+          "reason": "Takotsubo subset; tangential."
+        },
+        {
+          "uid": "pubmed-35643384",
+          "title": "Percutaneous Mechanical Circulatory Support in Post-Myocardial Infarction Cardiogenic Shock: A Systematic Review and Meta-analysis.",
+          "reason": "Overlap with retained device reviews; complications review retained."
+        },
+        {
+          "uid": "pubmed-32894797",
+          "title": "Safety and efficacy of mechanical circulatory support with Impella or intra-aortic balloon pump for high-risk percutaneous coronary intervention.",
+          "reason": "High-risk-PCI indication; not shock management."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Two devices carry most of the short-term mechanical-circulatory-support load. The intra-aortic balloon pump is the elder: counterpulsation inflating in diastole augments coronary perfusion and deflating in systole offloads the ventricle — modest support, easy to insert, but with the weakest outcome evidence (IABP-SHOCK II showed no mortality benefit in post-MI shock). The Impella transvalvular axial-flow pump provides far greater flows and true ventricular unloading, at the cost of vascular complications, haemolysis, and bleeding. Combined IABP-plus-Impella strategies appear in systematic review as an escalation option; complications surveillance — access-site, haemolysis, limb ischaemia — is the defining ICU management skill.",
+      "teaching_points": [
+        {
+          "claim": "IABP counterpulsation augments diastolic coronary perfusion and reduces afterload; it provides modest haemodynamic support but IABP-SHOCK II showed no mortality benefit in post-MI cardiogenic shock.",
+          "cites": [
+            "32793674"
+          ]
+        },
+        {
+          "claim": "Impella axial-flow pumps deliver higher flows with active ventricular unloading across the aortic valve; they suit higher-severity shock but carry vascular-access, bleeding, and haemolysis complications.",
+          "cites": [
+            "32793680",
+            "32793674"
+          ]
+        },
+        {
+          "claim": "Combined IABP-plus-Impella support is described in systematic review as an escalation strategy for refractory cardiogenic shock, adding pulsatility and afterload reduction to axial-flow output.",
+          "cites": [
+            "38697884"
+          ]
+        },
+        {
+          "claim": "ICU management centres on complications surveillance: access-site bleeding, limb ischaemia, haemolysis (plasma-free haemoglobin monitoring), device position (echo surveillance), and anticoagulation titration.",
+          "cites": [
+            "32793680",
+            "32793674"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Whether Impella-based strategies improve mortality in cardiogenic shock (versus IABP or medical therapy alone) awaits definitive trials.",
+        "Optimal anticoagulation intensity and device-weaning protocols are centre-specific."
+      ],
+      "mcq_angles": [
+        "IABP physics, indications, and IABP-SHOCK II.",
+        "Impella pumps: flows, positioning, and complications.",
+        "Combination-therapy rationale.",
+        "ICU surveillance priorities on MCS."
+      ],
+      "case_hooks": [
+        "A post-MI shock patient is failing on IABP; argue escalation to Impella and the expected trade-offs.",
+        "An Impella patient develops dark urine and rising lactate dehydrogenase; diagnose haemolysis and outline management."
+      ],
+      "gaps": "The IABP-SHOCK II primary report is not among the retained abstracts; verify trial details before approval.",
+      "sources": [
+        {
+          "pmid": "32793674",
+          "design": "review",
+          "year": "2020",
+          "journal": null,
+          "title": "Short-term mechanical circulatory support (intra-aortic balloon pump, Impella, extracorporeal membrane oxygenation)."
+        },
+        {
+          "pmid": "38697884",
+          "design": "systematic-review",
+          "year": "2023",
+          "journal": null,
+          "title": "Combined use of intra-aortic balloon pump and Impella in cardiogenic shock: A systematic review."
+        },
+        {
+          "pmid": "32793680",
+          "design": "review",
+          "year": "2020",
+          "journal": null,
+          "title": "Complications associated with mechanical circulatory support."
+        }
+      ]
+    }
+  },
+  {
+    "no": 967,
+    "topicId": "3de6b3ae-0f82-4745-9989-8fd421a0f529",
+    "topic": "Intra-articular injections in OA: corticosteroids, hyaluronic acid, PRP: evidence review",
+    "cluster": "OA injections",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 8,
+      "papersKept": [
+        {
+          "uid": "pubmed-35383651",
+          "title": "AAOS Clinical Practice Guideline Summary: Management of Osteoarthritis of the Knee (Nonarthroplasty), Third Edition.",
+          "year": "2022"
+        },
+        {
+          "uid": "pubmed-34485586",
+          "title": "A Systematic Review of Current Clinical Practice Guidelines on Intra-articular Hyaluronic Acid, Corticosteroid, and Platelet-Rich Plasma.",
+          "year": "2021"
+        },
+        {
+          "uid": "pubmed-32829298",
+          "title": "Intra-articular saline injection is as effective as corticosteroids, platelet-rich plasma and hyaluronic acid for hip osteoarthritis.",
+          "year": "2017"
+        },
+        {
+          "uid": "pubmed-38331363",
+          "title": "Platelet-Rich Plasma, Bone Marrow Aspirate Concentrate, and Hyaluronic Acid Injections Outperform Corticosteroids in Knee Osteoarthritis.",
+          "year": "2022"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-39219017",
+          "title": "9. Chronic knee pain.",
+          "reason": "General chronic-pain review; injection-specific evidence retained."
+        },
+        {
+          "uid": "pubmed-41287699",
+          "title": "Knee Osteoarthritis: Current Insights Into Pathophysiology and Non-surgical Management Options.",
+          "reason": "General OA management review; injection question covered by guidelines."
+        },
+        {
+          "uid": "pubmed-40169165",
+          "title": "Stem cell injections for osteoarthritis of the knee.",
+          "reason": "Stem-cell subset with regulatory concerns; tangential."
+        },
+        {
+          "uid": "pubmed-37314198",
+          "title": "Efficacy of intra-articular injections of hyaluronic acid in patients with glenohumeral joint osteoarthritis: A systematic review.",
+          "reason": "Shoulder-joint subset; knee/hip evidence retained."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Intra-articular injections for osteoarthritis sit on contested evidence: guideline recommendations diverge by region and economics, and the placebo-controlled literature is humbling — intra-articular saline performs comparably to corticosteroid, PRP, and hyaluronic acid in hip-OA network meta-analysis, reminding clinicians that much of the injection benefit is contextual. The defensible reading: corticosteroids give short-term symptom relief with diminishing returns and possible cartilage concerns with repeated use; hyaluronic acid offers a modest, delayed benefit some guidelines endorse and others reject; PRP shows promise in comparative meta-analysis but standardisation and cost limit routine use.",
+      "teaching_points": [
+        {
+          "claim": "Clinical-practice-guideline systematic review shows divergent regional recommendations for IA corticosteroid, hyaluronic acid, and PRP in knee OA — reflecting evidence uncertainty and economic context rather than clear efficacy differences.",
+          "cites": [
+            "34485586",
+            "35383651"
+          ]
+        },
+        {
+          "claim": "Placebo-controlled network meta-analysis in hip OA found intra-articular saline as effective as corticosteroid, PRP, and hyaluronic acid — a powerful demonstration of contextual and placebo effects in injection trials.",
+          "cites": [
+            "32829298"
+          ]
+        },
+        {
+          "claim": "In knee-OA comparative meta-analysis, PRP, bone-marrow aspirate concentrate, and hyaluronic acid outperformed corticosteroids for symptom outcomes, though heterogeneity and commercial bias temper the conclusions.",
+          "cites": [
+            "38331363"
+          ]
+        },
+        {
+          "claim": "AAOS guidance supports corticosteroid use for short-term knee-OA symptom relief while not recommending routine hyaluronic-acid injection; repeated steroid injections carry diminishing returns and theoretical cartilage-harm concerns.",
+          "cites": [
+            "35383651"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Whether PRP's comparative benefit survives rigorous placebo-controlled standardised-protocol trials is unresolved.",
+        "Long-term safety of repeated corticosteroid injections on cartilage remains incompletely defined."
+      ],
+      "mcq_angles": [
+        "Guideline divergence and its reasons.",
+        "The saline-placebo lesson for injection evidence.",
+        "Comparative-effectiveness meta-analysis: PRP/HA versus steroid.",
+        "Practical injection counselling: expectations and limits."
+      ],
+      "case_hooks": [
+        "A knee-OA patient requests 'the injection that lasts longest'; counsel on the evidence landscape and set realistic expectations.",
+        "A patient has had four steroid injections in a year with waning benefit; discuss cartilage concerns and alternatives."
+      ],
+      "gaps": "The retained abstracts focus on knee and hip; verify recommendations for other joints separately before approval.",
+      "sources": [
+        {
+          "pmid": "35383651",
+          "design": "guideline",
+          "year": "2022",
+          "journal": null,
+          "title": "AAOS Clinical Practice Guideline Summary: Management of Osteoarthritis of the Knee (Nonarthroplasty), Third Edition."
+        },
+        {
+          "pmid": "34485586",
+          "design": "systematic-review",
+          "year": "2021",
+          "journal": null,
+          "title": "A Systematic Review of Current Clinical Practice Guidelines on Intra-articular Hyaluronic Acid, Corticosteroid, and Platelet-Rich Plasma."
+        },
+        {
+          "pmid": "32829298",
+          "design": "meta-analysis",
+          "year": "2017",
+          "journal": null,
+          "title": "Intra-articular saline injection is as effective as corticosteroids, platelet-rich plasma and hyaluronic acid for hip osteoarthritis."
+        },
+        {
+          "pmid": "38331363",
+          "design": "meta-analysis",
+          "year": "2022",
+          "journal": null,
+          "title": "Platelet-Rich Plasma, Bone Marrow Aspirate Concentrate, and Hyaluronic Acid Injections Outperform Corticosteroids in Knee Osteoarthritis."
+        }
+      ]
+    }
+  },
+  {
+    "no": 968,
+    "topicId": "a83ed924-603a-4b2c-8b51-3c0b6d6fde93",
+    "topic": "Intracerebral haemorrhage: blood pressure targets, reversal of anticoagulants",
+    "cluster": "ICH",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 8,
+      "papersKept": [
+        {
+          "uid": "pubmed-31188036",
+          "title": "Intracerebral hemorrhage: an update on diagnosis and treatment.",
+          "year": "2019"
+        },
+        {
+          "uid": "pubmed-28887767",
+          "title": "Management of Spontaneous Intracerebral Hemorrhage.",
+          "year": "2015"
+        },
+        {
+          "uid": "pubmed-38099439",
+          "title": "Code ICH: A Call to Action.",
+          "year": "2023"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-33272397",
+          "title": "Hemorrhagic stroke.",
+          "reason": "General haemorrhagic-stroke review; ICH-specific updates retained."
+        },
+        {
+          "uid": "pubmed-31262419",
+          "title": "Intracranial Hemorrhage and Intracranial Hypertension.",
+          "reason": "Broader ICP syndrome review; retained under topic 969."
+        },
+        {
+          "uid": "pubmed-29026928",
+          "title": "[Current treatment concepts in intracerebral hemorrhage].",
+          "reason": "Non-English-bracketed record; excluded per pipeline rules."
+        },
+        {
+          "uid": "pubmed-31092052",
+          "title": "An update on neurocritical care for intracerebral hemorrhage.",
+          "reason": "Abstract not retrievable in fetch output; excluded to honour read-before-cite rule."
+        },
+        {
+          "uid": "pubmed-38452748",
+          "title": "Advances in Prehospital Management of Intracerebral Hemorrhage.",
+          "reason": "Prehospital subset; in-hospital management focus retained."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Two interventions dominate the first hours of intracerebral haemorrhage, and both are about stopping the bleed. Blood-pressure lowering — the INTERACT2/ATACH lineage refined to a target around 130-140 mmHg systolic, achieved smoothly and early — reduces haematoma expansion, the strongest modifiable predictor of outcome. Anticoagulant reversal is the second: warfarin reversed with PCC plus vitamin K, the DOACs with specific reversal agents (idarucizumab for dabigatran; andexanet alfa or PCC for factor-Xa inhibitors), alongside platelet-transfusion caution — the PATCH lesson that indiscriminate platelet transfusion in antiplatelet-associated ICH may worsen outcome.",
+      "teaching_points": [
+        {
+          "claim": "Early, smooth systolic blood-pressure lowering to approximately 130-140 mmHg limits haematoma expansion, the strongest modifiable predictor of poor functional outcome.",
+          "cites": [
+            "31188036",
+            "28887767"
+          ]
+        },
+        {
+          "claim": "Haematoma expansion is common within the first hours; blood-pressure variability and peaks are as important as the absolute achieved level — smooth control matters.",
+          "cites": [
+            "38099439",
+            "31188036"
+          ]
+        },
+        {
+          "claim": "Anticoagulant reversal is urgent: vitamin K plus four-factor PCC for warfarin; idarucizumab for dabigatran; andexanet alfa or PCC for factor-Xa inhibitors — with the agent's last-dose timing guiding urgency.",
+          "cites": [
+            "28887767",
+            "31188036"
+          ]
+        },
+        {
+          "claim": "Platelet transfusion for antiplatelet-associated ICH is not routine: the PATCH trial signal of harm without surgical indication cautions against indiscriminate transfusion.",
+          "cites": [
+            "28887767"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "How low to target systolic BP (intensive <130 versus 140-150) and the role of ultra-early aggressive lowering are refined but unsettled.",
+        "The ideal reversal strategy for factor-Xa inhibitor ICH when andexanet is unavailable follows PCC-based protocols."
+      ],
+      "mcq_angles": [
+        "BP targets and the expansion-prevention rationale.",
+        "Anticoagulant-reversal agent selection by drug.",
+        "The platelet-transfusion caution.",
+        "Avoiding BP variability in the acute phase."
+      ],
+      "case_hooks": [
+        "A rivaroxaban patient presents with a large ICH and BP 185/105; sequence reversal and BP management for the first hours.",
+        "An aspirin-taking ICH patient has a falling GCS; argue the platelet-transfusion decision using the evidence."
+      ],
+      "gaps": "The INTERACT2/ATACH-2 primary reports are not among the retained abstracts; verify target-BP details against the primary publications before approval.",
+      "sources": [
+        {
+          "pmid": "31188036",
+          "design": "review",
+          "year": "2019",
+          "journal": null,
+          "title": "Intracerebral hemorrhage: an update on diagnosis and treatment."
+        },
+        {
+          "pmid": "28887767",
+          "design": "review",
+          "year": "2015",
+          "journal": null,
+          "title": "Management of Spontaneous Intracerebral Hemorrhage."
+        },
+        {
+          "pmid": "38099439",
+          "design": "call-to-action",
+          "year": "2023",
+          "journal": null,
+          "title": "Code ICH: A Call to Action."
+        }
+      ]
+    }
+  },
+  {
+    "no": 969,
+    "topicId": "9e7811e0-3630-4ebc-8f14-f0ba8a07836c",
+    "topic": "Intracerebral hemorrhage acute management",
+    "cluster": "ICH",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 8,
+      "papersKept": [
+        {
+          "uid": "pubmed-36725717",
+          "title": "A systematic review and synthesis of global stroke guidelines on behalf of the World Stroke Organization.",
+          "year": "2023"
+        },
+        {
+          "uid": "pubmed-31262419",
+          "title": "Intracranial Hemorrhage and Intracranial Hypertension.",
+          "year": "2021"
+        },
+        {
+          "uid": "pubmed-32227294",
+          "title": "Guidelines for the Acute Treatment of Cerebral Edema in Neurocritical Care Patients.",
+          "year": "2020"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-34618758",
+          "title": "Subarachnoid Hemorrhage.",
+          "reason": "SAH, not ICH; distinct management pathway."
+        },
+        {
+          "uid": "pubmed-33272397",
+          "title": "Hemorrhagic stroke.",
+          "reason": "General review; retained under topic 968."
+        },
+        {
+          "uid": "pubmed-38574483",
+          "title": "Infective Endocarditis and Antithrombotic Therapy.",
+          "reason": "Wrong topic; endocarditis antithrombotics."
+        },
+        {
+          "uid": "pubmed-40401775",
+          "title": "European Stroke Organisation (ESO) and European Association of Neurosurgical Societies (EANS) guideline on stroke delirium.",
+          "reason": "Delirium guideline; tangential to acute ICH management."
+        },
+        {
+          "uid": "pubmed-38099439",
+          "title": "Code ICH: A Call to Action.",
+          "reason": "Retained under topic 968 to avoid duplicate citation across the cluster."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Acute ICH management beyond BP and reversal is a choreography of neuroprotection, surveillance, and escalation. The World Stroke Organization's synthesis of global guidelines provides the consensus frame: rapid CT, reversal of coagulopathy, BP control, and early neurosurgical assessment for cerebellar haemorrhage or deterioration — with inter-hospital transfer protocols for centres lacking neurosurgery. Raised intracranial pressure is managed with head positioning, osmotherapy (hypertonic saline or mannitol), and decompressive craniectomy for malignant MCA-pattern swelling; the cerebral-oedema guideline formalises selection and monitoring of these therapies. The through-line is organised systems — 'Code ICH' pathways compressing time-to-CT, time-to-reversal, and time-to-decision.",
+      "teaching_points": [
+        {
+          "claim": "Global stroke-guideline synthesis supports the core acute-ICH bundle: rapid neuroimaging, coagulopathy reversal, controlled BP lowering, structured observation, and early surgical assessment for cerebellar or deteriorating haemorrhage.",
+          "cites": [
+            "36725717"
+          ]
+        },
+        {
+          "claim": "Intracranial-pressure management uses tiered escalation: head-of-bed elevation, sedation, osmotherapy (hypertonic saline or mannitol), CSF diversion where indicated, and decompressive craniectomy for refractory malignant swelling.",
+          "cites": [
+            "31262419",
+            "32227294"
+          ]
+        },
+        {
+          "claim": "The cerebral-oedema guideline provides practical recommendations for selecting and monitoring osmotherapy and ICP-directed therapies in neurocritical care.",
+          "cites": [
+            "32227294"
+          ]
+        },
+        {
+          "claim": "Cerebellar haemorrhage with brainstem compression or hydrocephalus is a surgical emergency for decompression and/or ventricular drainage — early recognition and transfer protocols determine outcome.",
+          "cites": [
+            "36725717",
+            "31262419"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Whether ICP-monitoring-guided therapy improves functional outcome in ICH is unproven.",
+        "Optimal timing and selection for minimally-invasive haematoma evacuation remain under active trial evaluation."
+      ],
+      "mcq_angles": [
+        "The acute-ICH bundle components.",
+        "Tiered ICP management and osmotherapy selection.",
+        "Surgical emergencies: cerebellar haemorrhage and hydrocephalus.",
+        "Code-ICH systems and transfer protocols."
+      ],
+      "case_hooks": [
+        "A cerebellar-ICH patient is drowsy with new hydrocephalus at a non-surgical centre; sequence the stabilisation and transfer.",
+        "An ICH patient's GCS falls with new pupil asymmetry; outline the tiered ICP-escalation response."
+      ],
+      "gaps": "The retained abstracts do not include the primary surgical-trial evidence (STICH lineage) or the current AHA/ASA ICH guideline; verify surgical-indication thresholds before approval.",
+      "sources": [
+        {
+          "pmid": "36725717",
+          "design": "guideline-synthesis",
+          "year": "2023",
+          "journal": null,
+          "title": "A systematic review and synthesis of global stroke guidelines on behalf of the World Stroke Organization."
+        },
+        {
+          "pmid": "31262419",
+          "design": "review",
+          "year": "2021",
+          "journal": null,
+          "title": "Intracranial Hemorrhage and Intracranial Hypertension."
+        },
+        {
+          "pmid": "32227294",
+          "design": "guideline",
+          "year": "2020",
+          "journal": null,
+          "title": "Guidelines for the Acute Treatment of Cerebral Edema in Neurocritical Care Patients."
+        }
+      ]
+    }
+  },
+  {
+    "no": 970,
+    "topicId": "4465c605-c116-4d17-b81c-637ad1f5d332",
+    "topic": "Intravenous fluid prescribing and fluid balance management",
+    "cluster": "IV fluid prescribing",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 6,
+      "papersKept": [
+        {
+          "uid": "pubmed-34006046",
+          "title": "Aiming for zero fluid accumulation: First, do no harm.",
+          "year": "2021"
+        },
+        {
+          "uid": "pubmed-29858432",
+          "title": "What is the evidence base for fluid resuscitation in acute medicine?",
+          "year": "2016"
+        },
+        {
+          "uid": "pubmed-34764839",
+          "title": "Restricted, optimized or liberal fluid strategy in thoracic surgery: A narrative review.",
+          "year": "2022"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-36289081",
+          "title": "ESPNIC clinical practice guidelines: intravenous maintenance fluid therapy in acute and critically ill children.",
+          "reason": "Paediatric population; excluded."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Intravenous-fluid prescribing is the commonest inpatient intervention and among the least audited: fluids are drugs with indications, contraindications, and toxicity — yet they are often prescribed 'to keep the vein open' by the most junior team member. The modern evidence frame is the four Ds and the harm narrative: the evidence base for exactly when and how much resuscitation fluid remains thin in multimorbid acute medicine, while harm accrues quietly through fluid accumulation — positive balance drives oedema, AKI, and delayed recovery even when each bolus looked reasonable. Perioperative and thoracic-surgery data anchor the optimisation principle: goal-directed, moderate-volume strategies beat both liberal flooding and dogmatic restriction.",
+      "teaching_points": [
+        {
+          "claim": "Fluid prescribing should follow drug-prescribing logic: assess need (hypovolaemia versus euvolaemia), choose fluid type deliberately (crystalloid default), define volume and endpoint, and review daily with a stop date.",
+          "cites": [
+            "29858432",
+            "34006046"
+          ]
+        },
+        {
+          "claim": "The evidence base for exactly when and how much resuscitation fluid to give in acute medicine is limited; uncertainty should translate into small aliquots with reassessment rather than large empirical boluses.",
+          "cites": [
+            "29858432"
+          ]
+        },
+        {
+          "claim": "Cumulative positive fluid balance is an independent harm driver: 'zero fluid accumulation' is the therapeutic goal in critical illness, with deresuscitation (fluid removal) a deliberate phase of care.",
+          "cites": [
+            "34006046"
+          ]
+        },
+        {
+          "claim": "Perioperative evidence supports optimised, goal-directed moderate-fluid strategies over liberal administration; thoracic-surgery data show excess fluid drives respiratory complications.",
+          "cites": [
+            "34764839"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Which dynamic measures (passive leg raise, stroke-volume variation, echo) best guide fluid responsiveness at the bedside remains practice-variable.",
+        "Optimal deresuscitation timing and triggers in established positive balance are not standardised."
+      ],
+      "mcq_angles": [
+        "Fluid-as-drug prescribing framework.",
+        "Fluid responsiveness assessment.",
+        "The harm of cumulative positive balance.",
+        "Goal-directed versus liberal strategies perioperatively."
+      ],
+      "case_hooks": [
+        "A septic patient has received 6 litres by day 2 with rising oxygen requirements and positive 5-litre balance; design the reassessment and deresuscitation.",
+        "A post-operative patient is on 'maintenance fluids' day 4 without review; audit the prescription against prescribing principles."
+      ],
+      "gaps": "The retained abstracts do not include the current consensus definitions of fluid stewardship or the crystalloid-versus-colloid trial literature; verify fluid-type guidance before approval.",
+      "sources": [
+        {
+          "pmid": "34006046",
+          "design": "review",
+          "year": "2021",
+          "journal": null,
+          "title": "Aiming for zero fluid accumulation: First, do no harm."
+        },
+        {
+          "pmid": "29858432",
+          "design": "review",
+          "year": "2016",
+          "journal": null,
+          "title": "What is the evidence base for fluid resuscitation in acute medicine?"
+        },
+        {
+          "pmid": "34764839",
+          "design": "review",
+          "year": "2022",
+          "journal": null,
+          "title": "Restricted, optimized or liberal fluid strategy in thoracic surgery: A narrative review."
+        }
+      ]
+    }
+  }
+]

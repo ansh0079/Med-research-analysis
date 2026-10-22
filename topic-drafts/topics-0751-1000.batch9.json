@@ -1,0 +1,1173 @@
+[
+  {
+    "no": 831,
+    "topicId": "2bc894d1-ec94-49d0-837b-34cac4d4e7a6",
+    "topic": "HIV pre-exposure prophylaxis",
+    "cluster": "HIV PrEP implementation",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 16,
+      "papersKept": [
+        {
+          "uid": "pubmed-38743381",
+          "title": "Identifying Best Practices for Increasing HIV Pre-exposure Prophylaxis (PrEP) Use and Persistence in the United States.",
+          "year": "2024"
+        },
+        {
+          "uid": "pubmed-41761621",
+          "title": "Global Perspectives on Pre-Exposure Prophylaxis: A Systematic Review and Meta-Analysis of Health Care Providers' Awareness, Willingness, and Barriers.",
+          "year": "2025"
+        },
+        {
+          "uid": "pubmed-31094576",
+          "title": "Next-Wave HIV Pre-Exposure Prophylaxis Implementation for Gay and Bisexual Men.",
+          "year": "2019"
+        },
+        {
+          "uid": "pubmed-28361503",
+          "title": "Offering pre-exposure prophylaxis for HIV prevention to pregnant and postpartum women: a clinical approach.",
+          "year": "2018"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-38130977",
+          "title": "A Scoping Review of Biobehavioural Interventions to Improve PrEP Continuum of Care in Latin America.",
+          "reason": "Single-region scoping review; too narrow for general implementation guidance."
+        },
+        {
+          "uid": "pubmed-34916275",
+          "title": "Roll-out of HIV pre-exposure prophylaxis: a gateway to mental health promotion.",
+          "reason": "Mental-health framing; tangential to PrEP delivery."
+        },
+        {
+          "uid": "pubmed-32861269",
+          "title": "Initiation, discontinuation, and restarting HIV pre-exposure prophylaxis.",
+          "reason": "Overlaps persistence content retained via 38743381."
+        },
+        {
+          "uid": "pubmed-40642253",
+          "title": "Impact of mHealth on enhancing PrEP adherence.",
+          "reason": "Digital-adherence focus; tangential."
+        },
+        {
+          "uid": "pubmed-30796608",
+          "title": "Scaling-up PrEP Delivery in Sub-Saharan Africa.",
+          "reason": "Health-system scale-up lens; tangential to clinician-facing implementation."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "PrEP's problem is no longer whether it works but whether people can get it, stay on it, and be supported through the cycles of starting, stopping and restarting that real life imposes. Implementation science now dominates the literature: systematic reviews of best practices, global syntheses of provider barriers, and frameworks describing how programs must move from development and diffusion to genuine integration. Two populations remain systematically under-served — gay and bisexual men facing access disparities, and pregnant and postpartum women, for whom prevention is also child health.",
+      "teaching_points": [
+        {
+          "claim": "A qualitative systematic review identifies characteristics of best practices for increasing PrEP use and persistence, and maps research gaps in current PrEP interventions.",
+          "cites": [
+            "38743381"
+          ]
+        },
+        {
+          "claim": "A global systematic review and meta-analysis quantifies health-care providers' awareness, willingness and key barriers to implementing PrEP.",
+          "cites": [
+            "41761621"
+          ]
+        },
+        {
+          "claim": "PrEP implementation has moved through waves of development (2012–2015) and diffusion (2016–2018); reducing persistent disparities in access requires a next wave focused on integration of services.",
+          "cites": [
+            "31094576"
+          ]
+        },
+        {
+          "claim": "Pregnancy is a critical window to elicit HIV vulnerability, offer testing, and provide PrEP for the pregnancy, postpartum period and future conception planning.",
+          "cites": [
+            "28361503"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Which delivery models best sustain PrEP persistence through discontinuation-and-restart cycles is not established.",
+        "Provider-level barriers identified in global syntheses vary widely by health system, limiting generalisable solutions."
+      ],
+      "mcq_angles": [
+        "PrEP continuum of care: indication, initiation, persistence, discontinuation, restart.",
+        "Provider barriers to PrEP implementation and how they are measured.",
+        "PrEP in pregnancy and breastfeeding: indications and counselling.",
+        "Next-wave implementation: from diffusion to integration for marginalised populations."
+      ],
+      "case_hooks": [
+        "A patient stops and restarts PrEP twice in a year; design a follow-up approach that keeps them protected through the gaps.",
+        "A pregnant patient at ongoing HIV risk presents for antenatal care; decide whether and how to offer PrEP."
+      ],
+      "gaps": "Specific eligibility criteria, baseline and follow-up laboratory monitoring, and regimen dosing are covered under topics 830/832 and not duplicated here.",
+      "sources": [
+        {
+          "pmid": "38743381",
+          "design": "systematic-review",
+          "year": "2024",
+          "journal": null,
+          "title": "Identifying Best Practices for Increasing HIV Pre-exposure Prophylaxis (PrEP) Use and Persistence in the United States."
+        },
+        {
+          "pmid": "41761621",
+          "design": "meta-analysis",
+          "year": "2025",
+          "journal": null,
+          "title": "Global Perspectives on Pre-Exposure Prophylaxis: A Systematic Review and Meta-Analysis of Health Care Providers' Awareness, Willingness, and Barriers."
+        },
+        {
+          "pmid": "31094576",
+          "design": "review",
+          "year": "2019",
+          "journal": null,
+          "title": "Next-Wave HIV Pre-Exposure Prophylaxis Implementation for Gay and Bisexual Men."
+        },
+        {
+          "pmid": "28361503",
+          "design": "review",
+          "year": "2018",
+          "journal": null,
+          "title": "Offering pre-exposure prophylaxis for HIV prevention to pregnant and postpartum women: a clinical approach."
+        }
+      ]
+    }
+  },
+  {
+    "no": 832,
+    "topicId": "b91161c1-5133-4ce3-b2aa-9af69ce63e3b",
+    "topic": "HIV pre-exposure prophylaxis PrEP: tenofovir-emtricitabine, eligibility, monitoring, efficacy",
+    "cluster": "HIV PrEP drug therapy",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 2,
+      "papersKept": [
+        {
+          "uid": "pubmed-28130774",
+          "title": "Pre-Exposure Prophylaxis for HIV Prevention: Safety Concerns.",
+          "year": "2016"
+        },
+        {
+          "uid": "pubmed-27391203",
+          "title": "Drug safety evaluation of oral tenofovir disoproxil fumarate-emtricitabine for pre-exposure prophylaxis.",
+          "year": "2016"
+        }
+      ],
+      "papersDropped": [],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Tenofovir disoproxil fumarate with emtricitabine is the drug pair on which oral PrEP was built, and its clinical profile is unusually favourable: trial-level efficacy of 74–92% among participants with detectable drug levels, a safety record gathered across large prevention trials, and adverse events that are real but mostly manageable — nausea at initiation, small declines in renal function, and bone-density effects that matter mainly in younger patients. Knowing this safety architecture is what lets clinicians prescribe confidently and monitor selectively rather than reflexively.",
+      "teaching_points": [
+        {
+          "claim": "Prophylactic TDF-based regimens reduce the risk of HIV infection by 74 to 92% among participants with detectable drug levels, and available evidence supports PrEP efficacy when combined with other preventive methods.",
+          "cites": [
+            "27391203",
+            "28130774"
+          ]
+        },
+        {
+          "claim": "Safety concerns are a recognised challenge in PrEP implementation, and dedicated reviews discuss the adverse-event profile and its management.",
+          "cites": [
+            "28130774"
+          ]
+        },
+        {
+          "claim": "Adverse events observed in clinical trials of TDF/FTC for PrEP are documented in a dedicated drug-safety evaluation, informing monitoring practice.",
+          "cites": [
+            "27391203"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Long-term (beyond trial follow-up) renal and bone effects of TDF-based PrEP in younger populations need ongoing surveillance.",
+        "How to individualise monitoring frequency for patients with borderline renal function is practice-dependent."
+      ],
+      "mcq_angles": [
+        "Efficacy magnitude of TDF/FTC PrEP and the central role of adherence (detectable drug levels).",
+        "Adverse-effect profile: GI intolerance, renal tubular effects, bone density.",
+        "Monitoring on PrEP: HIV testing, creatinine/eGFR, STI screening cadence.",
+        "Eligibility: who qualifies and what must be excluded before starting."
+      ],
+      "case_hooks": [
+        "A 28-year-old with eGFR 68 requests PrEP; decide whether TDF/FTC is appropriate and what monitoring to arrange.",
+        "A patient on daily PrEP reports nausea in week 2; counsel on expected course and when to switch approach."
+      ],
+      "gaps": "THIN EVIDENCE BASE (2 sources, both 2016): current eligibility criteria, on-demand dosing, long-acting alternatives and updated renal monitoring protocols are not covered. Cross-check topics 830/831 and verify against the current guideline before approval.",
+      "sources": [
+        {
+          "pmid": "28130774",
+          "design": "review",
+          "year": "2016",
+          "journal": null,
+          "title": "Pre-Exposure Prophylaxis for HIV Prevention: Safety Concerns."
+        },
+        {
+          "pmid": "27391203",
+          "design": "review",
+          "year": "2016",
+          "journal": null,
+          "title": "Drug safety evaluation of oral tenofovir disoproxil fumarate-emtricitabine for pre-exposure prophylaxis."
+        }
+      ]
+    }
+  },
+  {
+    "no": 833,
+    "topicId": "2bc0e532-5c01-4f14-8f73-938fe6a4f0b7",
+    "topic": "HIV prognosis before and after modern ART",
+    "cluster": "HIV prognosis",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 26,
+      "papersKept": [
+        {
+          "uid": "pubmed-27254748",
+          "title": "Trends in life expectancy of HIV-positive adults on antiretroviral therapy across the globe.",
+          "year": "2017"
+        },
+        {
+          "uid": "pubmed-31285181",
+          "title": "Advanced HIV: diagnosis, treatment, and prevention.",
+          "year": "2019"
+        },
+        {
+          "uid": "pubmed-38361925",
+          "title": "CD4/CD8 ratio and CD8+ T-cell count as prognostic markers for non-AIDS mortality in people living with HIV.",
+          "year": "2024"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-29313284",
+          "title": "Endocrinological aspects of HIV infection.",
+          "reason": "Endocrinology-focused; tangential to prognosis."
+        },
+        {
+          "uid": "pubmed-40733522",
+          "title": "Current State of AIDS-Related Malignant Lymphoma.",
+          "reason": "Malignancy subtype; off-target."
+        },
+        {
+          "uid": "pubmed-32016535",
+          "title": "Management of HIV-infected patients in the intensive care unit.",
+          "reason": "ICU management; tangential."
+        },
+        {
+          "uid": "pubmed-32014514",
+          "title": "Prevention of stroke in people living with HIV.",
+          "reason": "Single-complication prevention; tangential."
+        },
+        {
+          "uid": "pubmed-40903256",
+          "title": "Current status and challenges of AIDS-related malignant lymphoma.",
+          "reason": "Malignancy; off-target."
+        },
+        {
+          "uid": "pubmed-41302629",
+          "title": "Promoting Healthy Aging Through Mindfulness and Yoga.",
+          "reason": "Intervention study off-target for prognosis."
+        },
+        {
+          "uid": "pubmed-31045941",
+          "title": "HIV infection and nonalcoholic fatty liver disease in LMICs.",
+          "reason": "Single comorbidity; tangential."
+        },
+        {
+          "uid": "pubmed-32709573",
+          "title": "Cardiovascular risk calculators for people living with HIV.",
+          "reason": "Risk-tool study; tangential."
+        },
+        {
+          "uid": "pubmed-37407116",
+          "title": "Dyslipidemia in HIV Disease.",
+          "reason": "Single comorbidity; tangential."
+        },
+        {
+          "uid": "pubmed-29548534",
+          "title": "HIV and cancer: what's new in 2017.",
+          "reason": "Malignancy overview; tangential."
+        },
+        {
+          "uid": "pubmed-35243744",
+          "title": "Comorbidities in women living with HIV: a systematic review.",
+          "reason": "Comorbidity catalogue; tangential to prognosis trajectory."
+        },
+        {
+          "uid": "pubmed-39847393",
+          "title": "Femoral head necrosis in HIV-infected patients.",
+          "reason": "Single complication; off-target."
+        },
+        {
+          "uid": "pubmed-27254749",
+          "title": "Reducing preventable HIV/AIDS-associated mortality among people who inject drugs.",
+          "reason": "Subpopulation program study; tangential."
+        },
+        {
+          "uid": "pubmed-30907775",
+          "title": "Cervical cancer screening in immunosuppressed women without HIV.",
+          "reason": "Wrong population."
+        },
+        {
+          "uid": "pubmed-35245507",
+          "title": "Outcomes of people living with HIV after hospital discharge.",
+          "reason": "Post-discharge outcomes; tangential."
+        },
+        {
+          "uid": "pubmed-30588732",
+          "title": "HIV-associated psoriasis.",
+          "reason": "Single complication; off-target."
+        },
+        {
+          "uid": "pubmed-28233512",
+          "title": "Tuberculosis associated with HIV infection.",
+          "reason": "Single OI; tangential."
+        },
+        {
+          "uid": "pubmed-32052271",
+          "title": "Novel Antiretroviral Agents.",
+          "reason": "Drug pipeline review; tangential."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "The prognosis question in HIV has flipped completely: it is no longer 'how long' but 'how close to normal'. With modern ART, published life-expectancy estimates for people with HIV on treatment approach those of the general population, though a gap persists that depends on when treatment starts, baseline CD4, and health system context. The residual burden has also shifted — from AIDS-defining illness to non-AIDS comorbidity — which is why markers such as the CD4/CD8 ratio are being studied to flag patients whose immune dysfunction persists despite viral suppression. Late diagnosis remains the single most powerful determinant of a worse prognosis even after ART begins.",
+      "teaching_points": [
+        {
+          "claim": "A systematic review of published estimates finds life expectancy of HIV-positive adults on ART increasingly approaches that of the general population, though gaps remain by timing of initiation and setting.",
+          "cites": [
+            "27254748"
+          ]
+        },
+        {
+          "claim": "Individuals first diagnosed with advanced HIV have higher mortality than those diagnosed earlier, even after starting ART, making early diagnosis the key prognostic lever.",
+          "cites": [
+            "31285181"
+          ]
+        },
+        {
+          "claim": "The CD4/CD8 ratio and CD8+ T-cell count are being evaluated as prognostic markers for non-AIDS mortality in treated people living with HIV, beyond what CD4 count alone explains.",
+          "cites": [
+            "38361925"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "How much of the residual life-expectancy gap is attributable to persistent immune activation versus lifestyle and traditional risk factors.",
+        "Whether CD4/CD8-ratio-guided interventions actually improve non-AIDS outcomes is unproven."
+      ],
+      "mcq_angles": [
+        "Life expectancy of treated HIV versus the general population, and what modifies the gap.",
+        "Advanced HIV at diagnosis as a prognostic determinant despite ART.",
+        "Non-AIDS mortality and emerging markers (CD4/CD8 ratio, CD8 count).",
+        "Prognosis counselling: what to tell a newly diagnosed patient."
+      ],
+      "case_hooks": [
+        "A newly diagnosed 30-year-old asks 'will I live a normal life?'; construct an evidence-based answer.",
+        "Two patients start ART — one with CD4 600, one with CD4 40; compare expected trajectories and what changes counselling."
+      ],
+      "gaps": "Quantitative life-expectancy figures by region and subgroup, and smoking/ lifestyle adjustment data, are not extractable from the retained abstracts; verify against the full systematic review before approval.",
+      "sources": [
+        {
+          "pmid": "27254748",
+          "design": "systematic-review",
+          "year": "2017",
+          "journal": null,
+          "title": "Trends in life expectancy of HIV-positive adults on antiretroviral therapy across the globe."
+        },
+        {
+          "pmid": "31285181",
+          "design": "review",
+          "year": "2019",
+          "journal": null,
+          "title": "Advanced HIV: diagnosis, treatment, and prevention."
+        },
+        {
+          "pmid": "38361925",
+          "design": "meta-analysis",
+          "year": "2024",
+          "journal": null,
+          "title": "CD4/CD8 ratio and CD8+ T-cell count as prognostic markers for non-AIDS mortality in people living with HIV."
+        }
+      ]
+    }
+  },
+  {
+    "no": 834,
+    "topicId": "490d7dba-eb94-4bc4-b85d-fbfa113cd96d",
+    "topic": "HIV testing",
+    "cluster": "HIV testing",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 10,
+      "papersKept": [
+        {
+          "uid": "pubmed-27092562",
+          "title": "Care of Patients With HIV Infection: Diagnosis and Monitoring.",
+          "year": "2016"
+        },
+        {
+          "uid": "pubmed-39969389",
+          "title": "Public health implications of diagnosing and treating acute HIV.",
+          "year": "2025"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-27726785",
+          "title": "Human Immunodeficiency Virus.",
+          "reason": "Broad textbook chapter; not testing-focused evidence."
+        },
+        {
+          "uid": "pubmed-40938233",
+          "title": "AACE Consensus Statement: Algorithm for Management of Adults with Dysglycemia.",
+          "reason": "Diabetes algorithm; off-target."
+        },
+        {
+          "uid": "pubmed-41123477",
+          "title": "Updates in the clinical management of tuberculous meningitis.",
+          "reason": "Off-target."
+        },
+        {
+          "uid": "pubmed-26320113",
+          "title": "2015 ESC/ERS Guidelines for pulmonary hypertension.",
+          "reason": "Off-target; also no abstract."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "HIV testing technology has quietly revolutionised the epidemic's control: the evolution from antibody-only assays through fourth-generation antigen/antibody tests to nucleic-acid detection has compressed the window period dramatically, and each advance matters most in acute infection, when viral load and transmissibility peak. Universal screening is now recommended for all adolescents and adults at least once, with repeat testing for those at risk — yet testing is also where the cascade leaks, since a reactive test that is not confirmed and linked achieves nothing.",
+      "teaching_points": [
+        {
+          "claim": "The US Preventive Services Task Force recommends universal HIV screening at least once for adolescents and adults aged 15 to 65, with additional screening for higher-risk patients, reflecting recent changes in testing technology.",
+          "cites": [
+            "27092562"
+          ]
+        },
+        {
+          "claim": "Appropriate screening is the cornerstone of HIV-related care, with several recent changes in testing technology and screening recommendations.",
+          "cites": [
+            "27092562"
+          ]
+        },
+        {
+          "claim": "The earliest months of HIV infection carry high viral loads and elevated transmissibility; narrowing the window between acquisition and a reactive test, followed by rapid ART linkage, is the key transmission-prevention opportunity.",
+          "cites": [
+            "39969389"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Optimal screening intervals for higher-risk groups beyond 'at least annual' vary by guideline.",
+        "Implementation of same-day confirmatory algorithms remains uneven across health systems."
+      ],
+      "mcq_angles": [
+        "Window period and test-generation evolution (antibody, antigen/antibody, nucleic acid).",
+        "Confirmatory algorithm after a reactive screening test.",
+        "USPSTF universal screening recommendations and risk-based repeat testing.",
+        "Acute HIV: high transmissibility and the case for rapid linkage."
+      ],
+      "case_hooks": [
+        "A patient has a reactive point-of-care screening test; outline the confirmatory sequence before any result is delivered.",
+        "A high-risk patient tested 'negative' four weeks after a potential exposure; interpret the result and plan retesting."
+      ],
+      "gaps": "WEAK EVIDENCE BASE (2 sources): the specific fourth-generation window period, confirmatory testing algorithm steps, and rapid versus laboratory testing distinctions are not detailed in the retained abstracts. Verify against current CDC/WHO testing guidance before approval.",
+      "sources": [
+        {
+          "pmid": "27092562",
+          "design": "review",
+          "year": "2016",
+          "journal": null,
+          "title": "Care of Patients With HIV Infection: Diagnosis and Monitoring."
+        },
+        {
+          "pmid": "39969389",
+          "design": "review",
+          "year": "2025",
+          "journal": null,
+          "title": "Public health implications of diagnosing and treating acute HIV."
+        }
+      ]
+    }
+  },
+  {
+    "no": 835,
+    "topicId": "2ab4f373-b38f-458f-8e66-0e57d82349f1",
+    "topic": "Hodgkin Lymphoma",
+    "cluster": "Hodgkin lymphoma",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 8,
+      "papersKept": [
+        {
+          "uid": "pubmed-39239794",
+          "title": "Hodgkin lymphoma: 2025 update on diagnosis, risk-stratification, and management.",
+          "year": "2025"
+        },
+        {
+          "uid": "pubmed-38037872",
+          "title": "Classic Hodgkin lymphoma.",
+          "year": "2023"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-33657296",
+          "title": "Diffuse Large B-Cell Lymphoma.",
+          "reason": "Wrong lymphoma subtype."
+        },
+        {
+          "uid": "pubmed-31739939",
+          "title": "Hematologic Malignancies.",
+          "reason": "Broad textbook chapter; not Hodgkin-specific evidence."
+        },
+        {
+          "uid": "pubmed-33580422",
+          "title": "Richter Syndrome.",
+          "reason": "Off-target entity."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Hodgkin lymphoma is the model of a curable malignancy: a disease whose modern combination chemotherapy and risk-stratified radiotherapy transformed survival from months to the great majority of patients cured. It divides into classical Hodgkin lymphoma — with its nodular sclerosis, mixed cellularity, lymphocyte-depleted and lymphocyte-rich subtypes — and nodular lymphocyte-predominant disease, which behaves differently enough to manage as a related but distinct entity. Modern care is built on accurate subtype diagnosis, stage- and risk-adapted therapy, and metabolic response assessment.",
+      "teaching_points": [
+        {
+          "claim": "Hodgkin lymphoma comprises two distinct entities — classical HL and nodular lymphocyte-predominant HL — with classical subtypes including nodular sclerosis, mixed cellularity, lymphocyte depletion and lymphocyte-rich.",
+          "cites": [
+            "39239794"
+          ]
+        },
+        {
+          "claim": "Classic Hodgkin lymphoma has an incidence of approximately 85,000 patients globally per year with a predilection for adolescents and young adults aged 15–39, and outcomes have improved dramatically since the introduction of combination chemotherapy.",
+          "cites": [
+            "38037872"
+          ]
+        },
+        {
+          "claim": "Contemporary management rests on diagnosis, risk-stratification and stage-adapted therapy, updated in the 2025 review of the field.",
+          "cites": [
+            "39239794"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "How to minimise late toxicity (cardiac, second malignancy) while preserving cure rates in young, cured populations.",
+        "Optimal management of nodular lymphocyte-predominant HL, which diverges from classical HL pathways, is less standardised."
+      ],
+      "mcq_angles": [
+        "WHO classification: classical subtypes versus nodular lymphocyte-predominant HL.",
+        "Stage and risk-group assignment driving therapy choice.",
+        "ABVD lineage and role of PET-adapted response assessment.",
+        "Late-effect surveillance in long-term survivors."
+      ],
+      "case_hooks": [
+        "A 24-year-old presents with mediastinal mass and B symptoms; outline the diagnostic pathway to subtype confirmation.",
+        "A patient cured of HL at 25 asks what surveillance they need in middle age; structure the late-effects answer."
+      ],
+      "gaps": "Specific staging investigations, IPS scoring and detailed treatment algorithms are not extractable from the retained abstracts; verify against the full 2025 update before approval.",
+      "sources": [
+        {
+          "pmid": "39239794",
+          "design": "review",
+          "year": "2025",
+          "journal": null,
+          "title": "Hodgkin lymphoma: 2025 update on diagnosis, risk-stratification, and management."
+        },
+        {
+          "pmid": "38037872",
+          "design": "review",
+          "year": "2023",
+          "journal": null,
+          "title": "Classic Hodgkin lymphoma."
+        }
+      ]
+    }
+  },
+  {
+    "no": 836,
+    "topicId": "5cbf8e20-2f01-42cf-844f-3c7fb8ad4690",
+    "topic": "Hodgkin lymphoma: brentuximab vedotin frontline therapy",
+    "cluster": "Hodgkin lymphoma brentuximab",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 6,
+      "papersKept": [
+        {
+          "uid": "pubmed-30504311",
+          "title": "Risk-adapted therapy for advanced-stage Hodgkin lymphoma.",
+          "year": "2018"
+        },
+        {
+          "uid": "pubmed-37685994",
+          "title": "Incorporating Monoclonal Antibodies into the First-Line Treatment of Classical Hodgkin Lymphoma.",
+          "year": "2023"
+        },
+        {
+          "uid": "pubmed-30210755",
+          "title": "Update on the role of brentuximab vedotin in classical Hodgkin lymphoma.",
+          "year": "2018"
+        },
+        {
+          "uid": "pubmed-31092364",
+          "title": "Neutropenia during frontline treatment of advanced Hodgkin lymphoma: incidence, risk factors, and management.",
+          "year": "2019"
+        }
+      ],
+      "papersDropped": [],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "More than 80% of advanced-stage Hodgkin lymphoma is now cured, so the frontline question has become how to escalate for those at highest risk of relapse without over-treating everyone else. Brentuximab vedotin — an anti-CD30 antibody-drug conjugate — entered first-line therapy for advanced disease on the strength of the ECHELON-1-era evidence, trading modest toxicity for relapse reduction. Using it well means understanding where it fits in risk-adapted strategy, and managing its signature toxicities: neuropathy and neutropenia.",
+      "teaching_points": [
+        {
+          "claim": "More than 80% of patients with advanced-stage Hodgkin lymphoma are cured with contemporary approaches; the challenge is escalating therapy for high-risk patients while de-escalating safely for lower-risk patients.",
+          "cites": [
+            "30504311"
+          ]
+        },
+        {
+          "claim": "Treatment intensity adaptation to early metabolic response assessed by PET/CT has been a cornerstone of risk stratification in advanced-stage HL, and monoclonal antibodies are being incorporated into first-line classical HL treatment.",
+          "cites": [
+            "37685994"
+          ]
+        },
+        {
+          "claim": "Brentuximab vedotin is effective and well tolerated in classical Hodgkin lymphoma and was initially FDA-approved after failure of autologous transplant or at least two prior chemotherapy lines.",
+          "cites": [
+            "30210755"
+          ]
+        },
+        {
+          "claim": "Neutropenia, including febrile neutropenia, is a significant frontline toxicity of advanced HL therapy, with risk differing across regimens and patient characteristics, and guideline-based management principles apply.",
+          "cites": [
+            "31092364"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Whether PET-adapted de-escalation can spare toxicity without sacrificing cure is being refined trial by trial.",
+        "Optimal management and reversibility timeline of brentuximab-associated peripheral neuropathy in frontline use needs individualisation."
+      ],
+      "mcq_angles": [
+        "CD30 targeting and brentuximab vedotin's mechanism as an antibody-drug conjugate.",
+        "Frontline evidence base (ECHELON-1 lineage) and its role in advanced-stage disease.",
+        "PET/CT-adapted response assessment driving escalation and de-escalation.",
+        "Toxicity management: peripheral neuropathy and febrile neutropenia."
+      ],
+      "case_hooks": [
+        "A patient with advanced-stage classical HL starts frontline therapy including brentuximab; outline the monitoring plan for neuropathy and neutropenia.",
+        "An interim PET after two cycles is positive in a young patient with advanced HL; discuss escalation options."
+      ],
+      "gaps": "Specific trial regimens (A+AVD versus ABVD), survival figures and growth-factor prophylaxis thresholds are not extractable from the retained abstracts; verify against the ECHELON-1 publication and current guidance before approval.",
+      "sources": [
+        {
+          "pmid": "30504311",
+          "design": "review",
+          "year": "2018",
+          "journal": null,
+          "title": "Risk-adapted therapy for advanced-stage Hodgkin lymphoma."
+        },
+        {
+          "pmid": "37685994",
+          "design": "review",
+          "year": "2023",
+          "journal": null,
+          "title": "Incorporating Monoclonal Antibodies into the First-Line Treatment of Classical Hodgkin Lymphoma."
+        },
+        {
+          "pmid": "30210755",
+          "design": "review",
+          "year": "2018",
+          "journal": null,
+          "title": "Update on the role of brentuximab vedotin in classical Hodgkin lymphoma."
+        },
+        {
+          "pmid": "31092364",
+          "design": "review",
+          "year": "2019",
+          "journal": null,
+          "title": "Neutropenia during frontline treatment of advanced Hodgkin lymphoma: incidence, risk factors, and management."
+        }
+      ]
+    }
+  },
+  {
+    "no": 837,
+    "topicId": "166343ae-7129-402f-8f60-81955c29f2ce",
+    "topic": "Hormone Receptor-Positive Breast Cancer",
+    "cluster": "HR-positive breast cancer",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 8,
+      "papersKept": [
+        {
+          "uid": "pubmed-36074908",
+          "title": "Breast cancer: an up-to-date review and future perspectives.",
+          "year": "2022"
+        },
+        {
+          "uid": "pubmed-29349755",
+          "title": "Adjuvant Endocrine Therapy.",
+          "year": "2018"
+        },
+        {
+          "uid": "pubmed-39662202",
+          "title": "PI3K/AKT/mTOR inhibitors for hormone receptor-positive advanced breast cancer.",
+          "year": "2024"
+        },
+        {
+          "uid": "pubmed-34392831",
+          "title": "ESR1 mutation as an emerging clinical biomarker in metastatic hormone receptor-positive breast cancer.",
+          "year": "2021"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-31318440",
+          "title": "ESR1 mutations in breast cancer.",
+          "reason": "Overlaps ESR1 content retained via 34392831."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Hormone receptor-positive breast cancer is the commonest breast cancer biology and the one in which the gap between early and advanced disease is most stark: adjuvant endocrine therapy converts early disease into high cure rates, yet advanced HR+ disease, though indolent, remains incurable and lethal. Modern management layers CDK4/6 inhibition onto endocrine backbone in the advanced setting, hunts resistance mechanisms — above all ESR1 mutations from aromatase-inhibitor pressure — and is now deploying PI3K/AKT/mTOR pathway inhibitors for tumours carrying those aberrations. Sequencing these tools intelligently is the core clinical skill.",
+      "teaching_points": [
+        {
+          "claim": "Breast cancer is highly heterogeneous, and treatment strategies vary by molecular features including hormone receptor and HER2 status.",
+          "cites": [
+            "36074908"
+          ]
+        },
+        {
+          "claim": "Adjuvant endocrine therapy has improved outcomes in early-stage HR-positive disease, with choice of agent driven by menopausal state, patient preference and side effects, and molecular profiling enabling tailoring.",
+          "cites": [
+            "29349755"
+          ]
+        },
+        {
+          "claim": "Dysregulation of the PI3K/AKT/mTOR pathway is increasingly recognised as a key driver in HR+/HER2- advanced breast cancer, and inhibitors of this pathway are an established therapeutic class.",
+          "cites": [
+            "39662202"
+          ]
+        },
+        {
+          "claim": "ESR1 mutations are a common mechanism of acquired resistance to aromatase-inhibitor estrogen deprivation in metastatic HR-positive disease and are an emerging biomarker guiding therapy selection.",
+          "cites": [
+            "34392831"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Optimal sequencing after CDK4/6 inhibitor progression (PI3K/AKT/mTOR agents, SERDs, ADCs) is evolving rapidly.",
+        "Duration and intensity of adjuvant endocrine therapy beyond five years for higher-risk patients is individualised with incomplete predictive tools."
+      ],
+      "mcq_angles": [
+        "Endocrine agent selection by menopausal status (tamoxifen, aromatase inhibitors, ovarian suppression).",
+        "CDK4/6 inhibitor role on the endocrine backbone in advanced disease.",
+        "ESR1 mutation testing and its implications after aromatase inhibitor failure.",
+        "PI3K/AKT/mTOR pathway inhibitors: indications and resistance biology."
+      ],
+      "case_hooks": [
+        "A postmenopausal patient relapses two years after anastrozole; plan next-line therapy including mutation testing rationale.",
+        "A premenopausal woman with node-positive HR+ disease asks about adjuvant options; frame tamoxifen versus ovarian suppression plus AI."
+      ],
+      "gaps": "CDK4/6 inhibitor trial specifics, fulvestrant and oral SERD sequencing, and genomic assays (Oncotype, ESR1 liquid biopsy logistics) are not covered by the retained abstracts; verify against current guidelines before approval.",
+      "sources": [
+        {
+          "pmid": "36074908",
+          "design": "review",
+          "year": "2022",
+          "journal": null,
+          "title": "Breast cancer: an up-to-date review and future perspectives."
+        },
+        {
+          "pmid": "29349755",
+          "design": "review",
+          "year": "2018",
+          "journal": null,
+          "title": "Adjuvant Endocrine Therapy."
+        },
+        {
+          "pmid": "39662202",
+          "design": "review",
+          "year": "2024",
+          "journal": null,
+          "title": "PI3K/AKT/mTOR inhibitors for hormone receptor-positive advanced breast cancer."
+        },
+        {
+          "pmid": "34392831",
+          "design": "review",
+          "year": "2021",
+          "journal": null,
+          "title": "ESR1 mutation as an emerging clinical biomarker in metastatic hormone receptor-positive breast cancer."
+        }
+      ]
+    }
+  },
+  {
+    "no": 838,
+    "topicId": "be742c4d-9804-48dc-a41f-8079f5ce08cb",
+    "topic": "hormone replacement therapy",
+    "cluster": "menopausal hormone therapy",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 8,
+      "papersKept": [
+        {
+          "uid": "pubmed-35797481",
+          "title": "The 2022 hormone therapy position statement of The North American Menopause Society.",
+          "year": "2022"
+        },
+        {
+          "uid": "pubmed-38484309",
+          "title": "A Contemporary View of Menopausal Hormone Therapy.",
+          "year": "2024"
+        },
+        {
+          "uid": "pubmed-35000809",
+          "title": "Hormone replacement therapy - Current recommendations.",
+          "year": "2018"
+        },
+        {
+          "uid": "pubmed-38263123",
+          "title": "The benefits and risks of menopause hormone therapy for the cardiovascular system in postmenopausal women.",
+          "year": "2023"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-39077777",
+          "title": "The musculoskeletal syndrome of menopause.",
+          "reason": "Musculoskeletal symptom focus; tangential to HRT risk-benefit."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Menopausal hormone therapy has lived two lives: routine preventive panacea until the Women's Health Initiative abruptly ended that era in 2002, and since then, a symptom-targeted treatment whose risk-benefit calculus depends heavily on when it is started, how it is delivered, and who is asking. The 2002 backlash drove both prescriptions and menopause training sharply down, arguably underserving women with genuine vasomotor burden. Modern guidance — including the 2022 North American Menopause Society position statement — restores hormone therapy as the most effective treatment for vasomotor symptoms while retaining clear cautions about timing, duration and individual risk.",
+      "teaching_points": [
+        {
+          "claim": "The 2022 NAMS position statement updates the 2017 version through an expert advisory panel review, defining current indications and cautions for hormone therapy.",
+          "cites": [
+            "35797481"
+          ]
+        },
+        {
+          "claim": "Since the 2002 Women's Health Initiative initial results, treatment for menopausal symptoms and practitioner training in menopause management have sharply declined.",
+          "cites": [
+            "38484309"
+          ]
+        },
+        {
+          "claim": "Current recommendations frame HRT around individualised symptom relief, with the average age of menopause around 51 in the UK and a variable perimenopausal transition.",
+          "cites": [
+            "35000809"
+          ]
+        },
+        {
+          "claim": "Cardiovascular benefits and risks of menopause hormone therapy remain incompletely clear, with benefits, risks and influencing factors evaluated in a dedicated review.",
+          "cites": [
+            "38263123"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Whether the 'timing hypothesis' — cardiovascular benefit when started near menopause — holds at trial level remains debated.",
+        "Optimal duration of therapy for symptom control versus long-term risk accrual is an individualised, evolving judgement."
+      ],
+      "mcq_angles": [
+        "Indications: vasomotor symptoms as the primary driver; what HRT is not indicated for.",
+        "The WHI legacy and how it changed prescribing.",
+        "Routes and regimens: transdermal versus oral estrogen, combined versus estrogen-alone.",
+        "Cardiovascular risk-benefit by age at initiation."
+      ],
+      "case_hooks": [
+        "A 52-year-old with disabling hot flushes and no contraindications asks for HRT; counsel on benefits, risks and follow-up.",
+        "A 60-year-old with a history of DVT asks about HRT for mood and sleep; assess contraindications and alternatives."
+      ],
+      "gaps": "Contraindication specifics (breast cancer history, VTE, stroke), tissue-selective SERM combinations and bone-density effects are not detailed in the retained abstracts; verify against the full NAMS statement before approval.",
+      "sources": [
+        {
+          "pmid": "35797481",
+          "design": "guideline",
+          "year": "2022",
+          "journal": null,
+          "title": "The 2022 hormone therapy position statement of The North American Menopause Society."
+        },
+        {
+          "pmid": "38484309",
+          "design": "review",
+          "year": "2024",
+          "journal": null,
+          "title": "A Contemporary View of Menopausal Hormone Therapy."
+        },
+        {
+          "pmid": "35000809",
+          "design": "review",
+          "year": "2018",
+          "journal": null,
+          "title": "Hormone replacement therapy - Current recommendations."
+        },
+        {
+          "pmid": "38263123",
+          "design": "review",
+          "year": "2023",
+          "journal": null,
+          "title": "The benefits and risks of menopause hormone therapy for the cardiovascular system in postmenopausal women."
+        }
+      ]
+    }
+  },
+  {
+    "no": 839,
+    "topicId": "6a4b6aff-a498-4c44-9288-a4b87cc86f2e",
+    "topic": "hormone therapy for cardiovascular prevention in postmenopausal women",
+    "cluster": "MHT cardiovascular prevention",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 6,
+      "papersKept": [
+        {
+          "uid": "pubmed-38272338",
+          "title": "Estrogen and cardiovascular disease.",
+          "year": "2024"
+        },
+        {
+          "uid": "pubmed-33251828",
+          "title": "Menopause Transition and Cardiovascular Disease Risk: Implications for Timing of Early Prevention.",
+          "year": "2020"
+        },
+        {
+          "uid": "pubmed-34339416",
+          "title": "Menopausal hormone therapy and women's health: An umbrella review.",
+          "year": "2022"
+        },
+        {
+          "uid": "pubmed-38691368",
+          "title": "The Women's Health Initiative Randomized Trials and Clinical Practice: A Review.",
+          "year": "2024"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-37130601",
+          "title": "Fracture risk reduction and safety by osteoporosis treatment compared with placebo or active comparator.",
+          "reason": "Osteoporosis-treatment meta-analysis; off-target."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Hormone therapy for cardiovascular prevention is one of medicine's most instructive reversals. The biological case was always plausible — women develop coronary disease later than men, and estrogen deficiency accelerates it — but the Women's Health Initiative randomised trials showed that starting hormone therapy years past menopause does not prevent cardiovascular disease and can harm. The refined modern position is the timing hypothesis: risk-benefit may differ for women started near the menopause transition, which is exactly the population now being studied. For prevention, though, the default answer remains: hormone therapy treats symptoms, it is not a cardiovascular drug.",
+      "teaching_points": [
+        {
+          "claim": "Cardiovascular benefits of estradiol are documented in reproductive-aged women, while accelerated CVD development follows loss of ovarian estradiol and progesterone production.",
+          "cites": [
+            "38272338"
+          ]
+        },
+        {
+          "claim": "A scientific statement on the menopause transition examines whether the MT contributes to the increase in coronary heart disease risk and the implications for timing of early prevention.",
+          "cites": [
+            "33251828"
+          ]
+        },
+        {
+          "claim": "An umbrella review comprehensively summarises the benefits and harms of menopausal hormone therapy across diverse health outcomes, reflecting persistent uncertainty about its overall impact on women's health.",
+          "cites": [
+            "34339416"
+          ]
+        },
+        {
+          "claim": "The Women's Health Initiative randomised trials — enrolling over 160,000 postmenopausal women — remain the definitive evidence base informing clinical practice on hormone therapy's health effects.",
+          "cites": [
+            "38691368"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Whether early-initiation MHT around the menopause transition reduces cardiovascular endpoints awaits dedicated trial evidence.",
+        "Breast-cancer risk accrual with duration of combined therapy remains the dominant counterweight in shared decisions."
+      ],
+      "mcq_angles": [
+        "WHI findings: why hormone therapy is not used for cardiovascular prevention.",
+        "Timing hypothesis: age and menopause proximity as modifiers of risk-benefit.",
+        "Estrogen-alone versus combined estrogen-progestin risk profiles.",
+        "What MHT is and is not indicated for in modern practice."
+      ],
+      "case_hooks": [
+        "A 58-year-old asks to start estrogen 'to protect her heart'; respond using the WHI evidence and the timing framework.",
+        "A perimenopausal 49-year-old with flushes and a strong family history of CHD asks about HRT; structure the risk-benefit discussion."
+      ],
+      "gaps": "Quantitative risk estimates (VTE, stroke, breast cancer incidence by regimen) and surrogate-endpoint data are not extractable from the retained abstracts; verify against the WHI publications and the umbrella review before approval.",
+      "sources": [
+        {
+          "pmid": "38272338",
+          "design": "review",
+          "year": "2024",
+          "journal": null,
+          "title": "Estrogen and cardiovascular disease."
+        },
+        {
+          "pmid": "33251828",
+          "design": "scientific-statement",
+          "year": "2020",
+          "journal": null,
+          "title": "Menopause Transition and Cardiovascular Disease Risk: Implications for Timing of Early Prevention."
+        },
+        {
+          "pmid": "34339416",
+          "design": "umbrella-review",
+          "year": "2022",
+          "journal": null,
+          "title": "Menopausal hormone therapy and women's health: An umbrella review."
+        },
+        {
+          "pmid": "38691368",
+          "design": "review",
+          "year": "2024",
+          "journal": null,
+          "title": "The Women's Health Initiative Randomized Trials and Clinical Practice: A Review."
+        }
+      ]
+    }
+  },
+  {
+    "no": 840,
+    "topicId": "24d4ca6a-05ec-4b0b-8f9d-579e745edbfb",
+    "topic": "hospital acquired and ventilator associated pneumonia",
+    "cluster": "HAP/VAP",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 8,
+      "papersKept": [
+        {
+          "uid": "pubmed-27418577",
+          "title": "Management of Adults With Hospital-acquired and Ventilator-associated Pneumonia: 2016 Clinical Practice Guidelines by IDSA and ATS.",
+          "year": "2016"
+        },
+        {
+          "uid": "pubmed-28890434",
+          "title": "International ERS/ESICM/ESCMID/ALAT guidelines for the management of hospital-acquired pneumonia and ventilator-associated pneumonia.",
+          "year": "2017"
+        },
+        {
+          "uid": "pubmed-38280768",
+          "title": "Management of Ventilator-Associated Pneumonia: Guidelines.",
+          "year": "2024"
+        },
+        {
+          "uid": "pubmed-37892664",
+          "title": "Ten Issues to Update in Nosocomial or Hospital-Acquired Pneumonia: An Expert Review.",
+          "year": "2024"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-28343909",
+          "title": "Pneumonia.",
+          "reason": "Broad general chapter; not HAP/VAP-specific evidence."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Hospital-acquired and ventilator-associated pneumonia are the commonest fatal hospital infections, and HAP in particular is now the leading cause of death from nosocomial infection in critically ill patients. Management is deliberately empirical and local: both the IDSA/ATS and the international guidelines anchor antibiotic choice in local resistance patterns and individual risk factors for resistant pathogens, while disagreeing instructively on diagnostics — one recommends against invasive quantitative cultures for VAP. The recurring themes are early appropriate therapy, de-escalation as cultures return, and shorter courses.",
+      "teaching_points": [
+        {
+          "claim": "The 2016 IDSA/ATS guideline provides management standards for HAP and VAP while explicitly leaving room for physician judgement in individual cases.",
+          "cites": [
+            "27418577"
+          ]
+        },
+        {
+          "claim": "International ERS/ESICM/ESCMID/ALAT guidelines incorporate randomised-trial evidence published after the prior European guidance on epidemiology, diagnosis, empiric treatment and response assessment.",
+          "cites": [
+            "28890434"
+          ]
+        },
+        {
+          "claim": "Two recent major VAP guidelines recommend basing initial empiric antibiotics on local resistance patterns and individual risk for resistant pathogens, and one recommends against invasive diagnostic techniques with quantitative cultures.",
+          "cites": [
+            "38280768"
+          ]
+        },
+        {
+          "claim": "HAP is currently the main cause of death from nosocomial infection in critically ill patients worldwide, despite widely used management guidelines.",
+          "cites": [
+            "37892664"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Invasive versus non-invasive diagnostic strategies for VAP remain a genuine guideline divergence.",
+        "Optimal duration of therapy and de-escalation triggers vary across guidelines and resistance environments."
+      ],
+      "mcq_angles": [
+        "HAP versus VAP definitions and timing windows (48 h; 48–72 h post-intubation).",
+        "Empiric therapy driven by local antibiograms and MDRO risk stratification.",
+        "Diagnostic controversy: invasive quantitative cultures versus clinical diagnosis.",
+        "De-escalation and short-course strategies."
+      ],
+      "case_hooks": [
+        "A ventilated patient develops purulent secretions and a new infiltrate on day 5; choose empiric antibiotics using local resistance data and justify coverage.",
+        "A ventilated patient on day-3 antibiotics for VAP has improving oxygenation but persistent infiltrate; decide on de-escalation and duration."
+      ],
+      "gaps": "Specific antibiotic selection tables by pathogen, MRSA coverage criteria and treatment-duration numbers are not extractable from the retained abstracts; verify against the full IDSA/ATS and ERS/ESICM guidelines before approval.",
+      "sources": [
+        {
+          "pmid": "27418577",
+          "design": "guideline",
+          "year": "2016",
+          "journal": null,
+          "title": "Management of Adults With Hospital-acquired and Ventilator-associated Pneumonia: 2016 Clinical Practice Guidelines by IDSA and ATS."
+        },
+        {
+          "pmid": "28890434",
+          "design": "guideline",
+          "year": "2017",
+          "journal": null,
+          "title": "International ERS/ESICM/ESCMID/ALAT guidelines for the management of hospital-acquired pneumonia and ventilator-associated pneumonia."
+        },
+        {
+          "pmid": "38280768",
+          "design": "review",
+          "year": "2024",
+          "journal": null,
+          "title": "Management of Ventilator-Associated Pneumonia: Guidelines."
+        },
+        {
+          "pmid": "37892664",
+          "design": "review",
+          "year": "2024",
+          "journal": null,
+          "title": "Ten Issues to Update in Nosocomial or Hospital-Acquired Pneumonia: An Expert Review."
+        }
+      ]
+    }
+  }
+]

@@ -1,0 +1,1299 @@
+[
+  {
+    "no": 951,
+    "topicId": "05e665df-a30b-4299-bdf4-db20a29dc7eb",
+    "topic": "intensive blood glucose control sulphonylureas insulin type 2 diabetes UKPDS",
+    "cluster": "glucose control legacy",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 9,
+      "papersKept": [
+        {
+          "uid": "pubmed-37915902",
+          "title": "The long-term benefits of early intensive therapy in chronic diseases - the legacy effect.",
+          "year": "2022"
+        },
+        {
+          "uid": "pubmed-35638331",
+          "title": "Treatment of diabetes mellitus has borne much fruit in the prevention of cardiovascular disease.",
+          "year": "2021"
+        },
+        {
+          "uid": "pubmed-39155282",
+          "title": "Glycaemic control is still central in the hierarchy of priorities in type 2 diabetes management.",
+          "year": "2023"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-31366777",
+          "title": "Role of Advanced Glycation Endproduct (AGE)-Receptor for Advanced Glycation Endproduct (RAGE) Axis in Cardiovascular Disease.",
+          "reason": "Mechanistic biochemistry; not clinical glucose-control evidence."
+        },
+        {
+          "uid": "pubmed-29658280",
+          "title": "[Randomized, controlled clinical trials with observational follow-up investigations for evaluating efficacy of anti-diabetes drugs].",
+          "reason": "Non-English-bracketed record; excluded per pipeline rules."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "UKPDS taught endocrinology its defining lesson: in type 2 diabetes, early intensive glycaemic control with sulphonylureas or insulin does more than lower glucose — it prevents microvascular complications, and its benefits persist for years after the trial ended (the 'legacy effect'). That insight reframed glucose control as disease modification, not symptom control. The modern nuance: glycaemic control remains central but now shares the stage with cardiovascular-risk-directed therapy (statins, BP control, and newer agents with proven CV benefit) — the UKPDS lesson is necessary, not sufficient.",
+      "teaching_points": [
+        {
+          "claim": "UKPDS established that intensive glycaemic control with sulphonylureas or insulin reduces microvascular complications (retinopathy, nephropathy) in type 2 diabetes, with no excess cardiovascular harm.",
+          "cites": [
+            "35638331",
+            "39155282"
+          ]
+        },
+        {
+          "claim": "The legacy effect describes durable long-term benefit from early intensive therapy observed years after trial completion — early glycaemic control 'banks' protection (UKPDS, and analogous findings in hypertension and lipids).",
+          "cites": [
+            "37915902"
+          ]
+        },
+        {
+          "claim": "Sulphonylurea- and insulin-based intensification remain evidence-based for microvascular protection, though modern guidelines prioritise agents with cardiovascular benefit (GLP-1 receptor agonists, SGLT2 inhibitors) for patients with established disease.",
+          "cites": [
+            "39155282",
+            "35638331"
+          ]
+        },
+        {
+          "claim": "Glucose control sits within a hierarchy: glycaemia management is necessary but must be integrated with blood pressure, lipid, and weight management for maximal cardiovascular prevention.",
+          "cites": [
+            "39155282",
+            "35638331"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Whether sulphonylureas retain a role versus newer agents in early intensive therapy is contested by cardiovascular-outcome data.",
+        "The durability of legacy effects with modern agents is untested at UKPDS timescales."
+      ],
+      "mcq_angles": [
+        "UKPDS: what intensive control achieved and with which drugs.",
+        "The legacy effect and its clinical implication for early treatment.",
+        "Microvascular versus macrovascular prevention hierarchy.",
+        "Sulphonylureas/insulin in modern treatment algorithms."
+      ],
+      "case_hooks": [
+        "A newly diagnosed type 2 diabetic patient asks whether early tight control 'matters later'; answer using UKPDS and the legacy effect.",
+        "A patient on metformin needs intensification with established cardiovascular disease; reconcile UKPDS-era evidence with modern agent selection."
+      ],
+      "gaps": "The UKPDS primary reports (Lancet 1998) predate the pipeline's 2015+ evidence filter; verify trial arm details and effect sizes against the primary publications before approval.",
+      "sources": [
+        {
+          "pmid": "37915902",
+          "design": "review",
+          "year": "2022",
+          "journal": null,
+          "title": "The long-term benefits of early intensive therapy in chronic diseases - the legacy effect."
+        },
+        {
+          "pmid": "35638331",
+          "design": "review",
+          "year": "2021",
+          "journal": null,
+          "title": "Treatment of diabetes mellitus has borne much fruit in the prevention of cardiovascular disease."
+        },
+        {
+          "pmid": "39155282",
+          "design": "consensus-review",
+          "year": "2023",
+          "journal": null,
+          "title": "Glycaemic control is still central in the hierarchy of priorities in type 2 diabetes management."
+        }
+      ]
+    }
+  },
+  {
+    "no": 952,
+    "topicId": "92abdb6f-3233-4496-aa38-3b47f0ae87ef",
+    "topic": "intensive blood pressure control cardiovascular outcomes systolic",
+    "cluster": "intensive BP control",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 8,
+      "papersKept": [
+        {
+          "uid": "pubmed-40902616",
+          "title": "Benefit-harm trade-offs of intensive blood pressure control versus standard blood pressure control on cardiovascular outcomes.",
+          "year": "2025"
+        },
+        {
+          "uid": "pubmed-30218213",
+          "title": "SPRINT and the Kidney: What Have We Learned?",
+          "year": "2019"
+        },
+        {
+          "uid": "pubmed-31646769",
+          "title": "Ideal Target Blood Pressure in Hypertension.",
+          "year": "2020"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-35731676",
+          "title": "New wrinkles in hypertension management 2022.",
+          "reason": "General hypertension commentary; SPRINT-focused evidence retained."
+        },
+        {
+          "uid": "pubmed-34153181",
+          "title": "Blood pressure control in patients with chronic kidney disease.",
+          "reason": "CKD-specific subset; SPRINT renal analysis retained instead."
+        },
+        {
+          "uid": "pubmed-28873137",
+          "title": "Association Between More Intensive vs Less Intensive Blood Pressure Lowering and Risk of Mortality in Chronic Kidney Disease.",
+          "reason": "CKD-specific mortality analysis; tangential."
+        },
+        {
+          "uid": "pubmed-27722961",
+          "title": "Treatment of Hypertension: Which Goal for Which Patient?",
+          "reason": "General goal-setting commentary; retained reviews cover it."
+        },
+        {
+          "uid": "pubmed-29991704",
+          "title": "Impact of SPRINT results on hypertension guidelines: implications for 'frail' elderly patients.",
+          "reason": "Frailty-subset commentary; individualisation covered by retained reviews."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "SPRINT re-set blood-pressure medicine: intensive control targeting systolic <120 mmHg reduced major cardiovascular events and mortality versus the <140 mmHg standard in non-diabetic high-risk patients — at the price of more hypotension, electrolyte disturbance, and acute kidney injury. The kidney follow-up taught the second lesson: the AKI signal was largely haemodynamic and recoverable, and intensive control did not accelerate CKD progression on extended observation. The modern skill is patient selection: intensive targets for fit high-risk patients, individualised relaxation for frailty, standing hypotension, and advanced CKD.",
+      "teaching_points": [
+        {
+          "claim": "SPRINT showed intensive systolic control (<120 mmHg) reduced major cardiovascular events and all-cause mortality in non-diabetic high-risk patients, driving guideline targets toward lower goals.",
+          "cites": [
+            "31646769",
+            "40902616"
+          ]
+        },
+        {
+          "claim": "The benefit-harm balance of intensive control varies by patient characteristics: absolute benefit concentrates in higher-risk patients, while adverse effects (hypotension, syncope, AKI, electrolytes) increase with frailty.",
+          "cites": [
+            "40902616"
+          ]
+        },
+        {
+          "claim": "SPRINT's AKI signal was predominantly haemodynamic and largely reversible; on extended follow-up, intensive control did not accelerate chronic kidney disease progression despite early creatinine rises.",
+          "cites": [
+            "30218213"
+          ]
+        },
+        {
+          "claim": "Ideal targets are individualised: intensive (<120-130 systolic) for fit high-risk patients, with relaxed targets for frail elderly, standing hypotension, and advanced CKD.",
+          "cites": [
+            "31646769",
+            "40902616"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Whether intensive targets benefit patients with diabetes (ACCORD's negative primary result) or very elderly frail patients remains patient-specific.",
+        "Optimal implementation (home versus office measurement, titration speed) varies by health system."
+      ],
+      "mcq_angles": [
+        "SPRINT design, population, and primary results.",
+        "The AKI signal: haemodynamic versus structural interpretation.",
+        "Benefit-harm trade-offs by patient subgroup.",
+        "Individualising targets: frailty, orthostasis, CKD."
+      ],
+      "case_hooks": [
+        "A fit 68-year-old with prior stroke has office BP 138/78; argue the target using SPRINT evidence.",
+        "A frail 82-year-old has a fall on intensified antihypertensives; apply the benefit-harm framework and adjust the target."
+      ],
+      "gaps": "The SPRINT primary report (NEJM 2015) is not among the retained abstracts; verify endpoint definitions and adverse-event rates against the primary publication before approval.",
+      "sources": [
+        {
+          "pmid": "40902616",
+          "design": "meta-analysis",
+          "year": "2025",
+          "journal": null,
+          "title": "Benefit-harm trade-offs of intensive blood pressure control versus standard blood pressure control on cardiovascular outcomes."
+        },
+        {
+          "pmid": "30218213",
+          "design": "review",
+          "year": "2019",
+          "journal": null,
+          "title": "SPRINT and the Kidney: What Have We Learned?"
+        },
+        {
+          "pmid": "31646769",
+          "design": "review",
+          "year": "2020",
+          "journal": null,
+          "title": "Ideal Target Blood Pressure in Hypertension."
+        }
+      ]
+    }
+  },
+  {
+    "no": 953,
+    "topicId": "938cd4dd-e69b-4756-9727-f8a948608696",
+    "topic": "Intensive care high yield clinical guidelines",
+    "cluster": "ICU guidelines",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 6,
+      "papersKept": [
+        {
+          "uid": "pubmed-38028633",
+          "title": "Prevention of ventilator-associated pneumonia through care bundles: A systematic review and meta-analysis.",
+          "year": "2024"
+        },
+        {
+          "uid": "pubmed-26276569",
+          "title": "What are effective strategies for the implementation of care bundles on ICUs: a systematic review.",
+          "year": "2016"
+        },
+        {
+          "uid": "pubmed-38771364",
+          "title": "European Society of Intensive Care Medicine clinical practice guideline on fluid therapy in adult critically ill patients.",
+          "year": "2024"
+        },
+        {
+          "uid": "pubmed-28860265",
+          "title": "Official ERS/ATS clinical practice guidelines: noninvasive ventilation for acute respiratory failure.",
+          "year": "2017"
+        }
+      ],
+      "papersDropped": [],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "High-yield ICU guidelines share a signature: they convert physiology into checklists that change outcomes. Ventilator care bundles — head-of-bed elevation, sedation breaks, spontaneous breathing trials, oral care, prophylaxis — reduce ventilator-associated pneumonia in meta-analysis, and implementation science shows the bundle matters less than the strategy that embeds it. The ESICM fluid therapy guideline restricts resuscitation fluids to balanced crystalloids as default and questions starches; the ERS/ATS NIV guideline defines which acute respiratory failure phenotypes (COPD exacerbation with acidosis, cardiogenic pulmonary oedema) benefit from noninvasive ventilation and which need intubation. The through-line: guidelines work when they are specific, physiological, and monitored.",
+      "teaching_points": [
+        {
+          "claim": "Ventilator-associated pneumonia care bundles reduce VAP incidence in meta-analysis; bundle elements (positioning, sedation interruption, oral care, prophylaxis) are the highest-yield preventive practice in the ventilated patient.",
+          "cites": [
+            "38028633"
+          ]
+        },
+        {
+          "claim": "Implementation strategy determines bundle success: systematic review identifies education, reminders, audit-feedback, and leadership engagement as the effective components, not the bundle document itself.",
+          "cites": [
+            "26276569"
+          ]
+        },
+        {
+          "claim": "The ESICM fluid-therapy guideline positions balanced crystalloids as the default resuscitation fluid and recommends against starch-based fluids, with fluid choice and fluid amount addressed separately.",
+          "cites": [
+            "38771364"
+          ]
+        },
+        {
+          "claim": "ERS/ATS NIV guidance: noninvasive ventilation benefits acute hypercapnic COPD exacerbation and cardiogenic pulmonary oedema, but not de novo hypoxaemic failure patterns where it may delay intubation.",
+          "cites": [
+            "28860265"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Which bundle-implementation strategies produce durable adherence beyond the study period is incompletely answered.",
+        "Optimal fluid-amount strategies (restrictive versus liberal) continue to be refined across specific ICU populations."
+      ],
+      "mcq_angles": [
+        "VAP bundle elements and evidence.",
+        "Why implementation strategy beats the checklist alone.",
+        "Resuscitation fluid choice per ESICM.",
+        "NIV indications and failure-recognition."
+      ],
+      "case_hooks": [
+        "A unit's VAP rate has plateaued despite an existing bundle; apply the implementation-science evidence to restart improvement.",
+        "A hypoxaemic pneumonia patient with COPD has pH 7.28 and PaCO2 68; argue for or against NIV per guideline phenotypes."
+      ],
+      "gaps": "The retained set covers selected high-yield domains only; sepsis (Surviving Sepsis) and transfusion guidelines are covered elsewhere in this topic set — verify cross-links before approval.",
+      "sources": [
+        {
+          "pmid": "38028633",
+          "design": "meta-analysis",
+          "year": "2024",
+          "journal": null,
+          "title": "Prevention of ventilator-associated pneumonia through care bundles: A systematic review and meta-analysis."
+        },
+        {
+          "pmid": "26276569",
+          "design": "systematic-review",
+          "year": "2016",
+          "journal": null,
+          "title": "What are effective strategies for the implementation of care bundles on ICUs: a systematic review."
+        },
+        {
+          "pmid": "38771364",
+          "design": "guideline",
+          "year": "2024",
+          "journal": null,
+          "title": "European Society of Intensive Care Medicine clinical practice guideline on fluid therapy in adult critically ill patients."
+        },
+        {
+          "pmid": "28860265",
+          "design": "guideline",
+          "year": "2017",
+          "journal": null,
+          "title": "Official ERS/ATS clinical practice guidelines: noninvasive ventilation for acute respiratory failure."
+        }
+      ]
+    }
+  },
+  {
+    "no": 954,
+    "topicId": "6c4dee81-5160-403c-b55b-9b6f0676872b",
+    "topic": "intensive glucose lowering type 2 diabetes",
+    "cluster": "glucose control harms",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 6,
+      "papersKept": [
+        {
+          "uid": "pubmed-36718676",
+          "title": "Efficacy and safety of intensive versus conventional glucose targets in people with type 2 diabetes: a systematic review.",
+          "year": "2023"
+        },
+        {
+          "uid": "pubmed-25944874",
+          "title": "Effect of Intensive Versus Standard Blood Glucose Control in Patients With Type 2 Diabetes Mellitus in Different Regions of the World.",
+          "year": "2015"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-37526194",
+          "title": "Perioperative glycaemic control for people with diabetes undergoing surgery.",
+          "reason": "Perioperative context; not chronic intensive-therapy question."
+        },
+        {
+          "uid": "pubmed-28594069",
+          "title": "Glucose targets for preventing diabetic kidney disease and its progression.",
+          "reason": "Nephropathy-specific targets; general efficacy/safety synthesis retained."
+        },
+        {
+          "uid": "pubmed-28617932",
+          "title": "Effect of the treatment of Type 2 diabetes mellitus on the development of cognitive impairment and dementia.",
+          "reason": "Cognitive-outcomes focus; tangential."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Where topic 951 covers what intensive control can achieve, this topic covers what it can cost. The modern synthesis of intensive-versus-standard trials finds a consistent pattern: intensive lowering reduces microvascular events but its effect on macrovascular outcomes and mortality depends on context — with ACCORD's excess mortality in aggressively targeted patients as the cautionary counterweight. Regional meta-analysis adds the generalisability caveat: benefits and harms vary with baseline care quality. The clinical rule that emerges: intensive targets earn their risk in younger, healthier, recently diagnosed patients with support systems; they pay it out in the frail, the elderly, and the long-diagnosed.",
+      "teaching_points": [
+        {
+          "claim": "Systematic review of intensive versus conventional glucose targets confirms microvascular benefit while showing macrovascular and mortality effects are context-dependent rather than uniformly favourable.",
+          "cites": [
+            "36718676"
+          ]
+        },
+        {
+          "claim": "The ACCORD-era lesson stands: aggressive intensification in higher-risk, longer-diagnosed patients increased mortality and severe hypoglycaemia — patient selection, not the number itself, drives safety.",
+          "cites": [
+            "36718676",
+            "25944874"
+          ]
+        },
+        {
+          "claim": "Meta-analysis across regions shows intensive-versus-standard effects vary with baseline control quality, implying diminishing returns where baseline care is already good.",
+          "cites": [
+            "25944874"
+          ]
+        },
+        {
+          "claim": "Severe hypoglycaemia is the central harm of intensification — it drives cardiovascular events, falls, and cognitive decline — and its risk must be weighed against microvascular benefit in every target decision.",
+          "cites": [
+            "36718676"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Whether modern agents (GLP-1 RA, SGLT2i) change the risk-benefit of intensive targets independent of glycaemia is an active research area.",
+        "Optimal de-intensification criteria for older patients are guideline-inferred rather than trial-proven."
+      ],
+      "mcq_angles": [
+        "Intensive versus standard: the consistent and variable effects.",
+        "ACCORD: what went wrong and whom it warns about.",
+        "Severe hypoglycaemia as the balancing harm.",
+        "De-intensification: who, when, how."
+      ],
+      "case_hooks": [
+        "A 78-year-old with 20-year diabetes, CKD, and two prior hypos is targeted to HbA1c 6.5%; argue for de-intensification.",
+        "A newly diagnosed motivated 50-year-old asks about tight control; balance microvascular benefit against hypoglycaemia risk."
+      ],
+      "gaps": "The retained evidence does not isolate ACCORD/ADVANCE/VADT primary reports; verify excess-mortality details against the primary publications before approval.",
+      "sources": [
+        {
+          "pmid": "36718676",
+          "design": "systematic-review",
+          "year": "2023",
+          "journal": null,
+          "title": "Efficacy and safety of intensive versus conventional glucose targets in people with type 2 diabetes: a systematic review."
+        },
+        {
+          "pmid": "25944874",
+          "design": "meta-analysis",
+          "year": "2015",
+          "journal": null,
+          "title": "Effect of Intensive Versus Standard Blood Glucose Control in Patients With Type 2 Diabetes Mellitus in Different Regions of the World."
+        }
+      ]
+    }
+  },
+  {
+    "no": 955,
+    "topicId": "e93ae704-a9d7-4d77-82e2-7ec2971acf45",
+    "topic": "intensive glycemic targets in type 2 diabetes",
+    "cluster": "glycemic targets",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 8,
+      "papersKept": [
+        {
+          "uid": "pubmed-34379732",
+          "title": "Individualisation of glycaemic management in older people with type 2 diabetes: a systematic review of clinical practice guidelines.",
+          "year": "2022"
+        },
+        {
+          "uid": "pubmed-35614863",
+          "title": "Intensive glycemic control and macrovascular, microvascular, hypoglycemia complications and mortality in older (age > 65 years) patients.",
+          "year": "2021"
+        },
+        {
+          "uid": "pubmed-30833929",
+          "title": "Diabetes and Aging: From Treatment Goals to Pharmacologic Therapy.",
+          "year": "2020"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-30615985",
+          "title": "Comparative efficacy, safety, and cardiovascular outcomes with once-weekly subcutaneous semaglutide in the treatment of type 2 diabetes.",
+          "reason": "Single-agent trial context; target-individualisation evidence retained."
+        },
+        {
+          "uid": "pubmed-40652453",
+          "title": "Preexisting Diabetes and Pregnancy: An Endocrine Society and European Society of Endocrinology Joint Clinical Practice Guideline.",
+          "reason": "Pregnancy subset; excluded."
+        },
+        {
+          "uid": "pubmed-34158243",
+          "title": "Improvement of glycemic control in type 2 diabetes: A systematic review and meta-analysis of randomized controlled trials.",
+          "reason": "General glycaemic-improvement meta-analysis; target-specific syntheses retained."
+        },
+        {
+          "uid": "pubmed-42594096",
+          "title": "HbA1c and pulmonary function in type 2 diabetes mellitus: A systematic review and meta-analysis.",
+          "reason": "Unrelated outcome; tangential."
+        },
+        {
+          "uid": "pubmed-36650625",
+          "title": "Evolution of Guideline Recommendations on Insulin Therapy in Type 2 Diabetes Mellitus Over the Last Two Decades: A Systematic Review.",
+          "reason": "Insulin-therapy evolution focus; target individualisation retained."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "The HbA1c number is now a shared decision, not an order: guidelines systematically individualise targets by life expectancy, comorbidity burden, hypoglycaemia risk, and patient preference. Younger, healthier patients aim for near-normal glycaemia (6.0-6.5%); healthy older adults relax modestly (7.0-7.5%); frailty, dementia, limited life expectancy, or severe hypoglycaemia history justify 8.0% or higher — where comfort and safety outrank the microvascular arithmetic. The systematic review of guideline recommendations shows this individualisation is now explicit and consistent across major societies; the craft is matching the target to the person, then matching the therapy's hypoglycaemia risk to the target.",
+      "teaching_points": [
+        {
+          "claim": "Major guidelines individualise HbA1c targets: approximately <6.5-7.0% for healthy younger patients, 7.0-7.5% for healthy older adults, and 8.0%+ for frail patients or limited life expectancy.",
+          "cites": [
+            "34379732",
+            "30833929"
+          ]
+        },
+        {
+          "claim": "In older patients, intensive control's benefit-harm balance shifts: microvascular gains shrink while hypoglycaemia, falls, and treatment burden grow, driving relaxed targets with advancing frailty.",
+          "cites": [
+            "35614863",
+            "30833929"
+          ]
+        },
+        {
+          "claim": "Guideline recommendations consistently frame targets around patient characteristics (life expectancy, comorbidity, hypoglycaemia risk, preference) rather than a single population number.",
+          "cites": [
+            "34379732"
+          ]
+        },
+        {
+          "claim": "Therapy selection must match the target: agents with low hypoglycaemia risk (metformin, GLP-1 RA, SGLT2i, DPP-4i) support intensive targets safely; sulphonylureas and insulin require target relaxation or enhanced monitoring in vulnerable patients.",
+          "cites": [
+            "30833929",
+            "35614863"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Exact HbA1c cut-offs by frailty category vary between guidelines; local protocols differ.",
+        "How to operationalise individualisation in busy clinics (frailty scoring uptake) is an implementation, not efficacy, question."
+      ],
+      "mcq_angles": [
+        "Target ranges by age, frailty, and life expectancy.",
+        "Why older patients warrant relaxed targets.",
+        "Agent selection to support intensive targets safely.",
+        "Shared decision-making in target setting."
+      ],
+      "case_hooks": [
+        "A healthy 45-year-old and a frail 84-year-old with identical HbA1c 7.4% need different targets; set both and justify.",
+        "A sulphonylurea-treated older patient has recurrent hypos on an intensive target; restructure therapy and target together."
+      ],
+      "gaps": "The retained abstracts summarise guidelines without the primary ADA/EASD target documents; verify exact ranges against current guidelines before approval.",
+      "sources": [
+        {
+          "pmid": "34379732",
+          "design": "systematic-review",
+          "year": "2022",
+          "journal": null,
+          "title": "Individualisation of glycaemic management in older people with type 2 diabetes: a systematic review of clinical practice guidelines."
+        },
+        {
+          "pmid": "35614863",
+          "design": "review",
+          "year": "2021",
+          "journal": null,
+          "title": "Intensive glycemic control and macrovascular, microvascular, hypoglycemia complications and mortality in older (age > 65 years) patients."
+        },
+        {
+          "pmid": "30833929",
+          "design": "review",
+          "year": "2020",
+          "journal": null,
+          "title": "Diabetes and Aging: From Treatment Goals to Pharmacologic Therapy."
+        }
+      ]
+    }
+  },
+  {
+    "no": 956,
+    "topicId": "c88d8db7-aa4d-4fb1-8853-cb7b86a07cd1",
+    "topic": "intensive LDL cholesterol lowering statin meta-analysis",
+    "cluster": "intensive LDL lowering",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 10,
+      "papersKept": [
+        {
+          "uid": "pubmed-25579834",
+          "title": "Efficacy and safety of LDL-lowering therapy among men and women: meta-analysis of individual data from 174,000 participants in 27 randomised trials (CTT).",
+          "year": "2015"
+        },
+        {
+          "uid": "pubmed-39550238",
+          "title": "Safety and efficacy of moderate-intensity statin plus ezetimibe versus high-intensity statin monotherapy.",
+          "year": "2023"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-30712900",
+          "title": "Efficacy and safety of statin therapy in older people: a meta-analysis of individual participant data from 28 randomised trials.",
+          "reason": "Older-population subset; general intensive-lowering evidence retained."
+        },
+        {
+          "uid": "pubmed-38554713",
+          "title": "Effects of statin therapy on diagnoses of new-onset diabetes and worsening glycaemia in large-scale randomised blinded trials.",
+          "reason": "Diabetes-safety focus; not lowering-intensity efficacy."
+        },
+        {
+          "uid": "pubmed-39135464",
+          "title": "Safety and Effectiveness of High-Intensity Statins Versus Low/Moderate-Intensity Statins Plus Ezetimibe in Patients with Atherosclerotic Cardiovascular Disease.",
+          "reason": "Duplicate comparison; retained meta-analysis covers it."
+        },
+        {
+          "uid": "pubmed-40492183",
+          "title": "Efficacy and Safety of Moderate-Intensity Statin and Ezetimibe Combination Therapy Versus High-Intensity Statin Monotherapy.",
+          "reason": "Duplicate comparison; retained meta-analysis covers it."
+        },
+        {
+          "uid": "pubmed-26397380",
+          "title": "Systematic literature review and meta-analysis of dual therapy with fenofibrate or fenofibric acid and a statin versus statin monotherapy.",
+          "reason": "Fibrate-add-on question; different strategy."
+        },
+        {
+          "uid": "pubmed-39536001",
+          "title": "Efficacy and safety of moderate-intensity rosuvastatin plus ezetimibe versus high-intensity rosuvastatin monotherapy.",
+          "reason": "Duplicate comparison; retained meta-analysis covers it."
+        },
+        {
+          "uid": "pubmed-42296115",
+          "title": "Moderate Intensity Statins Plus Ezetimibe Combination Therapy Versus High Intensity Statins Monotherapy After Percutaneous Coronary Intervention.",
+          "reason": "Post-PCI subset; duplicate comparison."
+        },
+        {
+          "uid": "pubmed-42716850",
+          "title": "Efficacy and diabetes risk of moderate-intensity statin plus ezetimibe versus high-intensity statin after percutaneous coronary intervention.",
+          "reason": "Post-PCI subset; duplicate comparison."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "The Cholesterol Treatment Trialists' meta-analyses established the foundational rule of lipid medicine: cardiovascular benefit is proportional to the absolute LDL-C reduction, in every group studied — men and women, primary and secondary prevention — and there is no threshold below which benefit stops. Intensive lowering therefore means driving LDL as low as practically achievable with tolerated therapy. The modern implementation question: whether moderate-intensity statin plus ezetimibe matches high-intensity statin alone — meta-analytic evidence now suggests comparable LDL lowering with better tolerability, reshaping the escalation ladder.",
+      "teaching_points": [
+        {
+          "claim": "CTT individual-participant meta-analysis shows statin benefit is proportional to absolute LDL-C reduction and is consistent across sexes and prevention settings, supporting intensive lowering targets.",
+          "cites": [
+            "25579834"
+          ]
+        },
+        {
+          "claim": "Meta-analysis supports moderate-intensity statin plus ezetimibe as an alternative to high-intensity statin monotherapy, with comparable LDL-C lowering and improved tolerability in several analyses.",
+          "cites": [
+            "39550238"
+          ]
+        },
+        {
+          "claim": "Intensive LDL targets in very-high-risk ASCVD (e.g. <1.4 mmol/L or <55 mg/dL per ESC) operationalise the proportional-benefit rule with combination therapy as needed.",
+          "cites": [
+            "25579834",
+            "39550238"
+          ]
+        },
+        {
+          "claim": "Tolerability drives adherence: switching to combination moderate-intensity therapy is preferable to statin discontinuation when high-intensity doses cause adverse effects.",
+          "cites": [
+            "39550238"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Whether combination moderate-intensity therapy reduces hard cardiovascular outcomes identically to high-intensity monotherapy awaits dedicated outcome trials.",
+        "Optimal LDL floors and very-long-term safety of very low LDL remain reassuring but observational."
+      ],
+      "mcq_angles": [
+        "The proportional-benefit rule from CTT meta-analysis.",
+        "No threshold: interpreting very low LDL targets.",
+        "Moderate-statin-plus-ezetimibe versus high-intensity monotherapy evidence.",
+        "Tolerability-driven switching strategies."
+      ],
+      "case_hooks": [
+        "A patient cannot tolerate high-intensity atorvastatin due to myalgia; construct the combination alternative and its evidence base.",
+        "A very-high-risk ASCVD patient asks 'how low should my cholesterol go'; answer with the proportional-benefit evidence."
+      ],
+      "gaps": "The primary CTT 2010 meta-analysis and IMPROVE-IT are not among the retained abstracts (pre-2015 or filter-limited); verify effect magnitudes against the primary publications before approval.",
+      "sources": [
+        {
+          "pmid": "25579834",
+          "design": "meta-analysis",
+          "year": "2015",
+          "journal": null,
+          "title": "Efficacy and safety of LDL-lowering therapy among men and women: meta-analysis of individual data from 174,000 participants in 27 randomised trials (CTT)."
+        },
+        {
+          "pmid": "39550238",
+          "design": "meta-analysis",
+          "year": "2023",
+          "journal": null,
+          "title": "Safety and efficacy of moderate-intensity statin plus ezetimibe versus high-intensity statin monotherapy."
+        }
+      ]
+    }
+  },
+  {
+    "no": 957,
+    "topicId": "6685743b-3692-4075-a7fb-f35014c73514",
+    "topic": "Intermediate-risk pulmonary embolism reperfusion",
+    "cluster": "intermediate-risk PE",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 8,
+      "papersKept": [
+        {
+          "uid": "pubmed-26384442",
+          "title": "Thrombolysis for acute intermediate-risk pulmonary embolism: A meta-analysis.",
+          "year": "2015"
+        },
+        {
+          "uid": "pubmed-37855802",
+          "title": "Efficacy and Safety of Anticoagulation, Catheter-Directed Thrombolysis, or Systemic Thrombolysis in Acute Pulmonary Embolism.",
+          "year": "2023"
+        },
+        {
+          "uid": "pubmed-37336568",
+          "title": "Catheter-directed thrombolysis compared with systemic thrombolysis and anticoagulation in patients with intermediate- or high-risk pulmonary embolism.",
+          "year": "2023"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-35433747",
+          "title": "Tenecteplase in Pulmonary Embolism Patients: A Meta-Analysis and Systematic Review.",
+          "reason": "Agent-specific meta-analysis; strategy-level syntheses retained."
+        },
+        {
+          "uid": "pubmed-41076852",
+          "title": "Has systemic thrombolysis run its course? A systematic review and network meta-analysis of patients with intermediate-risk pulmonary embolism.",
+          "reason": "Overlapping NMA; retained network comparison covers it."
+        },
+        {
+          "uid": "pubmed-42580844",
+          "title": "Catheter-directed thrombolysis versus anticoagulation for intermediate-risk and high-risk pulmonary embolism: a systematic review and meta-analysis.",
+          "reason": "Overlapping CDT comparison; retained."
+        },
+        {
+          "uid": "pubmed-28393706",
+          "title": "Ultrasound-Assisted Catheter-Directed Thrombolysis in High-Risk and Intermediate-High-Risk Pulmonary Embolism: A Meta-Analysis.",
+          "reason": "Ultrasound-assisted subset; tangential."
+        },
+        {
+          "uid": "pubmed-36536090",
+          "title": "Percutaneous thrombectomy in patients with intermediate- and high-risk pulmonary embolism and contraindications to thrombolysis.",
+          "reason": "Thrombectomy-niche review; tangential."
+        },
+        {
+          "uid": "pubmed-39244019",
+          "title": "Advancing the management of acute intermediate-high-risk pulmonary embolism: The enduring legacy of Professor Guy Meyer.",
+          "reason": "Commentary piece; not evidence."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Intermediate-risk (submassive) pulmonary embolism — haemodynamically stable but with RV dysfunction or troponin elevation — is the discipline's judgement call: anticoagulation alone has a low but real early mortality, while systemic thrombolysis prevents haemodynamic collapse but at a cost of major bleeding and intracranial haemorrhage. PEITHO quantified the trade: thrombolysis averted deterioration but with roughly 2% intracranial bleeding. Meta-analyses frame the modern answer: anticoagulation for most, rescue thrombolysis for the 5-10% who deteriorate, and catheter-directed therapy as the evolving middle path — promising lower bleeding, still awaiting definitive outcome trials.",
+      "teaching_points": [
+        {
+          "claim": "Meta-analysis of intermediate-risk PE shows thrombolysis reduces early clinical deterioration and recurrent PE compared with anticoagulation alone, at the cost of significantly more major bleeding.",
+          "cites": [
+            "26384442"
+          ]
+        },
+        {
+          "claim": "The PEITHO-era trade-off defines practice: most intermediate-risk patients are managed with anticoagulation plus close monitoring, with rescue thrombolysis reserved for haemodynamic deterioration.",
+          "cites": [
+            "26384442",
+            "37855802"
+          ]
+        },
+        {
+          "claim": "Network and pairwise meta-analyses position catheter-directed thrombolysis between systemic lysis and anticoagulation — lower bleeding than systemic lysis, but without definitive outcome superiority.",
+          "cites": [
+            "37855802",
+            "37336568"
+          ]
+        },
+        {
+          "claim": "Risk markers (RV dysfunction on echo/CT, elevated troponin/BNP, PESI class) identify the intermediate-risk category but do not yet reliably identify who benefits from upfront reperfusion.",
+          "cites": [
+            "37855802",
+            "26384442"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Whether catheter-directed therapy improves hard outcomes versus anticoagulation alone is the subject of ongoing trials.",
+        "Optimal selection of intermediate-high-risk patients ('the grey zone') for upfront reperfusion is unresolved."
+      ],
+      "mcq_angles": [
+        "Defining intermediate-risk PE: RV dysfunction plus biomarkers.",
+        "The PEITHO trade: benefit versus intracranial haemorrhage.",
+        "Anticoagulation-plus-rescue versus upfront lysis.",
+        "Catheter-directed therapy positioning."
+      ],
+      "case_hooks": [
+        "A stable PE patient has RV dilation on CT and troponin elevation; defend the anticoagulation-plus-monitoring strategy and define rescue criteria.",
+        "An intermediate-risk PE patient deteriorates at hour 18 with rising lactate; outline rescue reperfusion."
+      ],
+      "gaps": "The PEITHO primary report (NEJM 2014) is not among the retained abstracts; verify bleeding and deterioration rates against the primary publication before approval.",
+      "sources": [
+        {
+          "pmid": "26384442",
+          "design": "meta-analysis",
+          "year": "2015",
+          "journal": null,
+          "title": "Thrombolysis for acute intermediate-risk pulmonary embolism: A meta-analysis."
+        },
+        {
+          "pmid": "37855802",
+          "design": "meta-analysis",
+          "year": "2023",
+          "journal": null,
+          "title": "Efficacy and Safety of Anticoagulation, Catheter-Directed Thrombolysis, or Systemic Thrombolysis in Acute Pulmonary Embolism."
+        },
+        {
+          "pmid": "37336568",
+          "design": "meta-analysis",
+          "year": "2023",
+          "journal": null,
+          "title": "Catheter-directed thrombolysis compared with systemic thrombolysis and anticoagulation in patients with intermediate- or high-risk pulmonary embolism."
+        }
+      ]
+    }
+  },
+  {
+    "no": 958,
+    "topicId": "367f56a6-5c57-4dba-8add-40608825f40c",
+    "topic": "Intermittent Haemodialysis: Principles and Adequacy",
+    "cluster": "haemodialysis",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 12,
+      "papersKept": [
+        {
+          "uid": "pubmed-34595991",
+          "title": "Toward an individualized determination of dialysis adequacy: a narrative review with special emphasis on incremental haemodialysis.",
+          "year": "2021"
+        },
+        {
+          "uid": "pubmed-27578429",
+          "title": "Effect of Treatment Duration and Frequency on Uremic Solute Kinetics, Clearances and Concentrations.",
+          "year": "2016"
+        },
+        {
+          "uid": "pubmed-33391741",
+          "title": "An update review of intradialytic hypotension: concept, risk factors, clinical implications and management.",
+          "year": "2021"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-27467103",
+          "title": "Dialytic dose in pediatric continuous renal replacement therapy patients.",
+          "reason": "Paediatric CRRT population; excluded."
+        },
+        {
+          "uid": "pubmed-28992335",
+          "title": "How to set the stage for a full-fledged clinical trial testing 'incremental haemodialysis'.",
+          "reason": "Trial-design commentary; narrative adequacy review retained."
+        },
+        {
+          "uid": "pubmed-27536678",
+          "title": "Chronic Hemodialysis Therapy in the West.",
+          "reason": "Service-model overview; adequacy science retained."
+        },
+        {
+          "uid": "pubmed-30815462",
+          "title": "Development of an Artificial Intelligence Model to Guide the Management of Blood Pressure, Fluid Volume, and Dialysate Temperature.",
+          "reason": "AI-model development paper; tangential."
+        },
+        {
+          "uid": "pubmed-40142654",
+          "title": "How to Limit Interdialytic Weight Gain in Patients on Maintenance Hemodialysis: State of the Art and Perspectives.",
+          "reason": "Fluid-management subset; adequacy principles retained."
+        },
+        {
+          "uid": "pubmed-28803369",
+          "title": "Volume Balance and Intradialytic Ultrafiltration Rate in the Hemodialysis Patient.",
+          "reason": "Ultrafiltration sub-question; tangential."
+        },
+        {
+          "uid": "pubmed-35950992",
+          "title": "Management of intradialytic hypertension: current evidence and future perspectives.",
+          "reason": "Intradialytic hypertension subset; hypotension review retained."
+        },
+        {
+          "uid": "pubmed-40013364",
+          "title": "Intradialytic Hypotension Pathophysiology and Therapy Update: Review and Update.",
+          "reason": "Duplicate topic; retained IDH review covers it."
+        },
+        {
+          "uid": "pubmed-39726219",
+          "title": "Prevalence of cardiovascular instability during hemodialysis therapy in hospitalized patients: A systematic review.",
+          "reason": "Hospitalised-patient subset; retained reviews cover principles."
+        },
+        {
+          "uid": "pubmed-42721100",
+          "title": "On-Line High-Volume Hemodiafiltration: Current Evidence and Clinical Outcomes.",
+          "reason": "HDF modality comparison; tangential to IHD adequacy."
+        },
+        {
+          "uid": "pubmed-42646757",
+          "title": "Hemodiafiltration in Dialysis Practice: Global Adoption, Toxin Clearance, Inflammation Control, and Clinical Safety.",
+          "reason": "HDF practice review; tangential."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Intermittent haemodialysis works by the physics of diffusion and convection: blood and dialysate flow past a semipermeable membrane in counter-current, clearing small solutes in proportion to time, surface area, and concentration gradient. Adequacy is measured — Kt/V (clearance x time over volume) targeting around 1.2-1.4 per session thrice-weekly, supplemented by the uraemic-solute view that phosphate and middle molecules clear differently from urea. The modern refinement is individualisation: incremental regimens for residual renal function and session tolerance, recognising that the number is a guide, not a verdict. And the commonest session-level complication, intradialytic hypotension, reflects the fine balance between ultrafiltration demand and cardiovascular compensation.",
+      "teaching_points": [
+        {
+          "claim": "IHD adequacy is quantified by Kt/V (spKt/V target ≥1.2 per session, with minimum delivered dose-equivalent of 1.4 by single-pool measures), supplemented by assessment of phosphate, fluid, and middle-molecule clearance.",
+          "cites": [
+            "34595991",
+            "27578429"
+          ]
+        },
+        {
+          "claim": "Uremic solute kinetics differ by size and protein-binding: small solutes like urea clear readily, while phosphate and larger 'middle molecules' need longer or more frequent sessions — the rationale for individualised prescriptions.",
+          "cites": [
+            "27578429"
+          ]
+        },
+        {
+          "claim": "Incremental haemodialysis — starting with fewer/shorter sessions when residual kidney function remains — is supported as an individualised adequacy strategy rather than a fixed thrice-weekly default.",
+          "cites": [
+            "34595991"
+          ]
+        },
+        {
+          "claim": "Intradialytic hypotension results from the interaction of ultrafiltration rate, refilling capacity, and autonomic/vascular compensation; it associates with adverse long-term outcomes and requires active prevention (dialysate temperature, UF profiling, sodium modelling, midodrine).",
+          "cites": [
+            "33391741"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Whether higher session frequency (short daily) improves hard outcomes beyond adequacy numbers is debated.",
+        "Optimal incremental-dialysis protocols and their long-term safety are under study."
+      ],
+      "mcq_angles": [
+        "Kt/V: calculation logic, targets, and pitfalls.",
+        "Solute-size classes and their clearance implications.",
+        "Incremental dialysis rationale.",
+        "Intradialytic hypotension: mechanisms and countermeasures."
+      ],
+      "case_hooks": [
+        "A patient's spKt/V is 1.05 thrice-weekly; diagnose the adequacy shortfall and redesign the prescription.",
+        "A patient repeatedly cramps and hypotends mid-session with high interdialytic gains; apply the IDH prevention toolkit."
+      ],
+      "gaps": "The retained abstracts are narrative reviews; verify Kt/V targets and dialysis-complication management against KDOQI/ERBP adequacy guidelines before approval.",
+      "sources": [
+        {
+          "pmid": "34595991",
+          "design": "review",
+          "year": "2021",
+          "journal": null,
+          "title": "Toward an individualized determination of dialysis adequacy: a narrative review with special emphasis on incremental haemodialysis."
+        },
+        {
+          "pmid": "27578429",
+          "design": "review",
+          "year": "2016",
+          "journal": null,
+          "title": "Effect of Treatment Duration and Frequency on Uremic Solute Kinetics, Clearances and Concentrations."
+        },
+        {
+          "pmid": "33391741",
+          "design": "review",
+          "year": "2021",
+          "journal": null,
+          "title": "An update review of intradialytic hypotension: concept, risk factors, clinical implications and management."
+        }
+      ]
+    }
+  },
+  {
+    "no": 959,
+    "topicId": "a443c183-b42b-418d-8074-9804fd06994b",
+    "topic": "Intermittent haemodialysis vs CRRT: selection criteria in critically ill",
+    "cluster": "RRT modality",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 7,
+      "papersKept": [
+        {
+          "uid": "pubmed-31695978",
+          "title": "Single-best Choice Between Intermittent Versus Continuous Renal Replacement Therapy: A Review.",
+          "year": "2018"
+        },
+        {
+          "uid": "pubmed-36723298",
+          "title": "Debate: Intermittent Hemodialysis versus Continuous Kidney Replacement Therapy in the Critically Ill Patient.",
+          "year": "2023"
+        },
+        {
+          "uid": "pubmed-25843704",
+          "title": "Extended Daily Dialysis Versus Continuous Renal Replacement Therapy for Acute Kidney Injury: A Meta-analysis.",
+          "year": "2015"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-35664279",
+          "title": "Management of acute renal replacement therapy in critically ill cirrhotic patients.",
+          "reason": "Cirrhosis-specific subset; general modality evidence retained."
+        },
+        {
+          "uid": "pubmed-40275676",
+          "title": "Timing of kidney replacement therapy in critically ill patients: A call to shift the paradigm in the era of artificial intelligence.",
+          "reason": "Initiation-timing commentary; covered under topic 905."
+        },
+        {
+          "uid": "pubmed-34362161",
+          "title": "Impact of Renal Replacement Therapy on Mortality in Critically Ill Patients - The Nephrologist's View within an Interdisciplinary Team.",
+          "reason": "Perspective piece; not modality-comparison evidence."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "The IHD-versus-CRRT debate has matured from ideology to physiology: meta-analyses show no mortality difference between modalities in critically ill AKI, so the choice rests on the patient's haemodynamic tolerance, metabolic burden, and practical constraints. CRRT offers slow, continuous solute and fluid removal — kinder to unstable circuits, better for severe catabolism and raised intracranial pressure, but resource-heavy and anticoagulation-hungry. IHD is efficient, available, and frees the patient between sessions, but tolerates less instability. Hybrid extended-daily dialysis splits the difference, and meta-analysis finds it comparable to CRRT — a legitimate middle path.",
+      "teaching_points": [
+        {
+          "claim": "No mortality difference between IHD and CRRT has been shown in meta-analyses of critically ill AKI; modality selection is therefore physiological and practical, not evidence-dictated.",
+          "cites": [
+            "31695978",
+            "36723298"
+          ]
+        },
+        {
+          "claim": "CRRT is favoured for haemodynamic instability, severe fluid overload needing gentle removal, high catabolic states, and raised intracranial pressure; IHD suits stable patients and resource-constrained settings.",
+          "cites": [
+            "36723298",
+            "31695978"
+          ]
+        },
+        {
+          "claim": "Extended daily (hybrid) dialysis shows comparable outcomes to CRRT in meta-analysis, offering slower clearance with intermittent logistics — a legitimate alternative where expertise exists.",
+          "cites": [
+            "25843704"
+          ]
+        },
+        {
+          "claim": "Practical factors — anticoagulation needs, nursing ratio, vascular access, cost, and the ability to interrupt for procedures — legitimately shape modality choice alongside physiology.",
+          "cites": [
+            "36723298",
+            "31695978"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Whether CRRT's haemodynamic gentleness translates to renal-recovery benefit is unproven.",
+        "Optimal modality-switching protocols during a single AKI episode are not standardised."
+      ],
+      "mcq_angles": [
+        "The no-mortality-difference evidence base.",
+        "Physiological selection criteria for each modality.",
+        "Hybrid/extended-daily dialysis positioning.",
+        "Practical constraints in modality choice."
+      ],
+      "case_hooks": [
+        "A septic shock patient with AKI, on high-dose noradrenaline, needs RRT; select and justify the modality.",
+        "A stable post-surgical AKI patient needs RRT in a unit without CRRT capacity; assess IHD candidacy and precautions."
+      ],
+      "gaps": "The retained evidence is review/meta-analysis level; verify selection-criteria details against the current KDIGO AKI guideline before approval.",
+      "sources": [
+        {
+          "pmid": "31695978",
+          "design": "review",
+          "year": "2018",
+          "journal": null,
+          "title": "Single-best Choice Between Intermittent Versus Continuous Renal Replacement Therapy: A Review."
+        },
+        {
+          "pmid": "36723298",
+          "design": "debate-review",
+          "year": "2023",
+          "journal": null,
+          "title": "Debate: Intermittent Hemodialysis versus Continuous Kidney Replacement Therapy in the Critically Ill Patient."
+        },
+        {
+          "pmid": "25843704",
+          "design": "meta-analysis",
+          "year": "2015",
+          "journal": null,
+          "title": "Extended Daily Dialysis Versus Continuous Renal Replacement Therapy for Acute Kidney Injury: A Meta-analysis."
+        }
+      ]
+    }
+  },
+  {
+    "no": 960,
+    "topicId": "06864cad-3a53-4663-a601-92e6236f68d0",
+    "topic": "interstitial lung disease",
+    "cluster": "ILD",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 14,
+      "papersKept": [
+        {
+          "uid": "pubmed-32649920",
+          "title": "Interstitial lung abnormalities detected incidentally on CT: a Position Paper from the Fleischner Society.",
+          "year": "2020"
+        },
+        {
+          "uid": "pubmed-30695649",
+          "title": "Interstitial Pneumonia with Autoimmune Features.",
+          "year": "2016"
+        },
+        {
+          "uid": "pubmed-37156412",
+          "title": "Idiopathic pulmonary fibrosis.",
+          "year": "2023"
+        },
+        {
+          "uid": "pubmed-40358445",
+          "title": "Advances in Concept and Imaging of Interstitial Lung Disease.",
+          "year": "2025"
+        },
+        {
+          "uid": "pubmed-37505195",
+          "title": "Imaging Features of Idiopathic Interstitial Lung Diseases.",
+          "year": "2023"
+        },
+        {
+          "uid": "pubmed-35938712",
+          "title": "Immunomodulatory treatment of interstitial lung disease.",
+          "year": "2020"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-40818476",
+          "title": "Advances in the classification and management of idiopathic inflammatory myopathies.",
+          "reason": "Myositis, not ILD; wrong disease."
+        },
+        {
+          "uid": "pubmed-32279294",
+          "title": "Hermansky-Pudlak Syndrome.",
+          "reason": "Single-genetic-syndrome subset; tangential."
+        },
+        {
+          "uid": "pubmed-37161084",
+          "title": "Evidence-Based Guideline for the diagnosis and management of eosinophilic granulomatosis with polyangiitis.",
+          "reason": "Vasculitis guideline; covered under AAV cluster."
+        },
+        {
+          "uid": "pubmed-38923509",
+          "title": "Management of cardiac sarcoidosis.",
+          "reason": "Cardiac-sarcoid subset; tangential."
+        },
+        {
+          "uid": "pubmed-39264073",
+          "title": "Idiopathic Pulmonary Fibrosis: Review of Current Knowledge.",
+          "reason": "IPF-specific; already cited under topic 909."
+        },
+        {
+          "uid": "pubmed-39603671",
+          "title": "Transcriptomics of interstitial lung disease: a systematic review and meta-analysis.",
+          "reason": "Omics-level research; not clinical management."
+        },
+        {
+          "uid": "pubmed-31782933",
+          "title": "Quantitative CT Analysis of Diffuse Lung Disease.",
+          "reason": "Quantitative-CT methodology; qualitative imaging reviews retained."
+        },
+        {
+          "uid": "pubmed-32186607",
+          "title": "[Update on interstitial lung diseases].",
+          "reason": "Non-English-bracketed record; excluded per pipeline rules."
+        },
+        {
+          "uid": "pubmed-41342677",
+          "title": "Quantitative Imaging for Interstitial Lung Disease.",
+          "reason": "Quantitative-imaging review; overlapping content retained."
+        },
+        {
+          "uid": "pubmed-34805219",
+          "title": "Variability in Global Prevalence of Interstitial Lung Disease.",
+          "reason": "Epidemiology focus; tangential."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Interstitial lung disease is an umbrella, not a diagnosis: the idiopathic interstitial pneumonias, connective-tissue-disease-related ILD, hypersensitivity pneumonitis, and drug-induced disease share radiological patterns but diverge in treatment and prognosis. The modern craft is pattern recognition followed by an aetiology hunt — exposures, autoimmunity, drugs — because the HRCT pattern organises everything: UIP suggests IPF after cause exclusion, while NSIP, organising pneumonia, and HP patterns point to specific treatable entities. Two contemporary frames matter: interstitial lung abnormalities on incidental CT, common and mostly indolent but a marker of future progression; and interstitial pneumonia with autoimmune features, the research category for patients who fall between rheumatology and respiratory clinics.",
+      "teaching_points": [
+        {
+          "claim": "ILD requires a systematic aetiology work-up — exposures (hypersensitivity pneumonitis), connective tissue disease serology, drug history, and family history — because treatment is cause-specific.",
+          "cites": [
+            "30695649",
+            "32649920"
+          ]
+        },
+        {
+          "claim": "HRCT patterns organise ILD diagnosis: UIP pattern strongly suggests IPF (after cause exclusion), while NSIP, organising pneumonia, and hypersensitivity patterns point to specific treatable entities.",
+          "cites": [
+            "37505195",
+            "40358445"
+          ]
+        },
+        {
+          "claim": "The progressive-pulmonary-fibrosis concept unites fibrosing ILDs by trajectory rather than label: worsening symptoms, physiology, or imaging within a year on appropriate therapy triggers antifibrotic treatment (see topic 909).",
+          "cites": [
+            "37156412"
+          ]
+        },
+        {
+          "claim": "Non-IPF ILDs with inflammatory phenotypes — CTD-ILD and chronic hypersensitivity pneumonitis — have immunomodulatory options (mycophenolate, azathioprine, cyclophosphamide, rituximab) that IPF lacks.",
+          "cites": [
+            "35938712"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Surveillance intervals and treatment thresholds for ILAs are not standardised.",
+        "Whether IPAF should be treated as inflammatory or fibrotic disease (or both sequentially) is unresolved."
+      ],
+      "mcq_angles": [
+        "ILD aetiology work-up sequence.",
+        "HRCT pattern recognition and diagnostic weight.",
+        "Antifibrotic versus immunosuppressive selection by ILD type.",
+        "ILA recognition and IPAF classification."
+      ],
+      "case_hooks": [
+        "An incidental CT shows subpleural reticulation in a 70-year-old; distinguish ILA from clinical ILD and plan surveillance.",
+        "A patient has UIP-pattern ILD with positive ANA but no CTD criteria; discuss the IPAF framework and treatment options."
+      ],
+      "gaps": "The retained evidence is heterogeneous (position paper, research classification, imaging and treatment reviews); verify ILD-specific guideline management against ATS/ERS documents before approval.",
+      "sources": [
+        {
+          "pmid": "32649920",
+          "design": "position-paper",
+          "year": "2020",
+          "journal": null,
+          "title": "Interstitial lung abnormalities detected incidentally on CT: a Position Paper from the Fleischner Society."
+        },
+        {
+          "pmid": "30695649",
+          "design": "review",
+          "year": "2016",
+          "journal": null,
+          "title": "Interstitial Pneumonia with Autoimmune Features."
+        },
+        {
+          "pmid": "37156412",
+          "design": "review",
+          "year": "2023",
+          "journal": null,
+          "title": "Idiopathic pulmonary fibrosis."
+        },
+        {
+          "pmid": "40358445",
+          "design": "review",
+          "year": "2025",
+          "journal": null,
+          "title": "Advances in Concept and Imaging of Interstitial Lung Disease."
+        },
+        {
+          "pmid": "37505195",
+          "design": "review",
+          "year": "2023",
+          "journal": null,
+          "title": "Imaging Features of Idiopathic Interstitial Lung Diseases."
+        },
+        {
+          "pmid": "35938712",
+          "design": "review",
+          "year": "2020",
+          "journal": null,
+          "title": "Immunomodulatory treatment of interstitial lung disease."
+        }
+      ]
+    }
+  }
+]

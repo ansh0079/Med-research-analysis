@@ -1,0 +1,1331 @@
+[
+  {
+    "no": 991,
+    "topicId": "79902434-9303-44f2-a130-7156bb14c12b",
+    "topic": "Juvenile idiopathic arthritis JIA: ILAR categories, oligoarticular, polyarticular, systemic",
+    "cluster": "JIA classification",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 9,
+      "papersKept": [
+        {
+          "uid": "pubmed-35233986",
+          "title": "2021 American College of Rheumatology Guideline for the Treatment of Juvenile Idiopathic Arthritis.",
+          "year": "2021"
+        },
+        {
+          "uid": "pubmed-35087087",
+          "title": "Juvenile idiopathic arthritis.",
+          "year": "2022"
+        },
+        {
+          "uid": "pubmed-34425842",
+          "title": "Juvenile idiopathic arthritis: from aetiopathogenesis to therapeutic approaches.",
+          "year": "2021"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-35449805",
+          "title": "B Cells on the Stage of Inflammation in Juvenile Idiopathic Arthritis.",
+          "reason": "Basic-science review of B-cell biology; not classification evidence - off-topic."
+        },
+        {
+          "uid": "pubmed-29290458",
+          "title": "Anterior uveitis.",
+          "reason": "Uveitis management, not JIA classification - off-topic."
+        },
+        {
+          "uid": "pubmed-29079590",
+          "title": "2017 EULAR/ACR classification criteria for adult Still's disease.",
+          "reason": "Adult-onset Still's classification criteria; the paediatric JIA classification is the topic scope - off-target."
+        },
+        {
+          "uid": "pubmed-26461152",
+          "title": "Macrophage Activation Syndrome.",
+          "reason": "Duplicate cluster: MAS content assigned to the systemic-JIA/subtypes topic 992 for scope differentiation."
+        },
+        {
+          "uid": "pubmed-27402112",
+          "title": "Juvenile Spondyloarthropathies.",
+          "reason": "JSpA subset overview; not the general ILAR classification - off-scope."
+        },
+        {
+          "uid": "pubmed-34181974",
+          "title": "Pediatric uveitis: A comprehensive review.",
+          "reason": "Uveitis, not JIA classification - off-topic."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Juvenile idiopathic arthritis is the umbrella term for arthritis of unknown origin lasting more than six weeks with onset before age 16 - the most common chronic inflammatory rheumatic disease of childhood. Classification drives everything: the ILAR framework defines seven mutually exclusive categories (oligoarticular, polyarticular RF-positive and RF-negative, systemic, enthesitis-related, psoriatic, undifferentiated), and each category carries its own treatment pathway, uveitis risk, and prognosis. The 2021 ACR guideline translates the classification into pharmacologic management for oligoarthritis, temporomandibular joint arthritis, and systemic JIA with and without macrophage activation syndrome.",
+      "teaching_points": [
+        {
+          "claim": "JIA is defined as arthritis of unknown origin lasting >6 weeks with onset before age 16; the ILAR classification recognises seven mutually exclusive categories including oligoarticular, polyarticular (RF-positive and RF-negative), and systemic forms.",
+          "cites": [
+            "35087087"
+          ]
+        },
+        {
+          "claim": "Subtype classification - by number of joints affected, extra-articular manifestations, systemic symptoms, serology, and genetics - determines treatment pathway and prognosis.",
+          "cites": [
+            "34425842"
+          ]
+        },
+        {
+          "claim": "The 2021 ACR guideline provides pharmacologic-treatment recommendations for JIA organised by category: oligoarthritis, temporomandibular joint arthritis, and systemic JIA with and without macrophage activation syndrome.",
+          "cites": [
+            "35233986"
+          ]
+        },
+        {
+          "claim": "The guideline also addresses tapering and discontinuing treatment in inactive disease - an active-management question in every JIA category.",
+          "cites": [
+            "35233986"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "The ILAR categories imperfectly map to molecular phenotypes; reclassification efforts continue.",
+        "When and how aggressively to taper therapy in sustained inactive disease remains debated by category."
+      ],
+      "mcq_angles": [
+        "ILAR category definitions and the seven-category framework.",
+        "Category-specific treatment pathways per the 2021 ACR guideline.",
+        "Uveitis surveillance differences across categories.",
+        "Tapering and withdrawal criteria in inactive disease."
+      ],
+      "case_hooks": [
+        "A 4-year-old girl with a single swollen knee and positive ANA; classify and set surveillance for category-specific uveitis risk.",
+        "A 10-year-old with five active joints; distinguish polyarticular from extended oligoarticular and apply the guideline pathway."
+      ],
+      "gaps": "Evidence is classification reviews and the 2021 ACR guideline; no updated international JIA classification revision is retrievable under the pipeline filter.",
+      "sources": [
+        {
+          "pmid": "35233986",
+          "design": "guideline",
+          "year": "2021",
+          "journal": null,
+          "title": "2021 American College of Rheumatology Guideline for the Treatment of Juvenile Idiopathic Arthritis."
+        },
+        {
+          "pmid": "35087087",
+          "design": "review",
+          "year": "2022",
+          "journal": null,
+          "title": "Juvenile idiopathic arthritis."
+        },
+        {
+          "pmid": "34425842",
+          "design": "review",
+          "year": "2021",
+          "journal": null,
+          "title": "Juvenile idiopathic arthritis: from aetiopathogenesis to therapeutic approaches."
+        }
+      ]
+    }
+  },
+  {
+    "no": 992,
+    "topicId": "2a5285ea-201a-4194-9d49-00c9a4169159",
+    "topic": "Juvenile Idiopathic Arthritis subtypes",
+    "cluster": "systemic JIA and MAS",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 15,
+      "papersKept": [
+        {
+          "uid": "pubmed-39317417",
+          "title": "EULAR/PReS recommendations for the diagnosis and management of Still's disease, comprising systemic juvenile idiopathic arthritis and adult-onset Still's disease.",
+          "year": "2024"
+        },
+        {
+          "uid": "pubmed-37923864",
+          "title": "Treatment of systemic juvenile idiopathic arthritis.",
+          "year": "2021"
+        },
+        {
+          "uid": "pubmed-26461152",
+          "title": "Macrophage Activation Syndrome.",
+          "year": "2016"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-34425842",
+          "title": "Juvenile idiopathic arthritis: from aetiopathogenesis to therapeutic approaches.",
+          "reason": "Duplicate cluster: general JIA review assigned to the ILAR-classification topic 991."
+        },
+        {
+          "uid": "pubmed-29624302",
+          "title": "[JUVENILE IDIOPATHIC ARTHRITIS].",
+          "reason": "Non-English (Spanish, bracketed title) - excluded per pipeline language rule."
+        },
+        {
+          "uid": "pubmed-35722498",
+          "title": "New Insights on Juvenile Psoriatic Arthritis.",
+          "reason": "Subtype review abstract not assessed this session; excluded per evidence-first rule."
+        },
+        {
+          "uid": "pubmed-27234966",
+          "title": "Ultrasound in juvenile idiopathic arthritis.",
+          "reason": "Imaging modality review; not subtype management - off-topic."
+        },
+        {
+          "uid": "pubmed-31515696",
+          "title": "Current status and recent advances on the use of ultrasonography in pediatric rheumatic diseases.",
+          "reason": "Ultrasonography review; off the subtype-management scope."
+        },
+        {
+          "uid": "pubmed-31786801",
+          "title": "Overview of Juvenile localized scleroderma and its management.",
+          "reason": "Localized scleroderma is not a JIA subtype - off-topic."
+        },
+        {
+          "uid": "pubmed-33076506",
+          "title": "The Multi-Omics Architecture of Juvenile Idiopathic Arthritis.",
+          "reason": "Omics research overview; not clinical subtype management - off-topic."
+        },
+        {
+          "uid": "pubmed-38297525",
+          "title": "Precision medicine in juvenile idiopathic arthritis-has the time arrived?",
+          "reason": "Concept piece; not current clinical subtype guidance - off-topic."
+        },
+        {
+          "uid": "pubmed-36608984",
+          "title": "Immune dysregulation.",
+          "reason": "Broad immunology overview; off the JIA subtype scope."
+        },
+        {
+          "uid": "pubmed-38736876",
+          "title": "Heterogeneity of macrophage activation syndrome and treatment progression.",
+          "reason": "Overlaps the MAS review retained (26461152); redundant."
+        },
+        {
+          "uid": "pubmed-30774631",
+          "title": "The Immunology of Macrophage Activation Syndrome.",
+          "reason": "Overlaps the MAS review retained (26461152); redundant."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Among JIA subtypes, systemic JIA stands apart: severe systemic inflammation with arthritis that may be absent at presentation, sitting on a continuum with adult-onset Still's disease. The first joint EULAR/PReS recommendations for Still's disease give diagnosis and management a unified frame. The subtype's defining danger is macrophage activation syndrome - a potentially life-threatening hyperinflammatory complication that has acquired new classification criteria and pathophysiological understanding in recent years. Treating the systemic phenotype increasingly means treating the innate-inflammatory drive early, before MAS supervenes.",
+      "teaching_points": [
+        {
+          "claim": "Systemic JIA and adult-onset Still's disease are considered the same disease; EULAR and PReS convened a joint task force, producing the first shared recommendations for diagnosis and management.",
+          "cites": [
+            "39317417"
+          ]
+        },
+        {
+          "claim": "sJIA is hallmarked by severe systemic inflammation that may accompany or precede arthritis; contemporary understanding places it on a continuum with AOSD.",
+          "cites": [
+            "37923864"
+          ]
+        },
+        {
+          "claim": "Macrophage activation syndrome is a potentially life-threatening complication occurring most commonly in systemic JIA; recent advances include new classification criteria and deeper pathophysiological understanding.",
+          "cites": [
+            "26461152"
+          ]
+        },
+        {
+          "claim": "Patients with sJIA are particularly prone to MAS, making early recognition of the systemic phenotype - fever pattern, ferritin, systemic inflammation markers - a core clinical skill.",
+          "cites": [
+            "37923864",
+            "26461152"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Optimal early biologic timing in sJIA to prevent MAS versus cost and infection trade-offs.",
+        "How the joint EULAR/PReS Still's recommendations should be adapted where paediatric and adult services differ."
+      ],
+      "mcq_angles": [
+        "Distinguishing sJIA from other febrile illnesses at presentation.",
+        "MAS clinical and laboratory recognition (ferritin, fibrinogen pattern, cytopenias).",
+        "The sJIA-AOSD continuum and the joint EULAR/PReS recommendations.",
+        "Early aggressive therapy rationale in the systemic phenotype."
+      ],
+      "case_hooks": [
+        "A 6-year-old with daily spiking fevers, evanescent rash, and ferritin rising; evaluate for sJIA and impending MAS.",
+        "An sJIA patient on IL-1 blockade develops cytopenias and falling fibrinogen; recognise MAS and escalate."
+      ],
+      "gaps": "Subtype coverage is concentrated on the systemic phenotype; evidence for enthesitis-related and psoriatic subtype management was not retrievable under the pipeline filter.",
+      "sources": [
+        {
+          "pmid": "39317417",
+          "design": "guideline",
+          "year": "2024",
+          "journal": null,
+          "title": "EULAR/PReS recommendations for the diagnosis and management of Still's disease, comprising systemic juvenile idiopathic arthritis and adult-onset Still's disease."
+        },
+        {
+          "pmid": "37923864",
+          "design": "review",
+          "year": "2021",
+          "journal": null,
+          "title": "Treatment of systemic juvenile idiopathic arthritis."
+        },
+        {
+          "pmid": "26461152",
+          "design": "review",
+          "year": "2016",
+          "journal": null,
+          "title": "Macrophage Activation Syndrome."
+        }
+      ]
+    }
+  },
+  {
+    "no": 993,
+    "topicId": "adf77492-a000-45a8-9e34-17581369c336",
+    "topic": "Kawasaki Disease",
+    "cluster": "Kawasaki disease overview",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 8,
+      "papersKept": [
+        {
+          "uid": "pubmed-39534969",
+          "title": "Update on Diagnosis and Management of Kawasaki Disease: A Scientific Statement From the American Heart Association.",
+          "year": "2024"
+        },
+        {
+          "uid": "pubmed-28356445",
+          "title": "Diagnosis, Treatment, and Long-Term Management of Kawasaki Disease: A Scientific Statement for Health Professionals From the AHA.",
+          "year": "2017"
+        },
+        {
+          "uid": "pubmed-39299749",
+          "title": "Kawasaki disease: contemporary perspectives.",
+          "year": "2024"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-28941329",
+          "title": "Tokyo Guidelines 2018: initial management of acute biliary infection.",
+          "reason": "Acute cholangitis guideline - off-topic."
+        },
+        {
+          "uid": "pubmed-29032636",
+          "title": "Tokyo Guidelines 2018: diagnostic criteria and severity grading of acute cholecystitis.",
+          "reason": "Acute cholecystitis guideline - off-topic."
+        },
+        {
+          "uid": "pubmed-26373316",
+          "title": "Infective Endocarditis in Adults: Diagnosis, Antimicrobial Therapy, and Management of Complications.",
+          "reason": "Adult infective endocarditis - off-topic."
+        },
+        {
+          "uid": "pubmed-34531393",
+          "title": "Behcet syndrome.",
+          "reason": "Behcet syndrome - off-topic."
+        },
+        {
+          "uid": "pubmed-39491365",
+          "title": "Macrophage Activation Syndrome.",
+          "reason": "Duplicate cluster: MAS content assigned to the systemic-JIA topic 992 for scope differentiation."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Kawasaki disease - acute self-limited febrile vasculitis of childhood, primarily affecting children under five - is the leading cause of acquired heart disease in developed countries. Untreated, roughly a quarter of children develop coronary artery aneurysms; treatment within the window reduces that risk several-fold. Two AHA scientific statements frame modern care: the 2017 statement on diagnosis, treatment, and long-term management, and the 2024 update summarising recent advances. The clinical challenge is recognition - fever with mucocutaneous features in an irritable child - because treatment urgency is measured in days.",
+      "teaching_points": [
+        {
+          "claim": "Kawasaki disease is an acute self-limited febrile illness primarily affecting children under 5 and is the leading cause of acquired heart disease in developed countries; coronary artery dilation/aneurysms develop in about 25% of untreated patients.",
+          "cites": [
+            "39534969",
+            "28356445"
+          ]
+        },
+        {
+          "claim": "The 2024 AHA scientific statement updates diagnosis and management, summarising recent evidence advances since the 2017 statement.",
+          "cites": [
+            "39534969"
+          ]
+        },
+        {
+          "claim": "The 2017 AHA statement provides the framework for diagnosis, treatment, and long-term management, including serial echocardiographic surveillance of coronary arteries.",
+          "cites": [
+            "28356445"
+          ]
+        },
+        {
+          "claim": "Classic presentation combines fever, rash, conjunctivitis, mucositis, lymphadenopathy, and extremity changes; coronary aneurysms occur in approximately 20% without treatment, with giant aneurysms the most feared outcome.",
+          "cites": [
+            "39299749"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Optimal management of refractory or IVIG-resistant disease and risk-stratified intensification.",
+        "Long-term cardiovascular surveillance intervals for patients with regressed aneurysms."
+      ],
+      "mcq_angles": [
+        "Diagnostic criteria and incomplete/atypical Kawasaki presentations.",
+        "Coronary artery aneurysm risk and surveillance echocardiography schedules.",
+        "Treatment window urgency and what changes it.",
+        "Long-term management per the AHA statements."
+      ],
+      "case_hooks": [
+        "A 3-year-old with 6 days of fever, bilateral conjunctival injection, and strawberry tongue; assemble the diagnosis and treatment timeline.",
+        "A child treated on day 4 has persisting fever at 36 hours post-IVIG; define IVIG resistance and next steps."
+      ],
+      "gaps": "Evidence is AHA scientific statements and a contemporary review; primary IVIG trials predate the pipeline filter and are cited through the statements.",
+      "sources": [
+        {
+          "pmid": "39534969",
+          "design": "guideline",
+          "year": "2024",
+          "journal": null,
+          "title": "Update on Diagnosis and Management of Kawasaki Disease: A Scientific Statement From the American Heart Association."
+        },
+        {
+          "pmid": "28356445",
+          "design": "guideline",
+          "year": "2017",
+          "journal": null,
+          "title": "Diagnosis, Treatment, and Long-Term Management of Kawasaki Disease: A Scientific Statement for Health Professionals From the AHA."
+        },
+        {
+          "pmid": "39299749",
+          "design": "review",
+          "year": "2024",
+          "journal": null,
+          "title": "Kawasaki disease: contemporary perspectives."
+        }
+      ]
+    }
+  },
+  {
+    "no": 994,
+    "topicId": "30165321-5416-4208-a8ac-358fff8778d4",
+    "topic": "Kawasaki disease: diagnostic criteria, IVIG, aspirin, coronary artery aneurysm",
+    "cluster": "Kawasaki acute treatment specifics",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 8,
+      "papersKept": [
+        {
+          "uid": "pubmed-27056781",
+          "title": "Kawasaki Disease.",
+          "year": "2016"
+        },
+        {
+          "uid": "pubmed-28580631",
+          "title": "Kawasaki disease: Medical therapies.",
+          "year": "2017"
+        },
+        {
+          "uid": "pubmed-39051299",
+          "title": "The Effectiveness of No or Low-Dose versus High-Dose Aspirin in Treating Acute Kawasaki Disease: A Systematic Review and Meta-Analysis.",
+          "year": "2024"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-27590181",
+          "title": "Kawasaki disease: etiopathogenesis and novel treatment strategies.",
+          "reason": "Pathogenesis focus; the topic scope is criteria and acute treatment specifics - off-scope."
+        },
+        {
+          "uid": "pubmed-41160750",
+          "title": "Kawasaki Disease Vasculitis: From Diagnosis to New Concepts in Pathophysiology and Therapeutic Approaches.",
+          "reason": "Overlaps the reviews kept; partially redundant."
+        },
+        {
+          "uid": "pubmed-32520905",
+          "title": "Kawasaki disease: Shedding light on a mysterious diagnosis.",
+          "reason": "General narrative; redundant with the reviews kept."
+        },
+        {
+          "uid": "pubmed-25882057",
+          "title": "Kawasaki disease: an evolving paradigm.",
+          "reason": "Older narrative review; superseded by the AHA statements and reviews kept."
+        },
+        {
+          "uid": "pubmed-31599798",
+          "title": "One year in review: Kawasaki disease.",
+          "reason": "Annual-review format; redundant with current dedicated reviews."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "The acute treatment trio of Kawasaki disease - intravenous immunoglobulin, aspirin, and vigilant coronary surveillance - rests on precise criteria and timing. Without IVIG, one child in five develops a coronary artery aneurysm; treatment within ten days of fever onset reduces that risk roughly five-fold. The standard regimen is IVIG 2 g/kg over 10-12 hours with antiplatelet-dose aspirin, but the aspirin component has been quietly debated: a 2024 systematic review and meta-analysis directly compares no/low-dose with high-dose aspirin across coronary outcomes, IVIG resistance, and hospital course.",
+      "teaching_points": [
+        {
+          "claim": "If not treated early with high-dose IVIG, 1 in 5 children with Kawasaki disease develop coronary artery aneurysms; IVIG administered within the treatment window reduces this risk about 5-fold.",
+          "cites": [
+            "27056781"
+          ]
+        },
+        {
+          "claim": "All patients with acute Kawasaki disease should receive IVIG 2 g/kg, generally administered over 10-12 hours; medical therapy aims to reduce aneurysm prevalence, suppress systemic inflammation, and prevent coronary thrombosis.",
+          "cites": [
+            "28580631"
+          ]
+        },
+        {
+          "claim": "A 2024 systematic review and meta-analysis assesses no/low-dose versus high-dose aspirin for coronary artery aneurysm incidence, IVIG resistance, hospital stay, and fever duration in acute Kawasaki disease - informing whether high-dose aspirin remains necessary adjunct therapy.",
+          "cites": [
+            "39051299"
+          ]
+        },
+        {
+          "claim": "Diagnostic criteria remain clinical - fever plus mucocutaneous features - with echocardiography defining coronary artery aneurysm status and serial imaging tracking evolution.",
+          "cites": [
+            "27056781",
+            "28580631"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Whether high-dose aspirin adds benefit over low/no-dose aspirin atop modern IVIG therapy is being actively re-examined.",
+        "Optimal intensification for patients at highest aneurysm risk (young age, delayed presentation)."
+      ],
+      "mcq_angles": [
+        "IVIG dose, administration, and the ten-day treatment window.",
+        "Aspirin dosing debate and what the 2024 meta-analysis examined.",
+        "Defining and grading coronary artery aneurysms.",
+        "IVIG resistance and retreatment criteria."
+      ],
+      "case_hooks": [
+        "A child presents on day 9 of fever meeting full criteria; confirm eligibility urgency and write the IVIG/aspirin orders.",
+        "A newly diagnosed child has a parent asking why aspirin is needed when the IVIG 'does the work'; summarise the adjunct-therapy evidence."
+      ],
+      "gaps": "The aspirin meta-analysis abstract was truncated in retrieval; verify pooled effect estimates against the full text before approval.",
+      "sources": [
+        {
+          "pmid": "27056781",
+          "design": "review",
+          "year": "2016",
+          "journal": null,
+          "title": "Kawasaki Disease."
+        },
+        {
+          "pmid": "28580631",
+          "design": "review",
+          "year": "2017",
+          "journal": null,
+          "title": "Kawasaki disease: Medical therapies."
+        },
+        {
+          "pmid": "39051299",
+          "design": "systematic-review",
+          "year": "2024",
+          "journal": null,
+          "title": "The Effectiveness of No or Low-Dose versus High-Dose Aspirin in Treating Acute Kawasaki Disease: A Systematic Review and Meta-Analysis."
+        }
+      ]
+    }
+  },
+  {
+    "no": 995,
+    "topicId": "16939eb8-f76d-49b3-b0fb-42f914483691",
+    "topic": "Key lipid-lowering trials: 4S, HPS, FOURIER, ODYSSEY interpretation",
+    "cluster": "lipid-lowering trial evidence",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 16,
+      "papersKept": [
+        {
+          "uid": "pubmed-27673306",
+          "title": "Association Between Lowering LDL-C and Cardiovascular Risk Reduction Among Different Therapeutic Interventions.",
+          "year": "2017"
+        },
+        {
+          "uid": "pubmed-36739653",
+          "title": "PCSK9 inhibitors and reduction in cardiovascular events: Current evidence and future perspectives.",
+          "year": "2023"
+        },
+        {
+          "uid": "pubmed-30527147",
+          "title": "Cardiovascular Efficacy and Safety of PCSK9 Inhibitors: Systematic Review and Meta-analysis Including the ODYSSEY OUTCOMES and FOURIER trials.",
+          "year": "2019"
+        },
+        {
+          "uid": "pubmed-31593483",
+          "title": "PCSK9 inhibitors and cardiovascular outcomes.",
+          "year": "2020"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-35169843",
+          "title": "Prevalence of statin intolerance: a meta-analysis.",
+          "reason": "Statin-intolerance epidemiology; not trial interpretation - off-topic."
+        },
+        {
+          "uid": "pubmed-33186535",
+          "title": "Efficacy and safety of lowering LDL cholesterol in older patients: a systematic review and meta-analysis.",
+          "reason": "Older-population subset analysis; not the landmark-trial scope."
+        },
+        {
+          "uid": "pubmed-25579834",
+          "title": "Efficacy and safety of LDL-lowering therapy among men and women: meta-analysis of individual data from 17 trials.",
+          "reason": "Sex-stratified analysis; off the landmark-trial scope."
+        },
+        {
+          "uid": "pubmed-38554713",
+          "title": "Effects of statin therapy on diagnoses of new-onset diabetes and worsening glycaemia in large-scale randomised trials.",
+          "reason": "Diabetes safety signal; not trial-outcome interpretation - off-topic."
+        },
+        {
+          "uid": "pubmed-40126455",
+          "title": "Impact of Lipid-Lowering Combination Therapy With Statins and Ezetimibe vs Statin Monotherapy.",
+          "reason": "Ezetimibe combination therapy; not the statin/PCSK9 landmark trials - off-scope."
+        },
+        {
+          "uid": "pubmed-30971107",
+          "title": "Biomarkers of Dietary Omega-6 Fatty Acids and Incident Cardiovascular Disease and Mortality.",
+          "reason": "Dietary biomarker cohort analysis - off-topic."
+        },
+        {
+          "uid": "pubmed-38323514",
+          "title": "Lipid-Lowering Therapy and Risk of Hemorrhagic Stroke: A Systematic Review and Meta-Analysis.",
+          "reason": "Haemorrhagic-stroke safety subset; off the landmark-trial scope."
+        },
+        {
+          "uid": "pubmed-30420622",
+          "title": "PCSK9 inhibitors: clinical evidence and implementation.",
+          "reason": "Overlaps the PCSK9 reviews kept; redundant."
+        },
+        {
+          "uid": "pubmed-30012326",
+          "title": "The Evolving Future of PCSK9 Inhibitors.",
+          "reason": "Perspective piece; redundant with evidence reviews kept."
+        },
+        {
+          "uid": "pubmed-35445838",
+          "title": "[Update on PCSK9 inhibition].",
+          "reason": "Non-English (German, bracketed title) - excluded per pipeline language rule."
+        },
+        {
+          "uid": "pubmed-32275743",
+          "title": "Indirect comparison of the efficacy and safety of alirocumab and evolocumab: a systematic review and network meta-analysis.",
+          "reason": "Agent-versus-agent comparison; the topic scope is trial-level interpretation versus standard care."
+        },
+        {
+          "uid": "pubmed-31442512",
+          "title": "An update on pharmacotherapies in diabetic dyslipidemia.",
+          "reason": "Diabetic dyslipidaemia pharmacotherapy - off-topic."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Four trials anchor lipid-lowering medicine: 4S and HPS proved statins save lives in secondary prevention, and FOURIER and ODYSSEY OUTCOMES proved that pushing LDL-C far lower with PCSK9 inhibitors still reduces events - without a safety floor being reached. The interpretive framework uniting them is the LDL hypothesis itself: meta-analysis shows cardiovascular risk reduction is proportional to absolute LDL-C lowering, broadly consistent across statin and nonstatin therapies. The key trials 4S (1994) and HPS (2002) predate this pipeline's retrieval window and are cited through meta-analytic summaries; FOURIER and ODYSSEY OUTCOMES are directly synthesised.",
+      "teaching_points": [
+        {
+          "claim": "Meta-analysis of randomised trials shows the association between lowering LDL-C and relative cardiovascular risk reduction holds across different statin and nonstatin therapies - the unifying principle behind 4S/HPS and the PCSK9-era trials.",
+          "cites": [
+            "27673306"
+          ]
+        },
+        {
+          "claim": "PCSK9 inhibitors (evolocumab in FOURIER, alirocumab in ODYSSEY OUTCOMES) reduce cardiovascular events as LDL-C falls to unprecedentedly low levels; current evidence reviews characterise the magnitude and safety of this benefit.",
+          "cites": [
+            "36739653",
+            "31593483"
+          ]
+        },
+        {
+          "claim": "A systematic review and meta-analysis including the ODYSSEY OUTCOMES and FOURIER trials provides precise estimates of PCSK9 inhibitors' effects on major adverse cardiovascular events, mortality, and safety.",
+          "cites": [
+            "30527147"
+          ]
+        },
+        {
+          "claim": "Interpretation principle: absolute benefit scales with baseline absolute risk and achieved LDL-C reduction - trial-level relative reductions translate differently in primary versus secondary prevention.",
+          "cites": [
+            "27673306",
+            "31593483"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Whether very-low LDL-C levels over decades carry unrecognised harms remains under long-term follow-up.",
+        "Cost-effectiveness and implementation barriers limit real-world translation of the PCSK9 trial results."
+      ],
+      "mcq_angles": [
+        "What each landmark trial proved and its population (4S/HPS secondary prevention; FOURIER/ODYSSEY on statin background).",
+        "The proportional-reduction principle linking absolute LDL-C fall to event reduction.",
+        "No observed LDL floor: interpreting safety at very low LDL-C.",
+        "Applying trial relative reductions to an individual patient's absolute risk."
+      ],
+      "case_hooks": [
+        "A secondary-prevention patient on maximal statin has LDL-C 2.4 mmol/L; use the trial evidence to justify adding a PCSK9 inhibitor.",
+        "A primary-prevention patient cites a relative-risk figure from a trial; convert it to absolute benefit for shared decision-making."
+      ],
+      "gaps": "4S (1994) and HPS (2002) primary reports predate the pipeline's 2015+ filter and are cited through meta-analytic summaries; verify landmark-trial specifics against the primary publications before approval.",
+      "sources": [
+        {
+          "pmid": "27673306",
+          "design": "meta-analysis",
+          "year": "2017",
+          "journal": null,
+          "title": "Association Between Lowering LDL-C and Cardiovascular Risk Reduction Among Different Therapeutic Interventions."
+        },
+        {
+          "pmid": "36739653",
+          "design": "review",
+          "year": "2023",
+          "journal": null,
+          "title": "PCSK9 inhibitors and reduction in cardiovascular events: Current evidence and future perspectives."
+        },
+        {
+          "pmid": "30527147",
+          "design": "systematic-review",
+          "year": "2019",
+          "journal": null,
+          "title": "Cardiovascular Efficacy and Safety of PCSK9 Inhibitors: Systematic Review and Meta-analysis Including the ODYSSEY OUTCOMES and FOURIER trials."
+        },
+        {
+          "pmid": "31593483",
+          "design": "review",
+          "year": "2020",
+          "journal": null,
+          "title": "PCSK9 inhibitors and cardiovascular outcomes."
+        }
+      ]
+    }
+  },
+  {
+    "no": 996,
+    "topicId": "cf3ae476-63b2-401f-af6e-8c5e1778b619",
+    "topic": "kidney transplant antibody mediated rejection",
+    "cluster": "antibody-mediated rejection",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 8,
+      "papersKept": [
+        {
+          "uid": "pubmed-40440205",
+          "title": "Antibody-mediated rejection-treatment standard.",
+          "year": "2025"
+        },
+        {
+          "uid": "pubmed-31895348",
+          "title": "Recommended Treatment for Antibody-mediated Rejection After Kidney Transplantation: The 2019 Expert Consensus from the Transplantion Society Working Group.",
+          "year": "2019"
+        },
+        {
+          "uid": "pubmed-28446536",
+          "title": "Donor-Specific Antibodies in Kidney Transplant Recipients.",
+          "year": "2017"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-39467249",
+          "title": "Pathophysiology of rejection in kidney transplantation.",
+          "reason": "General rejection pathophysiology; the topic scope is AMR management - off-scope."
+        },
+        {
+          "uid": "pubmed-39192468",
+          "title": "Chronic Rejection After Kidney Transplantation.",
+          "reason": "Chronic rejection overview; not antibody-mediated rejection specifically - off-scope."
+        },
+        {
+          "uid": "pubmed-39888686",
+          "title": "Post-transplant Thrombotic Microangiopathy.",
+          "reason": "TMA is a distinct post-transplant entity - off-topic."
+        },
+        {
+          "uid": "pubmed-37568328",
+          "title": "Current Therapies in Kidney Transplant Rejection.",
+          "reason": "Covers T-cell-mediated rejection as well; broader than the AMR scope - off-scope."
+        },
+        {
+          "uid": "pubmed-40444214",
+          "title": "Targeting CD38 in Antibody-Mediated Rejection.",
+          "reason": "Single emerging-target review; superseded by the treatment-standard and consensus sources kept."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Antibody-mediated rejection is the leading immunological cause of kidney graft loss, recognised for over 25 years yet still treated without a single regulator-approved therapy. Donor-specific antibodies are the established biomarker, and modern solid-phase assays plus refined histological classification have made the diagnosis ever more common - and its therapeutic vacuum ever more visible. Practice rests on the 2019 Transplantation Society expert consensus and uncontrolled series showing promise: plasma exchange, IVIG, anti-CD20, complement targeting, and newer approaches such as CD38-directed therapy each answer a different layer of the alloimmune cascade.",
+      "teaching_points": [
+        {
+          "claim": "AMR remains a major cause of kidney graft failure with significant health and economic burden; despite >25 years of recognition, treatment remains unstandardised and no therapy has gained robust regulatory approval.",
+          "cites": [
+            "40440205"
+          ]
+        },
+        {
+          "claim": "The 2019 Transplantation Society Working Group expert consensus provides the recommended treatment framework for AMR after kidney transplantation, based on mechanistic reasoning and available series rather than randomised trials.",
+          "cites": [
+            "31895348"
+          ]
+        },
+        {
+          "claim": "Donor-specific antibodies are an established biomarker predicting AMR; AMR phenotypes along the post-transplant course are determined by timing and exposure characteristics.",
+          "cites": [
+            "28446536"
+          ]
+        },
+        {
+          "claim": "Therapeutic approaches target layers of the alloimmune cascade - antibody removal (plasma exchange), antibody production (anti-CD20), complement-mediated injury, and plasma-cell targeting (anti-CD38) - selected by phenotype and trajectory.",
+          "cites": [
+            "40440205",
+            "31895348"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "No randomised controlled trial evidence supports any single AMR regimen; uncontrolled series dominate.",
+        "Optimal sequencing and timing of emerging agents (complement inhibitors, CD38 targeting) relative to conventional therapy."
+      ],
+      "mcq_angles": [
+        "DSA monitoring and AMR histological phenotypes.",
+        "The evidence vacuum: why consensus rather than guideline drives treatment.",
+        "Mechanism-matched therapy selection across the alloimmune cascade.",
+        "Differentiating active AMR from accommodation and DSA-without-injury states."
+      ],
+      "case_hooks": [
+        "A transplant recipient at month 18 has rising DSA and creatinine with biopsy-proven active AMR; construct a consensus-based treatment plan.",
+        "A stable patient has persistent low-level DSA without graft dysfunction; decide between surveillance and treatment."
+      ],
+      "gaps": "Treatment standard and consensus are narrative/consensus sources - no randomised AMR treatment evidence exists; verify current local protocol alignment before approval.",
+      "sources": [
+        {
+          "pmid": "40440205",
+          "design": "review",
+          "year": "2025",
+          "journal": null,
+          "title": "Antibody-mediated rejection-treatment standard."
+        },
+        {
+          "pmid": "31895348",
+          "design": "expert-consensus",
+          "year": "2019",
+          "journal": null,
+          "title": "Recommended Treatment for Antibody-mediated Rejection After Kidney Transplantation: The 2019 Expert Consensus from the Transplantion Society Working Group."
+        },
+        {
+          "pmid": "28446536",
+          "design": "review",
+          "year": "2017",
+          "journal": null,
+          "title": "Donor-Specific Antibodies in Kidney Transplant Recipients."
+        }
+      ]
+    }
+  },
+  {
+    "no": 997,
+    "topicId": "f48af838-1718-43da-ad00-20786c1bef52",
+    "topic": "Lactose Intolerance",
+    "cluster": "lactose intolerance",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 8,
+      "papersKept": [
+        {
+          "uid": "pubmed-31427404",
+          "title": "Update on lactose malabsorption and intolerance: pathogenesis, diagnosis and clinical management.",
+          "year": "2020"
+        },
+        {
+          "uid": "pubmed-26393648",
+          "title": "Lactose Intolerance in Adults: Biological Mechanism and Dietary Management.",
+          "year": "2016"
+        },
+        {
+          "uid": "pubmed-28690131",
+          "title": "Country, regional, and global estimates for lactose malabsorption in adults: a systematic review and meta-analysis.",
+          "year": "2017"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-35068123",
+          "title": "Lactose intolerance: myths and facts. An update.",
+          "reason": "Overlaps the pathogenesis/management update kept; redundant."
+        },
+        {
+          "uid": "pubmed-30783042",
+          "title": "Lactose Intolerance: Common Misunderstandings.",
+          "reason": "Narrative on misconceptions; redundant with the reviews kept."
+        },
+        {
+          "uid": "pubmed-38068827",
+          "title": "Myths and Facts about Food Intolerance: A Narrative Review.",
+          "reason": "Broad food-intolerance review, not lactose-specific - off-scope."
+        },
+        {
+          "uid": "pubmed-40432984",
+          "title": "Lactose Intolerance and Malabsorption Revisited: Exploring the Impact and Solutions.",
+          "reason": "Abstract not assessed this session; excluded per evidence-first rule."
+        },
+        {
+          "uid": "pubmed-36137844",
+          "title": "AGA Clinical Practice Update on Management of Refractory Celiac Disease.",
+          "reason": "Refractory coeliac disease - off-topic."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Lactose intolerance - abdominal pain, distension, borborygmi, flatus, and diarrhoea after dairy - results from lactase deficiency, whether primary (genetically programmed down-regulation after weaning) or secondary (mucosal disease). Global patterns matter: lactose malabsorption prevalence varies enormously by geography, so symptom attribution and dietary advice must be population-aware. Modern management has moved beyond blanket dairy elimination: hydrogen breath testing and genetic testing refine the diagnosis, while dietary management aims at symptom control with maintained calcium and nutrient intake - including lactose-hydrolysed products, gradual re-exposure, and tolerance thresholds rather than zero-tolerance rules.",
+      "teaching_points": [
+        {
+          "claim": "Lactose intolerance arises from primary or secondary lactase deficiency and is characterised by abdominal pain, distension, borborygmi, flatus, and diarrhoea induced by lactose in dairy products.",
+          "cites": [
+            "26393648"
+          ]
+        },
+        {
+          "claim": "The biological mechanism of lactose malabsorption is established; several investigations are available including genetic testing and breath-based tests to distinguish intolerance from malabsorption.",
+          "cites": [
+            "26393648",
+            "31427404"
+          ]
+        },
+        {
+          "claim": "A systematic review and meta-analysis provides updated country, regional, and global prevalence estimates for lactose malabsorption in adults - prevalence varies widely across populations.",
+          "cites": [
+            "28690131"
+          ]
+        },
+        {
+          "claim": "Clinical management focuses on dietary modification with preserved nutrient intake: lactose-hydrolysed dairy, threshold-based reintroduction, and ensuring calcium and vitamin D adequacy rather than complete dairy elimination.",
+          "cites": [
+            "31427404",
+            "26393648"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Symptom perception versus actual malabsorption: visceral hypersensitivity clouds test-symptom correlation.",
+        "Optimal dietary thresholds and the role of lactase supplementation and fermented dairy in individual patients."
+      ],
+      "mcq_angles": [
+        "Primary versus secondary lactase deficiency and their causes.",
+        "Diagnostic testing: hydrogen breath test and genetic testing indications.",
+        "Global prevalence patterns and their clinical relevance.",
+        "Nutrition-safe dietary management versus unnecessary dairy elimination."
+      ],
+      "case_hooks": [
+        "An adult with bloating after milk asks whether to stop all dairy; design a threshold-based management plan with calcium protection.",
+        "A patient with recent gastroenteritis now reports milk intolerance; distinguish secondary lactase deficiency from primary intolerance."
+      ],
+      "gaps": "Evidence is reviews plus a prevalence meta-analysis; no recent guideline was retrievable under the pipeline filter.",
+      "sources": [
+        {
+          "pmid": "31427404",
+          "design": "review",
+          "year": "2020",
+          "journal": null,
+          "title": "Update on lactose malabsorption and intolerance: pathogenesis, diagnosis and clinical management."
+        },
+        {
+          "pmid": "26393648",
+          "design": "review",
+          "year": "2016",
+          "journal": null,
+          "title": "Lactose Intolerance in Adults: Biological Mechanism and Dietary Management."
+        },
+        {
+          "pmid": "28690131",
+          "design": "systematic-review",
+          "year": "2017",
+          "journal": null,
+          "title": "Country, regional, and global estimates for lactose malabsorption in adults: a systematic review and meta-analysis."
+        }
+      ]
+    }
+  },
+  {
+    "no": 998,
+    "topicId": "f64f1e55-da8b-4b3f-901e-298cb7a4347c",
+    "topic": "Lambert-Eaton Myasthenic Syndrome (LEMS): VGCC antibodies, small cell lung cancer connection",
+    "cluster": "LEMS",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 8,
+      "papersKept": [
+        {
+          "uid": "pubmed-29655456",
+          "title": "Lambert-Eaton Myasthenic Syndrome.",
+          "year": "2018"
+        },
+        {
+          "uid": "pubmed-40675738",
+          "title": "Lambert Eaton Myasthenic Syndrome.",
+          "year": "2025"
+        },
+        {
+          "uid": "pubmed-35065040",
+          "title": "Epidemiology, diagnostics, and biomarkers of autoimmune neuromuscular junction disorders.",
+          "year": "2022"
+        },
+        {
+          "uid": "pubmed-41361909",
+          "title": "Paraneoplastic Lambert-Eaton myasthenic syndrome associated with non-small cell lung cancer.",
+          "year": "2025"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-38741506",
+          "title": "[Lambert-Eaton Myasthenic Syndrome].",
+          "reason": "Non-English (bracketed title) - excluded per pipeline language rule."
+        },
+        {
+          "uid": "pubmed-35292226",
+          "title": "Paraneoplastic syndromes in ophthalmology.",
+          "reason": "Ophthalmology-focused paraneoplastic review - off-topic."
+        },
+        {
+          "uid": "pubmed-33029958",
+          "title": "Anti-SOX1 Antibodies in Paraneoplastic Neurological Syndrome.",
+          "reason": "Single-antibody biomarker study; covered within the neuromuscular-junction biomarker review kept."
+        },
+        {
+          "uid": "pubmed-38741503",
+          "title": "[Peripheral Neuropathy and Muscle Disorders as Immune-Related Adverse Events].",
+          "reason": "Immune-checkpoint-inhibitor toxicity context; not LEMS management - off-topic."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Lambert-Eaton myasthenic syndrome is a pre-synaptic neuromuscular junction disorder - proximal weakness with autonomic symptoms and reduced reflexes - caused by antibodies against P/Q-type voltage-gated calcium channels. The clinical fork that dominates management is aetiological: roughly half of cases are paraneoplastic, and small cell lung cancer is the classic association, so a new LEMS diagnosis triggers a malignancy hunt, often with repeat imaging over time. The phenotype is distinctive - leg-predominant proximal weakness spreading cranially, dry mouth, autonomic features - and the electrophysiological signature (low compound muscle action potential with post-exercise increment) confirms it at the bedside.",
+      "teaching_points": [
+        {
+          "claim": "LEMS is a paraneoplastic or primary autoimmune neuromuscular junction disorder characterised by proximal weakness, autonomic dysfunction, and areflexia; symptoms are caused by antibodies against P/Q-type voltage-gated calcium channels.",
+          "cites": [
+            "29655456"
+          ]
+        },
+        {
+          "claim": "The classic clinical phenotype is leg-predominant proximal weakness with distal and cranial spread as severity increases, reduced reflexes, and autonomic symptoms such as dry mouth; typical electrophysiology confirms the pre-synaptic defect.",
+          "cites": [
+            "40675738"
+          ]
+        },
+        {
+          "claim": "As an autoimmune neuromuscular junction disorder, LEMS sits within a broader epidemiological and diagnostic landscape where antibody and electrophysiological biomarkers define the diagnosis and its distinction from myasthenia gravis.",
+          "cites": [
+            "35065040"
+          ]
+        },
+        {
+          "claim": "Paraneoplastic LEMS is well-established in small-cell lung cancer; contemporary cohort data now characterise the phenotype in non-SCLC cancers relative to SCLC-associated and autoimmune LEMS - reinforcing that any LEMS diagnosis warrants malignancy screening.",
+          "cites": [
+            "41361909"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Screening intensity and duration: how long and how often to image when initial cancer work-up is negative.",
+        "Relative prevalence of paraneoplastic versus autoimmune LEMS and how phenotype should calibrate the cancer search."
+      ],
+      "mcq_angles": [
+        "P/Q-type VGCC antibody pathophysiology and the pre-synaptic defect.",
+        "Clinical pattern recognition: proximal leg weakness, hyporeflexia, autonomic signs.",
+        "The SCLC connection and malignancy-screening obligations.",
+        "Electrophysiological confirmation: post-exercise increment."
+      ],
+      "case_hooks": [
+        "A 60-year-old smoker has proximal leg weakness, dry mouth, and impotence; connect the phenotype to LEMS and plan the cancer work-up.",
+        "A patient with confirmed LEMS has negative initial imaging; counsel on surveillance imaging intervals."
+      ],
+      "gaps": "Evidence is reviews and one cohort comparison; no treatment-focused LEMS evidence (3,4-diaminopyridine, immunotherapy) was retrieved under the pipeline filter - verify treatment specifics before approval.",
+      "sources": [
+        {
+          "pmid": "29655456",
+          "design": "review",
+          "year": "2018",
+          "journal": null,
+          "title": "Lambert-Eaton Myasthenic Syndrome."
+        },
+        {
+          "pmid": "40675738",
+          "design": "review",
+          "year": "2025",
+          "journal": null,
+          "title": "Lambert Eaton Myasthenic Syndrome."
+        },
+        {
+          "pmid": "35065040",
+          "design": "review",
+          "year": "2022",
+          "journal": null,
+          "title": "Epidemiology, diagnostics, and biomarkers of autoimmune neuromuscular junction disorders."
+        },
+        {
+          "pmid": "41361909",
+          "design": "cohort",
+          "year": "2025",
+          "journal": null,
+          "title": "Paraneoplastic Lambert-Eaton myasthenic syndrome associated with non-small cell lung cancer."
+        }
+      ]
+    }
+  },
+  {
+    "no": 999,
+    "topicId": "bcf8b95f-21e0-46b7-81fc-ff5cc4964785",
+    "topic": "Large bowel obstruction, volvulus, and pseudo-obstruction management",
+    "cluster": "large bowel obstruction",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 6,
+      "papersKept": [
+        {
+          "uid": "pubmed-31791596",
+          "title": "ASGE guideline on the role of endoscopy in the management of acute colonic pseudo-obstruction and colonic volvulus.",
+          "year": "2020"
+        },
+        {
+          "uid": "pubmed-42246394",
+          "title": "Contemporary management of large bowel obstruction: What you need to know.",
+          "year": "2025"
+        },
+        {
+          "uid": "pubmed-34305473",
+          "title": "Acute Colonic Pseudo-obstruction and Volvulus: Pathophysiology, Evaluation, and Treatment.",
+          "year": "2021"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-34016826",
+          "title": "ASCRS Clinical Practice Guidelines for the Management of Colonic Volvulus.",
+          "reason": "No abstract retrievable this session; excluded per evidence-first rule despite likely relevance."
+        },
+        {
+          "uid": "pubmed-37973225",
+          "title": "Endoscopic Management of Colonic Obstruction.",
+          "reason": "Overlaps the ASGE endoscopy guideline kept; redundant."
+        },
+        {
+          "uid": "pubmed-33538914",
+          "title": "Gastrointestinal dysfunction in movement disorders.",
+          "reason": "Neurological GI dysfunction review - off-topic."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Large bowel obstruction accounts for about a quarter of all intestinal obstructions and splits into mechanical causes - benign or malignant - and functional obstruction such as acute colonic pseudo-obstruction (ACPO). Volvulus, most commonly sigmoid, is twisting along the mesenteric axis; ACPO is poorly understood mechanistically but shares the danger of caecal ischaemia and perforation when distension is unrelieved. The ASGE guideline frames endoscopy's role across volvulus and ACPO, and contemporary reviews integrate decompression, endoscopic detorsion, stenting, and surgery into a single decision pathway keyed to viability of the bowel and fitness of the patient.",
+      "teaching_points": [
+        {
+          "claim": "Colonic volvulus and acute colonic pseudo-obstruction are two causes of benign large-bowel obstruction; volvulus most commonly involves the sigmoid colon through twisting along its mesenteric axis, while ACPO's pathophysiology remains poorly understood.",
+          "cites": [
+            "31791596",
+            "34305473"
+          ]
+        },
+        {
+          "claim": "The ASGE guideline defines the role of endoscopy across ACPO and colonic volvulus - decompression for ACPO and endoscopic detorsion where viable, with surgery reserved for peritonitis, ischaemia, or failed endoscopy.",
+          "cites": [
+            "31791596"
+          ]
+        },
+        {
+          "claim": "LBO accounts for approximately one-quarter of all intestinal obstructions and may be mechanical (benign or malignant) or functional (ACPO); presentation varies by acuity, aetiology, and ileocaecal-valve competence.",
+          "cites": [
+            "42246394"
+          ]
+        },
+        {
+          "claim": "ACPO is associated with multiple comorbidities and may be managed conservatively initially, while volvulus carries ischaemic and perforation risk demanding rapid decompression.",
+          "cites": [
+            "34305473"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Optimal timing of surgical intervention for failed endoscopic decompression in volvulus.",
+        "Role of neostigmine relative to endoscopic decompression in ACPO, and recurrence prevention after detorsion."
+      ],
+      "mcq_angles": [
+        "Sigmoid versus caecal volvulus and their different management emphases.",
+        "ACPO recognition, neostigmine, and endoscopic decompression sequence.",
+        "Red flags for ischaemia/perforation mandating surgery.",
+        "Malignant obstruction: stenting as bridge versus definitive surgery."
+      ],
+      "case_hooks": [
+        "An elderly, institutionalised patient presents with abdominal distension and obstipation; distinguish sigmoid volvulus from ACPO and sequence management.",
+        "A patient post-joint-replacement develops progressive distension without peritonitis; outline conservative and pharmacological ACPO escalation."
+      ],
+      "gaps": "The ASCRS colonic-volvulus guideline was dropped because no abstract was retrievable this session; verify detorsion and recurrence-prevention recommendations against it before approval.",
+      "sources": [
+        {
+          "pmid": "31791596",
+          "design": "guideline",
+          "year": "2020",
+          "journal": null,
+          "title": "ASGE guideline on the role of endoscopy in the management of acute colonic pseudo-obstruction and colonic volvulus."
+        },
+        {
+          "pmid": "42246394",
+          "design": "review",
+          "year": "2025",
+          "journal": null,
+          "title": "Contemporary management of large bowel obstruction: What you need to know."
+        },
+        {
+          "pmid": "34305473",
+          "design": "review",
+          "year": "2021",
+          "journal": null,
+          "title": "Acute Colonic Pseudo-obstruction and Volvulus: Pathophysiology, Evaluation, and Treatment."
+        }
+      ]
+    }
+  },
+  {
+    "no": 1000,
+    "topicId": "e8359944-ff48-4d88-a61d-33e4b263ca0d",
+    "topic": "Large Granular Lymphocytic Leukaemia",
+    "cluster": "LGL leukemia",
+    "status": "draft_pending_clinician_review",
+    "dbEvidence": {
+      "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+      "papersReviewed": 8,
+      "papersKept": [
+        {
+          "uid": "pubmed-38848524",
+          "title": "A modern view of LGL leukemia.",
+          "year": "2024"
+        },
+        {
+          "uid": "pubmed-28115367",
+          "title": "LGL leukemia: from pathogenesis to treatment.",
+          "year": "2017"
+        },
+        {
+          "uid": "pubmed-39644019",
+          "title": "Large granular lymphocyte leukemia: a clonal disorder with autoimmune manifestations.",
+          "year": "2024"
+        }
+      ],
+      "papersDropped": [
+        {
+          "uid": "pubmed-37026382",
+          "title": "T-large granular lymphocytic leukemia.",
+          "reason": "Overlaps the modern-view and pathogenesis reviews kept; redundant."
+        },
+        {
+          "uid": "pubmed-40517537",
+          "title": "Autoimmune Complications of Lymphoproliferative Diseases.",
+          "reason": "Broad lymphoproliferative autoimmune complications - off the LGL-specific scope."
+        },
+        {
+          "uid": "pubmed-35178350",
+          "title": "Toward a Better Classification System for NK-LGL Disorders.",
+          "reason": "NK-LGL classification proposal; narrow and overlapping - redundant."
+        },
+        {
+          "uid": "pubmed-34404528",
+          "title": "Immunologic effects on the haematopoietic stem cell in marrow failure.",
+          "reason": "Marrow-failure stem-cell biology - off-topic."
+        },
+        {
+          "uid": "pubmed-25819216",
+          "title": "Management of neutropenia in patients with rheumatoid arthritis.",
+          "reason": "RA neutropenia management; not LGL leukemia - off-topic."
+        }
+      ],
+      "guidelinesKept": [],
+      "guidelinesDropped": []
+    },
+    "page": {
+      "mentor_intro": "Large granular lymphocytic leukaemia is a rare chronic lymphoproliferative disorder - clonal expansion of cytotoxic T or NK cells - that behaves less like a leukaemia and more like an autoimmune disease with a clonal engine. Patients are typically older (median age in the 60s), and the disease announces itself through cytopenias: neutropenic infections and anaemia dominate. Rheumatoid arthritis is a frequent companion, reflecting the constitutively activated survival pathways (STAT3 signalling central) that both drive the clone and sustain autoimmunity. Management is immunosuppression rather than chemotherapy - methotrexate, cyclophosphamide, or cyclosporine - aimed at the cytopenia that threatens the patient.",
+      "teaching_points": [
+        {
+          "claim": "LGL leukaemia is a rare chronic lymphoproliferative disorder characterised by expansion of T or NK cytotoxic cells; chronic T-LGL and NK-LGL are indolent diseases affecting older patients with a median age in the sixth decade.",
+          "cites": [
+            "38848524"
+          ]
+        },
+        {
+          "claim": "The WHO classification recognises three categories among mature T-cell and NK-cell neoplasms - chronic T-cell leukaemia, NK-cell lymphocytosis, and aggressive NK-LGL - the first two indolent and characterised by cytopenias and autoimmune features.",
+          "cites": [
+            "28115367"
+          ]
+        },
+        {
+          "claim": "Neutropenia-related infections and anaemia are the main clinical manifestations; the disease is frequently associated with autoimmune disorders, particularly rheumatoid arthritis.",
+          "cites": [
+            "39644019"
+          ]
+        },
+        {
+          "claim": "Pathogenesis centres on chronic antigenic stimulation driving clonal LGL expansion with apoptotic dysregulation through constitutively activated survival pathways - which explains both the clonal persistence and the autoimmune overlap.",
+          "cites": [
+            "28115367",
+            "38848524"
+          ]
+        }
+      ],
+      "uncertainties": [
+        "Optimal first-line immunosuppressant selection (methotrexate, cyclophosphamide, cyclosporine) and sequencing in relapsed disease.",
+        "When and whether to treat asymptomatic clonal lymphocytosis without cytopenia."
+      ],
+      "mcq_angles": [
+        "T-LGL versus NK-LGL and the WHO categories.",
+        "The autoimmune interface: RA association and STAT3-driven pathogenesis.",
+        "Treatment triggers: cytopenia-driven rather than count-driven decision-making.",
+        "Immunosuppression-based management rather than chemotherapy."
+      ],
+      "case_hooks": [
+        "An older adult with RA presents with recurrent infections and neutropenia; connect the cytopenia to a possible clonal LGL disorder.",
+        "An asymptomatic patient has incidental clonal LGL expansion without cytopenia; decide whether treatment is warranted."
+      ],
+      "gaps": "Evidence is narrative reviews; no randomised treatment trials exist and treatment specifics should be verified against current haematology guidance before approval.",
+      "sources": [
+        {
+          "pmid": "38848524",
+          "design": "review",
+          "year": "2024",
+          "journal": null,
+          "title": "A modern view of LGL leukemia."
+        },
+        {
+          "pmid": "28115367",
+          "design": "review",
+          "year": "2017",
+          "journal": null,
+          "title": "LGL leukemia: from pathogenesis to treatment."
+        },
+        {
+          "pmid": "39644019",
+          "design": "review",
+          "year": "2024",
+          "journal": null,
+          "title": "Large granular lymphocyte leukemia: a clonal disorder with autoimmune manifestations."
+        }
+      ]
+    }
+  }
+]

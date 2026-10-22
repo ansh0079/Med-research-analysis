@@ -1,0 +1,1327 @@
+[
+ {
+  "no": 751,
+  "topicId": "43eff189-4287-4236-901e-0f00af0cd72f",
+  "topic": "Gram-negative bloodstream infection duration",
+  "cluster": "gram-negative bloodstream infection duration",
+  "status": "draft_pending_clinician_review",
+  "dbEvidence": {
+   "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed (guideline/review/meta-analysis filter), every abstract read before use. DB link validation pending export.",
+   "papersReviewed": 8,
+   "papersKept": [
+    {
+     "uid": "pubmed-40116824",
+     "title": "Seven vs Fourteen Days of Antibiotics for Gram-Negative Bloodstream Infection: A Systematic Review and Noninferiority Meta-Analysis.",
+     "year": "2025"
+    },
+    {
+     "uid": "pubmed-41419448",
+     "title": "IDSA 2025 Guidelines on Management and Treatment of Complicated Urinary Tract Infections--Duration of Antibiotics for Complicated UTI.",
+     "year": "2026"
+    },
+    {
+     "uid": "pubmed-30803971",
+     "title": "A Systematic Review and Meta-analysis of Antibiotic Treatment Duration for Bacteremia Due to Enterobacteriaceae.",
+     "year": "2019"
+    },
+    {
+     "uid": "pubmed-36075498",
+     "title": "Short-course antibiotics for common infections: what do we know and where do we go from here?",
+     "year": "2023"
+    },
+    {
+     "uid": "pubmed-40725151",
+     "title": "Antibiotic Therapy Duration for Multidrug-Resistant Gram-Negative Bacterial Infections: An Evidence-Based Review.",
+     "year": "2025"
+    }
+   ],
+   "papersDropped": [
+    {
+     "uid": "pubmed-34446092",
+     "title": "Initial antimicrobial management of sepsis.",
+     "reason": "Sepsis empiric-therapy focus; no BSI duration content usable for this topic."
+    },
+    {
+     "uid": "pubmed-40744275",
+     "title": "Treatment and follow-up of vascular graft and endograft infection: Delphi consensus document.",
+     "reason": "Vascular-graft infection niche; not BSI duration."
+    },
+    {
+     "uid": "pubmed-37950017",
+     "title": "[Guideline-conform treatment of sepsis].",
+     "reason": "Sepsis timing-of-antibiotics content; superseded by duration-specific sources."
+    }
+   ],
+   "guidelinesKept": [],
+   "guidelinesDropped": []
+  },
+  "page": {
+   "mentor_intro": "Gram-negative bloodstream infection is one of the settings where antimicrobial stewardship has most visibly shortened therapy. A decade of non-inferiority trials and meta-analyses now supports 7-day courses for many patients, while multidrug-resistant organisms remain the key evidence gap.",
+   "teaching_points": [
+    {
+     "claim": "A 2025 systematic review and noninferiority meta-analysis of randomized trials found 7 days of antibiotics noninferior to 14 days for gram-negative bloodstream infection in hospitalized adults.",
+     "cites": [
+      "40116824"
+     ]
+    },
+    {
+     "claim": "IDSA's 2025 complicated-UTI guideline suggests 5-7 days of a fluoroquinolone or 7 days of a non-fluoroquinolone when the patient is improving on effective therapy, regardless of associated gram-negative bacteremia.",
+     "cites": [
+      "41419448"
+     ]
+    },
+    {
+     "claim": "In Enterobacteriaceae bacteremia, meta-analysis showed no significant difference between short (<=10 days) and longer courses for 30- and 90-day mortality, clinical cure, or relapse.",
+     "cites": [
+      "30803971"
+     ]
+    },
+    {
+     "claim": "Short courses are consistently noninferior when the diagnosis is confirmed, the antimicrobial is appropriate, and the patient shows clinical improvement.",
+     "cites": [
+      "36075498"
+     ]
+    },
+    {
+     "claim": "For MDR gram-negatives (CRE, difficult-to-treat Pseudomonas, CRAB), IDSA and ESCMID give explicit agent-selection advice but lack detailed duration recommendations; evidence for short courses is limited here.",
+     "cites": [
+      "40725151"
+     ]
+    }
+   ],
+   "uncertainties": [
+    "Optimal duration for carbapenem-resistant organisms and difficult-to-treat Pseudomonas aeruginosa bacteremia.",
+    "How source control status should modify the 7-day default."
+   ],
+   "mcq_angles": [
+    "Seven versus fourteen days: what the noninferiority meta-analysis supports and its boundaries.",
+    "cUTI with gram-negative bacteremia: translating the IDSA 5-7/7-day recommendation to a clinical vignette.",
+    "Which patients qualify for short-course therapy (confirmed diagnosis, effective agent, improving).",
+    "The MDR-GNB duration evidence gap versus agent-selection guidance."
+   ],
+   "case_hooks": [
+    "E. coli bacteremia from pyelonephritis, afebrile and improving on day 3 - stop at day 7?",
+    "Carbapenem-resistant Klebsiella pneumoniae bacteremia in a stable patient - how long, and on what evidence?"
+   ],
+   "gaps": "Pediatric durations, Pseudomonas-specific BSI data, and pathogen-disease combinations beyond Enterobacteriaceae/UTI are not covered by the retained abstracts; verify against a full BSI guideline before approval.",
+   "sources": [
+    {
+     "pmid": "40116824",
+     "design": "meta-analysis",
+     "year": "2025",
+     "journal": null,
+     "title": "Seven vs Fourteen Days of Antibiotics for Gram-Negative Bloodstream Infection: A Systematic Review and Noninferiority Meta-Analysis"
+    },
+    {
+     "pmid": "41419448",
+     "design": "guideline",
+     "year": "2026",
+     "journal": null,
+     "title": "IDSA 2025 Guidelines on Management and Treatment of Complicated Urinary Tract Infections--Duration of Antibiotics for Complicated UTI"
+    },
+    {
+     "pmid": "30803971",
+     "design": "meta-analysis",
+     "year": "2019",
+     "journal": null,
+     "title": "A Systematic Review and Meta-analysis of Antibiotic Treatment Duration for Bacteremia Due to Enterobacteriaceae"
+    },
+    {
+     "pmid": "36075498",
+     "design": "review",
+     "year": "2023",
+     "journal": null,
+     "title": "Short-course antibiotics for common infections: what do we know and where do we go from here?"
+    },
+    {
+     "pmid": "40725151",
+     "design": "review",
+     "year": "2025",
+     "journal": null,
+     "title": "Antibiotic Therapy Duration for Multidrug-Resistant Gram-Negative Bacterial Infections: An Evidence-Based Review"
+    }
+   ]
+  }
+ },
+ {
+  "no": 752,
+  "topicId": "4ad12870-7505-41d8-a207-5ad629984c8e",
+  "topic": "Gram-negative resistance: ESBL, carbapenemase-producing organisms, colistin, ceftazidime-avibactam",
+  "cluster": "gram-negative resistance esbl carbapenemase colistin ceftazidime-avibactam",
+  "status": "draft_pending_clinician_review",
+  "dbEvidence": {
+   "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed, abstracts read before use. DB link validation pending export.",
+   "papersReviewed": 9,
+   "papersKept": [
+    {
+     "uid": "pubmed-34169446",
+     "title": "Treatment for carbapenem-resistant Enterobacterales infections: recent advances and future directions.",
+     "year": "2021"
+    },
+    {
+     "uid": "pubmed-34752560",
+     "title": "Review of Ceftazidime-Avibactam, Meropenem-Vaborbactam, and Imipenem/Cilastatin-Relebactam to Target KPC-producing Enterobacterales.",
+     "year": "2020"
+    },
+    {
+     "uid": "pubmed-40185559",
+     "title": "Management of Severe Infections: Multidrug-Resistant and Carbapenem-Resistant Gram-Negative Bacteria.",
+     "year": "2025"
+    },
+    {
+     "uid": "pubmed-33177185",
+     "title": "New beta-Lactam-beta-Lactamase Inhibitor Combinations.",
+     "year": "2020"
+    },
+    {
+     "uid": "pubmed-33895414",
+     "title": "Resistance to ceftazidime/avibactam in infections and colonisations by KPC-producing Enterobacterales: a systematic review.",
+     "year": "2021"
+    },
+    {
+     "uid": "pubmed-37937997",
+     "title": "Klebsiella pneumoniae carbapenemase variants: the new threat to global public health.",
+     "year": "2023"
+    }
+   ],
+   "papersDropped": [
+    {
+     "uid": "pubmed-36543346",
+     "title": "New antibiotics for Gram-negative pneumonia.",
+     "reason": "Narrow pneumonia indication; redundant with broader CRE reviews."
+    },
+    {
+     "uid": "pubmed-37107016",
+     "title": "What to Do with the New Antibiotics?",
+     "reason": "General overview; superseded by the 2025 severe-infection review."
+    },
+    {
+     "uid": "pubmed-35787918",
+     "title": "Clinical data from studies involving novel antibiotics to treat MDR Gram-negative bacterial infections.",
+     "reason": "Overlapping agent coverage; kept the more current reviews."
+    }
+   ],
+   "guidelinesKept": [],
+   "guidelinesDropped": []
+  },
+  "page": {
+   "mentor_intro": "The last decade has transformed treatment of carbapenem-resistant gram-negatives: ceftazidime-avibactam, meropenem-vaborbactam and imipenem-relebactam have moved KPC-producing Enterobacterales from the colistin era into targeted beta-lactam therapy, while KPC variant evolution now threatens the new agents themselves.",
+   "teaching_points": [
+    {
+     "claim": "Ceftazidime-avibactam is a first-line option for KPC-producing Enterobacterales, with meropenem-vaborbactam and imipenem-relebactam as alternatives; ceftazidime-avibactam is preferred for OXA-48-like producers.",
+     "cites": [
+      "40185559",
+      "34752560"
+     ]
+    },
+    {
+     "claim": "For KPC strains resistant to ceftazidime-avibactam, meropenem-vaborbactam and imipenem-relebactam have relative advantages.",
+     "cites": [
+      "40185559"
+     ]
+    },
+    {
+     "claim": "Newer beta-lactam/beta-lactamase inhibitor combinations expanded the armamentarium against MDR Enterobacterales and Pseudomonas aeruginosa beyond the polymyxin era.",
+     "cites": [
+      "33177185",
+      "34169446"
+     ]
+    },
+    {
+     "claim": "In-vivo emergence of ceftazidime-avibactam resistance in KPC-E is documented in a systematic review: most cases were Klebsiella pneumoniae ST258 with the D179Y substitution, occurring during treatment of deep-seated infection.",
+     "cites": [
+      "33895414"
+     ]
+    },
+    {
+     "claim": "More than 150 blaKPC variants are now reported, most identified in the last three years, and variants restore ceftazidime affinity while weakening avibactam binding - a moving resistance target.",
+     "cites": [
+      "37937997"
+     ]
+    }
+   ],
+   "uncertainties": [
+    "Optimal sequencing of newer agents when first-line BLBLI therapy fails.",
+    "Whether combination therapy (e.g. BLBLI plus aminoglycoside or polymyxin) improves outcomes in high-inoculum infections."
+   ],
+   "mcq_angles": [
+    "Agent selection by carbapenemase type: KPC versus OXA-48 versus MBL.",
+    "Recognizing and responding to ceftazidime-avibactam resistance emerging on therapy (ST258/D179Y).",
+    "Why colistin has been displaced as default therapy for KPC-producing CRE.",
+    "The blaKPC variant explosion and what it means for susceptibility reporting."
+   ],
+   "case_hooks": [
+    "Blood culture grows KPC-producing Klebsiella pneumoniae on day 4 of ceftazidime-avibactam - what changed and what next?",
+    "OXA-48-producing E. coli bacteremia: choosing between ceftazidime-avibactam and a carbapenem-sparing alternative."
+   ],
+   "gaps": "Metallo-beta-lactamase therapy (aztreonam-avibactam, cefiderocol) is not covered by the retained abstracts; add an MBL-specific source before approval. ESBL-specific guidance (when carbapenems can be spared) is also not represented.",
+   "sources": [
+    {
+     "pmid": "34169446",
+     "design": "review",
+     "year": "2021",
+     "journal": null,
+     "title": "Treatment for carbapenem-resistant Enterobacterales infections: recent advances and future directions"
+    },
+    {
+     "pmid": "34752560",
+     "design": "review",
+     "year": "2020",
+     "journal": null,
+     "title": "Review of Ceftazidime-Avibactam, Meropenem-Vaborbactam, and Imipenem/Cilastatin-Relebactam to Target KPC-producing Enterobacterales"
+    },
+    {
+     "pmid": "40185559",
+     "design": "review",
+     "year": "2025",
+     "journal": null,
+     "title": "Management of Severe Infections: Multidrug-Resistant and Carbapenem-Resistant Gram-Negative Bacteria"
+    },
+    {
+     "pmid": "33177185",
+     "design": "review",
+     "year": "2020",
+     "journal": null,
+     "title": "New beta-Lactam-beta-Lactamase Inhibitor Combinations"
+    },
+    {
+     "pmid": "33895414",
+     "design": "systematic review",
+     "year": "2021",
+     "journal": null,
+     "title": "Resistance to ceftazidime/avibactam in infections and colonisations by KPC-producing Enterobacterales"
+    },
+    {
+     "pmid": "37937997",
+     "design": "review",
+     "year": "2023",
+     "journal": null,
+     "title": "Klebsiella pneumoniae carbapenemase variants: the new threat to global public health"
+    }
+   ]
+  }
+ },
+ {
+  "no": 753,
+  "topicId": "a845e725-d773-45b5-9a2c-b4c58b8b048b",
+  "topic": "Granulomatosis with Polyangiitis",
+  "cluster": "granulomatosis with polyangiitis",
+  "status": "draft_pending_clinician_review",
+  "dbEvidence": {
+   "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed, abstracts read before use. DB link validation pending export.",
+   "papersReviewed": 8,
+   "papersKept": [
+    {
+     "uid": "pubmed-36927642",
+     "title": "EULAR recommendations for the management of ANCA-associated vasculitis: 2022 update.",
+     "year": "2024"
+    },
+    {
+     "uid": "pubmed-39196354",
+     "title": "Update on treatment of ANCA-associated vasculitis.",
+     "year": "2024"
+    },
+    {
+     "uid": "pubmed-41460038",
+     "title": "Update on antineutrophil cytoplasmic antibody vasculitis.",
+     "year": "2026"
+    },
+    {
+     "uid": "pubmed-36112482",
+     "title": "Systematic review and meta-analysis for 2023 clinical practice guidelines of the Japan Research Committee for Intractable Vasculitis.",
+     "year": "2023"
+    },
+    {
+     "uid": "pubmed-41051263",
+     "title": "Mapping a path forward: addressing disease burden, pathways and solutions in ANCA-associated vasculitis.",
+     "year": "2026"
+    }
+   ],
+   "papersDropped": [
+    {
+     "uid": "pubmed-38253699",
+     "title": "[Management of ANCA-associated vasculitides].",
+     "reason": "German-language review; redundant with English EULAR-based sources."
+    },
+    {
+     "uid": "pubmed-38964344",
+     "title": "[Eosinophilic granulomatosis with polyangiitis: a review article].",
+     "reason": "EGPA subtype focus, not GPA."
+    },
+    {
+     "uid": "pubmed-36112482-dup",
+     "title": "(duplicate handling note)",
+     "reason": null
+    }
+   ],
+   "guidelinesKept": [],
+   "guidelinesDropped": []
+  },
+  "page": {
+   "mentor_intro": "Granulomatosis with polyangiitis is the commonest ANCA-associated vasculitis and a medical emergency when active: modern regimens pair glucocorticoids with rituximab or cyclophosphamide for induction, and the 2022 EULAR update redefined how newer trial evidence maps to treatment choices.",
+   "teaching_points": [
+    {
+     "claim": "EULAR's 2022 AAV recommendations were built on a systematic literature review plus expert consensus, incorporating randomized trials published since the 2016 version that change clinical care.",
+     "cites": [
+      "36927642"
+     ]
+    },
+    {
+     "claim": "Rituximab is now an established induction option alongside glucocorticoids for ANCA-associated vasculitis, reflected across EULAR, KDIGO and ACR guidance.",
+     "cites": [
+      "39196354"
+     ]
+    },
+    {
+     "claim": "Major clinical trials underpinning current ANCA vasculitis treatment have reduced morbidity and improved survival; guideline summaries track these trial milestones.",
+     "cites": [
+      "41460038"
+     ]
+    },
+    {
+     "claim": "Japanese 2023 AAV guideline development used a dedicated systematic review and meta-analysis, an example of rigorous national adaptation of the same evidence base.",
+     "cites": [
+      "36112482"
+     ]
+    },
+    {
+     "claim": "AAV is a frequently relapsing disorder; treatment aims are rapid control of active disease, then prevention of relapse and organ damage.",
+     "cites": [
+      "41051263"
+     ]
+    }
+   ],
+   "uncertainties": [
+    "Optimal glucocorticoid-sparing intensity and the role of avacopan in routine practice.",
+    "How to sequence maintenance therapy and define relapse triggers for re-treatment."
+   ],
+   "mcq_angles": [
+    "Induction therapy selection: rituximab versus cyclophosphamide for new organ-threatening GPA.",
+    "What changed between EULAR 2016 and 2022 and which trials drove it.",
+    "Maintenance and relapse prevention after successful induction.",
+    "Organ-specific complications (pulmonary haemorrhage, RPGN) and how they modify therapy."
+   ],
+   "case_hooks": [
+    "45-year-old with haemoptysis, saddle-nose deformity and c-ANCA - induction regimen and monitoring plan?",
+    "GPA in remission on azathioprine with rising ANCA titre - escalate, switch, or watch?"
+   ],
+   "gaps": "Avacopan (ADVOCATE), plasma exchange (PEXIVAS) and trimethoprim-sulfamethoxazole prophylaxis specifics are not in the retained abstracts; add the primary trial/guideline sources before approval.",
+   "sources": [
+    {
+     "pmid": "36927642",
+     "design": "systematic review",
+     "year": "2024",
+     "journal": null,
+     "title": "EULAR recommendations for the management of ANCA-associated vasculitis: 2022 update"
+    },
+    {
+     "pmid": "39196354",
+     "design": "review",
+     "year": "2024",
+     "journal": null,
+     "title": "Update on treatment of ANCA-associated vasculitis"
+    },
+    {
+     "pmid": "41460038",
+     "design": "review",
+     "year": "2026",
+     "journal": null,
+     "title": "Update on antineutrophil cytoplasmic antibody vasculitis"
+    },
+    {
+     "pmid": "36112482",
+     "design": "meta-analysis",
+     "year": "2023",
+     "journal": null,
+     "title": "Systematic review and meta-analysis for 2023 clinical practice guidelines of the Japan Research Committee for Intractable Vasculitis"
+    },
+    {
+     "pmid": "41051263",
+     "design": "review",
+     "year": "2026",
+     "journal": null,
+     "title": "Mapping a path forward: addressing disease burden, pathways and solutions in ANCA-associated vasculitis"
+    }
+   ]
+  }
+ },
+ {
+  "no": 754,
+  "topicId": "9fe7acaf-d90b-46e8-b38f-92385c18f997",
+  "topic": "graves disease antithyroid and radioiodine therapy",
+  "cluster": "graves disease antithyroid radioiodine therapy",
+  "status": "draft_pending_clinician_review",
+  "dbEvidence": {
+   "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed, abstracts read before use. DB link validation pending export.",
+   "papersReviewed": 8,
+   "papersKept": [
+    {
+     "uid": "pubmed-30193753",
+     "title": "Treatment of adult Graves' disease.",
+     "year": "2018"
+    },
+    {
+     "uid": "pubmed-30730622",
+     "title": "Graves' disease in adults: antithyroid drugs, radioactive iodine, or sometimes thyroidectomy.",
+     "year": "2017"
+    },
+    {
+     "uid": "pubmed-42119974",
+     "title": "Long-Term Antithyroid Drug Therapy in the Management of Graves' Hyperthyroidism: An Updated Narrative Review.",
+     "year": "2026"
+    },
+    {
+     "uid": "pubmed-30912336",
+     "title": "Graves' Disease: Can It Be Cured?",
+     "year": "2019"
+    }
+   ],
+   "papersDropped": [
+    {
+     "uid": "pubmed-33565846",
+     "title": "The role of laboratory medicine in the diagnosis of the hyperthyroidism.",
+     "reason": "Diagnostic-laboratory focus; topic is therapy."
+    },
+    {
+     "uid": "pubmed-30354697",
+     "title": "Investigational drugs in early stage clinical trials for thyrotoxicosis.",
+     "reason": "Investigational agents; not current practice."
+    },
+    {
+     "uid": "pubmed-38195966",
+     "title": "Perchlorates in the treatment of hyperthyroidism and thytotoxicosis.",
+     "reason": "Non-first-line agent; peripheral to guideline-based therapy."
+    },
+    {
+     "uid": "pubmed-39501471",
+     "title": "Effect of Antithyroid Drugs Treatment Duration on The Remission Rates of Graves' Disease in Children.",
+     "reason": "Pediatric population; retained for topic 755 with population caveat."
+    }
+   ],
+   "guidelinesKept": [],
+   "guidelinesDropped": []
+  },
+  "page": {
+   "mentor_intro": "Graves' hyperthyroidism offers three effective definitive strategies - antithyroid drugs, radioiodine and thyroidectomy - and no modality has proven universally superior. Modern practice starts with antithyroid drugs to restore euthyroidism, then individualises the definitive step around orbitopathy, pregnancy plans and patient preference.",
+   "teaching_points": [
+    {
+     "claim": "Guideline-based strategy first restores euthyroid status with antithyroid therapy, then selects a definitive modality; no treatment modality has demonstrated superiority, so the choice is shared with the patient.",
+     "cites": [
+      "30193753"
+     ]
+    },
+    {
+     "claim": "Radioiodine-131 and thyroidectomy abolish hyperthyroidism but create hypothyroidism requiring lifelong levothyroxine - a trade of one disease for another rather than a cure.",
+     "cites": [
+      "30912336"
+     ]
+    },
+    {
+     "claim": "Radioiodine can aggravate Graves' orbitopathy and requires pre-treatment assessment; pregnancy or pregnancy plans change both treatment choice and monitoring.",
+     "cites": [
+      "30193753"
+     ]
+    },
+    {
+     "claim": "A beta-blocker relieves tachycardia, anxiety and tremor while awaiting definitive control.",
+     "cites": [
+      "30730622"
+     ]
+    },
+    {
+     "claim": "Long-term antithyroid drug courses are an increasingly used strategy, with contemporary narrative reviews updating their role against radioiodine and surgery.",
+     "cites": [
+      "42119974"
+     ]
+    }
+   ],
+   "uncertainties": [
+    "Which patients achieve durable remission after antithyroid drugs and how to predict relapse.",
+    "Optimal role and duration of long-term low-dose antithyroid drug maintenance."
+   ],
+   "mcq_angles": [
+    "First step in a newly diagnosed thyrotoxic patient: restore euthyroidism before definitive therapy.",
+    "How orbitopathy and pregnancy plans shift the modality choice.",
+    "Radioiodine versus antithyroid drugs: what 'cure' actually means.",
+    "Symptom control with beta-blockers while definitive therapy takes effect."
+   ],
+   "case_hooks": [
+    "28-year-old woman with Graves' disease planning pregnancy - which therapy, and what monitoring?",
+    "Active smokers with moderate orbitopathy - why radioiodine needs a second look."
+   ],
+   "gaps": "Antithyroid drug adverse effects (agranulocytosis, hepatotoxicity) and their monitoring are not detailed in the retained abstracts; add an ATA/EUGOGO-aligned source before approval.",
+   "sources": [
+    {
+     "pmid": "30193753",
+     "design": "guideline",
+     "year": "2018",
+     "journal": null,
+     "title": "Treatment of adult Graves' disease"
+    },
+    {
+     "pmid": "30730622",
+     "design": "review",
+     "year": "2017",
+     "journal": null,
+     "title": "Graves' disease in adults: antithyroid drugs, radioactive iodine, or sometimes thyroidectomy"
+    },
+    {
+     "pmid": "42119974",
+     "design": "review",
+     "year": "2026",
+     "journal": null,
+     "title": "Long-Term Antithyroid Drug Therapy in the Management of Graves' Hyperthyroidism: An Updated Narrative Review"
+    },
+    {
+     "pmid": "30912336",
+     "design": "review",
+     "year": "2019",
+     "journal": null,
+     "title": "Graves' Disease: Can It Be Cured?"
+    }
+   ]
+  }
+ },
+ {
+  "no": 755,
+  "topicId": "f0da50d8-1cd5-4765-b2b3-53e8d15a08b9",
+  "topic": "Graves disease: antithyroid drugs, radioiodine, thyroidectomy - comparative outcomes",
+  "cluster": "graves disease comparative outcomes",
+  "status": "draft_pending_clinician_review",
+  "dbEvidence": {
+   "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed, abstracts read before use. DB link validation pending export.",
+   "papersReviewed": 13,
+   "papersKept": [
+    {
+     "uid": "pubmed-42683117",
+     "title": "Graves' disease: review of disease characteristics, burden, and treatments.",
+     "year": "2026"
+    },
+    {
+     "uid": "pubmed-42119974",
+     "title": "Long-Term Antithyroid Drug Therapy in the Management of Graves' Hyperthyroidism.",
+     "year": "2026"
+    },
+    {
+     "uid": "pubmed-30193753",
+     "title": "Treatment of adult Graves' disease.",
+     "year": "2018"
+    },
+    {
+     "uid": "pubmed-30730622",
+     "title": "Graves' disease in adults: antithyroid drugs, radioactive iodine, or sometimes thyroidectomy.",
+     "year": "2017"
+    },
+    {
+     "uid": "pubmed-30912336",
+     "title": "Graves' Disease: Can It Be Cured?",
+     "year": "2019"
+    },
+    {
+     "uid": "pubmed-39501471",
+     "title": "Effect of Antithyroid Drugs Treatment Duration on The Remission Rates of Graves' Disease in Children.",
+     "year": "2025"
+    }
+   ],
+   "papersDropped": [
+    {
+     "uid": "pubmed-35175308",
+     "title": "Proptosis and Diplopia Response With Teprotumumab...",
+     "reason": "Thyroid eye disease, not the comparative-modality question."
+    },
+    {
+     "uid": "pubmed-36802028",
+     "title": "Dysthyroid optic neuropathy: emerging treatment strategies.",
+     "reason": "Orbitopathy complication management; off the comparative-outcomes question."
+    },
+    {
+     "uid": "pubmed-34918472",
+     "title": "Comparative effectiveness of different treatment modalities for active, moderate-to-severe Graves' orbitopathy.",
+     "reason": "Orbitopathy population, not hyperthyroidism comparative outcomes."
+    },
+    {
+     "uid": "pubmed-41743555",
+     "title": "Immunomodulators in Graves' ophthalmopathy: a systematic review.",
+     "reason": "Ophthalmopathy focus."
+    }
+   ],
+   "guidelinesKept": [],
+   "guidelinesDropped": []
+  },
+  "page": {
+   "mentor_intro": "Comparing antithyroid drugs, radioiodine and thyroidectomy for Graves' disease is less about finding a winner than matching trade-offs: remission potential versus definitive control, and the burden of lifelong thyroid hormone replacement after destructive approaches. Guidelines consistently report no modality as universally superior.",
+   "teaching_points": [
+    {
+     "claim": "Treatment options for Graves' hyperthyroidism have not changed in decades - antithyroid drugs, radioactive iodine and thyroidectomy - and reviews of disease burden confirm all three remain the active comparators.",
+     "cites": [
+      "42683117"
+     ]
+    },
+    {
+     "claim": "No randomized comparison has established superiority of one modality; guideline strategy therefore emphasises informed, preference-sensitive choice after euthyroidism is restored.",
+     "cites": [
+      "30193753",
+      "30730622"
+     ]
+    },
+    {
+     "claim": "Radioiodine and thyroidectomy reliably abolish hyperthyroidism but commit the patient to lifelong levothyroxine; antithyroid drugs preserve thyroid function but carry relapse risk.",
+     "cites": [
+      "30912336"
+     ]
+    },
+    {
+     "claim": "Antithyroid drug treatment duration relates to remission rates, though the meta-analytic evidence to date is in children - extrapolation to adults needs caution.",
+     "cites": [
+      "39501471"
+     ]
+    },
+    {
+     "claim": "Long-term antithyroid drug therapy is an increasingly recognised strategy whose updated narrative review maps its place against radioiodine and thyroidectomy.",
+     "cites": [
+      "42119974"
+     ]
+    }
+   ],
+   "uncertainties": [
+    "Adult remission rates by antithyroid drug duration and predictive factors (TRAb, goitre size).",
+    "Long-term quality-of-life and cardiovascular outcome differences between modalities."
+   ],
+   "mcq_angles": [
+    "A patient-centred modality choice: orbitopathy, pregnancy plans and smoking status as decision modifiers.",
+    "What 'definitive therapy' commits the patient to: lifelong levothyroxine after RAI/surgery.",
+    "Relapse after antithyroid drug withdrawal: who, when, and predicted by what.",
+    "Evidence limits: why guidelines decline to crown a winner."
+   ],
+   "case_hooks": [
+    "35-year-old man with recurrent Graves' relapse after 18 months of carbimazole - radioiodine, surgery, or prolonged ATD?",
+    "Patient asks which treatment is 'best' - structuring a preference-sensitive consultation."
+   ],
+   "gaps": "Adult comparative-effectiveness data (remission rates, relapse predictors) are thin in the retained abstracts - the pediatric duration meta-analysis is the only quantified source; adult RCT/Registry data needed before approval.",
+   "sources": [
+    {
+     "pmid": "42683117",
+     "design": "review",
+     "year": "2026",
+     "journal": null,
+     "title": "Graves' disease: review of disease characteristics, burden, and treatments"
+    },
+    {
+     "pmid": "42119974",
+     "design": "review",
+     "year": "2026",
+     "journal": null,
+     "title": "Long-Term Antithyroid Drug Therapy in the Management of Graves' Hyperthyroidism"
+    },
+    {
+     "pmid": "30193753",
+     "design": "guideline",
+     "year": "2018",
+     "journal": null,
+     "title": "Treatment of adult Graves' disease"
+    },
+    {
+     "pmid": "30730622",
+     "design": "review",
+     "year": "2017",
+     "journal": null,
+     "title": "Graves' disease in adults: antithyroid drugs, radioactive iodine, or sometimes thyroidectomy"
+    },
+    {
+     "pmid": "30912336",
+     "design": "review",
+     "year": "2019",
+     "journal": null,
+     "title": "Graves' Disease: Can It Be Cured?"
+    },
+    {
+     "pmid": "39501471",
+     "design": "meta-analysis",
+     "year": "2025",
+     "journal": null,
+     "title": "Effect of Antithyroid Drugs Treatment Duration on The Remission Rates of Graves' Disease in Children"
+    }
+   ]
+  }
+ },
+ {
+  "no": 756,
+  "topicId": "ee48bfba-a3fb-4deb-87c8-8c8bc0903677",
+  "topic": "Group 1 pulmonary arterial hypertension: ERA, PDE5i, prostacyclin, combination therapy",
+  "cluster": "group 1 pulmonary arterial hypertension era pde5i prostacyclin combination",
+  "status": "draft_pending_clinician_review",
+  "dbEvidence": {
+   "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed, abstracts read before use. DB link validation pending export.",
+   "papersReviewed": 8,
+   "papersKept": [
+    {
+     "uid": "pubmed-30545971",
+     "title": "Risk stratification and medical therapy of pulmonary arterial hypertension.",
+     "year": "2019"
+    },
+    {
+     "uid": "pubmed-37085727",
+     "title": "Refined risk stratification, current treatment, and new therapeutic approaches in pulmonary arterial hypertension.",
+     "year": "2023"
+    },
+    {
+     "uid": "pubmed-33720578",
+     "title": "Advantages and limitations of initial combination therapy in pulmonary arterial hypertension patients.",
+     "year": "2020"
+    }
+   ],
+   "papersDropped": [
+    {
+     "uid": "pubmed-28629920",
+     "title": "Pulmonary Hypertension in Parenchymal Lung Diseases: Any Future for New Therapies?",
+     "reason": "Group 3 PH (lung disease); not Group 1 PAH - group mismatch."
+    },
+    {
+     "uid": "pubmed-36527480",
+     "title": "Advances in targeted therapy for pulmonary arterial hypertension in children.",
+     "reason": "Pediatric population; topic frame is adult Group 1 therapy."
+    },
+    {
+     "uid": "pubmed-25946920",
+     "title": "Recent strategies in treatment of pulmonary arterial hypertension, a review.",
+     "reason": "Superseded by ESC/ERS 2022-aligned reviews."
+    },
+    {
+     "uid": "pubmed-36527480-2",
+     "title": "(see above)",
+     "reason": null
+    },
+    {
+     "uid": "pubmed-37085727-dup",
+     "title": "(see kept)",
+     "reason": null
+    }
+   ],
+   "guidelinesKept": [],
+   "guidelinesDropped": []
+  },
+  "page": {
+   "mentor_intro": "Group 1 pulmonary arterial hypertension is managed by three pathways - endothelin receptor antagonists, phosphodiesterase-5 inhibitors and prostacyclin analogues - but the defining shift of recent years is treatment strategy: risk-stratified, combination-first, then escalation.",
+   "teaching_points": [
+    {
+     "claim": "The 2022 ESC/ERS guidelines introduced a refined three-category risk stratification (low, intermediate, high) that guides both initial and subsequent therapy; estimated 1-year mortality exceeds 20% in high-risk patients.",
+     "cites": [
+      "37085727"
+     ]
+    },
+    {
+     "claim": "Initial combination therapy for PAH was first proposed for high-risk patients in the 2009 European guidelines, extended to low/intermediate-risk patients by 2015 and later consensus meetings - a concept now central to practice.",
+     "cites": [
+      "33720578"
+     ]
+    },
+    {
+     "claim": "Modern progress in PAH therapy comes not from new pathways but from combination strategies across the endothelin, nitric-oxide and prostacyclin pathways plus systematic escalation based on risk.",
+     "cites": [
+      "30545971"
+     ]
+    }
+   ],
+   "uncertainties": [
+    "Which initial doublet (ERA+PDE5i versus including a prostacyclin pathway agent) best serves intermediate-risk patients.",
+    "How to time escalation and when to refer for lung transplantation assessment."
+   ],
+   "mcq_angles": [
+    "Risk-stratified treatment selection: which patient gets initial combination therapy.",
+    "The three drug pathways and their representative agents.",
+    "Treatment goals: moving a patient from intermediate to low risk as the therapeutic target.",
+    "Recognising refractory disease and the transplant window."
+   ],
+   "case_hooks": [
+    "Newly diagnosed idiopathic PAH, intermediate risk on refined scoring - initial regimen?",
+    "Patient deteriorating on ERA+PDE5i despite 6 months of therapy - escalation options."
+   ],
+   "gaps": "Named pivotal trials (AMBITION, GRIPHON, SERAPHIN) and prostacyclin route practicalities are not in the retained abstracts; add ESC/ERS 2022 guideline summary and AMBITION primary paper before approval.",
+   "sources": [
+    {
+     "pmid": "30545971",
+     "design": "review",
+     "year": "2019",
+     "journal": null,
+     "title": "Risk stratification and medical therapy of pulmonary arterial hypertension"
+    },
+    {
+     "pmid": "37085727",
+     "design": "review",
+     "year": "2023",
+     "journal": null,
+     "title": "Refined risk stratification, current treatment, and new therapeutic approaches in pulmonary arterial hypertension"
+    },
+    {
+     "pmid": "33720578",
+     "design": "review",
+     "year": "2020",
+     "journal": null,
+     "title": "Advantages and limitations of initial combination therapy in pulmonary arterial hypertension patients"
+    }
+   ]
+  }
+ },
+ {
+  "no": 757,
+  "topicId": "4d39c457-196a-4401-a9be-ab113e581dfd",
+  "topic": "Gut Microbiome in GI Disease",
+  "cluster": "gut microbiome gi disease",
+  "status": "draft_pending_clinician_review",
+  "dbEvidence": {
+   "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed, abstracts read before use. DB link validation pending export.",
+   "papersReviewed": 8,
+   "papersKept": [
+    {
+     "uid": "pubmed-36157114",
+     "title": "Gut microbiota, inflammatory bowel disease and colorectal cancer.",
+     "year": "2022"
+    },
+    {
+     "uid": "pubmed-38542689",
+     "title": "Prebiotics and Probiotics for Gastrointestinal Disorders.",
+     "year": "2024"
+    },
+    {
+     "uid": "pubmed-38388570",
+     "title": "Ultra-processed foods and food additives in gut health and disease.",
+     "year": "2024"
+    },
+    {
+     "uid": "pubmed-33208922",
+     "title": "Dietary fibre in gastrointestinal health and disease.",
+     "year": "2021"
+    },
+    {
+     "uid": "pubmed-33049223",
+     "title": "Irritable bowel syndrome.",
+     "year": "2020"
+    }
+   ],
+   "papersDropped": [
+    {
+     "uid": "pubmed-33049223-note",
+     "title": "(kept as peripheral IBS anchor)",
+     "reason": null
+    }
+   ],
+   "guidelinesKept": [],
+   "guidelinesDropped": []
+  },
+  "page": {
+   "mentor_intro": "The gut microbiome has moved from speculation to mechanism in GI disease: dysbiosis is now associated with IBS, IBD and colorectal cancer, diet and food additives are established modulators, and prebiotic/probiotic strategies are being refined - though causality and strain specificity remain the frontier.",
+   "teaching_points": [
+    {
+     "claim": "Dysbiosis - imbalance between beneficial and opportunistic microbiota - is associated with IBS, IBD (ulcerative colitis and Crohn's disease) and colorectal cancer.",
+     "cites": [
+      "36157114"
+     ]
+    },
+    {
+     "claim": "Dietary fibre from unrefined whole foods benefits gastrointestinal health, with regulatory effects on transit time, stool formation and the gut milieu.",
+     "cites": [
+      "33208922"
+     ]
+    },
+    {
+     "claim": "Diets rich in ultra-processed foods are associated with gut disease including IBD, colorectal cancer and IBS; some additives (e.g. certain emulsifiers) directly affect gut health.",
+     "cites": [
+      "38388570"
+     ]
+    },
+    {
+     "claim": "Prebiotics and probiotics beneficially modulate the gut microbiome, but formulating specific recommendations for GI conditions remains challenging.",
+     "cites": [
+      "38542689"
+     ]
+    },
+    {
+     "claim": "Acute enteric infection is the best-described risk factor for IBS, linking microbiome disturbance to post-infectious functional disease.",
+     "cites": [
+      "33049223"
+     ]
+    }
+   ],
+   "uncertainties": [
+    "Causality: whether dysbiosis drives disease or mirrors it.",
+    "Strain-specific probiotic efficacy and which patients benefit from which preparations."
+   ],
+   "mcq_angles": [
+    "Mechanism questions: dysbiosis across IBS, IBD and colorectal cancer.",
+    "Diet as therapy: fibre, ultra-processed foods and additives.",
+    "What probiotics can and cannot claim in GI conditions.",
+    "Post-infectious IBS as a microbiome-mediated entity."
+   ],
+   "case_hooks": [
+    "IBS patient asking about probiotics and diet - what does the evidence support?",
+    "Crohn's patient in remission asking whether diet can modify relapse risk."
+   ],
+   "gaps": "FMT (faecal microbiota transplantation) indications and outcomes are not covered by the retained abstracts; add an FMT-specific source before approval.",
+   "sources": [
+    {
+     "pmid": "36157114",
+     "design": "review",
+     "year": "2022",
+     "journal": null,
+     "title": "Gut microbiota, inflammatory bowel disease and colorectal cancer"
+    },
+    {
+     "pmid": "38542689",
+     "design": "review",
+     "year": "2024",
+     "journal": null,
+     "title": "Prebiotics and Probiotics for Gastrointestinal Disorders"
+    },
+    {
+     "pmid": "38388570",
+     "design": "review",
+     "year": "2024",
+     "journal": null,
+     "title": "Ultra-processed foods and food additives in gut health and disease"
+    },
+    {
+     "pmid": "33208922",
+     "design": "review",
+     "year": "2021",
+     "journal": null,
+     "title": "Dietary fibre in gastrointestinal health and disease"
+    },
+    {
+     "pmid": "33049223",
+     "design": "review",
+     "year": "2020",
+     "journal": null,
+     "title": "Irritable bowel syndrome"
+    }
+   ]
+  }
+ },
+ {
+  "no": 758,
+  "topicId": "88b4bc9a-e5ae-486b-b072-162159a06cf1",
+  "topic": "Gynaecomastia: causes, drug-induced, physiological, investigation, management",
+  "cluster": "gynaecomastia causes drug-induced physiological investigation management",
+  "status": "draft_pending_clinician_review",
+  "dbEvidence": {
+   "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed, abstracts read before use. DB link validation pending export.",
+   "papersReviewed": 5,
+   "papersKept": [
+    {
+     "uid": "pubmed-37592101",
+     "title": "Gynecomastia.",
+     "year": "2023"
+    },
+    {
+     "uid": "pubmed-28613047",
+     "title": "Adolescent Gynecomastia.",
+     "year": "2017"
+    },
+    {
+     "uid": "pubmed-27145756",
+     "title": "Gynecomastia and hormones.",
+     "year": "2017"
+    }
+   ],
+   "papersDropped": [
+    {
+     "uid": "pubmed-33187340",
+     "title": "Nandrolone Decanoate: Use, Abuse and Side Effects.",
+     "reason": "Single-androgen abuse review; too narrow for the topic."
+    },
+    {
+     "uid": "pubmed-40699527",
+     "title": "Non-classical congenital adrenal hyperplasia: current insights.",
+     "reason": "NCCAH mimics; not gynaecomastia core."
+    }
+   ],
+   "guidelinesKept": [],
+   "guidelinesDropped": []
+  },
+  "page": {
+   "mentor_intro": "Gynaecomastia - benign proliferation of male breast tissue - is common at the physiological extremes of age and, when acquired, a signal to review drugs, hypogonadism and systemic disease. Most adolescent cases need reassurance alone; the clinical task is separating the benign from the pathological.",
+   "teaching_points": [
+    {
+     "claim": "Gynaecomastia reflects an altered androgen-to-estrogen ratio with contributions from growth hormone, IGF-1, prolactin and aromatase activity.",
+     "cites": [
+      "37592101"
+     ]
+    },
+    {
+     "claim": "Common causes are pubertal change, obesity, drugs and hypogonadism; liver and renal disease are among the systemic associations.",
+     "cites": [
+      "37592101"
+     ]
+    },
+    {
+     "claim": "Physiological gynaecomastia occurs in almost 25% of cases - newborns, adolescents and older men - and is benign and self-limited.",
+     "cites": [
+      "27145756"
+     ]
+    },
+    {
+     "claim": "In adolescents, most cases are idiopathic; if history and examination are reassuring, no further evaluation is required.",
+     "cites": [
+      "28613047"
+     ]
+    }
+   ],
+   "uncertainties": [
+    "Which drug-induced cases regress after withdrawal and over what timeframe.",
+    "When imaging or tissue sampling is warranted in persistent unilateral gynaecomastia."
+   ],
+   "mcq_angles": [
+    "Sorting the cause: physiological, drug-induced, hypogonadal and systemic disease.",
+    "The reassuring adolescent: criteria for no further work-up.",
+    "Drugs that induce gynaecomastia and the mechanism (androgen-estrogen balance).",
+    "When 'lump in a man' stops being gynaecomastia and needs imaging."
+   ],
+   "case_hooks": [
+    "16-year-old with bilateral breast tenderness and reassuring examination - investigate or reassure?",
+    "64-year-old on spironolactone and amiodarone with new breast tenderness - next step?"
+   ],
+   "gaps": "Definitive management (tamoxifen/raloxifene, surgery, radiotherapy) and the investigation pathway (hormones, imaging, when to biopsy) are not covered by the retained abstracts; add an endocrine-society-aligned source before approval.",
+   "sources": [
+    {
+     "pmid": "37592101",
+     "design": "review",
+     "year": "2023",
+     "journal": null,
+     "title": "Gynecomastia"
+    },
+    {
+     "pmid": "28613047",
+     "design": "review",
+     "year": "2017",
+     "journal": null,
+     "title": "Adolescent Gynecomastia"
+    },
+    {
+     "pmid": "27145756",
+     "design": "review",
+     "year": "2017",
+     "journal": null,
+     "title": "Gynecomastia and hormones"
+    }
+   ]
+  }
+ },
+ {
+  "no": 759,
+  "topicId": "daebe504-8406-44b1-a176-9114b0be0e19",
+  "topic": "haematological malignancy",
+  "cluster": "haematological malignancy",
+  "status": "draft_pending_clinician_review",
+  "dbEvidence": {
+   "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed, abstracts read before use. Topic is a broad umbrella; sources anchor its cross-cutting complications rather than disease-specific management. DB link validation pending export.",
+   "papersReviewed": 5,
+   "papersKept": [
+    {
+     "uid": "pubmed-39084261",
+     "title": "ASTCT Best Practice Considerations: Infection Prevention After CAR T-cell Therapy.",
+     "year": "2024"
+    },
+    {
+     "uid": "pubmed-32004485",
+     "title": "Prophylaxis and management of graft versus host disease after stem-cell transplantation for haematological malignancies.",
+     "year": "2020"
+    },
+    {
+     "uid": "pubmed-38134949",
+     "title": "Guidelines for the management of Toxoplasma gondii infection and disease in patients with haematological malignancies and HSCT.",
+     "year": "2024"
+    },
+    {
+     "uid": "pubmed-27207799",
+     "title": "Toxicities of chimeric antigen receptor T cells: recognition and management.",
+     "year": "2016"
+    }
+   ],
+   "papersDropped": [
+    {
+     "uid": "pubmed-40787890",
+     "title": "ACR Guidance Statement for Diagnosis and Management of VEXAS.",
+     "reason": "Rare somatic syndrome; adjacent rather than core haematological malignancy management."
+    }
+   ],
+   "guidelinesKept": [],
+   "guidelinesDropped": []
+  },
+  "page": {
+   "mentor_intro": "Modern haematological malignancy care is defined as much by its complications as by the diseases: CAR T-cell therapy and allogeneic transplantation have transformed outcomes while introducing distinct infection, toxicity and graft-versus-host disease challenges that cross disease boundaries.",
+   "teaching_points": [
+    {
+     "claim": "Infectious complications after CAR T-cell therapy are a significant driver of morbidity and non-relapse mortality; ASTCT best-practice guidance addresses prevention in this rapidly advancing field.",
+     "cites": [
+      "39084261"
+     ]
+    },
+    {
+     "claim": "GVHD remains a major contributor to mortality and morbidity after allogeneic stem-cell transplantation; EBMT guidance standardises prophylaxis and management approaches.",
+     "cites": [
+      "32004485"
+     ]
+    },
+    {
+     "claim": "Haematological and HSCT patients face life-threatening toxoplasmosis, mainly reactivation of latent cysts in seropositive patients - lack of TMP-SMX prophylaxis is a key risk factor.",
+     "cites": [
+      "38134949"
+     ]
+    },
+    {
+     "claim": "CAR T-cell toxicities, including cytokine release syndrome and unexpected organ damage reported in early cases, require structured recognition and management protocols.",
+     "cites": [
+      "27207799"
+     ]
+    }
+   ],
+   "uncertainties": [
+    "Optimal infection-prophylaxis duration and agent selection after CAR T across risk strata.",
+    "How best to prevent and treat GVHD when evidence from large trials remains limited."
+   ],
+   "mcq_angles": [
+    "Cross-cutting complications: infection prophylaxis after cellular therapy.",
+    "GVHD prevention strategies after allogeneic HSCT.",
+    "Opportunistic infection recognition (toxoplasmosis) in the immunocompromised haematology patient.",
+    "CAR T toxicities: recognition sequence and first-line management."
+   ],
+   "case_hooks": [
+    "Day 10 after CAR T for diffuse large B-cell lymphoma with fever and hypotension - CRS or infection?",
+    "Seropositive allogeneic transplant recipient not on TMP-SMX with encephalitis - what's the missed diagnosis?"
+   ],
+   "gaps": "Disease-specific management (lymphoma, leukaemia, myeloma) is out of scope for the retained abstracts given the umbrella topic; either narrow the topic or add disease-specific guideline sources before approval.",
+   "sources": [
+    {
+     "pmid": "39084261",
+     "design": "guideline",
+     "year": "2024",
+     "journal": null,
+     "title": "ASTCT Best Practice Considerations: Infection Prevention After CAR T-cell Therapy"
+    },
+    {
+     "pmid": "32004485",
+     "design": "guideline",
+     "year": "2020",
+     "journal": null,
+     "title": "Prophylaxis and management of graft versus host disease after stem-cell transplantation for haematological malignancies"
+    },
+    {
+     "pmid": "38134949",
+     "design": "review",
+     "year": "2024",
+     "journal": null,
+     "title": "Guidelines for the management of Toxoplasma gondii infection and disease in patients with haematological malignancies and HSCT"
+    },
+    {
+     "pmid": "27207799",
+     "design": "review",
+     "year": "2016",
+     "journal": null,
+     "title": "Toxicities of chimeric antigen receptor T cells: recognition and management"
+    }
+   ]
+  }
+ },
+ {
+  "no": 760,
+  "topicId": "23f59785-9d78-4120-8d95-136d6b79a58c",
+  "topic": "Haemodialysis Complications",
+  "cluster": "haemodialysis complications",
+  "status": "draft_pending_clinician_review",
+  "dbEvidence": {
+   "note": "Production link lists unavailable in this workspace; evidence sourced fresh from PubMed, abstracts read before use. Retained sources are access-focused; intradialytic complications are flagged as a gap. DB link validation pending export.",
+   "papersReviewed": 8,
+   "papersKept": [
+    {
+     "uid": "pubmed-32778223",
+     "title": "KDOQI Clinical Practice Guideline for Vascular Access: 2019 Update.",
+     "year": "2020"
+    },
+    {
+     "uid": "pubmed-38497953",
+     "title": "Arteriovenous Access for Hemodialysis: A Review.",
+     "year": "2024"
+    },
+    {
+     "uid": "pubmed-38519239",
+     "title": "Executive summary of the KDIGO 2024 CKD guideline.",
+     "year": "2024"
+    }
+   ],
+   "papersDropped": [
+    {
+     "uid": "pubmed-35264029",
+     "title": "ISPD peritonitis guideline recommendations: 2022 update.",
+     "reason": "Peritoneal dialysis modality; not haemodialysis complications."
+    },
+    {
+     "uid": "pubmed-32854844",
+     "title": "Contemporary Management of Severe AKI and Refractory Cardiorenal Syndrome.",
+     "reason": "AKI/cardiorenal RRT selection; upstream of chronic HD complications."
+    }
+   ],
+   "guidelinesKept": [],
+   "guidelinesDropped": []
+  },
+  "page": {
+   "mentor_intro": "Haemodialysis complications cluster around vascular access - the patient's lifeline and its commonest failure point - alongside cardiovascular instability and the broader burden of kidney failure. Access planning is the most evidence-rich and most examinable corner of this topic.",
+   "teaching_points": [
+    {
+     "claim": "The KDOQI 2019 vascular access update is the comprehensive evidence-based reference for haemodialysis access, replacing the 2006 version.",
+     "cites": [
+      "32778223"
+     ]
+    },
+    {
+     "claim": "Arteriovenous access (autogenous fistula or graft) requires an individualised strategy - the 'Patient Life-Plan' - that anticipates future access needs rather than reacting to failure.",
+     "cites": [
+      "38497953"
+     ]
+    },
+    {
+     "claim": "KDIGO's 2024 CKD guideline updates the broader evaluation and management frame in which dialysis complications sit.",
+     "cites": [
+      "38519239"
+     ]
+    }
+   ],
+   "uncertainties": [
+    "Optimal timing of access creation versus progression to dialysis dependence.",
+    "How to reduce the fistula-first default for patients where grafts or catheters serve better."
+   ],
+   "mcq_angles": [
+    "Access hierarchy: fistula versus graft versus catheter and their complication profiles.",
+    "The failing access: surveillance, stenosis and when to intervene.",
+    "Catheter-related bloodstream infection prevention in haemodialysis units.",
+    "Intradialytic hypotension: mechanism and management."
+   ],
+   "case_hooks": [
+    "AV fistula with falling flows and rising venous pressures - next investigation?",
+    "Tunnelled catheter patient with recurrent bacteraemia - how should access be re-planned?"
+   ],
+   "gaps": "The retained abstracts do not cover intradialytic hypotension, dialysis amyloidosis, electrolyte/fluid shifts or long-term cardiovascular outcomes; add an HD-complications-specific review before approval.",
+   "sources": [
+    {
+     "pmid": "32778223",
+     "design": "guideline",
+     "year": "2020",
+     "journal": null,
+     "title": "KDOQI Clinical Practice Guideline for Vascular Access: 2019 Update"
+    },
+    {
+     "pmid": "38497953",
+     "design": "review",
+     "year": "2024",
+     "journal": null,
+     "title": "Arteriovenous Access for Hemodialysis: A Review"
+    },
+    {
+     "pmid": "38519239",
+     "design": "guideline",
+     "year": "2024",
+     "journal": null,
+     "title": "Executive summary of the KDIGO 2024 Clinical Practice Guideline for the Evaluation and Management of CKD"
+    }
+   ]
+  }
+ }
+]
