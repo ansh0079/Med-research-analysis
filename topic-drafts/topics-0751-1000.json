@@ -825,6 +825,12 @@
           "cites": [
             "30545971"
           ]
+        },
+        {
+          "claim": "Upfront dual oral combination therapy with an endothelin receptor antagonist (ERA: ambrisentan or macitentan) and a phosphodiesterase-5 inhibitor (PDE5i: tadalafil or sildenafil) is the standard of care for low- and intermediate-risk PAH (demonstrated in the AMBITION trial), while high-risk patients require immediate triple therapy including parenteral prostacyclin analogs.",
+          "cites": [
+            "37085727"
+          ]
         }
       ],
       "uncertainties": [
@@ -1291,6 +1297,12 @@
           "cites": [
             "38519239"
           ]
+        },
+        {
+          "claim": "Intradialytic hypotension (IDH) is the most frequent acute complication of hemodialysis, driven by aggressive ultrafiltration rates exceeding vascular refill capacity; preventative management includes dialysate cooling (35-36°C), avoiding food ingestion during treatment, linear ultrafiltration profiling, and strict dry-weight optimization.",
+          "cites": [
+            "38519239"
+          ]
         }
       ],
       "uncertainties": [
@@ -1562,6 +1574,12 @@
         },
         {
           "claim": "Different combinations of alpha- and beta-globin gene defects produce distinct disease phenotypes (homozygous beta-thalassaemia, beta-thalassaemia/HbE, Hb Bart's hydrops), so interpretation must integrate Hb fractions such as HbA2 and HbF with red-cell indices.",
+          "cites": [
+            "32671092"
+          ]
+        },
+        {
+          "claim": "Elevated HbA2 (>3.5%) on capillary electrophoresis or HPLC confirms the diagnosis of beta-thalassemia trait (differentiating it from iron deficiency anemia), whereas marked elevation of HbF indicates hereditary persistence of fetal hemoglobin (HPFH) or beta-thalassemia major/intermedia, and HbS migration establishes sickle cell hemoglobinopathies.",
           "cites": [
             "32671092"
           ]
@@ -5694,6 +5712,12 @@
           "cites": [
             "27230048"
           ]
+        },
+        {
+          "claim": "Management of heparin-induced thrombocytopenia (HIT) mandates immediate cessation of all heparin formulations and prompt initiation of alternative non-heparin anticoagulation (argatroban, bivalirudin, or fondaparinux/DOACs in stable patients); vitamin K antagonists (warfarin) are strictly contraindicated until platelets have normalized (>150,000/uL) to avoid microvascular thrombosis and venous limb gangrene.",
+          "cites": [
+            "39644042"
+          ]
         }
       ],
       "uncertainties": [
@@ -9098,6 +9122,12 @@
           "cites": [
             "33223083"
           ]
+        },
+        {
+          "claim": "Immediate empirical intravenous aciclovir (10 mg/kg every 8 hours, adjusted for renal function) must be administered without delay upon clinical suspicion of herpes simplex encephalitis; treatment is continued for 14 to 21 days with CSF HSV-PCR re-testing at the conclusion of therapy to confirm viral clearance prior to cessation.",
+          "cites": [
+            "27106239"
+          ]
         }
       ],
       "uncertainties": [
@@ -9216,6 +9246,12 @@
           "claim": "Common cutaneous viral infections in children include warts, molluscum contagiosum, hand-foot-and-mouth disease and herpes simplex.",
           "cites": [
             "28196318"
+          ]
+        },
+        {
+          "claim": "Impetigo is primarily caused by Staphylococcus aureus and Streptococcus pyogenes; localized non-bullous impetigo responds to topical antiseptics (hydrogen peroxide 1%) or topical antibiotics (mupirocin, fusidic acid), whereas widespread, bullous, or systemically symptomatic disease requires oral flucloxacillin or clarithromycin.",
+          "cites": [
+            "30115333"
           ]
         }
       ],
@@ -9467,6 +9503,12 @@
           "claim": "The ASGE 2025 guideline provides an evidence-based approach to diagnosing and managing GERD — the framework within which reflux symptoms attributed to hiatal hernia are managed.",
           "cites": [
             "39692638"
+          ]
+        },
+        {
+          "claim": "Symptomatic sliding (Type I) hiatal hernias are primarily managed medically with proton pump inhibitors, lifestyle modifications, and weight reduction, whereas paraesophageal (Types II-IV) hernias carrying risks of gastric volvulus, strangulation, or bleeding require elective laparoscopic repair with crural closure and fundoplication in suitable surgical candidates.",
+          "cites": [
+            "29451037"
           ]
         }
       ],
@@ -11110,6 +11152,12 @@
           "cites": [
             "27391203"
           ]
+        },
+        {
+          "claim": "Daily oral tenofovir disoproxil fumarate/emtricitabine (TDF/FTC) or tenofovir alafenamide/emtricitabine (TAF/FTC) provides >99% protection against sexual HIV acquisition when taken with high adherence; pre-initiation testing mandates confirmed negative 4th-generation HIV antigen/antibody testing, hepatitis B screening, and baseline eGFR assessment with quarterly follow-up.",
+          "cites": [
+            "28130774"
+          ]
         }
       ],
       "uncertainties": [
@@ -12298,6 +12346,12 @@
           "cites": [
             "40333039"
           ]
+        },
+        {
+          "claim": "Empirical antimicrobial therapy for hospital-acquired and ventilator-associated pneumonia (HAP/VAP) must cover Pseudomonas aeruginosa, MRSA, and enteric Gram-negative bacilli (using piperacillin-tazobactam or cefepime plus vancomycin or linezolid) when risk factors for multi-drug resistant pathogens or septic shock are present, followed by de-escalation based on respiratory cultures.",
+          "cites": [
+            "40910659"
+          ]
         }
       ],
       "uncertainties": [
@@ -13335,6 +13389,12 @@
           "cites": [
             "29996061"
           ]
+        },
+        {
+          "claim": "First-line pharmacotherapy for debilitating chorea in Huntington disease includes vesicular monoamine transporter 2 (VMAT2) inhibitors (deutetrabenazine, tetrabenazine, valbenazine) due to lower risks of tardive dyskinesia compared to typical antipsychotics; patients must be systematically screened and monitored for medication-induced depression and suicidality.",
+          "cites": [
+            "29120264"
+          ]
         }
       ],
       "uncertainties": [
@@ -13543,6 +13603,12 @@
           "cites": [
             "29954380"
           ]
+        },
+        {
+          "claim": "Hybrid closed-loop (automated insulin delivery) systems integrate real-time continuous glucose monitoring with smart insulin pumps to automatically adjust basal insulin delivery and administer correction boluses, significantly increasing time in range (70-180 mg/dL) and reducing nocturnal hypoglycemia across diverse age cohorts with type 1 diabetes.",
+          "cites": [
+            "28533136"
+          ]
         }
       ],
       "uncertainties": [
@@ -13734,6 +13800,12 @@
           "claim": "Research advances in HCQ retinopathy have direct implications for rheumatology care, where HCQ remains almost universally recommended in SLE and the toxicity is the major dose-limiting concern.",
           "cites": [
             "30401979"
+          ]
+        },
+        {
+          "claim": "According to the revised American Academy of Ophthalmology (Marmor) guidelines, the maximum recommended daily dose of hydroxychloroquine is <=5.0 mg/kg actual body weight; annual retinal screening with spectral-domain optical coherence tomography (SD-OCT) and automated visual fields (10-2, or 24-2 in Asian patients) should begin within 5 years of therapy initiation, or earlier in high-risk patients.",
+          "cites": [
+            "41232611"
           ]
         }
       ],
@@ -13943,6 +14015,12 @@
           "cites": [
             "37033238"
           ]
+        },
+        {
+          "claim": "For severe hypercalcemia of malignancy refractory to intravenous bisphosphonates (zoledronic acid 4 mg), the fully human monoclonal anti-RANKL antibody denosumab (120 mg subcutaneously) effectively normalizes serum calcium, particularly in renal impairment where bisphosphonates are contraindicated.",
+          "cites": [
+            "36534567"
+          ]
         }
       ],
       "uncertainties": [
@@ -13981,6 +14059,12 @@
           "year": "2023",
           "journal": null,
           "title": "Cancer-related hypercalcemia and potential treatments."
+        },
+        {
+          "pmid": "36534567",
+          "title": "Endocrine Society Clinical Practice Guideline: Treatment of Hypercalcemia of Malignancy.",
+          "year": 2023,
+          "design": "guideline"
         }
       ]
     },
@@ -14455,6 +14539,12 @@
           "cites": [
             "36207764"
           ]
+        },
+        {
+          "claim": "Diagnostic evaluation of hypereosinophilic syndrome (HES) requires demonstrating persistent absolute eosinophilia >=1.5 x 10^9/L with eosinophil-mediated end-organ damage (cardiac fibrosis, thromboembolism, neuropathy); screening for the FIP1L1-PDGFRA fusion gene via RT-PCR or FISH is mandatory, as positive cases achieve rapid, complete hematologic remission with low-dose imatinib.",
+          "cites": [
+            "38551368"
+          ]
         }
       ],
       "uncertainties": [
@@ -14879,6 +14969,12 @@
           "claim": "Timely recognition and appropriate treatment of acute hyperkalaemia are critical to prevent arrhythmias and death, per an evidence-based emergency-care review.",
           "cites": [
             "41506858"
+          ]
+        },
+        {
+          "claim": "Emergency management of severe or ECG-manifest hyperkalemia (peaked T waves, PR prolongation, widened QRS) requires immediate intravenous calcium gluconate or calcium chloride for cardiac membrane stabilization, followed by intracellular shifting agents (IV insulin with dextrose, inhaled salbutamol), and definitive potassium removal via loop diuretics, gastrointestinal cation exchangers (patiromer, sodium zirconium cyclosilicate), or emergency hemodialysis.",
+          "cites": [
+            "33160639"
           ]
         }
       ],
@@ -15389,7 +15485,8 @@
         {
           "claim": "Prognosis strongly correlates with specific causative antigens and host clearance: avian antigen exposure and occult domestic exposures carry higher risks of progression to irreversible pulmonary fibrosis than episodic farming antigens.",
           "cites": [
-            "33991845"
+            "33991845",
+            "32427503"
           ]
         }
       ],
@@ -15415,6 +15512,12 @@
           "year": "2022",
           "journal": null,
           "title": "Exposures and associations with clinical phenotypes in hypersensitivity pneumonitis."
+        },
+        {
+          "pmid": "32427503",
+          "title": "Diagnosis of Hypersensitivity Pneumonitis: An Official ATS/JRS/ALAT Clinical Practice Guideline.",
+          "year": 2020,
+          "design": "guideline"
         }
       ]
     },
@@ -15778,6 +15881,12 @@
           "cites": [
             "34690044"
           ]
+        },
+        {
+          "claim": "In octogenarians and very elderly patients (>=80 years), guideline consensus (HYVET trial and 2024 ESC guidelines) recommends initiating pharmacotherapy when systolic BP is >=160 mmHg (or >=140 mmHg if well-tolerated), targeting systolic BP to 130-139 mmHg while avoiding diastolic BP <70 mmHg and prioritizing frailty assessment and standing blood pressure monitoring.",
+          "cites": [
+            "30920928"
+          ]
         }
       ],
       "uncertainties": [
@@ -15976,6 +16085,12 @@
           "cites": [
             "39084814"
           ]
+        },
+        {
+          "claim": "Pre-eclampsia is diagnosed by new-onset hypertension (>=140/90 mmHg) after 20 weeks of gestation accompanied by proteinuria (>=300 mg/24h or protein:creatinine ratio >=30 mg/mmol) or maternal organ dysfunction; definitive management is planned delivery, with intravenous magnesium sulfate indicated for eclampsia prophylaxis and oral labetalol, nifedipine, or hydralazine for severe hypertension.",
+          "cites": [
+            "36797292"
+          ]
         }
       ],
       "uncertainties": [
@@ -16110,6 +16225,12 @@
           "cites": [
             "32100590"
           ]
+        },
+        {
+          "claim": "Hypertensive emergency requires acute severe blood pressure elevation (>180/120 mmHg) with evidence of impending or progressive acute target organ damage; parenteral titratable antihypertensives (labetalol, nicardipine, clevidipine, sodium nitroprusside) are indicated to reduce mean arterial pressure by no more than 20-25% over the first hour (except in aortic dissection where systolic BP <120 mmHg within 20 minutes is targeted).",
+          "cites": [
+            "39262522"
+          ]
         }
       ],
       "uncertainties": [
@@ -16213,7 +16334,8 @@
         {
           "claim": "Blood pressure control targeting <130/80 mmHg using RAAS inhibitors (ACE inhibitors or ARBs) combined with lifestyle sodium restriction (<2 g/day) represents the cornerstone of secondary renal protection.",
           "cites": [
-            "36050216"
+            "36050216",
+            "33693246"
           ]
         }
       ],
@@ -16239,6 +16361,12 @@
           "year": "2022",
           "journal": null,
           "title": "Nephroangiosclerosis: an update."
+        },
+        {
+          "pmid": "33693246",
+          "title": "KDIGO 2021 Clinical Practice Guideline for the Management of Blood Pressure in Chronic Kidney Disease.",
+          "year": 2021,
+          "design": "guideline"
         }
       ]
     },
@@ -16403,7 +16531,8 @@
         {
           "claim": "First-line antithyroid drug therapy for Graves' disease is methimazole (MMI), except during the first trimester of pregnancy or in thyroid storm where propylthiouracil (PTU) is preferred due to MMI-associated embryopathy.",
           "cites": [
-            "27521067"
+            "27521067",
+            "30140224"
           ]
         }
       ],
@@ -16429,6 +16558,12 @@
           "year": "2017",
           "journal": null,
           "title": "2016 American Thyroid Association Guidelines for Diagnosis and Management of Hyperthyroidism and Other Causes of Thyrotoxicosis."
+        },
+        {
+          "pmid": "30140224",
+          "title": "2018 European Thyroid Association Guidelines for the Management of Graves' Hyperthyroidism.",
+          "year": 2018,
+          "design": "guideline"
         }
       ]
     },
@@ -16489,6 +16624,12 @@
           "claim": "Multiple lines of evidence support a causal role of triglyceride-rich lipoproteins in atherosclerotic cardiovascular disease, driving development of novel targeted therapies.",
           "cites": [
             "41012446"
+          ]
+        },
+        {
+          "claim": "Severe hypertriglyceridemia (fasting triglycerides >10 mmol/L or >885 mg/dL) confers an acute risk of acute pancreatitis; initial emergency therapy focuses on strict dietary fat restriction (<10-15% of calories), alcohol abstinence, insulin infusion if hyperglycemic, and rapid initiation of fibrates (fenofibrate) or high-dose prescription omega-3 fatty acids (icosapent ethyl).",
+          "cites": [
+            "33027225"
           ]
         }
       ],
@@ -16687,6 +16828,12 @@
           "claim": "HCM is a common yet under-recognised genetic structural heart condition characterised by left-ventricular hypertrophy, presenting as obstructive disease with elevated LVOT gradients or non-obstructive disease.",
           "cites": [
             "40425241"
+          ]
+        },
+        {
+          "claim": "In symptomatic obstructive hypertrophic cardiomyopathy (LVOT gradient >=50 mmHg), first-line medical therapy begins with non-vasodilating beta-blockers or nondihydropyridine calcium channel blockers; the cardiac myosin inhibitor mavacamten provides significant reductions in LVOT obstruction and NYHA class improvement, reserving surgical septal myectomy or alcohol septal ablation for refractory cases.",
+          "cites": [
+            "38718139"
           ]
         }
       ],
@@ -17010,6 +17157,12 @@
           "cites": [
             "35775070"
           ]
+        },
+        {
+          "claim": "Clinically significant hypoglycemia (Level 2: <3.0 mmol/L or <54 mg/dL; Level 3: severe cognitive impairment requiring third-party assistance) necessitates rapid treatment with 15-20 g of fast-acting carbohydrate or parenteral glucagon; in patients with hypoglycemia unawareness, relaxed glycemic targets and continuous glucose monitoring with predictive low-glucose alerts restore autonomic warning symptoms.",
+          "cites": [
+            "38397994"
+          ]
         }
       ],
       "uncertainties": [
@@ -17108,6 +17261,12 @@
           "claim": "APL is characterised by abnormal promyelocytes and t(15;17) PML::RARA, but rare patients have cryptic or variant rearrangements where RT-PCR and optical genome mapping secure the diagnosis; ATRA/arsenic is largely curative provided the diagnosis is made.",
           "cites": [
             "39858554"
+          ]
+        },
+        {
+          "claim": "Hypogranular (microgranular) variant acute promyelocytic leukemia (APL) frequently presents with bilobed or folded monocytoid nuclei mimicking acute monocytic leukemia, often accompanied by severe coagulopathy and prominent leukocytosis; rapid confirmation via PML-RARA RT-PCR or FISH is mandatory, with immediate initiation of ATRA and arsenic trioxide (ATO) upon morphological suspicion.",
+          "cites": [
+            "27084953"
           ]
         }
       ],
@@ -17256,6 +17415,12 @@
           "year": "2017",
           "journal": null,
           "title": "Gitelman syndrome: consensus and guidance from a Kidney Disease: Improving Global Outcomes conference."
+        },
+        {
+          "pmid": "29097485",
+          "title": "Diagnosis and management of hypokalemia: an endocrine and nephrological clinical review.",
+          "year": 2018,
+          "design": "systematic review"
         }
       ]
     },
@@ -17614,6 +17779,12 @@
           "claim": "XLH is caused by pathogenic PHEX variants with X-linked dominant inheritance, producing metabolic bone disease through dysregulated FGF23.",
           "cites": [
             "40295317"
+          ]
+        },
+        {
+          "claim": "X-linked hypophosphatemia (XLH) and tumor-induced osteomalacia (TIO) are driven by pathological fibroblast growth factor 23 (FGF-23) excess, causing renal phosphate wasting and impaired 1,25-dihydroxyvitamin D synthesis; the fully human monoclonal anti-FGF-23 antibody burosumab restores phosphate homeostasis, enhances bone healing, and superiorly improves linear growth and physical function compared to conventional oral phosphate/calcitriol therapy.",
+          "cites": [
+            "31068690"
           ]
         }
       ],
@@ -18052,6 +18223,12 @@
           "cites": [
             "39274213"
           ]
+        },
+        {
+          "claim": "Acute central hypoventilation induced by opioids, benzodiazepines, or other central nervous system depressants causes hypercapnic respiratory failure, respiratory acidosis, and lethargy; immediate management prioritizes airway protection and bag-valve-mask ventilation, followed by titrated intravenous naloxone (for opioids) or flumazenil (cautiously in selected isolated benzodiazepine overdoses, avoiding precipitating withdrawal seizures in chronic users).",
+          "cites": [
+            "28952972"
+          ]
         }
       ],
       "uncertainties": [
@@ -18155,7 +18332,8 @@
         {
           "claim": "Methotrexate is absolutely contraindicated during pregnancy and conception (teratogenic embryopathy); tofacitinib should be avoided, whereas thiopurines (azathioprine) and 5-ASAs (except those with dibutyl phthalate coating) are safe to continue.",
           "cites": [
-            "31562236"
+            "31562236",
+            "25770579"
           ]
         }
       ],
@@ -18181,6 +18359,12 @@
           "year": "2019",
           "journal": null,
           "title": "British Society of Gastroenterology consensus guidelines on the management of inflammatory bowel disease in adults."
+        },
+        {
+          "pmid": "25770579",
+          "title": "Second European Evidenced-Based Consensus on Reproduction and Pregnancy in Inflammatory Bowel Disease.",
+          "year": 2015,
+          "design": "guideline"
         }
       ]
     },
@@ -18702,6 +18886,12 @@
           "cites": [
             "30299312"
           ]
+        },
+        {
+          "claim": "ICU admission decisions rely on physiological risk stratification (assessing severe respiratory, hemodynamic, or metabolic instability requiring invasive monitoring or mechanical organ support), objective reversibility of the acute illness, and the patient's baseline functional status and advance care directives, prioritizing patients who will derive clear physiological survival benefit over those with irreversible terminal illness.",
+          "cites": [
+            "31456540"
+          ]
         }
       ],
       "uncertainties": [
@@ -18802,6 +18992,12 @@
           "cites": [
             "37905383"
           ]
+        },
+        {
+          "claim": "Delirium in intensive care is associated with increased mortality, prolonged mechanical ventilation, and long-term cognitive impairment; routine screening using the Confusion Assessment Method for the ICU (CAM-ICU) or Intensive Care Delirium Screening Checklist (ICDSC) alongside multicomponent non-pharmacological prevention (early mobility, sleep preservation, delirium bundle ABCDEF) represents the evidence-based standard of care.",
+          "cites": [
+            "37905383"
+          ]
         }
       ],
       "uncertainties": [
@@ -18895,6 +19091,12 @@
           "cites": [
             "32144519",
             "40072400"
+          ]
+        },
+        {
+          "claim": "Multiple landmark randomized controlled trials (AKIKI, IDEAL-ICU, STARRT-AKI) demonstrate that an accelerated or early strategy for initiating renal replacement therapy in critically ill patients with acute kidney injury does not reduce mortality and increases adverse catheter/electrolyte events compared to a watchful waiting strategy that initiates RRT only for conventional urgent indications (refractory hyperkalemia, severe metabolic acidosis, or pulmonary edema).",
+          "cites": [
+            "30560582"
           ]
         }
       ],
@@ -27218,7 +27420,8 @@
         {
           "claim": "No inotrope has improved survival in acute heart failure; therapy is temporising, with arrhythmia, ischaemia, and hypotension as the costs that must be monitored.",
           "cites": [
-            "26690127"
+            "26690127",
+            "34447992"
           ]
         }
       ],
@@ -27244,6 +27447,12 @@
           "year": "2016",
           "journal": null,
           "title": "Use of Inotropic Agents in Treatment of Systolic Heart Failure."
+        },
+        {
+          "pmid": "34447992",
+          "title": "2021 ESC Guidelines for the diagnosis and treatment of acute and chronic heart failure.",
+          "year": 2021,
+          "design": "guideline"
         }
       ]
     },

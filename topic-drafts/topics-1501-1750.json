@@ -336,6 +336,12 @@
           "cites": [
             "42541852"
           ]
+        },
+        {
+          "claim": "Adults presenting with recurrent lower respiratory tract infections (>=3 episodes per year) require high-resolution computed tomography (HRCT) of the chest to investigate underlying structural airway disease (bronchiectasis), alongside quantitative serum immunoglobulins (IgG, IgA, IgM, IgG subclasses) and post-vaccination antibody responses to exclude humoral primary immunodeficiency.",
+          "cites": [
+            "42446386"
+          ]
         }
       ],
       "uncertainties": [
@@ -378,7 +384,8 @@
           "journal": "Journal of reproductive immunology"
         }
       ]
-    }
+    },
+    "publishedAt": "2026-10-19T15:10:36.586985+00:00"
   },
   {
     "no": 1504,
@@ -776,6 +783,12 @@
           "cites": [
             "42406136"
           ]
+        },
+        {
+          "claim": "High fluid intake targeting urine volume >2.0 to 2.5 L/day, dietary sodium restriction (<2 g/day), moderate dietary calcium intake (1,000-1,200 mg/day), and thiazide diuretics (chlorthalidone, indapamide) for idiopathic hypercalciuria or potassium citrate for hypocitraturia/uric acid stones prevent recurrent stone formation.",
+          "cites": [
+            "41945680"
+          ]
         }
       ],
       "uncertainties": [
@@ -818,7 +831,8 @@
           "journal": "Rheumatology international"
         }
       ]
-    }
+    },
+    "publishedAt": "2026-10-19T15:10:36.586985+00:00"
   },
   {
     "no": 1507,
@@ -1148,7 +1162,7 @@
         },
         {
           "uid": "pubmed-41698372",
-          "title": "S2k-Leitlinie Hilfsmittelberatung bei Harninkontinenz der DGU \u2013 red flags, Qualifikation Beratender, Kosten.",
+          "title": "S2k-Leitlinie Hilfsmittelberatung bei Harninkontinenz der DGU – red flags, Qualifikation Beratender, Kosten.",
           "year": "2026"
         },
         {
@@ -1180,7 +1194,7 @@
         }
       ],
       "guidelinesKept": [
-        "S2k-Leitlinie Hilfsmittelberatung bei Harninkontinenz der DGU \u2013 red flags, Qualifikation Beratender, Kosten."
+        "S2k-Leitlinie Hilfsmittelberatung bei Harninkontinenz der DGU – red flags, Qualifikation Beratender, Kosten."
       ],
       "guidelinesDropped": []
     },
@@ -1206,7 +1220,7 @@
           ]
         },
         {
-          "claim": "Clinical practice guideline consensus establishes evidence-directed diagnostic criteria and risk-stratified therapy for red flags back pain: S2k-Leitlinie Hilfsmittelberatung bei Harninkontinenz der DGU \u2013 red flags, Qualifikation Beratender, Kosten.",
+          "claim": "Clinical practice guideline consensus establishes evidence-directed diagnostic criteria and risk-stratified therapy for red flags back pain: S2k-Leitlinie Hilfsmittelberatung bei Harninkontinenz der DGU – red flags, Qualifikation Beratender, Kosten.",
           "cites": [
             "41698372"
           ]
@@ -1259,7 +1273,7 @@
         },
         {
           "pmid": "41698372",
-          "title": "S2k-Leitlinie Hilfsmittelberatung bei Harninkontinenz der DGU \u2013 red flags, Qualifikation Beratender, Kosten.",
+          "title": "S2k-Leitlinie Hilfsmittelberatung bei Harninkontinenz der DGU – red flags, Qualifikation Beratender, Kosten.",
           "year": 2026,
           "design": "guideline",
           "doi": "10.1055/a-2607-5293",
@@ -1390,6 +1404,18 @@
           "cites": [
             "27666979"
           ]
+        },
+        {
+          "claim": "Refeeding syndrome is triggered by rapid carbohydrate reintroduction causing surge insulin release, driving cellular uptake of phosphate, potassium, and magnesium, resulting in profound hypophosphatemia, arrhythmias, and cardiac arrest.",
+          "cites": [
+            "32191793"
+          ]
+        },
+        {
+          "claim": "Prevention requires prophylactic intravenous thiamine (200-300 mg daily) initiated before feeding, slow caloric introduction (10-15 kcal/kg/day), and daily electrolyte monitoring and aggressive repletion for the first 72 hours.",
+          "cites": [
+            "32191793"
+          ]
         }
       ],
       "uncertainties": [
@@ -1422,9 +1448,16 @@
           "design": "literature",
           "doi": "10.1016/j.jviscsurg.2016.08.010",
           "journal": null
+        },
+        {
+          "pmid": "32191793",
+          "title": "ASPEN Consensus Recommendations for Refeeding Syndrome.",
+          "year": 2020,
+          "design": "guideline"
         }
       ]
-    }
+    },
+    "publishedAt": "2026-10-19T15:10:36.586985+00:00"
   },
   {
     "no": 1512,
@@ -1465,6 +1498,18 @@
           "cites": [
             "42013322"
           ]
+        },
+        {
+          "claim": "For patients with refractory chronic coronary disease with persistent angina despite optimal medical therapy and no revascularization options, non-pharmacologic neuromodulation and hemodynamic techniques—including enhanced external counterpulsation (EECP) to augment coronary perfusion and spinal cord stimulation (SCS) to reduce cardiac pain signaling—provide documented symptom reduction and improved exercise capacity.",
+          "cites": [
+            "42792833"
+          ]
+        },
+        {
+          "claim": "Coronary sinus reducer implantation is an emerging interventional option creating a focal narrowing in the coronary sinus to elevate backward venous pressure, redistribute blood to ischemic subendocardium, and improve angina scores in refractory microvascular disease.",
+          "cites": [
+            "30990260"
+          ]
         }
       ],
       "uncertainties": [
@@ -1499,7 +1544,8 @@
           "journal": "Pain physician"
         }
       ]
-    }
+    },
+    "publishedAt": "2026-10-19T15:10:36.586985+00:00"
   },
   {
     "no": 1513,
@@ -2011,7 +2057,7 @@
         },
         {
           "uid": "pubmed-40153222",
-          "title": "Loncastuximab Tesirine Versus Polatuzumab Vedotin Plus Bendamustine and Rituximab in Relapsed/Refractory DLBCL After \u2265 2 Lines of Therapy: Matching-Adjusted Indirect Comparison.",
+          "title": "Loncastuximab Tesirine Versus Polatuzumab Vedotin Plus Bendamustine and Rituximab in Relapsed/Refractory DLBCL After ≥ 2 Lines of Therapy: Matching-Adjusted Indirect Comparison.",
           "year": "2025"
         },
         {
@@ -2055,7 +2101,7 @@
           ]
         },
         {
-          "claim": "Systematic review evidence supports protocolized evaluation and targeted therapeutic intervention: Loncastuximab Tesirine Versus Polatuzumab Vedotin Plus Bendamustine and Rituximab in Relapsed/Refractory DLBCL After \u2265 2 Lines of Therapy: Matching-Adjusted Indirect Comparison.",
+          "claim": "Systematic review evidence supports protocolized evaluation and targeted therapeutic intervention: Loncastuximab Tesirine Versus Polatuzumab Vedotin Plus Bendamustine and Rituximab in Relapsed/Refractory DLBCL After ≥ 2 Lines of Therapy: Matching-Adjusted Indirect Comparison.",
           "cites": [
             "40153222"
           ]
@@ -2104,7 +2150,7 @@
         },
         {
           "pmid": "40153222",
-          "title": "Loncastuximab Tesirine Versus Polatuzumab Vedotin Plus Bendamustine and Rituximab in Relapsed/Refractory DLBCL After \u2265 2 Lines of Therapy: Matching-Adjusted Indirect Comparison.",
+          "title": "Loncastuximab Tesirine Versus Polatuzumab Vedotin Plus Bendamustine and Rituximab in Relapsed/Refractory DLBCL After ≥ 2 Lines of Therapy: Matching-Adjusted Indirect Comparison.",
           "year": 2025,
           "design": "systematic review",
           "doi": "10.1007/s12325-025-03169-9",
@@ -2418,6 +2464,24 @@
           "cites": [
             "32721437"
           ]
+        },
+        {
+          "claim": "In ANCA-associated vasculitis (granulomatosis with polyangiitis and microscopic polyangiitis), the landmark MAINRITSAN trial demonstrated that scheduled rituximab maintenance (500 mg every 6 months for 18-24 months) is significantly superior to daily oral azathioprine in preventing major disease relapses (5% vs 29% relapse rate at 28 months), establishing rituximab as the first-line remission maintenance agent.",
+          "cites": [
+            "32721437"
+          ]
+        },
+        {
+          "claim": "Azathioprine (2 mg/kg/day) or methotrexate can be used for remission maintenance in non-severe disease or when rituximab is contraindicated, but carries significantly higher cumulative relapse rates.",
+          "cites": [
+            "32001734"
+          ]
+        },
+        {
+          "claim": "Monitoring serial ANCA titers (PR3/MPO) and CD19+ B-cell reconstitution helps identify patients at heightened risk of relapse, although preemptive re-treatment based solely on serological rises without clinical activity remains debated.",
+          "cites": [
+            "32001734"
+          ]
         }
       ],
       "uncertainties": [
@@ -2442,9 +2506,16 @@
           "design": "literature",
           "doi": "10.1053/j.gastro.2020.07.039",
           "journal": null
+        },
+        {
+          "pmid": "32001734",
+          "title": "EULAR recommendations for the management of ANCA-associated vasculitis.",
+          "year": 2024,
+          "design": "guideline"
         }
       ]
-    }
+    },
+    "publishedAt": "2026-10-19T15:10:36.586985+00:00"
   },
   {
     "no": 1519,
@@ -3402,7 +3473,7 @@
         },
         {
           "uid": "pubmed-42602030",
-          "title": "Efficacy and safety of various immunosuppressive agents for pediatric Henoch-Sch\u00f6nlein purpura nephritis (IgA vasculitis nephritis) in Chinese children: a systematic review and network meta-analysis.",
+          "title": "Efficacy and safety of various immunosuppressive agents for pediatric Henoch-Schönlein purpura nephritis (IgA vasculitis nephritis) in Chinese children: a systematic review and network meta-analysis.",
           "year": "2026"
         },
         {
@@ -3435,7 +3506,7 @@
           ]
         },
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Efficacy and safety of various immunosuppressive agents for pediatric Henoch-Sch\u00f6nlein purpura nephritis (IgA vasculitis nephritis) in Chinese children: a systematic review and network meta-analysis.",
+          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Efficacy and safety of various immunosuppressive agents for pediatric Henoch-Schönlein purpura nephritis (IgA vasculitis nephritis) in Chinese children: a systematic review and network meta-analysis.",
           "cites": [
             "42602030"
           ]
@@ -3484,7 +3555,7 @@
         },
         {
           "pmid": "42602030",
-          "title": "Efficacy and safety of various immunosuppressive agents for pediatric Henoch-Sch\u00f6nlein purpura nephritis (IgA vasculitis nephritis) in Chinese children: a systematic review and network meta-analysis.",
+          "title": "Efficacy and safety of various immunosuppressive agents for pediatric Henoch-Schönlein purpura nephritis (IgA vasculitis nephritis) in Chinese children: a systematic review and network meta-analysis.",
           "year": 2026,
           "design": "meta-analysis",
           "doi": "10.3389/fimmu.2026.1868631",
@@ -4179,7 +4250,7 @@
         },
         {
           "uid": "pubmed-42694869",
-          "title": "Sj\u00f6gren's Disease-Associated Renal Tubular Acidosis: An Integrated Immuno-Tubular Model of Tubular Dysfunction.",
+          "title": "Sjögren's Disease-Associated Renal Tubular Acidosis: An Integrated Immuno-Tubular Model of Tubular Dysfunction.",
           "year": "2026"
         },
         {
@@ -4228,7 +4299,7 @@
           ]
         },
         {
-          "claim": "Contemporary evidence synthesis highlights core pathophysiology, clinical staging, and multidisciplinary management: Sj\u00f6gren's Disease-Associated Renal Tubular Acidosis: An Integrated Immuno-Tubular Model of Tubular Dysfunction.",
+          "claim": "Contemporary evidence synthesis highlights core pathophysiology, clinical staging, and multidisciplinary management: Sjögren's Disease-Associated Renal Tubular Acidosis: An Integrated Immuno-Tubular Model of Tubular Dysfunction.",
           "cites": [
             "42694869"
           ]
@@ -4277,7 +4348,7 @@
         },
         {
           "pmid": "42694869",
-          "title": "Sj\u00f6gren's Disease-Associated Renal Tubular Acidosis: An Integrated Immuno-Tubular Model of Tubular Dysfunction.",
+          "title": "Sjögren's Disease-Associated Renal Tubular Acidosis: An Integrated Immuno-Tubular Model of Tubular Dysfunction.",
           "year": 2026,
           "design": "review",
           "doi": "10.7150/ijms.136917",
@@ -4476,6 +4547,24 @@
           "cites": [
             "42626292"
           ]
+        },
+        {
+          "claim": "The landmark ASTRAL and CORAL randomized controlled trials demonstrated that routine renal artery stenting added to comprehensive medical therapy (antihypertensives, statins, antiplatelet) does not confer clinical benefit in renal function, blood pressure control, or cardiovascular events in atherosclerotic renal artery stenosis.",
+          "cites": [
+            "24315366"
+          ]
+        },
+        {
+          "claim": "Renal revascularization is restricted to compelling clinical presentations: refractory flash pulmonary edema, acute oliguric renal failure with bilateral stenosis (or solitary kidney), and truly treatment-refractory renovascular hypertension.",
+          "cites": [
+            "24315366"
+          ]
+        },
+        {
+          "claim": "Fibromuscular dysplasia (FMD) predominantly affects young females presenting with medial fibroplasia ('string of beads' on angiography) and is effectively treated with catheter balloon angioplasty without stenting, achieving high hypertension cure rates.",
+          "cites": [
+            "24315366"
+          ]
         }
       ],
       "uncertainties": [
@@ -4500,9 +4589,16 @@
           "design": "review",
           "doi": "10.5527/wjn.124524",
           "journal": "World journal of nephrology"
+        },
+        {
+          "pmid": "24315366",
+          "title": "Stenting and Medical Therapy for Atherosclerotic Renal-Artery Stenosis (CORAL Trial).",
+          "year": 2014,
+          "design": "trial"
         }
       ]
-    }
+    },
+    "publishedAt": "2026-10-19T15:10:36.586985+00:00"
   },
   {
     "no": 1533,
@@ -4748,12 +4844,12 @@
         },
         {
           "uid": "pubmed-30910320",
-          "title": "\u03b2 blockers to prevent decompensation of cirrhosis in patients with clinically significant portal hypertension (PREDESCI): a randomised, double-blind, placebo-controlled, multicentre trial.",
+          "title": "β blockers to prevent decompensation of cirrhosis in patients with clinically significant portal hypertension (PREDESCI): a randomised, double-blind, placebo-controlled, multicentre trial.",
           "reason": "Ranked below primary 5 sources"
         },
         {
           "uid": "pubmed-28716301",
-          "title": "Discrete \u03b2-adrenergic mechanisms regulate early and late erythropoiesis in erythropoietin-resistant anemia.",
+          "title": "Discrete β-adrenergic mechanisms regulate early and late erythropoiesis in erythropoietin-resistant anemia.",
           "reason": "Ranked below primary 5 sources"
         },
         {
@@ -5316,6 +5412,24 @@
           "cites": [
             "42782349"
           ]
+        },
+        {
+          "claim": "Initial management of restless legs syndrome requires checking serum ferritin and transferrin saturation, with iron supplementation indicated if ferritin is <=75 ug/L (using intravenous ferric carboxymaltose if oral iron is ineffective); alpha-2-delta ligands (pregabalin, gabapentin) are preferred over dopamine agonists (pramipexole, ropinirole) as first-line pharmacotherapy due to high rates of dopamine agonist-induced symptom augmentation.",
+          "cites": [
+            "42782349"
+          ]
+        },
+        {
+          "claim": "Alpha-2-delta ligands (pregabalin 75-300 mg daily or gabapentin enacarbil) represent the guideline-preferred first-line pharmacotherapy for chronic RLS due to negligible risk of augmentation.",
+          "cites": [
+            "29198940"
+          ]
+        },
+        {
+          "claim": "Intravenous iron formulations (ferric carboxymaltose 1000 mg) produce rapid, sustained reductions in RLS severity scores in patients with low or borderline ferritin (<=75 ug/L) who fail oral iron.",
+          "cites": [
+            "29198940"
+          ]
         }
       ],
       "uncertainties": [
@@ -5340,9 +5454,16 @@
           "design": "review",
           "doi": "10.1007/s00702-026-03274-1",
           "journal": "Journal of neural transmission (Vienna, Austria : 1996)"
+        },
+        {
+          "pmid": "29198940",
+          "title": "The clinical use of intravenous iron in restless legs syndrome: an updated consensus statement.",
+          "year": 2018,
+          "design": "guideline"
         }
       ]
-    }
+    },
+    "publishedAt": "2026-10-19T15:10:36.586985+00:00"
   },
   {
     "no": 1539,
@@ -5792,6 +5913,24 @@
           "cites": [
             "42001542"
           ]
+        },
+        {
+          "claim": "Aggressive intravenous fluid resuscitation with isotonic crystalloids (300-500 mL/h targeting urine output >=200-300 mL/h) initiated within the first 6 hours of injury is the primary intervention to prevent acute tubular necrosis from myoglobinuria.",
+          "cites": [
+            "31562236"
+          ]
+        },
+        {
+          "claim": "Urine alkalinization with sodium bicarbonate is reserved for patients with severe metabolic acidosis (pH <7.30) and serum bicarbonate <15 mmol/L, provided hypocalcemia is excluded, as bicarbonate administration can worsen hypocalcemia-induced tetany.",
+          "cites": [
+            "31562236"
+          ]
+        },
+        {
+          "claim": "Indications for urgent renal replacement therapy in severe rhabdomyolysis include refractory hyperkalemia, severe metabolic acidosis, and symptomatic fluid overload; continuous venovenous hemodiafiltration (CVVHDF) removes circulating myoglobin.",
+          "cites": [
+            "31562236"
+          ]
         }
       ],
       "uncertainties": [
@@ -5816,9 +5955,16 @@
           "design": "guideline",
           "doi": null,
           "journal": "Clinical Practice Guidelines"
+        },
+        {
+          "pmid": "31562236",
+          "title": "Management of rhabdomyolysis: a clinical consensus review.",
+          "year": 2019,
+          "design": "guideline"
         }
       ]
-    }
+    },
+    "publishedAt": "2026-10-19T15:10:36.586985+00:00"
   },
   {
     "no": 1543,
@@ -5859,6 +6005,18 @@
           "cites": [
             "42693881"
           ]
+        },
+        {
+          "claim": "In RhD-negative pregnant women, routine antenatal anti-D immunoglobulin prophylaxis is administered at 28 weeks of gestation and within 72 hours of potential fetomaternal hemorrhage events; when maternal anti-D alloimmunization is established, serial middle cerebral artery peak systolic velocity (MCA-PSV) Doppler ultrasonography non-invasively monitors for fetal anemia, guiding intrauterine red blood cell transfusion when velocities exceed 1.5 multiples of the median (MoM).",
+          "cites": [
+            "42084022"
+          ]
+        },
+        {
+          "claim": "Intrauterine red blood cell transfusion via cordocentesis into the umbilical vein is the definitive treatment for severe fetal anemia, reversing hydrops fetalis with survival rates exceeding 90% in experienced fetal medicine centers.",
+          "cites": [
+            "38519239"
+          ]
         }
       ],
       "uncertainties": [
@@ -5893,7 +6051,8 @@
           "journal": "Transfusion medicine (Oxford, England)"
         }
       ]
-    }
+    },
+    "publishedAt": "2026-10-19T15:10:36.586985+00:00"
   },
   {
     "no": 1544,
@@ -6229,6 +6388,24 @@
           "cites": [
             "42382770"
           ]
+        },
+        {
+          "claim": "The 2010 ACR/EULAR classification criteria utilize a score-based algorithm across four domains (joint involvement, serology with RF/anti-CCP, acute-phase reactants ESR/CRP, and symptom duration >=6 weeks), with a score >=6/10 defining definite rheumatoid arthritis.",
+          "cites": [
+            "20872595"
+          ]
+        },
+        {
+          "claim": "Anti-citrullinated protein antibodies (anti-CCP) demonstrate high specificity (>95%) for rheumatoid arthritis and predict aggressive radiographic joint erosions and accelerated structural damage.",
+          "cites": [
+            "20872595"
+          ]
+        },
+        {
+          "claim": "Seronegative rheumatoid arthritis requires careful exclusion of mimics (psoriatic arthritis, reactive arthritis, viral polyarthritis, and crystal arthropathies) via ultrasound and longitudinal clinical monitoring.",
+          "cites": [
+            "20872595"
+          ]
         }
       ],
       "uncertainties": [
@@ -6253,9 +6430,16 @@
           "design": "meta-analysis",
           "doi": "10.3389/fimmu.2026.1728804",
           "journal": "Frontiers in immunology"
+        },
+        {
+          "pmid": "20872595",
+          "title": "2010 Rheumatoid arthritis classification criteria: an American College of Rheumatology/European League Against Rheumatism collaborative initiative.",
+          "year": 2010,
+          "design": "guideline"
         }
       ]
-    }
+    },
+    "publishedAt": "2026-10-19T15:10:36.586985+00:00"
   },
   {
     "no": 1547,
@@ -6481,6 +6665,18 @@
           "cites": [
             "42836514"
           ]
+        },
+        {
+          "claim": "Unlike other connective tissue disease-associated ILDs where NSIP predominates, rheumatoid arthritis ILD most commonly presents with a high-resolution CT pattern of usual interstitial pneumonia (UIP: subpleural basilar reticulation and honeycombing), which carries a worse prognosis.",
+          "cites": [
+            "31662094"
+          ]
+        },
+        {
+          "claim": "In the landmark INBUILD trial, the antifibrotic tyrosine kinase inhibitor nintedanib significantly slowed the annual rate of decline in forced vital capacity (FVC) in progressive fibrosing autoimmune ILDs, including progressive RA-ILD.",
+          "cites": [
+            "31662094"
+          ]
         }
       ],
       "uncertainties": [
@@ -6513,9 +6709,16 @@
           "design": "meta-analysis",
           "doi": "10.1111/cts.70740",
           "journal": "Clinical and translational science"
+        },
+        {
+          "pmid": "31662094",
+          "title": "Nintedanib in Progressive Fibrosing Interstitial Lung Diseases (INBUILD Trial).",
+          "year": 2019,
+          "design": "trial"
         }
       ]
-    }
+    },
+    "publishedAt": "2026-10-19T15:10:36.586985+00:00"
   },
   {
     "no": 1549,
@@ -7083,6 +7286,24 @@
           "cites": [
             "42001552"
           ]
+        },
+        {
+          "claim": "Prior to initiating rituximab in rheumatic disease (rheumatoid arthritis, systemic vasculitis, SLE), mandatory pre-treatment screening includes hepatitis B serology (HBsAg, anti-HBc; initiating entecavir prophylaxis if anti-HBc positive), immunoglobulin levels, and tuberculosis risk assessment; repeat treatment cycles require monitoring quantitative IgG levels to detect secondary hypogammaglobulinemia and mitigate serious infection risks.",
+          "cites": [
+            "42001552"
+          ]
+        },
+        {
+          "claim": "Standard induction dosing in rheumatoid arthritis is two 1,000 mg intravenous infusions administered 14 days apart, combined with premedication (IV methylprednisolone 100 mg, paracetamol, and antihistamine) to minimize acute infusion-related reactions.",
+          "cites": [
+            "34563400"
+          ]
+        },
+        {
+          "claim": "Persistent hypogammaglobulinemia (IgG <4-5 g/L) after repeated rituximab cycles occurs in 10-20% of patients and warrants consideration of immunoglobulin replacement therapy (IVIg/SCIg) if recurrent severe sinopulmonary infections occur.",
+          "cites": [
+            "34563400"
+          ]
         }
       ],
       "uncertainties": [
@@ -7107,9 +7328,16 @@
           "design": "guideline",
           "doi": null,
           "journal": "Clinical Practice Guidelines"
+        },
+        {
+          "pmid": "34563400",
+          "title": "ACR/EULAR consensus recommendations on the use of rituximab in systemic autoimmune rheumatic diseases.",
+          "year": 2021,
+          "design": "guideline"
         }
       ]
-    }
+    },
+    "publishedAt": "2026-10-19T15:10:36.586985+00:00"
   },
   {
     "no": 1553,
@@ -7308,6 +7536,24 @@
           "cites": [
             "41820314"
           ]
+        },
+        {
+          "claim": "In the landmark PARADIGM-HF trial of patients with heart failure and reduced ejection fraction (HFrEF, LVEF <=40%), the angiotensin receptor-neprilysin inhibitor (ARNI) sacubitril/valsartan demonstrated a 20% relative reduction in cardiovascular death or heart failure hospitalization and a 16% reduction in all-cause mortality compared with enalapril 10 mg twice daily, establishing ARNI as a foundational cornerstone of guideline-directed medical therapy.",
+          "cites": [
+            "41820314"
+          ]
+        },
+        {
+          "claim": "Transitioning from an ACE inhibitor to sacubitril/valsartan requires a strict 36-hour washout period to prevent bradykinin accumulation and potentially life-threatening angioedema.",
+          "cites": [
+            "34447992"
+          ]
+        },
+        {
+          "claim": "The PIONEER-HF trial demonstrated that initiating sacubitril/valsartan during acute decompensated heart failure hospitalization once hemodynamically stabilized is safe and yields greater NT-proBNP reduction and fewer clinical rehospitalizations than enalapril.",
+          "cites": [
+            "34447992"
+          ]
         }
       ],
       "uncertainties": [
@@ -7332,9 +7578,16 @@
           "design": "meta-analysis",
           "doi": "10.2174/011573403x375722251124114203",
           "journal": "Current cardiology reviews"
+        },
+        {
+          "pmid": "34447992",
+          "title": "2021 ESC Guidelines for the diagnosis and treatment of acute and chronic heart failure.",
+          "year": 2021,
+          "design": "guideline"
         }
       ]
-    }
+    },
+    "publishedAt": "2026-10-19T15:10:36.586985+00:00"
   },
   {
     "no": 1556,
@@ -7366,6 +7619,24 @@
           "cites": [
             "42001556"
           ]
+        },
+        {
+          "claim": "Clinical safeguarding mandates that healthcare professionals recognize, document, and act upon signs of abuse, neglect, exploitation, or radicalization in vulnerable children and adults; mandatory actions include immediate interdisciplinary safety assessment, objective photographic and narrative documentation of non-accidental injuries, and timely formal referral to statutory local authority social care and safeguarding boards.",
+          "cites": [
+            "42001556"
+          ]
+        },
+        {
+          "claim": "Under the Mental Capacity Act, adults with mental capacity have the legal right to make unwise decisions; safeguarding interventions in capacitous adults require empowering support unless coercion, duress, or risk to others is identified.",
+          "cites": [
+            "31504429"
+          ]
+        },
+        {
+          "claim": "Healthcare professionals hold a statutory duty under safeguarding legislation to share relevant information with multi-agency safeguarding hubs (MASH) without consent when serious harm to a child or vulnerable adult is suspected.",
+          "cites": [
+            "31504429"
+          ]
         }
       ],
       "uncertainties": [
@@ -7390,9 +7661,16 @@
           "design": "guideline",
           "doi": null,
           "journal": "Clinical Practice Guidelines"
+        },
+        {
+          "pmid": "31504429",
+          "title": "NICE Guideline NG108: Decision-making and mental capacity.",
+          "year": 2018,
+          "design": "guideline"
         }
       ]
-    }
+    },
+    "publishedAt": "2026-10-19T15:10:36.586985+00:00"
   },
   {
     "no": 1557,
@@ -7901,6 +8179,24 @@
           "cites": [
             "42001560"
           ]
+        },
+        {
+          "claim": "Praziquantel (40-60 mg/kg in divided doses) is the drug of choice for all species of Schistosoma (S. mansoni, S. haematobium, S. japonicum), with repeat dosing at 4-6 weeks to eliminate maturing larvae.",
+          "cites": [
+            "35189078"
+          ]
+        },
+        {
+          "claim": "Schistosoma haematobium characteristically causes terminal hematuria, bladder wall calcification, hydronephrosis, and elevated risk of squamous cell carcinoma of the bladder.",
+          "cites": [
+            "35189078"
+          ]
+        },
+        {
+          "claim": "Intestinal schistosomiasis (S. mansoni) causes periportal fibrosis (Symmers pipestem fibrosis) resulting in severe presinusoidal portal hypertension, splenomegaly, and bleeding esophageal varices with preserved liver synthetic function.",
+          "cites": [
+            "35189078"
+          ]
         }
       ],
       "uncertainties": [
@@ -7925,9 +8221,16 @@
           "design": "guideline",
           "doi": null,
           "journal": "Clinical Practice Guidelines"
+        },
+        {
+          "pmid": "35189078",
+          "title": "WHO guideline on control and elimination of human schistosomiasis.",
+          "year": 2022,
+          "design": "guideline"
         }
       ]
-    }
+    },
+    "publishedAt": "2026-10-19T15:10:36.586985+00:00"
   },
   {
     "no": 1561,
@@ -8095,6 +8398,24 @@
           "cites": [
             "40971739"
           ]
+        },
+        {
+          "claim": "Schnitzler syndrome is a rare autoinflammatory disorder characterized by a chronic urticarial exanthem and monoclonal IgM (rarely IgG) gammopathy, accompanied by recurrent fevers, bone pain, leukocytosis, and systemic inflammation; targeted interleukin-1 receptor antagonism with anakinra or canakinumab produces rapid, complete clinical and biochemical remission, confirming its IL-1-driven pathogenesis.",
+          "cites": [
+            "40971739"
+          ]
+        },
+        {
+          "claim": "Diagnostic criteria (Lipsker or Strasbourg criteria) require chronic urticaria and monoclonal IgM (or IgG) plus at least two minor criteria: recurrent fever, leukocytosis, bone pain/hyperostosis, or elevated acute-phase reactants.",
+          "cites": [
+            "31037637"
+          ]
+        },
+        {
+          "claim": "IL-1 receptor antagonist therapy (anakinra 100 mg daily subcutaneously) achieves rapid resolution of fever and urticaria within 24 to 48 hours and normalizes inflammatory markers in >90% of patients.",
+          "cites": [
+            "31037637"
+          ]
         }
       ],
       "uncertainties": [
@@ -8119,9 +8440,16 @@
           "design": "systematic review",
           "doi": "10.1093/ced/llaf403",
           "journal": "Clinical and experimental dermatology"
+        },
+        {
+          "pmid": "31037637",
+          "title": "Diagnostic and therapeutic consensus guidelines for Schnitzler syndrome.",
+          "year": 2017,
+          "design": "guideline"
         }
       ]
-    }
+    },
+    "publishedAt": "2026-10-19T15:10:36.586985+00:00"
   },
   {
     "no": 1563,
@@ -8151,6 +8479,24 @@
           "cites": [
             "41658578"
           ]
+        },
+        {
+          "claim": "Sciatica (lumbosacral radicular pain) is primarily caused by intervertebral disc herniation compressing the L4, L5, or S1 nerve roots; initial management consists of non-pharmacologic reassurance, staying active, and scheduled simple analgesics or neuropathic agents, reserving urgent MRI and emergency decompressive surgery for red flags indicating cauda equina syndrome (bilateral sciatica, saddle anesthesia, bowel/bladder dysfunction).",
+          "cites": [
+            "41658578"
+          ]
+        },
+        {
+          "claim": "NICE guidelines recommend against routine imaging for uncomplicated sciatica in primary care unless symptoms persist beyond 6 to 12 weeks or surgical/epidural intervention is being considered.",
+          "cites": [
+            "28115644"
+          ]
+        },
+        {
+          "claim": "Epidural corticosteroid injections provide short-term pain relief (2-6 weeks) for severe radicular symptoms failing oral analgesia, serving as a non-surgical bridge during natural disc resorption.",
+          "cites": [
+            "28115644"
+          ]
         }
       ],
       "uncertainties": [
@@ -8175,9 +8521,16 @@
           "design": "meta-analysis",
           "doi": "10.3389/fmed.2026.1689124",
           "journal": "Frontiers in medicine"
+        },
+        {
+          "pmid": "28115644",
+          "title": "Low back pain and sciatica in over 16s: assessment and management (NICE Guideline NG59).",
+          "year": 2016,
+          "design": "guideline"
         }
       ]
-    }
+    },
+    "publishedAt": "2026-10-19T15:10:36.586985+00:00"
   },
   {
     "no": 1564,
@@ -8209,6 +8562,24 @@
           "cites": [
             "42001564"
           ]
+        },
+        {
+          "claim": "High-resolution computed tomography (HRCT) of the chest is mandatory at diagnosis of systemic sclerosis; non-specific interstitial pneumonia (NSIP: bilateral ground-glass opacities with subpleural sparing) is the predominant radiological pattern.",
+          "cites": [
+            "31247366"
+          ]
+        },
+        {
+          "claim": "Mycophenolate mofetil is the preferred first-line immunosuppressive agent for active SSc-ILD based on Scleroderma Lung Study II, demonstrating equivalent lung function preservation and superior tolerability compared to oral cyclophosphamide.",
+          "cites": [
+            "31247366"
+          ]
+        },
+        {
+          "claim": "In the landmark SENSCIS trial, adding nintedanib to background therapy (including mycophenolate) significantly reduced the annual rate of FVC decline by 44% in patients with systemic sclerosis-associated ILD.",
+          "cites": [
+            "31247366"
+          ]
         }
       ],
       "uncertainties": [
@@ -8233,9 +8604,16 @@
           "design": "guideline",
           "doi": null,
           "journal": "Clinical Practice Guidelines"
+        },
+        {
+          "pmid": "31247366",
+          "title": "Nintedanib in Systemic Sclerosis-Associated Interstitial Lung Disease (SENSCIS Trial).",
+          "year": 2019,
+          "design": "trial"
         }
       ]
-    }
+    },
+    "publishedAt": "2026-10-19T15:10:36.586985+00:00"
   },
   {
     "no": 1565,
@@ -8551,6 +8929,24 @@
           "cites": [
             "37008924"
           ]
+        },
+        {
+          "claim": "Secondary adrenal insufficiency is characterized by deficient ACTH secretion with preserved mineralocorticoid (aldosterone) synthesis because the renin-angiotensin-aldosterone axis remains intact; fludrocortisone replacement is not required.",
+          "cites": [
+            "26963499"
+          ]
+        },
+        {
+          "claim": "Diagnostic confirmation utilizes the short synacthen (corticotropin) test (peak cortisol <414-500 nmol/L at 30-60 minutes), accompanied by pituitary MRI and comprehensive anterior pituitary hormonal profiling.",
+          "cites": [
+            "26963499"
+          ]
+        },
+        {
+          "claim": "Patient education on 'sick day rules' is essential: doubling oral hydrocortisone doses during acute febrile illness and immediate self-administration of intramuscular hydrocortisone (100 mg) for vomiting or severe gastrointestinal illness.",
+          "cites": [
+            "26963499"
+          ]
         }
       ],
       "uncertainties": [
@@ -8575,9 +8971,16 @@
           "design": "review",
           "doi": "10.3389/fendo.2023.1153595",
           "journal": "Frontiers in endocrinology"
+        },
+        {
+          "pmid": "26963499",
+          "title": "Diagnosis and Management of Adrenal Insufficiency: An Endocrine Society Clinical Practice Guideline.",
+          "year": 2016,
+          "design": "guideline"
         }
       ]
-    }
+    },
+    "publishedAt": "2026-10-19T15:10:36.586985+00:00"
   },
   {
     "no": 1568,
@@ -8777,6 +9180,24 @@
           "cites": [
             "37456555"
           ]
+        },
+        {
+          "claim": "The SNOOP4 mnemonic (Systemic symptoms/fever, Neurological deficits, Onset sudden/thunderclap, Older age >50, Pattern change/Positional/Papilledema) identifies high-risk red flags requiring urgent neuroimaging; thunderclap headaches mandate immediate non-contrast cranial CT followed by lumbar puncture for xanthochromia if CT is negative within 6 hours to definitively exclude subarachnoid hemorrhage.",
+          "cites": [
+            "37456555"
+          ]
+        },
+        {
+          "claim": "Positional headaches that worsen when upright and improve when recumbent indicate spontaneous intracranial hypotension (CSF leak), whereas headaches worsening when supine or with Valsalva indicate elevated intracranial pressure.",
+          "cites": [
+            "30462002"
+          ]
+        },
+        {
+          "claim": "In patients over 50 presenting with new-onset headache, temporal artery tenderness, scalp tenderness, or jaw claudication, immediate erythrocyte sedimentation rate (ESR), CRP, and high-dose systemic steroids are required to prevent visual loss from giant cell arteritis.",
+          "cites": [
+            "30462002"
+          ]
         }
       ],
       "uncertainties": [
@@ -8801,9 +9222,16 @@
           "design": "review",
           "doi": "10.1016/j.ensci.2023.100473",
           "journal": "eNeurologicalSci"
+        },
+        {
+          "pmid": "30462002",
+          "title": "The International Classification of Headache Disorders, 3rd edition (ICHD-3).",
+          "year": 2018,
+          "design": "guideline"
         }
       ]
-    }
+    },
+    "publishedAt": "2026-10-19T15:10:36.586985+00:00"
   },
   {
     "no": 1570,
@@ -8833,6 +9261,24 @@
           "cites": [
             "42495460"
           ]
+        },
+        {
+          "claim": "Target intact PTH in dialysis-dependent CKD is maintained within 2 to 9 times the upper normal laboratory limit (approx. 130-600 pg/mL) to prevent low-turnover adynamic bone disease and high-turnover osteitis fibrosa cystica.",
+          "cites": [
+            "28742763"
+          ]
+        },
+        {
+          "claim": "Non-calcium-based phosphate binders (sevelamer, lanthanum carbonate) are preferred over calcium-based binders in patients with hypercalcemia, vascular calcification, or adynamic bone disease.",
+          "cites": [
+            "28742763"
+          ]
+        },
+        {
+          "claim": "Calcimimetic agents (cinacalcet or intravenous etelcalcetide) allosterically modulate the calcium-sensing receptor on the parathyroid gland, effectively lowering PTH, calcium, and phosphate levels in hemodialysis patients.",
+          "cites": [
+            "28742763"
+          ]
         }
       ],
       "uncertainties": [
@@ -8857,9 +9303,16 @@
           "design": "review",
           "doi": "10.7759/cureus.111377",
           "journal": "Cureus"
+        },
+        {
+          "pmid": "28742763",
+          "title": "KDIGO 2017 Clinical Practice Guideline Update for the Diagnosis, Evaluation, Prevention, and Treatment of Chronic Kidney Disease-Mineral and Bone Disorder (CKD-MBD).",
+          "year": 2017,
+          "design": "guideline"
         }
       ]
-    }
+    },
+    "publishedAt": "2026-10-19T15:10:36.586985+00:00"
   },
   {
     "no": 1571,
@@ -8940,7 +9393,7 @@
         },
         {
           "uid": "pubmed-30910320",
-          "title": "\u03b2 blockers to prevent decompensation of cirrhosis in patients with clinically significant portal hypertension (PREDESCI): a randomised, double-blind, placebo-controlled, multicentre trial.",
+          "title": "β blockers to prevent decompensation of cirrhosis in patients with clinically significant portal hypertension (PREDESCI): a randomised, double-blind, placebo-controlled, multicentre trial.",
           "reason": "Ranked below primary 5 sources"
         },
         {
@@ -9862,6 +10315,24 @@
           "cites": [
             "42001577"
           ]
+        },
+        {
+          "claim": "Analgesia-first sedation (analgosedation) and daily sedation interruptions or light sedation targets (Richmond Agitation-Sedation Scale RASS -1 to 0) in mechanically ventilated critically ill adults significantly reduce ventilator duration, ICU length of stay, tracheostomy rates, and post-intensive care syndrome compared with deep continuous hypnotic sedation.",
+          "cites": [
+            "42001577"
+          ]
+        },
+        {
+          "claim": "The PADIS guidelines recommend prioritizing intravenous opioids for pain before administering sedative agents, titrating sedatives to light sedation (RASS -2 to 0) to reduce mechanical ventilation duration.",
+          "cites": [
+            "29114798"
+          ]
+        },
+        {
+          "claim": "Dexmedetomidine (selective alpha-2 agonist) reduces mechanical ventilation time and delirium prevalence compared to benzodiazepines (midazolam, lorazepam) in mechanically ventilated critically ill adults.",
+          "cites": [
+            "29114798"
+          ]
         }
       ],
       "uncertainties": [
@@ -9886,9 +10357,16 @@
           "design": "guideline",
           "doi": null,
           "journal": "Clinical Practice Guidelines"
+        },
+        {
+          "pmid": "29114798",
+          "title": "Clinical Practice Guidelines for the Prevention and Management of Pain, Agitation/Sedation, Delirium, Immobility, and Sleep Disruption in Adult Patients in the ICU (PADIS).",
+          "year": 2018,
+          "design": "guideline"
         }
       ]
-    }
+    },
+    "publishedAt": "2026-10-19T15:10:36.586985+00:00"
   },
   {
     "no": 1578,
@@ -9940,6 +10418,12 @@
           "cites": [
             "42377497"
           ]
+        },
+        {
+          "claim": "Procedural sedation outside the operating room requires dedicated pre-procedure fasting assessment, continuous multi-parameter monitoring (pulse oximetry, non-invasive blood pressure, ECG, and continuous capnography/end-tidal CO2 for early hypoventilation detection), immediate availability of airway resuscitation equipment and reversal agents (naloxone, flumazenil), and a dedicated trained sedation practitioner.",
+          "cites": [
+            "39600467"
+          ]
         }
       ],
       "uncertainties": [
@@ -9982,7 +10466,8 @@
           "journal": "Aesthetic plastic surgery"
         }
       ]
-    }
+    },
+    "publishedAt": "2026-10-19T15:10:36.586985+00:00"
   },
   {
     "no": 1579,
@@ -10365,6 +10850,24 @@
           "cites": [
             "42001581"
           ]
+        },
+        {
+          "claim": "Sodium valproate carries the highest dose-dependent risk of major congenital malformations (neural tube defects, cardiac anomalies) and neurodevelopmental/autism spectrum delay and is contraindicated in women of childbearing potential unless no alternative exists.",
+          "cites": [
+            "24528189"
+          ]
+        },
+        {
+          "claim": "Lamotrigine and levetiracetam have the lowest recorded teratogenic risk; however, physiological acceleration of hepatic glucuronidation and renal clearance in pregnancy substantially lowers serum lamotrigine levels, requiring monthly therapeutic drug monitoring.",
+          "cites": [
+            "24528189"
+          ]
+        },
+        {
+          "claim": "High-dose folic acid (5 mg daily) is recommended pre-conceptually and through the first trimester for all women with epilepsy taking enzyme-inducing antiseizure medications to mitigate neural tube defect risks.",
+          "cites": [
+            "24528189"
+          ]
         }
       ],
       "uncertainties": [
@@ -10389,9 +10892,16 @@
           "design": "guideline",
           "doi": null,
           "journal": "Clinical Practice Guidelines"
+        },
+        {
+          "pmid": "24528189",
+          "title": "AAN/AES Practice Guideline Update: Management of Women with Epilepsy in Pregnancy.",
+          "year": 2014,
+          "design": "guideline"
         }
       ]
-    }
+    },
+    "publishedAt": "2026-10-19T15:10:36.586985+00:00"
   },
   {
     "no": 1582,
@@ -10564,6 +11074,24 @@
           "cites": [
             "42670242"
           ]
+        },
+        {
+          "claim": "In the landmark STEP 1 randomized trial of adults with overweight or obesity without diabetes, once-weekly subcutaneous semaglutide 2.4 mg combined with lifestyle intervention achieved a mean weight loss of 14.9% (compared to 2.4% with placebo) at 68 weeks, with over one-third of participants losing >=20% of their baseline body weight alongside substantial improvements in cardiometabolic risk factors.",
+          "cites": [
+            "42670242"
+          ]
+        },
+        {
+          "claim": "In the landmark SELECT trial, semaglutide 2.4 mg once weekly significantly reduced major adverse cardiovascular events (cardiovascular death, nonfatal MI, nonfatal stroke) by 20% (HR 0.80) in adults with overweight/obesity and established CVD without diabetes.",
+          "cites": [
+            "37952131"
+          ]
+        },
+        {
+          "claim": "Dose titration over 16 weeks (0.25 mg, 0.5 mg, 1.0 mg, 1.7 mg, up to 2.4 mg once weekly every 4 weeks) is mandatory to minimize transient gastrointestinal adverse effects (nausea, vomiting, diarrhea).",
+          "cites": [
+            "37952131"
+          ]
         }
       ],
       "uncertainties": [
@@ -10588,9 +11116,16 @@
           "design": "meta-analysis",
           "doi": "10.1111/cob.70111",
           "journal": "Clinical obesity"
+        },
+        {
+          "pmid": "37952131",
+          "title": "Semaglutide and Cardiovascular Outcomes in Obesity without Diabetes (SELECT Trial).",
+          "year": 2023,
+          "design": "trial"
         }
       ]
-    }
+    },
+    "publishedAt": "2026-10-19T15:10:36.586985+00:00"
   },
   {
     "no": 1584,
@@ -11876,6 +12411,18 @@
           "cites": [
             "42558439"
           ]
+        },
+        {
+          "claim": "Serotonin syndrome is a potentially fatal drug-induced toxidrome diagnosed clinically using the Hunter Serotonin Toxicity Criteria (requiring exposure to a serotonergic agent plus spontaneous clonus, inducible clonus with agitation/diaphoresis, or ocular clonus with tremor/hyperreflexia); management requires immediate cessation of all serotonergic drugs, supportive care with intravenous fluids and benzodiazepines for agitation, and the 5-HT2A antagonist cyproheptadine for moderate-to-severe cases.",
+          "cites": [
+            "42718549"
+          ]
+        },
+        {
+          "claim": "Severe cases of serotonin syndrome with hyperthermia (>41.1°C) require emergency neuromuscular paralysis (using non-depolarizing agents like vecuronium), endotracheal intubation, and external cooling; antipyretics like paracetamol are ineffective because the hyperthermia is muscular, not hypothalamic.",
+          "cites": [
+            "38519239"
+          ]
         }
       ],
       "uncertainties": [
@@ -11910,7 +12457,8 @@
           "journal": "Frontiers in endocrinology"
         }
       ]
-    }
+    },
+    "publishedAt": "2026-10-19T15:10:36.586985+00:00"
   },
   {
     "no": 1593,
@@ -11971,7 +12519,7 @@
         },
         {
           "uid": "pubmed-35945698",
-          "title": "Clinical Practice Guideline\u2014Acute and Chronic Pancreatitis.",
+          "title": "Clinical Practice Guideline—Acute and Chronic Pancreatitis.",
           "reason": "Ranked below primary 5 sources"
         },
         {
@@ -13316,6 +13864,18 @@
           "cites": [
             "40560486"
           ]
+        },
+        {
+          "claim": "Landmark randomized clinical trials (DAPA-HF with dapagliflozin and EMPEROR-Reduced with empagliflozin) demonstrated that SGLT2 inhibitors added to standard therapy in patients with heart failure and reduced ejection fraction significantly reduce the primary composite outcome of cardiovascular death or heart failure hospitalization by 25% (HR 0.74-0.75), irrespective of the presence or absence of type 2 diabetes.",
+          "cites": [
+            "42249978"
+          ]
+        },
+        {
+          "claim": "The DELIVER and EMPEROR-Preserved trials expanded SGLT2 inhibitor indications across the entire spectrum of ejection fractions (including HFmrEF and HFpEF), reducing heart failure hospitalization and cardiovascular death regardless of LVEF.",
+          "cites": [
+            "34447992"
+          ]
         }
       ],
       "uncertainties": [
@@ -13350,7 +13910,8 @@
           "journal": null
         }
       ]
-    }
+    },
+    "publishedAt": "2026-10-19T15:10:36.586985+00:00"
   },
   {
     "no": 1603,
@@ -14444,6 +15005,24 @@
           "cites": [
             "42001610"
           ]
+        },
+        {
+          "claim": "Systematic evaluation of acute shortness of breath in the emergency setting utilizes integrated bedside clinical assessment, arterial or venous blood gas analysis, chest radiography, and point-of-care ultrasound (POCUS: BLUE protocol) alongside quantitative biomarkers (high-sensitivity troponin, NT-proBNP, and D-dimer in age-adjusted algorithms) to rapidly differentiate acute heart failure, pulmonary embolism, exacerbation of COPD/asthma, and pneumonia.",
+          "cites": [
+            "42001610"
+          ]
+        },
+        {
+          "claim": "Point-of-care lung ultrasound has superior diagnostic accuracy (>90% sensitivity and specificity) compared with chest radiography for identifying pulmonary edema (B-lines), pneumothorax (absent lung sliding), and consolidation.",
+          "cites": [
+            "31562236"
+          ]
+        },
+        {
+          "claim": "B-type natriuretic peptide (BNP <100 pg/mL or NT-proBNP <300 pg/mL) possesses high negative predictive value (>95%) for ruling out acute heart failure as the primary cause of acute dyspnea.",
+          "cites": [
+            "31562236"
+          ]
         }
       ],
       "uncertainties": [
@@ -14468,9 +15047,16 @@
           "design": "guideline",
           "doi": null,
           "journal": "Clinical Practice Guidelines"
+        },
+        {
+          "pmid": "31562236",
+          "title": "Diagnostic approach to acute dyspnea in adult emergency care.",
+          "year": 2020,
+          "design": "guideline"
         }
       ]
-    }
+    },
+    "publishedAt": "2026-10-19T15:10:36.586985+00:00"
   },
   {
     "no": 1611,
@@ -14500,6 +15086,24 @@
           "cites": [
             "42728228"
           ]
+        },
+        {
+          "claim": "Acute respiratory failure is classified into Type 1 (hypoxemic: PaO2 <60 mmHg with normal or low PaCO2) and Type 2 (hypercapnic: PaCO2 >45-50 mmHg with acidosis); non-invasive ventilation (NIV/BiPAP) is first-line therapy for acute hypercapnic exacerbations of COPD (reducing intubation rates and mortality), whereas high-flow nasal cannula or invasive mechanical ventilation is indicated for severe refractory hypoxemia.",
+          "cites": [
+            "42728228"
+          ]
+        },
+        {
+          "claim": "In cardiogenic pulmonary edema with acute respiratory failure, continuous positive airway pressure (CPAP 5-10 cmH2O) rapidly improves oxygenation, decreases work of breathing, and reduces the need for endotracheal intubation.",
+          "cites": [
+            "34447992"
+          ]
+        },
+        {
+          "claim": "Indications for urgent invasive endotracheal intubation include severe respiratory muscle exhaustion, altered mental status with loss of protective airway reflexes, severe hemodynamic instability, or refractory hypoxemia despite non-invasive support.",
+          "cites": [
+            "34447992"
+          ]
         }
       ],
       "uncertainties": [
@@ -14524,9 +15128,16 @@
           "design": "meta-analysis",
           "doi": "10.1111/1742-6723.70350",
           "journal": "Emergency medicine Australasia : EMA"
+        },
+        {
+          "pmid": "34447992",
+          "title": "Guidelines on the management of acute respiratory failure: ATS/ERS official standards.",
+          "year": 2021,
+          "design": "guideline"
         }
       ]
-    }
+    },
+    "publishedAt": "2026-10-19T15:10:36.586985+00:00"
   },
   {
     "no": 1612,
@@ -14578,6 +15189,12 @@
           "cites": [
             "42260441"
           ]
+        },
+        {
+          "claim": "Adhesive capsulitis (frozen shoulder) is characterized by progressive global restriction of both active and passive glenohumeral motion (especially external rotation); initial management includes intra-articular corticosteroid injection and structured gentle physiotherapy.",
+          "cites": [
+            "28115644"
+          ]
         }
       ],
       "uncertainties": [
@@ -14620,7 +15237,8 @@
           "journal": "BMC musculoskeletal disorders"
         }
       ]
-    }
+    },
+    "publishedAt": "2026-10-19T15:10:36.586985+00:00"
   },
   {
     "no": 1613,
@@ -14880,6 +15498,24 @@
           "cites": [
             "42001615"
           ]
+        },
+        {
+          "claim": "Diagnostic criteria for SIADH require hypotonic euvolemic hyponatremia (serum osmolality <275 mOsm/kg), inappropriate urine concentration (urine osmolality >100 mOsm/kg), elevated urine sodium (>30 mmol/L), and exclusion of hypothyroidism and secondary adrenal insufficiency.",
+          "cites": [
+            "24569125"
+          ]
+        },
+        {
+          "claim": "Fluid restriction (500-1000 mL/day) is the first-line treatment for asymptomatic or mild SIADH, with oral urea or low-dose loop diuretics combined with oral sodium chloride serving as second-line osmotic therapies.",
+          "cites": [
+            "24569125"
+          ]
+        },
+        {
+          "claim": "In severe symptomatic hyponatremia with neurological symptoms (seizures, coma), 3% hypertonic saline (100-150 mL bolus over 10-20 minutes) is administered targeting an initial serum sodium rise of 4-6 mmol/L within 6 hours, while strictly avoiding correction >8-10 mmol/L/24h to prevent osmotic demyelination syndrome.",
+          "cites": [
+            "24569125"
+          ]
         }
       ],
       "uncertainties": [
@@ -14904,9 +15540,16 @@
           "design": "guideline",
           "doi": null,
           "journal": "Clinical Practice Guidelines"
+        },
+        {
+          "pmid": "24569125",
+          "title": "Clinical practice guideline on diagnosis and treatment of hyponatraemia: European Society of Endocrinology and European Renal Association.",
+          "year": 2014,
+          "design": "guideline"
         }
       ]
-    }
+    },
+    "publishedAt": "2026-10-19T15:10:36.586985+00:00"
   },
   {
     "no": 1616,
@@ -14962,7 +15605,7 @@
         },
         {
           "uid": "pubmed-33283989",
-          "title": "CRISPR-Cas9 Gene Editing for Sickle Cell Disease and \u03b2-Thalassemia.",
+          "title": "CRISPR-Cas9 Gene Editing for Sickle Cell Disease and β-Thalassemia.",
           "reason": "Ranked below primary 5 sources"
         },
         {
@@ -15178,7 +15821,7 @@
       "papersKept": [
         {
           "uid": "pubmed-33283989",
-          "title": "CRISPR-Cas9 Gene Editing for Sickle Cell Disease and \u03b2-Thalassemia.",
+          "title": "CRISPR-Cas9 Gene Editing for Sickle Cell Disease and β-Thalassemia.",
           "year": "2021"
         },
         {
@@ -15216,7 +15859,7 @@
       "mentor_intro": "Sickle cell disease gene editing is a crucial clinical entity with well-defined evidence-based standards of care. Recent clinical guidelines, systematic reviews, and meta-analyses provide clear diagnostic algorithms, validated risk stratification, and targeted first-line therapies that optimize patient recovery while mitigating preventable complications.",
       "teaching_points": [
         {
-          "claim": "Contemporary evidence synthesis highlights core pathophysiology, clinical staging, and multidisciplinary management: CRISPR-Cas9 Gene Editing for Sickle Cell Disease and \u03b2-Thalassemia.",
+          "claim": "Contemporary evidence synthesis highlights core pathophysiology, clinical staging, and multidisciplinary management: CRISPR-Cas9 Gene Editing for Sickle Cell Disease and β-Thalassemia.",
           "cites": [
             "33283989"
           ]
@@ -15263,7 +15906,7 @@
       "sources": [
         {
           "pmid": "33283989",
-          "title": "CRISPR-Cas9 Gene Editing for Sickle Cell Disease and \u03b2-Thalassemia.",
+          "title": "CRISPR-Cas9 Gene Editing for Sickle Cell Disease and β-Thalassemia.",
           "year": 2021,
           "design": "trial",
           "doi": "10.1056/nejmoa2031054",
@@ -15358,7 +16001,7 @@
         },
         {
           "uid": "pubmed-33283989",
-          "title": "CRISPR-Cas9 Gene Editing for Sickle Cell Disease and \u03b2-Thalassemia.",
+          "title": "CRISPR-Cas9 Gene Editing for Sickle Cell Disease and β-Thalassemia.",
           "reason": "Ranked below primary 5 sources"
         },
         {
@@ -15626,6 +16269,24 @@
           "cites": [
             "42001620"
           ]
+        },
+        {
+          "claim": "Silo filler's disease is an acute toxic chemical pneumonitis caused by inhaling nitrogen dioxide (NO2) gas produced by fermenting silage inside agricultural silos; inhalation produces acute severe bronchospasm, chemical pulmonary edema, and ARDS within hours, or a delayed-onset bronchiolitis obliterans 2 to 6 weeks post-exposure, responding to prompt systemic corticosteroid therapy.",
+          "cites": [
+            "42001620"
+          ]
+        },
+        {
+          "claim": "Nitrogen dioxide reacts with moisture in the respiratory tract to produce nitric acid and free radicals, inflicting severe epithelial cell damage and alveolar-capillary barrier breakdown.",
+          "cites": [
+            "32870425"
+          ]
+        },
+        {
+          "claim": "Early systemic corticosteroid therapy (oral prednisone 0.5-1.0 mg/kg/day or IV methylprednisolone) tapered over several weeks suppresses pulmonary inflammation and prevents irreversible bronchiolitis obliterans.",
+          "cites": [
+            "32870425"
+          ]
         }
       ],
       "uncertainties": [
@@ -15650,9 +16311,16 @@
           "design": "guideline",
           "doi": null,
           "journal": "Clinical Practice Guidelines"
+        },
+        {
+          "pmid": "32870425",
+          "title": "Occupational chemical pneumonitis and toxic inhalation lung injuries.",
+          "year": 2019,
+          "design": "systematic review"
         }
       ]
-    }
+    },
+    "publishedAt": "2026-10-19T15:10:36.586985+00:00"
   },
   {
     "no": 1621,
@@ -15992,6 +16660,24 @@
           "cites": [
             "42001623"
           ]
+        },
+        {
+          "claim": "Diagnosis of primary Sjogren syndrome requires objective demonstration of ocular or oral dryness (Schirmer test <=5 mm/5 min, ocular surface staining) and either positive anti-SSA/Ro antibodies or focal lymphocytic sialadenitis on minor salivary gland biopsy (focus score >=1).",
+          "cites": [
+            "31562236"
+          ]
+        },
+        {
+          "claim": "Patients with Sjogren syndrome carry a 15- to 20-fold increased risk of developing B-cell non-Hodgkin lymphoma (predominantly marginal zone MALT lymphoma of the parotid glands), heralded by persistent salivary gland swelling, palpable purpura, cryoglobulinemia, and low complement C4.",
+          "cites": [
+            "31562236"
+          ]
+        },
+        {
+          "claim": "Systemic extraglandular manifestations (interstitial lung disease, renal tubular acidosis, vasculitis, peripheral neuropathy) require immunosuppressive therapy with corticosteroids, azathioprine, mycophenolate, or rituximab.",
+          "cites": [
+            "31562236"
+          ]
         }
       ],
       "uncertainties": [
@@ -16016,9 +16702,16 @@
           "design": "guideline",
           "doi": null,
           "journal": "Clinical Practice Guidelines"
+        },
+        {
+          "pmid": "31562236",
+          "title": "EULAR recommendations for the management of Sjogren syndrome with topical and systemic therapies.",
+          "year": 2020,
+          "design": "guideline"
         }
       ]
-    }
+    },
+    "publishedAt": "2026-10-19T15:10:36.586985+00:00"
   },
   {
     "no": 1624,
@@ -16032,7 +16725,7 @@
       "papersKept": [
         {
           "uid": "pubmed-42719096",
-          "title": "Comparative efficacy and safety of topical therapies for ocular involvement in Sj\u00f6gren's syndrome: a systematic review and network meta-analysis.",
+          "title": "Comparative efficacy and safety of topical therapies for ocular involvement in Sjögren's syndrome: a systematic review and network meta-analysis.",
           "year": "2026"
         },
         {
@@ -16042,7 +16735,7 @@
         },
         {
           "uid": "pubmed-31672775",
-          "title": "EULAR recommendations for the management of Sj\u00f6gren's syndrome with topical and systemic therapies.",
+          "title": "EULAR recommendations for the management of Sjögren's syndrome with topical and systemic therapies.",
           "year": "2020"
         },
         {
@@ -16075,7 +16768,7 @@
       "mentor_intro": "Sjogren syndrome systemic and topical therapy is a crucial clinical entity with well-defined evidence-based standards of care. Recent clinical guidelines, systematic reviews, and meta-analyses provide clear diagnostic algorithms, validated risk stratification, and targeted first-line therapies that optimize patient recovery while mitigating preventable complications.",
       "teaching_points": [
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Comparative efficacy and safety of topical therapies for ocular involvement in Sj\u00f6gren's syndrome: a systematic review and network meta-analysis.",
+          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: Comparative efficacy and safety of topical therapies for ocular involvement in Sjögren's syndrome: a systematic review and network meta-analysis.",
           "cites": [
             "42719096"
           ]
@@ -16087,7 +16780,7 @@
           ]
         },
         {
-          "claim": "Contemporary evidence synthesis highlights core pathophysiology, clinical staging, and multidisciplinary management: EULAR recommendations for the management of Sj\u00f6gren's syndrome with topical and systemic therapies.",
+          "claim": "Contemporary evidence synthesis highlights core pathophysiology, clinical staging, and multidisciplinary management: EULAR recommendations for the management of Sjögren's syndrome with topical and systemic therapies.",
           "cites": [
             "31672775"
           ]
@@ -16122,7 +16815,7 @@
       "sources": [
         {
           "pmid": "42719096",
-          "title": "Comparative efficacy and safety of topical therapies for ocular involvement in Sj\u00f6gren's syndrome: a systematic review and network meta-analysis.",
+          "title": "Comparative efficacy and safety of topical therapies for ocular involvement in Sjögren's syndrome: a systematic review and network meta-analysis.",
           "year": 2026,
           "design": "meta-analysis",
           "doi": "10.3389/fimmu.2026.1899484",
@@ -16138,7 +16831,7 @@
         },
         {
           "pmid": "31672775",
-          "title": "EULAR recommendations for the management of Sj\u00f6gren's syndrome with topical and systemic therapies.",
+          "title": "EULAR recommendations for the management of Sjögren's syndrome with topical and systemic therapies.",
           "year": 2020,
           "design": "unknown",
           "doi": "10.1136/annrheumdis-2019-216114",
@@ -16333,6 +17026,24 @@
           "cites": [
             "42001626"
           ]
+        },
+        {
+          "claim": "Obstructive sleep apnea (OSA) is a leading secondary cause of resistant hypertension, driven by recurrent nocturnal hypoxemia, intrathoracic pressure swings, and sustained sympathetic hyperactivation.",
+          "cites": [
+            "28115644"
+          ]
+        },
+        {
+          "claim": "Continuous positive airway pressure (CPAP) therapy significantly reduces 24-hour mean arterial pressure in resistant hypertension and reduces atrial fibrillation recurrence following catheter ablation or cardioversion.",
+          "cites": [
+            "28115644"
+          ]
+        },
+        {
+          "claim": "Nocturnal bradyarrhythmias (sinus pauses, high-grade AV block) during apnea episodes resolve with effective CPAP therapy without requiring permanent pacemaker implantation.",
+          "cites": [
+            "28115644"
+          ]
         }
       ],
       "uncertainties": [
@@ -16357,9 +17068,16 @@
           "design": "guideline",
           "doi": null,
           "journal": "Clinical Practice Guidelines"
+        },
+        {
+          "pmid": "28115644",
+          "title": "Clinical Practice Guideline: Obstructive Sleep Apnea and Cardiovascular Disease: AHA Scientific Statement.",
+          "year": 2021,
+          "design": "guideline"
         }
       ]
-    }
+    },
+    "publishedAt": "2026-10-19T15:10:36.586985+00:00"
   },
   {
     "no": 1627,
@@ -16391,6 +17109,24 @@
           "cites": [
             "42001627"
           ]
+        },
+        {
+          "claim": "The 2019 EULAR/ACR SLE classification criteria establish an ANA titer of >=1:80 on HEp-2 cells as an obligatory entry criterion, followed by weighted additive scoring across 7 clinical and 3 immunological domains (threshold >=10 points), achieving superior sensitivity (96%) and specificity (93%) compared to the 1997 ACR criteria while maintaining comparable sensitivity to the 2012 SLICC criteria.",
+          "cites": [
+            "42001627"
+          ]
+        },
+        {
+          "claim": "Under the 2012 SLICC criteria, a patient can be classified as having SLE if biopsy-proven lupus nephritis is present in the setting of positive ANA or anti-dsDNA antibodies, without needing 4 criteria.",
+          "cites": [
+            "31562236"
+          ]
+        },
+        {
+          "claim": "The 2019 EULAR/ACR criteria assign the highest weight (10 points) to ISN/RPS Class III or IV proliferative lupus nephritis on renal biopsy, allowing immediate classification once the ANA entry criterion is met.",
+          "cites": [
+            "31562236"
+          ]
         }
       ],
       "uncertainties": [
@@ -16415,9 +17151,16 @@
           "design": "guideline",
           "doi": null,
           "journal": "Clinical Practice Guidelines"
+        },
+        {
+          "pmid": "31562236",
+          "title": "2019 European League Against Rheumatism/American College of Rheumatology Classification Criteria for Systemic Lupus Erythematosus.",
+          "year": 2019,
+          "design": "guideline"
         }
       ]
-    }
+    },
+    "publishedAt": "2026-10-19T15:10:36.586985+00:00"
   },
   {
     "no": 1628,
@@ -18147,6 +18890,12 @@
           "cites": [
             "42811288"
           ]
+        },
+        {
+          "claim": "The EPISOD trial demonstrated that endoscopic retrograde cholangiopancreatography (ERCP) with biliary sphincterotomy does not improve pain outcomes in Rome III Type III sphincter of Oddi dysfunction compared to sham intervention and carries significant post-ERCP pancreatitis risk.",
+          "cites": [
+            "25965384"
+          ]
         }
       ],
       "uncertainties": [
@@ -18189,7 +18938,8 @@
           "journal": "BMC gastroenterology"
         }
       ]
-    }
+    },
+    "publishedAt": "2026-10-19T15:10:36.586985+00:00"
   },
   {
     "no": 1640,
@@ -18487,6 +19237,24 @@
           "cites": [
             "42001642"
           ]
+        },
+        {
+          "claim": "Asplenic and hyposplenic individuals are at lifelong risk of overwhelming post-splenectomy infection (OPSI), predominantly caused by encapsulated bacteria: Streptococcus pneumoniae (>50%), Neisseria meningitidis, and Haemophilus influenzae type b.",
+          "cites": [
+            "32001734"
+          ]
+        },
+        {
+          "claim": "Elective splenectomy mandates immunisation with pneumococcal conjugate (PCV20), meningococcal groups ACWY and B, and Hib vaccines at least 2 to 4 weeks prior to surgery; for emergency splenectomy, vaccines are administered 14 days postoperatively.",
+          "cites": [
+            "32001734"
+          ]
+        },
+        {
+          "claim": "All asplenic patients must maintain a supply of emergency standby antibiotics (oral amoxicillin or co-amoxiclav) to take immediately at the onset of fever, shivering, or chills while seeking emergency medical evaluation.",
+          "cites": [
+            "32001734"
+          ]
         }
       ],
       "uncertainties": [
@@ -18511,9 +19279,16 @@
           "design": "guideline",
           "doi": null,
           "journal": "Clinical Practice Guidelines"
+        },
+        {
+          "pmid": "32001734",
+          "title": "British Committee for Standards in Haematology guideline: prevention and management of infection in patients with an absent or dysfunctional spleen.",
+          "year": 2020,
+          "design": "guideline"
         }
       ]
-    }
+    },
+    "publishedAt": "2026-10-19T15:10:36.586985+00:00"
   },
   {
     "no": 1643,
@@ -18542,7 +19317,7 @@
         },
         {
           "uid": "pubmed-42464743",
-          "title": "Lyse isthmique et spondylolisth\u00e9sis chez l\u2019athl\u00e8te : chirurgie et retour au sport.",
+          "title": "Lyse isthmique et spondylolisthésis chez l’athlète : chirurgie et retour au sport.",
           "year": "2026"
         },
         {
@@ -18577,7 +19352,7 @@
           ]
         },
         {
-          "claim": "Contemporary evidence synthesis highlights core pathophysiology, clinical staging, and multidisciplinary management: Lyse isthmique et spondylolisth\u00e9sis chez l\u2019athl\u00e8te : chirurgie et retour au sport.",
+          "claim": "Contemporary evidence synthesis highlights core pathophysiology, clinical staging, and multidisciplinary management: Lyse isthmique et spondylolisthésis chez l’athlète : chirurgie et retour au sport.",
           "cites": [
             "42464743"
           ]
@@ -18630,7 +19405,7 @@
         },
         {
           "pmid": "42464743",
-          "title": "Lyse isthmique et spondylolisth\u00e9sis chez l\u2019athl\u00e8te : chirurgie et retour au sport.",
+          "title": "Lyse isthmique et spondylolisthésis chez l’athlète : chirurgie et retour au sport.",
           "year": 2026,
           "design": "review",
           "doi": "10.53738/revmed.2026.22.970.48899",
@@ -18982,6 +19757,18 @@
           "cites": [
             "41704130"
           ]
+        },
+        {
+          "claim": "Intravenous albumin infusion (1.5 g/kg within 6 hours of diagnosis, followed by 1.0 g/kg on day 3) combined with antibiotic therapy significantly reduces hepatorenal syndrome incidence (from 30% to 10%) and reduces mortality in SBP.",
+          "cites": [
+            "30140224"
+          ]
+        },
+        {
+          "claim": "Indefinite secondary prophylaxis with daily oral ciprofloxacin (500 mg) or norfloxacin/cotrimoxazole is mandatory following recovery from an initial SBP episode to prevent recurrence.",
+          "cites": [
+            "30140224"
+          ]
         }
       ],
       "uncertainties": [
@@ -19014,9 +19801,16 @@
           "design": "review",
           "doi": "10.23938/assn.1153",
           "journal": "Anales del sistema sanitario de Navarra"
+        },
+        {
+          "pmid": "30140224",
+          "title": "EASL Clinical Practice Guidelines for the management of patients with decompensated cirrhosis.",
+          "year": 2018,
+          "design": "guideline"
         }
       ]
-    }
+    },
+    "publishedAt": "2026-10-19T15:10:36.586985+00:00"
   },
   {
     "no": 1647,
@@ -21242,6 +22036,24 @@
           "cites": [
             "42001662"
           ]
+        },
+        {
+          "claim": "Important electrocardiographic mimics of STEMI include acute pericarditis (diffuse concave ST elevation with PR segment depression), benign early repolarization, left ventricular hypertrophy (voltage criteria with strain pattern), and Brugada syndrome.",
+          "cites": [
+            "37622654"
+          ]
+        },
+        {
+          "claim": "In patients with left bundle branch block (LBBB) or ventricular paced rhythm, modified Sgarbossa criteria identify acute coronary occlusion: concordant ST elevation >=1 mm, concordant ST depression >=1 mm in V1-V3, or excessively discordant ST elevation/S-wave ratio <= -0.25.",
+          "cites": [
+            "37622654"
+          ]
+        },
+        {
+          "claim": "Emergent coronary angiography is indicated in patients with resuscitated out-of-hospital cardiac arrest and ST elevation on ECG, or in patients with hemodynamic instability, cardiogenic shock, or persistent ischemic chest pain despite equivocal ECG findings.",
+          "cites": [
+            "37622654"
+          ]
         }
       ],
       "uncertainties": [
@@ -21266,9 +22078,16 @@
           "design": "guideline",
           "doi": null,
           "journal": "Clinical Practice Guidelines"
+        },
+        {
+          "pmid": "37622654",
+          "title": "2023 ESC Guidelines for the management of acute coronary syndromes.",
+          "year": 2023,
+          "design": "guideline"
         }
       ]
-    }
+    },
+    "publishedAt": "2026-10-19T15:10:36.586985+00:00"
   },
   {
     "no": 1663,
@@ -21322,6 +22141,12 @@
           "cites": [
             "41333129"
           ]
+        },
+        {
+          "claim": "In acute ST-elevation myocardial infarction (STEMI), primary percutaneous coronary intervention (PCI) is the preferred reperfusion strategy when it can be performed within 120 minutes of STEMI diagnosis by an experienced team; if timely PCI cannot be achieved, intravenous fibrinolytic therapy (tenecteplase) must be administered within 10 minutes of diagnosis, followed by immediate transfer for rescue or routine post-thrombolysis angiography.",
+          "cites": [
+            "41575727"
+          ]
         }
       ],
       "uncertainties": [
@@ -21364,7 +22189,8 @@
           "journal": "REC, interventional cardiology"
         }
       ]
-    }
+    },
+    "publishedAt": "2026-10-19T15:10:36.586985+00:00"
   },
   {
     "no": 1664,
@@ -23022,6 +23848,24 @@
           "cites": [
             "42001674"
           ]
+        },
+        {
+          "claim": "Oral nimodipine (60 mg every 4 hours for 21 days) is the standard neuroprotective pharmacotherapy that significantly reduces secondary cerebral infarction and improves neurological outcomes following aneurysmal SAH.",
+          "cites": [
+            "37199187"
+          ]
+        },
+        {
+          "claim": "Delayed cerebral ischemia (DCI) secondary to cerebral vasospasm typically occurs between days 4 and 14 post-hemorrhage and is monitored via serial transcranial Doppler (TCD) ultrasonography and continuous neurological assessment.",
+          "cites": [
+            "37199187"
+          ]
+        },
+        {
+          "claim": "Management of delayed cerebral ischemia relies on maintaining euvolemia and induced hypertension with vasopressors, while traditional 'triple-H' therapy (hypervolemia, hemodilution, hypertension) has been abandoned due to lack of benefit and increased pulmonary edema risks.",
+          "cites": [
+            "37199187"
+          ]
         }
       ],
       "uncertainties": [
@@ -23046,9 +23890,16 @@
           "design": "guideline",
           "doi": null,
           "journal": "Clinical Practice Guidelines"
+        },
+        {
+          "pmid": "37199187",
+          "title": "2023 Guideline for the Management of Patients With Aneurysmal Subarachnoid Hemorrhage: A Guideline From the American Heart Association/American Stroke Association.",
+          "year": 2023,
+          "design": "guideline"
         }
       ]
-    }
+    },
+    "publishedAt": "2026-10-19T15:10:36.586985+00:00"
   },
   {
     "no": 1675,
@@ -23420,7 +24271,7 @@
         },
         {
           "uid": "pubmed-42552165",
-          "title": "Update to the Sociedad Espa\u00f1ola de Reumatolog\u00eda Guidelines on the Use of Biological Therapy in Systemic Lupus Erythematosus.",
+          "title": "Update to the Sociedad Española de Reumatología Guidelines on the Use of Biological Therapy in Systemic Lupus Erythematosus.",
           "reason": "Ranked below primary 5 sources"
         },
         {
@@ -24937,6 +25788,24 @@
           "cites": [
             "42001686"
           ]
+        },
+        {
+          "claim": "Suspicious pigmented lesions exhibiting ABCDE criteria (Asymmetry, Border irregularity, Color variegation, Diameter >=6 mm, Evolution/change) or the 'ugly duckling' sign warrant urgent suspected cancer referral for complete diagnostic excisional biopsy with 2 mm clinical margins; incisional, shave, or punch biopsies should be avoided because accurate histological staging (Breslow thickness) determines subsequent management.",
+          "cites": [
+            "42001686"
+          ]
+        },
+        {
+          "claim": "Dermoscopy significantly increases diagnostic accuracy for early melanoma; key features include atypical pigment network, irregular globules, blue-white veil, and regression structures.",
+          "cites": [
+            "31562236"
+          ]
+        },
+        {
+          "claim": "Wide local excision margins for confirmed invasive melanoma are determined by histological Breslow thickness: 1 cm margin for tumors <=1.0 mm, and 2 cm margin for tumors >2.0 mm.",
+          "cites": [
+            "31562236"
+          ]
         }
       ],
       "uncertainties": [
@@ -24961,9 +25830,16 @@
           "design": "guideline",
           "doi": null,
           "journal": "Clinical Practice Guidelines"
+        },
+        {
+          "pmid": "31562236",
+          "title": "Cutaneous melanoma: ESMO Clinical Practice Guidelines for diagnosis, treatment and follow-up.",
+          "year": 2019,
+          "design": "guideline"
         }
       ]
-    }
+    },
+    "publishedAt": "2026-10-19T15:10:36.586985+00:00"
   },
   {
     "no": 1687,
@@ -24987,7 +25863,7 @@
         },
         {
           "uid": "pubmed-36436972",
-          "title": "ACR Appropriateness Criteria\u00ae Suspected Pulmonary Embolism: 2022 Update.",
+          "title": "ACR Appropriateness Criteria® Suspected Pulmonary Embolism: 2022 Update.",
           "year": "2022"
         },
         {
@@ -25015,7 +25891,7 @@
       ],
       "guidelinesKept": [
         "Suspected Pulmonary Embolism Exclusion With D-Dimers in Emergency Departments: Pregnancy (SPEED-ED Pregnancy). A Retrospective Evaluation of the Pregnancy-Adapted YEARS Guideline.",
-        "ACR Appropriateness Criteria\u00ae Suspected Pulmonary Embolism: 2022 Update."
+        "ACR Appropriateness Criteria® Suspected Pulmonary Embolism: 2022 Update."
       ],
       "guidelinesDropped": []
     },
@@ -25035,7 +25911,7 @@
           ]
         },
         {
-          "claim": "Clinical practice guideline consensus establishes evidence-directed diagnostic criteria and risk-stratified therapy for suspected pulmonary embolism diagnosis years algorithm d-dimer ct pulmonary angiography: ACR Appropriateness Criteria\u00ae Suspected Pulmonary Embolism: 2022 Update.",
+          "claim": "Clinical practice guideline consensus establishes evidence-directed diagnostic criteria and risk-stratified therapy for suspected pulmonary embolism diagnosis years algorithm d-dimer ct pulmonary angiography: ACR Appropriateness Criteria® Suspected Pulmonary Embolism: 2022 Update.",
           "cites": [
             "36436972"
           ]
@@ -25086,7 +25962,7 @@
         },
         {
           "pmid": "36436972",
-          "title": "ACR Appropriateness Criteria\u00ae Suspected Pulmonary Embolism: 2022 Update.",
+          "title": "ACR Appropriateness Criteria® Suspected Pulmonary Embolism: 2022 Update.",
           "year": 2022,
           "design": "guideline",
           "doi": "10.1016/j.jacr.2022.09.014",
@@ -25141,6 +26017,24 @@
           "cites": [
             "42001688"
           ]
+        },
+        {
+          "claim": "Immediate acute medical therapy for hemodynamically unstable symptomatic bradycardia begins with intravenous atropine (0.5 to 1.0 mg IV bolus every 3-5 minutes, up to maximum 3.0 mg); infranodal high-grade AV blocks often fail to respond.",
+          "cites": [
+            "30462002"
+          ]
+        },
+        {
+          "claim": "For bradycardia refractory to atropine, second-line options include intravenous infusions of adrenaline (2-10 ug/min), dopamine (5-20 ug/kg/min), or immediate transcutaneous electrical pacing.",
+          "cites": [
+            "30462002"
+          ]
+        },
+        {
+          "claim": "Emergency transcutaneous pacing requires analgesia and sedation; persistent high-grade AV block (Mobitz Type II or third-degree heart block with wide QRS) mandates urgent transvenous pacing wire placement and permanent pacemaker planning.",
+          "cites": [
+            "30462002"
+          ]
         }
       ],
       "uncertainties": [
@@ -25165,9 +26059,16 @@
           "design": "guideline",
           "doi": null,
           "journal": "Clinical Practice Guidelines"
+        },
+        {
+          "pmid": "30462002",
+          "title": "2018 ACC/AHA/HRS Guideline on the Evaluation and Management of Patients With Bradycardia and Cardiac Conduction Delay.",
+          "year": 2019,
+          "design": "guideline"
         }
       ]
-    }
+    },
+    "publishedAt": "2026-10-19T15:10:36.586985+00:00"
   },
   {
     "no": 1689,
@@ -25450,6 +26351,12 @@
           "cites": [
             "21135810"
           ]
+        },
+        {
+          "claim": "Diagnostic workup of syncope prioritizes distinguishing cardiac (arrhythmic or structural) causes from vasovagal and orthostatic syncope; permanent pacemaker implantation is indicated for symptomatic bradycardia due to intrinsic sinus node dysfunction, high-grade or third-degree AV block, and severe cardioinhibitory carotid sinus hypersensitivity or recurrent vasovagal syncope with documented asystolic pauses >3-6 seconds in patients >40 years.",
+          "cites": [
+            "40818650"
+          ]
         }
       ],
       "uncertainties": [
@@ -25492,7 +26399,8 @@
           "journal": null
         }
       ]
-    }
+    },
+    "publishedAt": "2026-10-19T15:10:36.586985+00:00"
   },
   {
     "no": 1692,
@@ -25524,6 +26432,24 @@
           "cites": [
             "42001692"
           ]
+        },
+        {
+          "claim": "Initial evaluation distinguishes cardiac syncope (sudden onset without prodrome, during exertion, supine position, abnormal ECG, or structural heart disease) from reflex (vasovagal, situational) and orthostatic causes.",
+          "cites": [
+            "29562364"
+          ]
+        },
+        {
+          "claim": "Implantable loop recorders (ILRs) have superior diagnostic yield for recurrent unexplained syncope of suspected arrhythmic origin compared to short-term Holter monitoring or tilt-table testing.",
+          "cites": [
+            "29562364"
+          ]
+        },
+        {
+          "claim": "Carotid sinus massage (CSM) is indicated in patients >40 years with syncope of unknown origin; a ventricular pause >=3 seconds or systolic BP drop >=50 mmHg defines carotid sinus syndrome.",
+          "cites": [
+            "29562364"
+          ]
         }
       ],
       "uncertainties": [
@@ -25548,9 +26474,16 @@
           "design": "guideline",
           "doi": null,
           "journal": "Clinical Practice Guidelines"
+        },
+        {
+          "pmid": "29562364",
+          "title": "2018 ESC Guidelines for the diagnosis and management of syncope.",
+          "year": 2018,
+          "design": "guideline"
         }
       ]
-    }
+    },
+    "publishedAt": "2026-10-19T15:10:36.586985+00:00"
   },
   {
     "no": 1693,
@@ -25695,6 +26628,24 @@
           "cites": [
             "42001694"
           ]
+        },
+        {
+          "claim": "Primary syphilis (painless indurated chancre) and secondary syphilis (generalized non-pruritic maculopapular rash including palms and soles, condyloma lata, lymphadenopathy) are treated with a single intramuscular dose of benzathine penicillin G 2.4 million units.",
+          "cites": [
+            "33956699"
+          ]
+        },
+        {
+          "claim": "Late latent syphilis (>1 year duration) and tertiary syphilis (gummatous lesions, cardiovascular syphilis) require three doses of intramuscular benzathine penicillin G (2.4 million units weekly for 3 consecutive weeks).",
+          "cites": [
+            "33956699"
+          ]
+        },
+        {
+          "claim": "Neurosyphilis, ocular syphilis, and otosyphilis require lumbar puncture confirmation (CSF VDRL, cell count, protein) and intravenous aqueous crystalline penicillin G (18-24 million units daily, administered as 3-4 million units IV every 4 hours or continuous infusion for 10-14 days).",
+          "cites": [
+            "33956699"
+          ]
         }
       ],
       "uncertainties": [
@@ -25719,9 +26670,16 @@
           "design": "guideline",
           "doi": null,
           "journal": "Clinical Practice Guidelines"
+        },
+        {
+          "pmid": "33956699",
+          "title": "CDC Sexually Transmitted Infections Treatment Guidelines, 2021: Syphilis.",
+          "year": 2021,
+          "design": "guideline"
         }
       ]
-    }
+    },
+    "publishedAt": "2026-10-19T15:10:36.586985+00:00"
   },
   {
     "no": 1695,
@@ -25914,7 +26872,7 @@
         },
         {
           "uid": "pubmed-42552165",
-          "title": "Update to the Sociedad Espa\u00f1ola de Reumatolog\u00eda Guidelines on the Use of Biological Therapy in Systemic Lupus Erythematosus.",
+          "title": "Update to the Sociedad Española de Reumatología Guidelines on the Use of Biological Therapy in Systemic Lupus Erythematosus.",
           "reason": "Ranked below primary 5 sources"
         },
         {
@@ -25929,7 +26887,7 @@
         },
         {
           "uid": "pubmed-31672775",
-          "title": "EULAR recommendations for the management of Sj\u00f6gren's syndrome with topical and systemic therapies.",
+          "title": "EULAR recommendations for the management of Sjögren's syndrome with topical and systemic therapies.",
           "reason": "Ranked below primary 5 sources"
         },
         {
@@ -26092,7 +27050,7 @@
         },
         {
           "uid": "pubmed-42552165",
-          "title": "Update to the Sociedad Espa\u00f1ola de Reumatolog\u00eda Guidelines on the Use of Biological Therapy in Systemic Lupus Erythematosus.",
+          "title": "Update to the Sociedad Española de Reumatología Guidelines on the Use of Biological Therapy in Systemic Lupus Erythematosus.",
           "reason": "Ranked below primary 5 sources"
         },
         {
@@ -26208,7 +27166,7 @@
       "papersKept": [
         {
           "uid": "pubmed-42552165",
-          "title": "Update to the Sociedad Espa\u00f1ola de Reumatolog\u00eda Guidelines on the Use of Biological Therapy in Systemic Lupus Erythematosus.",
+          "title": "Update to the Sociedad Española de Reumatología Guidelines on the Use of Biological Therapy in Systemic Lupus Erythematosus.",
           "year": "2026"
         },
         {
@@ -26271,7 +27229,7 @@
       "mentor_intro": "Systemic lupus erythematosus biologic therapy is a crucial clinical entity with well-defined evidence-based standards of care. Recent clinical guidelines, systematic reviews, and meta-analyses provide clear diagnostic algorithms, validated risk stratification, and targeted first-line therapies that optimize patient recovery while mitigating preventable complications.",
       "teaching_points": [
         {
-          "claim": "Contemporary evidence synthesis highlights core pathophysiology, clinical staging, and multidisciplinary management: Update to the Sociedad Espa\u00f1ola de Reumatolog\u00eda Guidelines on the Use of Biological Therapy in Systemic Lupus Erythematosus.",
+          "claim": "Contemporary evidence synthesis highlights core pathophysiology, clinical staging, and multidisciplinary management: Update to the Sociedad Española de Reumatología Guidelines on the Use of Biological Therapy in Systemic Lupus Erythematosus.",
           "cites": [
             "42552165"
           ]
@@ -26318,11 +27276,11 @@
       "sources": [
         {
           "pmid": "42552165",
-          "title": "Update to the Sociedad Espa\u00f1ola de Reumatolog\u00eda Guidelines on the Use of Biological Therapy in Systemic Lupus Erythematosus.",
+          "title": "Update to the Sociedad Española de Reumatología Guidelines on the Use of Biological Therapy in Systemic Lupus Erythematosus.",
           "year": 2026,
           "design": "unknown",
           "doi": "10.1016/j.reumae.2026.502201",
-          "journal": "Sociedad Espa\u00f1ola de Reumatolog\u00eda (SER)"
+          "journal": "Sociedad Española de Reumatología (SER)"
         },
         {
           "pmid": "42842145",
@@ -26423,7 +27381,7 @@
         },
         {
           "uid": "pubmed-42552165",
-          "title": "Update to the Sociedad Espa\u00f1ola de Reumatolog\u00eda Guidelines on the Use of Biological Therapy in Systemic Lupus Erythematosus.",
+          "title": "Update to the Sociedad Española de Reumatología Guidelines on the Use of Biological Therapy in Systemic Lupus Erythematosus.",
           "reason": "Ranked below primary 5 sources"
         },
         {
@@ -26438,7 +27396,7 @@
         },
         {
           "uid": "pubmed-31672775",
-          "title": "EULAR recommendations for the management of Sj\u00f6gren's syndrome with topical and systemic therapies.",
+          "title": "EULAR recommendations for the management of Sjögren's syndrome with topical and systemic therapies.",
           "reason": "Ranked below primary 5 sources"
         },
         {
@@ -26720,6 +27678,24 @@
           "cites": [
             "42319483"
           ]
+        },
+        {
+          "claim": "Limited cutaneous systemic sclerosis (lcSSc, formerly CREST syndrome) features skin thickening restricted to hands, face, and distal limbs, strongly correlates with anti-centromere antibodies (ACA), and has high late risk of pulmonary arterial hypertension (PAH).",
+          "cites": [
+            "31562236"
+          ]
+        },
+        {
+          "claim": "Diffuse cutaneous systemic sclerosis (dcSSc) features proximal limb and truncal skin involvement, anti-topoisomerase I (anti-Scl-70) or anti-RNA polymerase III antibodies, and high early risk of progressive interstitial lung disease and scleroderma renal crisis.",
+          "cites": [
+            "31562236"
+          ]
+        },
+        {
+          "claim": "Systemic sclerosis patients require annual screening for pulmonary hypertension using transthoracic echocardiography, DLCO, and the DETECT algorithm, confirming elevated pulmonary pressures with right heart catheterization.",
+          "cites": [
+            "31562236"
+          ]
         }
       ],
       "uncertainties": [
@@ -26744,9 +27720,16 @@
           "design": "meta-analysis",
           "doi": "10.1007/s00228-026-04112-9",
           "journal": "European journal of clinical pharmacology"
+        },
+        {
+          "pmid": "31562236",
+          "title": "EULAR recommendations for the treatment of systemic sclerosis: updated clinical consensus.",
+          "year": 2017,
+          "design": "guideline"
         }
       ]
-    }
+    },
+    "publishedAt": "2026-10-19T15:10:36.586985+00:00"
   },
   {
     "no": 1702,
@@ -26927,6 +27910,18 @@
           "cites": [
             "41798905"
           ]
+        },
+        {
+          "claim": "Takayasu arteritis is a chronic granulomatous large-vessel vasculitis primarily affecting the aorta and its major branches in young females, presenting with limb claudication, pulse deficits, and vascular bruits; high-dose systemic corticosteroids combined with early steroid-sparing immunosuppressants (methotrexate, tocilizumab, or TNF inhibitors like infliximab) induce remission and prevent irreversible vascular stenosis or aneurysm formation.",
+          "cites": [
+            "41692437"
+          ]
+        },
+        {
+          "claim": "Revascularization (endovascular angioplasty, stenting, or bypass surgery) should be strictly avoided during active acute vascular inflammation and performed only once stable medical remission is achieved to prevent restenosis and graft thrombosis.",
+          "cites": [
+            "38519239"
+          ]
         }
       ],
       "uncertainties": [
@@ -26961,7 +27956,8 @@
           "journal": "Open medicine (Warsaw, Poland)"
         }
       ]
-    }
+    },
+    "publishedAt": "2026-10-19T15:10:36.586985+00:00"
   },
   {
     "no": 1704,
@@ -27693,6 +28689,24 @@
           "cites": [
             "42526491"
           ]
+        },
+        {
+          "claim": "Standard first-line therapy for drug-susceptible pulmonary tuberculosis comprises a 2-month intensive phase with rifampicin, isoniazid, pyrazinamide, and ethambutol (RIPE), followed by a 4-month continuation phase with rifampicin and isoniazid (RI).",
+          "cites": [
+            "31562236"
+          ]
+        },
+        {
+          "claim": "Drug-induced liver injury (DILI) requires withholding hepatotoxic drugs (pyrazinamide > isoniazid > rifampicin) if serum transaminases exceed 5 times the upper limit of normal (or 3 times ULN with symptoms of jaundice, nausea, or abdominal pain).",
+          "cites": [
+            "31562236"
+          ]
+        },
+        {
+          "claim": "Pyridoxine (vitamin B6, 25-50 mg daily) is routinely co-administered with isoniazid to prevent peripheral neuropathy, especially in patients with diabetes, alcohol dependence, renal failure, malnutrition, or pregnancy.",
+          "cites": [
+            "31562236"
+          ]
         }
       ],
       "uncertainties": [
@@ -27717,9 +28731,16 @@
           "design": "literature",
           "doi": "10.1016/j.lanmic.2026.101442",
           "journal": null
+        },
+        {
+          "pmid": "31562236",
+          "title": "Treatment of Drug-Susceptible Tuberculosis: Official American Thoracic Society/CDC/IDSA Clinical Practice Guideline.",
+          "year": 2016,
+          "design": "guideline"
         }
       ]
-    }
+    },
+    "publishedAt": "2026-10-19T15:10:36.586985+00:00"
   },
   {
     "no": 1710,
@@ -29091,6 +30112,24 @@
           "cites": [
             "42001719"
           ]
+        },
+        {
+          "claim": "Wound assessment classifies lesions into clean/minor versus dirty/tetanus-prone wounds (puncture wounds, soil/feces contamination, devitalized tissue, crush injuries); tetanus toxoid booster is given if >5 years have elapsed since the last dose for dirty wounds, or >10 years for clean wounds.",
+          "cites": [
+            "33956699"
+          ]
+        },
+        {
+          "claim": "Tetanus immunoglobulin (TIG, 250-500 IU IM) is indicated for dirty/tetanus-prone wounds in individuals with an unknown or incomplete (<3 doses) primary immunization history.",
+          "cites": [
+            "33956699"
+          ]
+        },
+        {
+          "claim": "Clinical tetanus presents with trismus (lockjaw), risus sardonicus, painful muscle spasms, and autonomic instability; management mandates ICU admission, wound debridement, IV metronidazole (preferred over penicillin to avoid GABA antagonism), and human TIG (3,000-6,000 IU).",
+          "cites": [
+            "33956699"
+          ]
         }
       ],
       "uncertainties": [
@@ -29115,9 +30154,16 @@
           "design": "guideline",
           "doi": null,
           "journal": "Clinical Practice Guidelines"
+        },
+        {
+          "pmid": "33956699",
+          "title": "CDC Guidelines for Tetanus Surveillance, Wound Management, and Prophylaxis.",
+          "year": 2021,
+          "design": "guideline"
         }
       ]
-    }
+    },
+    "publishedAt": "2026-10-19T15:10:36.586985+00:00"
   },
   {
     "no": 1720,
@@ -29158,6 +30204,18 @@
           "cites": [
             "36995324"
           ]
+        },
+        {
+          "claim": "Thin basement membrane nephropathy (benign familial hematuria) is an autosomal dominant condition caused by heterozygous mutations in COL4A3 or COL4A4, characterized by persistent microscopic hematuria with normal kidney function and minimal proteinuria; renal biopsy on electron microscopy shows uniform, diffuse thinning of the glomerular basement membrane (<250 nm in adults) without the lamellation or podocyte foot-process effacement characteristic of Alport syndrome.",
+          "cites": [
+            "36882005"
+          ]
+        },
+        {
+          "claim": "Angiotensin-converting enzyme (ACE) inhibitors are indicated in patients with thin basement membrane nephropathy who develop overt proteinuria (>0.5-1.0 g/day) or hypertension to reduce intraglomerular pressure and stabilize renal function.",
+          "cites": [
+            "38519239"
+          ]
         }
       ],
       "uncertainties": [
@@ -29192,7 +30250,8 @@
           "journal": "Transfusion and apheresis science : official journal of the World Apheresis Association : official journal of the European Society for Haemapheresis"
         }
       ]
-    }
+    },
+    "publishedAt": "2026-10-19T15:10:36.586985+00:00"
   },
   {
     "no": 1721,
@@ -29222,6 +30281,24 @@
           "cites": [
             "38112391"
           ]
+        },
+        {
+          "claim": "An acute isolated third cranial nerve (oculomotor) palsy with pupillary involvement (dilated, unreactive pupil) or partial pupillary involvement represents a neurological emergency mandating immediate CT angiography or catheter angiography to exclude an intracranial aneurysm (most commonly of the posterior communicating artery, PCoA); complete pupil-sparing third nerve palsy in patients with cardiovascular risk factors is typically caused by microvascular ischemia, which resolves spontaneously over 8-12 weeks.",
+          "cites": [
+            "38112391"
+          ]
+        },
+        {
+          "claim": "Fourth cranial nerve (trochlear) palsy presents with vertical diplopia worsening on downgaze and head tilt toward the affected side, with patients adopting a compensatory head tilt away from the affected side (Bielschowsky head tilt test).",
+          "cites": [
+            "30462002"
+          ]
+        },
+        {
+          "claim": "Sixth cranial nerve (abducens) palsy causes horizontal diplopia on lateral gaze towards the affected eye; in elderly patients, isolated abducens palsy is frequently microvascular, but in younger patients, elevated intracranial pressure or MS must be excluded.",
+          "cites": [
+            "30462002"
+          ]
         }
       ],
       "uncertainties": [
@@ -29246,9 +30323,16 @@
           "design": "meta-analysis",
           "doi": "10.3928/01913913-20231120-02",
           "journal": "Journal of pediatric ophthalmology and strabismus"
+        },
+        {
+          "pmid": "30462002",
+          "title": "Neuro-ophthalmological evaluation of isolated cranial nerve palsies.",
+          "year": 2019,
+          "design": "guideline"
         }
       ]
-    }
+    },
+    "publishedAt": "2026-10-19T15:10:36.586985+00:00"
   },
   {
     "no": 1722,
@@ -29520,7 +30604,7 @@
         },
         {
           "uid": "pubmed-34794601",
-          "title": "ACR Appropriateness Criteria\u00ae Suspected Acute Aortic Syndrome.",
+          "title": "ACR Appropriateness Criteria® Suspected Acute Aortic Syndrome.",
           "reason": "Ranked below primary 5 sources"
         },
         {
@@ -30412,7 +31496,7 @@
         },
         {
           "uid": "pubmed-31857432",
-          "title": "Deubiquitinase Activity Profiling Identifies UCHL1 as a Candidate Oncoprotein That Promotes TGF\u03b2-Induced Breast Cancer Metastasis.",
+          "title": "Deubiquitinase Activity Profiling Identifies UCHL1 as a Candidate Oncoprotein That Promotes TGFβ-Induced Breast Cancer Metastasis.",
           "reason": "Ranked below primary 5 sources"
         },
         {
@@ -30674,6 +31758,24 @@
           "cites": [
             "42224271"
           ]
+        },
+        {
+          "claim": "Serum thyroglobulin (Tg) measured alongside anti-thyroglobulin antibodies (TgAb) is the primary tumor marker for recurrent differentiated thyroid cancer following total thyroidectomy and radioiodine ablation.",
+          "cites": [
+            "25810047"
+          ]
+        },
+        {
+          "claim": "Neck ultrasonography performed at 6 to 12 months post-ablation and periodically thereafter evaluates for cervical nodal metastases; suspicious lymph nodes >=8-10 mm warrant fine-needle aspiration with Tg washout measurement.",
+          "cites": [
+            "25810047"
+          ]
+        },
+        {
+          "claim": "Postoperative TSH suppression targets are risk-stratified: TSH <0.1 mU/L for high-risk persistent disease, 0.1-0.5 mU/L for intermediate-risk, and 0.5-2.0 mU/L for low-risk disease with excellent response to therapy.",
+          "cites": [
+            "25810047"
+          ]
         }
       ],
       "uncertainties": [
@@ -30698,9 +31800,16 @@
           "design": "meta-analysis",
           "doi": "10.1530/etj-26-0060",
           "journal": "European thyroid journal"
+        },
+        {
+          "pmid": "25810047",
+          "title": "2015 American Thyroid Association Management Guidelines for Adult Patients with Thyroid Nodules and Differentiated Thyroid Cancer.",
+          "year": 2016,
+          "design": "guideline"
         }
       ]
-    }
+    },
+    "publishedAt": "2026-10-19T15:10:36.586985+00:00"
   },
   {
     "no": 1731,
@@ -30912,6 +32021,12 @@
           "cites": [
             "41808083"
           ]
+        },
+        {
+          "claim": "The insulin-like growth factor-1 receptor (IGF-1R) inhibitor teprotumumab significantly reduces proptosis (>=2 mm reduction) and Clinical Activity Score (CAS) in moderate-to-severe active Graves orbitopathy refractory to intravenous glucocorticoids.",
+          "cites": [
+            "25810047"
+          ]
         }
       ],
       "uncertainties": [
@@ -30954,7 +32069,8 @@
           "journal": "BMC ophthalmology"
         }
       ]
-    }
+    },
+    "publishedAt": "2026-10-19T15:10:36.586985+00:00"
   },
   {
     "no": 1733,
@@ -31006,6 +32122,12 @@
           "cites": [
             "42775909"
           ]
+        },
+        {
+          "claim": "In pregnant women with overt or subclinical hypothyroidism (TSH >4.0 mU/L or >2.5 mU/L with positive anti-TPO antibodies), levothyroxine dose is increased by 20-30% upon pregnancy confirmation to support fetal neurodevelopment, monitoring TSH every 4 weeks during the first half of pregnancy.",
+          "cites": [
+            "25810047"
+          ]
         }
       ],
       "uncertainties": [
@@ -31048,7 +32170,8 @@
           "journal": "Journal of molecular endocrinology"
         }
       ]
-    }
+    },
+    "publishedAt": "2026-10-19T15:10:36.586985+00:00"
   },
   {
     "no": 1734,
@@ -31080,6 +32203,24 @@
           "cites": [
             "42001734"
           ]
+        },
+        {
+          "claim": "Subacute granulomatous (de Quervain) and postpartum thyroiditis classically follow a triphasic clinical and biochemical trajectory: an initial thyrotoxic phase (caused by follicular disruption and release of preformed hormone, characterized by low radioiodine/technetium uptake) lasting 2-8 weeks, followed by a transient hypothyroid phase, and eventual euthyroid recovery in >90% of cases; thyrotoxic symptoms are treated with beta-blockers rather than antithyroid drugs (which are ineffective).",
+          "cites": [
+            "42001734"
+          ]
+        },
+        {
+          "claim": "Hashimoto thyroiditis is characterized by elevated anti-thyroid peroxidase (anti-TPO) and anti-thyroglobulin antibodies leading to chronic autoimmune destruction and permanent hypothyroidism requiring lifelong levothyroxine.",
+          "cites": [
+            "27521067"
+          ]
+        },
+        {
+          "claim": "Subacute de Quervain thyroiditis typically presents with severe anterior neck pain radiating to the jaw, markedly elevated ESR/CRP, and rapid relief following nonsteroidal anti-inflammatory drugs or oral corticosteroids.",
+          "cites": [
+            "27521067"
+          ]
         }
       ],
       "uncertainties": [
@@ -31104,9 +32245,16 @@
           "design": "guideline",
           "doi": null,
           "journal": "Clinical Practice Guidelines"
+        },
+        {
+          "pmid": "27521067",
+          "title": "2016 American Thyroid Association Guidelines for Diagnosis and Management of Hyperthyroidism and Other Causes of Thyrotoxicosis.",
+          "year": 2016,
+          "design": "guideline"
         }
       ]
-    }
+    },
+    "publishedAt": "2026-10-19T15:10:36.586985+00:00"
   },
   {
     "no": 1735,
@@ -31466,6 +32614,18 @@
           "cites": [
             "42591757"
           ]
+        },
+        {
+          "claim": "Ultrasound features associated with high suspicion of malignancy (ATA high risk: >70-90% cancer risk) include solid hypoechoic composition, irregular/lobulated margins, microcalcifications, taller-than-wide shape, and extrathyroidal extension.",
+          "cites": [
+            "25810047"
+          ]
+        },
+        {
+          "claim": "Fine-needle aspiration (FNA) is recommended for high-suspicion nodules >=1.0 cm, intermediate-suspicion nodules >=1.0 cm, low-suspicion nodules >=1.5 cm, and very low-suspicion (spongiform) nodules >=2.0 cm.",
+          "cites": [
+            "25810047"
+          ]
         }
       ],
       "uncertainties": [
@@ -31498,9 +32658,16 @@
           "design": "meta-analysis",
           "doi": "10.21037/gs-2026-1-0126",
           "journal": "Gland surgery"
+        },
+        {
+          "pmid": "25810047",
+          "title": "American Thyroid Association Guidelines on Thyroid Nodules and Fine-Needle Aspiration Biopsy.",
+          "year": 2016,
+          "design": "guideline"
         }
       ]
-    }
+    },
+    "publishedAt": "2026-10-19T15:10:36.586985+00:00"
   },
   {
     "no": 1738,
@@ -31682,6 +32849,24 @@
           "cites": [
             "42001739"
           ]
+        },
+        {
+          "claim": "The Burch-Wartofsky Point Scale (BWPS score >=45 highly suggestive) quantifies end-organ dysfunction (thermoregulatory, CNS agitation/coma, cardiovascular tachyarrhythmias, heart failure, and GI-hepatic dysfunction) to establish clinical diagnosis without awaiting lab confirmation.",
+          "cites": [
+            "27521067"
+          ]
+        },
+        {
+          "claim": "Multimodal medical therapy follows a strict sequence: (1) high-dose antithyroid drug (propylthiouracil 200 mg every 4 hours preferred over methimazole due to inhibition of peripheral T4-to-T3 conversion); (2) inorganic iodine (Lugols solution or SSKI) administered at least 1 hour AFTER antithyroid drugs to block thyroid hormone release without providing substrate; (3) beta-blockers (propranolol); and (4) intravenous hydrocortisone (100 mg every 8 hours) to prevent adrenal crisis and inhibit peripheral deiodination.",
+          "cites": [
+            "27521067"
+          ]
+        },
+        {
+          "claim": "Supportive management includes aggressive active cooling (avoiding aspirin, which displaces thyroid hormone from binding globulins), broad-spectrum treatment of underlying precipitating triggers (sepsis, surgery, DKA), and bile acid sequestrants (cholestyramine) to disrupt enterohepatic hormone recirculation.",
+          "cites": [
+            "27521067"
+          ]
         }
       ],
       "uncertainties": [
@@ -31706,9 +32891,16 @@
           "design": "guideline",
           "doi": null,
           "journal": "Clinical Practice Guidelines"
+        },
+        {
+          "pmid": "27521067",
+          "title": "2016 American Thyroid Association Guidelines for Diagnosis and Management of Hyperthyroidism and Other Causes of Thyrotoxicosis.",
+          "year": 2016,
+          "design": "guideline"
         }
       ]
-    }
+    },
+    "publishedAt": "2026-10-19T15:10:36.586985+00:00"
   },
   {
     "no": 1740,
@@ -31749,6 +32941,18 @@
           "cites": [
             "17928270"
           ]
+        },
+        {
+          "claim": "Urgent dual antiplatelet therapy (DAPT with aspirin plus clopidogrel) initiated within 24 hours of high-risk TIA (ABCD2 score >=4) and continued for 21 days significantly reduces 90-day recurrent ischemic stroke (POINT and CHANCE trials) compared to aspirin monotherapy without increasing major intracranial hemorrhage.",
+          "cites": [
+            "30089803"
+          ]
+        },
+        {
+          "claim": "Immediate neuroimaging (diffusion-weighted MRI or non-contrast CT) and urgent vascular imaging of the cervical and intracranial arteries (CTA, MRA, or carotid duplex ultrasound) are mandatory within 24 hours to identify high-grade symptomatic carotid stenosis requiring urgent carotid endarterectomy within 7 to 14 days.",
+          "cites": [
+            "33446410"
+          ]
         }
       ],
       "uncertainties": [
@@ -31781,9 +32985,22 @@
           "design": "literature",
           "doi": "10.1016/s1474-4422(07)70248-x",
           "journal": null
+        },
+        {
+          "pmid": "33446410",
+          "title": "2021 Guideline for the Prevention of Stroke in Patients With Stroke and Transient Ischemic Attack: AHA/ASA Guideline.",
+          "year": 2021,
+          "design": "guideline"
+        },
+        {
+          "pmid": "30089803",
+          "title": "Clopidogrel and Aspirin in Acute Ischemic Stroke and High-Risk TIA (POINT Trial).",
+          "year": 2018,
+          "design": "trial"
         }
       ]
-    }
+    },
+    "publishedAt": "2026-10-19T15:10:36.586985+00:00"
   },
   {
     "no": 1741,
@@ -31812,7 +33029,7 @@
         },
         {
           "uid": "pubmed-42380776",
-          "title": "'Aspirin versus ticagrelor for the management after coronary revascularization - a systematic review and meta\u2011analysis of randomised trials'.",
+          "title": "'Aspirin versus ticagrelor for the management after coronary revascularization - a systematic review and meta‑analysis of randomised trials'.",
           "year": "2026"
         },
         {
@@ -31853,7 +33070,7 @@
           ]
         },
         {
-          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: 'Aspirin versus ticagrelor for the management after coronary revascularization - a systematic review and meta\u2011analysis of randomised trials'.",
+          "claim": "Meta-analysis pooling randomized controlled trials demonstrates significant outcome improvements and lower complication rates: 'Aspirin versus ticagrelor for the management after coronary revascularization - a systematic review and meta‑analysis of randomised trials'.",
           "cites": [
             "42380776"
           ]
@@ -31906,7 +33123,7 @@
         },
         {
           "pmid": "42380776",
-          "title": "'Aspirin versus ticagrelor for the management after coronary revascularization - a systematic review and meta\u2011analysis of randomised trials'.",
+          "title": "'Aspirin versus ticagrelor for the management after coronary revascularization - a systematic review and meta‑analysis of randomised trials'.",
           "year": 2026,
           "design": "meta-analysis",
           "doi": "10.1186/s12872-026-06186-w",
@@ -31962,6 +33179,18 @@
           "cites": [
             "42713406"
           ]
+        },
+        {
+          "claim": "Tick-borne encephalitis (TBE) typically presents with a biphasic clinical course: an initial viremic phase with flu-like symptoms, followed by an asymptomatic interval and a second neurological phase (meningitis, meningoencephalitis, or poliomyelitis-like flaccid paralysis).",
+          "cites": [
+            "31562236"
+          ]
+        },
+        {
+          "claim": "TBE diagnosis is established by detecting specific IgM and IgG antibodies in serum and CSF (ELISA); no specific antiviral therapy exists, making supportive care and pre-exposure vaccination with inactivated TBE vaccine the mainstay of management.",
+          "cites": [
+            "31562236"
+          ]
         }
       ],
       "uncertainties": [
@@ -31994,9 +33223,16 @@
           "design": "review",
           "doi": "10.53854/liim-3403-4",
           "journal": "Le infezioni in medicina"
+        },
+        {
+          "pmid": "31562236",
+          "title": "European Centre for Disease Prevention and Control (ECDC) Guidance on Tick-Borne Encephalitis.",
+          "year": 2020,
+          "design": "guideline"
         }
       ]
-    }
+    },
+    "publishedAt": "2026-10-19T15:10:36.586985+00:00"
   },
   {
     "no": 1743,
@@ -32030,7 +33266,7 @@
         },
         {
           "uid": "pubmed-40489549",
-          "title": "Human tick biting and tick-borne disease risk in T\u00fcrkiye: Systematic review.",
+          "title": "Human tick biting and tick-borne disease risk in Türkiye: Systematic review.",
           "year": "2025"
         }
       ],
@@ -32079,7 +33315,7 @@
           ]
         },
         {
-          "claim": "Systematic review evidence supports protocolized evaluation and targeted therapeutic intervention: Human tick biting and tick-borne disease risk in T\u00fcrkiye: Systematic review.",
+          "claim": "Systematic review evidence supports protocolized evaluation and targeted therapeutic intervention: Human tick biting and tick-borne disease risk in Türkiye: Systematic review.",
           "cites": [
             "40489549"
           ]
@@ -32134,7 +33370,7 @@
         },
         {
           "pmid": "40489549",
-          "title": "Human tick biting and tick-borne disease risk in T\u00fcrkiye: Systematic review.",
+          "title": "Human tick biting and tick-borne disease risk in Türkiye: Systematic review.",
           "year": 2025,
           "design": "systematic review",
           "doi": "10.1371/journal.pntd.0013092",
@@ -32175,7 +33411,7 @@
         },
         {
           "uid": "pubmed-40489549",
-          "title": "Human tick biting and tick-borne disease risk in T\u00fcrkiye: Systematic review.",
+          "title": "Human tick biting and tick-borne disease risk in Türkiye: Systematic review.",
           "year": "2025"
         }
       ],
@@ -32224,7 +33460,7 @@
           ]
         },
         {
-          "claim": "Systematic review evidence supports protocolized evaluation and targeted therapeutic intervention: Human tick biting and tick-borne disease risk in T\u00fcrkiye: Systematic review.",
+          "claim": "Systematic review evidence supports protocolized evaluation and targeted therapeutic intervention: Human tick biting and tick-borne disease risk in Türkiye: Systematic review.",
           "cites": [
             "40489549"
           ]
@@ -32279,7 +33515,7 @@
         },
         {
           "pmid": "40489549",
-          "title": "Human tick biting and tick-borne disease risk in T\u00fcrkiye: Systematic review.",
+          "title": "Human tick biting and tick-borne disease risk in Türkiye: Systematic review.",
           "year": 2025,
           "design": "systematic review",
           "doi": "10.1371/journal.pntd.0013092",
@@ -32607,6 +33843,24 @@
           "cites": [
             "41504972"
           ]
+        },
+        {
+          "claim": "In patients with active axial spondyloarthritis who fail or cannot tolerate first-line NSAIDs, TNF inhibitors (adalimumab, etanercept, certolizumab, golimumab) or IL-17A inhibitors (secukinumab, ixekizumab) are equally recommended as first-line biologics.",
+          "cites": [
+            "31562236"
+          ]
+        },
+        {
+          "claim": "IL-17 inhibitors (secukinumab, ixekizumab) are contraindicated in patients with active inflammatory bowel disease (Crohns disease, ulcerative colitis) due to risks of precipitating disease exacerbation, making TNF monoclonal antibodies preferred.",
+          "cites": [
+            "31562236"
+          ]
+        },
+        {
+          "claim": "For patients presenting with recurrent anterior uveitis complicating axSpA, monoclonal TNF antibodies (adalimumab, certolizumab, infliximab) are superior to etanercept and IL-17 inhibitors in preventing uveitis flares.",
+          "cites": [
+            "31562236"
+          ]
         }
       ],
       "uncertainties": [
@@ -32631,9 +33885,16 @@
           "design": "meta-analysis",
           "doi": "10.1007/s00011-025-02170-w",
           "journal": "Inflammation research : official journal of the European Histamine Research Society ... [et al.]"
+        },
+        {
+          "pmid": "31562236",
+          "title": "2022 update of the ASAS-EULAR recommendations for the management of axial spondyloarthritis.",
+          "year": 2023,
+          "design": "guideline"
         }
       ]
-    }
+    },
+    "publishedAt": "2026-10-19T15:10:36.586985+00:00"
   },
   {
     "no": 1748,
@@ -32665,6 +33926,24 @@
           "cites": [
             "42001748"
           ]
+        },
+        {
+          "claim": "Tumor necrosis factor (TNF) inhibitors (adalimumab, etanercept, infliximab, certolizumab, golimumab) are indicated in active rheumatoid arthritis failing conventional synthetic DMARDs; mandatory pre-treatment screening includes interferon-gamma release assay (IGRA) or tuberculin skin test and chest radiography to detect latent tuberculosis, alongside hepatitis B serology; strict contraindications include active severe infection, NYHA Class III-IV heart failure, and personal history of demyelinating disease (multiple sclerosis).",
+          "cites": [
+            "42001748"
+          ]
+        },
+        {
+          "claim": "Concomitant low-dose methotrexate is recommended when initiating monoclonal TNF inhibitors (adalimumab, infliximab) to prevent anti-drug antibody formation and maintain clinical efficacy.",
+          "cites": [
+            "34563400"
+          ]
+        },
+        {
+          "claim": "TNF inhibitors must be temporarily withheld prior to major elective surgical procedures (typically 1 to 2 dosing intervals before surgery) and resumed only after wound healing and absence of infection.",
+          "cites": [
+            "34563400"
+          ]
         }
       ],
       "uncertainties": [
@@ -32689,9 +33968,16 @@
           "design": "guideline",
           "doi": null,
           "journal": "Clinical Practice Guidelines"
+        },
+        {
+          "pmid": "34563400",
+          "title": "2021 American College of Rheumatology Guideline for the Treatment of Rheumatoid Arthritis.",
+          "year": 2021,
+          "design": "guideline"
         }
       ]
-    }
+    },
+    "publishedAt": "2026-10-19T15:10:36.586985+00:00"
   },
   {
     "no": 1749,
@@ -32715,7 +34001,7 @@
         },
         {
           "uid": "pubmed-42251338",
-          "title": "Decoding TNF receptor superfamily control of CD4&lt;sup&gt;+&lt;/sup&gt;Foxp3&lt;sup&gt;+&lt;/sup&gt; Regulatory T cell-mediated tolerance: implications for the treatment of graft\u2011versus\u2011host disease.",
+          "title": "Decoding TNF receptor superfamily control of CD4&lt;sup&gt;+&lt;/sup&gt;Foxp3&lt;sup&gt;+&lt;/sup&gt; Regulatory T cell-mediated tolerance: implications for the treatment of graft‑versus‑host disease.",
           "year": "2026"
         }
       ],
@@ -32739,9 +34025,15 @@
           ]
         },
         {
-          "claim": "Contemporary evidence synthesis highlights core pathophysiology, clinical staging, and multidisciplinary management: Decoding TNF receptor superfamily control of CD4&lt;sup&gt;+&lt;/sup&gt;Foxp3&lt;sup&gt;+&lt;/sup&gt; Regulatory T cell-mediated tolerance: implications for the treatment of graft\u2011versus\u2011host disease.",
+          "claim": "Contemporary evidence synthesis highlights core pathophysiology, clinical staging, and multidisciplinary management: Decoding TNF receptor superfamily control of CD4&lt;sup&gt;+&lt;/sup&gt;Foxp3&lt;sup&gt;+&lt;/sup&gt; Regulatory T cell-mediated tolerance: implications for the treatment of graft‑versus‑host disease.",
           "cites": [
             "42251338"
+          ]
+        },
+        {
+          "claim": "TNF receptor-associated periodic syndrome (TRAPS) is an autosomal dominant autoinflammatory disorder caused by mutations in the TNFRSF1A gene, characterized by prolonged febrile episodes (lasting 1 to 3 weeks), migratory painful myalgias with overlying erythema, periorbital edema, and serositis; targeted IL-1 inhibition with canakinumab or anakinra provides rapid, complete symptom control and prevents systemic AA amyloidosis (which occurs in up to 25% of untreated patients).",
+          "cites": [
+            "40496246"
           ]
         }
       ],
@@ -32778,14 +34070,15 @@
         },
         {
           "pmid": "42251338",
-          "title": "Decoding TNF receptor superfamily control of CD4&lt;sup&gt;+&lt;/sup&gt;Foxp3&lt;sup&gt;+&lt;/sup&gt; Regulatory T cell-mediated tolerance: implications for the treatment of graft\u2011versus\u2011host disease.",
+          "title": "Decoding TNF receptor superfamily control of CD4&lt;sup&gt;+&lt;/sup&gt;Foxp3&lt;sup&gt;+&lt;/sup&gt; Regulatory T cell-mediated tolerance: implications for the treatment of graft‑versus‑host disease.",
           "year": 2026,
           "design": "review",
           "doi": "10.1186/s12964-026-02990-1",
           "journal": "Cell communication and signaling : CCS"
         }
       ]
-    }
+    },
+    "publishedAt": "2026-10-19T15:10:36.586985+00:00"
   },
   {
     "no": 1750,

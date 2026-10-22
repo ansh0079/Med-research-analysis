@@ -138,6 +138,10 @@ echo "Ingesting uploaded open-access guidelines..."
 docker compose -f docker-compose.hetzner.yml exec -T -e USE_POSTGRES_MAIN=true web \
   node scripts/ingest-flagship-guideline-seeds.js --catalog server/config/uploadedGuidelines.json
 
+echo "Syncing published curriculum mentor synopses into Postgres..."
+docker compose -f docker-compose.hetzner.yml exec -T -e USE_POSTGRES_MAIN=true web \
+  node server/scripts/syncAllMentorDraftsToProd.js --apply
+
 echo ""
 echo "Waiting for health (web + worker) ..."
 web_ok=0

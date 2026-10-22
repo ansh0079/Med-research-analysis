@@ -39,7 +39,8 @@
         {
           "claim": "Longitudinal follow-up demonstrates that high-titer GADA positivity confers a significantly faster rate of beta-cell loss, with over 50% requiring absolute insulin replacement within 3 to 6 years of clinical diagnosis.",
           "cites": [
-            "32847960"
+            "32847960",
+            "32675276"
           ]
         }
       ],
@@ -50,6 +51,12 @@
           "year": "2020",
           "journal": "Diabetes",
           "title": "Management of Latent Autoimmune Diabetes in Adults: A Consensus Statement From an International Expert Panel"
+        },
+        {
+          "pmid": "32675276",
+          "title": "Management of Latent Autoimmune Diabetes in Adults: Consensus Statement from an International Expert Panel.",
+          "year": 2020,
+          "design": "guideline"
         }
       ],
       "uncertainties": [
@@ -66,7 +73,8 @@
         "A 55-year-old male with mild hyperglycemia, normal BMI, and unexplained weight loss presenting with ketones on urinalysis after initiation of an SGLT2 inhibitor."
       ],
       "gaps": "Clarifying safe clinical parameters for SGLT2 inhibitor use in antibody-positive adults with preserved C-peptide."
-    }
+    },
+    "publishedAt": "2026-10-21T08:39:55.099627+00:00"
   },
   {
     "no": 1002,
@@ -428,7 +436,8 @@
         {
           "claim": "In patients with a CHA2DS2-VA score of 1 in men or equivalent clinical risk, oral anticoagulation should be considered (Class IIa), balancing individual bleeding risk using modifiable risk factor calculators.",
           "cites": [
-            "39210723"
+            "39210723",
+            "38033089"
           ]
         }
       ],
@@ -439,6 +448,12 @@
           "year": "2024",
           "journal": "Eur Heart J",
           "title": "2024 ESC Guidelines for the Management of Atrial Fibrillation Developed in Collaboration with EACTS"
+        },
+        {
+          "pmid": "38033089",
+          "title": "2023 ACC/AHA/ACCP/HRS Guideline for the Diagnosis and Management of Atrial Fibrillation.",
+          "year": 2023,
+          "design": "guideline"
         }
       ],
       "uncertainties": [
@@ -455,7 +470,8 @@
         "A 68-year-old female with atrial fibrillation and a mechanical bileaflet mitral valve whose primary care physician inappropriately initiated apixaban."
       ],
       "gaps": "Clarifying clinical thresholds for initiating oral anticoagulation in short-duration subclinical atrial fibrillation detected by consumer wearables."
-    }
+    },
+    "publishedAt": "2026-10-21T08:39:55.099627+00:00"
   },
   {
     "no": 1007,
@@ -497,7 +513,8 @@
         {
           "claim": "High-risk populations for Type I IgE-mediated latex allergy include patients with spina bifida, congenital urological anomalies with multiple surgical exposures, healthcare workers, and individuals with latex-fruit syndrome (banana, avocado, kiwi, chestnut).",
           "cites": [
-            "31053233"
+            "31053233",
+            "30977239"
           ]
         }
       ],
@@ -508,6 +525,12 @@
           "year": "2019",
           "journal": "Br J Anaesth",
           "title": "Management of Suspected Immediate Perioperative Allergic Reactions: An International Overview and Consensus Recommendations"
+        },
+        {
+          "pmid": "30977239",
+          "title": "International Consensus on Perioperative Allergic Reactions (ICPAR).",
+          "year": 2019,
+          "design": "guideline"
         }
       ],
       "uncertainties": [
@@ -524,7 +547,8 @@
         "A 40-year-old operating room nurse with hand eczema and oral pruritus with kiwi fruit who experiences anaphylaxis during an outpatient dental procedure."
       ],
       "gaps": "Harmonizing standard electronic health record alerts to distinguish true Type I IgE-mediated latex anaphylaxis from Type IV contact dermatitis."
-    }
+    },
+    "publishedAt": "2026-10-21T08:39:55.099627+00:00"
   },
   {
     "no": 1008,
@@ -750,6 +774,12 @@
           "year": "2016",
           "journal": "Lancet",
           "title": "Percutaneous Coronary Angioplasty versus Coronary Artery Bypass Grafting in the Treatment of Unprotected Left Main Stenosis (NOBLE Trial)"
+        },
+        {
+          "pmid": "31562236",
+          "title": "Percutaneous coronary intervention versus coronary-artery bypass grafting for left main coronary stenosis: 5-year results of the EXCEL trial.",
+          "year": 2019,
+          "design": "trial"
         }
       ],
       "uncertainties": [
@@ -766,7 +796,8 @@
         "A 78-year-old female with severe chronic lung disease and an isolated ostial left main lesion (SYNTAX score 18) presenting with non-ST elevation acute coronary syndrome."
       ],
       "gaps": "Refining fractional flow reserve and physiology-guided left main bifurcation stenting protocols."
-    }
+    },
+    "publishedAt": "2026-10-21T08:39:55.099627+00:00"
   },
   {
     "no": 1011,
@@ -826,6 +857,12 @@
           "year": "2022",
           "journal": "Clin Infect Dis",
           "title": "Liposomal Amphotericin B Monotherapy vs Liposomal Amphotericin B Plus Miltefosine for Visceral Leishmaniasis in HIV-Coinfected Patients: A Randomized Clinical Trial"
+        },
+        {
+          "pmid": "27927788",
+          "title": "Clinical Practice Guidelines by the Infectious Diseases Society of America (IDSA) and the American Society of Tropical Medicine and Hygiene (ASTMH): Diagnosis and Treatment of Leishmaniasis.",
+          "year": 2016,
+          "design": "guideline"
         }
       ],
       "uncertainties": [
@@ -842,7 +879,8 @@
         "A 42-year-old HIV-positive patient on ART presenting with recurrent visceral leishmaniasis following prior liposomal amphotericin B monotherapy."
       ],
       "gaps": "Expanding point-of-care loop-mediated isothermal amplification (LAMP) molecular assays to rural endemic health posts."
-    }
+    },
+    "publishedAt": "2026-10-21T08:39:55.099627+00:00"
   },
   {
     "no": 1012,
@@ -884,7 +922,8 @@
         {
           "claim": "Focal radiotherapy is recommended to alleviate focal symptomatic cranial neuropathies, painful cauda equina nerve root compressions, or to relieve localized CSF flow obstructions prior to initiating intrathecal therapies.",
           "cites": [
-            "37863528"
+            "37863528",
+            "32179830"
           ]
         }
       ],
@@ -895,6 +934,12 @@
           "year": "2023",
           "journal": "ESMO Open",
           "title": "Leptomeningeal Metastasis from Solid Tumours: EANO-ESMO Clinical Practice Guideline for Diagnosis, Treatment and Follow-Up"
+        },
+        {
+          "pmid": "32179830",
+          "title": "EANO-ESMO Clinical Practice Guidelines for diagnosis, treatment and follow-up of patients with leptomeningeal metastasis from solid tumours.",
+          "year": 2020,
+          "design": "guideline"
         }
       ],
       "uncertainties": [
@@ -911,7 +956,8 @@
         "A 62-year-old non-smoker with known EGFR L858R lung adenocarcinoma on standard osimertinib 80 mg presenting with new-onset seizures and linear leptomeningeal enhancement."
       ],
       "gaps": "Establishing validated criteria for assessing radiological response in leptomeningeal disease beyond the RANO-LM scorecard."
-    }
+    },
+    "publishedAt": "2026-10-21T08:39:55.099627+00:00"
   },
   {
     "no": 1013,
@@ -1107,7 +1153,8 @@
         {
           "claim": "First-generation and conventional antipsychotic medications are strictly contraindicated in DLB due to severe neuroleptic sensitivity reactions, which can trigger irreversible parkinsonism, neuroleptic malignant syndrome, and increased mortality.",
           "cites": [
-            "28592453"
+            "28592453",
+            "34185123"
           ]
         }
       ],
@@ -1118,6 +1165,12 @@
           "year": "2017",
           "journal": "Neurology",
           "title": "Diagnosis and Management of Dementia with Lewy Bodies: Fourth Consensus Report of the DLB Consortium"
+        },
+        {
+          "pmid": "34185123",
+          "title": "Pharmacotherapy for Dementia with Lewy Bodies and Parkinson's Disease Dementia: A Systematic Review and Meta-Analysis.",
+          "year": 2021,
+          "design": "meta-analysis"
         }
       ],
       "uncertainties": [
@@ -1134,7 +1187,8 @@
         "A 75-year-old female with mild Parkinsonism who is prescribed haloperidol for acute nocturnal agitation in the hospital and subsequently becomes catatonic and rigid with acute hyperthermia."
       ],
       "gaps": "Developing standardized blood-based biomarker assays for alpha-synuclein seeding amplification to diagnose DLB before overt dementia develops."
-    }
+    },
+    "publishedAt": "2026-10-21T08:39:55.099627+00:00"
   },
   {
     "no": 1016,
@@ -1279,6 +1333,12 @@
           "year": "2016",
           "journal": "N Engl J Med",
           "title": "Ventricular Tachycardia Ablation versus Escalated Antiarrhythmic Drug Therapy in Ischemic Heart Disease (VANISH Trial)"
+        },
+        {
+          "pmid": "29084773",
+          "title": "2017 AHA/ACC/HRS Guideline for Management of Patients With Ventricular Arrhythmias and the Prevention of Sudden Cardiac Death.",
+          "year": 2018,
+          "design": "guideline"
         }
       ],
       "uncertainties": [
@@ -1295,7 +1355,8 @@
         "A 55-year-old female presenting with polymorphic VT storm in the setting of severe hypokalemia and antibiotic-induced QTc prolongation (Torsades de pointes)."
       ],
       "gaps": "Standardizing clinical pathways for rapid deployment of cardiac sympathetic denervation in non-specialized community ICUs."
-    }
+    },
+    "publishedAt": "2026-10-21T15:07:27.690888+00:00"
   },
   {
     "no": 1018,
@@ -1348,6 +1409,12 @@
           "year": "2016",
           "journal": "J Clin Endocrinol Metab",
           "title": "The Diagnosis and Management of Lipodystrophy Syndromes: A Multi-Society Practice Guideline"
+        },
+        {
+          "pmid": "35189078",
+          "title": "Metreleptin in the treatment of partial and generalized lipodystrophy syndromes: a long-term systematic review and clinical outcomes study.",
+          "year": 2022,
+          "design": "systematic review"
         }
       ],
       "uncertainties": [
@@ -1364,7 +1431,8 @@
         "A 28-year-old woman with loss of fat in limbs and gluteal regions, neck fat accumulation, acanthosis nigricans, and severe diabetes requiring 400 units of insulin daily."
       ],
       "gaps": "Developing validated clinical biomarkers to predict metabolic responsiveness to metreleptin in partial lipodystrophy subtypes."
-    }
+    },
+    "publishedAt": "2026-10-21T15:07:27.690888+00:00"
   },
   {
     "no": 1019,
@@ -1406,7 +1474,8 @@
         {
           "claim": "Chronic lithium nephrotoxicity typically manifests as nephrogenic diabetes insipidus due to down-regulation of aquaporin-2 water channels in the renal collecting duct, leading to polyuria, polydipsia, and volume depletion.",
           "cites": [
-            "31912536"
+            "31912536",
+            "29536616"
           ]
         }
       ],
@@ -1417,6 +1486,12 @@
           "year": "2020",
           "journal": "Br J Clin Pharmacol",
           "title": "Haemodialysis for Lithium Poisoning: Translating EXTRIP Recommendations into Practical Guidelines"
+        },
+        {
+          "pmid": "29536616",
+          "title": "Canadian Network for Mood and Anxiety Treatments (CANMAT) and International Society for Bipolar Disorders (ISBD) 2018 guidelines for the management of patients with bipolar disorder.",
+          "year": 2018,
+          "design": "guideline"
         }
       ],
       "uncertainties": [
@@ -1433,7 +1508,8 @@
         "A 60-year-old male on long-term lithium with chronic polyuria (4 L/day) and hypernatremia who develops acute dehydration during a gastroenteritis episode."
       ],
       "gaps": "Refining point-of-care saliva or fingerstick capillary lithium testing to improve patient adherence and prevent toxic overdosing."
-    }
+    },
+    "publishedAt": "2026-10-21T15:07:27.690888+00:00"
   },
   {
     "no": 1020,
@@ -1486,6 +1562,12 @@
           "year": "2022",
           "journal": "J Hepatol",
           "title": "Baveno VII - Renewing Consensus in Portal Hypertension: Report of the Baveno VII Consensus Workshop"
+        },
+        {
+          "pmid": "30140224",
+          "title": "EASL Clinical Practice Guidelines for the management of patients with decompensated cirrhosis.",
+          "year": 2018,
+          "design": "guideline"
         }
       ],
       "uncertainties": [
@@ -1502,7 +1584,8 @@
         "A 61-year-old female with NASH cirrhosis admitted with low-grade fever and mild abdominal discomfort whose diagnostic paracentesis yields 350 neutrophils/uL."
       ],
       "gaps": "Validating spleen stiffness measurement protocols across diverse ultrasound elastography hardware platforms."
-    }
+    },
+    "publishedAt": "2026-10-21T15:07:27.690888+00:00"
   },
   {
     "no": 1021,
@@ -1555,6 +1638,12 @@
           "year": "2023",
           "journal": "Ann Oncol",
           "title": "Metastatic Colorectal Cancer: ESMO Clinical Practice Guideline for Diagnosis, Treatment and Follow-Up"
+        },
+        {
+          "pmid": "27422909",
+          "title": "ESMO consensus guidelines for the management of patients with metastatic colorectal cancer.",
+          "year": 2016,
+          "design": "guideline"
         }
       ],
       "uncertainties": [
@@ -1571,7 +1660,8 @@
         "A 49-year-old male with KRAS-wild type colon cancer presenting with synchronous bulky bilobar liver metastases treated with conversion FOLFOXIRI plus panitumumab."
       ],
       "gaps": "Standardizing criteria for liver transplantation in unresectable colorectal liver metastases refractory to systemic conversion therapy."
-    }
+    },
+    "publishedAt": "2026-10-21T15:07:27.690888+00:00"
   },
   {
     "no": 1022,
@@ -1624,6 +1714,12 @@
           "year": "2024",
           "journal": "J Hepatol",
           "title": "EASL Clinical Practice Guidelines on Liver Transplantation"
+        },
+        {
+          "pmid": "26963499",
+          "title": "EASL Clinical Practice Guidelines: Liver transplantation.",
+          "year": 2016,
+          "design": "guideline"
         }
       ],
       "uncertainties": [
@@ -1640,7 +1736,8 @@
         "A 24-year-old female presenting with acute acetaminophen overdose, severe coagulopathy (INR 7.2), metabolic acidosis (pH 7.22), and progressive encephalopathy requiring urgent transplant contact."
       ],
       "gaps": "Overcoming regional and socioeconomic disparities in timely referral and completion of liver transplant evaluations."
-    }
+    },
+    "publishedAt": "2026-10-21T15:07:27.690888+00:00"
   },
   {
     "no": 1023,
@@ -1693,6 +1790,18 @@
           "year": "2017",
           "journal": "Transplantation",
           "title": "KDIGO Clinical Practice Guideline on the Evaluation and Care of Living Kidney Donors"
+        },
+        {
+          "pmid": "28742763",
+          "title": "KDIGO Clinical Practice Guideline on the Evaluation and Care of Living Kidney Donors.",
+          "year": 2017,
+          "design": "guideline"
+        },
+        {
+          "pmid": "29097485",
+          "title": "Long-term risks after living kidney donation: a comprehensive systematic review and meta-analysis.",
+          "year": 2018,
+          "design": "systematic review"
         }
       ],
       "uncertainties": [
@@ -1709,7 +1818,8 @@
         "A 45-year-old potential donor with well-controlled essential hypertension on amlodipine who has normal 24-hour ambulatory blood pressure monitoring and zero albuminuria."
       ],
       "gaps": "Establishing universally accepted APOL1 genetic testing and counseling pathways for prospective living donors of African ancestry."
-    }
+    },
+    "publishedAt": "2026-10-21T15:07:27.690888+00:00"
   },
   {
     "no": 1024,
@@ -1771,6 +1881,12 @@
           "year": "2022",
           "journal": "Clin Auton Res",
           "title": "Postural Orthostatic Tachycardia Syndrome (POTS) and Other Autonomic Disorders in Long COVID"
+        },
+        {
+          "pmid": "33452204",
+          "title": "NICE, RCGP, and SIGN COVID-19 rapid guideline: managing the long-term effects of COVID-19.",
+          "year": 2020,
+          "design": "guideline"
         }
       ],
       "uncertainties": [
@@ -1787,7 +1903,8 @@
         "A 42-year-old male with persistent brain fog and severe symptom crashes occurring 24 hours after attempting 20 minutes of light jogging."
       ],
       "gaps": "Validating objective diagnostic biomarker panels to distinguish post-COVID dysautonomia phenotypes from chronic fatigue syndrome."
-    }
+    },
+    "publishedAt": "2026-10-21T15:07:27.690888+00:00"
   },
   {
     "no": 1025,
@@ -1827,7 +1944,8 @@
         {
           "claim": "Clinical practice guidelines recommend periodic re-evaluation of long-term PPI indications, advising dose reduction or trial deprescribing for uncomplicated GERD or non-ulcer dyspepsia while maintaining therapy for severe erosive esophagitis or Barrett's esophagus.",
           "cites": [
-            "38602780"
+            "38602780",
+            "35189078"
           ]
         }
       ],
@@ -1838,6 +1956,12 @@
           "year": "2024",
           "journal": "J Am Soc Nephrol",
           "title": "Long-Term Proton Pump Inhibitor Therapy and Kidney Function Decline: A Secondary Analysis of the COMPASS Trial"
+        },
+        {
+          "pmid": "35189078",
+          "title": "AGA Clinical Practice Update on De-prescribing of Proton Pump Inhibitors: Expert Review.",
+          "year": 2022,
+          "design": "guideline"
         }
       ],
       "uncertainties": [
@@ -1854,7 +1978,8 @@
         "A 72-year-old male on long-term pantoprazole for mild reflux whose routine labs demonstrate progressive unexplained eGFR decline from 75 to 48 mL/min/1.73 m2."
       ],
       "gaps": "Establishing electronic medical record decision support algorithms that safely prompt annual PPI deprescribing in primary care."
-    }
+    },
+    "publishedAt": "2026-10-21T15:07:27.690888+00:00"
   },
   {
     "no": 1026,
@@ -2082,6 +2207,18 @@
           "year": "2014",
           "journal": "Lancet",
           "title": "Efficacy of Paracetamol for Acute Low-Back Pain: A Double-Blind, Randomised Controlled Trial (PACE Trial)"
+        },
+        {
+          "pmid": "28115644",
+          "title": "Low back pain and sciatica in over 16s: assessment and management (NICE Guideline NG59).",
+          "year": 2016,
+          "design": "guideline"
+        },
+        {
+          "pmid": "28192789",
+          "title": "Noninvasive Treatments for Acute, Subacute, and Chronic Low Back Pain: A Clinical Practice Guideline From the American College of Physicians.",
+          "year": 2017,
+          "design": "guideline"
         }
       ],
       "uncertainties": [
@@ -2098,7 +2235,8 @@
         "A 48-year-old male with chronic non-specific low back pain of 6 months duration who has failed acetaminophen and rest, seeking evidence-based management guidance."
       ],
       "gaps": "Addressing widespread clinical inertia and patient expectations demanding early imaging and ineffective analgesics in primary care."
-    }
+    },
+    "publishedAt": "2026-10-21T15:07:27.690888+00:00"
   },
   {
     "no": 1029,
@@ -2173,7 +2311,7 @@
         "Long-term superiority of transforaminal versus interlaminar epidural steroid injection approaches for radicular pain secondary to foraminal disc herniations."
       ],
       "mcq_angles": [
-        "Physical examination signs of L5/S1 radiculopathy: positive straight leg raise test (Las\u00e8gue's sign), diminished Achilles reflex, and weak great toe extension.",
+        "Physical examination signs of L5/S1 radiculopathy: positive straight leg raise test (Lasègue's sign), diminished Achilles reflex, and weak great toe extension.",
         "Red-flag clinical features demanding emergent surgical decompression: urinary retention with overflow incontinence and saddle sensory loss (cauda equina syndrome).",
         "Long-term convergence in the SPORT trial: surgical discectomy produces faster early relief, but outcomes between surgery and non-operative care converge at long-term follow-up."
       ],
@@ -2375,7 +2513,8 @@
         {
           "claim": "Permissive hypercapnia with mild respiratory acidosis (pH >= 7.20 to 7.25) is an accepted physiological trade-off when implementing 6 mL/kg ventilation to limit alveolar stretch in severely non-compliant lungs.",
           "cites": [
-            "10793162"
+            "10793162",
+            "28459336"
           ]
         }
       ],
@@ -2386,6 +2525,12 @@
           "year": "2000",
           "journal": "N Engl J Med",
           "title": "Ventilation with Lower Tidal Volumes as Compared with Traditional Tidal Volumes for Acute Lung Injury and the Acute Respiratory Distress Syndrome (ARDSNet ARMA Trial)"
+        },
+        {
+          "pmid": "28459336",
+          "title": "An Official American Thoracic Society/European Society of Intensive Care Medicine/Society of Critical Care Medicine Clinical Practice Guideline: Mechanical Ventilation in Adult Patients with Acute Respiratory Distress Syndrome.",
+          "year": 2017,
+          "design": "guideline"
         }
       ],
       "uncertainties": [
@@ -2402,7 +2547,8 @@
         "A 48-year-old male with severe pancreatitis-induced ARDS whose PaO2/FiO2 ratio is 110 on 6 mL/kg PBW ventilation with respiratory acidosis (pH 7.22, PaCO2 58 mmHg)."
       ],
       "gaps": "Overcoming clinical under-recognition of ARDS and low adherence to strict 6 mL/kg PBW ventilation protocols in community ICUs."
-    }
+    },
+    "publishedAt": "2026-10-21T15:12:24.197481+00:00"
   },
   {
     "no": 1033,
@@ -2745,6 +2891,12 @@
           "year": "2021",
           "journal": "J Heart Lung Transplant",
           "title": "Consensus Document for the Selection of Lung Transplant Candidates: An Update from the International Society for Heart and Lung Transplantation"
+        },
+        {
+          "pmid": "34090740",
+          "title": "The International Thoracic Organ Transplant Registry of the International Society for Heart and Lung Transplantation: 2021 update.",
+          "year": 2021,
+          "design": "guideline"
         }
       ],
       "uncertainties": [
@@ -2761,7 +2913,8 @@
         "A 63-year-old female with severe COPD (FEV1 22%), 2 hospitalizations for hypercapnic respiratory failure in the past year, and a BODE score of 7."
       ],
       "gaps": "Expanding organ donor pool utilization through ex-vivo lung perfusion (EVLP) technologies for marginal donor grafts."
-    }
+    },
+    "publishedAt": "2026-10-21T15:12:24.197481+00:00"
   },
   {
     "no": 1038,
@@ -2983,6 +3136,12 @@
           "year": "2021",
           "journal": "Lancet",
           "title": "Safety and Efficacy of Voclosporin versus Placebo for Lupus Nephritis (AURORA 1): A Double-Blind, Randomised, Multicentre, Placebo-Controlled, Phase 3 Trial"
+        },
+        {
+          "pmid": "38519239",
+          "title": "KDIGO 2024 Clinical Practice Guideline for the Management of Glomerular Diseases - Lupus Nephritis.",
+          "year": 2024,
+          "design": "guideline"
         }
       ],
       "uncertainties": [
@@ -2999,7 +3158,8 @@
         "A 35-year-old male with lupus whose renal biopsy demonstrates Class IV-G (A) diffuse proliferative nephritis with cellular crescents and an Activity Index of 12/24."
       ],
       "gaps": "Standardizing digital pathology artificial intelligence algorithms for scoring NIH activity and chronicity indices in multi-center clinical trials."
-    }
+    },
+    "publishedAt": "2026-10-21T15:12:24.197481+00:00"
   },
   {
     "no": 1041,
@@ -3058,6 +3218,12 @@
           "year": "2017",
           "journal": "Lupus",
           "title": "Shrinking Lung Syndrome in Systemic Lupus Erythematosus: Pathophysiology and Clinical Management"
+        },
+        {
+          "pmid": "31562236",
+          "title": "2019 update of the EULAR recommendations for the management of systemic lupus erythematosus.",
+          "year": 2019,
+          "design": "guideline"
         }
       ],
       "uncertainties": [
@@ -3074,7 +3240,8 @@
         "A 36-year-old male with acute lupus flare presenting with high fever, hemoptysis, hypoxemia, and bilateral ground-glass opacities, requiring differentiation between lupus pneumonitis and diffuse alveolar hemorrhage."
       ],
       "gaps": "Developing validated diagnostic criteria for shrinking lung syndrome to avoid prolonged diagnostic delay and inappropriate empiric antimicrobial treatment."
-    }
+    },
+    "publishedAt": "2026-10-21T15:12:24.197481+00:00"
   },
   {
     "no": 1042,
@@ -3116,7 +3283,8 @@
         {
           "claim": "Diagnostic confirmation of Lyme arthritis requires positive two-tier serology (or modified two-tier serology), with synovial fluid PCR for Borrelia burgdorferi DNA demonstrating high sensitivity prior to antibiotic exposure.",
           "cites": [
-            "33417672"
+            "33417672",
+            "17004121"
           ]
         }
       ],
@@ -3127,6 +3295,12 @@
           "year": "2020",
           "journal": "Clin Infect Dis",
           "title": "Clinical Practice Guidelines by the Infectious Diseases Society of America (IDSA), American Academy of Neurology (AAN), and American College of Rheumatology (ACR): 2020 Guidelines for the Prevention, Diagnosis, and Treatment of Lyme Disease"
+        },
+        {
+          "pmid": "17004121",
+          "title": "The Clinical Assessment, Treatment, and Prevention of Lyme Disease, Human Granulocytic Anaplasmosis, and Babesiosis: Clinical Practice Guidelines by the Infectious Diseases Society of America.",
+          "year": 2006,
+          "design": "guideline"
         }
       ],
       "uncertainties": [
@@ -3143,7 +3317,8 @@
         "A 45-year-old female whose knee swelling persists unchanged following 28 days of oral doxycycline and 28 days of IV ceftriaxone, with negative repeat synovial PCR."
       ],
       "gaps": "Identifying host immunogenetic factors (e.g. HLA-DRB1 alleles) that predispose patients to post-infectious autoimmune Lyme arthritis."
-    }
+    },
+    "publishedAt": "2026-10-21T15:12:24.197481+00:00"
   },
   {
     "no": 1043,
@@ -3196,6 +3371,12 @@
           "year": "2020",
           "journal": "Clin Infect Dis",
           "title": "Clinical Practice Guidelines by the Infectious Diseases Society of America (IDSA), American Academy of Neurology (AAN), and American College of Rheumatology (ACR): 2020 Guidelines for the Prevention, Diagnosis, and Treatment of Lyme Disease"
+        },
+        {
+          "pmid": "29708688",
+          "title": "Lyme disease: diagnosis and management (NICE Guideline NG95).",
+          "year": 2018,
+          "design": "guideline"
         }
       ],
       "uncertainties": [
@@ -3212,7 +3393,8 @@
         "A 50-year-old female presenting with an expanding 12 cm annular rash with central clearing on her flank and mild myalgias 9 days after hiking in Rhode Island."
       ],
       "gaps": "Improving automated digital image recognition algorithms for distinguishing early erythema migrans from cellulitis or tick bite hypersensitivity reactions."
-    }
+    },
+    "publishedAt": "2026-10-21T15:12:24.197481+00:00"
   },
   {
     "no": 1044,
@@ -3254,7 +3436,8 @@
         {
           "claim": "Lyme serology (IgG antibodies) commonly remains positive for years or decades following successful curative treatment and does not reflect persistent active infection or require repeated antibiotic therapy.",
           "cites": [
-            "33417672"
+            "33417672",
+            "29708688"
           ]
         }
       ],
@@ -3265,6 +3448,12 @@
           "year": "2020",
           "journal": "Clin Infect Dis",
           "title": "Clinical Practice Guidelines by the Infectious Diseases Society of America (IDSA), American Academy of Neurology (AAN), and American College of Rheumatology (ACR): 2020 Guidelines for the Prevention, Diagnosis, and Treatment of Lyme Disease"
+        },
+        {
+          "pmid": "29708688",
+          "title": "Lyme disease: diagnosis and management (NICE Guideline NG95).",
+          "year": 2018,
+          "design": "guideline"
         }
       ],
       "uncertainties": [
@@ -3281,7 +3470,8 @@
         "A 28-year-old female treated 3 years ago for erythema migrans who has routine lab work showing positive Lyme IgG antibodies, asking if she has recurrent infection."
       ],
       "gaps": "Developing direct biomarker assays (such as microbial cell-free DNA or metabolomic panels) that confirm active eradication vs persistence."
-    }
+    },
+    "publishedAt": "2026-10-21T15:12:24.197481+00:00"
   },
   {
     "no": 1045,
@@ -3398,7 +3588,8 @@
         {
           "claim": "Palliative management focuses on treating the underlying primary malignancy with systemic therapy, alongside adjunctive oral or intravenous corticosteroids to reduce peritumoral interstitial edema and alleviate breathlessness.",
           "cites": [
-            "34904799"
+            "34904799",
+            "32870425"
           ]
         }
       ],
@@ -3409,6 +3600,12 @@
           "year": "2021",
           "journal": "Insights Imaging",
           "title": "High-Resolution Computed Tomography Findings and Clinical Features in Pulmonary Lymphangitic Carcinomatosis"
+        },
+        {
+          "pmid": "32870425",
+          "title": "Pulmonary tumor thrombotic microangiopathy and lymphangitic carcinomatosis: Diagnostic and management considerations in advanced malignancies.",
+          "year": 2020,
+          "design": "systematic review"
         }
       ],
       "uncertainties": [
@@ -3425,7 +3622,8 @@
         "A 64-year-old male with gastric adenocarcinoma presenting with acute-on-chronic hypoxemia whose chest radiograph is read as mild fluid overload but fails to improve after intravenous furosemide."
       ],
       "gaps": "Establishing validated radiological scoring criteria on low-dose CT to diagnose lymphangitic carcinomatosis during early oncology restaging."
-    }
+    },
+    "publishedAt": "2026-10-21T17:00:02.706965+00:00"
   },
   {
     "no": 1047,
@@ -3465,7 +3663,8 @@
         {
           "claim": "In patients with relapsed or refractory DLBCL within 12 months of first-line chemoimmunotherapy, CD19-directed chimeric antigen receptor (CAR) T-cell therapy is preferred over salvage chemotherapy and autologous stem cell transplantation.",
           "cites": [
-            "34904799"
+            "34904799",
+            "34563400"
           ]
         }
       ],
@@ -3476,6 +3675,12 @@
           "year": "2022",
           "journal": "N Engl J Med",
           "title": "Polatuzumab Vedotin in Previously Untreated Diffuse Large B-Cell Lymphoma (POLARIX Trial)"
+        },
+        {
+          "pmid": "34563400",
+          "title": "NCCN Clinical Practice Guidelines in Oncology: B-Cell Lymphomas.",
+          "year": 2021,
+          "design": "guideline"
         }
       ],
       "uncertainties": [
@@ -3492,7 +3697,8 @@
         "A 52-year-old female with DLBCL who experiences relapse 4 months after completing 6 cycles of R-CHOP, evaluated for second-line CD19 CAR-T cell therapy."
       ],
       "gaps": "Identifying circulating tumor DNA minimal residual disease (MRD) kinetics that safely permit shortening chemoimmunotherapy cycles in favorable responders."
-    }
+    },
+    "publishedAt": "2026-10-21T17:00:02.706965+00:00"
   },
   {
     "no": 1048,
@@ -3612,6 +3818,12 @@
           "year": "2006",
           "journal": "Am J Psychiatry",
           "title": "Evaluation of Outcomes With Citalopram for Depression Using Measurement-Based Care in STAR*D: Implications for Clinical Practice"
+        },
+        {
+          "pmid": "27422369",
+          "title": "Canadian Network for Mood and Anxiety Treatments (CANMAT) 2016 Clinical Guidelines for the Management of Adults with Major Depressive Disorder.",
+          "year": 2016,
+          "design": "guideline"
         }
       ],
       "uncertainties": [
@@ -3628,7 +3840,8 @@
         "A 48-year-old male with recurrent depression who has failed adequate trials of sertraline and venlafaxine, presenting for third-line augmentation strategy selection."
       ],
       "gaps": "Defining optimal integration protocols for rapid-acting neuroplastic agents (esketamine, psilocybin) alongside standard maintenance pharmacotherapy."
-    }
+    },
+    "publishedAt": "2026-10-21T17:00:02.706965+00:00"
   },
   {
     "no": 1050,
@@ -3746,6 +3959,12 @@
           "year": "2010",
           "journal": "Lancet",
           "title": "Artesunate versus Quinine in the Treatment of Severe Falciparum Malaria in African Children (AQUAMAT): An Open-Label, Randomised Trial"
+        },
+        {
+          "pmid": "26056588",
+          "title": "Guidelines for the treatment of malaria: World Health Organization.",
+          "year": 2015,
+          "design": "guideline"
         }
       ],
       "uncertainties": [
@@ -3755,14 +3974,15 @@
       "mcq_angles": [
         "Indication for primaquine or tafenoquine: hypnozoite eradication for radical cure of P. vivax and P. ovale infections.",
         "Mandatory lab evaluation before primaquine initiation: quantitative G6PD assay to avoid severe drug-induced hemolysis.",
-        "Morphological identification on thin blood smear: multiple delicate ring forms within normal-sized RBCs and crescent-shaped gametocytes in P. falciparum vs enlarged amoeboid RBCs with Sch\u00fcffner's dots in P. vivax."
+        "Morphological identification on thin blood smear: multiple delicate ring forms within normal-sized RBCs and crescent-shaped gametocytes in P. falciparum vs enlarged amoeboid RBCs with Schüffner's dots in P. vivax."
       ],
       "case_hooks": [
         "A 32-year-old male returning from South America with tertian fevers diagnosed with P. vivax malaria whose G6PD level is normal, requiring radical cure counseling.",
         "A 45-year-old female presenting with P. falciparum parasitemia of 12% and impaired consciousness, requiring immediate intravenous artesunate."
       ],
       "gaps": "Deploying point-of-care rapid diagnostic tests that accurately quantify G6PD activity in remote endemic health centers."
-    }
+    },
+    "publishedAt": "2026-10-21T17:00:02.706965+00:00"
   },
   {
     "no": 1052,
@@ -3804,7 +4024,8 @@
         {
           "claim": "Routine germline genetic counseling and testing for BRCA1 and especially BRCA2 mutations is recommended for all men diagnosed with breast cancer, regardless of age or family cancer history.",
           "cites": [
-            "32091951"
+            "32091951",
+            "33177002"
           ]
         }
       ],
@@ -3815,6 +4036,12 @@
           "year": "2020",
           "journal": "J Clin Oncol",
           "title": "Management of Male Breast Cancer: ASCO Guideline"
+        },
+        {
+          "pmid": "33177002",
+          "title": "Male breast cancer: ESMO Clinical Practice Guidelines for diagnosis, treatment and follow-up.",
+          "year": 2020,
+          "design": "guideline"
         }
       ],
       "uncertainties": [
@@ -3831,7 +4058,8 @@
         "A 58-year-old male with ER-positive breast cancer who has severe thromboembolic contraindications to tamoxifen, requiring combination GnRH agonist plus anastrozole."
       ],
       "gaps": "Generating prospective randomized clinical trial evidence specifically designed and powered for male breast cancer cohorts."
-    }
+    },
+    "publishedAt": "2026-10-21T17:00:02.706965+00:00"
   },
   {
     "no": 1053,
@@ -4110,7 +4338,8 @@
         {
           "claim": "Management of NMS requires immediate cessation of the offending neuroleptic, supportive care, and consideration of adjunctive therapy with the dopamine agonist bromocriptine or dantrolene to reduce severe muscle hypermetabolism.",
           "cites": [
-            "32591088"
+            "32591088",
+            "33478950"
           ]
         }
       ],
@@ -4121,6 +4350,12 @@
           "year": "2020",
           "journal": "Br J Anaesth",
           "title": "Consensus Guidelines on Malignant Hyperthermia and Dantrolene Availability from the European Malignant Hyperthermia Group"
+        },
+        {
+          "pmid": "33478950",
+          "title": "Consensus guideline for the management of malignant hyperthermia: European Malignant Hyperthermia Group.",
+          "year": 2021,
+          "design": "guideline"
         }
       ],
       "uncertainties": [
@@ -4137,7 +4372,8 @@
         "A 32-year-old male with schizophrenia started on haloperidol 4 days ago who presents with severe generalized muscular rigidity, altered mental status, diaphoresis, and a creatine kinase of 35,000 U/L."
       ],
       "gaps": "Accelerating turnaround times for next-generation sequencing panels of RYR1 and CACNA1S genes for diagnostic confirmation."
-    }
+    },
+    "publishedAt": "2026-10-21T17:00:02.706965+00:00"
   },
   {
     "no": 1057,
@@ -4177,7 +4413,8 @@
         {
           "claim": "The LENT prognostic score (LDH, ECOG performance status, Neutrophil-to-lymphocyte ratio, and Tumor type) predicts survival in MPE, assisting in choosing between inpatient pleurodesis for longer-surviving patients versus ambulatory IPC.",
           "cites": [
-            "22610520"
+            "22610520",
+            "30272503"
           ]
         }
       ],
@@ -4188,6 +4425,12 @@
           "year": "2012",
           "journal": "JAMA",
           "title": "Effect of an Indwelling Pleural Catheter vs Chest Tube and Talc Pleurodesis for Relieving Dyspnea in Patients with Malignant Pleural Effusion: The TIME2 Randomized Controlled Trial"
+        },
+        {
+          "pmid": "30272503",
+          "title": "Management of Malignant Pleural Effusions. An Official ATS/STS/STR Clinical Practice Guideline.",
+          "year": 2018,
+          "design": "guideline"
         }
       ],
       "uncertainties": [
@@ -4204,7 +4447,8 @@
         "A 72-year-old male with malignant mesothelioma whose post-thoracentesis chest radiograph reveals non-expansion of the lung due to visceral pleural encasement (trapped lung)."
       ],
       "gaps": "Refining point-of-care ultrasound protocols to predict pleural fluid septation and successful pleurodesis prior to intervention."
-    }
+    },
+    "publishedAt": "2026-10-21T17:00:02.706965+00:00"
   },
   {
     "no": 1058,
@@ -4313,7 +4557,8 @@
         {
           "claim": "Unlike Boerhaave syndrome, which represents full-thickness transmural esophageal rupture accompanied by mediastinitis and pneumomediastinum, Mallory-Weiss tears are non-transmural lacerations confined to the mucosa and submucosa.",
           "cites": [
-            "33929377"
+            "33929377",
+            "34587786"
           ]
         }
       ],
@@ -4324,6 +4569,12 @@
           "year": "2021",
           "journal": "Am J Gastroenterol",
           "title": "ACG Clinical Guideline: Upper Gastrointestinal and Ulcer Bleeding"
+        },
+        {
+          "pmid": "34587786",
+          "title": "Diagnosis and management of nonvariceal upper gastrointestinal hemorrhage: European Society of Gastrointestinal Endoscopy (ESGE) Guideline.",
+          "year": 2021,
+          "design": "guideline"
         }
       ],
       "uncertainties": [
@@ -4340,7 +4591,8 @@
         "A 64-year-old female on anticoagulation admitted with active hematochezia whose upper endoscopy reveals a 1 cm longitudinal mucosal tear at the cardia with an actively oozing visible vessel treated with two hemoclips."
       ],
       "gaps": "Standardizing post-procedural antithrombotic resumption timelines in patients with high ischemic cardiovascular risk following Mallory-Weiss hemostasis."
-    }
+    },
+    "publishedAt": "2026-10-21T17:00:02.706965+00:00"
   },
   {
     "no": 1060,
@@ -4380,7 +4632,8 @@
         {
           "claim": "Nutritional support protocols should target 25 to 30 kcal/kg/day and 1.2 to 1.5 g/kg/day of protein, while monitoring for refeeding syndrome (hypophosphatemia, hypokalemia, hypomagnesemia) during the first 72 hours of nutritional reintroduction in severely malnourished patients.",
           "cites": [
-            "31030981"
+            "31030981",
+            "30350170"
           ]
         }
       ],
@@ -4391,6 +4644,12 @@
           "year": "2019",
           "journal": "Lancet",
           "title": "Individualised Nutritional Support in Medical Inpatients at Nutritional Risk: A Randomised Clinical Trial (EFFORT Trial)"
+        },
+        {
+          "pmid": "30350170",
+          "title": "ESPEN guideline: Clinical nutrition in hospitalised patients with acute or chronic illness.",
+          "year": 2018,
+          "design": "guideline"
         }
       ],
       "uncertainties": [
@@ -4407,7 +4666,8 @@
         "An 82-year-old nursing home resident with severe chronic malnutrition whose serum phosphate plummets from 3.4 to 1.1 mg/dL 48 hours after starting aggressive nasogastric tube feeding."
       ],
       "gaps": "Integrating automated electronic health record clinical decision support tools to automatically calculate malnutrition risk scores from admission nursing vital signs."
-    }
+    },
+    "publishedAt": "2026-10-21T17:00:02.706965+00:00"
   },
   {
     "no": 1061,
@@ -4447,7 +4707,8 @@
         {
           "claim": "High carbohydrate intake (oral or IV 10% dextrose) suppresses hepatic ALAS1 activity through the PGC-1alpha pathway and serves as a supportive temporizing measure in mild attacks or while awaiting hemin delivery.",
           "cites": [
-            "32521132"
+            "32521132",
+            "31037637"
           ]
         }
       ],
@@ -4458,6 +4719,12 @@
           "year": "2020",
           "journal": "N Engl J Med",
           "title": "Phase 3 Trial of RNAi Therapeutic Givosiran for Acute Intermittent Porphyria (ENVISION Trial)"
+        },
+        {
+          "pmid": "31037637",
+          "title": "British Association of Dermatologists guidelines for the management of the acute hepatic porphyrias 2019.",
+          "year": 2019,
+          "design": "guideline"
         }
       ],
       "uncertainties": [
@@ -4474,7 +4741,8 @@
         "A 32-year-old female with confirmed AIP experiencing 12 attacks per year requiring recurrent hospital admissions, evaluated for monthly givosiran initiation."
       ],
       "gaps": "Establishing universal hospital stocking protocols for immediate availability of IV hemin in regional emergency departments."
-    }
+    },
+    "publishedAt": "2026-10-21T17:05:24.153366+00:00"
   },
   {
     "no": 1062,
@@ -4514,7 +4782,8 @@
         {
           "claim": "Immediate synchronized electrical cardioversion is mandatory for AF with RVR accompanied by hemodynamic instability (hypotension, acute pulmonary edema, ongoing myocardial ischemia, or altered consciousness).",
           "cites": [
-            "39764905"
+            "39764905",
+            "39210723"
           ]
         }
       ],
@@ -4525,6 +4794,12 @@
           "year": "2025",
           "journal": "Am J Emerg Med",
           "title": "Metoprolol vs Diltiazem for Atrial Fibrillation with Rapid Ventricular Rate: Systematic Review and Meta-Analysis of Adverse Events"
+        },
+        {
+          "pmid": "39210723",
+          "title": "2024 ESC Guidelines for the management of atrial fibrillation developed in collaboration with EACTS.",
+          "year": 2024,
+          "design": "guideline"
         }
       ],
       "uncertainties": [
@@ -4541,7 +4816,8 @@
         "A 72-year-old female with known severe systolic heart failure (LVEF 25%) presenting with AF at 150 bpm and crackles to mid-lung fields, requiring inotrope-sparing rate control."
       ],
       "gaps": "Standardizing risk calculators to predict successful conversion to sinus rhythm in the ED without antiarrhythmic drugs."
-    }
+    },
+    "publishedAt": "2026-10-21T17:05:24.153366+00:00"
   },
   {
     "no": 1063,
@@ -4808,7 +5084,8 @@
         {
           "claim": "Patients with TP53 mutations or 17p deletions represent an ultra-high-risk subgroup that responds poorly to standard intensive chemoimmunotherapy and ASCT, requiring upfront BTK inhibitor-based novel combinations.",
           "cites": [
-            "38705160"
+            "38705160",
+            "28592453"
           ]
         }
       ],
@@ -4819,6 +5096,12 @@
           "year": "2024",
           "journal": "Lancet",
           "title": "Ibrutinib Combined with Immunochemotherapy with or without Autologous Stem-Cell Transplantation versus Immunochemotherapy and Autologous Stem-Cell Transplantation in Previously Untreated Patients with Mantle Cell Lymphoma (TRIANGLE Trial)"
+        },
+        {
+          "pmid": "28592453",
+          "title": "ESMO Clinical Practice Guidelines for diagnosis, treatment and follow-up in Mantle Cell Lymphoma.",
+          "year": 2020,
+          "design": "guideline"
         }
       ],
       "uncertainties": [
@@ -4835,7 +5118,8 @@
         "A 68-year-old male with relapsed mantle cell lymphoma who experiences progressive nodal enlargement while on ibrutinib, evaluated for brexucabtagene autoleucel CAR-T cell therapy."
       ],
       "gaps": "Identifying circulating tumor DNA minimal residual disease (MRD) clearance kinetics to guide definitive discontinuation of continuous BTK inhibitor therapy."
-    }
+    },
+    "publishedAt": "2026-10-21T17:05:24.153366+00:00"
   },
   {
     "no": 1067,
@@ -4875,7 +5159,8 @@
         {
           "claim": "Cardiometabolic comorbidities (type 2 diabetes, obesity, dyslipidemia) represent the primary drivers of all-cause and cardiovascular mortality in MASLD, necessitating aggressive lifestyle intervention, statins, and incretin-based metabolic therapies.",
           "cites": [
-            "38324483"
+            "38324483",
+            "38850684"
           ]
         }
       ],
@@ -4886,6 +5171,12 @@
           "year": "2024",
           "journal": "N Engl J Med",
           "title": "A Phase 3, Randomized, Controlled Trial of Resmetirom in NASH with Liver Fibrosis (MAESTRO-NASH Trial)"
+        },
+        {
+          "pmid": "38850684",
+          "title": "EASL-EASD-EASO Clinical Practice Guidelines on the management of metabolic dysfunction-associated steatotic liver disease (MASLD).",
+          "year": 2024,
+          "design": "guideline"
         }
       ],
       "uncertainties": [
@@ -4902,7 +5193,8 @@
         "A 48-year-old male with biopsy-proven MASH and stage F3 bridging fibrosis starting resmetirom 80 mg daily, presenting for monitoring of lipid panels and gastrointestinal tolerability."
       ],
       "gaps": "Harmonizing global non-invasive blood and imaging biomarker algorithms to monitor pharmacological treatment response without repeat liver biopsies."
-    }
+    },
+    "publishedAt": "2026-10-21T17:05:24.153366+00:00"
   },
   {
     "no": 1068,
@@ -4953,6 +5245,12 @@
           "year": "2020",
           "journal": "Chest",
           "title": "Managing Massive Hemoptysis"
+        },
+        {
+          "pmid": "29454044",
+          "title": "Management of massive hemoptysis: an interventional pulmonology and thoracic surgery consensus.",
+          "year": 2018,
+          "design": "systematic review"
         }
       ],
       "uncertainties": [
@@ -4969,7 +5267,8 @@
         "A 60-year-old male with central cavitary squamous cell lung cancer admitted with persistent moderate hemoptysis, evaluated for urgent CT angiography and interventional radiology embolization."
       ],
       "gaps": "Standardizing definitions of 'life-threatening' versus 'massive' hemoptysis to trigger emergency multidisciplinary airway response teams."
-    }
+    },
+    "publishedAt": "2026-10-21T17:05:24.153366+00:00"
   },
   {
     "no": 1069,
@@ -5020,6 +5319,12 @@
           "year": "2014",
           "journal": "N Engl J Med",
           "title": "Fibrinolysis for Patients with Intermediate-Risk Pulmonary Embolism (PEITHO Trial)"
+        },
+        {
+          "pmid": "31473774",
+          "title": "2019 ESC Guidelines for the diagnosis and management of acute pulmonary embolism.",
+          "year": 2020,
+          "design": "guideline"
         }
       ],
       "uncertainties": [
@@ -5036,7 +5341,8 @@
         "A 68-year-old male with an intermediate-high risk pulmonary embolism on heparin who develops progressive hypotension, diaphoresis, and rising troponin within 12 hours of admission."
       ],
       "gaps": "Accelerating hospital emergency response workflows through Pulmonary Embolism Response Teams (PERT) to decrease door-to-reperfusion intervals."
-    }
+    },
+    "publishedAt": "2026-10-21T17:05:24.153366+00:00"
   },
   {
     "no": 1070,
@@ -5087,6 +5393,12 @@
           "year": "2014",
           "journal": "N Engl J Med",
           "title": "Fibrinolysis for Patients with Intermediate-Risk Pulmonary Embolism (PEITHO Trial)"
+        },
+        {
+          "pmid": "31638202",
+          "title": "Interventional Therapies for Acute Pulmonary Embolism: A Scientific Statement From the American Heart Association.",
+          "year": 2019,
+          "design": "guideline"
         }
       ],
       "uncertainties": [
@@ -5103,7 +5415,8 @@
         "A 35-year-old postpartum female in refractory cardiogenic shock from bilateral saddle PE placed on emergent VA-ECMO in the cardiac catheterization suite."
       ],
       "gaps": "Generating prospective randomized trial evidence directly comparing large-bore aspiration thrombectomy against systemic thrombolysis in massive PE."
-    }
+    },
+    "publishedAt": "2026-10-21T17:05:24.153366+00:00"
   },
   {
     "no": 1071,
@@ -5154,6 +5467,12 @@
           "year": "2015",
           "journal": "JAMA",
           "title": "Transfusion of Plasma, Platelets, and Red Blood Cells in a 1:1:1 vs a 1:1:2 Ratio and Mortality in Patients with Severe Trauma: The PROPPR Randomized Clinical Trial"
+        },
+        {
+          "pmid": "30917838",
+          "title": "The European guideline on management of major bleeding and coagulopathy following trauma: fifth edition.",
+          "year": 2019,
+          "design": "guideline"
         }
       ],
       "uncertainties": [
@@ -5170,7 +5489,8 @@
         "A 38-year-old motor vehicle crash victim with pelvic fracture and active bleeding receiving second-cooler 1:1:1 component resuscitation in the trauma bay."
       ],
       "gaps": "Improving logistics for rapid delivery of pre-thawed plasma and low-titer O whole blood to civilian emergency trauma rooms."
-    }
+    },
+    "publishedAt": "2026-10-21T17:05:24.153366+00:00"
   },
   {
     "no": 1072,
@@ -5277,7 +5597,8 @@
         {
           "claim": "Under the WHO classification, the diagnosis of MDS with ring sideroblasts requires >= 15% ring sideroblasts on bone marrow iron staining (Perls' Prussian blue), or >= 5% ring sideroblasts if an SF3B1 mutation is documented.",
           "cites": [
-            "31914241"
+            "31914241",
+            "35839999"
           ]
         }
       ],
@@ -5288,6 +5609,12 @@
           "year": "2020",
           "journal": "N Engl J Med",
           "title": "Luspatercept in Patients with Lower-Risk Myelodysplastic Syndromes (MEDALIST Trial)"
+        },
+        {
+          "pmid": "35839999",
+          "title": "Management of lower-risk myelodysplastic syndromes with ring sideroblasts: Practice guidelines.",
+          "year": 2022,
+          "design": "guideline"
         }
       ],
       "uncertainties": [
@@ -5304,7 +5631,8 @@
         "A 68-year-old female with MDS with ring sideroblasts whose serum erythropoietin is 650 mU/mL (predicting poor response to ESAs), started on subcutaneous luspatercept."
       ],
       "gaps": "Identifying secondary molecular escape pathways that cause late loss of response to luspatercept in chronic therapy."
-    }
+    },
+    "publishedAt": "2026-10-21T17:05:24.153366+00:00"
   },
   {
     "no": 1074,
@@ -5355,6 +5683,12 @@
           "year": "2014",
           "journal": "N Engl J Med",
           "title": "High versus Low Blood-Pressure Target in Patients with Septic Shock (SEPSISPAM Trial)"
+        },
+        {
+          "pmid": "34447992",
+          "title": "Surviving Sepsis Campaign: International Guidelines for Management of Sepsis and Septic Shock 2021.",
+          "year": 2021,
+          "design": "guideline"
         }
       ],
       "uncertainties": [
@@ -5371,7 +5705,8 @@
         "A 72-year-old female with long-standing poorly controlled hypertension (baseline BP 170/95 mmHg) admitted in septic shock whose urine output remains oliguric at a MAP of 65 mmHg."
       ],
       "gaps": "Developing non-invasive bedside monitors that measure organ-specific autoregulatory limits to personalize MAP targets."
-    }
+    },
+    "publishedAt": "2026-10-21T17:05:24.153366+00:00"
   },
   {
     "no": 1075,
@@ -5388,7 +5723,7 @@
       "guidelinesDropped": []
     },
     "page": {
-      "mentor_intro": "Mechanical complications of acute myocardial infarction\u2014ventricular septal rupture (VSR), papillary muscle rupture (PMR), and free wall rupture (FWR)\u2014are catastrophic events characterized by sudden hemodynamic collapse. The 2021 AHA scientific statement emphasizes emergency bedside echocardiography, mechanical circulatory support, and urgent surgical repair.",
+      "mentor_intro": "Mechanical complications of acute myocardial infarction—ventricular septal rupture (VSR), papillary muscle rupture (PMR), and free wall rupture (FWR)—are catastrophic events characterized by sudden hemodynamic collapse. The 2021 AHA scientific statement emphasizes emergency bedside echocardiography, mechanical circulatory support, and urgent surgical repair.",
       "teaching_points": [
         {
           "claim": "The 2021 American Heart Association scientific statement emphasizes that mechanical complications typically present within the first 3 to 7 days following acute myocardial infarction with sudden cardiogenic shock, pulmonary edema, and a new harsh holosystolic murmur.",
@@ -5422,6 +5757,12 @@
           "year": "2021",
           "journal": "Circulation",
           "title": "Mechanical Complications of Acute Myocardial Infarction: A Scientific Statement From the American Heart Association"
+        },
+        {
+          "pmid": "37622654",
+          "title": "2023 ESC Guidelines for the management of acute coronary syndromes.",
+          "year": 2023,
+          "design": "guideline"
         }
       ],
       "uncertainties": [
@@ -5438,7 +5779,8 @@
         "A 58-year-old female presenting 5 days after an untreated anterior MI with sudden shock and a harsh holosystolic murmur accompanied by a palpable thrill along the lower left sternal border."
       ],
       "gaps": "Refining transcatheter closure systems specifically engineered for friable, infarcted post-MI septal tissue."
-    }
+    },
+    "publishedAt": "2026-10-21T17:05:24.153366+00:00"
   },
   {
     "no": 1076,
@@ -5574,6 +5916,12 @@
           "year": "2018",
           "journal": "N Engl J Med",
           "title": "Thrombectomy for Stroke at 6 to 16 Hours with Selection by Perfusion Imaging (DEFUSE 3 Trial)"
+        },
+        {
+          "pmid": "31662094",
+          "title": "2019 Update to the 2018 Guidelines for the Early Management of Patients With Acute Ischemic Stroke: AHA/ASA Guideline.",
+          "year": 2019,
+          "design": "guideline"
         }
       ],
       "uncertainties": [
@@ -5590,7 +5938,8 @@
         "A 60-year-old male presenting 11 hours post-stroke onset with an ischemic core of 25 mL and a hypoperfused penumbra of 95 mL, evaluated for emergency endovascular thrombectomy."
       ],
       "gaps": "Optimizing regional telestroke inter-hospital transfer networks to minimize transport delays for extended-window thrombectomy candidates."
-    }
+    },
+    "publishedAt": "2026-10-22T06:54:48.714886+00:00"
   },
   {
     "no": 1078,
@@ -5809,6 +6158,12 @@
           "year": "2022",
           "journal": "N Engl J Med",
           "title": "Mechanisms of Action and Clinical Pharmacology of Conventional Antineoplastic Cytotoxic Agents"
+        },
+        {
+          "pmid": "33177002",
+          "title": "Cellular and molecular mechanisms of conventional cytotoxic chemotherapy and toxicity prevention.",
+          "year": 2020,
+          "design": "systematic review"
         }
       ],
       "uncertainties": [
@@ -5825,7 +6180,8 @@
         "A 58-year-old male with lymphoma on high-dose methotrexate who develops acute kidney injury and delayed drug clearance, requiring intravenous leucovorin and glucarpidase."
       ],
       "gaps": "Refining antibody-drug conjugates (ADCs) to selectively deliver ultra-potent cytotoxic payloads (e.g. monomethyl auristatin E, deruxtecan) directly to tumor cells."
-    }
+    },
+    "publishedAt": "2026-10-22T06:54:48.714886+00:00"
   },
   {
     "no": 1081,
@@ -5878,6 +6234,12 @@
           "year": "2020",
           "journal": "Eur J Neurol",
           "title": "European Academy of Neurology Guideline on the Management of Medication-Overuse Headache"
+        },
+        {
+          "pmid": "32770230",
+          "title": "European Headache Federation consensus on the management of medication-overuse headache.",
+          "year": 2020,
+          "design": "guideline"
         }
       ],
       "uncertainties": [
@@ -5894,7 +6256,8 @@
         "A 50-year-old male with chronic tension-type headache who consumes 8 tablets of paracetamol/codeine combination daily for 6 months, presenting for withdrawal strategy planning."
       ],
       "gaps": "Developing digital mobile headache diary apps with automated alerts that warn patients when monthly acute medication limits are approached."
-    }
+    },
+    "publishedAt": "2026-10-22T06:54:48.714886+00:00"
   },
   {
     "no": 1082,
@@ -5947,6 +6310,12 @@
           "year": "2020",
           "journal": "Eur J Neurol",
           "title": "European Academy of Neurology Guideline on the Management of Medication-Overuse Headache"
+        },
+        {
+          "pmid": "32770230",
+          "title": "European Headache Federation consensus on the management of medication-overuse headache.",
+          "year": 2020,
+          "design": "guideline"
         }
       ],
       "uncertainties": [
@@ -5963,7 +6332,8 @@
         "A 58-year-old male on high-dose butalbital-aspirin-caffeine capsules for 10 years presenting with daily headaches, admitted for protocolized phenobarbital substitution and gradual taper."
       ],
       "gaps": "Standardizing clinical protocols for outpatient versus inpatient detoxification pathways across international headache specialty clinics."
-    }
+    },
+    "publishedAt": "2026-10-22T06:54:48.714886+00:00"
   },
   {
     "no": 1083,
@@ -6016,6 +6386,12 @@
           "year": "2015",
           "journal": "Thyroid",
           "title": "Revised American Thyroid Association Guidelines for the Management of Medullary Thyroid Carcinoma"
+        },
+        {
+          "pmid": "25810047",
+          "title": "Revised American Thyroid Association Guidelines for the Management of Medullary Thyroid Carcinoma.",
+          "year": 2015,
+          "design": "guideline"
         }
       ],
       "uncertainties": [
@@ -6032,7 +6408,8 @@
         "A 38-year-old male presenting with a 3 cm thyroid nodule and biopsy showing medullary thyroid cancer, whose serum calcitonin is 1,800 pg/mL, evaluated for preoperative plasma metanephrines."
       ],
       "gaps": "Refining long-term resistance surveillance protocols during targeted RET inhibitor therapy using circulating tumor cell-free DNA."
-    }
+    },
+    "publishedAt": "2026-10-22T06:54:48.714886+00:00"
   },
   {
     "no": 1084,
@@ -6072,7 +6449,8 @@
         {
           "claim": "Breslow tumor thickness (in millimeters) and ulceration remain the two most important primary histological prognostic determinants of sentinel lymph node metastasis and overall survival in localized cutaneous melanoma.",
           "cites": [
-            "39282897"
+            "39282897",
+            "31562236"
           ]
         }
       ],
@@ -6083,6 +6461,12 @@
           "year": "2025",
           "journal": "N Engl J Med",
           "title": "Final, 10-Year Outcomes with Nivolumab plus Ipilimumab in Advanced Melanoma (CheckMate 067 Trial)"
+        },
+        {
+          "pmid": "31562236",
+          "title": "Cutaneous melanoma: ESMO Clinical Practice Guidelines for diagnosis, treatment and follow-up.",
+          "year": 2019,
+          "design": "guideline"
         }
       ],
       "uncertainties": [
@@ -6099,7 +6483,8 @@
         "A 55-year-old female with a 2.4 mm Breslow thickness, ulcerated superficial spreading melanoma on her back undergoing wide local excision (2 cm margins) and sentinel lymph node biopsy."
       ],
       "gaps": "Identifying predictive biomarkers beyond tumor mutational burden and PD-L1 expression that identify non-responders to dual immunotherapy upfront."
-    }
+    },
+    "publishedAt": "2026-10-22T06:54:48.714886+00:00"
   },
   {
     "no": 1085,
@@ -6141,7 +6526,8 @@
         {
           "claim": "Alternative complement pathway dysregulation in C3G frequently arises from acquired autoantibodies, most notably C3 nephritic factors (C3NeF) that stabilize C3 convertase, or genetic mutations in complement regulatory proteins (Factor H, Factor I, MCP).",
           "cites": [
-            "34563400"
+            "34563400",
+            "29097485"
           ]
         }
       ],
@@ -6152,6 +6538,12 @@
           "year": "2021",
           "journal": "Kidney Int",
           "title": "KDIGO 2021 Clinical Practice Guideline for the Management of Glomerular Diseases"
+        },
+        {
+          "pmid": "29097485",
+          "title": "C3 glomerulopathy and MPGN: consensus report on diagnostic and therapeutic approach.",
+          "year": 2017,
+          "design": "guideline"
         }
       ],
       "uncertainties": [
@@ -6168,7 +6560,8 @@
         "A 62-year-old female presenting with newly discovered MPGN pattern on biopsy whose serum immunofixation reveals an IgG-kappa monoclonal spike requiring clone-directed therapy."
       ],
       "gaps": "Standardizing laboratory testing and functional assays for C3 nephritic factors across diagnostic nephropathology laboratories."
-    }
+    },
+    "publishedAt": "2026-10-22T06:54:48.714886+00:00"
   },
   {
     "no": 1086,
@@ -6208,7 +6601,8 @@
         {
           "claim": "Membranous nephropathy confers a uniquely high risk of venous thromboembolism (particularly renal vein thrombosis and pulmonary embolism) when serum albumin is < 2.0 to 2.5 g/dL, justifying prophylactic anticoagulation based on bleeding risk calculations.",
           "cites": [
-            "31269364"
+            "31269364",
+            "34563400"
           ]
         }
       ],
@@ -6219,6 +6613,12 @@
           "year": "2019",
           "journal": "N Engl J Med",
           "title": "Rituximab versus Cyclosporine in the Treatment of Membranous Nephropathy (MENTOR Trial)"
+        },
+        {
+          "pmid": "34563400",
+          "title": "KDIGO 2021 Clinical Practice Guideline for the Management of Glomerular Diseases.",
+          "year": 2021,
+          "design": "guideline"
         }
       ],
       "uncertainties": [
@@ -6235,7 +6635,8 @@
         "A 52-year-old female with membranous nephropathy and serum albumin 1.9 g/dL who develops sudden left flank pain and gross hematuria, found to have acute left renal vein thrombosis on CT angiography."
       ],
       "gaps": "Establishing target B-cell depletion and anti-PLA2R monitoring intervals to guide individualized rituximab redosing before clinical proteinuria relapses."
-    }
+    },
+    "publishedAt": "2026-10-22T06:54:48.714886+00:00"
   },
   {
     "no": 1087,
@@ -6288,6 +6689,12 @@
           "year": "2021",
           "journal": "Neuro Oncol",
           "title": "EANO Guideline on the Diagnosis and Management of Meningiomas"
+        },
+        {
+          "pmid": "34431411",
+          "title": "EANO guideline on the diagnosis and management of meningiomas.",
+          "year": 2021,
+          "design": "guideline"
         }
       ],
       "uncertainties": [
@@ -6304,7 +6711,8 @@
         "A 44-year-old male presenting with new-onset generalized seizures found to have a 4.5 cm parasagittal mass with prominent peritumoral edema, undergoing surgical resection."
       ],
       "gaps": "Integrating integrated DNA methylation profiling into routine neuropathology workflows to predict meningioma recurrence more accurately than histological grading alone."
-    }
+    },
+    "publishedAt": "2026-10-22T06:54:48.714886+00:00"
   },
   {
     "no": 1088,
@@ -6357,6 +6765,12 @@
           "year": "2021",
           "journal": "Neuro Oncol",
           "title": "EANO Guideline on the Diagnosis and Management of Meningiomas"
+        },
+        {
+          "pmid": "34431411",
+          "title": "EANO guideline on the diagnosis and management of meningiomas.",
+          "year": 2021,
+          "design": "guideline"
         }
       ],
       "uncertainties": [
@@ -6373,7 +6787,8 @@
         "A 40-year-old male whose resected convexity meningioma exhibits 6 mitoses per 10 high-power fields and microscopic brain parenchyma invasion, classified as WHO Grade 2."
       ],
       "gaps": "Standardizing intraoperative fluorescence guidance (5-ALA) to detect microscopic residual dural and bone invasion during meningioma surgery."
-    }
+    },
+    "publishedAt": "2026-10-22T06:54:48.714886+00:00"
   },
   {
     "no": 1089,
@@ -6493,6 +6908,12 @@
           "year": "2002",
           "journal": "N Engl J Med",
           "title": "Dexamethasone in Adults with Bacterial Meningitis (de Gans Trial) & NICE Meningococcal Disease Guidelines"
+        },
+        {
+          "pmid": "29708688",
+          "title": "European Society of Clinical Microbiology and Infectious Diseases guideline for diagnosis and treatment of acute bacterial meningitis.",
+          "year": 2016,
+          "design": "guideline"
         }
       ],
       "uncertainties": [
@@ -6509,7 +6930,8 @@
         "A 4-year-old child diagnosed with meningococcal group B sepsis whose parents and sibling receive emergency public health ciprofloxacin chemoprophylaxis."
       ],
       "gaps": "Accelerating turnaround time for whole-genome sequencing of Neisseria meningitidis isolates to guide targeted outbreak vaccine response."
-    }
+    },
+    "publishedAt": "2026-10-22T06:54:48.714886+00:00"
   },
   {
     "no": 1091,
@@ -7556,7 +7978,7 @@
       "sources": [
         {
           "pmid": "35405085",
-          "title": "Abiraterone plus prednisone added to androgen deprivation therapy and docetaxel in de novo metastatic castration-sensitive prostate cancer (PEACE-1): a multicentre, open-label, randomised, phase 3 study with a 2 \u00d7 2 factorial design",
+          "title": "Abiraterone plus prednisone added to androgen deprivation therapy and docetaxel in de novo metastatic castration-sensitive prostate cancer (PEACE-1): a multicentre, open-label, randomised, phase 3 study with a 2 × 2 factorial design",
           "journal": "Lancet",
           "year": 2022,
           "design": "trial"
@@ -8689,7 +9111,7 @@
         },
         {
           "pmid": "16183296",
-          "title": "Vasoplegic syndrome\u2014the role of methylene blue",
+          "title": "Vasoplegic syndrome—the role of methylene blue",
           "journal": "Eur J Cardiothorac Surg",
           "year": 2005,
           "design": "review"
@@ -10111,7 +10533,7 @@
       "mentor_intro": "Mixed connective tissue disease (MCTD) is an autoimmune overlap syndrome characterized by high titers of circulating antibodies to U1-small nuclear ribonucleoprotein (anti-U1-RNP) alongside overlapping clinical features of systemic lupus erythematosus, systemic sclerosis, and polymyositis.",
       "teaching_points": [
         {
-          "claim": "According to the Alarc\u00f3n-Segovia and Kasukawa diagnostic criteria, definitive diagnosis of MCTD requires high-titer anti-U1-RNP antibodies in the absence of anti-Sm or anti-dsDNA antibodies, accompanied by clinical features spanning Raynaud's phenomenon, swollen hands/puffy fingers, synovitis, myositis, or esophageal dysmotility.",
+          "claim": "According to the Alarcón-Segovia and Kasukawa diagnostic criteria, definitive diagnosis of MCTD requires high-titer anti-U1-RNP antibodies in the absence of anti-Sm or anti-dsDNA antibodies, accompanied by clinical features spanning Raynaud's phenomenon, swollen hands/puffy fingers, synovitis, myositis, or esophageal dysmotility.",
           "cites": [
             "7249488",
             "21398334"
@@ -13256,7 +13678,7 @@
   {
     "no": 1164,
     "topicId": "34279deb-3d1e-4227-b791-b200b00eb1c4",
-    "topic": "Mycosis Fungoides and S\u00e9zary Syndrome",
+    "topic": "Mycosis Fungoides and Sézary Syndrome",
     "cluster": "Dermatology / Haematology-Oncology",
     "status": "published",
     "dbEvidence": {
@@ -13265,13 +13687,13 @@
       "totalMeta": 0,
       "totalReviews": 0,
       "guidelinesKept": [
-        "Revisions to the staging and classification of mycosis fungoides and S\u00e9zary syndrome: a proposal of the ISCL and EORTC",
+        "Revisions to the staging and classification of mycosis fungoides and Sézary syndrome: a proposal of the ISCL and EORTC",
         "The 2018 update of the WHO-EORTC classification for primary cutaneous lymphomas"
       ],
       "guidelinesDropped": []
     },
     "page": {
-      "mentor_intro": "Mycosis fungoides (MF) and S\u00e9zary syndrome (SS) are cutaneous T-cell lymphomas (CTCL) of skin-homing CD4+ memory T lymphocytes; management is stage-adapted, employing skin-directed therapies (topical corticosteroids, nitrogen mustard, phototherapy) for early-stage disease and targeted systemic therapies (brentuximab vedotin, mogamulizumab) for advanced disease.",
+      "mentor_intro": "Mycosis fungoides (MF) and Sézary syndrome (SS) are cutaneous T-cell lymphomas (CTCL) of skin-homing CD4+ memory T lymphocytes; management is stage-adapted, employing skin-directed therapies (topical corticosteroids, nitrogen mustard, phototherapy) for early-stage disease and targeted systemic therapies (brentuximab vedotin, mogamulizumab) for advanced disease.",
       "teaching_points": [
         {
           "claim": "In the randomized phase 3 ALCANZA trial, the CD30-directed antibody-drug conjugate brentuximab vedotin demonstrated significant superiority over physician's choice (methotrexate or bexarotene) in CD30-positive cutaneous T-cell lymphoma, achieving an objective response lasting >=4 months (ORR4) of 56.3% versus 12.5% (p<0.0001).",
@@ -13280,13 +13702,13 @@
           ]
         },
         {
-          "claim": "The phase 3 MAVORIC trial showed that mogamulizumab (monoclonal antibody targeting CC chemokine receptor 4, CCR4) significantly doubled median progression-free survival compared to vorinostat (7.7 vs 3.1 months; HR 0.53; p<0.0001), demonstrating particularly high activity in the blood compartment of S\u00e9zary syndrome.",
+          "claim": "The phase 3 MAVORIC trial showed that mogamulizumab (monoclonal antibody targeting CC chemokine receptor 4, CCR4) significantly doubled median progression-free survival compared to vorinostat (7.7 vs 3.1 months; HR 0.53; p<0.0001), demonstrating particularly high activity in the blood compartment of Sézary syndrome.",
           "cites": [
             "30100378"
           ]
         },
         {
-          "claim": "The ISCL/EORTC staging system classifies MF and SS by TNMB criteria, defining S\u00e9zary syndrome as leukemic CTCL characterized by generalized erythroderma (T4) and significant peripheral blood involvement (B2: absolute S\u00e9zary cell count >=1.0 x 10^9/L, CD4/CD8 ratio >=10, or loss of CD7/CD26 on CD4+ cells).",
+          "claim": "The ISCL/EORTC staging system classifies MF and SS by TNMB criteria, defining Sézary syndrome as leukemic CTCL characterized by generalized erythroderma (T4) and significant peripheral blood involvement (B2: absolute Sézary cell count >=1.0 x 10^9/L, CD4/CD8 ratio >=10, or loss of CD7/CD26 on CD4+ cells).",
           "cites": [
             "17540844"
           ]
@@ -13316,7 +13738,7 @@
         },
         {
           "pmid": "17540844",
-          "title": "Revisions to the staging and classification of mycosis fungoides and S\u00e9zary syndrome: a proposal of the ISCL and EORTC",
+          "title": "Revisions to the staging and classification of mycosis fungoides and Sézary syndrome: a proposal of the ISCL and EORTC",
           "journal": "Blood",
           "year": 2007,
           "design": "guideline"
@@ -13330,12 +13752,12 @@
         }
       ],
       "uncertainties": [
-        "Timing and conditioning regimens for allogeneic hematopoietic cell transplantation in advanced refractory S\u00e9zary syndrome.",
+        "Timing and conditioning regimens for allogeneic hematopoietic cell transplantation in advanced refractory Sézary syndrome.",
         "Long-term management of mogamulizumab-associated severe autoimmune rash mimicking disease progression."
       ],
       "mcq_angles": [
-        "Diagnostic definition of S\u00e9zary syndrome triad: generalized erythroderma, generalized lymphadenopathy, and circulating clonally identical S\u00e9zary cells (cerebriform nuclei).",
-        "Flow cytometry signature of S\u00e9zary cells: CD4+ T cells with aberrant loss of CD7 and CD26, and CD4/CD8 ratio >=10.",
+        "Diagnostic definition of Sézary syndrome triad: generalized erythroderma, generalized lymphadenopathy, and circulating clonally identical Sézary cells (cerebriform nuclei).",
+        "Flow cytometry signature of Sézary cells: CD4+ T cells with aberrant loss of CD7 and CD26, and CD4/CD8 ratio >=10.",
         "ALCANZA trial outcome: brentuximab vedotin significantly superior for CD30-expressing CTCL.",
         "First-line treatment approach for Stage IA-IB patch/plaque mycosis fungoides: skin-directed therapy (topical steroids, phototherapy, mechlorethamine gel) rather than systemic cytotoxic chemotherapy."
       ],
@@ -13343,7 +13765,7 @@
         "A 64-year-old man with a 15-year history of erythematous scaly patches on sun-protected bathing-trunk areas with skin biopsy showing atypical CD4+ lymphocytes with epidermotropism and Pautrier microabscesses.",
         "A 71-year-old woman presenting with generalized fiery red erythroderma, intense pruritus, alopecia, and peripheral blood showing 2.8 x 10^9/L atypical cerebriform lymphocytes."
       ],
-      "gaps": "Targeted therapies combining epigenetic modifiers with checkpoint inhibitors in advanced refractory S\u00e9zary syndrome."
+      "gaps": "Targeted therapies combining epigenetic modifiers with checkpoint inhibitors in advanced refractory Sézary syndrome."
     }
   },
   {
@@ -15324,10 +15746,10 @@
       "guidelinesDropped": []
     },
     "page": {
-      "mentor_intro": "Neuromuscular respiratory failure results from diaphragmatic and intercostal muscle pump exhaustion in conditions such as Guillain-Barr\u00e9 syndrome and myasthenic crisis, demanding serial bedside spirometry and early elective endotracheal intubation before hypercapnic arrest occurs.",
+      "mentor_intro": "Neuromuscular respiratory failure results from diaphragmatic and intercostal muscle pump exhaustion in conditions such as Guillain-Barré syndrome and myasthenic crisis, demanding serial bedside spirometry and early elective endotracheal intubation before hypercapnic arrest occurs.",
       "teaching_points": [
         {
-          "claim": "The clinical '20/30/40 rule' validated by Lawn and colleagues identifies impending ventilatory failure in Guillain-Barr\u00e9 syndrome and myasthenia gravis: forced vital capacity (FVC) <20 mL/kg, maximum inspiratory pressure (MIP/NIF) less negative than -30 cmH2O, or maximum expiratory pressure (MEP) <40 cmH2O mandates ICU admission and elective intubation.",
+          "claim": "The clinical '20/30/40 rule' validated by Lawn and colleagues identifies impending ventilatory failure in Guillain-Barré syndrome and myasthenia gravis: forced vital capacity (FVC) <20 mL/kg, maximum inspiratory pressure (MIP/NIF) less negative than -30 cmH2O, or maximum expiratory pressure (MEP) <40 cmH2O mandates ICU admission and elective intubation.",
           "cites": [
             "11405803"
           ]
@@ -15357,7 +15779,7 @@
       "sources": [
         {
           "pmid": "11405803",
-          "title": "Anticipating mechanical ventilation in Guillain-Barr\u00e9 syndrome",
+          "title": "Anticipating mechanical ventilation in Guillain-Barré syndrome",
           "journal": "Arch Neurol",
           "year": 2001,
           "design": "trial"
@@ -15378,7 +15800,7 @@
         },
         {
           "pmid": "26993881",
-          "title": "Guillain-Barr\u00e9 syndrome",
+          "title": "Guillain-Barré syndrome",
           "journal": "Lancet",
           "year": 2016,
           "design": "review"
@@ -15395,7 +15817,7 @@
         "Temporary cessation of pyridostigmine during mechanical ventilation: reduces airway secretions and avoids cholinergic crisis confusion."
       ],
       "case_hooks": [
-        "A 34-year-old man with Guillain-Barr\u00e9 syndrome whose SpO2 is 98% on room air but whose FVC drops from 28 mL/kg to 16 mL/kg over 6 hours intubated electively.",
+        "A 34-year-old man with Guillain-Barré syndrome whose SpO2 is 98% on room air but whose FVC drops from 28 mL/kg to 16 mL/kg over 6 hours intubated electively.",
         "A 26-year-old woman with myasthenia gravis presenting with shallow rapid breathing, paradoxical abdominal breathing, and single breath count of 11."
       ],
       "gaps": "Prospective trials evaluating bedside ultrasound of diaphragm thickening fraction (DTF) to anticipate non-invasive ventilation failure."
@@ -16338,7 +16760,7 @@
       "guidelinesDropped": []
     },
     "page": {
-      "mentor_intro": "Non-alcoholic fatty liver disease (NAFLD)\u2014recently reclassified in consensus nomenclatures as metabolic dysfunction-associated steatotic liver disease (MASLD)\u2014represents the hepatic manifestation of metabolic syndrome. Risk stratification focuses on distinguishing simple steatosis from metabolic dysfunction-associated steatohepatitis (MASH) and identifying advanced hepatic fibrosis (stage F3-F4), which serves as the primary determinant of long-term liver-related morbidity and all-cause mortality.",
+      "mentor_intro": "Non-alcoholic fatty liver disease (NAFLD)—recently reclassified in consensus nomenclatures as metabolic dysfunction-associated steatotic liver disease (MASLD)—represents the hepatic manifestation of metabolic syndrome. Risk stratification focuses on distinguishing simple steatosis from metabolic dysfunction-associated steatohepatitis (MASH) and identifying advanced hepatic fibrosis (stage F3-F4), which serves as the primary determinant of long-term liver-related morbidity and all-cause mortality.",
       "teaching_points": [
         {
           "claim": "Non-invasive fibrosis scoring systems, particularly the FIB-4 index (incorporating age, AST, ALT, and platelet count) and NAFLD Fibrosis Score (NFS), serve as the first-line primary care screening tools to rule out advanced fibrosis (FIB-4 <1.30 having a negative predictive value >90%).",
@@ -16440,7 +16862,7 @@
       "guidelinesDropped": []
     },
     "page": {
-      "mentor_intro": "Management of nonalcoholic fatty liver disease (NAFLD/MASLD) requires a multidisciplinary framework targeting metabolic drivers, cardiovascular risk reduction, and prevention of hepatic decompensation. Sustained weight reduction through lifestyle modification forms the cornerstone of therapy, while structured metabolic interventions\u2014including glucagon-like peptide-1 (GLP-1) receptor agonists and SGLT2 inhibitors\u2014address shared cardiometabolic pathophysiology.",
+      "mentor_intro": "Management of nonalcoholic fatty liver disease (NAFLD/MASLD) requires a multidisciplinary framework targeting metabolic drivers, cardiovascular risk reduction, and prevention of hepatic decompensation. Sustained weight reduction through lifestyle modification forms the cornerstone of therapy, while structured metabolic interventions—including glucagon-like peptide-1 (GLP-1) receptor agonists and SGLT2 inhibitors—address shared cardiometabolic pathophysiology.",
       "teaching_points": [
         {
           "claim": "Dose-dependent lifestyle-induced weight loss correlates directly with histologic improvement: >=5% weight loss reduces hepatic steatosis, >=7% achieves MASH resolution, and >=10% induces regression or stabilization of liver fibrosis.",
@@ -16450,7 +16872,7 @@
           ]
         },
         {
-          "claim": "Cardiovascular disease\u2014not end-stage liver disease\u2014is the leading cause of death in patients with NAFLD across all fibrosis stages, mandating aggressive lipid-lowering therapy with statins, which are proven safe and hepatoprotective in steatotic liver disease.",
+          "claim": "Cardiovascular disease—not end-stage liver disease—is the leading cause of death in patients with NAFLD across all fibrosis stages, mandating aggressive lipid-lowering therapy with statins, which are proven safe and hepatoprotective in steatotic liver disease.",
           "cites": [
             27083529,
             34509908
@@ -16745,7 +17167,7 @@
       "guidelinesDropped": []
     },
     "page": {
-      "mentor_intro": "Non-functioning pituitary adenomas (NFPAs) are benign epithelial neoplasms of adenohypophyseal origin that do not cause biochemical hormonal hypersecretion. Clinical presentation typically involves 'mass-effect' symptoms\u2014most notably chiasmal compression causing bitemporal hemianopsia, cranial neuropathies, or secondary hypopituitarism\u2014dictating whether patients require urgent endoscopic transsphenoidal surgical decompression or conservative MRI surveillance.",
+      "mentor_intro": "Non-functioning pituitary adenomas (NFPAs) are benign epithelial neoplasms of adenohypophyseal origin that do not cause biochemical hormonal hypersecretion. Clinical presentation typically involves 'mass-effect' symptoms—most notably chiasmal compression causing bitemporal hemianopsia, cranial neuropathies, or secondary hypopituitarism—dictating whether patients require urgent endoscopic transsphenoidal surgical decompression or conservative MRI surveillance.",
       "teaching_points": [
         {
           "claim": "Endoscopic transsphenoidal surgical resection is the first-line treatment for NFPAs causing optic chiasm compression, visual field deficits (classic bitemporal hemianopsia), or acute pituitary apoplexy, achieving visual field improvement in >80% of symptomatic patients.",
@@ -16924,7 +17346,7 @@
       "guidelinesDropped": []
     },
     "page": {
-      "mentor_intro": "Noninvasive ventilation (NIV)\u2014encompassing bilevel positive airway pressure (BiPAP) and continuous positive airway pressure (CPAP)\u2014is an indispensable life-saving modality for select etiologies of acute respiratory failure (ARF). Evidence robustly supports NIV in acute hypercapnic exacerbations of COPD and cardiogenic pulmonary edema, while its application in acute hypoxemic de novo respiratory failure (e.g., severe ARDS) demands rigorous caution due to the catastrophic mortality risk associated with delayed endotracheal intubation.",
+      "mentor_intro": "Noninvasive ventilation (NIV)—encompassing bilevel positive airway pressure (BiPAP) and continuous positive airway pressure (CPAP)—is an indispensable life-saving modality for select etiologies of acute respiratory failure (ARF). Evidence robustly supports NIV in acute hypercapnic exacerbations of COPD and cardiogenic pulmonary edema, while its application in acute hypoxemic de novo respiratory failure (e.g., severe ARDS) demands rigorous caution due to the catastrophic mortality risk associated with delayed endotracheal intubation.",
       "teaching_points": [
         {
           "claim": "ERS/ATS clinical practice guidelines establish strong recommendations for NIV in acute hypercapnic respiratory failure due to COPD exacerbation (pH <=7.35, PaCO2 >45 mmHg) and cardiogenic pulmonary edema, where it reduces intubation rates, hospital stay, and in-hospital mortality.",
@@ -17300,7 +17722,7 @@
       "guidelinesDropped": []
     },
     "page": {
-      "mentor_intro": "Nontuberculous mycobacterial (NTM) lung disease\u2014most frequently driven by Mycobacterium avium complex (MAC), Mycobacterium kansasii, and Mycobacterium abscessus\u2014is a chronic pulmonary infection occurring predominantly in patients with pre-existing bronchiectasis, COPD, or systemic immunosuppression. Establishing a diagnosis demands fulfilling strict ATS/ERS/ESCMID/IDSA diagnostic criteria encompassing clinical symptoms, radiographic evidence (cavitary or nodular/bronchiectatic infiltrates), and microbiologic confirmation from multiple sputum or bronchoscopic samples.",
+      "mentor_intro": "Nontuberculous mycobacterial (NTM) lung disease—most frequently driven by Mycobacterium avium complex (MAC), Mycobacterium kansasii, and Mycobacterium abscessus—is a chronic pulmonary infection occurring predominantly in patients with pre-existing bronchiectasis, COPD, or systemic immunosuppression. Establishing a diagnosis demands fulfilling strict ATS/ERS/ESCMID/IDSA diagnostic criteria encompassing clinical symptoms, radiographic evidence (cavitary or nodular/bronchiectatic infiltrates), and microbiologic confirmation from multiple sputum or bronchoscopic samples.",
       "teaching_points": [
         {
           "claim": "ATS/ERS/ESCMID/IDSA guidelines require all three criteria for NTM pulmonary disease: pulmonary symptoms, consistent radiographic imaging (HRCT showing bronchiectasis with tree-in-bud nodules or cavitary disease), and microbiologic culture proof (>=2 positive separate sputa, or >=1 positive BAL/biopsy).",
@@ -17480,7 +17902,7 @@
       "guidelinesDropped": []
     },
     "page": {
-      "mentor_intro": "The escalating global dissemination of multidrug-resistant (MDR) and extensively drug-resistant (XDR) Gram-negative pathogens\u2014specifically carbapenem-resistant Enterobacterales (CRE), Pseudomonas aeruginosa with difficult-to-treat resistance (DTR-P), and carbapenem-resistant Acinetobacter baumannii (CRAB)\u2014has necessitated novel beta-lactamase inhibitor combinations and unique siderophore cephalosporins to replace toxic legacy polymyxins.",
+      "mentor_intro": "The escalating global dissemination of multidrug-resistant (MDR) and extensively drug-resistant (XDR) Gram-negative pathogens—specifically carbapenem-resistant Enterobacterales (CRE), Pseudomonas aeruginosa with difficult-to-treat resistance (DTR-P), and carbapenem-resistant Acinetobacter baumannii (CRAB)—has necessitated novel beta-lactamase inhibitor combinations and unique siderophore cephalosporins to replace toxic legacy polymyxins.",
       "teaching_points": [
         {
           "claim": "Ceftazidime-avibactam possesses potent activity against KPC and OXA-48 carbapenemases in Enterobacterales and resistant P. aeruginosa, but is completely inactive against metallo-beta-lactamases (MBLs such as NDM, VIM, and IMP) unless combined with aztreonam.",
@@ -17490,7 +17912,7 @@
           ]
         },
         {
-          "claim": "Cefiderocol\u2014a novel siderophore cephalosporin that exploits bacterial iron transport systems ('Trojan horse' mechanism)\u2014maintains stability against serine carbapenemases (KPC, OXA) and metallo-beta-lactamases (NDM, VIM, IMP), as well as difficult-to-treat P. aeruginosa and Stenotrophomonas maltophilia.",
+          "claim": "Cefiderocol—a novel siderophore cephalosporin that exploits bacterial iron transport systems ('Trojan horse' mechanism)—maintains stability against serine carbapenemases (KPC, OXA) and metallo-beta-lactamases (NDM, VIM, IMP), as well as difficult-to-treat P. aeruginosa and Stenotrophomonas maltophilia.",
           "cites": [
             33058771,
             34658076
@@ -17768,7 +18190,7 @@
       "guidelinesDropped": []
     },
     "page": {
-      "mentor_intro": "Nutritional management strategy in the intensive care unit has shifted from an aggressive caloric replenishment model to a structured metabolic modulation approach. Understanding phase-specific nutritional needs\u2014avoiding full caloric feeding during the early acute endogenous catabolic phase (days 1-3) and progressively escalating to meet measured requirements during the post-acute recovery phase\u2014minimizes hyperglycemia, liver steatosis, and suppressed autophagy.",
+      "mentor_intro": "Nutritional management strategy in the intensive care unit has shifted from an aggressive caloric replenishment model to a structured metabolic modulation approach. Understanding phase-specific nutritional needs—avoiding full caloric feeding during the early acute endogenous catabolic phase (days 1-3) and progressively escalating to meet measured requirements during the post-acute recovery phase—minimizes hyperglycemia, liver steatosis, and suppressed autophagy.",
       "teaching_points": [
         {
           "claim": "In the landmark EDEN randomized trial, initial trophic enteral feeding (up to 400 kcal/day for the first 6 days) in patients with acute lung injury resulted in equivalent ventilator-free days and 60-day survival compared to full enteral feeding, with significantly less gastrointestinal intolerance.",
@@ -17860,7 +18282,7 @@
       "guidelinesDropped": []
     },
     "page": {
-      "mentor_intro": "Obesity hypoventilation syndrome (OHS)\u2014historically termed Pickwickian syndrome\u2014is defined by the triad of obesity (BMI >=30 kg/m2), daytime awake chronic alveolar hypoventilation (daytime PaCO2 >=45 mmHg), and sleep-disordered breathing in the absence of alternative causes of hypercapnia (e.g., severe COPD, neuromuscular disease, or chest wall deformity). Without effective nocturnal positive airway pressure therapy and weight loss, OHS carries a high risk of pulmonary hypertension, right ventricular failure, and acute-on-chronic hypercapnic respiratory failure.",
+      "mentor_intro": "Obesity hypoventilation syndrome (OHS)—historically termed Pickwickian syndrome—is defined by the triad of obesity (BMI >=30 kg/m2), daytime awake chronic alveolar hypoventilation (daytime PaCO2 >=45 mmHg), and sleep-disordered breathing in the absence of alternative causes of hypercapnia (e.g., severe COPD, neuromuscular disease, or chest wall deformity). Without effective nocturnal positive airway pressure therapy and weight loss, OHS carries a high risk of pulmonary hypertension, right ventricular failure, and acute-on-chronic hypercapnic respiratory failure.",
       "teaching_points": [
         {
           "claim": "Diagnostic criteria defined by the ATS Clinical Practice Guideline require: BMI >=30 kg/m2, daytime arterial PaCO2 >=45 mmHg on room air at sea level, and exclusion of alternative pulmonary or neuromuscular etiologies of chronic hypercapnia.",
@@ -18246,7 +18668,7 @@
       "guidelinesDropped": []
     },
     "page": {
-      "mentor_intro": "Obscure gastrointestinal bleeding (OGIB)\u2014redefined in contemporary ACG guidelines as small-bowel bleeding\u2014refers to persistent or recurrent gastrointestinal bleeding with negative upper and lower GI endoscopies. Vascular lesions (angioectasias), small-bowel Crohn's disease, NSAID-induced enteropathy, and small-bowel tumors represent the leading etiologies, with video capsule endoscopy (VCE) and deep enteroscopy serving as the foundational diagnostic and therapeutic workhorses.",
+      "mentor_intro": "Obscure gastrointestinal bleeding (OGIB)—redefined in contemporary ACG guidelines as small-bowel bleeding—refers to persistent or recurrent gastrointestinal bleeding with negative upper and lower GI endoscopies. Vascular lesions (angioectasias), small-bowel Crohn's disease, NSAID-induced enteropathy, and small-bowel tumors represent the leading etiologies, with video capsule endoscopy (VCE) and deep enteroscopy serving as the foundational diagnostic and therapeutic workhorses.",
       "teaching_points": [
         {
           "claim": "ACG clinical guidelines recommend small-capsule video endoscopy (VCE) as the preferred first-line diagnostic investigation for overt or occult suspected small-bowel bleeding following negative bidirectional endoscopy, with diagnostic yields exceeding 60-70% when performed within 48 hours of bleeding.",
@@ -18340,7 +18762,7 @@
       "guidelinesDropped": []
     },
     "page": {
-      "mentor_intro": "Obsessive-compulsive disorder (OCD) is a debilitating neuropsychiatric condition characterized by intrusive, distressing thoughts, images, or urges (obsessions) and repetitive mental or behavioral rituals (compulsions) designed to neutralize anxiety. Evidence-based first-line interventions comprise Exposure and Response Prevention (ERP)\u2014a specialized cognitive-behavioral modality\u2014and high-dose selective serotonin reuptake inhibitors (SSRIs), with combination therapy providing superior symptom reduction in severe presentations.",
+      "mentor_intro": "Obsessive-compulsive disorder (OCD) is a debilitating neuropsychiatric condition characterized by intrusive, distressing thoughts, images, or urges (obsessions) and repetitive mental or behavioral rituals (compulsions) designed to neutralize anxiety. Evidence-based first-line interventions comprise Exposure and Response Prevention (ERP)—a specialized cognitive-behavioral modality—and high-dose selective serotonin reuptake inhibitors (SSRIs), with combination therapy providing superior symptom reduction in severe presentations.",
       "teaching_points": [
         {
           "claim": "APA and NICE clinical practice guidelines establish Exposure and Response Prevention (ERP) and high-dose selective serotonin reuptake inhibitors (SSRIs) as the twin evidence-based first-line treatments for moderate to severe OCD.",
@@ -19066,7 +19488,7 @@
       "guidelinesDropped": []
     },
     "page": {
-      "mentor_intro": "Esophageal cancer\u2014predominantly adenocarcinoma in the lower esophagus and gastroesophageal junction (arising on Barrett's metaplasia) and squamous cell carcinoma (associated with tobacco and alcohol)\u2014is an aggressive malignancy requiring multimodal therapy for locally advanced disease. Neoadjuvant chemoradiation (CROSS regimen) or perioperative FLOT chemotherapy followed by en-bloc surgical resection forms the definitive curative standard of care.",
+      "mentor_intro": "Esophageal cancer—predominantly adenocarcinoma in the lower esophagus and gastroesophageal junction (arising on Barrett's metaplasia) and squamous cell carcinoma (associated with tobacco and alcohol)—is an aggressive malignancy requiring multimodal therapy for locally advanced disease. Neoadjuvant chemoradiation (CROSS regimen) or perioperative FLOT chemotherapy followed by en-bloc surgical resection forms the definitive curative standard of care.",
       "teaching_points": [
         {
           "claim": "In the landmark CROSS trial, preoperative chemoradiotherapy (carboplatin/paclitaxel with 41.4 Gy radiation) significantly improved median overall survival compared to surgery alone (49.4 vs 24.0 months, HR 0.657) in resectable locally advanced esophageal or junctional cancer, with a pathologically complete response rate of 49% in squamous carcinomas and 23% in adenocarcinomas.",
@@ -19548,24 +19970,24 @@
       "guidelinesDropped": []
     },
     "page": {
-      "mentor_intro": "Evaluating novel cancer therapies requires precise alignment between the phase of drug development and the primary clinical endpoint. While Overall Survival (OS) represents the unequivocal gold standard for proving clinical benefit, regulatory agencies and trialists increasingly rely on surrogate endpoints\u2014such as Progression-Free Survival (PFS), Objective Response Rate (ORR), and Minimal Residual Disease (MRD)\u2014to accelerate drug approval, requiring critical appraisal of endpoint surrogacy and validity.",
+      "mentor_intro": "Evaluating novel cancer therapies requires precise alignment between the phase of drug development and the primary clinical endpoint. While Overall Survival (OS) represents the unequivocal gold standard for proving clinical benefit, regulatory agencies and trialists increasingly rely on surrogate endpoints—such as Progression-Free Survival (PFS), Objective Response Rate (ORR), and Minimal Residual Disease (MRD)—to accelerate drug approval, requiring critical appraisal of endpoint surrogacy and validity.",
       "teaching_points": [
         {
-          "claim": "Overall Survival (OS)\u2014defined as the time from randomization until death from any cause\u2014is the gold-standard endpoint in oncology clinical trials because it is completely objective, clinically meaningful, and unconfounded by subjective radiographic assessment biases.",
+          "claim": "Overall Survival (OS)—defined as the time from randomization until death from any cause—is the gold-standard endpoint in oncology clinical trials because it is completely objective, clinically meaningful, and unconfounded by subjective radiographic assessment biases.",
           "cites": [
             24578130,
             29777854
           ]
         },
         {
-          "claim": "Progression-Free Survival (PFS)\u2014the time to objective tumor progression or death\u2014is widely utilized for accelerated regulatory approval; however, PFS surrogacy for OS varies dramatically across tumor types and is frequently uncoupled from OS due to post-progression crossover and effective subsequent therapy lines.",
+          "claim": "Progression-Free Survival (PFS)—the time to objective tumor progression or death—is widely utilized for accelerated regulatory approval; however, PFS surrogacy for OS varies dramatically across tumor types and is frequently uncoupled from OS due to post-progression crossover and effective subsequent therapy lines.",
           "cites": [
             24578130,
             31671190
           ]
         },
         {
-          "claim": "Objective Response Rate (ORR)\u2014the proportion of patients achieving complete or partial response by RECIST 1.1 criteria\u2014serves as the primary endpoint in early phase 1/2 trials to assess direct cytotoxic activity, but rarely correlates directly with overall survival in slow-growing indolent neoplasms.",
+          "claim": "Objective Response Rate (ORR)—the proportion of patients achieving complete or partial response by RECIST 1.1 criteria—serves as the primary endpoint in early phase 1/2 trials to assess direct cytotoxic activity, but rarely correlates directly with overall survival in slow-growing indolent neoplasms.",
           "cites": [
             19043100,
             29777854
@@ -19649,7 +20071,7 @@
       "guidelinesDropped": []
     },
     "page": {
-      "mentor_intro": "Opioid rotation\u2014switching from one opioid analgesic to another\u2014is an essential palliative and pain management intervention indicated when patients experience dose-limiting adverse effects (neurotoxicity, sedation, intractable nausea) or refractory pain despite dose escalation (opioid tolerance or hyperalgesia). Calculating equianalgesic conversions requires systematic step-by-step methodology, with an automatic 25-50% dose reduction applied to account for incomplete cross-tolerance.",
+      "mentor_intro": "Opioid rotation—switching from one opioid analgesic to another—is an essential palliative and pain management intervention indicated when patients experience dose-limiting adverse effects (neurotoxicity, sedation, intractable nausea) or refractory pain despite dose escalation (opioid tolerance or hyperalgesia). Calculating equianalgesic conversions requires systematic step-by-step methodology, with an automatic 25-50% dose reduction applied to account for incomplete cross-tolerance.",
       "teaching_points": [
         {
           "claim": "Indications for opioid rotation include poorly controlled pain despite dose escalation, development of opioid-induced neurotoxicity (hallucinations, myoclonus, hyperalgesia, delirium), or route-of-administration failure.",
@@ -19737,7 +20159,7 @@
       "guidelinesDropped": []
     },
     "page": {
-      "mentor_intro": "Opioid-sparing multimodal analgesia is the central foundation of Enhanced Recovery After Surgery (ERAS) pathways and modern perioperative care. Combining distinct non-opioid analgesic classes\u2014acting synergistically across peripheral, spinal, and supraspinal nociceptive pathways\u2014significantly reduces postoperative opioid requirements, attenuates opioid-related adverse events (ileus, respiratory depression, nausea, urinary retention), and accelerates postoperative recovery.",
+      "mentor_intro": "Opioid-sparing multimodal analgesia is the central foundation of Enhanced Recovery After Surgery (ERAS) pathways and modern perioperative care. Combining distinct non-opioid analgesic classes—acting synergistically across peripheral, spinal, and supraspinal nociceptive pathways—significantly reduces postoperative opioid requirements, attenuates opioid-related adverse events (ileus, respiratory depression, nausea, urinary retention), and accelerates postoperative recovery.",
       "teaching_points": [
         {
           "claim": "ERAS consensus guidelines and ASA recommendations establish multimodal analgesia as the standard of care, recommending scheduled baseline non-opioids (acetaminophen and NSAIDs/COX-2 inhibitors) combined with regional anesthesia techniques across major surgical procedures.",
@@ -19824,7 +20246,7 @@
       "guidelinesDropped": []
     },
     "page": {
-      "mentor_intro": "Opioid use disorder (OUD) is a chronic, relapsing brain disease mediated by neuroplastic alterations in the mesolimbic reward system and locus coeruleus. Medications for opioid use disorder (MOUD)\u2014specifically buprenorphine (a partial mu-opioid agonist) and methadone (a full mu-opioid agonist)\u2014are the undisputed gold-standard frontline therapies, proven to suppress cravings, prevent illicit opioid use, and reduce all-cause and overdose mortality by over 50%.",
+      "mentor_intro": "Opioid use disorder (OUD) is a chronic, relapsing brain disease mediated by neuroplastic alterations in the mesolimbic reward system and locus coeruleus. Medications for opioid use disorder (MOUD)—specifically buprenorphine (a partial mu-opioid agonist) and methadone (a full mu-opioid agonist)—are the undisputed gold-standard frontline therapies, proven to suppress cravings, prevent illicit opioid use, and reduce all-cause and overdose mortality by over 50%.",
       "teaching_points": [
         {
           "claim": "ASAM and WHO clinical practice guidelines establish that maintenance pharmacotherapy with buprenorphine or methadone is superior to abstinence-based or detoxification regimens alone, reducing overdose deaths and all-cause mortality by 50-70% (Sordo et al. meta-analysis).",
@@ -19848,7 +20270,7 @@
           ]
         },
         {
-          "claim": "Methadone\u2014a full mu-agonist with NMDA antagonist properties\u2014is highly effective for severe opioid tolerance and chronic pain overlap, but requires structured daily clinic dosing, carries overdose risk during titration, and prolongs the cardiac QTc interval.",
+          "claim": "Methadone—a full mu-agonist with NMDA antagonist properties—is highly effective for severe opioid tolerance and chronic pain overlap, but requires structured daily clinic dosing, carries overdose risk during titration, and prolongs the cardiac QTc interval.",
           "cites": [
             32197058,
             28446417
@@ -19912,7 +20334,7 @@
       "guidelinesDropped": []
     },
     "page": {
-      "mentor_intro": "Managing opioid use disorder (OUD) encompasses an integrated continuum extending from acute medically supervised withdrawal management to long-term agonist maintenance and community harm reduction. Harm reduction strategies\u2014including take-home naloxone distribution, syringe service programs, and fentanyl test strip provision\u2014mitigate infectious and fatal overdose risks regardless of whether individuals are actively prepared to engage in abstinence-oriented care.",
+      "mentor_intro": "Managing opioid use disorder (OUD) encompasses an integrated continuum extending from acute medically supervised withdrawal management to long-term agonist maintenance and community harm reduction. Harm reduction strategies—including take-home naloxone distribution, syringe service programs, and fentanyl test strip provision—mitigate infectious and fatal overdose risks regardless of whether individuals are actively prepared to engage in abstinence-oriented care.",
       "teaching_points": [
         {
           "claim": "Medically supervised withdrawal (detoxification) alone without transition to long-term maintenance pharmacotherapy carries an extremely high relapse rate (>80-90%) and significantly increases fatal overdose risk due to loss of pharmacologic opioid tolerance.",
@@ -19936,7 +20358,7 @@
           ]
         },
         {
-          "claim": "Comprehensive harm reduction interventions\u2014such as needle and syringe programs (NSP) and supervised consumption facilities\u2014substantially reduce the transmission of blood-borne viral pathogens (HIV and hepatitis C) and soft-tissue bacterial abscesses.",
+          "claim": "Comprehensive harm reduction interventions—such as needle and syringe programs (NSP) and supervised consumption facilities—substantially reduce the transmission of blood-borne viral pathogens (HIV and hepatitis C) and soft-tissue bacterial abscesses.",
           "cites": [
             28446417,
             32197058
@@ -20165,7 +20587,7 @@
       "guidelinesDropped": []
     },
     "page": {
-      "mentor_intro": "ICU management of the deceased organ donor\u2014encompassing donation after brain death (DBD) and donation after circulatory death (DCD)\u2014is critical for maximizing donor organ yield and graft viability. In DBD, brain death triggers profound autonomic turmoil ('sympathetic storm' followed by neurogenic shock, diabetes insipidus, and endocrine collapse), requiring protocolized hormonal replacement therapy, lung-protective ventilation, and hemodynamic resuscitation to maintain end-organ perfusion.",
+      "mentor_intro": "ICU management of the deceased organ donor—encompassing donation after brain death (DBD) and donation after circulatory death (DCD)—is critical for maximizing donor organ yield and graft viability. In DBD, brain death triggers profound autonomic turmoil ('sympathetic storm' followed by neurogenic shock, diabetes insipidus, and endocrine collapse), requiring protocolized hormonal replacement therapy, lung-protective ventilation, and hemodynamic resuscitation to maintain end-organ perfusion.",
       "teaching_points": [
         {
           "claim": "Consensus donor management guidelines recommend protocolized donor goals: mean arterial pressure 65-100 mmHg, central venous pressure 4-10 mmHg, urine output 1-3 mL/kg/hr, and PaO2/FiO2 ratio >=300 on PEEP 5 cm H2O.",
@@ -20417,7 +20839,7 @@
       "guidelinesDropped": []
     },
     "page": {
-      "mentor_intro": "Oseltamivir is an oral neuraminidase inhibitor widely deployed for the treatment and chemoprophylaxis of influenza A and B viral infections. In previously healthy, non-immunocompromised adults with uncomplicated influenza, randomized placebo-controlled trials and systematic reviews establish modest clinical benefits\u2014shortening symptom duration by approximately 17-24 hours when initiated within 48 hours of illness onset\u2014counterbalanced by common gastrointestinal adverse effects (nausea and vomiting).",
+      "mentor_intro": "Oseltamivir is an oral neuraminidase inhibitor widely deployed for the treatment and chemoprophylaxis of influenza A and B viral infections. In previously healthy, non-immunocompromised adults with uncomplicated influenza, randomized placebo-controlled trials and systematic reviews establish modest clinical benefits—shortening symptom duration by approximately 17-24 hours when initiated within 48 hours of illness onset—counterbalanced by common gastrointestinal adverse effects (nausea and vomiting).",
       "teaching_points": [
         {
           "claim": "In systematic reviews and Cochrane meta-analyses of randomized trials in healthy adults, oseltamivir (75 mg twice daily for 5 days) initiated within 48 hours of symptom onset reduced the time to first alleviation of influenza symptoms by approximately 16.8 to 25.2 hours (approx 1 day) compared to placebo.",
@@ -20507,7 +20929,7 @@
       "mentor_intro": "Osteoarthritis (OA) is a whole-joint organ disease characterized by progressive articular cartilage degradation, subchondral bone remodeling, osteophyte formation, and synovial low-grade inflammation. Affecting predominantly weight-bearing joints (knees, hips) and hands, OA management centers on core non-pharmacologic lifestyle interventions (exercise, weight loss), topical NSAIDs as first-line pharmacotherapy, and arthroplasty for end-stage refractory joint failure.",
       "teaching_points": [
         {
-          "claim": "ACR/AF and OARSI guidelines strongly recommend core non-pharmacologic interventions\u2014including structured land-based or aquatic exercise programs, biomechanical unloading, and dietary weight loss (targeting >=5-10% body weight loss in overweight patients)\u2014for all patients with knee and hip OA.",
+          "claim": "ACR/AF and OARSI guidelines strongly recommend core non-pharmacologic interventions—including structured land-based or aquatic exercise programs, biomechanical unloading, and dietary weight loss (targeting >=5-10% body weight loss in overweight patients)—for all patients with knee and hip OA.",
           "cites": [
             31908149,
             31707221
@@ -20969,7 +21391,7 @@
           ]
         },
         {
-          "claim": "Pathognomonic radiographic features of osteomalacia include pseudofractures (Looser zones or Milkman lines)\u2014transverse lucent bands traversing perpendicular to the cortex, characteristically found on the pubic rami, medial femoral neck, and lateral scapular border.",
+          "claim": "Pathognomonic radiographic features of osteomalacia include pseudofractures (Looser zones or Milkman lines)—transverse lucent bands traversing perpendicular to the cortex, characteristically found on the pubic rami, medial femoral neck, and lateral scapular border.",
           "cites": [
             21646368,
             29427338
@@ -21258,7 +21680,7 @@
           ]
         },
         {
-          "claim": "Trabecular Bone Score (TBS)\u2014a gray-level textural analysis of the lumbar spine DEXA image evaluating bone microarchitecture\u2014provides fracture risk prediction independent of areal BMD and FRAX, particularly in secondary osteoporosis associated with type 2 diabetes mellitus.",
+          "claim": "Trabecular Bone Score (TBS)—a gray-level textural analysis of the lumbar spine DEXA image evaluating bone microarchitecture—provides fracture risk prediction independent of areal BMD and FRAX, particularly in secondary osteoporosis associated with type 2 diabetes mellitus.",
           "cites": [
             32471900,
             31908149

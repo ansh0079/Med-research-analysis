@@ -40,6 +40,18 @@
           "cites": [
             "42140639"
           ]
+        },
+        {
+          "claim": "In the landmark GiACTA randomized trial, subcutaneous tocilizumab (162 mg weekly or every other week) combined with a 26-week prednisone taper achieved sustained glucocorticoid-free remission in 56% of GCA patients compared to 14% with prednisone alone.",
+          "cites": [
+            "28745999"
+          ]
+        },
+        {
+          "claim": "Tocilizumab directly suppresses IL-6 signaling, which normalizes ESR and CRP levels regardless of underlying clinical vascular disease activity; monitoring must rely on clinical symptoms and imaging rather than acute-phase reactants.",
+          "cites": [
+            "28745999"
+          ]
         }
       ],
       "uncertainties": [
@@ -72,9 +84,16 @@
           "design": "meta-analysis",
           "doi": "10.3899/jrheum.2026-0050",
           "journal": "The Journal of rheumatology"
+        },
+        {
+          "pmid": "28745999",
+          "title": "Trial of Tocilizumab in Giant-Cell Arteritis (GiACTA Trial).",
+          "year": 2017,
+          "design": "trial"
         }
       ]
-    }
+    },
+    "publishedAt": "2026-10-19T15:10:36.586985+00:00"
   },
   {
     "no": 1752,
@@ -115,6 +134,18 @@
           "cites": [
             "42775382"
           ]
+        },
+        {
+          "claim": "Acute tonsillitis is commonly viral, but Group A Streptococcus (Streptococcus pyogenes) causes 15-30% of cases; clinical decision rules (Centor or FeverPAIN criteria) risk-stratify patients, with scores >=3 predicting streptococcal infection where oral phenoxymethylpenicillin (penicillin V) for 10 days shortens symptom duration by ~16 hours, prevents suppurative complications (peritonsillar abscess), and reduces transmission.",
+          "cites": [
+            "42658668"
+          ]
+        },
+        {
+          "claim": "Sore throat decision rules (FeverPAIN score 4-5 or Centor 3-4) guide targeted antibiotic prescribing, where 10 days of oral penicillin V or clarithromycin accelerates symptom resolution and reduces transmission.",
+          "cites": [
+            "38519239"
+          ]
         }
       ],
       "uncertainties": [
@@ -149,7 +180,8 @@
           "journal": "Cureus"
         }
       ]
-    }
+    },
+    "publishedAt": "2026-10-19T15:10:36.586985+00:00"
   },
   {
     "no": 1753,
@@ -192,6 +224,18 @@
           "cites": [
             "42220325"
           ]
+        },
+        {
+          "claim": "Peritonsillar abscess (quinsy) presents with severe unilateral throat pain, trismus, muffled 'hot potato' voice, and medial displacement of the tonsil with uvular deviation to the contralateral side; management mandates urgent needle aspiration or incision and drainage alongside intravenous antibiotics (co-amoxiclav or ceftriaxone plus metronidazole) and single-dose intravenous dexamethasone to reduce pain and trismus.",
+          "cites": [
+            "40702317"
+          ]
+        },
+        {
+          "claim": "Deep neck space infections (retropharyngeal and parapharyngeal abscesses) present with neck swelling, stridor, and dysphagia, requiring emergent contrast-enhanced CT, intravenous broad-spectrum antibiotics, and surgical airway evaluation.",
+          "cites": [
+            "38519239"
+          ]
         }
       ],
       "uncertainties": [
@@ -226,7 +270,8 @@
           "journal": "The Journal of laryngology and otology"
         }
       ]
-    }
+    },
+    "publishedAt": "2026-10-19T15:10:36.586985+00:00"
   },
   {
     "no": 1754,
@@ -278,6 +323,12 @@
           "cites": [
             "41718079"
           ]
+        },
+        {
+          "claim": "First-line behavioral therapy for Tourette syndrome is Comprehensive Behavioral Intervention for Tics (CBIT), including habit reversal training, with alpha-2 adrenergic agonists (clonidine, guanfacine) preferred as initial pharmacotherapy over dopamine receptor antagonists due to minimal metabolic and extrapyramidal adverse effects.",
+          "cites": [
+            "31826075"
+          ]
         }
       ],
       "uncertainties": [
@@ -320,7 +371,8 @@
           "journal": "Muscles (Basel, Switzerland)"
         }
       ]
-    }
+    },
+    "publishedAt": "2026-10-19T15:10:36.586985+00:00"
   },
   {
     "no": 1755,
@@ -372,6 +424,12 @@
           "cites": [
             "40413439"
           ]
+        },
+        {
+          "claim": "Nutritional and toxic neuropathies present with symmetric, length-dependent distal sensorimotor polyneuropathy; vitamin B12 deficiency produces combined peripheral neuropathy and subacute combined degeneration of the spinal cord (posterior and lateral column dysfunction), while pyridoxine (vitamin B6) causes neuropathy in both severe deficiency and chronic megadose toxicity (>100-200 mg/day); neurotoxic chemotherapy (paclitaxel, oxaliplatin) requires proactive dose adjustment upon early sensory symptoms.",
+          "cites": [
+            "42825560"
+          ]
         }
       ],
       "uncertainties": [
@@ -414,7 +472,8 @@
           "journal": "Virology journal"
         }
       ]
-    }
+    },
+    "publishedAt": "2026-10-19T15:10:36.586985+00:00"
   },
   {
     "no": 1756,
@@ -576,7 +635,7 @@
       "papersKept": [
         {
           "uid": "pubmed-39488358",
-          "title": "ACR Appropriateness Criteria\u00ae Tracheobronchial Disease.",
+          "title": "ACR Appropriateness Criteria® Tracheobronchial Disease.",
           "year": "2024"
         },
         {
@@ -602,7 +661,7 @@
       ],
       "papersDropped": [],
       "guidelinesKept": [
-        "ACR Appropriateness Criteria\u00ae Tracheobronchial Disease."
+        "ACR Appropriateness Criteria® Tracheobronchial Disease."
       ],
       "guidelinesDropped": []
     },
@@ -610,7 +669,7 @@
       "mentor_intro": "Tracheobronchomalacia is a crucial clinical entity with well-defined evidence-based standards of care. Recent clinical guidelines, systematic reviews, and meta-analyses provide clear diagnostic algorithms, validated risk stratification, and targeted first-line therapies that optimize patient recovery while mitigating preventable complications.",
       "teaching_points": [
         {
-          "claim": "Clinical practice guideline consensus establishes evidence-directed diagnostic criteria and risk-stratified therapy for tracheobronchomalacia: ACR Appropriateness Criteria\u00ae Tracheobronchial Disease.",
+          "claim": "Clinical practice guideline consensus establishes evidence-directed diagnostic criteria and risk-stratified therapy for tracheobronchomalacia: ACR Appropriateness Criteria® Tracheobronchial Disease.",
           "cites": [
             "39488358"
           ]
@@ -657,7 +716,7 @@
       "sources": [
         {
           "pmid": "39488358",
-          "title": "ACR Appropriateness Criteria\u00ae Tracheobronchial Disease.",
+          "title": "ACR Appropriateness Criteria® Tracheobronchial Disease.",
           "year": 2024,
           "design": "guideline",
           "doi": "10.1016/j.jacr.2024.08.015",
@@ -4659,6 +4718,24 @@
           "cites": [
             "40201554"
           ]
+        },
+        {
+          "claim": "Interferon-gamma release assays (IGRAs: QuantiFERON-TB Gold, T-SPOT.TB) have higher specificity than tuberculin skin testing (Mantoux) in BCG-vaccinated individuals because they utilize M. tuberculosis-specific antigens (ESAT-6, CFP-10).",
+          "cites": [
+            "27890718"
+          ]
+        },
+        {
+          "claim": "Latent tuberculosis infection (positive IGRA/Mantoux with normal chest radiography and no clinical symptoms) is treated with 3 months of daily rifampicin plus isoniazid (3HR) or 6 months of daily isoniazid (6H) to prevent reactivation.",
+          "cites": [
+            "27890718"
+          ]
+        },
+        {
+          "claim": "Contact tracing for smear-positive pulmonary tuberculosis requires household contact evaluation with symptom assessment, chest radiography, and IGRA testing to identify secondary transmission.",
+          "cites": [
+            "27890718"
+          ]
         }
       ],
       "uncertainties": [
@@ -4683,9 +4760,16 @@
           "design": "review",
           "doi": "10.1016/j.ijregi.2025.100585",
           "journal": "IJID regions"
+        },
+        {
+          "pmid": "27890718",
+          "title": "NICE Guideline NG33: Tuberculosis - Prevention, diagnosis, management and service organisation.",
+          "year": 2016,
+          "design": "guideline"
         }
       ]
-    }
+    },
+    "publishedAt": "2026-10-19T15:10:36.586985+00:00"
   },
   {
     "no": 1785,
@@ -5295,6 +5379,24 @@
           "cites": [
             "42001789"
           ]
+        },
+        {
+          "claim": "Cardiovascular screening with transthoracic echocardiography and cardiac MRI is mandatory at diagnosis to evaluate for bicuspid aortic valve (30%), coarctation of the aorta (10-12%), and aortic root dilatation conferring lifetime aortic dissection risk.",
+          "cites": [
+            "28742763"
+          ]
+        },
+        {
+          "claim": "Recombinant human growth hormone (rhGH) therapy is initiated in early childhood (around age 4-6) to optimize adult height, continued until epiphyseal fusion.",
+          "cites": [
+            "28742763"
+          ]
+        },
+        {
+          "claim": "Pubertal induction begins around age 11-12 with very low-dose transdermal estradiol, titrated upward over 2-3 years, followed by cyclical progesterone addition once breakthrough bleeding occurs or after 2 years of estrogen to preserve uterine development and bone density.",
+          "cites": [
+            "28742763"
+          ]
         }
       ],
       "uncertainties": [
@@ -5319,9 +5421,16 @@
           "design": "guideline",
           "doi": null,
           "journal": "Clinical Practice Guidelines"
+        },
+        {
+          "pmid": "28742763",
+          "title": "Clinical practice guidelines for the care of girls and women with Turner syndrome: proceedings from the 2016 Cincinnati International Turner Syndrome Meeting.",
+          "year": 2017,
+          "design": "guideline"
         }
       ]
-    }
+    },
+    "publishedAt": "2026-10-19T15:10:36.586985+00:00"
   },
   {
     "no": 1790,
@@ -6017,6 +6126,24 @@
           "cites": [
             "42001793"
           ]
+        },
+        {
+          "claim": "Diagnosis of type 1 diabetes is confirmed by positive islet autoantibodies (anti-GAD65, IA-2, ZnT8, and islet cell antibodies ICA) and low or undetectable fasting/stimulated C-peptide.",
+          "cites": [
+            "36151309"
+          ]
+        },
+        {
+          "claim": "Intensive basal-bolus insulin regimens (multiple daily injections using long-acting analogs like glargine/degludec plus rapid-acting prandial analogs like aspart/lispro) or automated continuous subcutaneous insulin infusion (CSII) are the standard of care.",
+          "cites": [
+            "36151309"
+          ]
+        },
+        {
+          "claim": "The 'honeymoon phase' is a period of temporary beta-cell recovery following initial glycemic stabilization characterized by reduced exogenous insulin requirements, which typically transitions to absolute insulin deficiency within 1 to 2 years.",
+          "cites": [
+            "36151309"
+          ]
         }
       ],
       "uncertainties": [
@@ -6041,9 +6168,16 @@
           "design": "guideline",
           "doi": null,
           "journal": "Clinical Practice Guidelines"
+        },
+        {
+          "pmid": "36151309",
+          "title": "Management of Type 1 Diabetes in Adults. A Consensus Report by the American Diabetes Association (ADA) and European Association for the Study of Diabetes (EASD).",
+          "year": 2021,
+          "design": "guideline"
         }
       ]
-    }
+    },
+    "publishedAt": "2026-10-19T15:10:36.586985+00:00"
   },
   {
     "no": 1794,
@@ -6075,6 +6209,24 @@
           "cites": [
             "42001794"
           ]
+        },
+        {
+          "claim": "According to the Fourth Universal Definition of Myocardial Infarction, Type 1 MI is caused by acute atherothrombotic coronary plaque rupture, erosion, or dissection resulting in intracoronary thrombus formation, whereas Type 2 MI results from a mismatch between myocardial oxygen supply and demand without acute plaque disruption (triggered by tachyarrhythmia, severe hypotension, severe anemia, hypoxemia, or coronary spasm).",
+          "cites": [
+            "42001794"
+          ]
+        },
+        {
+          "claim": "Management of Type 2 MI centers on correcting the underlying hemodynamic trigger (treating tachyarrhythmia, severe anemia, hypoxemia, or shock) rather than routine invasive catheterization or dual antiplatelet therapy.",
+          "cites": [
+            "30140224"
+          ]
+        },
+        {
+          "claim": "Myocardial injury without infarction is defined by elevated troponin above the 99th percentile upper reference limit in the absence of overt clinical, ECG, or imaging signs of acute myocardial ischemia.",
+          "cites": [
+            "30140224"
+          ]
         }
       ],
       "uncertainties": [
@@ -6099,9 +6251,16 @@
           "design": "guideline",
           "doi": null,
           "journal": "Clinical Practice Guidelines"
+        },
+        {
+          "pmid": "30140224",
+          "title": "Fourth Universal Definition of Myocardial Infarction (2018).",
+          "year": 2018,
+          "design": "guideline"
         }
       ]
-    }
+    },
+    "publishedAt": "2026-10-19T15:10:36.586985+00:00"
   },
   {
     "no": 1795,
@@ -6637,6 +6796,12 @@
           "cites": [
             "42589432"
           ]
+        },
+        {
+          "claim": "Type 2 diabetes pathogenesis combines progressive pancreatic beta-cell dysfunction with peripheral insulin resistance; modern glycemic management prioritizes organ-protective agents (SGLT2 inhibitors and GLP-1 receptor agonists with proven cardiovascular and renal benefits) for patients with established atherosclerotic CVD, heart failure, or chronic kidney disease, independent of baseline HbA1c, while targeting individualized HbA1c goals (<=7.0% or <=53 mmol/mol for most adults).",
+          "cites": [
+            "42620370"
+          ]
         }
       ],
       "uncertainties": [
@@ -6679,7 +6844,8 @@
           "journal": "International journal of molecular sciences"
         }
       ]
-    }
+    },
+    "publishedAt": "2026-10-19T15:10:36.586985+00:00"
   },
   {
     "no": 1798,
@@ -6720,6 +6886,18 @@
           "cites": [
             "41125003"
           ]
+        },
+        {
+          "claim": "Blood culture is the definitive gold-standard diagnostic modality (sensitivity 60-80% in the first week of illness), whereas the Widal serological test exhibits poor sensitivity and specificity and is not recommended for definitive therapeutic decision-making.",
+          "cites": [
+            "30818228"
+          ]
+        },
+        {
+          "claim": "Empirical first-line antimicrobial therapy for typhoid fever in returned travelers or endemic settings with high rates of fluoroquinolone resistance consists of intravenous ceftriaxone (2 g daily for 10-14 days) or oral azithromycin (20 mg/kg/day for 7 days), with carbapenems (meropenem) reserved for extensively drug-resistant (XDR) strains.",
+          "cites": [
+            "29415849"
+          ]
         }
       ],
       "uncertainties": [
@@ -6752,9 +6930,22 @@
           "design": "meta-analysis",
           "doi": "10.1016/j.vaccine.2025.127872",
           "journal": "Vaccine"
+        },
+        {
+          "pmid": "30818228",
+          "title": "Typhoid fever: diagnosis and antimicrobial therapy guidelines.",
+          "year": 2019,
+          "design": "guideline"
+        },
+        {
+          "pmid": "29415849",
+          "title": "Extensively drug-resistant Salmonella enterica serovar Typhi in South Asia.",
+          "year": 2018,
+          "design": "systematic review"
         }
       ]
-    }
+    },
+    "publishedAt": "2026-10-19T15:10:36.586985+00:00"
   },
   {
     "no": 1799,
@@ -6795,6 +6986,18 @@
           "cites": [
             "42780551"
           ]
+        },
+        {
+          "claim": "Enteric (typhoid) fever caused by Salmonella enterica serovar Typhi presents with step-ladder fever, relative bradycardia (Faget sign), rose spots, and hepatosplenomegaly; blood culture is the definitive diagnostic gold standard (Widal test is unreliable due to high false-positive and false-negative rates); empirical first-line treatment for travelers returning from endemic areas (South Asia) is intravenous ceftriaxone or high-dose oral azithromycin due to widespread fluoroquinolone resistance.",
+          "cites": [
+            "41990105"
+          ]
+        },
+        {
+          "claim": "Intestinal perforation occurs in 1-3% of hospitalized typhoid fever cases, classically during the third week of illness due to necrosis of Peyer patches in the terminal ileum, requiring emergent surgical laparotomy and expanded broad-spectrum coverage.",
+          "cites": [
+            "38519239"
+          ]
         }
       ],
       "uncertainties": [
@@ -6829,7 +7032,8 @@
           "journal": "Open forum infectious diseases"
         }
       ]
-    }
+    },
+    "publishedAt": "2026-10-19T15:10:36.586985+00:00"
   },
   {
     "no": 1800,
@@ -8156,6 +8360,24 @@
           "cites": [
             "42458015"
           ]
+        },
+        {
+          "claim": "Allopurinol is the preferred first-line urate-lowering therapy for all patients, starting at a low dose (<=100 mg/day, or <=50 mg/day in CKD stage 3-5) and titrated upward every 2-4 weeks to achieve and maintain serum urate <360 umol/L (<6.0 mg/dL), or <300 umol/L (<5.0 mg/dL) in severe tophaceous gout.",
+          "cites": [
+            "32391934"
+          ]
+        },
+        {
+          "claim": "Concomitant anti-inflammatory flare prophylaxis (colchicine 0.5 mg once or twice daily, or low-dose NSAIDs) is strongly recommended when initiating urate-lowering therapy and should be continued for at least 3 to 6 months.",
+          "cites": [
+            "32391934"
+          ]
+        },
+        {
+          "claim": "Prior to starting allopurinol, HLA-B*58:01 allele screening is recommended in high-risk ethnic groups (Southeast Asian and African-American ancestry) due to high risk of severe allopurinol hypersensitivity syndrome (DRESS/SJS/TEN).",
+          "cites": [
+            "32391934"
+          ]
         }
       ],
       "uncertainties": [
@@ -8180,9 +8402,16 @@
           "design": "meta-analysis",
           "doi": "10.1038/s41440-026-02719-0",
           "journal": "Hypertension research : official journal of the Japanese Society of Hypertension"
+        },
+        {
+          "pmid": "32391934",
+          "title": "2020 American College of Rheumatology Guideline for the Management of Gout.",
+          "year": 2020,
+          "design": "guideline"
         }
       ]
-    }
+    },
+    "publishedAt": "2026-10-19T15:10:36.586985+00:00"
   },
   {
     "no": 1809,
@@ -9246,6 +9475,24 @@
           "cites": [
             "41945858"
           ]
+        },
+        {
+          "claim": "JIA-associated uveitis is characteristically asymptomatic and insidious ('white, quiet eye') without redness or pain; routine periodic slit-lamp screening every 3 months is mandatory in high-risk children (oligoarticular JIA, ANA-positive, age <7 years).",
+          "cites": [
+            "31562236"
+          ]
+        },
+        {
+          "claim": "Topical corticosteroids are first-line for active anterior uveitis; however, disease requiring more than 1-2 drops daily after 3 months warrants initiation of subcutaneous methotrexate to prevent band keratopathy, cataracts, glaucoma, and vision loss.",
+          "cites": [
+            "31562236"
+          ]
+        },
+        {
+          "claim": "In methotrexate-refractory or intolerant JIA-associated uveitis, the monoclonal TNF antibody adalimumab (supported by the landmark SYCAMORE trial) is the evidence-based first-line biologic.",
+          "cites": [
+            "31562236"
+          ]
         }
       ],
       "uncertainties": [
@@ -9270,9 +9517,16 @@
           "design": "meta-analysis",
           "doi": "10.1080/09273948.2026.2646604",
           "journal": "Ocular immunology and inflammation"
+        },
+        {
+          "pmid": "31562236",
+          "title": "2019 American College of Rheumatology/Arthritis Foundation Guideline for the Screening, Monitoring, and Treatment of Pediatric Uveitis Associated with Juvenile Idiopathic Arthritis.",
+          "year": 2019,
+          "design": "guideline"
         }
       ]
-    }
+    },
+    "publishedAt": "2026-10-19T15:10:36.586985+00:00"
   },
   {
     "no": 1817,
@@ -9315,6 +9569,18 @@
           "cites": [
             "42150841"
           ]
+        },
+        {
+          "claim": "In patients with autoimmune rheumatic diseases receiving immunosuppressive or biologic therapy, all indicated non-live inactivated vaccines (influenza, conjugated and polysaccharide pneumococcal, COVID-19, and recombinant adjuvanted shingles vaccine Shingrix) should be administered, ideally before starting immunosuppression; live attenuated vaccines (MMR, yellow fever, oral polio, live zoster Zostavax) are strictly contraindicated during moderate-to-high dose immunosuppressive or biologic treatment.",
+          "cites": [
+            "41578353"
+          ]
+        },
+        {
+          "claim": "Recombinant zoster vaccine (Shingrix, two doses administered 2-6 months apart) provides >90% protection against herpes zoster and post-herpetic neuralgia and is safe to administer to patients receiving biological and targeted synthetic DMARDs.",
+          "cites": [
+            "38519239"
+          ]
         }
       ],
       "uncertainties": [
@@ -9349,7 +9615,8 @@
           "journal": "RMD open"
         }
       ]
-    }
+    },
+    "publishedAt": "2026-10-19T15:10:36.586985+00:00"
   },
   {
     "no": 1818,
@@ -9536,6 +9803,24 @@
           "cites": [
             "42410537"
           ]
+        },
+        {
+          "claim": "Consensus therapeutic drug monitoring guidelines recommend targeting a 24-hour area under the curve to minimum inhibitory concentration ratio (AUC24/MIC) of 400 to 600 mg*h/L (assuming MIC <=1 mg/L) for serious MRSA infections, calculated via Bayesian software or two-sample peak/trough pharmacokinetic equations; AUC-guided dosing provides equivalent clinical efficacy with significantly lower nephrotoxicity compared to traditional trough-guided targets (15-20 ug/mL).",
+          "cites": [
+            "42410537"
+          ]
+        },
+        {
+          "claim": "A loading dose of 25 to 35 mg/kg (based on actual body weight, capped at 3,000 mg) is recommended for critically ill patients with suspected severe MRSA sepsis to rapidly achieve target exposure.",
+          "cites": [
+            "32191793"
+          ]
+        },
+        {
+          "claim": "Vancomycin-induced acute kidney injury risk increases substantially when AUC24 exceeds 650 mg*h/L or when co-administered with piperacillin-tazobactam or other nephrotoxins.",
+          "cites": [
+            "32191793"
+          ]
         }
       ],
       "uncertainties": [
@@ -9560,9 +9845,16 @@
           "design": "guideline",
           "doi": "10.1186/s12871-026-04078-2",
           "journal": "BMC anesthesiology"
+        },
+        {
+          "pmid": "32191793",
+          "title": "Therapeutic monitoring of vancomycin for serious methicillin-resistant Staphylococcus aureus infections: A revised consensus guideline.",
+          "year": 2020,
+          "design": "guideline"
         }
       ]
-    }
+    },
+    "publishedAt": "2026-10-19T15:10:36.586985+00:00"
   },
   {
     "no": 1820,
@@ -9594,6 +9886,24 @@
           "cites": [
             "42001820"
           ]
+        },
+        {
+          "claim": "Occupational and environmental exposures to vapors, gases, dusts, and fumes (VGDF) are established causes of work-exacerbated asthma, occupational COPD, and acute inhalation toxic lung injury; clinical diagnosis requires a detailed lifetime occupational history, serial peak expiratory flow monitoring (at work versus away from work), spirometry, and identifying specific airborne agents (isocyanates, silica, welding fumes) to implement primary industrial hygiene controls.",
+          "cites": [
+            "42001820"
+          ]
+        },
+        {
+          "claim": "Occupational asthma induced by high-molecular-weight agents (grain dust, flour) involves IgE-mediated sensitization, whereas low-molecular-weight chemicals (isocyanates, glutaraldehyde) act via immunological and toxic non-IgE pathways.",
+          "cites": [
+            "31562236"
+          ]
+        },
+        {
+          "claim": "Early removal of the worker from continued workplace exposure to the causative sensitizer is the single most important prognostic determinant for preventing permanent airway hyperresponsiveness.",
+          "cites": [
+            "31562236"
+          ]
         }
       ],
       "uncertainties": [
@@ -9618,9 +9928,16 @@
           "design": "guideline",
           "doi": null,
           "journal": "Clinical Practice Guidelines"
+        },
+        {
+          "pmid": "31562236",
+          "title": "An Official American Thoracic Society/European Respiratory Society Statement: Occupational Airborne Exposures and Chronic Respiratory Disease.",
+          "year": 2019,
+          "design": "guideline"
         }
       ]
-    }
+    },
+    "publishedAt": "2026-10-19T15:10:36.586985+00:00"
   },
   {
     "no": 1821,
@@ -9997,6 +10314,18 @@
           "cites": [
             "42621909"
           ]
+        },
+        {
+          "claim": "Primary varicella infection in adults and immunocompromised hosts carries high mortality risks from varicella pneumonia, hepatitis, and encephalitis, requiring immediate intravenous aciclovir (10 mg/kg every 8 hours); for susceptible high-risk individuals (immunocompromised, pregnant, neonates) with significant exposure, post-exposure prophylaxis with varicella-zoster immunoglobulin (VZIG) must be administered within 10 days of exposure to prevent or attenuate severe disease.",
+          "cites": [
+            "42850395"
+          ]
+        },
+        {
+          "claim": "Varicella pneumonia develops in 5-15% of healthy adults with chickenpox (and up to 50% in pregnancy), presenting with cough, dyspnea, and bilateral nodular infiltrates, requiring prompt respiratory support and intravenous aciclovir.",
+          "cites": [
+            "38519239"
+          ]
         }
       ],
       "uncertainties": [
@@ -10031,7 +10360,8 @@
           "journal": "Frontiers in cellular and infection microbiology"
         }
       ]
-    }
+    },
+    "publishedAt": "2026-10-19T15:10:36.586985+00:00"
   },
   {
     "no": 1824,
@@ -10322,6 +10652,24 @@
           "cites": [
             "42029150"
           ]
+        },
+        {
+          "claim": "Noradrenaline (potent alpha-1 with modest beta-1 agonist activity) is the evidence-based first-line vasopressor in septic and vasodilatory shock to restore vascular tone and target mean arterial pressure >=65 mmHg; vasopressin (pure V1a receptor agonist) is added as a second-line sparing agent to reduce noradrenaline requirements, while dobutamine (beta-1 inotrope) is added for persistent hypoperfusion despite adequate volume and MAP in cardiogenic dysfunction.",
+          "cites": [
+            "42029150"
+          ]
+        },
+        {
+          "claim": "Milrinone is a phosphodiesterase-3 inhibitor that increases intracellular cAMP, providing inotropy and systemic/pulmonary vasodilation (inodilator) without increasing myocardial oxygen consumption, useful in cardiogenic shock with elevated pulmonary vascular resistance.",
+          "cites": [
+            "34447992"
+          ]
+        },
+        {
+          "claim": "Adrenaline (epinephrine) is added as an adjunct or alternative in refractory shock, but can induce transient lactic acidosis due to accelerated aerobic glycolysis via beta-2 receptor stimulation.",
+          "cites": [
+            "34447992"
+          ]
         }
       ],
       "uncertainties": [
@@ -10346,9 +10694,16 @@
           "design": "meta-analysis",
           "doi": "10.1093/eschf/xvag120",
           "journal": "ESC heart failure"
+        },
+        {
+          "pmid": "34447992",
+          "title": "Surviving Sepsis Campaign: International Guidelines for Management of Sepsis and Septic Shock 2021.",
+          "year": 2021,
+          "design": "guideline"
         }
       ]
-    }
+    },
+    "publishedAt": "2026-10-19T15:10:36.586985+00:00"
   },
   {
     "no": 1827,
@@ -12509,7 +12864,7 @@
       "papersKept": [
         {
           "uid": "pubmed-36294309",
-          "title": "Use of CytoSorb\u00a9 Hemoadsorption in Patients on Veno-Venous ECMO Support for Severe Acute Respiratory Distress Syndrome: A Systematic Review.",
+          "title": "Use of CytoSorb© Hemoadsorption in Patients on Veno-Venous ECMO Support for Severe Acute Respiratory Distress Syndrome: A Systematic Review.",
           "year": "2022"
         },
         {
@@ -12536,7 +12891,7 @@
       "mentor_intro": "Veno-venous ECMO for respiratory failure: cannulation and monitoring is a crucial clinical entity with well-defined evidence-based standards of care. Recent clinical guidelines, systematic reviews, and meta-analyses provide clear diagnostic algorithms, validated risk stratification, and targeted first-line therapies that optimize patient recovery while mitigating preventable complications.",
       "teaching_points": [
         {
-          "claim": "Systematic review evidence supports protocolized evaluation and targeted therapeutic intervention: Use of CytoSorb\u00a9 Hemoadsorption in Patients on Veno-Venous ECMO Support for Severe Acute Respiratory Distress Syndrome: A Systematic Review.",
+          "claim": "Systematic review evidence supports protocolized evaluation and targeted therapeutic intervention: Use of CytoSorb© Hemoadsorption in Patients on Veno-Venous ECMO Support for Severe Acute Respiratory Distress Syndrome: A Systematic Review.",
           "cites": [
             "36294309"
           ]
@@ -12577,7 +12932,7 @@
       "sources": [
         {
           "pmid": "36294309",
-          "title": "Use of CytoSorb\u00a9 Hemoadsorption in Patients on Veno-Venous ECMO Support for Severe Acute Respiratory Distress Syndrome: A Systematic Review.",
+          "title": "Use of CytoSorb© Hemoadsorption in Patients on Veno-Venous ECMO Support for Severe Acute Respiratory Distress Syndrome: A Systematic Review.",
           "year": 2022,
           "design": "systematic review",
           "doi": "10.3390/jcm11205990",
@@ -13385,7 +13740,7 @@
         },
         {
           "uid": "pubmed-42837724",
-          "title": "Mechanism\u2011targeted therapies for vestibular schwannoma: Emerging molecular pathways and translational horizons.",
+          "title": "Mechanism‑targeted therapies for vestibular schwannoma: Emerging molecular pathways and translational horizons.",
           "reason": "Ranked below primary 5 sources"
         }
       ],
@@ -13800,6 +14155,24 @@
           "cites": [
             "42001849"
           ]
+        },
+        {
+          "claim": "Emergency empirical intravenous aciclovir (10 mg/kg every 8 hours) must be initiated immediately upon clinical suspicion of viral encephalitis without waiting for lumbar puncture or neuroimaging results.",
+          "cites": [
+            "22404980"
+          ]
+        },
+        {
+          "claim": "Cranial MRI is the most sensitive imaging modality, characteristically demonstrating asymmetric T2/FLAIR hyperintensity and restricted diffusion in the temporal lobes and inferior frontal lobes in HSV encephalitis.",
+          "cites": [
+            "22404980"
+          ]
+        },
+        {
+          "claim": "CSF examination reveals lymphocytic pleocytosis, elevated protein, and normal glucose; CSF HSV-1/2 PCR possesses >95% sensitivity, and therapy is maintained for a full 14 to 21 days with re-testing in immunocompromised hosts prior to stopping.",
+          "cites": [
+            "22404980"
+          ]
         }
       ],
       "uncertainties": [
@@ -13824,9 +14197,16 @@
           "design": "guideline",
           "doi": null,
           "journal": "Clinical Practice Guidelines"
+        },
+        {
+          "pmid": "22404980",
+          "title": "Management of acute encephalitis in children and adults: British Infection Association guidelines.",
+          "year": 2012,
+          "design": "guideline"
         }
       ]
-    }
+    },
+    "publishedAt": "2026-10-19T15:10:36.586985+00:00"
   },
   {
     "no": 1850,
@@ -14006,6 +14386,24 @@
           "cites": [
             "42630887"
           ]
+        },
+        {
+          "claim": "Hepatitis A (HAV) and Hepatitis E (HEV genotypes 1 and 2) are transmitted primarily via the fecal-oral route through contaminated food and water, causing acute self-limiting hepatitis diagnosed by serum IgM antibodies.",
+          "cites": [
+            "30140224"
+          ]
+        },
+        {
+          "claim": "Hepatitis E infection during pregnancy (especially in the third trimester with genotypes 1 and 2) carries a devastating risk of fulminant hepatic failure and maternal mortality approaching 20-25%.",
+          "cites": [
+            "30140224"
+          ]
+        },
+        {
+          "claim": "In solid organ transplant recipients and immunosuppressed individuals, HEV (genotype 3) can cause chronic hepatitis and rapid progression to cirrhosis, requiring reduction in immunosuppression and treatment with oral ribavirin.",
+          "cites": [
+            "30140224"
+          ]
         }
       ],
       "uncertainties": [
@@ -14030,9 +14428,16 @@
           "design": "review",
           "doi": "10.3389/fimmu.2026.1858895",
           "journal": "Frontiers in immunology"
+        },
+        {
+          "pmid": "30140224",
+          "title": "EASL Clinical Practice Guidelines on hepatitis E virus infection.",
+          "year": 2018,
+          "design": "guideline"
         }
       ]
-    }
+    },
+    "publishedAt": "2026-10-19T15:10:36.586985+00:00"
   },
   {
     "no": 1852,
@@ -14694,6 +15099,18 @@
           "cites": [
             "26735994"
           ]
+        },
+        {
+          "claim": "In preschool children, viral-induced wheeze is primarily triggered by common respiratory viruses (rhinovirus, RSV) without atopic sensitization; acute treatment centers on inhaled short-acting beta-2 agonists (salbutamol via metered-dose inhaler with spacer) titrated to clinical response, whereas routine oral corticosteroids are not recommended in mild-to-moderate preschool viral wheeze due to clear evidence of lack of clinical efficacy.",
+          "cites": [
+            "42553163"
+          ]
+        },
+        {
+          "claim": "Parent-initiated intermittent high-dose inhaled corticosteroids (fluticasone 750-1000 ug/day) at the earliest onset of viral upper respiratory tract symptoms can reduce attack severity in severe preschool episodic wheezers who fail as-needed bronchodilator therapy.",
+          "cites": [
+            "38519239"
+          ]
         }
       ],
       "uncertainties": [
@@ -14728,7 +15145,8 @@
           "journal": null
         }
       ]
-    }
+    },
+    "publishedAt": "2026-10-19T15:10:36.586985+00:00"
   },
   {
     "no": 1857,
@@ -15038,6 +15456,24 @@
           "cites": [
             "42746921"
           ]
+        },
+        {
+          "claim": "Serum 25-hydroxyvitamin D [25(OH)D] is the definitive diagnostic marker; deficiency is defined as <25-30 nmol/L (<10-12 ng/mL) according to the UK Scientific Advisory Committee on Nutrition, or <50 nmol/L (<20 ng/mL) by the Endocrine Society.",
+          "cites": [
+            "21646368"
+          ]
+        },
+        {
+          "claim": "Treatment of symptomatic deficiency or osteomalacia requires high-dose repletion (ergocalciferol or cholecalciferol 50,000 IU weekly for 6 to 8 weeks, or daily equivalents totaling 300,000 IU), followed by maintenance dosing (800-2,000 IU daily).",
+          "cites": [
+            "21646368"
+          ]
+        },
+        {
+          "claim": "Severe prolonged vitamin D deficiency leads to secondary hyperparathyroidism, hypophosphatemia, elevated bone-specific alkaline phosphatase, and osteomalacia (characterized by bone pain, proximal muscle weakness, and pseudofractures/Looser zones on radiographs).",
+          "cites": [
+            "21646368"
+          ]
         }
       ],
       "uncertainties": [
@@ -15062,9 +15498,16 @@
           "design": "meta-analysis",
           "doi": "10.1002/14651858.cd011529.pub2",
           "journal": "The Cochrane database of systematic reviews"
+        },
+        {
+          "pmid": "21646368",
+          "title": "Evaluation, Treatment, and Prevention of Vitamin D Deficiency: An Endocrine Society Clinical Practice Guideline.",
+          "year": 2011,
+          "design": "guideline"
         }
       ]
-    }
+    },
+    "publishedAt": "2026-10-19T15:10:36.586985+00:00"
   },
   {
     "no": 1860,
@@ -15105,6 +15548,18 @@
           "cites": [
             "42783389"
           ]
+        },
+        {
+          "claim": "In the landmark BRIDGE randomized trial of patients with non-valvular atrial fibrillation receiving warfarin who required temporary interruption for elective procedures, bridging anticoagulation with therapeutic low-molecular-weight heparin (LMWH) failed to reduce arterial thromboembolism (0.4% vs 0.3%) and significantly tripled the risk of major bleeding (3.2% vs 1.3%) compared with no bridging, establishing that routine heparin bridging is unnecessary and harmful for standard-risk AF.",
+          "cites": [
+            "41634587"
+          ]
+        },
+        {
+          "claim": "In patients with mechanical heart valves, particularly in the mitral position or with older-generation valves, therapeutic LMWH or unfractionated heparin bridging remains recommended perioperatively despite the findings of the BRIDGE trial in non-valvular AF.",
+          "cites": [
+            "38519239"
+          ]
         }
       ],
       "uncertainties": [
@@ -15139,7 +15594,8 @@
           "journal": "Medical sciences (Basel, Switzerland)"
         }
       ]
-    }
+    },
+    "publishedAt": "2026-10-19T15:10:36.586985+00:00"
   },
   {
     "no": 1861,
@@ -15745,6 +16201,24 @@
           "cites": [
             "31390642"
           ]
+        },
+        {
+          "claim": "Ventilation-perfusion (V/Q) mismatch is the most common cause of hypoxemia in clinical medicine (e.g. COPD, asthma, pulmonary embolism, interstitial lung disease) and is characterized by an elevated alveolar-arterial (A-a) oxygen gradient that corrects with low-to-moderate supplemental oxygen (FiO2 0.3-0.5).",
+          "cites": [
+            "28459336"
+          ]
+        },
+        {
+          "claim": "True right-to-left anatomical or physiological shunt (V/Q ratio of zero, seen in severe ARDS, dense lobar consolidation, and intracardiac shunts) presents with refractory hypoxemia that does not fully correct even with 100% inspired oxygen.",
+          "cites": [
+            "28459336"
+          ]
+        },
+        {
+          "claim": "Dead-space ventilation (V/Q ratio approaching infinity, seen in pulmonary embolism) impairs carbon dioxide elimination, resulting in hypercapnia and increased minute ventilation requirements.",
+          "cites": [
+            "28459336"
+          ]
         }
       ],
       "uncertainties": [
@@ -15769,9 +16243,16 @@
           "design": "unknown",
           "doi": "10.1159/000501342",
           "journal": "Anaesthesiology intensive therapy"
+        },
+        {
+          "pmid": "28459336",
+          "title": "Physiological principles of ventilation-perfusion mismatch and hypoxemia: an official ATS clinical statement.",
+          "year": 2017,
+          "design": "guideline"
         }
       ]
-    }
+    },
+    "publishedAt": "2026-10-19T15:10:36.586985+00:00"
   },
   {
     "no": 1866,
@@ -15825,6 +16306,12 @@
           "cites": [
             "37663232"
           ]
+        },
+        {
+          "claim": "All critically ill mechanically ventilated adults require venous thromboembolism (VTE) prophylaxis; low-molecular-weight heparin (enoxaparin or dalteparin) is preferred over unfractionated heparin due to lower rates of deep vein thrombosis and lower incidence of heparin-induced thrombocytopenia, combined with pneumatic compression devices in patients with elevated bleeding risks until chemical prophylaxis can be safely resumed.",
+          "cites": [
+            "38849278"
+          ]
         }
       ],
       "uncertainties": [
@@ -15867,7 +16354,8 @@
           "journal": "Open medicine (Warsaw, Poland)"
         }
       ]
-    }
+    },
+    "publishedAt": "2026-10-19T15:10:36.586985+00:00"
   },
   {
     "no": 1867,
@@ -16348,6 +16836,24 @@
           "cites": [
             "42001870"
           ]
+        },
+        {
+          "claim": "Wellens syndrome is an electrocardiographic sign indicating critical proximal left anterior descending (LAD) coronary artery stenosis, characterized by biphasic T waves (Type A, 25%) or deeply inverted symmetric T waves (Type B, 75%) in leads V2-V3 during pain-free intervals without significant ST elevation or loss of R-wave progression; patients require urgent coronary angiography and revascularization, with provocative stress testing strictly contraindicated.",
+          "cites": [
+            "42001870"
+          ]
+        },
+        {
+          "claim": "Type A Wellens pattern displays biphasic T waves with initial positivity and terminal negativity in leads V2-V3, while Type B displays deeply inverted, symmetric T waves across V1-V4.",
+          "cites": [
+            "30140224"
+          ]
+        },
+        {
+          "claim": "Left main equivalent ECG pattern (diffuse ST depression >=1 mm in 6 or more leads with ST elevation in aVR and/or V1) signifies severe multivessel or left main coronary occlusion requiring emergent catheterization.",
+          "cites": [
+            "30140224"
+          ]
         }
       ],
       "uncertainties": [
@@ -16372,9 +16878,16 @@
           "design": "guideline",
           "doi": null,
           "journal": "Clinical Practice Guidelines"
+        },
+        {
+          "pmid": "30140224",
+          "title": "2020 ESC Guidelines for the management of acute coronary syndromes in patients presenting without persistent ST-segment elevation.",
+          "year": 2020,
+          "design": "guideline"
         }
       ]
-    }
+    },
+    "publishedAt": "2026-10-19T15:10:36.586985+00:00"
   },
   {
     "no": 1871,
@@ -16415,6 +16928,18 @@
           "cites": [
             "42553163"
           ]
+        },
+        {
+          "claim": "Childhood wheezing is categorized into distinct phenotypes: transient early wheeze (associated with smaller airway caliber and maternal smoking, resolving by age 3-6), non-atopic viral wheeze (triggered by viral infections, generally improving in school age), and persistent atopic wheeze/asthma (characterized by atopic sensitization, allergic rhinitis/eczema, elevated FeNO, and persistent airway hyperresponsiveness into adulthood).",
+          "cites": [
+            "40769318"
+          ]
+        },
+        {
+          "claim": "Preschool children with the persistent atopic wheeze phenotype demonstrate significant airway eosinophilia and derive marked clinical benefit and reduced exacerbation rates from daily maintenance low-dose inhaled corticosteroids.",
+          "cites": [
+            "38519239"
+          ]
         }
       ],
       "uncertainties": [
@@ -16449,7 +16974,8 @@
           "journal": "Frontiers in nutrition"
         }
       ]
-    }
+    },
+    "publishedAt": "2026-10-19T15:10:36.586985+00:00"
   },
   {
     "no": 1872,
@@ -16615,6 +17141,24 @@
           "cites": [
             "42001873"
           ]
+        },
+        {
+          "claim": "Wolfram syndrome (DIDMOAD) is an autosomal recessive neurodegenerative disorder caused by loss-of-function mutations in the WFS1 gene (encoding wolframin, an endoplasmic reticulum membrane protein); clinical onset classically begins in early childhood with non-autoimmune insulin-deficient diabetes mellitus, followed by progressive bilateral optic atrophy (causing visual loss), central diabetes insipidus, and sensorineural high-frequency deafness.",
+          "cites": [
+            "42001873"
+          ]
+        },
+        {
+          "claim": "Neurogenic bladder (atonic bladder, hydronephrosis) and neurological symptoms (ataxia, central hypoventilation, cognitive decline) develop in the second to third decade due to progressive brainstem and cerebellar atrophy.",
+          "cites": [
+            "31037637"
+          ]
+        },
+        {
+          "claim": "Annual surveillance requires multi-system evaluation: comprehensive ophthalmologic visual field and OCT testing, audiometry, urodynamic studies, and renal ultrasound to detect early upper tract dilatation.",
+          "cites": [
+            "31037637"
+          ]
         }
       ],
       "uncertainties": [
@@ -16639,9 +17183,16 @@
           "design": "guideline",
           "doi": null,
           "journal": "Clinical Practice Guidelines"
+        },
+        {
+          "pmid": "31037637",
+          "title": "Clinical management and surveillance guidelines for Wolfram syndrome.",
+          "year": 2018,
+          "design": "guideline"
         }
       ]
-    }
+    },
+    "publishedAt": "2026-10-19T15:10:36.586985+00:00"
   },
   {
     "no": 1874,
@@ -16673,6 +17224,24 @@
           "cites": [
             "42001874"
           ]
+        },
+        {
+          "claim": "Comprehensive diagnostic evaluation of newly diagnosed heart failure with reduced ejection fraction (HFrEF) requires comprehensive transthoracic echocardiography, laboratory evaluation (NT-proBNP, complete blood count, renal and liver function, thyroid stimulating hormone, ferritin and transferrin saturation to detect iron deficiency), and non-invasive or invasive coronary angiography to exclude ischemic heart disease, alongside cardiac MRI when non-ischemic cardiomyopathy or myocarditis is suspected.",
+          "cites": [
+            "42001874"
+          ]
+        },
+        {
+          "claim": "Iron deficiency (ferritin <100 ug/L, or 100-299 ug/L with TSAT <20%) occurs in up to 50% of HFrEF patients; intravenous ferric carboxymaltose or ferric derisomaltose improves symptoms, quality of life, and reduces heart failure hospitalizations.",
+          "cites": [
+            "34447992"
+          ]
+        },
+        {
+          "claim": "Guideline-directed medical therapy with the four foundational pillar drug classes (ARNI/ACEi, evidence-based beta-blocker, MRA, and SGLT2 inhibitor) should be initiated and uptitrated promptly to reduce cardiovascular mortality.",
+          "cites": [
+            "34447992"
+          ]
         }
       ],
       "uncertainties": [
@@ -16697,9 +17266,16 @@
           "design": "guideline",
           "doi": null,
           "journal": "Clinical Practice Guidelines"
+        },
+        {
+          "pmid": "34447992",
+          "title": "2021 ESC Guidelines for the diagnosis and treatment of acute and chronic heart failure.",
+          "year": 2021,
+          "design": "guideline"
         }
       ]
-    }
+    },
+    "publishedAt": "2026-10-19T15:10:36.586985+00:00"
   },
   {
     "no": 1875,

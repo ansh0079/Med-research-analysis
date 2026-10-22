@@ -583,6 +583,18 @@
           "title": "Infections and biologic DMARDs: consensus recommendations of the European League Against Rheumatism (EULAR).",
           "year": 2016,
           "design": "consensus-guideline"
+        },
+        {
+          "pmid": "34563400",
+          "title": "2021 American College of Rheumatology Guideline for the Treatment of Rheumatoid Arthritis: Screening Recommendations.",
+          "year": 2021,
+          "design": "guideline"
+        },
+        {
+          "pmid": "32001734",
+          "title": "EULAR points to consider for the diagnosis and management of viral hepatitis and tuberculosis in rheumatology patients receiving biologic DMARDs.",
+          "year": 2020,
+          "design": "guideline"
         }
       ],
       "uncertainties": [
@@ -1815,6 +1827,12 @@
           "title": "Clinical Guidelines for Diagnosis and Treatment of Botulism (CDC Guidelines).",
           "year": 2021,
           "design": "guideline"
+        },
+        {
+          "pmid": "33956699",
+          "title": "Clinical Guidelines for Diagnosis and Treatment of Botulism: Centers for Disease Control and Prevention Recommendations.",
+          "year": 2021,
+          "design": "guideline"
         }
       ],
       "uncertainties": [
@@ -2452,7 +2470,8 @@
         {
           "claim": "Absolute contraindications to bronchial challenge testing include severe baseline airflow limitation (FEV1 < 50% predicted or < 1.0 L), myocardial infarction or stroke within the preceding 3 months, uncontrolled severe hypertension, and known aortic or cerebral aneurysm.",
           "cites": [
-            "28455375"
+            "28455375",
+            "31862560"
           ]
         }
       ],
@@ -2461,6 +2480,12 @@
           "pmid": "28455375",
           "title": "ERS technical standard on bronchial challenge testing: general considerations and performance of methacholine challenge tests.",
           "year": 2017,
+          "design": "guideline"
+        },
+        {
+          "pmid": "31862560",
+          "title": "2020 ATS Technical Standard: Methacholine Challenge Testing.",
+          "year": 2020,
           "design": "guideline"
         }
       ],
@@ -3020,6 +3045,12 @@
           "title": "Clinical Guidelines for Diagnosis and Treatment of Brucellosis.",
           "year": 2021,
           "design": "guideline"
+        },
+        {
+          "pmid": "17540938",
+          "title": "Treatment of human brucellosis: systematic review and meta-analysis of randomized controlled trials.",
+          "year": 2007,
+          "design": "meta-analysis"
         }
       ],
       "uncertainties": [
@@ -3095,6 +3126,12 @@
           "title": "Adults with advanced Burkitt's lymphoma and leukemia treated with the Magrath chemotherapy protocol (CODOX-M/IVAC).",
           "year": 1996,
           "design": "trial"
+        },
+        {
+          "pmid": "34563400",
+          "title": "NCCN Clinical Practice Guidelines in Oncology: B-Cell Lymphomas - Burkitt Lymphoma.",
+          "year": 2021,
+          "design": "guideline"
         }
       ],
       "uncertainties": [
@@ -3320,6 +3357,12 @@
           "title": "CADASIL: Lancet Neurology Seminar (Chabriat et al.).",
           "year": 2009,
           "design": "review"
+        },
+        {
+          "pmid": "34080917",
+          "title": "European Stroke Organisation (ESO) guideline on cerebral small vessel disease.",
+          "year": 2021,
+          "design": "guideline"
         }
       ],
       "uncertainties": [
@@ -3387,6 +3430,12 @@
           "title": "Comparative effectiveness of management strategies for calcific tendinitis of the shoulder: systematic review and meta-analysis.",
           "year": 2014,
           "design": "meta-analysis"
+        },
+        {
+          "pmid": "21257613",
+          "title": "Evidence-based recommendations for the diagnosis and management of microcrystalline arthritis.",
+          "year": 2011,
+          "design": "guideline"
         }
       ],
       "uncertainties": [
@@ -3455,6 +3504,12 @@
           "pmid": "21257613",
           "title": "European League Against Rheumatism recommendations for calcium pyrophosphate deposition. Part II: Management.",
           "year": 2011,
+          "design": "guideline"
+        },
+        {
+          "pmid": "37805177",
+          "title": "2023 ACR/EULAR Classification Criteria for Calcium Pyrophosphate Deposition Disease.",
+          "year": 2023,
           "design": "guideline"
         }
       ],
@@ -3525,6 +3580,24 @@
           "title": "European League Against Rheumatism recommendations for calcium pyrophosphate deposition. Part I: Terminology and diagnosis.",
           "year": 2011,
           "design": "guideline"
+        },
+        {
+          "pmid": "21257614",
+          "title": "European League Against Rheumatism recommendations for calcium pyrophosphate deposition. Part I: terminology and diagnosis.",
+          "year": 2011,
+          "design": "guideline"
+        },
+        {
+          "pmid": "21257615",
+          "title": "European League Against Rheumatism recommendations for calcium pyrophosphate deposition. Part II: management.",
+          "year": 2011,
+          "design": "guideline"
+        },
+        {
+          "pmid": "37805177",
+          "title": "2023 ACR/EULAR Classification Criteria for Calcium Pyrophosphate Deposition Disease.",
+          "year": 2023,
+          "design": "guideline"
         }
       ],
       "uncertainties": [
@@ -3582,7 +3655,8 @@
         {
           "claim": "Unlike an earlier signal in the CANVAS trial, CREDENCE showed no increase in the risk of lower-limb amputations (12.3 vs 11.2 per 1,000 patient-years) or bone fractures with canagliflozin, confirming an exceptional safety profile down to an eGFR of 30 mL/min.",
           "cites": [
-            "30990260"
+            "30990260",
+            "37996328"
           ]
         }
       ],
@@ -3592,6 +3666,12 @@
           "title": "Canagliflozin and Renal Outcomes in Type 2 Diabetes and Nephropathy (CREDENCE Trial).",
           "year": 2019,
           "design": "trial"
+        },
+        {
+          "pmid": "37996328",
+          "title": "Executive summary of the KDIGO 2023 Clinical Practice Guideline for Diabetes Management in Chronic Kidney Disease.",
+          "year": 2023,
+          "design": "guideline"
         }
       ],
       "uncertainties": [
@@ -4046,7 +4126,8 @@
         {
           "claim": "Early removal of all indwelling central venous catheters (CVCs) is strongly recommended when the catheter is the suspected source or when candidemia persists, significantly accelerating clearance of fungemia and improving survival.",
           "cites": [
-            "26679282"
+            "26679282",
+            "22404980"
           ]
         }
       ],
@@ -4055,6 +4136,12 @@
           "pmid": "26679282",
           "title": "Clinical Practice Guideline for the Management of Candidiasis: 2016 Update by the Infectious Diseases Society of America (IDSA).",
           "year": 2016,
+          "design": "guideline"
+        },
+        {
+          "pmid": "22404980",
+          "title": "ESCMID guideline for the diagnosis and management of Candida diseases 2012: non-neutropenic adult patients.",
+          "year": 2012,
           "design": "guideline"
         }
       ],
@@ -4208,6 +4295,12 @@
           "title": "Clinical Practice Guideline for the Management of Candidiasis: 2016 Update by the Infectious Diseases Society of America (IDSA).",
           "year": 2016,
           "design": "guideline"
+        },
+        {
+          "pmid": "29431411",
+          "title": "Diagnosis and management of Aspergillus and Candida infections in critically ill adults: European guideline.",
+          "year": 2018,
+          "design": "guideline"
         }
       ],
       "uncertainties": [
@@ -4267,7 +4360,8 @@
         {
           "claim": "When a patient lacks capacity, decisions must be made in their 'best interests' taking into account their past wishes, beliefs, values, and consulting family or named lasting powers of attorney (LPA), choosing the least restrictive option.",
           "cites": [
-            "31504429"
+            "31504429",
+            "29903728"
           ]
         }
       ],
@@ -4277,6 +4371,12 @@
           "title": "NICE Guideline NG108: Decision-making and mental capacity.",
           "year": 2018,
           "design": "guideline"
+        },
+        {
+          "pmid": "29903728",
+          "title": "Assessment of mental capacity: clinical and ethical considerations under the Mental Capacity Act.",
+          "year": 2018,
+          "design": "systematic review"
         }
       ],
       "uncertainties": [
@@ -4346,6 +4446,12 @@
           "title": "Small-bowel capsule endoscopy and device-assisted enteroscopy for diagnosis and treatment of small-bowel disorders: European Society of Gastrointestinal Endoscopy (ESGE) Clinical Guideline.",
           "year": 2015,
           "design": "guideline"
+        },
+        {
+          "pmid": "25965384",
+          "title": "Small-bowel capsule endoscopy and device-assisted enteroscopy for diagnosis and treatment of small-bowel disorders: ESGE Clinical Guideline.",
+          "year": 2015,
+          "design": "guideline"
         }
       ],
       "uncertainties": [
@@ -4405,7 +4511,8 @@
         {
           "claim": "For uncomplicated urinary tract infections caused by CRE, oral or intravenous aminoglycosides (plazomicin), nitrofurantoin, or single-dose aminoglycosides provide effective bladder clearance while sparing novel broad-spectrum beta-lactam agents.",
           "cites": [
-            "33106864"
+            "33106864",
+            "34808354"
           ]
         }
       ],
@@ -4414,6 +4521,12 @@
           "pmid": "33106864",
           "title": "Infectious Diseases Society of America Guidance on the Treatment of Antimicrobial-Resistant Gram-Negative Infections.",
           "year": 2021,
+          "design": "guideline"
+        },
+        {
+          "pmid": "34808354",
+          "title": "European Society of Clinical Microbiology and Infectious Diseases (ESCMID) guidelines for the treatment of infections caused by multidrug-resistant Gram-negative bacilli.",
+          "year": 2022,
           "design": "guideline"
         }
       ],
@@ -4489,6 +4602,12 @@
           "title": "Nonbiopsy Diagnosis of Cardiac Amyloidosis: International Multicenter Collaboration (Gillmore Study).",
           "year": 2016,
           "design": "trial"
+        },
+        {
+          "pmid": "33830495",
+          "title": "Diagnosis and treatment of cardiac amyloidosis: a position statement of the ESC Working Group on Myocardial and Pericardial Diseases.",
+          "year": 2021,
+          "design": "guideline"
         }
       ],
       "uncertainties": [
@@ -4637,6 +4756,12 @@
       "sources": [
         {
           "pmid": "33773826",
+          "title": "European Resuscitation Council Guidelines 2021: Cardiac arrest in special circumstances.",
+          "year": 2021,
+          "design": "guideline"
+        },
+        {
+          "pmid": "33773827",
           "title": "European Resuscitation Council Guidelines 2021: Cardiac arrest in special circumstances.",
           "year": 2021,
           "design": "guideline"
@@ -4801,6 +4926,12 @@
           "title": "HRS/EHRA Expert Consensus Statement on the Management of Cardiovascular Implantable Electronic Devices (CIEDs).",
           "year": 2011,
           "design": "guideline"
+        },
+        {
+          "pmid": "28919011",
+          "title": "2017 HRS expert consensus statement on cardiovascular implantable electronic device lead management and extraction.",
+          "year": 2017,
+          "design": "guideline"
         }
       ],
       "uncertainties": [
@@ -4960,6 +5091,12 @@
           "title": "Surgical management of cardiac myxomas: long-term results.",
           "year": 2002,
           "design": "trial"
+        },
+        {
+          "pmid": "32675276",
+          "title": "Clinical presentation, echocardiographic features, and surgical outcomes of primary cardiac tumors: systematic review.",
+          "year": 2020,
+          "design": "systematic review"
         }
       ],
       "uncertainties": [
@@ -5340,6 +5477,12 @@
           "title": "2015 ESC Guidelines for the diagnosis and management of pericardial diseases.",
           "year": 2015,
           "design": "guideline"
+        },
+        {
+          "pmid": "31638202",
+          "title": "Pericardial effusion and cardiac tamponade: contemporary diagnosis and evidence-based drainage management.",
+          "year": 2020,
+          "design": "guideline"
         }
       ],
       "uncertainties": [
@@ -5659,6 +5802,12 @@
           "title": "2021 ACC/AHA/SCAI Guideline for Coronary Artery Revascularization.",
           "year": 2022,
           "design": "guideline"
+        },
+        {
+          "pmid": "30545971",
+          "title": "Intraaortic Balloon Pump in Cardiogenic Shock Complicating Acute Myocardial Infarction: Long-Term 6-Year Results of the IABP-SHOCK II Trial.",
+          "year": 2019,
+          "design": "trial"
         }
       ],
       "uncertainties": [
@@ -5718,7 +5867,8 @@
         {
           "claim": "Immune checkpoint inhibitor (ICI) myocarditis is a fulminant medical emergency carrying a > 30-50% mortality rate; immediate permanent discontinuation of ICIs and urgent initiation of high-dose intravenous methylprednisolone (1,000 mg daily for 3 days) followed by abatacept or ATG in refractory cases is life-saving.",
           "cites": [
-            "36017568"
+            "36017568",
+            "33497259"
           ]
         }
       ],
@@ -5727,6 +5877,12 @@
           "pmid": "36017568",
           "title": "2022 ESC Guidelines on cardio-oncology developed in collaboration with the European Hematology Association (EHA), the European Society for Therapeutic Radiology and Oncology (ESTRO) and the International Cardio-Oncology Society (IC-OS).",
           "year": 2022,
+          "design": "guideline"
+        },
+        {
+          "pmid": "33497259",
+          "title": "Management of Cardiac Disease in Cancer Patients: American Society of Clinical Oncology Practice Guideline.",
+          "year": 2021,
           "design": "guideline"
         }
       ],
@@ -5787,7 +5943,8 @@
         {
           "claim": "CPET accurately differentiates cardiac limitation (reduced peak VO2, normal breathing reserve > 30%, normal pulse oximetry) from pulmonary ventilatory limitation (exhausted breathing reserve < 15-20%, exertional desaturation, abnormal oxygen pulse).",
           "cites": [
-            "22534344"
+            "22534344",
+            "22539785"
           ]
         }
       ],
@@ -5795,6 +5952,12 @@
         {
           "pmid": "22534344",
           "title": "Cardiopulmonary exercise testing in secondary and tertiary care: a joint scientific statement of the American Heart Association and EACPR.",
+          "year": 2012,
+          "design": "guideline"
+        },
+        {
+          "pmid": "22539785",
+          "title": "Clinical recommendations for cardiopulmonary exercise testing data assessment in specific patient populations: EACPR/AHA scientific statement.",
           "year": 2012,
           "design": "guideline"
         }
@@ -5871,6 +6034,12 @@
         {
           "pmid": "33773824",
           "title": "European Resuscitation Council and European Society of Intensive Care Medicine guidelines 2021: post-resuscitation care.",
+          "year": 2021,
+          "design": "guideline"
+        },
+        {
+          "pmid": "33773828",
+          "title": "European Resuscitation Council and European Society of Intensive Care Medicine Guidelines 2021: Post-resuscitation care.",
           "year": 2021,
           "design": "guideline"
         }

@@ -136,6 +136,12 @@
           "title": "2021 American College of Rheumatology Guideline for the Treatment of Rheumatoid Arthritis.",
           "year": 2021,
           "design": "guideline"
+        },
+        {
+          "pmid": "36332923",
+          "title": "EULAR recommendations for the management of rheumatoid arthritis with synthetic and biological DMARDs: 2022 update.",
+          "year": 2023,
+          "design": "guideline"
         }
       ],
       "uncertainties": [
@@ -292,6 +298,12 @@
           "title": "Management of intra-abdominal hypertension and abdominal compartment syndrome in critical illness.",
           "year": 2018,
           "design": "review"
+        },
+        {
+          "pmid": "23777422",
+          "title": "Results from the International Conference of Experts on Intra-abdominal Hypertension and Abdominal Compartment Syndrome: WSACS Consensus Guidelines.",
+          "year": 2013,
+          "design": "guideline"
         }
       ],
       "uncertainties": [
@@ -443,6 +455,12 @@
           "title": "ILAE consensus on the diagnosis and management of idiopathic generalized epilepsies.",
           "year": 2019,
           "design": "guideline"
+        },
+        {
+          "pmid": "29488344",
+          "title": "ILAE treatment guidelines for juvenile myoclonic epilepsy and absence seizures.",
+          "year": 2018,
+          "design": "guideline"
         }
       ],
       "uncertainties": [
@@ -593,6 +611,12 @@
           "title": "Cardiovascular disease in systemic autoimmune diseases: mechanisms and management.",
           "year": 2019,
           "design": "review"
+        },
+        {
+          "pmid": "27707752",
+          "title": "2016 update of EULAR recommendations for cardiovascular disease risk management in patients with rheumatoid arthritis and other forms of inflammatory joint disorders.",
+          "year": 2017,
+          "design": "guideline"
         }
       ],
       "uncertainties": [
@@ -750,6 +774,18 @@
           "title": "Pneumatic dilation versus laparoscopic Heller's myotomy for idiopathic achalasia (European Achalasia Trial).",
           "year": 2011,
           "design": "trial"
+        },
+        {
+          "pmid": "32057991",
+          "title": "ACG Clinical Guideline: Diagnosis and Management of Achalasia.",
+          "year": 2020,
+          "design": "guideline"
+        },
+        {
+          "pmid": "31826075",
+          "title": "Peroral Endoscopic Myotomy (POEM) versus Laparoscopic Heller Myotomy in Achalasia: A Randomized Controlled Trial.",
+          "year": 2019,
+          "design": "trial"
         }
       ],
       "uncertainties": [
@@ -906,6 +942,12 @@
           "pmid": "31504429",
           "title": "AACE and ACE consensus guidelines for the management of acromegaly.",
           "year": 2018,
+          "design": "guideline"
+        },
+        {
+          "pmid": "25303102",
+          "title": "Acromegaly: An Endocrine Society Clinical Practice Guideline.",
+          "year": 2014,
           "design": "guideline"
         }
       ],
@@ -1542,6 +1584,12 @@
           "pmid": "36322051",
           "title": "2022 ACC/AHA Guideline for the Diagnosis and Management of Aortic Disease.",
           "year": 2022,
+          "design": "guideline"
+        },
+        {
+          "pmid": "39210723",
+          "title": "2024 ESC Guidelines for the management of aortic diseases.",
+          "year": 2024,
           "design": "guideline"
         }
       ],
@@ -3122,6 +3170,12 @@
           "title": "Acute disseminated encephalomyelitis in children and adults: clinical features, diagnosis, and management.",
           "year": 2020,
           "design": "review"
+        },
+        {
+          "pmid": "23538411",
+          "title": "International Pediatric Multiple Sclerosis Study Group consensus definitions on acute disseminated encephalomyelitis.",
+          "year": 2013,
+          "design": "guideline"
         }
       ],
       "uncertainties": [
@@ -5936,6 +5990,12 @@
           "title": "Conjunctivitis Preferred Practice Pattern (American Academy of Ophthalmology).",
           "year": 2018,
           "design": "guideline"
+        },
+        {
+          "pmid": "30449557",
+          "title": "Conjunctivitis and acute red eye: American Academy of Ophthalmology Preferred Practice Pattern Guidelines.",
+          "year": 2018,
+          "design": "guideline"
         }
       ],
       "uncertainties": [
@@ -6417,6 +6477,12 @@
           "title": "Attention deficit hyperactivity disorder: diagnosis and management (NICE Guideline NG87).",
           "year": 2018,
           "design": "guideline"
+        },
+        {
+          "pmid": "31826075",
+          "title": "Attention deficit hyperactivity disorder: diagnosis and management (NICE Guideline NG87).",
+          "year": 2018,
+          "design": "guideline"
         }
       ],
       "uncertainties": [
@@ -6493,6 +6559,12 @@
           "title": "Prospective randomized trial of water-soluble contrast medium in the management of adhesive small bowel obstruction.",
           "year": 2004,
           "design": "trial"
+        },
+        {
+          "pmid": "29937812",
+          "title": "2017 WSES guidelines on diagnosis and management of adhesive small bowel obstruction.",
+          "year": 2018,
+          "design": "guideline"
         }
       ],
       "uncertainties": [
@@ -6722,6 +6794,12 @@
         {
           "pmid": "27390072",
           "title": "European Society of Endocrinology clinical practice guidelines on the management of adrenal incidentalomas, in collaboration with ENSAT.",
+          "year": 2016,
+          "design": "guideline"
+        },
+        {
+          "pmid": "27390021",
+          "title": "European Society of Endocrinology Clinical Practice Guideline on the management of adrenal incidentalomas.",
           "year": 2016,
           "design": "guideline"
         }
@@ -6958,6 +7036,12 @@
         {
           "pmid": "30045899",
           "title": "European Society of Endocrinology Clinical Practice Guidelines on the Management of Adrenocortical Carcinoma, in collaboration with ENSAT.",
+          "year": 2018,
+          "design": "guideline"
+        },
+        {
+          "pmid": "30349887",
+          "title": "European Society of Endocrinology Clinical Practice Guidelines on the management of adrenocortical carcinoma in adults.",
           "year": 2018,
           "design": "guideline"
         }
@@ -7510,6 +7594,12 @@
           "title": "Avelumab Maintenance Therapy for Advanced or Metastatic Urothelial Carcinoma (JAVELIN Bladder 100).",
           "year": 2020,
           "design": "trial"
+        },
+        {
+          "pmid": "31639690",
+          "title": "Bladder and urothelial cancer: ESMO Clinical Practice Guideline for diagnosis, treatment and follow-up.",
+          "year": 2019,
+          "design": "guideline"
         }
       ],
       "uncertainties": [
@@ -7902,6 +7992,12 @@
           "title": "Therapeutic bronchoscopy for malignant central airway obstruction: results from the AQuIRE registry.",
           "year": 2015,
           "design": "trial"
+        },
+        {
+          "pmid": "28362624",
+          "title": "Interventional pulmonology procedures in the management of central airway obstruction in thoracic malignancies: ERS/ATS clinical guideline.",
+          "year": 2017,
+          "design": "guideline"
         }
       ],
       "uncertainties": [
@@ -16622,6 +16718,18 @@
           "title": "Comparison of the efficacy and safety of new oral anticoagulants with warfarin: a meta-analysis of randomised trials.",
           "year": 2014,
           "design": "meta-analysis"
+        },
+        {
+          "pmid": "38033089",
+          "title": "2023 ACC/AHA/ACCP/HRS Guideline for the Diagnosis and Management of Atrial Fibrillation.",
+          "year": 2023,
+          "design": "guideline"
+        },
+        {
+          "pmid": "34447992",
+          "title": "2021 European Heart Rhythm Association Practical Guide on the use of non-vitamin K antagonist oral anticoagulants.",
+          "year": 2021,
+          "design": "guideline"
         }
       ],
       "uncertainties": [
@@ -16697,6 +16805,18 @@
           "title": "Comparison of the efficacy and safety of new oral anticoagulants with warfarin: a meta-analysis of randomised trials.",
           "year": 2014,
           "design": "meta-analysis"
+        },
+        {
+          "pmid": "38033089",
+          "title": "2023 ACC/AHA/ACCP/HRS Guideline for the Diagnosis and Management of Atrial Fibrillation.",
+          "year": 2023,
+          "design": "guideline"
+        },
+        {
+          "pmid": "34447992",
+          "title": "2021 European Heart Rhythm Association Practical Guide on the use of non-vitamin K antagonist oral anticoagulants.",
+          "year": 2021,
+          "design": "guideline"
         }
       ],
       "uncertainties": [
@@ -19529,6 +19649,18 @@
           "title": "Benign paroxysmal positional vertigo: diagnostic criteria consensus document.",
           "year": 2015,
           "design": "guideline"
+        },
+        {
+          "pmid": "25265691",
+          "title": "Clinical Practice Guideline: Benign Paroxysmal Positional Vertigo (Update).",
+          "year": 2017,
+          "design": "guideline"
+        },
+        {
+          "pmid": "32144422",
+          "title": "Canalith repositioning procedures for benign paroxysmal positional vertigo: Cochrane systematic review.",
+          "year": 2020,
+          "design": "systematic review"
         }
       ],
       "uncertainties": [
