@@ -37,7 +37,7 @@ ENV SENTRY_AUTH_TOKEN=$SENTRY_AUTH_TOKEN
 
 COPY package*.json ./
 # The lockfile includes native bindings for both Windows and Linux.
-RUN npm ci --prefer-offline --no-audit --no-fund
+RUN (npm ci --prefer-offline --no-audit --no-fund || npm install --prefer-offline --no-audit --no-fund)
 
 COPY . .
 RUN npm run build
@@ -48,7 +48,7 @@ FROM node:22-alpine AS dependencies
 WORKDIR /app
 
 COPY package*.json ./
-RUN npm ci --prefer-offline --no-audit --no-fund --omit=dev && npm cache clean --force
+RUN (npm ci --prefer-offline --no-audit --no-fund --omit=dev || npm install --prefer-offline --no-audit --no-fund --omit=dev) && npm cache clean --force
 
 # ---- Production stage ----
 FROM node:22-alpine AS app
