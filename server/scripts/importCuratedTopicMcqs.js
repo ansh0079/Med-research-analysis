@@ -30,7 +30,7 @@ async function loadExistingStems(database) {
   const seen = new Set();
   if (!database?.all) return seen;
   try {
-    const rows = await database.all('SELECT object_payload FROM teaching_objects WHERE object_payload IS NOT NULL');
+    const rows = await database.all("SELECT object_payload FROM teaching_objects WHERE object_payload IS NOT NULL AND object_type != 'curated_topic_mcq'");
     for (const r of rows) {
       try {
         const p = JSON.parse(r.object_payload || '{}');

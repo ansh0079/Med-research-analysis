@@ -242,10 +242,12 @@
   },
   "overridesNotes": {
     "ws": "Pinned to 8.21.0: patched DoS CVE-2024-37890 lineage; socket.io/engine.io and jsdom pull older ranges. Re-check with `npm ls ws` before removing.",
-    "ts-jest": "29.4.x is the latest line and officially supports Jest 30 (peer range ^29 || ^30). No ts-jest 30 exists - do not 'fix' the apparent major-version skew."
+    "ts-jest": "29.4.x is the latest line and officially supports Jest 30 (peer range ^29 || ^30). No ts-jest 30 exists - do not 'fix' the apparent major-version skew.",
+    "ip-address": "Pinned to >=10.7.4 to fix GHSA-rxp7-6hxx-x8q5 quadratic regex parsing in ip-address"
   },
   "overrides": {
     "ws": "8.21.0",
-    "qs": "^6.16.0"
+    "qs": "^6.16.0",
+    "ip-address": "^10.7.4"
   }
 }
