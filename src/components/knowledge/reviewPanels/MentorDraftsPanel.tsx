@@ -50,6 +50,11 @@ function DraftDetail({ draft, onReview, onPublish, reviewing }: { draft: TopicMe
               <span className="whitespace-nowrap text-[10px] font-semibold text-indigo-500">
                 {tp.cites.map((c) => `[PMID ${c}]`).join(' ')}
               </span>
+              {tp.verification === 'source_identified_figures_in_full_text' && (
+                <span className="ml-1 whitespace-nowrap text-[10px] font-semibold text-amber-700" title="The cited paper is the right source but its abstract does not state these figures; confirm them in the full text.">
+                  [figures not in abstract{tp.figures_to_confirm?.length ? `: ${tp.figures_to_confirm.join(', ')}` : ''}]
+                </span>
+              )}
             </li>
           ))}
         </ul>
@@ -97,6 +102,10 @@ function DraftDetail({ draft, onReview, onPublish, reviewing }: { draft: TopicMe
             {(page.standard_knowledge || []).map((d, i) => (
               <li key={i}>
                 {d.claim}{' '}
+                {d.support_url && (
+                  <a className="whitespace-nowrap text-[10px] font-semibold text-indigo-500 underline" href={d.support_url} target="_blank" rel="noreferrer">[{d.support || 'source'}]</a>
+                )}
+                {d.flag && <span className="whitespace-nowrap text-[10px] font-semibold text-red-600">[{d.flag}]</span>}
                 {d.possible_support_pmid && <span className="whitespace-nowrap text-[10px] font-semibold text-amber-700">[possible support: PMID {d.possible_support_pmid}]</span>}
               </li>
             ))}

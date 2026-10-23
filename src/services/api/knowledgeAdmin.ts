@@ -28,14 +28,14 @@ export type TopicMentorDraftSource = {
 
 export type TopicMentorDraftPage = {
   mentor_intro: string;
-  teaching_points: Array<{ claim: string; cites: string[]; tier?: 'guideline' | 'review' | 'meta-analysis' | 'other' }>;
+  teaching_points: Array<{ claim: string; cites: string[]; tier?: 'guideline' | 'review' | 'meta-analysis' | 'trial' | 'primary study' | 'other'; verification?: 'abstract_checked' | 'source_identified_figures_in_full_text'; figures_to_confirm?: string[] }>;
   uncertainties: string[];
   mcq_angles: string[];
   case_hooks: string[];
   gaps: string;
   /** Textbook knowledge with no literature citation; published after the cited points, labelled as standard reference. */
   standard_overview?: string;
-  standard_knowledge?: Array<{ claim: string; basis: 'textbook'; possible_support_pmid?: string }>;
+  standard_knowledge?: Array<{ claim: string; basis: 'textbook'; possible_support_pmid?: string; support_url?: string; support?: string; flag?: string }>;
   sources: TopicMentorDraftSource[];
 };
 
