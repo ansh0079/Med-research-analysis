@@ -495,7 +495,7 @@ function registerReviewCaseRoutes(app, {
                 if (mastery.pitfallScore < 60) weaknesses.push({ type: 'pitfall', score: mastery.pitfallScore });
             }
 
-            const synopsis = topicKnowledge?.knowledge?.fullTextSynopsis || topicKnowledge?.knowledge?.synopsis || null;
+            const synopsis = topicKnowledge?.knowledge?.mentorMessage || topicKnowledge?.knowledge?.fullTextSynopsis || topicKnowledge?.knowledge?.synopsis || topicKnowledge?.knowledge?.overview || null;
 
             // Evidence density check — Phase 1 commercial trust: never start ungrounded.
             const guidelineCount = (guidelines || []).length;

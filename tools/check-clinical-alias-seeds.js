@@ -15,12 +15,12 @@ const seedsPath = process.argv[2]
 const catalog = readAliasSeedCatalog(seedsPath);
 const result = validateAliasSeedCatalog(catalog);
 
-for (const warning of result.warnings) {
+for (const warning of (result.warnings || [])) {
     console.warn(`clinical-alias warning: ${warning}`);
 }
 
 if (!result.ok) {
-    for (const error of result.errors) {
+    for (const error of (result.errors || [])) {
         console.error(`clinical-alias error: ${error}`);
     }
     process.exit(1);

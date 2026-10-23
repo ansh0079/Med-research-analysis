@@ -206,8 +206,34 @@ async getTeachingObjectsByTopicId(curriculumTopicId, types = []) {
 /** Convenience: resolve a topic string then fetch its objects. */
 async getTeachingObjectsForTopicString(topic, types = []) {
     const id = await this.resolveCurriculumTopicId(topic);
-    if (!id) return [];
-    return this.getTeachingObjectsByTopicId(id, types);
+    let rows = [];
+    if (id) {
+        rows = await this.getTeachingObjectsByTopicId(id, types);
+    }
+    if (rows.length === 0) {
+        // Fallback: match by normalized_topic or object_key prefix
+        const norm = this.normalizeTopic(topic);
+        if (norm) {
+            const list = Array.isArray(types) ? types.filter(Boolean) : [];
+            let sql = `SELECT * FROM teaching_objects WHERE (normalized_topic = ? OR object_key LIKE ? OR normalized_topic LIKE ?) AND review_state != 'withdrawn'`;
+            const params = [norm, `%:${norm.replace(/\s+/g, '-')}`, `${norm}%`];
+            if (list.length) {
+                sql += ` AND object_type IN (${list.map(() => '?').join(',')})`;
+                params.push(...list);
+            }
+            sql += ' ORDER BY updated_at DESC';
+            const rawRows = await this.all(sql, params).catch(() => []);
+            rows = rawRows.map((r) => this.mapTeachingObjectRow(r));
+        }
+    }
+    // Filter out rows that have empty mcqs
+    return rows.filter((r) => {
+        if (r.objectType && r.objectType.endsWith('_mcq')) {
+            const mcqs = r.payload?.mcqs;
+            return Array.isArray(mcqs) && mcqs.length > 0;
+        }
+        return true;
+    });
 }
 
 async getTeachingObjectByKey(objectKey) {

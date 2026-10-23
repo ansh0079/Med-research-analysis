@@ -113,7 +113,9 @@ function registerCuratedMcqRoutes(app, deps) {
       // Combine: per-question withdrawal overrides (by object index and by hash) AND clinical audit holds.
       const questions = stored
         .filter((q, i) => {
-          if (!q || !q.question || !q.correctAnswer || !Array.isArray(q.options)) return false;
+          const hasOptions = Array.isArray(q?.options) || (q?.options && typeof q.options === 'object');
+          const hasAnswer = Boolean(q?.correctAnswer || q?.correct);
+          if (!q || !q.question || !hasAnswer || !hasOptions) return false;
           // Withdrawn via explicit override for this object slot
           if (withdrawn.byObjectIndex.has(`${row.object_key}#${i}`)) return false;
           try {
@@ -130,8 +132,10 @@ function registerCuratedMcqRoutes(app, deps) {
           type: 'multiple_choice',
           questionType: canonicalQuestionType(q.questionType || 'guideline'),
           question: q.question,
-          options: Array.isArray(q.options) ? q.options : letters.map((L) => `${L}: ${(q.options && q.options[L]) || ''}`),
-          correctAnswer: q.correctAnswer,
+          options: Array.isArray(q.options)
+            ? q.options
+            : letters.filter((L) => q.options && q.options[L] !== undefined).map((L) => `${L}: ${q.options[L]}`),
+          correctAnswer: q.correctAnswer || q.correct,
           explanation: q.explanation || '',
           difficulty: q.difficulty || 'medium',
           outdatedSources: Boolean(q.outdatedSources),

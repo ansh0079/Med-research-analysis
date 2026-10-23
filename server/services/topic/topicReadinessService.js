@@ -147,7 +147,7 @@ async function collectTopicReadiness(db, {
             `SELECT normalized_topic,
                     COUNT(*) AS total,
                     SUM(CASE WHEN object_type = 'paper' THEN 1 ELSE 0 END) AS papers,
-                    SUM(CASE WHEN object_type IN ('paper_mcq', 'guideline_mcq') THEN 1 ELSE 0 END) AS mcqs
+                    SUM(CASE WHEN object_type IN ('verified_topic_mcq', 'curated_topic_mcq', 'cold_start_mcq', 'guideline_mcq', 'paper_mcq') THEN 1 ELSE 0 END) AS mcqs
              FROM teaching_objects
              GROUP BY normalized_topic`
         ).catch(() => []),

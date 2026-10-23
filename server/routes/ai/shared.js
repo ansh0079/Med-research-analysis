@@ -53,8 +53,11 @@ function createAiRouteHelpers({ db, ai, serverConfig, logger }) {
     // of that because outlineNodeId and claimKey are both always null on read.
     const mapColdStartMcq = (q, idx, prefix, objectType = null, topicKey = null) => {
         const claimKey = q.claimKey || computeMcqClaimKey(q, objectType, topicKey || prefix);
+        const normalizedOptions = Array.isArray(q.options)
+            ? q.options
+            : ['A', 'B', 'C', 'D', 'E'].filter((L) => q.options && q.options[L] !== undefined).map((L) => `${L}: ${q.options[L]}`);
         return {
-                    id: `${prefix}_${Date.now()}_${idx}`,
+                    id: q.id || `${prefix}_${Date.now()}_${idx}`,
                     type: q.type || 'multiple_choice',
                     // Stored MCQ payloads predate the generation-time enum guard and
                     // carry ~40 free-text spellings ("management decision",
@@ -63,8 +66,8 @@ function createAiRouteHelpers({ db, ai, serverConfig, logger }) {
                     // see canonicalQuestionType.
                     questionType: canonicalQuestionType(q.questionType),
                     question: q.question,
-                    options: q.options,
-                    correctAnswer: q.correctAnswer,
+                    options: normalizedOptions,
+                    correctAnswer: q.correctAnswer || q.correct,
                     explanation: q.explanation,
                     explanationDeep: q.explanationDeep || null,
                     whyOthersWrong: q.whyOthersWrong || null,
@@ -124,7 +127,17 @@ function createAiRouteHelpers({ db, ai, serverConfig, logger }) {
             ) || null;
 
             // Key lookup remains as a fallback for objects written before the backfill.
-            const verifiedObjs = byTopic.filter((o) => o.objectType === 'verified_topic_mcq' || o.objectType === 'curated_topic_mcq');
+            let verifiedObjs = byTopic.filter((o) => (o.objectType === 'verified_topic_mcq' || o.objectType === 'curated_topic_mcq') && (o.payload?.mcqs?.length > 0));
+            if (verifiedObjs.length === 0) {
+                const norm = database.normalizeTopic(topic);
+                const slug = norm.replace(/\s+/g, '-');
+                const [vObj, cObj] = await Promise.all([
+                    database.getTeachingObjectByKey(`verified-mcq:${slug}`).catch(() => null),
+                    database.getTeachingObjectByKey(`curated-mcq:${slug}`).catch(() => null),
+                ]);
+                if (vObj?.payload?.mcqs?.length > 0) verifiedObjs.push(vObj);
+                if (cObj?.payload?.mcqs?.length > 0) verifiedObjs.push(cObj);
+            }
             const [coldObj, guidelineObj, liveObj] = await Promise.all([
                 firstOfType('cold_start_mcq') || database.getTeachingObjectByKey(coldStartMcqKey(database, topic)),
                 firstOfType('guideline_mcq') || database.getTeachingObjectByKey(guidelineMcqKey(database, topic)),

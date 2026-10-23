@@ -29,12 +29,13 @@ module.exports = {
                 '<rootDir>/tests/integration/**/*.test.js',
             ],
             testPathIgnorePatterns: [
+                '<rootDir>/archive/',
                 '/node_modules/',
                 '/tests/e2e/',
                 '/tests/load/',
                 '<rootDir>/.claude/',
             ],
-            modulePathIgnorePatterns: ['<rootDir>/.claude/'],
+            modulePathIgnorePatterns: ['<rootDir>/.claude/', '<rootDir>/archive/'],
             collectCoverageFrom: [
                 'app.js',
                 'server.js',
@@ -62,7 +63,7 @@ module.exports = {
             testEnvironment: 'jsdom',
             testMatch: ['<rootDir>/src/**/*.test.{ts,tsx}'],
             testPathIgnorePatterns: ['/node_modules/', '<rootDir>/.claude/'],
-            modulePathIgnorePatterns: ['<rootDir>/.claude/'],
+            modulePathIgnorePatterns: ['<rootDir>/.claude/', '<rootDir>/archive/'],
             moduleFileExtensions: ['js', 'jsx', 'ts', 'tsx', 'json'],
             setupFilesAfterEnv: ['<rootDir>/tests/setup.frontend.ts'],
             moduleDirectories: ['node_modules'],

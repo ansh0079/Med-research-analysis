@@ -127,6 +127,16 @@ module.exports = (Sup) => class extends Sup {
         // Batch alias lookup — single query checking all keys at once instead of N round-trips
         const aliasRow = await this._getTopicKnowledgeRowByAliases(keys);
         if (aliasRow) return this.mapTopicKnowledgeRow(aliasRow);
+
+        // Fallback: prefix match on normalized_topic (e.g. "myasthenia gravis" -> "myasthenia gravis targeted immunotherapy")
+        const prefixRow = await this.kysely
+            .selectFrom('topic_knowledge')
+            .selectAll()
+            .where('normalized_topic', 'like', `${normalizedInput}%`)
+            .orderBy('confidence', 'desc')
+            .executeTakeFirst();
+        if (prefixRow) return this.mapTopicKnowledgeRow(prefixRow);
+
         return null;
     }
 

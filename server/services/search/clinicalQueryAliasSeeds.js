@@ -159,7 +159,7 @@ function validateAliasSeedCatalog(catalog = {}) {
         if (!hasAliases && !hasPmids) errors.push(`seed "${seed.source}" has no aliases or pmids`);
         pinnedPmidCount += hasPmids ? seed.pmids.length : 0;
     }
-    return { ok: errors.length === 0, errors, seedCount: seeds.length, pinnedPmidCount };
+    return { ok: errors.length === 0, errors, warnings: [], seedCount: seeds.length, pinnedPmidCount };
 }
 
 module.exports = {

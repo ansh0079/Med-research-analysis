@@ -170,7 +170,9 @@ function registerQuizRoutes(app, {
                 const mcqs = payload.mcqs || [];
                 for (let i = 0; i < mcqs.length; i++) {
                     const q = mcqs[i];
-                    if (!q.question || !q.options || !q.correctAnswer) continue;
+                    const hasOptions = Array.isArray(q?.options) || (q?.options && typeof q.options === 'object');
+                    const hasAnswer = Boolean(q?.correctAnswer || q?.correct);
+                    if (!q?.question || !hasOptions || !hasAnswer) continue;
                     // Object-index based block list
                     if (withdrawn.byObjectIndex.has(`${row.object_key}#${i}`)) continue;
                     // Per-question withdrawals applied by the review workflow: filter even when the index is off.
@@ -208,6 +210,9 @@ function registerQuizRoutes(app, {
                     // literally ("Guideline" vs "Evidence").
                     const isRealGuideline = row.object_type === 'guideline_mcq'
                         && isIssuingBodyValue(q.guidelineRef);
+                    const normalizedOptions = Array.isArray(q.options)
+                        ? q.options
+                        : ['A', 'B', 'C', 'D', 'E'].filter((L) => q.options && q.options[L] !== undefined).map((L) => `${L}: ${q.options[L]}`);
                     allMcqs.push({
                         id: `pool_${stableHash}`,
                         topic: assignment?.category === 'aligned' && assignment.topicName ? assignment.topicName : row.topic,
@@ -215,8 +220,8 @@ function registerQuizRoutes(app, {
                         type: q.type || 'multiple_choice',
                         questionType: canonicalQuestionType(q.questionType),
                         question: q.question,
-                        options: q.options,
-                        correctAnswer: q.correctAnswer,
+                        options: normalizedOptions,
+                        correctAnswer: q.correctAnswer || q.correct,
                         explanation: q.explanation || null,
                         guidelineRef: q.guidelineRef || null,
                         difficulty: q.difficulty || 'medium',
