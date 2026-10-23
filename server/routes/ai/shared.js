@@ -127,7 +127,7 @@ function createAiRouteHelpers({ db, ai, serverConfig, logger }) {
             ) || null;
 
             // Key lookup remains as a fallback for objects written before the backfill.
-            let verifiedObjs = byTopic.filter((o) => (o.objectType === 'verified_topic_mcq' || o.objectType === 'curated_topic_mcq') && (o.payload?.mcqs?.length > 0));
+            const verifiedObjs = byTopic.filter((o) => (o.objectType === 'verified_topic_mcq' || o.objectType === 'curated_topic_mcq') && (o.payload?.mcqs?.length > 0));
             if (verifiedObjs.length === 0) {
                 const norm = database.normalizeTopic(topic);
                 const slug = norm.replace(/\s+/g, '-');
@@ -151,7 +151,7 @@ function createAiRouteHelpers({ db, ai, serverConfig, logger }) {
             // slip back in from a future seeding run before the next cleanup pass catches them.
             const notFabricated = (q) => !hasSuspectFutureCitation(q);
 
-            let verifiedMcqs = verifiedObjs
+            const verifiedMcqs = verifiedObjs
                 .flatMap((o) => o.payload?.mcqs || [])
                 .filter(notFabricated)
                 .map((q, i) => mapColdStartMcq(q, i, 'verified_curated', 'verified_topic_mcq', claimTopicKey));

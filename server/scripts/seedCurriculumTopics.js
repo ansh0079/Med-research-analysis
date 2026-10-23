@@ -91,7 +91,7 @@ async function main() {
         const suggestedQuery = displayName;
 
         // Upsert curriculum_topic
-        let existing = await db.get("SELECT id FROM curriculum_topics WHERE LOWER(display_name) = LOWER(?)", [displayName]);
+        const existing = await db.get("SELECT id FROM curriculum_topics WHERE LOWER(display_name) = LOWER(?)", [displayName]);
         let topicId;
         if (existing) {
             topicId = existing.id;
