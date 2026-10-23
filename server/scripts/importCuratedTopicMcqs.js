@@ -74,7 +74,7 @@ async function run({ apply = false, dir = null } = {}) {
 
   db = require('../../database');
   await db.connect();
-  const seenStems = await loadExistingStems(db);
+  const seenStems = apply ? await loadExistingStems(db) : new Set();
   let totalDuplicatesSkipped = 0;
   let written = 0;
   const aggregated = new Map(); // topicKey -> merged topic payload

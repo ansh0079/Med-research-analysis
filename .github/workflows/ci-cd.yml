@@ -123,7 +123,7 @@ jobs:
         with:
           node-version: '22'
           cache: 'npm'
-      - run: npm ci
+      - run: npm install
       - name: Run backend tests against Postgres + Redis
         # Every suite that exercises the real database layer, not just the smoke tests. The main
         # suite runs these on SQLite; production is Postgres, and the two differ in ways that have
@@ -259,7 +259,7 @@ jobs:
         with:
           node-version: '22'
           cache: 'npm'
-      - run: npm ci
+      - run: npm install
       - name: Beta safety gate
         run: npm run beta:safety
       - name: Set up Docker Buildx
