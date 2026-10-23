@@ -114,7 +114,7 @@ function createAiRouteHelpers({ db, ai, serverConfig, logger }) {
             // at all. Key lookup still covers this path, so degrading is safe.
             const byTopic = typeof database.getTeachingObjectsForTopicString === 'function'
                 ? await database
-                    .getTeachingObjectsForTopicString(topic, ['cold_start_mcq', 'guideline_mcq', 'live_quiz_mcq', 'paper_mcq'])
+                    .getTeachingObjectsForTopicString(topic, ['verified_topic_mcq', 'curated_topic_mcq', 'cold_start_mcq', 'guideline_mcq', 'live_quiz_mcq', 'paper_mcq'])
                     .catch((err) => { logger?.warn?.({ err, topic }, 'getTeachingObjectsForTopicString failed; falling back to key lookup'); return []; })
                 : [];
             const firstOfType = (type) => byTopic.find((o) => o.objectType === type) || null;
@@ -124,6 +124,7 @@ function createAiRouteHelpers({ db, ai, serverConfig, logger }) {
             ) || null;
 
             // Key lookup remains as a fallback for objects written before the backfill.
+            const verifiedObjs = byTopic.filter((o) => o.objectType === 'verified_topic_mcq' || o.objectType === 'curated_topic_mcq');
             const [coldObj, guidelineObj, liveObj] = await Promise.all([
                 firstOfType('cold_start_mcq') || database.getTeachingObjectByKey(coldStartMcqKey(database, topic)),
                 firstOfType('guideline_mcq') || database.getTeachingObjectByKey(guidelineMcqKey(database, topic)),
@@ -137,6 +138,10 @@ function createAiRouteHelpers({ db, ai, serverConfig, logger }) {
             // slip back in from a future seeding run before the next cleanup pass catches them.
             const notFabricated = (q) => !hasSuspectFutureCitation(q);
 
+            let verifiedMcqs = verifiedObjs
+                .flatMap((o) => o.payload?.mcqs || [])
+                .filter(notFabricated)
+                .map((q, i) => mapColdStartMcq(q, i, 'verified_curated', 'verified_topic_mcq', claimTopicKey));
             let liveMcqs = (liveObj?.payload?.mcqs || []).filter(notFabricated).map((q, i) => mapColdStartMcq(q, i, 'live_cache', 'live_quiz_mcq', claimTopicKey));
             let coldMcqs = (coldObj?.payload?.mcqs || []).filter(notFabricated).map((q, i) => mapColdStartMcq(q, i, 'cold_start', 'cold_start_mcq', claimTopicKey));
             let guidelineMcqs = (guidelineObj?.payload?.mcqs || []).filter(notFabricated).map((q, i) => mapColdStartMcq(q, i, 'guideline', 'guideline_mcq', claimTopicKey));
@@ -197,7 +202,7 @@ function createAiRouteHelpers({ db, ai, serverConfig, logger }) {
             // paper-synthesis (cold-start) MCQs are the fallback when no guideline exists.
             // Order: guideline -> live cache -> cold-start; within each tier, ability-
             // matched ordering when userId is available.
-            const merged = [...guidelineMcqs, ...liveMcqs, ...coldMcqs].slice(0, count);
+            const merged = [...verifiedMcqs, ...guidelineMcqs, ...liveMcqs, ...coldMcqs].slice(0, count);
 
             return merged.length > 0 ? merged : null;
         } catch (err) {

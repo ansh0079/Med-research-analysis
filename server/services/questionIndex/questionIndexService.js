@@ -11,7 +11,7 @@ const crypto = require('crypto');
 const classify = require('./classify');
 
 const CLASSIFIER_VERSION = 'embed-v2';
-const MCQ_TYPES = ['guideline_mcq', 'cold_start_mcq', 'paper_mcq', 'live_quiz_mcq'];
+const MCQ_TYPES = ['verified_topic_mcq', 'curated_topic_mcq', 'guideline_mcq', 'cold_start_mcq', 'paper_mcq', 'live_quiz_mcq'];
 
 const sha = (text) => crypto.createHash('sha256').update(String(text)).digest('hex');
 const clean = (text) => String(text || '').replace(/\s+/g, ' ').trim();

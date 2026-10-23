@@ -44,6 +44,7 @@ const PUBLIC_PATTERNS = [
     /^\/api\/articles\/[^/]+\/related$/,
     /^\/api\/alerts\/unsubscribe$/,
     /^\/api\/ai\/health$/,
+    /^\/api\/ai\/synopsis\/feedback$/,
 ];
 
 function walk(entry) {

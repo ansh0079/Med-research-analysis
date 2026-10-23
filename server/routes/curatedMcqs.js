@@ -26,7 +26,7 @@ function registerCuratedMcqRoutes(app, deps) {
       const rows = await db.all(
         `SELECT object_key, topic, object_payload
          FROM teaching_objects
-         WHERE object_type = 'curated_topic_mcq'
+         WHERE object_type IN ('curated_topic_mcq', 'verified_topic_mcq')
            AND review_state != 'withdrawn'
          ORDER BY topic ASC`
       );
@@ -59,16 +59,20 @@ function registerCuratedMcqRoutes(app, deps) {
       if (!raw) return res.status(400).json({ error: 'topic is required' });
       const withdrawn = await loadWithdrawnOverrides(db);
 
-      // Try exact curated key first
-      const objectKey = raw.startsWith('curated-mcq:') ? raw : `curated-mcq:${raw.toLowerCase()}`;
-      let row = await db.get(`SELECT * FROM teaching_objects WHERE object_key = ? AND object_type = 'curated_topic_mcq'`, [objectKey]);
+      // Try exact curated or verified key first
+      const slug = raw.toLowerCase().replace(/^(curated|verified)-mcq:/, '');
+      let row = await db.get(
+        `SELECT * FROM teaching_objects
+         WHERE object_key IN (?, ?) AND object_type IN ('curated_topic_mcq', 'verified_topic_mcq')`,
+        [`curated-mcq:${slug}`, `verified-mcq:${slug}`]
+      );
 
       // Fall back to resolving topic string via alias -> curriculum topic id
       if (!row) {
         const id = await db.resolveCurriculumTopicId(raw);
         if (id) {
           row = await db.get(
-            `SELECT * FROM teaching_objects WHERE object_type = 'curated_topic_mcq' AND curriculum_topic_id = ? ORDER BY updated_at DESC LIMIT 1`,
+            `SELECT * FROM teaching_objects WHERE object_type IN ('curated_topic_mcq', 'verified_topic_mcq') AND curriculum_topic_id = ? ORDER BY updated_at DESC LIMIT 1`,
             [id]
           );
         }
@@ -81,7 +85,7 @@ function registerCuratedMcqRoutes(app, deps) {
         const candidates = await db.all(
           `SELECT object_key, topic, object_payload
            FROM teaching_objects
-           WHERE object_type = 'curated_topic_mcq' AND review_state != 'withdrawn'`
+           WHERE object_type IN ('curated_topic_mcq', 'verified_topic_mcq') AND review_state != 'withdrawn'`
         );
         for (const cand of candidates) {
           let p = {};

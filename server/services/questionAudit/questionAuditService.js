@@ -15,7 +15,7 @@ const crypto = require('crypto');
 const { buildAuditPrompt, normaliseVerdict } = require('./auditPrompt');
 const { questionHash } = require('../questionIndex/questionIndexService');
 
-const INDEXED_TYPES = ['guideline_mcq', 'cold_start_mcq', 'paper_mcq', 'live_quiz_mcq'];
+const INDEXED_TYPES = ['verified_topic_mcq', 'curated_topic_mcq', 'guideline_mcq', 'cold_start_mcq', 'paper_mcq', 'live_quiz_mcq'];
 const CURATED_TYPE = 'curated_topic_mcq';
 const HUMAN_DECISIONS = new Set(['approved', 'needs_revision', 'retired']);
 

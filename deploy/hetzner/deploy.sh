@@ -140,7 +140,7 @@ docker compose -f docker-compose.hetzner.yml exec -T -e USE_POSTGRES_MAIN=true w
 
 echo "Syncing published curriculum mentor synopses into Postgres..."
 docker compose -f docker-compose.hetzner.yml exec -T -e USE_POSTGRES_MAIN=true web \
-  node server/scripts/syncAllMentorDraftsToProd.js --apply
+  node server/scripts/syncAllMentorDraftsToProd.js --apply --publish-unreviewed
 
 echo ""
 echo "Waiting for health (web + worker) ..."

@@ -3,9 +3,7 @@
 const { listDrafts, getDraft, reviewDraft, publishDraft } = require('../services/topicMentorDrafts');
 
 function registerAdminTopicDraftRoutes(app, { db, requireAuthJwt, requireRole }) {
-    const guard = [requireAuthJwt, requireRole('admin', 'curator')];
-
-    app.get('/api/admin/topic-mentor-drafts', ...guard, async (req, res) => {
+    app.get('/api/admin/topic-mentor-drafts', requireAuthJwt, requireRole('admin', 'curator'), async (req, res) => {
         try {
             const limit = Math.min(Math.max(parseInt(String(req.query.limit || '50'), 10) || 50, 1), 200);
             const offset = Math.max(parseInt(String(req.query.offset || '0'), 10) || 0, 0);
@@ -17,7 +15,7 @@ function registerAdminTopicDraftRoutes(app, { db, requireAuthJwt, requireRole })
         }
     });
 
-    app.get('/api/admin/topic-mentor-drafts/:topicId', ...guard, async (req, res) => {
+    app.get('/api/admin/topic-mentor-drafts/:topicId', requireAuthJwt, requireRole('admin', 'curator'), async (req, res) => {
         try {
             const draft = await getDraft(db, req.params.topicId);
             if (!draft) return res.status(404).json({ error: 'Draft not found' });
@@ -28,7 +26,7 @@ function registerAdminTopicDraftRoutes(app, { db, requireAuthJwt, requireRole })
         }
     });
 
-    app.patch('/api/admin/topic-mentor-drafts/:topicId', ...guard, async (req, res) => {
+    app.patch('/api/admin/topic-mentor-drafts/:topicId', requireAuthJwt, requireRole('admin', 'curator'), async (req, res) => {
         try {
             const draft = await reviewDraft(db, {
                 topicId: req.params.topicId,

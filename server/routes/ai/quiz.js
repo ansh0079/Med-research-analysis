@@ -151,7 +151,7 @@ function registerQuizRoutes(app, {
 
             const rows = await db.all(
                 `SELECT object_key, topic, object_type, object_payload FROM teaching_objects
-                 WHERE object_type IN ('cold_start_mcq', 'guideline_mcq', 'paper_mcq')
+                 WHERE object_type IN ('verified_topic_mcq', 'curated_topic_mcq', 'cold_start_mcq', 'guideline_mcq', 'paper_mcq')
                    AND review_state != 'withdrawn'
                  ORDER BY RANDOM()`
             );
