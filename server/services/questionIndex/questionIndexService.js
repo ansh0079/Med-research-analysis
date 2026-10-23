@@ -96,7 +96,7 @@ async function loadSources(db) {
     const placeholders = MCQ_TYPES.map(() => '?').join(',');
     const [objects, topics, recs, papers] = await Promise.all([
         db.all(`SELECT object_key, object_type, normalized_topic, curriculum_topic_id, object_payload FROM teaching_objects WHERE object_type IN (${placeholders})`, MCQ_TYPES),
-        db.all('SELECT id, display_name, suggested_query, specialty FROM curriculum_topics', []),
+        db.all('SELECT t.id, t.display_name, t.suggested_query, b.name AS specialty FROM curriculum_topics t LEFT JOIN curriculum_blocks b ON b.id = t.block_id', []),
         db.all('SELECT id, normalized_topic, source_body, recommendation_text FROM topic_guidelines WHERE superseded_by_id IS NULL', []),
         db.all("SELECT article_uid, title, curriculum_topic_id FROM teaching_objects WHERE object_type = 'paper' AND article_uid IS NOT NULL AND title IS NOT NULL AND curriculum_topic_id IS NOT NULL", []),
     ]);

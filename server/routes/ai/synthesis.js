@@ -408,6 +408,11 @@ function registerSynthesisRoutes(app, {
                     logger.warn({ err, articleUid: uid }, 'stored synopsis invalidation failed');
                     return false;
                 });
+                if (topic && db?.markSynthesisSnapshotStale) {
+                    await db.markSynthesisSnapshotStale(topic).catch((err) => {
+                        logger.warn({ err, topic }, 'markSynthesisSnapshotStale failed');
+                    });
+                }
             }
             if (db?.logEvent) {
                 await db.logEvent(type === 'helpful' ? 'synopsis_feedback_helpful' : 'synopsis_feedback_not_helpful', req.sessionId, {
@@ -417,13 +422,36 @@ function registerSynthesisRoutes(app, {
                 }).catch((err) => { logger.warn({ err }, 'synopsis feedback logEvent failed'); return null; });
             }
             // Close the synopsis_style bandit reward loop
-            if (banditMeta?.policyType && banditMeta?.armId) {
+            let armId = banditMeta?.policyType === 'synopsis_style' ? banditMeta.armId : null;
+            let decisionId = null;
+            if (!armId && db?.all) {
+                const recentDecision = await db.all(
+                    `SELECT id, arm_id FROM personalization_decisions
+                     WHERE policy_type = 'synopsis_style' AND article_uid = ?
+                     ORDER BY created_at DESC LIMIT 1`,
+                    [uid]
+                ).catch(() => []);
+                if (recentDecision?.[0]?.arm_id) {
+                    armId = recentDecision[0].arm_id;
+                    decisionId = recentDecision[0].id;
+                }
+            }
+            if (armId) {
                 const reward = synopsisFeedbackReward(type, reason);
                 // reward === 0 means "not this arm's fault" (e.g. a factual/trust
                 // complaint) — don't touch the style arm's posterior at all.
                 if (reward !== 0) {
-                    recordBanditReward(db, banditMeta.policyType, banditMeta.armId, reward, req.user?.id ?? null)
-                        .catch((err) => logger.warn({ err, armId: banditMeta.armId }, 'synopsis bandit reward failed'));
+                    if (decisionId && db?.updatePersonalizationDecisionReward) {
+                        await db.updatePersonalizationDecisionReward(decisionId, {
+                            immediateReward: reward,
+                            totalReward: reward,
+                        }).catch(() => null);
+                    }
+                    recordBanditReward(db, 'synopsis_style', armId, reward, req.user?.id ?? null, {
+                        applicationKey: `synopsis_feedback:${uid}:${req.sessionId || req.user?.id || 'anon'}:${type}`,
+                        decisionId,
+                        source: 'synopsis_feedback',
+                    }).catch((err) => logger.warn({ err, armId }, 'synopsis bandit reward failed'));
                 }
             }
 
@@ -436,6 +464,88 @@ function registerSynthesisRoutes(app, {
         } catch (error) {
             req.log.error({ err: error }, 'Synopsis feedback error');
             return res.status(500).json({ error: 'Failed to record synopsis feedback' });
+        }
+    });
+
+    // Pairwise synopsis preference comparison (closing user preference RL loop)
+    app.post('/api/ai/synopsis/preference', limitBodySize(128 * 1024), requireJson, rateLimit(60, 60), async (req, res) => {
+        const {
+            articleUid,
+            topic = null,
+            preferred = null,
+            rejected = null,
+            reason = null,
+        } = req.body || {};
+
+        const uid = String(articleUid || '').trim();
+        const prefArm = String(preferred?.armId || '').trim();
+        const rejArm = String(rejected?.armId || '').trim();
+
+        if (!uid || !prefArm || !rejArm) {
+            return res.status(400).json({ error: 'articleUid, preferred.armId, and rejected.armId are required' });
+        }
+
+        try {
+            const preferredReward = 1.0;
+            const rejectedReward = -0.5;
+            let preferredDecisionUpdated = false;
+            let rejectedDecisionUpdated = false;
+
+            if (db?.all) {
+                const recentDecisions = await db.all(
+                    `SELECT id, arm_id FROM personalization_decisions
+                     WHERE policy_type = 'synopsis_style' AND article_uid = ?
+                     ORDER BY created_at DESC LIMIT 6`,
+                    [uid]
+                ).catch(() => []);
+
+                for (const dec of recentDecisions) {
+                    if (dec.arm_id === prefArm && !preferredDecisionUpdated && db.updatePersonalizationDecisionReward) {
+                        await db.updatePersonalizationDecisionReward(dec.id, {
+                            immediateReward: preferredReward,
+                            totalReward: preferredReward,
+                        }).catch(() => null);
+                        preferredDecisionUpdated = true;
+                    } else if (dec.arm_id === rejArm && !rejectedDecisionUpdated && db.updatePersonalizationDecisionReward) {
+                        await db.updatePersonalizationDecisionReward(dec.id, {
+                            immediateReward: rejectedReward,
+                            totalReward: rejectedReward,
+                        }).catch(() => null);
+                        rejectedDecisionUpdated = true;
+                    }
+                }
+            }
+
+            await recordBanditReward(db, 'synopsis_style', prefArm, preferredReward, req.user?.id ?? null, {
+                applicationKey: `synopsis_pref:${uid}:${prefArm}:pos`,
+                source: 'synopsis_preference_preferred',
+            }).catch((err) => logger.warn({ err, armId: prefArm }, 'preferred bandit reward failed'));
+
+            await recordBanditReward(db, 'synopsis_style', rejArm, rejectedReward, req.user?.id ?? null, {
+                applicationKey: `synopsis_pref:${uid}:${rejArm}:neg`,
+                source: 'synopsis_preference_rejected',
+            }).catch((err) => logger.warn({ err, armId: rejArm }, 'rejected bandit reward failed'));
+
+            if (db?.logEvent) {
+                await db.logEvent('synopsis_preference', req.sessionId, {
+                    articleUid: uid,
+                    topic,
+                    preferredArm: prefArm,
+                    rejectedArm: rejArm,
+                    reason,
+                }).catch(() => null);
+            }
+
+            return res.json({
+                ok: true,
+                preferredReward,
+                rejectedReward,
+                preferredDecisionUpdated,
+                rejectedDecisionUpdated,
+            });
+        } catch (error) {
+            req.log.error({ err: error }, 'Synopsis preference recording error');
+            return res.status(500).json({ error: 'Failed to record synopsis preference' });
         }
     });
 

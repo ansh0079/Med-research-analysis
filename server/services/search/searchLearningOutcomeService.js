@@ -3,16 +3,18 @@ const {
     POLICY_SEARCH_RANKING,
     POLICY_QUIZ_CLAIM_SELECTION,
     POLICY_TEACHING_STRATEGY,
+    POLICY_SYNOPSIS_STYLE,
     recordBanditReward,
 } = require('../personalizationBanditService');
 const { LEARNING_SIGNAL_TYPES, recordLearningSignal } = require('../learningSignalService');
-const { quizOutcomeRewardForAgent } = require('../learningLoopSignalService');
+const { quizOutcomeRewardForAgent, synopsisFeedbackReward } = require('../learningLoopSignalService');
 const { normalizeSearchId } = require('../../../shared/searchId');
 const {
     quizAttemptReward,
     impressionEngagementReward,
     combineSearchQuizReward,
     recommendationFollowThroughReward,
+    synopsisStyleEngagementReward,
     explainInteractionReward,
     searchFeedbackReward,
     REWARD_FIRST_CORRECT,
@@ -512,26 +514,112 @@ async function getQuizAttributionCoverage(db, { days = 7, userId = null } = {}) 
     };
 }
 
+async function attributeSynopsisStyleReward(db, {
+    userId = null,
+    sessionId = null,
+    topic = '',
+    styleArm = null,
+    articleUid = null,
+    decisionId = null,
+    dwellTimeMs = 0,
+    feedback = null,
+    reason = null,
+    isSaved = false,
+} = {}) {
+    if (!db || (!userId && !sessionId)) return { rewarded: false, reason: 'missing_context' };
+    const feedbackType = feedback ? String(feedback).trim() : null;
+    let reward = 0;
+    if (feedbackType) {
+        reward = synopsisFeedbackReward(feedbackType, reason);
+    } else {
+        reward = synopsisStyleEngagementReward({ dwellTimeMs, feedbackType: null, isSaved });
+    }
+    if (reward === 0) return { rewarded: false, reward: 0, reason: 'zero_reward' };
+
+    let armId = styleArm || null;
+    let resolvedDecisionId = decisionId != null ? Number(decisionId) : null;
+
+    if (!resolvedDecisionId && articleUid && db.all) {
+        const rows = await db.all(
+            `SELECT id, arm_id FROM personalization_decisions
+             WHERE policy_type = 'synopsis_style' AND article_uid = ?
+             ORDER BY created_at DESC LIMIT 1`,
+            [String(articleUid)]
+        ).catch(() => []);
+        if (rows?.[0]) {
+            resolvedDecisionId = rows[0].id;
+            if (!armId) armId = rows[0].arm_id;
+        }
+    }
+
+    if (armId) {
+        if (resolvedDecisionId && db.updatePersonalizationDecisionReward) {
+            await db.updatePersonalizationDecisionReward(resolvedDecisionId, {
+                immediateReward: reward,
+                totalReward: reward,
+            }).catch(() => null);
+        }
+        await recordBanditReward(db, POLICY_SYNOPSIS_STYLE, armId, reward, userId || null, {
+            applicationKey: articleUid ? `synopsis_reward:${articleUid}:${sessionId || userId || 'anon'}:${reward > 0 ? 'pos' : 'neg'}` : null,
+            decisionId: resolvedDecisionId,
+            source: feedbackType ? 'synopsis_feedback' : 'synopsis_dwell',
+        });
+        await recordLearningSignal(db, {
+            userId: userId || null,
+            sessionId,
+            eventType: 'synopsis_style_reward_attributed',
+            topic,
+            articleUid: articleUid || null,
+            decisionId: resolvedDecisionId,
+            payload: { armId, reward, feedbackType, dwellTimeMs, isSaved },
+        }).catch(() => null);
+        return { rewarded: true, armId, reward, decisionId: resolvedDecisionId };
+    }
+    return { rewarded: false, reason: 'no_arm' };
+}
+
 async function attributeRecommendationFollowThrough(db, userId, {
     topic,
     normalizedTopic,
     eventType,
+    sessionId = null,
 } = {}) {
-    if (!db || !userId || !topic) return null;
+    if (!db || (!userId && !sessionId) || !topic) return null;
     const since = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
-    const rows = await db.all?.(
-        `SELECT id, arm_id, context_json FROM personalization_decisions
-         WHERE user_id = ? AND policy_type = 'recommendation_strategy'
-           AND (normalized_topic = ? OR topic = ?)
-           AND created_at >= ?
-         ORDER BY created_at DESC LIMIT 3`,
-        [String(userId), normalizedTopic || '', topic, since]
-    ).catch(() => []);
+    let rows;
+    if (userId) {
+        rows = await db.all?.(
+            `SELECT id, arm_id, context_json FROM personalization_decisions
+             WHERE user_id = ? AND policy_type = 'recommendation_strategy'
+               AND (normalized_topic = ? OR topic = ?)
+               AND created_at >= ?
+             ORDER BY created_at DESC LIMIT 3`,
+            [String(userId), normalizedTopic || '', topic, since]
+        ).catch(() => []);
+    } else {
+        const potential = await db.all?.(
+            `SELECT id, arm_id, context_json FROM personalization_decisions
+             WHERE user_id IS NULL AND policy_type = 'recommendation_strategy'
+               AND (normalized_topic = ? OR topic = ?)
+               AND created_at >= ?
+             ORDER BY created_at DESC LIMIT 10`,
+            [normalizedTopic || '', topic, since]
+        ).catch(() => []);
+        rows = (potential || []).filter((r) => {
+            if (!sessionId) return true;
+            try {
+                const ctx = JSON.parse(r.context_json || '{}');
+                return ctx.sessionId === sessionId;
+            } catch {
+                return false;
+            }
+        }).slice(0, 3);
+    }
     if (!rows?.length) return null;
 
     const followReward = recommendationFollowThroughReward(eventType);
     for (const row of rows.slice(0, 1)) {
-        await recordBanditReward(db, 'recommendation_strategy', row.arm_id, followReward, userId);
+        await recordBanditReward(db, 'recommendation_strategy', row.arm_id, followReward, userId || null);
         await db.updatePersonalizationDecisionReward?.(row.id, {
             delayedReward: followReward,
             totalReward: followReward,
@@ -540,24 +628,49 @@ async function attributeRecommendationFollowThrough(db, userId, {
     return { rewarded: rows[0]?.arm_id || null, followReward };
 }
 
-async function attributeAgentQuizOutcomeReward(db, userId, attempts = [], topic = '') {
-    if (!db?.all || !userId || !Array.isArray(attempts) || attempts.length === 0) return { rewarded: 0 };
+async function attributeAgentQuizOutcomeReward(db, userId, attempts = [], topic = '', { sessionId = null } = {}) {
+    if (!db?.all || (!userId && !sessionId) || !Array.isArray(attempts) || attempts.length === 0) return { rewarded: 0 };
     const reward = quizOutcomeRewardForAgent(attempts);
     if (reward === 0) return { rewarded: 0, reward };
     const normalizedTopic = typeof db.normalizeTopic === 'function' ? db.normalizeTopic(topic) : String(topic || '').toLowerCase();
     const since = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
-    const pendingDecisions = await db.all(
-        `SELECT id, arm_id
-         FROM personalization_decisions
-         WHERE user_id = ?
-           AND policy_type = ?
-           AND delayed_reward IS NULL
-           AND (normalized_topic = ? OR topic = ?)
-           AND created_at >= ?
-         ORDER BY created_at DESC
-         LIMIT 3`,
-        [String(userId), POLICY_TEACHING_STRATEGY, normalizedTopic, topic, since]
-    ).catch(() => []);
+    let pendingDecisions = [];
+    if (userId) {
+        pendingDecisions = await db.all(
+            `SELECT id, arm_id
+             FROM personalization_decisions
+             WHERE user_id = ?
+               AND policy_type = ?
+               AND delayed_reward IS NULL
+               AND (normalized_topic = ? OR topic = ?)
+               AND created_at >= ?
+             ORDER BY created_at DESC
+             LIMIT 3`,
+            [String(userId), POLICY_TEACHING_STRATEGY, normalizedTopic, topic, since]
+        ).catch(() => []);
+    } else {
+        const potential = await db.all(
+            `SELECT id, arm_id, context_json
+             FROM personalization_decisions
+             WHERE user_id IS NULL
+               AND policy_type = ?
+               AND delayed_reward IS NULL
+               AND (normalized_topic = ? OR topic = ?)
+               AND created_at >= ?
+             ORDER BY created_at DESC
+             LIMIT 10`,
+            [POLICY_TEACHING_STRATEGY, normalizedTopic, topic, since]
+        ).catch(() => []);
+        pendingDecisions = (potential || []).filter((r) => {
+            if (!sessionId) return true;
+            try {
+                const ctx = JSON.parse(r.context_json || '{}');
+                return ctx.sessionId === sessionId;
+            } catch {
+                return false;
+            }
+        }).slice(0, 3);
+    }
     if (pendingDecisions?.length) {
         let rewarded = 0;
         const seen = new Set();
@@ -569,7 +682,7 @@ async function attributeAgentQuizOutcomeReward(db, userId, attempts = [], topic 
                 delayedReward: reward,
                 totalReward: reward,
             }).catch(() => null);
-            await recordBanditReward(db, POLICY_TEACHING_STRATEGY, row.arm_id, reward, userId);
+            await recordBanditReward(db, POLICY_TEACHING_STRATEGY, row.arm_id, reward, userId || null);
             rewarded += 1;
         }
         if (rewarded > 0) {
@@ -587,17 +700,33 @@ async function attributeAgentQuizOutcomeReward(db, userId, attempts = [], topic 
             return { rewarded, reward };
         }
     }
-    const rows = await db.all(
-        `SELECT payload_json
-         FROM learning_events
-         WHERE user_id = ?
-           AND event_type = 'agent_turn_completed'
-           AND (normalized_topic = ? OR topic = ?)
-           AND occurred_at >= ?
-         ORDER BY occurred_at DESC
-         LIMIT 3`,
-        [String(userId), normalizedTopic, topic, since]
-    ).catch(() => []);
+    let rows = [];
+    if (userId) {
+        rows = await db.all(
+            `SELECT payload_json
+             FROM learning_events
+             WHERE user_id = ?
+               AND event_type = 'agent_turn_completed'
+               AND (normalized_topic = ? OR topic = ?)
+               AND occurred_at >= ?
+             ORDER BY occurred_at DESC
+             LIMIT 3`,
+            [String(userId), normalizedTopic, topic, since]
+        ).catch(() => []);
+    } else if (sessionId) {
+        const potential = await db.all(
+            `SELECT payload_json, source_id
+             FROM learning_events
+             WHERE user_id IS NULL
+               AND event_type = 'agent_turn_completed'
+               AND (normalized_topic = ? OR topic = ?)
+               AND occurred_at >= ?
+             ORDER BY occurred_at DESC
+             LIMIT 10`,
+            [normalizedTopic, topic, since]
+        ).catch(() => []);
+        rows = (potential || []).filter((r) => r.source_id === sessionId).slice(0, 3);
+    }
     let rewarded = 0;
     const seen = new Set();
     for (const row of rows || []) {
@@ -606,7 +735,7 @@ async function attributeAgentQuizOutcomeReward(db, userId, attempts = [], topic 
         const armId = payload?.banditMeta?.armId || payload?.armId || null;
         if (!armId || seen.has(armId)) continue;
         seen.add(armId);
-        await recordBanditReward(db, POLICY_TEACHING_STRATEGY, armId, reward, userId);
+        await recordBanditReward(db, POLICY_TEACHING_STRATEGY, armId, reward, userId || null);
         await recordLearningSignal(db, {
             userId,
             eventType: 'agent_quiz_reward_attributed',
@@ -629,6 +758,7 @@ module.exports = {
     attributeAgentQuizOutcomeReward,
     attributeQuizAttemptRewards,
     attributeRecommendationFollowThrough,
+    attributeSynopsisStyleReward,
     attributeSearchInteractionReward,
     getQuizAttributionCoverage,
     explainInteractionReward,

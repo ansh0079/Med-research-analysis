@@ -57,6 +57,17 @@ function recommendationFollowThroughReward(eventType) {
     return RECOMMENDATION_REWARDS[eventType] ?? RECOMMENDATION_REWARDS.default;
 }
 
+function synopsisStyleEngagementReward({ dwellTimeMs = 0, feedbackType = null, isSaved = false } = {}) {
+    if (feedbackType === 'helpful') return 1.0;
+    if (feedbackType === 'not_helpful') return -0.3;
+    let reward = 0;
+    if (isSaved) reward += 0.5;
+    if (dwellTimeMs >= 45000) reward += 0.3;
+    else if (dwellTimeMs >= 20000) reward += 0.15;
+    else if (dwellTimeMs > 0 && dwellTimeMs < 5000) reward -= 0.05;
+    return Math.max(-1, Math.min(1, reward));
+}
+
 /**
  * Explain reward components for debugging / audit UI.
  */
@@ -66,6 +77,7 @@ function explainInteractionReward({
     quizAttempt = null,
     feedbackType = null,
     recommendationEventType = null,
+    synopsisInteraction = null,
 } = {}) {
     const components = [];
     let total = 0;
@@ -73,6 +85,12 @@ function explainInteractionReward({
     if (impression) {
         const r = impressionEngagementReward(impression);
         if (r > 0) components.push({ source: 'impression_engagement', reward: r });
+        total = Math.max(total, r);
+    }
+
+    if (synopsisInteraction) {
+        const r = synopsisStyleEngagementReward(synopsisInteraction);
+        if (r !== 0) components.push({ source: 'synopsis_style_engagement', reward: r });
         total = Math.max(total, r);
     }
 
@@ -120,6 +138,7 @@ module.exports = {
     quizAttemptReward,
     combineSearchQuizReward,
     recommendationFollowThroughReward,
+    synopsisStyleEngagementReward,
     explainInteractionReward,
     positionDebiasWeight,
 };

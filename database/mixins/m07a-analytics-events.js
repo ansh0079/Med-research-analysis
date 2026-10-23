@@ -150,10 +150,18 @@ async saveSynthesisSnapshot(topic, synthesis, articleUids = []) {
     );
 }
 
+async markSynthesisSnapshotStale(topic) {
+    const normalized = this.normalizeTopic(topic);
+    return this.run(
+        `UPDATE synthesis_snapshots SET is_stale = 1 WHERE normalized_topic = ?`,
+        [normalized]
+    );
+}
+
 async getLatestSynthesisSnapshots(topic, limit = 2) {
     const normalized = this.normalizeTopic(topic);
     return this.all(
-        `SELECT * FROM synthesis_snapshots WHERE normalized_topic = ?
+        `SELECT * FROM synthesis_snapshots WHERE normalized_topic = ? AND (is_stale IS NULL OR is_stale = 0)
          ORDER BY generated_at DESC LIMIT ?`,
         [normalized, Math.min(limit, 10)]
     );

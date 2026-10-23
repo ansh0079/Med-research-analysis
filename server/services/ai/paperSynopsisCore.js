@@ -428,9 +428,9 @@ async function runPaperSynopsisGenerationInner({
             // reuse serves the overwhelming majority of views -- counting only
             // generations would starve the bandit and it would never leave the
             // default arm.
-            if (userId && db?.insertPersonalizationDecision && synopsisStyleArm?.armId) {
+            if ((userId || sessionId) && db?.insertPersonalizationDecision && synopsisStyleArm?.armId) {
                 await db.insertPersonalizationDecision({
-                    userId,
+                    userId: userId || null,
                     policyType: POLICY_SYNOPSIS_STYLE,
                     armId: synopsisStyleArm.armId,
                     topic,
@@ -438,6 +438,9 @@ async function runPaperSynopsisGenerationInner({
                     articleUid: articleId,
                     propensity: synopsisStyleArm.propensity ?? null,
                     scopeKey: synopsisStyleArm.scopeKey || 'global',
+                    context: {
+                        sessionId: sessionId ? String(sessionId) : null,
+                    },
                 }).catch((err) => {
                     logger.debug({ err, articleId }, 'insertPersonalizationDecision (reuse) failed');
                 });
@@ -696,9 +699,9 @@ async function runPaperSynopsisGenerationInner({
         const cacheKey = getPaperSynopsisCacheKey(article, selectedModel || selectedModelForCache, effectiveTrainingStage, null, preferenceSuffix);
         await withSpan('synopsis.cache_set', { 'cache.key': cacheKey }, () => cache.setAsync(cacheKey, result, 7 * 86400));
     }
-    if (userId && db?.insertPersonalizationDecision && synopsisStyleArm?.armId) {
+    if ((userId || sessionId) && db?.insertPersonalizationDecision && synopsisStyleArm?.armId) {
         await db.insertPersonalizationDecision({
-            userId,
+            userId: userId || null,
             policyType: POLICY_SYNOPSIS_STYLE,
             armId: synopsisStyleArm.armId,
             topic,
@@ -706,6 +709,7 @@ async function runPaperSynopsisGenerationInner({
             articleUid: articleId,
             context: {
                 articleId,
+                sessionId: sessionId ? String(sessionId) : null,
                 model: selectedModel,
                 provider: selectedProvider,
                 trainingStage: effectiveTrainingStage,

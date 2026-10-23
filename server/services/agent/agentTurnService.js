@@ -374,10 +374,10 @@ async function executeAgentTurn(
     }
 
     // Enqueue side effects asynchronously — never block the response.
-    if (userId) {
+    if (userId || sessionId) {
         if (teachingStrategyArm?.armId) {
             db.insertPersonalizationDecision?.({
-                userId,
+                userId: userId || null,
                 policyType: POLICY_TEACHING_STRATEGY,
                 armId: teachingStrategyArm.armId,
                 topic: trimmedTopic,
@@ -394,7 +394,7 @@ async function executeAgentTurn(
             }).catch((err) => logger.debug({ err, topic: trimmedTopic, userId }, 'agent teaching personalization decision log failed'));
 
             db.recordLearningEvent?.({
-                userId,
+                userId: userId || null,
                 eventType: 'agent_turn_completed',
                 topic: trimmedTopic,
                 sourceType: 'agent_turn',
@@ -418,16 +418,18 @@ async function executeAgentTurn(
                     const existingFeedback = conversationId
                         ? await db.all?.(
                             `SELECT 1 FROM learning_events
-                             WHERE user_id = ? AND source_id = ? AND event_type IN ('feedback_helpful', 'feedback_confusing')
+                             WHERE (user_id = ? OR source_id = ?) AND event_type IN ('feedback_helpful', 'feedback_confusing')
                              LIMIT 1`,
-                            [String(userId), String(conversationId)]
+                            [userId ? String(userId) : '', String(conversationId)]
                         ).catch(() => [])
                         : [];
                     if (existingFeedback?.length) return;
-                    await recordBanditReward(db, 'agent_teaching_strategy', teachingStrategyArm.armId, implicitFollowUpReward, userId);
+                    await recordBanditReward(db, 'agent_teaching_strategy', teachingStrategyArm.armId, implicitFollowUpReward, userId || null);
                 })().catch((err) => logger.warn({ err, armId: teachingStrategyArm.armId }, 'agent follow-up bandit reward failed'));
             }
         }
+    }
+    if (userId) {
         enqueueAgentTurnSideEffects({
             db,
             serverConfig,

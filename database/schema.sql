@@ -1222,6 +1222,7 @@ CREATE TABLE IF NOT EXISTS synthesis_snapshots (
     article_uids TEXT NOT NULL DEFAULT '[]',
     claim_fingerprint TEXT,
     claim_texts_json TEXT NOT NULL DEFAULT '[]',
+    is_stale INTEGER NOT NULL DEFAULT 0,
     generated_at TEXT NOT NULL DEFAULT (datetime('now'))
 );
 

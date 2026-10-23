@@ -52,10 +52,10 @@ async function applyRecommendationBandit(db, userId, recommendations = [], conte
 
     adjusted.sort((a, b) => b.priority - a.priority);
 
-    if (userId && db.insertPersonalizationDecision) {
+    if ((userId || context.sessionId) && db.insertPersonalizationDecision) {
         for (const rec of adjusted.slice(0, 6)) {
             void db.insertPersonalizationDecision({
-                userId,
+                userId: userId || null,
                 policyType: POLICY_RECOMMENDATION,
                 armId: rec.banditArmId || RECOMMENDATION_ARM_BY_TYPE[rec.type] || rec.type,
                 topic: rec.topic,
@@ -65,6 +65,7 @@ async function applyRecommendationBandit(db, userId, recommendations = [], conte
                     action: rec.action,
                     basePriority: rec.priority,
                     banditSample: rec.banditSample,
+                    sessionId: context.sessionId || null,
                     ...rec.banditContext,
                 },
             }).catch((err) => logger.warn({ err, userId, armId: rec.banditArmId }, 'recommendation decision log failed'));
