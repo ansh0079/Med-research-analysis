@@ -10,6 +10,7 @@ const {
     liveClinicalAnswerJobKey,
     maybeEnqueueQuizPrefetch,
     quizPrefetchJobKey,
+    deriveEvidenceGrade,
 } = require('../../server/services/aiGenerationJobService');
 const { runPaperSynopsisGeneration } = require('../../server/services/paperSynopsisCore');
 
@@ -18,6 +19,30 @@ describe('aiGenerationJobService', () => {
         { uid: 'a-1', title: 'Open paper 1', isFree: true, abstract: 'A', pubdate: '2024' },
         { uid: 'a-2', title: 'Open paper 2', isFree: true, abstract: 'B', pubdate: '2025' },
     ];
+
+    test('does not call an answer guideline-backed just because a guideline was retrieved', () => {
+        const guidelines = [{ sourceBody: 'NICE', recommendationText: 'Assess suspected sepsis.' }];
+        const trial = [{ title: 'Trial', pubtype: ['Randomized Controlled Trial'] }];
+        expect(deriveEvidenceGrade({ clinicalBottomLine: 'Trial finding [1].' }, trial, guidelines))
+            .not.toBe('GUIDELINE_BACKED');
+        expect(deriveEvidenceGrade({ clinicalBottomLine: 'Guideline recommendation [G1].' }, trial, guidelines))
+            .toBe('GUIDELINE_BACKED');
+        expect(deriveEvidenceGrade({ clinicalBottomLine: 'Invalid guideline reference [G2].' }, trial, guidelines))
+            .not.toBe('GUIDELINE_BACKED');
+    });
+
+    test('grades the studies cited by the clinical answer, not unrelated retrieved papers', () => {
+        const papers = [
+            { title: 'Systematic review', pubtype: ['Systematic Review'] },
+            { title: 'Cohort study', pubtype: ['Cohort Study'] },
+        ];
+        expect(deriveEvidenceGrade({ clinicalBottomLine: 'Cohort finding [2].' }, papers))
+            .toBe('OBSERVATIONAL_ONLY');
+        expect(deriveEvidenceGrade({ clinicalBottomLine: 'Review finding [1].' }, papers))
+            .toBe('RCT_SUPPORTED');
+        expect(deriveEvidenceGrade({ clinicalBottomLine: 'Uncited assertion.' }, papers))
+            .toBe('EXPERT_OPINION');
+    });
 
     test('uses stable consensus job keys for the same topic and source set', () => {
         expect(consensusJobKey('sepsis', articles)).toBe(consensusJobKey('sepsis', [...articles]));

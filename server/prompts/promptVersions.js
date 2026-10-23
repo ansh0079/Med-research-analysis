@@ -6,6 +6,7 @@ const path = require('path');
 
 const PROMPT_FILES = {
     synopsis: 'synopsis.js',
+    consensus_synopsis: '../services/consensusSynopsisService.js',
     synthesis: 'synthesis.js',
     quiz: 'quiz.js',
     guideline_merge: 'guidelineMerge.js',

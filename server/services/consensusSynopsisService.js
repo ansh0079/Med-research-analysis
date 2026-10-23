@@ -99,7 +99,7 @@ Abstract/snippet: ${safeString(a.abstract || 'No abstract supplied.', 1200)}
 ${fullTextExcerpt ? `Cached full-text excerpts:\n${fullTextExcerpt}` : ''}`;
 }
 
-function buildConsensusSynopsisPrompt(topic, freeArticles, abstractArticles, guidelines, topicKnowledge) {
+function buildConsensusSynopsisPrompt(topic, freeArticles, abstractArticles, guidelines) {
     const freeEvidence = freeArticles.map((a, i) => formatArticleForPrompt(a, i + 1, 'FREE PAPER')).join('\n\n');
     const abstractEvidence = abstractArticles.map((a, i) => formatArticleForPrompt(a, freeArticles.length + i + 1, 'ABSTRACT ONLY')).join('\n\n');
 
@@ -108,15 +108,6 @@ function buildConsensusSynopsisPrompt(topic, freeArticles, abstractArticles, gui
         guidelineSection = `
 Relevant clinical guidelines:
 ${guidelines.map((g, i) => `${i + 1}. ${safeString(g.sourceBody, 80)} ${g.sourceYear || ''} — ${safeString(g.recommendationText, 400)}${g.recommendationStrength ? ` (Strength: ${g.recommendationStrength})` : ''}${g.recommendationCertainty ? ` (Certainty: ${g.recommendationCertainty})` : ''}`).join('\n')}
-`;
-    }
-
-    let knowledgeSection = '';
-    if (topicKnowledge && topicKnowledge.knowledge) {
-        knowledgeSection = `
-Curated topic knowledge:
-${safeString(topicKnowledge.knowledge, 2000)}
-${Array.isArray(topicKnowledge.sourceArticles) && topicKnowledge.sourceArticles.length > 0 ? `Seminal papers: ${topicKnowledge.sourceArticles.join('; ')}` : ''}
 `;
     }
 
@@ -130,9 +121,12 @@ Scope:
 - Do not present this as a guideline unless a supplied paper is an official guideline or consensus statement.
 - Every clinical claim must cite paper indices like [1] or [1, 3].
 - Do not invent effect sizes, doses, contraindications, or guideline positions.
-- Weight papers by their EBM score (higher = stronger study design) when judging consensus strength.
+- Use the most applicable current guideline recommendations, systematic reviews and meta-analyses, and pivotal randomised trials as the main evidence when they are available. Appraise relevance, methods and certainty; publication type or recency alone does not establish reliability.
+- Review articles and narrative literature reviews can explain context, but must not be treated as pooled evidence or as proof of a treatment effect.
+- Base clinical conclusions only on the supplied guideline recommendations and papers. Do not fill gaps with textbook or stored topic knowledge.
+- Identify the newest applicable guideline and directly relevant landmark trials when present; distinguish guideline recommendations, trial results and review conclusions. State when a category is absent instead of inventing one.
 
-${freeEvidence ? `FREE/OPEN-ACCESS PAPERS:\n${freeEvidence}\n` : ''}${abstractEvidence ? `ABSTRACT-ONLY PAPERS:\n${abstractEvidence}\n` : ''}${guidelineSection}${knowledgeSection}
+${freeEvidence ? `FREE/OPEN-ACCESS PAPERS:\n${freeEvidence}\n` : ''}${abstractEvidence ? `ABSTRACT-ONLY PAPERS:\n${abstractEvidence}\n` : ''}${guidelineSection}
 Return ONLY valid JSON with this exact shape:
 {
   "statement": "2-4 sentence consensus synopsis, using cautious language and inline paper citations",
@@ -376,7 +370,6 @@ async function generateConsensusSynopsis({
     }
 
     let guidelines = [];
-    let topicKnowledge = null;
     if (db) {
         try {
             if (typeof db.getGuidelinesByTopic === 'function') {
@@ -385,17 +378,10 @@ async function generateConsensusSynopsis({
         } catch (err) {
             logger.debug({ err, topic }, 'Failed to load guidelines for synopsis');
         }
-        try {
-            if (typeof db.getTopicKnowledge === 'function') {
-                topicKnowledge = await db.getTopicKnowledge(topic);
-            }
-        } catch (err) {
-            logger.debug({ err, topic }, 'Failed to load topic knowledge for synopsis');
-        }
     }
 
     const ai = getSharedAiService({ serverConfig, fetchImpl });
-    const prompt = buildConsensusSynopsisPrompt(topic, freeArticles, abstractArticles, guidelines, topicKnowledge);
+    const prompt = buildConsensusSynopsisPrompt(topic, freeArticles, abstractArticles, guidelines);
     const model = resolvedModel;
     const parsed = await ai.callStructured(prompt, provider, model, {
         temperature: TEMPERATURE.synopsis,

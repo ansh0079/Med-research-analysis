@@ -1,5 +1,7 @@
 'use strict';
 
+const { evaluateMentorEvidenceClearance } = require('./mentorEvidenceClearanceService');
+
 const DRAFT = 'draft_pending_clinician_review';
 const NEEDS_EVIDENCE = 'needs_evidence';
 const DECISIONS = ['approved', 'needs_changes', 'rejected'];
@@ -118,15 +120,7 @@ function draftToKnowledge(page) {
                 sourceIndices: (t.cites || []).map((c) => indexOf.get(String(c))).filter(Boolean),
                 guidelineIndices: [],
                 confidence: hasGuideline(t.cites || []) ? 'HIGH' : 'MODERATE',
-            }))
-                // Textbook knowledge follows the literature-backed points, labelled so learners can tell the difference.
-                .concat((page.standard_knowledge || []).map((t) => ({
-                    claim: t.claim,
-                    sourceIndices: [],
-                    guidelineIndices: [],
-                    confidence: 'LOW',
-                    basis: 'standard_reference',
-                }))),
+            })),
             caseGenerationHooks: page.case_hooks || [],
             mcqAngles: page.mcq_angles || [],
             controversies: (page.uncertainties || []).map((issue) => ({ issue, sourceIndices: [], guidelineIndices: [] })),
@@ -137,23 +131,34 @@ function draftToKnowledge(page) {
     };
 }
 
-/** Copy an approved draft into topic_knowledge as human_reviewed, keeping the previous content for rollback. */
+/** Copy a human-approved or deterministically evidence-cleared draft into topic_knowledge. */
 async function publishDraft(db, { topicId, userId = null, now = new Date().toISOString() }) {
     const row = await db.get('SELECT * FROM topic_mentor_drafts WHERE topic_id = ?', [String(topicId)]);
     if (!row) throw new Error('Draft not found');
-    if (row.review_decision !== 'approved') throw new Error('Invalid state: only an approved draft can be published');
     if (row.published_at) throw new Error('Invalid state: draft is already published');
     const page = parse(row.page_json, {});
-    if (!Array.isArray(page.teaching_points) || !(page.teaching_points.length || (page.standard_knowledge || []).length)) throw new Error('Invalid state: draft has no teaching points');
+    if (!Array.isArray(page.teaching_points) || !page.teaching_points.length) throw new Error('Invalid state: draft has no evidence-backed teaching points');
+
+    const humanApproved = row.review_decision === 'approved';
+    const automatedClearance = humanApproved
+        ? { cleared: false, method: 'human_review' }
+        : await evaluateMentorEvidenceClearance(db, page);
+    if (!humanApproved && !automatedClearance.cleared) {
+        const reasons = automatedClearance.failures.map((failure) => failure.code).slice(0, 5).join(', ');
+        throw new Error(`Invalid state: only an approved draft or an evidence-cleared draft can be published (${reasons || 'automated clearance failed'})`);
+    }
 
     const previous = await db.getTopicKnowledge(row.topic);
     const { knowledge, sourceArticles } = draftToKnowledge(page);
-    const saved = await db.upsertTopicKnowledge(row.topic, knowledge, sourceArticles, 'human_reviewed', 0.9);
+    const knowledgeStatus = humanApproved ? 'human_reviewed' : 'evidence_verified';
+    const saved = await db.upsertTopicKnowledge(row.topic, knowledge, sourceArticles, knowledgeStatus, 0.9);
     if (!saved) throw new Error('topic_knowledge write was refused');
 
     await db.run(
-        'UPDATE topic_mentor_drafts SET status = ?, previous_knowledge_json = ?, published_at = ?, published_by = ?, updated_at = ? WHERE topic_id = ?',
-        ['published', previous ? JSON.stringify({ knowledge: previous.knowledge, sourceArticles: previous.sourceArticles, status: previous.status }) : null, now, userId == null ? null : String(userId), now, String(topicId)],
+        'UPDATE topic_mentor_drafts SET status = ?, previous_knowledge_json = ?, evidence_json = ?, published_at = ?, published_by = ?, updated_at = ? WHERE topic_id = ?',
+        ['published', previous ? JSON.stringify({ knowledge: previous.knowledge, sourceArticles: previous.sourceArticles, status: previous.status }) : null,
+            JSON.stringify({ ...parse(row.evidence_json, {}), automatedClearance: { ...automatedClearance, clearedAt: now } }),
+            now, userId == null ? null : String(userId), now, String(topicId)],
     );
     return getDraft(db, topicId);
 }

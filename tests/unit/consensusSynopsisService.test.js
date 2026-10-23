@@ -3,6 +3,7 @@ const {
     generateConsensusSynopsisSafe,
     selectFreeEvidence,
     selectAbstractEvidence,
+    buildConsensusSynopsisPrompt,
 } = require('../../server/services/consensusSynopsisService');
 
 describe('consensusSynopsisService', () => {
@@ -54,6 +55,19 @@ describe('consensusSynopsisService', () => {
 
         expect(selected).toHaveLength(8);
         expect(selected.every((a) => a.uid.startsWith('pay-'))).toBe(true);
+    });
+
+    test('consensus prompt uses supplied evidence, not stored textbook-style topic knowledge', () => {
+        const prompt = buildConsensusSynopsisPrompt('sepsis', [articles[0]], [], [
+            { sourceBody: 'NICE', sourceYear: 2024, recommendationText: 'Assess suspected sepsis.' },
+        ], { knowledge: { teachingPoints: [{ claim: 'UNSOURCED TEXTBOOK ASSERTION' }] } });
+
+        expect(prompt).toContain('Open trial of sepsis bundles');
+        expect(prompt).toContain('Assess suspected sepsis.');
+        expect(prompt).not.toContain('UNSOURCED TEXTBOOK ASSERTION');
+        expect(prompt).toContain('Do not fill gaps with textbook or stored topic knowledge.');
+        expect(prompt).toContain('systematic reviews and meta-analyses');
+        expect(prompt).toContain('narrative literature reviews can explain context');
     });
 
     test('generates a structured consensus synopsis from built-in LLM output', async () => {

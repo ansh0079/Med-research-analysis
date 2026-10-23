@@ -52,7 +52,7 @@ function evidenceIds(articles, limit) {
 }
 
 function consensusJobKey(topic, articles = []) {
-    return withPromptVersion('synopsis', {
+    return withPromptVersion('consensus_synopsis', {
         topic: canonicalQueryForCache(topic),
         sourceIds: evidenceIds(articles, 8),
     }, 'consensus');
@@ -82,11 +82,17 @@ function liveClinicalAnswerJobKey(topic, articles = []) {
  * @returns {string} one of VALID_EVIDENCE_GRADES
  */
 function deriveEvidenceGrade(synthesis, articles = [], guidelines = []) {
-    const guidelineBacked = Boolean(
-        (Array.isArray(guidelines) && guidelines.length > 0)
-        || (synthesis?.guidelinePosition && String(synthesis.guidelinePosition).trim())
-    );
-    if (guidelineBacked) return 'GUIDELINE_BACKED';
+    // A retrieved source cannot support an answer unless the answer actually cites it.
+    const answerText = [
+        synthesis?.clinicalBottomLine,
+        synthesis?.clinicalActionCard?.recommendation,
+        synthesis?.overallAnswer,
+        synthesis?.practiceImpact?.mondayMorningLine,
+    ].filter((part) => typeof part === 'string').join(' ');
+    const guidelineIndices = [...answerText.matchAll(/\[G(\d+)\]/gi)].map((match) => Number(match[1]));
+    if (guidelineIndices.some((index) => index >= 1 && index <= (guidelines?.length || 0))) {
+        return 'GUIDELINE_BACKED';
+    }
 
     const certainty = String(synthesis?.evidenceGrade || '').toUpperCase();
     // Very low certainty is expert opinion regardless of what was cited.
@@ -98,12 +104,17 @@ function deriveEvidenceGrade(synthesis, articles = [], guidelines = []) {
 
     // A guideline sitting in the article list also scores 7 in the EBM table, so check
     // it explicitly rather than letting it be reported as randomised evidence.
-    if (list.some((a) => hasGuidelinePubtype(a))) return 'GUIDELINE_BACKED';
+    const citedStudyIndices = [...answerText.matchAll(/\[(\d+(?:\s*,\s*\d+)*)\]/g)]
+        .flatMap((match) => match[1].split(',').map((index) => Number(index.trim())));
+    if (citedStudyIndices.some((index) => index >= 1 && index <= list.length && hasGuidelinePubtype(list[index - 1]))) {
+        return 'GUIDELINE_BACKED';
+    }
 
-    // Note: getEbmScore defaults to 2 (observational tier) when an article carries no
-    // usable type metadata. That default is deliberate here -- unknown design must never
-    // be promoted to RCT_SUPPORTED.
-    const best = list.length ? Math.max(...list.map((a) => Number(getEbmScore(a)) || 0)) : 0;
+    // Unknown study design has no positive EBM score and cannot promote the answer.
+    const citedArticles = [...new Set(citedStudyIndices)]
+        .filter((index) => index >= 1 && index <= list.length)
+        .map((index) => list[index - 1]);
+    const best = citedArticles.length ? Math.max(...citedArticles.map((a) => Number(getEbmScore(a)) || 0)) : 0;
 
     // EBM tiers: >=6 randomised or systematic-review evidence, >=2 observational designs.
     if (best >= 6) return certainty === 'LOW' ? 'LOW_CERTAINTY' : 'RCT_SUPPORTED';
@@ -229,11 +240,7 @@ async function generateLiveClinicalAnswer({
     }
 
     const abstractOnly = !(Number(fullTextCoverageRatio) > 0);
-    const guidelineSupported = Boolean(
-        (clinicalAnswer?.guidelinePosition && String(clinicalAnswer.guidelinePosition).trim())
-        || (Array.isArray(guidelines) && guidelines.length > 0)
-        || clinicalAnswer?.evidenceGrade === 'GUIDELINE_BACKED'
-    );
+    const guidelineSupported = clinicalAnswer?.evidenceGrade === 'GUIDELINE_BACKED';
     if (clinicalAnswer) {
         clinicalAnswer.abstractOnly = abstractOnly;
         clinicalAnswer.fullTextCoverageRatio = fullTextCoverageRatio;
