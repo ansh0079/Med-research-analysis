@@ -1,6 +1,52 @@
 'use strict';
 
+const fs = require('fs');
+const path = require('path');
 const db = require('../database');
+
+const VERIFIED_JSON_PATH = path.join(__dirname, '..', 'database', 'seeds', 'verified_pubmed_pmids.json');
+
+const STOP = new Set([
+    'the', 'and', 'for', 'that', 'this', 'with', 'without', 'management', 'guideline',
+    'guidelines', 'study', 'trial', 'trials', 'treatment', 'clinical', 'versus', 'from',
+    'after', 'before', 'adults', 'children', 'people', 'disease', 'review', 'systematic',
+    'therapy', 'therapies', 'diagnosis', 'randomized', 'randomised', 'phase', 'results',
+    'cohort', 'retrospective', 'prospective', 'international', 'system', 'effect',
+    'effects', 'outcomes', 'outcome', 'analysis', 'using', 'based', 'associated', 'risk',
+    'care', 'practice', 'update', 'updated', 'american', 'european', 'society',
+    'association', 'college', 'national', 'world', 'health', 'organization', 'first',
+    'line', 'second', 'early', 'late', 'high', 'dose', 'low', 'combined', 'plus', 'alone',
+    'open', 'label', 'double', 'blind', 'placebo', 'controlled', 'multicenter', 'multi',
+    'institutional', 'report', 'group', 'working', 'task', 'force', 'consensus',
+    'statement', 'recommendations', 'recommendation', 'approach', 'approaches', 'new',
+    'novel', 'current', 'modern', 'standard', 'optimal', 'initial', 'long', 'term',
+    'short', 'year', 'years', 'patients', 'patient'
+]);
+
+function domainTokens(s) {
+    return new Set(
+        String(s || '')
+            .toLowerCase()
+            .replace(/[^a-z0-9]+/g, ' ')
+            .split(/\s+/)
+            .filter(w => w.length >= 3 && !STOP.has(w) && !/^\d+$/.test(w))
+    );
+}
+
+function titlesMatch(expectedTitle, actualPubmedTitle) {
+    if (!expectedTitle || !actualPubmedTitle) return false;
+    const wordsA = domainTokens(expectedTitle);
+    const wordsB = domainTokens(actualPubmedTitle);
+    if (wordsA.size === 0 || wordsB.size === 0) return false;
+
+    let overlap = 0;
+    for (const w of wordsA) {
+        if (wordsB.has(w)) overlap++;
+    }
+    const minSize = Math.min(wordsA.size, wordsB.size) || 1;
+    const ratio = overlap / minSize;
+    return (overlap >= 2 && ratio >= 0.34) || (overlap >= 1 && minSize <= 2 && ratio >= 0.5) || ratio >= 0.5;
+}
 
 function normalizeOptions(options) {
     if (Array.isArray(options)) {
@@ -113,7 +159,17 @@ async function run() {
     }
     console.log(`Backfilled curriculum_topic_id on ${backfilledCount} of ${allObjects.length} teaching_objects`);
 
-    console.log('\n--- Step 5: Clean 186 Collided PMIDs in topic_knowledge.source_articles ---');
+    console.log('\n--- Step 5: Sanitize Collided & Unverified PMIDs in topic_knowledge.source_articles ---');
+    let verifiedPmids = null;
+    if (fs.existsSync(VERIFIED_JSON_PATH)) {
+        try {
+            verifiedPmids = JSON.parse(fs.readFileSync(VERIFIED_JSON_PATH, 'utf8'));
+            console.log(`Loaded ${Object.keys(verifiedPmids).length} PubMed esummary-verified PMIDs from seed dictionary`);
+        } catch (e) {
+            console.warn('Could not parse verified_pubmed_pmids.json:', e.message);
+        }
+    }
+
     const tkRows = await db.all("SELECT id, topic, source_articles FROM topic_knowledge");
     const pmidTitles = new Map();
     for (const r of tkRows) {
@@ -137,19 +193,29 @@ async function run() {
 
     let tkUpdated = 0;
     let articlesSanitized = 0;
+    let articlesVerified = 0;
     for (const r of tkRows) {
         let changed = false;
         try {
             const articles = JSON.parse(r.source_articles || '[]');
             for (const a of articles) {
                 const pmid = String(a.pmid || a.uid || '').replace(/^(?:pmid|pubmed):?/i, '').trim();
-                if (collided.has(pmid)) {
+                if (!/^\d+$/.test(pmid)) continue;
+
+                const isCollided = collided.has(pmid);
+                const isVerifiedMatch = verifiedPmids
+                    ? Boolean(verifiedPmids[pmid] && titlesMatch(a.title, verifiedPmids[pmid]))
+                    : !isCollided;
+
+                if (isCollided || !isVerifiedMatch) {
                     a.pmid = null;
-                    if (a.uid && a.uid.startsWith('pmid:')) {
+                    if (a.uid && /^(?:pmid|pubmed)[-:]?/i.test(String(a.uid))) {
                         a.uid = `article:title:${encodeURIComponent(String(a.title || '').slice(0, 80))}`;
                     }
                     changed = true;
                     articlesSanitized++;
+                } else {
+                    articlesVerified++;
                 }
             }
             if (changed) {
@@ -160,7 +226,7 @@ async function run() {
             console.error('Error cleaning source_articles for topic', r.topic, e.message);
         }
     }
-    console.log(`Sanitized ${articlesSanitized} articles across ${tkUpdated} topic_knowledge rows`);
+    console.log(`Sanitized ${articlesSanitized} articles across ${tkUpdated} topic_knowledge rows (${articlesVerified} verified PubMed links retained)`);
     console.log('\nDatabase integrity fix complete!');
 }
 

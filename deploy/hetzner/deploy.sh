@@ -142,6 +142,10 @@ echo "Syncing published curriculum mentor synopses into Postgres..."
 docker compose -f docker-compose.hetzner.yml exec -T -e USE_POSTGRES_MAIN=true web \
   node server/scripts/syncAllMentorDraftsToProd.js --apply --publish-unreviewed
 
+echo "Running MCQ, curriculum topic, and PubMed PMID integrity cleanup in Postgres..."
+docker compose -f docker-compose.hetzner.yml exec -T -e USE_POSTGRES_MAIN=true web \
+  node scripts/fix-mcq-and-topic-integrity.js
+
 echo ""
 echo "Waiting for health (web + worker) ..."
 web_ok=0
