@@ -170,11 +170,23 @@ async function run() {
         }
     }
 
+    const parseJsonArray = (val) => {
+        if (Array.isArray(val)) return val;
+        if (typeof val === 'string') {
+            try {
+                const parsed = JSON.parse(val);
+                return Array.isArray(parsed) ? parsed : [];
+            } catch {
+                return [];
+            }
+        }
+        return [];
+    };
+
     const tkRows = await db.all("SELECT id, topic, source_articles FROM topic_knowledge");
     const pmidTitles = new Map();
     for (const r of tkRows) {
-        let articles = [];
-        try { articles = JSON.parse(r.source_articles || '[]'); } catch (e) {}
+        const articles = parseJsonArray(r.source_articles);
         for (const a of articles) {
             const pmid = String(a.pmid || a.uid || '').replace(/^(?:pmid|pubmed):?/i, '').trim();
             if (/^\d+$/.test(pmid)) {
@@ -197,7 +209,7 @@ async function run() {
     for (const r of tkRows) {
         let changed = false;
         try {
-            const articles = JSON.parse(r.source_articles || '[]');
+            const articles = parseJsonArray(r.source_articles);
             for (const a of articles) {
                 const pmid = String(a.pmid || a.uid || '').replace(/^(?:pmid|pubmed):?/i, '').trim();
                 if (!/^\d+$/.test(pmid)) continue;
