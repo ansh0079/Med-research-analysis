@@ -22,6 +22,31 @@ const fs = require('fs');
 const path = require('path');
 const { validateCuratedTopicBlock, transformCuratedQuestionToStored } = require('../services/curatedMcqImportValidation');
 
+function normalizeStem(text) {
+  return String(text || '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+}
+
+async function loadExistingStems(database) {
+  const seen = new Set();
+  if (!database?.all) return seen;
+  try {
+    const rows = await database.all('SELECT object_payload FROM teaching_objects WHERE object_payload IS NOT NULL');
+    for (const r of rows) {
+      try {
+        const p = JSON.parse(r.object_payload || '{}');
+        const mcqs = Array.isArray(p.mcqs) ? p.mcqs : [];
+        for (const q of mcqs) {
+          const stem = normalizeStem(q.question || q.stem);
+          if (stem) seen.add(stem);
+        }
+      } catch { /* ignore */ }
+    }
+  } catch (err) {
+    console.warn('Could not load existing stems for dedup check:', err?.message);
+  }
+  return seen;
+}
+
 function findBatchFiles(rootDir) {
   const dir = path.resolve(rootDir);
   if (!fs.existsSync(dir)) return [];
@@ -47,10 +72,10 @@ async function run({ apply = false, dir = null } = {}) {
     return { files: 0, topics: 0, questions: 0, written: 0 };
   }
 
-  if (apply) {
-    db = require('../../database');
-    await db.connect();
-  }
+  db = require('../../database');
+  await db.connect();
+  const seenStems = await loadExistingStems(db);
+  let totalDuplicatesSkipped = 0;
   let written = 0;
   const aggregated = new Map(); // topicKey -> merged topic payload
 
@@ -92,7 +117,20 @@ async function run({ apply = false, dir = null } = {}) {
       // Keep first non-null coverage note
       if (!current.coverageNote && t.coverageNote) current.coverageNote = t.coverageNote;
       // Append questions
-      const transformed = t.mcqs.map(transformCuratedQuestionToStored);
+      // Append questions with deduplication check
+      const transformed = [];
+      let topicDups = 0;
+      for (const rawQ of t.mcqs) {
+        const q = transformCuratedQuestionToStored(rawQ);
+        const stem = normalizeStem(q.question || q.stem);
+        if (stem && seenStems.has(stem)) {
+          topicDups++;
+          totalDuplicatesSkipped++;
+          continue;
+        }
+        if (stem) seenStems.add(stem);
+        transformed.push(q);
+      }
       current.mcqs.push(...transformed);
       aggregated.set(key, current);
       console.log(`  - ${t.topicDisplayName} (${transformed.length} MCQs) — queued`);

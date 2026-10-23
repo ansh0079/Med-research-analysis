@@ -65,7 +65,16 @@ async function runPdfPreindex(article, deps) {
     }
 
     logger.debug({ id, url: url.slice(0, 80), oaSource }, '[pdfPreindex] Extracting PDF');
-    const extracted = await pdf.extractPdfText(url);
+    let extracted;
+    try {
+        extracted = await pdf.extractPdfText(url);
+    } catch (err) {
+        if (err?.code === 'BAD_CONTENT_TYPE' || err?.code === 'CONTENT_TOO_LARGE' || err?.code === 'UPSTREAM_ERROR' || err?.code === 'SSRF_BLOCKED') {
+            logger.debug({ id, url: url.slice(0, 80), err: err.message, code: err.code }, '[pdfPreindex] Remote URL returned non-PDF or failed upstream');
+            return { indexed: false, reason: err.code.toLowerCase(), id, oaSource: oaSource || null };
+        }
+        throw err;
+    }
 
     const payload = {
         sections: extracted.sections || {},
