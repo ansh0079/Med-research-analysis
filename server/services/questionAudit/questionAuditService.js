@@ -27,7 +27,8 @@ const STAGES = {
     },
     2: {
         provider: () => process.env.QUESTION_AUDIT_STAGE2_PROVIDER || 'gemini',
-        model: () => process.env.QUESTION_AUDIT_STAGE2_MODEL || 'gemini-2.5-pro',
+        // Secondary reviewer is a classification/verification pass; the lite tier suffices by default.
+        model: () => process.env.QUESTION_AUDIT_STAGE2_MODEL || process.env.GEMINI_LITE_MODEL || 'gemini-2.5-flash-lite',
         operation: 'question_audit_secondary',
     },
 };

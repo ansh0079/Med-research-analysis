@@ -16,10 +16,16 @@ const AI_PROVIDERS = {
 
 // Pinned model versions for reproducibility and deterministic outputs.
 const PINNED_MODELS = {
-    claude: 'claude-haiku-4-5-20251001',  // Fallback: reliable structured JSON, medical synthesis
-    gemini: 'gemini-2.5-flash',           // Primary: same job at ~1/3 the input cost (see resolveProvider)
-    geminiLite: 'gemini-2.5-flash-lite',  // Lite: agent memory, cheap conversational tasks only
-    geminiQuality: 'gemini-2.5-flash',    // Quality tier (same as Flash; upgrade to Pro when needed)
+    // Fallback: reliable structured JSON, medical synthesis
+    claude: 'claude-haiku-4-5-20251001',
+    // Gemini model tiers (env-overridable to tune cost/quality tradeoffs without code changes)
+    // - GEMINI_STANDARD_MODEL: default for general generation (defaults to Flash)
+    // - GEMINI_LITE_MODEL: used for classification/routing/drafts (defaults to Flash-Lite)
+    // - GEMINI_QUALITY_MODEL: used only when higher quality is explicitly requested (defaults to Standard)
+    gemini: process.env.GEMINI_STANDARD_MODEL || 'gemini-2.5-flash',
+    geminiLite: process.env.GEMINI_LITE_MODEL || 'gemini-2.5-flash-lite',
+    geminiQuality: process.env.GEMINI_QUALITY_MODEL || (process.env.GEMINI_STANDARD_MODEL || 'gemini-2.5-flash'),
+    // Mistral default
     mistral: 'mistral-small-2603',
 };
 
@@ -63,7 +69,8 @@ const { parseStructuredOutput } = require('../../utils/parseJson');
 
 function createAiService({ serverConfig, fetchImpl = fetch, onLlmCall = null }) {
     const f = fetchImpl;
-    const proxy = buildProxyService({ serverConfig, fetchImpl: f });
+    // Pass shared cache into the proxy so provider wrappers can use it (e.g., prompt-response cache)
+    const proxy = buildProxyService({ serverConfig, fetchImpl: f, cache: require('../../../cache') });
     const usageCallback = onLlmCall || (process.env.NODE_ENV === 'test' ? null : async (meta) => {
         const db = require('../../../database');
         const { createLlmUsageLogger, buildUsageEntry } = require('./llmUsageService');
@@ -117,7 +124,7 @@ function createAiService({ serverConfig, fetchImpl = fetch, onLlmCall = null }) 
         }
     }
 
-    async function executeProviderCall({ provider, model, prompt, usage, budget, allowBudgetSkip, maxOutputTokens, fn: rawFn }) {
+    async function executeProviderCall({ provider, model, prompt, usage, budget, allowBudgetSkip, maxOutputTokens, jsonMode, fn: rawFn }) {
         // Every provider call reports back so selection can route around an
         // account that is out of credit or using a rejected key -- see
         // providerHealth. Wrapped here because this is the one place that knows
@@ -406,6 +413,7 @@ function createAiService({ serverConfig, fetchImpl = fetch, onLlmCall = null }) 
             budget,
             allowBudgetSkip,
             maxOutputTokens: rest.maxOutputTokens,
+            jsonMode: rest.jsonMode,
             fn: () => mistralBreaker.fire(prompt, model, rest),
         });
     }
@@ -419,6 +427,7 @@ function createAiService({ serverConfig, fetchImpl = fetch, onLlmCall = null }) 
             budget,
             allowBudgetSkip,
             maxOutputTokens: rest.maxOutputTokens,
+            jsonMode: rest.jsonMode,
             fn: () => geminiBreaker.fire(prompt, model, rest),
         });
     }
