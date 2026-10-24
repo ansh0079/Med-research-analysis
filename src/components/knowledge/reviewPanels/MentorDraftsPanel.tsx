@@ -102,7 +102,7 @@ function DraftDetail({ draft, onReview, onPublish, reviewing }: { draft: TopicMe
             <ul className="mb-2 list-disc space-y-0.5 pl-5 text-[11px] text-slate-500">
               {page.overview_support.map((o, i) => (
                 <li key={i}>
-                  Overview sentence {o.sentence}:{' '}
+                  {o.sentence ? `Overview sentence ${o.sentence}:` : 'Removed overview sentence:'}{' '}
                   <span className={o.support.startsWith('No source') || o.support.startsWith('Recommend') ? 'font-semibold text-red-600' : 'font-semibold text-amber-700'}>{o.support}</span>
                   {o.pmids.length > 0 && <> (PMID {o.pmids.join(', ')})</>}. {o.note}
                 </li>
