@@ -28,7 +28,7 @@ export type TopicMentorDraftSource = {
 
 export type TopicMentorDraftPage = {
   mentor_intro: string;
-  teaching_points: Array<{ claim: string; cites: string[]; tier?: 'guideline' | 'review' | 'meta-analysis' | 'trial' | 'primary study' | 'other'; verification?: 'abstract_checked' | 'source_identified_figures_in_full_text'; figures_to_confirm?: string[] }>;
+  teaching_points: Array<{ claim: string; cites: string[]; tier?: 'guideline' | 'review' | 'meta-analysis' | 'trial' | 'primary study' | 'other'; verification?: 'abstract_checked' | 'source_identified_figures_in_full_text' | 'guideline_full_text_quote'; figures_to_confirm?: string[] }>;
   uncertainties: string[];
   mcq_angles: string[];
   case_hooks: string[];
