@@ -98,6 +98,17 @@ function DraftDetail({ draft, onReview, onPublish, reviewing }: { draft: TopicMe
         <div className="rounded-lg border border-amber-200 bg-amber-50/60 p-3 dark:border-amber-900/50 dark:bg-amber-950/20">
           <p className="mb-1 text-[10px] font-bold uppercase tracking-widest text-amber-700">Standard reference (textbook), no literature citation. Confirm against a current text or guideline before approving.</p>
           {page.standard_overview && <p className="mb-2 text-slate-600 dark:text-slate-400">{page.standard_overview}</p>}
+          {page.overview_support && page.overview_support.length > 0 && (
+            <ul className="mb-2 list-disc space-y-0.5 pl-5 text-[11px] text-slate-500">
+              {page.overview_support.map((o, i) => (
+                <li key={i}>
+                  Overview sentence {o.sentence}:{' '}
+                  <span className={o.support.startsWith('No source') || o.support.startsWith('Recommend') ? 'font-semibold text-red-600' : 'font-semibold text-amber-700'}>{o.support}</span>
+                  {o.pmids.length > 0 && <> (PMID {o.pmids.join(', ')})</>}. {o.note}
+                </li>
+              ))}
+            </ul>
+          )}
           <ul className="list-disc space-y-1 pl-5 text-slate-600 dark:text-slate-400">
             {(page.standard_knowledge || []).map((d, i) => (
               <li key={i}>
