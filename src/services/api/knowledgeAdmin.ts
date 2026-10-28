@@ -35,6 +35,7 @@ export type TopicMentorDraftPage = {
   gaps: string;
   /** Textbook knowledge with no literature citation; published after the cited points, labelled as standard reference. */
   standard_overview?: string;
+  guideline_recommendations?: Array<{ pmid: string; source: string; items: Array<{ num: string | null; text: string; grade: string; detail?: string }> }>;
   overview_support?: Array<{ sentence: number | null; support: string; pmids: string[]; note: string }>;
   standard_knowledge?: Array<{ claim: string; basis: 'textbook'; possible_support_pmid?: string; support_url?: string; support?: string; flag?: string }>;
   sources: TopicMentorDraftSource[];

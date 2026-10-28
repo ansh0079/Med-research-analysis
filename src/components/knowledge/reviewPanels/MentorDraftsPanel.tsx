@@ -97,6 +97,27 @@ function DraftDetail({ draft, onReview, onPublish, reviewing }: { draft: TopicMe
         </div>
       )}
 
+      {page.guideline_recommendations && page.guideline_recommendations.length > 0 && (
+        <div className="rounded-lg border border-emerald-200 bg-emerald-50/60 p-3 dark:border-emerald-900/50 dark:bg-emerald-950/20">
+          <p className="mb-1 text-[10px] font-bold uppercase tracking-widest text-emerald-700">Guideline recommendations (quoted word for word from the full text)</p>
+          {page.guideline_recommendations.map((g) => (
+            <details key={g.pmid} className="mb-1">
+              <summary className="cursor-pointer text-xs font-semibold text-slate-700 dark:text-slate-300">{g.source} ({g.items.length}) <span className="text-[10px] text-indigo-500">[PMID {g.pmid}]</span></summary>
+              <ol className="mt-1 list-none space-y-1 pl-0 text-slate-600 dark:text-slate-400">
+                {g.items.map((it, i) => (
+                  <li key={i}>
+                    {it.num && <span className="mr-1 font-mono text-[10px] text-slate-400">{it.num}</span>}
+                    {it.text}{' '}
+                    <span className="whitespace-nowrap text-[10px] font-semibold text-emerald-700">[{it.grade}]</span>
+                    {it.detail && <span className="block pl-4 text-[11px] text-slate-500">{it.detail}</span>}
+                  </li>
+                ))}
+              </ol>
+            </details>
+          ))}
+        </div>
+      )}
+
       {((page.standard_knowledge && page.standard_knowledge.length > 0) || page.standard_overview) && (
         <div className="rounded-lg border border-amber-200 bg-amber-50/60 p-3 dark:border-amber-900/50 dark:bg-amber-950/20">
           <p className="mb-1 text-[10px] font-bold uppercase tracking-widest text-amber-700">Standard reference (textbook), no literature citation. Confirm against a current text or guideline before approving.</p>
