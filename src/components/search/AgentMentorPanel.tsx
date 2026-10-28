@@ -192,6 +192,28 @@ export const AgentMentorPanel: React.FC<AgentMentorPanelProps> = ({
           ))}
         </div>
       )}
+      {(agentGuidance.guidelineRecommendations || []).length > 0 && (
+        <div>
+          <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-2">Guideline recommendations</p>
+          {(agentGuidance.guidelineRecommendations || []).map((g) => (
+            <details key={g.pmid} className="mb-1.5 rounded-lg border border-slate-100 dark:border-slate-700 px-2 py-1">
+              <summary className="cursor-pointer text-xs font-semibold text-slate-700 dark:text-slate-300">
+                {g.source} <span className="text-[10px] font-normal text-slate-400">({g.items.length} statements, quoted from the guideline)</span>
+              </summary>
+              <ol className="mt-1.5 space-y-1.5 list-none pl-0">
+                {g.items.map((it, i) => (
+                  <li key={i} className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+                    {it.num && <span className="mr-1 font-mono text-[10px] text-slate-400">{it.num}</span>}
+                    {it.text}{' '}
+                    {it.grade && <span className="whitespace-nowrap text-[10px] font-semibold text-emerald-700 dark:text-emerald-400">[{it.grade}]</span>}
+                    {it.detail && <span className="block pl-4 text-[11px] text-slate-500">{it.detail}</span>}
+                  </li>
+                ))}
+              </ol>
+            </details>
+          ))}
+        </div>
+      )}
       {agentGuidance.teachingPoints.length > 0 && (
         <div>
           <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-2">Key Teaching Points</p>

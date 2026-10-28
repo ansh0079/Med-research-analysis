@@ -25,6 +25,7 @@ function createSearchTopicHelpers({ db, logger, serverConfig }) {
             awaitingReview: k.awaitingReview === true,
             seminalPapers,
             teachingPoints,
+            guidelineRecommendations: Array.isArray(k.guidelineRecommendations) ? k.guidelineRecommendations.slice(0, 6) : [],
             verifiedAnchors,
             caseGenerationHooks: Array.isArray(k.caseGenerationHooks) ? k.caseGenerationHooks.slice(0, 5) : [],
             mcqAngles: Array.isArray(k.mcqAngles) ? k.mcqAngles.slice(0, 5) : [],

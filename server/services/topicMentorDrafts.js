@@ -125,6 +125,14 @@ function draftToKnowledge(page) {
             mcqAngles: page.mcq_angles || [],
             controversies: (page.uncertainties || []).map((issue) => ({ issue, sourceIndices: [], guidelineIndices: [] })),
             reviewerGaps: page.gaps || '',
+            guidelineRecommendations: (Array.isArray(page.guideline_recommendations) ? page.guideline_recommendations : [])
+                .filter((g) => g && g.pmid && Array.isArray(g.items))
+                .map((g) => ({
+                    pmid: String(g.pmid),
+                    source: g.source || '',
+                    sourceIndex: indexOf.get(String(g.pmid)) || null,
+                    items: g.items.filter((i) => i && i.text).map((i) => ({ num: i.num || null, text: i.text, grade: i.grade || '', ...(i.detail ? { detail: i.detail } : {}) })),
+                })),
             sourceArticles,
         },
         sourceArticles,
