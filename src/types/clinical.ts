@@ -64,7 +64,7 @@ export interface AgentGuidance {
     confidence?: 'HIGH' | 'MODERATE' | 'LOW' | 'VERY_LOW';
   }>;
   /** Recommendations quoted word for word from the topic's guidelines, grouped by guideline. */
-  guidelineRecommendations?: Array<{ pmid: string; source: string; sourceIndex?: number | null; items: Array<{ num: string | null; text: string; grade: string; detail?: string }> }>;
+  guidelineRecommendations?: Array<{ pmid: string; source: string; note?: string; sourceIndex?: number | null; items: Array<{ num: string | null; text: string; grade: string; detail?: string }> }>;
   /** Clinician-verified teaching anchors preserved across AI refresh. */
   verifiedAnchors?: Array<{
     id: string;

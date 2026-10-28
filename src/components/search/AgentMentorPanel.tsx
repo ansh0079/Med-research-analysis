@@ -200,6 +200,7 @@ export const AgentMentorPanel: React.FC<AgentMentorPanelProps> = ({
               <summary className="cursor-pointer text-xs font-semibold text-slate-700 dark:text-slate-300">
                 {g.source} <span className="text-[10px] font-normal text-slate-400">({g.items.length} statements, quoted from the guideline)</span>
               </summary>
+              {g.note && <p className="mt-1 text-[10px] italic text-slate-400">{g.note}</p>}
               <ol className="mt-1.5 space-y-1.5 list-none pl-0">
                 {g.items.map((it, i) => (
                   <li key={i} className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">

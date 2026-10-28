@@ -130,6 +130,7 @@ function draftToKnowledge(page) {
                 .map((g) => ({
                     pmid: String(g.pmid),
                     source: g.source || '',
+                    note: g.note || '',
                     sourceIndex: indexOf.get(String(g.pmid)) || null,
                     items: g.items.filter((i) => i && i.text).map((i) => ({ num: i.num || null, text: i.text, grade: i.grade || '', ...(i.detail ? { detail: i.detail } : {}) })),
                 })),

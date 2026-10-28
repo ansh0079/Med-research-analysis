@@ -103,6 +103,7 @@ function DraftDetail({ draft, onReview, onPublish, reviewing }: { draft: TopicMe
           {page.guideline_recommendations.map((g) => (
             <details key={g.pmid} className="mb-1">
               <summary className="cursor-pointer text-xs font-semibold text-slate-700 dark:text-slate-300">{g.source} ({g.items.length}) <span className="text-[10px] text-indigo-500">[PMID {g.pmid}]</span></summary>
+              {g.note && <p className="mt-1 text-[10px] italic text-slate-500">{g.note}</p>}
               <ol className="mt-1 list-none space-y-1 pl-0 text-slate-600 dark:text-slate-400">
                 {g.items.map((it, i) => (
                   <li key={i}>
