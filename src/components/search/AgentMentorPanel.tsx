@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button } from '@components/ui/Button';
 import { api } from '@services/api';
-import type { AgentGuidance } from '@types';
+import type { AgentGuidance, LinkedTopicDocument } from '@types';
 import { isLandmarkSeedKnowledge } from '@utils/topicKnowledgeTrust';
 
 interface AgentMentorPanelProps {
@@ -36,6 +36,16 @@ export const AgentMentorPanel: React.FC<AgentMentorPanelProps> = ({
   onAgentGuidanceChange,
 }) => {
   const [open, setOpen] = React.useState(false);
+  const [linkedDocs, setLinkedDocs] = React.useState<LinkedTopicDocument[]>([]);
+  React.useEffect(() => {
+    let cancelled = false;
+    setLinkedDocs([]);
+    if (!agentGuidance.topic) return undefined;
+    api.knowledge.getTopicDocuments(agentGuidance.topic)
+      .then((docs: LinkedTopicDocument[]) => { if (!cancelled) setLinkedDocs(docs); })
+      .catch(() => { /* the list is supplementary; a failed read just hides it */ });
+    return () => { cancelled = true; };
+  }, [agentGuidance.topic]);
   const [memoryFeedback, setMemoryFeedback] = React.useState<'helpful' | 'not_helpful' | null>(null);
   const [feedbackBusy, setFeedbackBusy] = React.useState(false);
 
@@ -213,6 +223,22 @@ export const AgentMentorPanel: React.FC<AgentMentorPanelProps> = ({
               </ol>
             </details>
           ))}
+        </div>
+      )}
+      {linkedDocs.length > 0 && (
+        <div>
+          <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-2">Reviewed source documents</p>
+          <ul className="space-y-1">
+            {linkedDocs.map((d) => (
+              <li key={d.pmid} className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+                <a href={`https://pubmed.ncbi.nlm.nih.gov/${d.pmid}/`} target="_blank" rel="noreferrer" className="hover:underline">
+                  {d.title || `PMID ${d.pmid}`}
+                </a>
+                {d.year ? <span className="text-slate-400"> ({d.year})</span> : null}
+                {d.kind ? <span className="ml-1 text-[10px] uppercase tracking-wide text-slate-400">{d.kind}</span> : null}
+              </li>
+            ))}
+          </ul>
         </div>
       )}
       {agentGuidance.teachingPoints.length > 0 && (

@@ -2,6 +2,7 @@
 import type {
   Article,
   AgentGuidance,
+  LinkedTopicDocument,
   TopicKnowledge,
   TopicKnowledgeListResponse,
   TopicKnowledgeProposal,
@@ -19,6 +20,13 @@ export class KnowledgeCoreApi extends BaseApiClient {
     }
     if (!response.ok) await this.parseErrorResponse(response);
     return response.json();
+  }
+
+  async getTopicDocuments(topic: string): Promise<LinkedTopicDocument[]> {
+    const response = await this.fetchWithSession(`${API_BASE}/api/knowledge/${encodeURIComponent(topic)}/documents`);
+    if (!response.ok) return [];
+    const body = (await response.json()) as { documents?: LinkedTopicDocument[] };
+    return Array.isArray(body.documents) ? body.documents : [];
   }
 
   async refreshTopicKnowledge(topic: string): Promise<{ agentGuidance: AgentGuidance; topicKnowledge: TopicKnowledge }> {

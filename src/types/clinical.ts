@@ -39,6 +39,14 @@ export interface Contradiction {
   clinicalImplication: string;
 }
 
+export interface LinkedTopicDocument {
+  pmid: string;
+  title: string | null;
+  year: number | string | null;
+  kind: string | null;
+  fullTextAvailable: boolean;
+}
+
 export interface AgentGuidance {
   topic: string;
   status: string;

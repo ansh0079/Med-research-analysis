@@ -2,6 +2,7 @@
 
 const { listDrafts, getDraft, reviewDraft, publishDraft } = require('../services/topicMentorDrafts');
 const { evaluateMentorEvidenceClearance } = require('../services/mentorEvidenceClearanceService');
+const { summariseSourceLinks } = require('../services/topicDocuments');
 
 function registerAdminTopicDraftRoutes(app, { db, requireAuthJwt, requireRole }) {
     app.get('/api/admin/topic-mentor-drafts', requireAuthJwt, requireRole('admin', 'curator'), async (req, res) => {
@@ -48,7 +49,8 @@ function registerAdminTopicDraftRoutes(app, { db, requireAuthJwt, requireRole })
             const draft = await getDraft(db, req.params.topicId);
             if (!draft) return res.status(404).json({ error: 'Draft not found' });
             const clearance = await evaluateMentorEvidenceClearance(db, draft.page);
-            res.json({ topicId: draft.topicId, clearance });
+            const sourceLinks = await summariseSourceLinks(db, draft.topicId, draft.page?.sources);
+            res.json({ topicId: draft.topicId, clearance, sourceLinks });
         } catch (error) {
             req.log.error({ err: error }, 'Topic mentor evidence verification error');
             res.status(500).json({ error: 'Internal server error' });
