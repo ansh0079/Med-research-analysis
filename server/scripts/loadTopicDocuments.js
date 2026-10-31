@@ -39,7 +39,7 @@ async function main() {
         stats.read += 1;
         const rec = JSON.parse(line);
         const pmid = String(rec.pmid || '').trim();
-        const topics = await db.all('SELECT id, name FROM curriculum_topics WHERE lower(name) = lower(?)', [rec.topic]);
+        const topics = await db.all('SELECT id, display_name AS name FROM curriculum_topics WHERE lower(display_name) = lower(?)', [rec.topic]);
         if (topics.length === 0) { stats.noTopic += 1; problems.push(`no topic: ${rec.topic}`); continue; }
         if (topics.length > 1) { stats.ambiguous += 1; problems.push(`ambiguous topic (${topics.length}): ${rec.topic}`); continue; }
         const doc = await db.get('SELECT id FROM guideline_documents WHERE pmid = ? LIMIT 1', [pmid]);
