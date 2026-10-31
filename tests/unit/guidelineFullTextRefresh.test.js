@@ -252,7 +252,7 @@ describe('guideline full-text database selector', () => {
         const Db = applyGuidelineMixin(Base);
         const db = new Db();
         await db.listGuidelineDocumentsNeedingFullText({ limit: 10 });
-        expect(db.query.sql).toContain("full_text_source = 'abstract'");
+        expect(db.query.sql).toContain("full_text_source IN ('abstract', 'bibliographic_abstract')");
         expect(db.query.sql).toContain('pmid IS NOT NULL');
         expect(db.query.sql).toContain('doi IS NOT NULL');
     });

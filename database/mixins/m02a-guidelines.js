@@ -338,9 +338,9 @@ async upsertGuidelineDocument(doc) {
                 source_body = COALESCE(source_body, ?), source_year = COALESCE(source_year, ?),
                 source_url = COALESCE(source_url, ?), document_label = COALESCE(document_label, ?),
                 evidence_tier = COALESCE(evidence_tier, ?),
-                full_text = CASE WHEN ? = 1 AND full_text_source = 'abstract' THEN ? ELSE COALESCE(full_text, ?) END,
-                full_text_source = CASE WHEN ? = 1 AND full_text_source = 'abstract' THEN ? ELSE COALESCE(full_text_source, ?) END,
-                word_count = CASE WHEN ? = 1 AND full_text_source = 'abstract' THEN ? ELSE COALESCE(word_count, ?) END,
+                full_text = CASE WHEN ? = 1 AND (full_text_source IS NULL OR full_text_source IN ('abstract', 'bibliographic_abstract')) THEN ? ELSE COALESCE(full_text, ?) END,
+                full_text_source = CASE WHEN ? = 1 AND (full_text_source IS NULL OR full_text_source IN ('abstract', 'bibliographic_abstract')) THEN ? ELSE COALESCE(full_text_source, ?) END,
+                word_count = CASE WHEN ? = 1 AND (full_text_source IS NULL OR full_text_source IN ('abstract', 'bibliographic_abstract')) THEN ? ELSE COALESCE(word_count, ?) END,
                 fetched_at = COALESCE(fetched_at, ?), updated_at = ?
              WHERE id = ?`,
             [
@@ -533,7 +533,7 @@ async listGuidelineDocumentsNeedingFullText({ limit = 25 } = {}) {
     return this.all(
         `SELECT id, pmcid, pmid, doi, title, source_body, source_year, full_text_source
          FROM guideline_documents
-         WHERE (full_text_source = 'abstract' OR full_text IS NULL OR LENGTH(full_text) = 0)
+         WHERE (full_text_source IS NULL OR full_text_source IN ('abstract', 'bibliographic_abstract') OR full_text IS NULL OR LENGTH(full_text) = 0)
            AND (
                 (pmcid IS NOT NULL AND pmcid != '')
                 OR (pmid IS NOT NULL AND pmid != '')
