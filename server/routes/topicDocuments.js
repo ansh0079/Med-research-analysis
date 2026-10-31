@@ -7,7 +7,9 @@ function registerTopicDocumentRoutes(app, { db, requireJson, requireAuthJwt, req
     app.get('/api/knowledge/:topic/documents', rateLimit(60, 60), async (req, res) => {
         try {
             const documents = await getConfirmedDocumentsForTopic(db, req.params.topic);
-            res.json({ topic: req.params.topic, documents });
+            // Review bookkeeping (reviewer, batch, vetting notes) stays server-side; learners get the document itself.
+            const publicDocuments = documents.map(({ pmid, title, year, kind, fullTextAvailable }) => ({ pmid, title, year, kind, fullTextAvailable }));
+            res.json({ topic: req.params.topic, documents: publicDocuments });
         } catch (error) {
             req.log.error({ err: error }, 'Topic documents read error');
             res.status(500).json({ error: 'Internal server error' });
