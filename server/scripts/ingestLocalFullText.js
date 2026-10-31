@@ -9,6 +9,7 @@
  *
  * Input: a JSON-lines file, one paper per line:
  *   {"pmid": "24054878", "doi": "10.1016/...", "title": "...", "year": "2013", "tier": "guideline", "text": "..."}
+ * Add "source": "jats" for text taken from an open-access article's XML; anything else is stored as "pdf".
  * tier is one of guideline | review | meta-analysis | trial (anything else is stored as "literature").
  *
  * Usage:
@@ -62,7 +63,7 @@ async function main() {
             sourceYear: rec.year || null,
             evidenceTier: TIERS.has(rec.tier) ? rec.tier : 'literature',
             fullText: text,
-            fullTextSource: 'pdf',
+            fullTextSource: rec.source === 'jats' ? 'jats' : 'pdf',
         });
     }
     console.log(APPLY ? 'applied' : 'dry run', stats);
