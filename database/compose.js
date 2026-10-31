@@ -36,6 +36,7 @@ const MIXIN_LAYERS = [
     ['m18-case-sessions', require('./mixins/m18-case-sessions')],
     ['m19-account-privacy', require('./mixins/m19-account-privacy')],
     ['m20-policy-concepts', require('./mixins/m20-policy-concepts')],
+    ['m21-topic-documents', require('./mixins/m21-topic-documents')],
 ];
 
 const ALLOWED_REPLACEMENTS = {
