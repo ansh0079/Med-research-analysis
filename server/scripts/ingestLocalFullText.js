@@ -33,7 +33,7 @@ if (!FILE) {
 
 // PDF extraction can leave NUL bytes and unpaired surrogates, which Postgres rejects as invalid UTF-8.
 const sanitize = (v) => String(v || '')
-    .replace(/\u0000/g, '')
+    .split(String.fromCharCode(0)).join('')
     .replace(/[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?<![\uD800-\uDBFF])[\uDC00-\uDFFF]/g, '');
 const TIERS = new Set(['guideline', 'review', 'meta-analysis', 'trial']);
 const FULL = new Set(['jats', 'pdf', 'manual', 'nice_html']);
