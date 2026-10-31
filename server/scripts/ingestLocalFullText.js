@@ -31,6 +31,10 @@ if (!FILE) {
     process.exit(1);
 }
 
+// PDF extraction can leave NUL bytes and unpaired surrogates, which Postgres rejects as invalid UTF-8.
+const sanitize = (v) => String(v || '')
+    .replace(/\u0000/g, '')
+    .replace(/[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?<![\uD800-\uDBFF])[\uDC00-\uDFFF]/g, '');
 const TIERS = new Set(['guideline', 'review', 'meta-analysis', 'trial']);
 const FULL = new Set(['jats', 'pdf', 'manual', 'nice_html']);
 
@@ -44,7 +48,7 @@ async function main() {
         stats.read += 1;
         const rec = JSON.parse(line);
         const pmid = String(rec.pmid || '').trim();
-        const text = String(rec.text || '').replace(/\s+/g, ' ').trim();
+        const text = sanitize(rec.text).replace(/\s+/g, ' ').trim();
         if (!/^\d{5,9}$/.test(pmid)) { stats.skippedNoPmid += 1; continue; }
         if (text.length < MIN_CHARS) { stats.skippedShort += 1; continue; }
         const existing = await db.get('SELECT id, full_text_source FROM guideline_documents WHERE pmid = ? LIMIT 1', [pmid]);
@@ -54,7 +58,7 @@ async function main() {
         await db.upsertGuidelineDocument({
             pmid,
             doi: rec.doi || null,
-            title: rec.title || null,
+            title: rec.title ? sanitize(rec.title) : null,
             sourceYear: rec.year || null,
             evidenceTier: TIERS.has(rec.tier) ? rec.tier : 'literature',
             fullText: text,
