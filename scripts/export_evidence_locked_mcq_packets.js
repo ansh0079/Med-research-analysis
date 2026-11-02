@@ -17,6 +17,19 @@ const stop = new Set('a an and are as at be by for from has have in is it of on 
 const tokens = (value) => [...new Set(String(value || '').toLowerCase().match(/[a-z0-9]+/g) || [])]
     .filter((word) => word.length >= 3 && !stop.has(word));
 const normalize = (value) => String(value || '').replace(/\s+/g, ' ').trim();
+const topicSynonyms = new Map([
+    ['acute confusion', ['delirium', 'acute confusional state']],
+]);
+
+function topicRelevant(topic, document) {
+    const topicText = normalize(topic).toLowerCase();
+    const evidenceText = normalize(`${document.title || ''} ${document.full_text || ''}`).toLowerCase();
+    if (evidenceText.includes(topicText)) return true;
+    if ((topicSynonyms.get(topicText) || []).some((synonym) => evidenceText.includes(synonym))) return true;
+    const topicTokens = tokens(topic).filter((token) => token.length >= 5);
+    const hits = topicTokens.filter((token) => evidenceText.includes(token));
+    return topicTokens.length >= 2 && hits.length >= 2 && hits.length / topicTokens.length >= 0.5;
+}
 
 function passages(fullText, query) {
     const queryTokens = tokens(query);
@@ -51,6 +64,7 @@ for (const object of objects) {
         const evidence = candidateIds.map((id) => documents.get(String(id))).filter(Boolean)
             .filter((row) => normalize(row.full_text).length >= 500
                 && !['abstract', 'bibliographic_abstract'].includes(String(row.full_text_source || '').toLowerCase()))
+            .filter((row) => topicRelevant(topic, row))
             .map((row) => ({ documentId: row.id, title: row.title, pmid: row.pmid, pmcid: row.pmcid,
                 doi: row.doi, sourceUrl: row.source_url, passages: passages(row.full_text, query) }))
             .filter((row) => row.passages.length);
