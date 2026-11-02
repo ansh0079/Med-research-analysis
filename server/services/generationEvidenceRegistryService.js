@@ -41,11 +41,13 @@ function generationKind(objectType) {
 function evidenceEntries(object = {}) {
     const payload = object.payload || {};
     const entries = [];
-    if (object.articleUid || payload.paper) entries.push({
-        ref: { ...(payload.paper || {}), articleUid: object.articleUid || payload.paper?.uid },
-        role: 'primary_source', questionId: null, claimKey: null, exactQuote: null,
-        sourceVersionId: payload.lineage?.sourceVersionId || payload.claimSupport?.sourceVersionId || null,
-    });
+    if (object.articleUid || payload.paper) {
+        entries.push({
+            ref: { ...(payload.paper || {}), articleUid: object.articleUid || payload.paper?.uid },
+            role: 'primary_source', questionId: null, claimKey: null, exactQuote: null,
+            sourceVersionId: payload.lineage?.sourceVersionId || payload.claimSupport?.sourceVersionId || null,
+        });
+    }
     for (const claim of (Array.isArray(payload.claimAnchors) ? payload.claimAnchors : [])) {
         entries.push({ ref: claim, role: 'synopsis_claim', questionId: null,
             claimKey: claim.claimKey || null, exactQuote: claim.exactQuote || claim.quote || null,
@@ -59,11 +61,13 @@ function evidenceEntries(object = {}) {
             ['mcq_source', question.sourceRefs], ['mcq_anchor', question.evidenceAnchors],
             ['mcq_candidate', question.evidenceCandidates],
         ]) {
-            for (const ref of (Array.isArray(refs) ? refs : [])) entries.push({
-                ref, role, questionId, claimKey: question.claimKey || null,
-                exactQuote: ref.exactQuote || ref.quote || ref.excerpt || null,
-                sourceVersionId: ref.sourceVersionId || null,
-            });
+            for (const ref of (Array.isArray(refs) ? refs : [])) {
+                entries.push({
+                    ref, role, questionId, claimKey: question.claimKey || null,
+                    exactQuote: ref.exactQuote || ref.quote || ref.excerpt || null,
+                    sourceVersionId: ref.sourceVersionId || null,
+                });
+            }
         }
         if (question.documentId || question.pmid || question.doi || question.sourceUrl || question.sourceArticleUid) {
             entries.push({ ref: question, role: 'mcq_source', questionId,
