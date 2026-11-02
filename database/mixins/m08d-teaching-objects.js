@@ -124,7 +124,16 @@ async upsertTeachingObject(object = {}) {
             ['teaching_object', objectKey, 'teaching_object_changed', now],
         ).catch(() => null);
     }
-    return this.getTeachingObjectByKey(objectKey);
+    const stored = await this.getTeachingObjectByKey(objectKey);
+    // Keep an explicit topic -> generated content -> evidence-document registry. This is
+    // deliberately best-effort for legacy callers, but a failed registry write is visible in logs
+    // and never upgrades the review state of the generated content.
+    await require('../../server/services/generationEvidenceRegistryService')
+        .registerTeachingObjectEvidence(this, { ...object, objectKey, topic, normalizedTopic }, stored)
+        .catch((error) => require('../../server/config/logger').warn(
+            { err: error, objectKey }, 'generation evidence registry write failed',
+        ));
+    return stored;
 }
 
 /**

@@ -184,7 +184,8 @@ async function main() {
     const params = [];
     if (ONLY_ID) { where.push('id = ?'); params.push(ONLY_ID); }
     else if (!FORCE) { where.push('synopsis_json IS NULL'); }
-    const sql = `SELECT id, title, source_body, source_year, full_text FROM guideline_documents
+    const sql = `SELECT id, pmcid, pmid, doi, title, source_body, source_year, source_url,
+                        full_text, synopsis_generated_at, synopsis_model FROM guideline_documents
                  ${where.length ? 'WHERE ' + where.join(' AND ') : ''}
                  ORDER BY id LIMIT ${LIMIT}`;
     const rows = await db.all(sql, params);
@@ -208,10 +209,16 @@ async function main() {
             console.log(`  OK    [${doc.id}] ${doc.title.slice(0, 60)} -- ${parsed.keyRecommendations.length} recs`);
             ok++;
             if (!DRY_RUN) {
+                const generatedAt = new Date().toISOString();
+                const synopsisModel = PROVIDER === 'anthropic' ? 'claude-sonnet-4-6' : 'gemini-2.5-flash';
                 await db.run(
                     'UPDATE guideline_documents SET synopsis_json = ?, synopsis_generated_at = ?, synopsis_model = ? WHERE id = ?',
-                    [JSON.stringify(parsed), new Date().toISOString(), PROVIDER === 'anthropic' ? 'claude-sonnet-4-6' : 'gemini-2.5-flash', doc.id]
+                    [JSON.stringify(parsed), generatedAt, synopsisModel, doc.id]
                 );
+                await require('../services/generationEvidenceRegistryService').registerGuidelineDocumentSynopsis(db, {
+                    ...doc, synopsis_json: JSON.stringify(parsed), synopsis_generated_at: generatedAt,
+                    synopsis_model: synopsisModel,
+                });
             }
         } catch (e) {
             console.log(`  ERROR [${doc.id}] ${doc.title.slice(0, 60)} -- ${e.message.slice(0, 120)}`);
