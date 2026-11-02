@@ -95,6 +95,17 @@ async function storeVerifiedDraft(db, input) {
             JSON.stringify(input.replacement), JSON.stringify(documentIds), 'verified_exact_quotes',
             'unreviewed', 'codex_task_no_cloud_llm', generatedAt, generatedAt, generatedAt],
     );
+    const { registerTeachingObjectEvidence } = require('./generationEvidenceRegistryService');
+    await registerTeachingObjectEvidence(db, {
+        objectKey: `evidence-locked-mcq-draft:${draftKey}`,
+        objectType: 'evidence_locked_mcq_draft', topic, normalizedTopic: normalizeTopic(topic),
+        curriculumTopicId: input.curriculumTopicId || null,
+        provider: 'codex_task', model: 'codex_no_cloud_api', reviewState: 'unreviewed', generatedAt,
+        payload: {
+            mcqs: [{ ...input.replacement, id: input.sourceQuestionId || `index:${input.sourceQuestionIndex}`,
+                evidenceAnchors: quotedAnchors(input.replacement) }],
+        },
+    });
     return { draftKey, documentIds, reviewState: 'unreviewed' };
 }
 

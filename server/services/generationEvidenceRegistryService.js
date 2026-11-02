@@ -85,7 +85,8 @@ async function registerTeachingObjectEvidence(db, object = {}, stored = null) {
     const topic = String(object.topic || stored?.topic || object.normalizedTopic || '').trim();
     if (!objectKey || !topic) return { registered: 0 };
     const normalizedTopic = object.normalizedTopic || stored?.normalizedTopic || db.normalizeTopic(topic);
-    const curriculumTopicId = stored?.curriculumTopicId || stored?.curriculum_topic_id || null;
+    const curriculumTopicId = object.curriculumTopicId || stored?.curriculumTopicId
+        || stored?.curriculum_topic_id || null;
     const generatedAt = object.generatedAt || stored?.generatedAt || new Date().toISOString();
     let registered = 0;
     for (const entry of evidenceEntries(object)) {
