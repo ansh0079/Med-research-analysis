@@ -18,7 +18,13 @@ async function main() {
     await db.connect();
     const results = [];
     for (const draft of batch.drafts) {
-        results.push(await storeVerifiedDraft(db, { ...draft, batchId: batch.batchId }));
+        const result = await storeVerifiedDraft(db, { ...draft, batchId: batch.batchId });
+        await db.run(`UPDATE evidence_locked_mcq_regeneration_queue
+            SET status = ?, status_reason = ?, updated_at = ?
+            WHERE source_object_key = ? AND source_question_index = ?`,
+        ['draft_created', `Unreviewed draft ${result.draftKey}`, new Date().toISOString(),
+            draft.sourceObjectKey, Number(draft.sourceQuestionIndex)]).catch(() => null);
+        results.push(result);
     }
     console.log(JSON.stringify({ batchId: batch.batchId, imported: results.length, results }, null, 2));
     await db.close();
