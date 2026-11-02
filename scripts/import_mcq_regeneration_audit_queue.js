@@ -45,7 +45,7 @@ async function main() {
     if (!input) throw new Error('Audit CSV path is required');
     const audited = parseCsv(fs.readFileSync(input, 'utf8')).filter((row) => row.outcome === 'regenerate');
     await db.connect();
-    const [objectRows, documentRows, catalogueRows, guidelineRows] = await Promise.all([
+    const [objectRows, documentRows, catalogueRows, guidelineRows, knowledgeRows] = await Promise.all([
         db.all('SELECT id,object_key,topic,normalized_topic,curriculum_topic_id,object_payload FROM teaching_objects'),
         db.all(`SELECT id,title,pmid,pmcid,doi,source_url,full_text,full_text_source FROM guideline_documents
                 WHERE length(trim(COALESCE(full_text,''))) >= 500
@@ -54,9 +54,31 @@ async function main() {
                 WHERE guideline_document_id IS NOT NULL`),
         db.all(`SELECT normalized_topic,document_id FROM topic_guidelines
                 WHERE document_id IS NOT NULL AND status IN ('active','ai_extracted')`),
+        db.all(`SELECT topic,normalized_topic,source_articles FROM topic_knowledge
+                WHERE source_articles IS NOT NULL AND source_articles <> '[]'`),
     ]);
     const objects = new Map(objectRows.map((row) => [row.object_key, row]));
+    const locationsById = new Map(); const locationsByText = new Map();
+    const addLocation = (map, key, location) => {
+        if (!key) return;
+        if (!map.has(key)) map.set(key, []);
+        map.get(key).push(location);
+    };
+    for (const object of objectRows) {
+        let payload = {}; try { payload = JSON.parse(object.object_payload || '{}'); } catch { payload = {}; }
+        (payload.mcqs || []).forEach((question, index) => {
+            const location = { object, question, index };
+            addLocation(locationsById, String(question.id || ''), location);
+            addLocation(locationsByText, norm(question.question), location);
+        });
+    }
     const documents = { byId: new Map(documentRows.map((row) => [String(row.id), row])) };
+    const documentsByPmid = new Map(documentRows.filter((row) => row.pmid)
+        .map((row) => [String(row.pmid), row.id]));
+    const documentsByDoi = new Map(documentRows.filter((row) => row.doi)
+        .map((row) => [String(row.doi).toLowerCase().replace(/^https?:\/\/(?:dx\.)?doi\.org\//, ''), row.id]));
+    const documentsByUrl = new Map(documentRows.filter((row) => row.source_url)
+        .map((row) => [String(row.source_url).replace(/\/$/, ''), row.id]));
     const linksByTopic = new Map(); const linksByTopicId = new Map();
     const add = (map, key, value) => { if (!key || !documents.byId.has(String(value))) return;
         if (!map.has(key)) map.set(key, new Set()); map.get(key).add(Number(value)); };
@@ -65,13 +87,33 @@ async function main() {
         add(linksByTopicId, String(row.topic_id || ''), row.guideline_document_id);
     }
     for (const row of guidelineRows) add(linksByTopic, norm(row.normalized_topic), row.document_id);
+    for (const row of knowledgeRows) {
+        let articles = []; try { articles = JSON.parse(row.source_articles || '[]'); } catch { articles = []; }
+        for (const article of articles) {
+            const pmid = String(article?.pmid || article?.url || '').match(/(?:pubmed\.ncbi\.nlm\.nih\.gov\/)?(\d{5,9})/)?.[1];
+            const doi = String(article?.doi || '').toLowerCase().replace(/^https?:\/\/(?:dx\.)?doi\.org\//, '');
+            const url = String(article?.url || '').replace(/\/$/, '');
+            const documentId = article?.documentId || documentsByPmid.get(pmid)
+                || documentsByDoi.get(doi) || documentsByUrl.get(url);
+            add(linksByTopic, norm(row.normalized_topic || row.topic), documentId);
+        }
+    }
     const counts = { audited: audited.length, ready_for_generation: 0, awaiting_evidence: 0,
         cleared_existing_exact_anchor: 0, mapping_mismatch: 0 };
     for (const row of audited) {
-        const object = objects.get(row.object_key); let question = null; let status; let reason;
+        let object = objects.get(row.object_key); let question = null;
+        let questionIndex = Number(row.question_index); let status; let reason;
         if (object) {
             let payload = {}; try { payload = JSON.parse(object.object_payload || '{}'); } catch { payload = {}; }
-            question = (payload.mcqs || [])[Number(row.question_index)] || null;
+            question = (payload.mcqs || [])[questionIndex] || null;
+        }
+        if (!question || norm(question.question) !== norm(row.question)) {
+            let matches = [...(locationsById.get(String(row.question_id || '')) || []),
+                ...(locationsByText.get(norm(row.question)) || [])];
+            matches = [...new Map(matches.map((match) => [`${match.object.object_key}#${match.index}`, match])).values()];
+            const topicMatches = matches.filter((match) => norm(match.object.topic || match.object.normalized_topic) === norm(row.topic));
+            if (topicMatches.length === 1) matches = topicMatches;
+            if (matches.length === 1) [{ object, question, index: questionIndex }] = matches;
         }
         if (!object || !question) { status = 'mapping_mismatch'; reason = 'Object or question index not found'; }
         else if (norm(question.question) !== norm(row.question)) {
@@ -92,10 +134,11 @@ async function main() {
             (queue_key,topic,normalized_topic,source_object_key,source_question_id,source_question_index,
              audited_question,current_question,curriculum_topic_id,candidate_document_ids,status,status_reason,
              audit_batch,created_at,updated_at) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
-            ON CONFLICT(queue_key) DO UPDATE SET current_question=excluded.current_question,
+            ON CONFLICT(queue_key) DO UPDATE SET source_object_key=excluded.source_object_key,
+             source_question_index=excluded.source_question_index,current_question=excluded.current_question,
              curriculum_topic_id=excluded.curriculum_topic_id,candidate_document_ids=excluded.candidate_document_ids,
              status=excluded.status,status_reason=excluded.status_reason,updated_at=excluded.updated_at`,
-        [key, row.topic, norm(row.topic), row.object_key, row.question_id || null, Number(row.question_index),
+        [key, row.topic, norm(row.topic), object?.object_key || row.object_key, row.question_id || null, questionIndex,
             row.question, question?.question || null, object?.curriculum_topic_id || null,
             JSON.stringify(row.candidateDocumentIds || []), status, reason, auditBatch,
             new Date().toISOString(), new Date().toISOString()]);
