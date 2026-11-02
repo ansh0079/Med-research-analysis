@@ -45,8 +45,9 @@ async function main() {
         db.all(`SELECT id,title,pmid,pmcid,doi,source_url,full_text,full_text_source
                 FROM guideline_documents WHERE length(trim(COALESCE(full_text,''))) >= 500`),
         db.all(`SELECT id,object_key,topic,normalized_topic,curriculum_topic_id,object_payload
-                FROM teaching_objects WHERE object_type IN ('curated_topic_mcq','verified_topic_mcq')
-                AND review_state IN ('approved','verified','human_reviewed') ORDER BY topic,object_key`),
+                FROM teaching_objects WHERE object_type IN
+                ('curated_topic_mcq','verified_topic_mcq','guideline_mcq','cold_start_mcq','paper_mcq','live_quiz_mcq')
+                ORDER BY topic,object_key`),
     ]);
     const byId = new Map(documents.map((row) => [String(row.id), row]));
     const packets = []; const chosenTopics = new Set();
