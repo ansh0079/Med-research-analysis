@@ -27,6 +27,10 @@ function topicRelevant(topic, document) {
     if (evidenceText.includes(topicText)) return true;
     if ((topicSynonyms.get(topicText) || []).some((synonym) => evidenceText.includes(synonym))) return true;
     const topicTokens = tokens(topic).filter((token) => token.length >= 5);
+    const generic = new Set(['management', 'treatment', 'diagnosis', 'timing', 'therapy', 'clinical',
+        'guideline', 'review', 'disease', 'syndrome', 'induced', 'modes']);
+    const conditionToken = topicTokens.find((token) => !generic.has(token));
+    if (conditionToken && !evidenceText.includes(conditionToken)) return false;
     const hits = topicTokens.filter((token) => evidenceText.includes(token));
     return topicTokens.length >= 2 && hits.length >= 2 && hits.length / topicTokens.length >= 0.5;
 }
