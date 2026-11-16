@@ -4,10 +4,10 @@
   "catalogueRange": "2097 prognosis after TIA through 2182 Tumour Lysis Syndrome in Oncology",
   "counts": {
     "inApp": 1,
-    "downloaded": 39,
-    "unresolved": 3,
+    "downloaded": 42,
+    "unresolved": 0,
     "topics": 43,
-    "mcqs": 200
+    "mcqs": 215
   },
   "topics": [
     {
@@ -98,19 +98,22 @@
       "catalogueId": "2009",
       "topic": "solid organ transplant induction immunosuppression",
       "specialty": "Transplantation",
-      "decision": "unresolved",
-      "sourceTitle": null,
-      "year": null,
-      "pmid": null,
+      "decision": "downloaded open source",
+      "sourceTitle": "KDIGO clinical practice guideline for the care of kidney transplant recipients: Chapter 1, Induction Therapy",
+      "year": 2009,
+      "pmid": "19845597",
       "pmcid": null,
-      "doi": null,
-      "url": null,
-      "whyItFits": null,
-      "unresolvedReason": "No stored document was an induction-immunosuppression guideline. KDIGO kidney-transplant guidance is not available as open full text. Open papers found were about CMV prevention, ABO-incompatible transplantation, or urinary infection, not the choice of induction antibody.",
+      "doi": "10.1111/j.1600-6143.2009.02834.x",
+      "url": "https://tts.org/kdigo/downloads/kdigo/S1-C01_Induction_Therapy.pdf",
+      "whyItFits": "The induction chapter of the 2009 KDIGO kidney-transplant guideline is a free four-page PDF. It grades interleukin-2 receptor antagonist versus lymphocyte-depleting antibody induction and states what the small alemtuzumab trials do and do not show. The full compiled guideline had not been available as open text; this chapter was.",
+      "unresolvedReason": null,
       "files": [
-        "data/part4-topic-evidence/2009/evidence.json"
+        "data/part4-topic-evidence/2009/evidence.json",
+        "data/part4-topic-evidence/2009/evidence.txt",
+        "data/part4-topic-evidence/2009/mcqs.json",
+        "data/part4-topic-evidence/2009/synopsis.json"
       ],
-      "mcqCount": 0
+      "mcqCount": 5
     },
     {
       "catalogueId": "2012",
@@ -745,19 +748,22 @@
       "catalogueId": "211",
       "topic": "Salivary Gland and Rare Head and Neck Tumours",
       "specialty": "Oncology",
-      "decision": "unresolved",
-      "sourceTitle": null,
-      "year": null,
-      "pmid": null,
-      "pmcid": null,
-      "doi": null,
-      "url": null,
-      "whyItFits": null,
-      "unresolvedReason": "The ASCO salivary-gland malignancy guideline is not open full text. Open head-and-neck papers in the search were acute infection guidance or imaging, not management of salivary-gland carcinoma.",
+      "decision": "downloaded open source",
+      "sourceTitle": "Salivary gland cancer: ESMO–European Reference Network on Rare Adult Solid Cancers (EURACAN) Clinical Practice Guideline for diagnosis, treatment and follow-up",
+      "year": 2022,
+      "pmid": "36567082",
+      "pmcid": "PMC9808465",
+      "doi": "10.1016/j.esmoop.2022.100602",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9808465/",
+      "whyItFits": "The 2022 ESMO–EURACAN guideline is open on PMC and covers diagnosis, staging, surgery, and radiotherapy for salivary-gland carcinoma. The ASCO guideline is not open.",
+      "unresolvedReason": null,
       "files": [
-        "data/part4-topic-evidence/211/evidence.json"
+        "data/part4-topic-evidence/211/evidence.json",
+        "data/part4-topic-evidence/211/evidence.txt",
+        "data/part4-topic-evidence/211/mcqs.json",
+        "data/part4-topic-evidence/211/synopsis.json"
       ],
-      "mcqCount": 0
+      "mcqCount": 5
     },
     {
       "catalogueId": "216",
@@ -847,19 +853,22 @@
       "catalogueId": "2032",
       "topic": "Thymic Tumours and Thymoma",
       "specialty": "Oncology",
-      "decision": "unresolved",
-      "sourceTitle": null,
-      "year": null,
-      "pmid": null,
-      "pmcid": null,
-      "doi": null,
-      "url": null,
-      "whyItFits": null,
-      "unresolvedReason": "The ESMO thymic epithelial tumour guideline is not open full text. A 2026 narrative review addresses induction therapy before resection of locally advanced thymoma and does not cover diagnosis and management of thymoma as a whole.",
+      "decision": "downloaded open source",
+      "sourceTitle": "SEOM-GECP-GETTHI clinical guidelines for the treatment of patients with thymic epithelial tumours (2021)",
+      "year": 2022,
+      "pmid": "35122634",
+      "pmcid": "PMC8817662",
+      "doi": "10.1007/s12094-022-02788-w",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8817662/",
+      "whyItFits": "This open 2021 SEOM-GECP-GETTHI guideline covers diagnosis, Masaoka-Koga staging, surgery, radiotherapy, and chemotherapy for thymoma and thymic carcinoma. It is not limited to induction before resection. The ESMO guideline is not open.",
+      "unresolvedReason": null,
       "files": [
-        "data/part4-topic-evidence/2032/evidence.json"
+        "data/part4-topic-evidence/2032/evidence.json",
+        "data/part4-topic-evidence/2032/evidence.txt",
+        "data/part4-topic-evidence/2032/mcqs.json",
+        "data/part4-topic-evidence/2032/synopsis.json"
       ],
-      "mcqCount": 0
+      "mcqCount": 5
     },
     {
       "catalogueId": "1265",

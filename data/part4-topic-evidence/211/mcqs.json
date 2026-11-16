@@ -1,0 +1,107 @@
+[
+  {
+    "type": "multiple_choice",
+    "questionType": "guideline",
+    "question": "What is mandatory before salivary-gland cancer is managed?",
+    "options": {
+      "A": "Serum CEA",
+      "B": "Clinical examination and pathological confirmation [IV, A]",
+      "C": "PET alone",
+      "D": "Open biopsy of every parotid mass",
+      "E": "A trial of antibiotics"
+    },
+    "correctAnswer": "B",
+    "correctAnswerText": "Clinical examination and pathological confirmation [IV, A]",
+    "explanation": "Clinical examination and pathological confirmation are mandatory, graded [IV, A] [1].",
+    "difficulty": "easy",
+    "sourceArticle": "Salivary gland cancer: ESMO–European Reference Network on Rare Adult Solid Cancers (EURACAN) Clinical Practice Guideline for diagnosis, treatment and follow-up",
+    "sourceReference": "PMID 36567082",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "guideline",
+    "question": "If fine-needle aspiration is non-diagnostic, the next step is:",
+    "options": {
+      "A": "Open biopsy of the parotid as the preferred next step",
+      "B": "Chemotherapy without tissue",
+      "C": "Observation for a year with no further sampling",
+      "D": "Core needle biopsy [III, A]",
+      "E": "Immediate radical neck dissection"
+    },
+    "correctAnswer": "D",
+    "correctAnswerText": "Core needle biopsy [III, A]",
+    "explanation": "Fine-needle aspiration is used for screening. If it is inadequate, core needle biopsy is an accepted next step [III, A]. Open biopsy of a major gland is avoided [1].",
+    "difficulty": "medium",
+    "sourceArticle": "Salivary gland cancer: ESMO–European Reference Network on Rare Adult Solid Cancers (EURACAN) Clinical Practice Guideline for diagnosis, treatment and follow-up",
+    "sourceReference": "PMID 36567082",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "guideline",
+    "question": "Which imaging does ESMO prefer when malignancy is suspected?",
+    "options": {
+      "A": "Ultrasound alone and no further imaging",
+      "B": "No imaging before surgery",
+      "C": "MRI [IV, A]",
+      "D": "Plain radiography",
+      "E": "Contrast CT for every patient, including those who can have MRI"
+    },
+    "correctAnswer": "C",
+    "correctAnswerText": "MRI [IV, A]",
+    "explanation": "When malignancy is suspected, MRI is the preferred imaging modality [IV, A]. Contrast CT is mostly limited to patients who cannot have MRI [1].",
+    "difficulty": "easy",
+    "sourceArticle": "Salivary gland cancer: ESMO–European Reference Network on Rare Adult Solid Cancers (EURACAN) Clinical Practice Guideline for diagnosis, treatment and follow-up",
+    "sourceReference": "PMID 36567082",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "clinical_application",
+    "question": "How does preoperative facial-nerve function change the operation?",
+    "options": {
+      "A": "Always sacrifice the nerve",
+      "B": "Always preserve it, even if it is already paralysed",
+      "C": "The nerve is not relevant to parotid surgery",
+      "D": "Radiotherapy replaces any decision about the nerve",
+      "E": "Try to preserve the nerve if there is no paralysis; sacrifice it if paralysis is already present"
+    },
+    "correctAnswer": "E",
+    "correctAnswerText": "Try to preserve the nerve if there is no paralysis; sacrifice it if paralysis is already present",
+    "explanation": "It is logical to try to preserve the facial nerve when there is no preoperative paralysis, and to sacrifice it when paralysis is already present [1].",
+    "difficulty": "medium",
+    "sourceArticle": "Salivary gland cancer: ESMO–European Reference Network on Rare Adult Solid Cancers (EURACAN) Clinical Practice Guideline for diagnosis, treatment and follow-up",
+    "sourceReference": "PMID 36567082",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "guideline",
+    "question": "Postoperative radiotherapy to the primary site is recommended for:",
+    "options": {
+      "A": "T3–T4 disease, high or intermediate grade, close or incomplete margins, or perineural growth",
+      "B": "Every benign pleomorphic adenoma",
+      "C": "Only distant metastases",
+      "D": "T1 low-grade tumours with wide margins and no other risk feature",
+      "E": "Replacement of surgery in every patient"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "T3–T4 disease, high or intermediate grade, close or incomplete margins, or perineural growth",
+    "explanation": "Postoperative radiotherapy is recommended for T3–T4 disease, high or intermediate grade, close or incomplete margins, and perineural growth. Adding chemotherapy in the cited database analysis did not improve survival [1].",
+    "difficulty": "medium",
+    "sourceArticle": "Salivary gland cancer: ESMO–European Reference Network on Rare Adult Solid Cancers (EURACAN) Clinical Practice Guideline for diagnosis, treatment and follow-up",
+    "sourceReference": "PMID 36567082",
+    "sourceIndices": [
+      1
+    ]
+  }
+]

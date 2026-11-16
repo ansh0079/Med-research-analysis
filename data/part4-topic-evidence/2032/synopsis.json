@@ -1,0 +1,31 @@
+{
+  "takeaway": "Resect a thymic epithelial tumour when a complete resection is achievable, through a median sternotomy, usually without a biopsy. Do not give adjuvant chemotherapy for thymoma. Add postoperative radiotherapy for stage III, thymic carcinoma, and incomplete resection, and use platinum chemotherapy when the disease is metastatic [1].",
+  "clinicalQuestion": "How are thymoma and other thymic epithelial tumours diagnosed and treated?",
+  "background": "Thymic epithelial tumours are thymomas, subtypes A, AB, B1, B2, and B3, and thymic carcinomas. They are half of anterior mediastinal masses. European Union incidence is 0.18 per 100,000 [1].",
+  "studyDesign": "SEOM-GECP-GETTHI clinical practice guideline.",
+  "setting": "Thoracic oncology multidisciplinary boards.",
+  "population": "Patients with thymoma or thymic carcinoma.",
+  "intervention": "Upfront resection when complete, postoperative radiotherapy for defined stages and margins, and platinum chemotherapy for unresectable metastatic disease.",
+  "comparator": "Biopsy or adjuvant chemotherapy for a resectable thymoma.",
+  "primaryOutcome": "Complete resection and stage-appropriate adjuvant treatment.",
+  "mainFindings": "Contrast-enhanced CT of the thorax and abdomen is standard imaging [IV, A]. PET has sensitivity 83% and specificity 58% and is not generally recommended [IV, C]. A biopsy is not required when suspicion is high and upfront resection is achievable [IV, E]. Otherwise a core or surgical biopsy is required [IV, A]; core biopsy sensitivity is up to 90%, and fine-needle aspiration is not recommended [IV, D]. Pleural spaces should be respected. Up to 30% of patients with thymoma have or later develop myasthenia gravis, while 10–20% of patients with myasthenia have a thymoma. Acetylcholine-receptor antibodies stay positive and are not used to monitor the tumour. Masaoka-Koga stage is assigned after resection [III, A]: stage I is encapsulated, stage IVA is separate pleural or pericardial nodules, and stage IVB is nodal or distant metastasis. If complete resection is achievable, surgery is the treatment [IV, A]. Median sternotomy is standard [IV, A], and complete thymectomy including residual thymus and perithymic fat is preferred [IV, B]. Ten-year overall survival after surgery is 90% and 70% for stages I and II, and 55% and 35% for stage III and IVA. Postoperative radiotherapy is recommended for stage III, thymic carcinoma, and R1 or R2 resection [IV, B], at 45–50 Gy after complete resection and 56 Gy after R1. Adjuvant chemotherapy is not indicated for thymoma [III, E]. Two to four cycles of induction chemotherapy are standard for locally advanced disease, with a response rate of about 70%. Platinum-based chemotherapy is standard for metastatic disease that will not have local treatment [III, A]. Immunotherapy is not standard [1].",
+  "clinicalMeaning": "Operate a resectable thymoma without a preliminary fine-needle aspirate. Control myasthenia before surgery. Do not add adjuvant chemotherapy after a thymoma resection [1].",
+  "limitations": "The 10-year survival figures are from the series cited by the guideline. Concurrent chemoradiotherapy doses for unresectable disease are listed separately and are not the postoperative doses [1].",
+  "bottomLine": "CT, then resect if an R0 is realistic. Radiotherapy for stage III, thymic carcinoma, and positive margins. Platinum chemotherapy for metastatic disease [1].",
+  "practiceImplication": "Ask about myasthenia and check acetylcholine-receptor antibodies before an operation, and involve neurology [1].",
+  "safetyOutcomes": [
+    "About one-third of patients with thymoma have an autoimmune disorder, which raises the risk of immune toxicity if checkpoint inhibitors are used.",
+    "Phrenic-nerve sacrifice does not change survival but increases local recurrence, so the trade-off matters most in myasthenia."
+  ],
+  "trustRating": "HIGH",
+  "trustRationale": "Multidisciplinary guideline with explicit grades. Randomised evidence is scarce because the disease is rare, and several recommendations are level III or IV.",
+  "quizFocusPoints": [
+    "no biopsy if upfront resection is achievable",
+    "no adjuvant chemotherapy for thymoma",
+    "PORT for stage III, thymic carcinoma, and incomplete resection"
+  ],
+  "whatNotToOverclaim": [
+    "Do not use this guideline as if it were only an induction-chemotherapy protocol.",
+    "Do not recommend fine-needle aspiration."
+  ]
+}

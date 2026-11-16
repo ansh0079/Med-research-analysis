@@ -2,10 +2,23 @@
   "catalogueId": "2032",
   "topic": "Thymic Tumours and Thymoma",
   "specialty": "Oncology",
-  "decision": "unresolved",
+  "decision": "downloaded open source",
   "rejected": [
-    "Narrative review of induction therapy before extended resection of locally advanced thymoma"
+    "2026 narrative review limited to induction therapy before extended resection",
+    "ESMO thymic guideline, which is not open full text"
   ],
-  "unresolvedReason": "The ESMO thymic epithelial tumour guideline is not open full text. A 2026 narrative review addresses induction therapy before resection of locally advanced thymoma and does not cover diagnosis and management of thymoma as a whole.",
-  "source": null
+  "unresolvedReason": null,
+  "source": {
+    "title": "SEOM-GECP-GETTHI clinical guidelines for the treatment of patients with thymic epithelial tumours (2021)",
+    "year": 2022,
+    "pmid": "35122634",
+    "pmcid": "PMC8817662",
+    "doi": "10.1007/s12094-022-02788-w",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8817662/",
+    "sourceBody": "Clinical and Translational Oncology",
+    "type": "clinical_practice_guideline",
+    "whyItFits": "This open 2021 SEOM-GECP-GETTHI guideline covers diagnosis, Masaoka-Koga staging, surgery, radiotherapy, and chemotherapy for thymoma and thymic carcinoma. It is not limited to induction before resection. The ESMO guideline is not open."
+  },
+  "evidenceTextFile": "data/part4-topic-evidence/2032/evidence.txt",
+  "evidenceChars": 44033
 }

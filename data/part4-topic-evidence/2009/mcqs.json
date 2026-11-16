@@ -1,0 +1,107 @@
+[
+  {
+    "type": "multiple_choice",
+    "questionType": "guideline",
+    "question": "What does KDIGO recommend as first-line induction?",
+    "options": {
+      "A": "Rituximab",
+      "B": "An interleukin-2 receptor antagonist (1B)",
+      "C": "Antithymocyte globulin for every recipient (1A)",
+      "D": "Alemtuzumab (1A)",
+      "E": "No biologic induction (1A)"
+    },
+    "correctAnswer": "B",
+    "correctAnswerText": "An interleukin-2 receptor antagonist (1B)",
+    "explanation": "Recommendation 1.2.1: an interleukin-2 receptor antagonist is first-line induction therapy, graded 1B. A biologic induction agent is recommended as part of the initial regimen (1A) [1].",
+    "difficulty": "easy",
+    "sourceArticle": "KDIGO clinical practice guideline for the care of kidney transplant recipients: Chapter 1, Induction Therapy",
+    "sourceReference": "PMID 19845597",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "guideline",
+    "question": "When does KDIGO suggest a lymphocyte-depleting agent rather than an interleukin-2 receptor antagonist?",
+    "options": {
+      "A": "Identical-twin transplantation",
+      "B": "Low risk, because depleting agents are safer",
+      "C": "Only after the first rejection",
+      "D": "High immunologic risk (2B)",
+      "E": "Every living-donor transplant"
+    },
+    "correctAnswer": "D",
+    "correctAnswerText": "High immunologic risk (2B)",
+    "explanation": "Recommendation 1.2.2 suggests a lymphocyte-depleting agent rather than an interleukin-2 receptor antagonist for recipients at high immunologic risk, graded 2B [1].",
+    "difficulty": "medium",
+    "sourceArticle": "KDIGO clinical practice guideline for the care of kidney transplant recipients: Chapter 1, Induction Therapy",
+    "sourceReference": "PMID 19845597",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "trial_interpretation",
+    "question": "Compared with no induction, an interleukin-2 receptor antagonist reduced which outcomes in the cited Cochrane review?",
+    "options": {
+      "A": "Malignancy only",
+      "B": "Nothing; the trials showed harm",
+      "C": "Biopsy-proven acute rejection (relative risk 0.77) and death-censored graft loss (relative risk 0.74, 0.55–0.99)",
+      "D": "All-cause mortality, with a significant relative risk of 0.40",
+      "E": "Cytomegalovirus infection, with a significant relative risk of 0.40"
+    },
+    "correctAnswer": "C",
+    "correctAnswerText": "Biopsy-proven acute rejection (relative risk 0.77) and death-censored graft loss (relative risk 0.74, 0.55–0.99)",
+    "explanation": "In the cited Cochrane review, biopsy-proven acute rejection (14 trials, 3861 patients) had relative risk 0.77, and death-censored graft loss (16 trials, 2973 patients) had relative risk 0.74 (0.55–0.99). Mortality (0.73, 0.50–1.07) and cytomegalovirus infection (0.90, 0.76–1.06) were not significantly different [1].",
+    "difficulty": "hard",
+    "sourceArticle": "KDIGO clinical practice guideline for the care of kidney transplant recipients: Chapter 1, Induction Therapy",
+    "sourceReference": "PMID 19845597",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "trial_interpretation",
+    "question": "Against lymphocyte-depleting antibodies, interleukin-2 receptor antagonists had:",
+    "options": {
+      "A": "Less rejection and less infection",
+      "B": "More rejection and more malignancy",
+      "C": "Identical rates of every outcome",
+      "D": "A proven graft-survival advantage",
+      "E": "More acute rejection, but less cytomegalovirus infection and less malignancy"
+    },
+    "correctAnswer": "E",
+    "correctAnswerText": "More acute rejection, but less cytomegalovirus infection and less malignancy",
+    "explanation": "Acute rejection was higher with interleukin-2 receptor antagonists (relative risk 1.27, 1.00–1.61). Cytomegalovirus infection (0.69, 0.49–0.97) and malignancy (0.23, 0.06–0.93) were lower. Graft loss was not significantly different [1].",
+    "difficulty": "medium",
+    "sourceArticle": "KDIGO clinical practice guideline for the care of kidney transplant recipients: Chapter 1, Induction Therapy",
+    "sourceReference": "PMID 19845597",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "pitfall",
+    "question": "What does the chapter conclude about alemtuzumab induction?",
+    "options": {
+      "A": "The small trials do not clearly show that benefit outweighs harm",
+      "B": "It is the graded first-line agent",
+      "C": "It is an interleukin-2 receptor antagonist",
+      "D": "It reduced malignancy compared with no induction in a large meta-analysis",
+      "E": "It is indicated for identical-twin transplants"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "The small trials do not clearly show that benefit outweighs harm",
+    "explanation": "Alemtuzumab is a humanised anti-CD52 lymphocyte-depleting antibody. The small randomised trials lacked power and often changed other drugs at the same time. Taken together they do not clearly show that benefits outweigh harms [1].",
+    "difficulty": "medium",
+    "sourceArticle": "KDIGO clinical practice guideline for the care of kidney transplant recipients: Chapter 1, Induction Therapy",
+    "sourceReference": "PMID 19845597",
+    "sourceIndices": [
+      1
+    ]
+  }
+]

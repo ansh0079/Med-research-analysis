@@ -1,0 +1,525 @@
+# Salivary gland cancer: ESMO–European Reference Network on Rare Adult Solid Cancers (EURACAN) Clinical Practice Guideline for diagnosis, treatment and follow-up
+
+PMC9808465. ESMO Open, 7(6):100602. Published 2022-11-02.
+
+## Authors
+
+C. van Herpen, V. Vander Poorten, A. Skalova, C. Terhaard, R. Maroldi, A. van Engen, B. Baujat, L.D. Locati, A.D. Jensen, L. Smeele, J. Hardillo, V. Costes Martineau, A. Trama, E. Kinloch, C. Even, J.-P. Machiels, ESMO Guidelines Committee∗clinicalguidelines@esmo.org
+
+## Details
+
+- DOI: https://doi.org/10.1016/j.esmoop.2022.100602
+- PMID: 36567082 (https://pubmed.ncbi.nlm.nih.gov/36567082/)
+- PMCID: PMC9808465
+- License: https://creativecommons.org/licenses/by-nc-nd/4.0/
+
+---
+
+## Abstract
+
+• This ESMO–EURACAN Clinical Practice Guideline provides key recommendations for managing salivary gland cancer. • The guideline covers clinical and pathological diagnosis, staging and risk assessment, treatment and follow-up. • Treatment algorithms for parotid, submandibular, sublingual and minor salivary gland cancer are provided. • The author group encompasses a multidisciplinary group of experts from different institutions and countries in Europe. • Recommendations are based on available scientific data and the authors’ collective expert opinion.
+
+## Incidence and epidemiology
+
+Major salivary gland cancers (SGCs) comprise 5% of head and neck cancers in Europe. The worldwide crude and age-adjusted incidence rates are 0.69 and 0.57 cases per 100 000 people per year, respectively, with 53 583 new patients in 2020. In Europe, crude and age-adjusted incidence rates are 1.3 and 0.67 cases per 100 000 people per year, respectively, with 9917 new patients in 2020. 1 Data for minor SGCs are limited, but the RARECARENet project estimated the crude incidence of minor salivary gland-type cancers of the head and neck to be 0.4 cases per 100 000 people in the 2000-2007 diagnosis period; minor SGCs have a slight predominance in males and incidence is highest in the elderly (>65 years). 2 
+
+History of head and neck cancer and cervicofacial radiotherapy (RT) have both been associated with an increased risk of major SGC [odds ratio (OR) 17.06, 95% confidence interval (CI) 4.34-67.05 and OR 31.74, 95% CI 2.48-405.25, respectively]. 3, 4 Industries such as cereal and other crop production, furniture manufacturing, interurban road transport and industrial cleaning have also been associated with an increased risk of major SGC.3, 4, 5 Smoking only seems to increase the risk of developing major SGCs other than mucoepidermoid carcinoma (MEC) (OR 5.15, 95% CI 2.06-12.87) 6; however, ionising radiation is the only well-established risk factor. 7, 8 
+
+SGCs include >20 distinct histological subtypes. Given their rarity and heterogeneity, population-based epidemiological studies providing incidence rates according to histology are limited.
+
+SGC typically occurs in the sixth and seventh decades of life and has a male predominance 2; however, age at diagnosis and gender predominance vary by histology. MEC, adenoid cystic carcinoma (AdCC) and acinic cell carcinoma (AcCC) tend to occur at an earlier age than adenocarcinoma and squamous cell carcinoma (SCC). MEC, AdCC and AcCC are more common in females up to ∼50 years of age; however, incidence of AdCC and AcCC is similar for females and males at older ages, whereas MEC has a higher incidence rate among older males. 7 The ratio of tumour diagnoses in parotid, submandibular, minor and sublingual subsites is 100:10:10:1, and the proportion of malignant tumours at these sites is 20%, 50%, 50% and 80%, respectively. 9 
+
+SGC incidence has not increased between 1995 and 2007 in Europe 10 or between 1995 and 2010 in the United States. 7 
+
+The 5-year relative survival rate (estimated as the ratio of observed to expected survival in the general population, matched by age, sex, calendar year and geographical area) for patients with major SGC is 63% (95% CI 62% to 63.7%) in Europe. 10 This decreases with age, from ∼90% (95% CI 91% to 97%) in patients aged <25 years, to 70% (95% CI 69% to 71%) in patients aged 25-64 years and 53% (95% CI 52% to 55%) in those aged >65 years. Five-year relative survival is higher in females (72%, 95% CI 71% to 74%) than in males (55%, 95% CI 54% to 56%). Furthermore, 5-year relative survival differs across European regions, with the highest rate of 74% (95% CI 71% to 78%) reported in Nordic countries (Finland, Iceland, Norway) and the lowest rate of 52% (95% CI 50% to 54%) reported in Eastern European countries (Bulgaria, Czech Republic, Estonia, Latvia, Lithuania, Poland, Slovakia). SGC relative survival has not improved in Europe between 1999 and 2007. 2 
+
+The 5-year relative survival rate for minor salivary gland-type cancers of the head and neck is 67% and is higher in females than in males. Five-year survival rates are highest in children (>90%) and patients aged <25 years, and then decrease to 60% in patients aged >65 years. In Europe during the period 1999-2007, 5-year survival remained stable and was highest in Nordic countries (84%) and lowest in Eastern European countries (55%). 2 
+
+## Diagnosis, pathology and molecular biology
+
+SGC should be classified according to the World Health Organization (WHO) Classification of Head and Neck Tumours. 11 Including both benign and malignant tumours, there are over 30 distinct salivary gland tumour types in the latest WHO classification system (see Supplementary Table S1, available at https://doi.org/10.1016/j.esmoop.2022.100602, for classification of the malignant tumour types).
+
+### Diagnostic work-up
+
+The symptoms of SGC depend on tumour location. Symptoms that should prompt consideration of SGC include pain in the face or mouth, an externally or submucosally growing lump or (facial) nerve paralysis.
+
+Cytology or histology is mandatory. Ultrasound-guided salivary gland fine-needle aspiration (FNA) cytology has become the accepted minimally invasive method for evaluating parotid and submandibular gland tumours preoperatively. This can distinguish malignant from benign disease in 90% of cases if examined by a pathologist experienced in salivary gland disease. 12 The Milan system for reporting salivary gland cytopathology is recommended. It facilitates standardised reporting and links each diagnostic category to a risk of malignancy (ROM); risks were recently confirmed in a large meta-analysis. 13 The Milan system facilitates ROM-associated therapeutic approaches, e.g. initial treatment can be intensified when high-grade malignancy is suspected (one study reported 99% diagnostic accuracy 14) (see Supplementary Table S2, available at https://doi.org/10.1016/j.esmoop.2022.100602). 12 
+
+If FNA is non-diagnostic or if the clinical situation requires more information on histotype, core needle biopsy, while more demanding and with a slightly increased risk of complications, 15 has less inadequate sampling (risk ratio 0.85) and a higher diagnostic yield than FNA. 16 It is thus an accepted next step in the diagnostic work-up. 17 
+
+Open biopsies should be avoided in major salivary gland lesions due to the risk of complicating definitive surgical treatment and the risk of spillage, with the exception of skin ulcerating tumours. For minor salivary gland tumours, an experienced surgeon should take a biopsy of the tumour and surrounding stroma. 18 Incisional biopsy is recommended for submucosally extending tumours, and an incisional or forceps biopsy should be taken for ulcerating lesions.
+
+Ultrasound, computed tomography (CT), magnetic resonance imaging (MRI) and [ 18 F]2-fluoro-2-deoxy-D-glucose–positron emission tomography (FDG–PET) are the imaging techniques most commonly used to assess lesions in the major salivary glands, with MRI being the preferred modality (see Figure 1). Diagnostic imaging techniques are described in Section 1 of the Supplementary Material, available at https://doi.org/10.1016/j.esmoop.2022.100602.
+
+*Figure 1 Work-up of major salivary gland nodules. Purple: general categories or stratification; white: other aspects of management. AdCC, adenoid cystic carcinoma; CNB, core needle biopsy; CT, computed tomography; FDG–PET–CT, [ 18 F]2-fluoro-2-deoxy-D-glucose–positron emission tomography–computed tomography; FNA, fine-needle aspiration; MRI, magnetic resonance imaging. a CNB considered when FNA is non-diagnostic or if more histological information is required.*
+
+### Histological tumour type and molecular biology
+
+The SGC histological type essentially defines its biological behaviour, which influences prognosis and patterns of recurrence, and thus clinical management.
+
+Some SGC types, such as basal cell adenocarcinoma, low-grade MEC, intraductal carcinoma and conventional AcCC, are indolent, with high risk of locoregional recurrence but low rates of nodal involvement and distant metastases. 19 
+
+Immunohistochemistry (IHC) on the surgical specimen provides supplementary visualisation of cell compartments and cell populations, thus improving SGC taxonomy. The role of molecular diagnostics in SGC is evolving. Many monomorphic SGCs are now known to harbour defining balanced translocations, some of which are readily evaluable on paraffin-embedded materials either by FISH, RT–PCR or next-generation sequencing (NGS). 20 Recently, NGS has provided significant input on the molecular characterisation of SGC subtypes, improving diagnostic differentiation between morphologically similar tumour types and also identifying novel driver pathways that determine tumour biology and which may be amenable to targeted therapy [see European Society for Medical Oncology (ESMO) Scale for Clinical Actionability of Molecular Targets (ESCAT) for further details in Supplementary Table S3, available at https://doi.org/10.1016/j.esmoop.2022.100602]. SGC histological subtypes are described in detail in Section 2 of the Supplementary Material, available at https://doi.org/10.1016/j.esmoop.2022.100602. Key molecular alterations in SGC are described in Supplementary Table S4, available at https://doi.org/10.1016/j.esmoop.2022.100602.
+
+### Recommendations
+
+• Classification should be carried out according to the WHO Classification of Head and Neck Tumours [I, A].
+
+• Clinical examination and pathological confirmation are mandatory [IV, A].
+
+• FNA should be used for screening; if inadequate, core needle biopsy can be a next step [III, A].
+
+• FNA results should be reported according to the Milan classification, including a defined ROM and suggested therapeutic approaches [IV, A].
+
+• For minor salivary gland tumours, an experienced surgeon should take a biopsy of the tumour and surrounding stroma. For submucosally extending tumours, an incisional biopsy, and for ulcerating lesions an incisional or forceps biopsy should be taken [IV, A].
+
+• When malignancy is suspected, MRI is the preferred imaging modality [IV, A].
+
+• Contrast-enhanced CT is mostly limited to patients in whom MRI is contraindicated [IV, B].
+
+• Regardless of the imaging technique used, the study should be extended to include the ipsilateral and contralateral neck levels or integrated with ultrasound examination of neck lymph nodes [III, A].
+
+• FDG–PET–CT is recommended in high-grade SGC for the detection of distant metastases [III, A].
+
+• IHC and molecular testing should be used as supplementary tools when appropriate [IV, A]. Confirmation of androgen receptor and human epidermal growth factor receptor 2 (HER2) status is mandatory in salivary duct carcinoma and adenocarcinoma not otherwise specified (NOS) with distant metastases [III, A; ESCAT score: II-B].
+
+• Analysis for NTRK fusion with NGS or whole genome sequencing is mandatory for differential diagnosis of secretory carcinoma and AcCC [III, A; ESCAT score: I-C].
+
+• NGS or whole genome sequencing (or whole exome sequencing) is suggested in recurrent or metastatic (R/M) disease for all tumour subtypes, as actionable mutations or fusion genes can be identified in 40%-50% of patients [V, C].
+
+## Staging and risk assessment
+
+### Staging
+
+Clinical classification [cTNM (clinical tumour–node–metastasis)] should be carried out before treatment by the referring physician during initial patient evaluation using the Union for International Cancer Control (UICC) TNM eighth edition staging classification. 21 Preoperative diagnostics are mainly based on imaging methods and pathological findings, especially FNA. Pathological staging is carried out after surgical resection of the primary tumour. There is currently no clear recommendation on differential staging of intraparotid versus cervical nodal metastases; findings from a recent study suggest that these differences should be addressed in future editions of the TNM classification. 22 
+
+### Pathological report and staging
+
+For correct management of major SGC, the pathological report should follow the International Collaboration on Cancer Reporting guidelines. 23 Operative procedure; specimens submitted; tumour site, focality and dimensions; histological tumour type and grade; perineural invasion; lymphovascular invasion; extent of invasion and margin status are required (see Section 3 of the Supplementary Material, available at https://doi.org/10.1016/j.esmoop.2022.100602). 23 
+
+The UICC pathological TNM (pTNM) staging system for SGC of the major salivary glands is presented in Supplementary Table S5, available at https://doi.org/10.1016/j.esmoop.2022.100602. Minor SGCs are staged similarly to SCC, according to the site in which they arise (e.g. oral cavity, pharynx, sinuses, etc.).
+
+### Recommendations
+
+• Clinical classification should be carried out before treatment and pTNM should be carried out after surgical resection using the UICC eighth edition staging classification [I, A].
+
+• Intra-operative frozen sections can be indicated to evaluate margins of resection, perineural invasion and lymph nodes, but only if the result is expected to alter management at the time of surgery [IV, B].
+
+• The pathological report should follow the International Collaboration on Cancer Reporting guidelines [III, A].
+
+## Management of local and locoregional disease
+
+SGCs are a rare and complicated subgroup of head and neck cancers. As such, local/locoregional disease should be managed by expert surgeons, radiation oncologists, medical oncologists and other specialists working as a multidisciplinary team in specialised head and neck units, such as the centres that are designated members of the European Reference Network on Rare Adult Solid Cancers.
+
+Proposed treatment algorithms for the treatment of parotid, minor salivary and sublingual gland, and submandibular gland cancer, are shown in Figures 2, 3 and 4, respectively.
+
+*Figure 2 Treatment algorithm for parotid gland cancer. Purple: general categories or stratification; red: surgery; dark green: radiotherapy; white: other aspects of management; blue: systemic anticancer therapy. ChT, chemotherapy; CNB, core needle biopsy; END, elective neck dissection; ENI, elective neck irradiation; FNA, fine-needle aspiration; ND, node dissection; nVII, seventh nerve; RT, radiotherapy. a Definition of high-grade tumours is described in Section 1 of the Supplementary Material, available at https://doi.org/10.1016/j.esmoop.2022.100602.*
+
+*Figure 3 Treatment algorithm for minor or sublingual SGC. Purple: general categories or stratification; red: surgery; dark green: radiotherapy; white: other aspects of management; blue: systemic anticancer therapy. ChT, chemotherapy; END, elective neck dissection; ND, node dissection; RT, radiotherapy; SGC, salivary gland cancer. a Definition of high-grade tumours is described in Section 1 of the Supplementary Material, available at https://doi.org/10.1016/j.esmoop.2022.100602.*
+
+*Figure 4 Treatment algorithm for submandibular gland cancer. Purple: general categories or stratification; red: surgery; dark green: radiotherapy; white: other aspects of management; blue: systemic anticancer therapy. ChT, chemotherapy; CNB, core needle biopsy; FNA, fine-needle aspiration; ND, node dissection; RT, radiotherapy. a Definition of high-grade tumours is described in Section 1 of the Supplementary Material, available at https://doi.org/10.1016/j.esmoop.2022.100602.*
+
+### Surgery
+
+#### Surgical management of the primary in parotid gland cancer
+
+The treatment of parotid gland cancer is based on complete surgical excision with free margins. 24 The difficulty of this surgery lies in achieving free margins without functional and aesthetic sequelae. Revision surgery following an unexpected post-operative diagnosis of malignancy carries a great risk to an already dissected facial nerve; therefore, every effort should be made to identify malignancy preoperatively, allowing for immediately adequate surgical removal. 25 It is imperative, if preoperative MRI, FNA or core needle biopsy suggests malignancy, to warn the patient of a possibly more extensive procedure. In case of extraparotid or facial nerve extension, an extended surgery sacrificing these elements [e.g. seventh nerve (nVII), infratemporal fossa, mandible, skin] with possible reconstruction must be considered. Functional or aesthetic disorders arising from resection should be considered during treatment planning. 24 Resectability should be assessed in a multidisciplinary team meeting, bearing in mind that surgery, if possible, is the optimal treatment. A cancer should be considered unresectable if macroscopic tumour is likely to be left behind.
+
+The reference procedure is a total parotidectomy. For low-grade, early-stage (cT1-T2N0) tumours in the superficial lobe, a superficial parotidectomy can suffice, especially if malignancy is a post-operative discovery on the definitive histology. For advanced-stage (all but cT1-T2N0) and/or preoperatively known intermediate- or high-grade tumours, a total parotidectomy is preferable. No consensus exists in the literature on how many millimetres thick a margin must be to be considered ‘free’.
+
+The presence or absence of facial nerve paralysis before surgery influences the choice of procedure: it is logical to try to preserve the facial nerve if there is no preoperative paralysis and to sacrifice it in case of preoperative paralysis. 24 In the absence of preoperative paralysis and in case of intra-operative macroscopic invasion of the facial nerve, sacrifice or preservation of the nerve is decided on a case-by-case basis, depending on the histology of the tumour and extent of invasion of the nerve, as well as the age and wishes of the patient. It is important to collect as much information as possible about the tumour before surgery, discuss scenarios with the patient and be able to do a graft during the ablative procedure. A remote dissection of the nerve branches with an extended resection and frozen section analysis of the nerve section limits may be necessary, especially in AdCC, which is characterised by tumour extensions along and in nerves. 26 Preoperative facial paralysis is a major negative prognostic factor. 24 It imposes a wide surgery with often unsatisfactory excisional limits. Addressing the nerve deficit during resection is the appropriate therapeutic approach. 24, 27 
+
+#### Surgical management of the primary in minor SGC and cancer of the sublingual gland
+
+Minor SGC, a rare entity, may arise in all mucous membranes of the head and neck (including the nasal cavity, nasopharynx, oropharynx, hypopharynx, cervical oesophagus, larynx, trachea and oral cavity). Cancer of the sublingual gland is 10 times less frequent than minor SGC. 9 
+
+Surgery is the mainstay of treatment for primary resectable disease with the traditional open approach being the most widely used, although endoscopic and robot-assisted approaches have recently been described. 28 In a series of 450 patients with minor SGC, multivariate analysis showed advanced clinical stage and unfavourable histological subtype to be associated with poor disease-specific survival. 29 This was confirmed in a large Surveillance, Epidemiology and End Results (SEER) database study of 1426 patients with minor SGC of the oropharynx. 30 It is generally accepted that a 1-cm free margin is adequate in most tumours; however, it is often the case that only millimetric margins are achievable. AdCC is particularly known for perineural spread (as described earlier), requiring detailed surgical planning and wide margins, including resection of bony structures. 24 
+
+#### Surgical management of the primary in submandibular gland cancer
+
+The most common submandibular gland malignant tumour type is AdCC. 31, 32 Tumours confined within the submandibular gland require resection of the gland and the surrounding level Ib lymph nodes to ensure negative margins. In case of high-grade malignancy without clinical evidence of cervical lymph node involvement, selective neck dissection involving level I, II and III lymph nodes is standard procedure as the prevalence of cervical lymph node metastasis in submandibular gland malignancies is high, exceeding that of the parotid malignancies. 24, 32, 33 Careful surgical planning is needed for AdCC, as clear margin surgery may require resection of important structures such as the lingual, hypoglossal and marginal mandibular nerves, floor of the mouth muscles and the skin. Although the risk of nodal metastasis in AdCC is low, this tumour has a propensity for infiltrating the adjacent lymph nodes and perineural spread. 24, 31, 32, 34 While it can be difficult to distinguish between direct invasion and embolic lymph node metastasis, some studies have identified a higher nodal spread than expected. 35 Elective neck dissection (END) for submandibular gland malignancies should be planned based on cytological and radiological findings. Whenever malignancy is suspected, frozen section analysis can dictate extension of surgery locally and to involve at least level Ib but most frequently level I, II and III lymph nodes. 32 
+
+#### Management of the cN+ neck in salivary gland malignancies
+
+The reported incidence of positive neck nodes in parotid carcinomas varies between 10% and 40% and they occur more frequently in patients with high-grade malignancy, advanced T status, facial nerve involvement and extraglandular invasion. 36, 37 The most frequently involved lymph node levels are II, III and IV 38; however, involvement of levels I and V is also non-negligible. 35, 39 When carrying out therapeutic neck dissection for clinically or radiologically positive lymph nodes (cN+), the recommendation is to carry out a comprehensive neck dissection of levels I-V. 35, 39 
+
+The incidence of lymph node metastasis for submandibular carcinomas at initial presentation is around 8%-33%. 40 Positive lymph nodes are often found in level I followed by levels II and III, although all lymph nodes can be involved with the possibility for skip metastases in levels IV and V. Some series have even shown positive lymph node involvement of 40% and 25% in levels IV and V, respectively, warranting a level I-V neck dissection for submandibular gland carcinomas with cN+ disease. 31 
+
+For minor SGC, the same applies, but depending on the origin of the primary, lymph nodes outside the neck may be involved that are relatively inaccessible for surgery, such as retropharyngeal or mediastinal nodes.
+
+#### END for the cN0 neck in parotid gland carcinoma
+
+In a cN0 neck parotid gland carcinoma with clinical and histopathological factors indicating a 15%-20% chance of occult regional metastasis, END is strongly recommended. Clinical prognostic factors for pathologically positive lymph nodes (pN+) are age >54 years, pain, nVII dysfunction and >T2 status. 41, 42 A study using END in T1-T2 N0 patients reported a cN0 pN+ rate of 17%. 43 Histopathological factors (that unfortunately only become clear once the primary is resected) include histological type, intermediate- or high-grade tumour, extraglandular soft tissue invasion and lymphatic invasion.40, 41, 42, 44, 45 Histological types with a high prevalence (>50%) of cN0 pN+ disease are salivary duct carcinoma, undifferentiated carcinoma, adenocarcinoma NOS, high-grade MEC, SCC and high-grade transformed AdCC. 36, 40 AcCC and low-grade MEC were previously considered to have low pN+ rates but routine ENDs have revealed higher than expected rates, especially for high-grade AcCC. 36, 38, 39, 43, 44, 46 Regarding the best treatment strategy, some clinicians use END followed by post-operative RT, while others prefer to use elective neck irradiation (ENI) (see RT section). 41, 45, 47, 48, 49
+
+Some clinicians propose a routine END for every patient with suspected or known parotid gland cancer; reported rates of cN0 pN+ range from 22% to 45% in series where all patients underwent END. 36, 43, 50, 51 The lymph node levels to address are II, III and IV. 39, 40 A significant proportion (53%-80%) of patients with pN+ disease on neck dissection will also have metastatic deposits in the ‘first echelon’ intraparotid lymph nodes (see earlier Surgical management of the primary in parotid gland cancer section). 24, 40, 52 In one study, 1-11 parotid lymph nodes were retrieved, with 80% of parotid nodes involved in cN0 pN+ patients. 38 There is still no direct evidence that resection of these nodes increases locoregional control. Taken together, three scenarios exist:
+
+1. Low risk of occult nodal disease (T1-T2 tumours, low-grade tumours, young patients)
+
+• After resection of the primary, a watch-and-wait policy to the neck can be defended 39 
+
+• Most clinicians will carry out a level II dissection with frozen section, converting into a comprehensive neck dissection in the rare pN+ cases, 24 but leaving the neck untreated if pN0
+
+• Systematic END 36, 38, 43, 50, 51 
+
+2. Risk factors for cN0 pN+ discovered at histology of parotidectomy
+
+• ENI is recommended 41, 49 
+
+3. High risk of occult nodal disease preoperatively
+
+• END (levels II, III and IV) and post-operative neck RT based on pathology. Level I (anteriorly located primary) and level V (large tumour located in the parotid tail with increased risk of spread to level V) dissection on indication 39, 45 
+
+• ENI, especially if adjuvant RT for the primary tumour is already likely 41, 48, 49 
+
+• Level II dissection, extended to a comprehensive neck dissection if cN0 pN+ on frozen section. If no pN+, ENI to the neck follows the findings in the pathology report of the resected primary 24 
+
+#### END for the cN0 neck in minor SGC
+
+For minor SGC, when the neck is surgically entered as an approach to the primary, it is logical to also address the neck surgically. The occult metastatic rate for laryngeal, sinonasal, external acoustic meatus and lacrimal gland origin is too low to justify END. In oral cavity (levels I, II, III and IV) and oropharyngeal (levels II, III and IV) minor SGC, and in high-grade MEC and AdCC, the occult rates largely exceed 20% and END is indicated. 53, 54 END is frequently advocated for all high-stage and high-grade tumours. In a recent French study, however, no benefit in terms of event-free survival was demonstrated when comparing patients with cN0 AdCC undergoing END with those who did not, except when the site of origin was the oral cavity. In this series, the majority (58%) of 322 cases were of minor salivary gland origin. 55 In a large series of 3005 patients with MEC of the oral cavity and oropharynx, END was associated with a survival benefit for patients with high-grade and clinical stage T3-4 disease. 56 
+
+#### END for the cN0 neck in submandibular gland carcinoma
+
+For preoperatively known submandibular gland cancers with otherwise cN0 neck, inclusion of the submandibular gland in a selective neck dissection (levels I, II and III) is considered the standard procedure, revealing occult metastasis rates of 21%-23%. 33, 57 For completely intraglandular tumours, if preoperatively certain to not be high grade, resection of the gland and the surrounding level Ib lymph nodes may suffice. 32 
+
+### RT
+
+#### Post-operative RT for SGC
+
+Historically, SGCs were considered radioresistant. There are no randomised studies comparing surgery alone versus surgery combined with post-operative RT. Nevertheless, many retrospective studies have reported beneficial outcomes with a combined approach in patients with advanced disease and negative prognostic factors for locoregional control.
+
+Based on literature using matched pair analysis or large retrospective cohort studies described in Section 4 of the Supplementary Material, available at https://doi.org/10.1016/j.esmoop.2022.100602, post-operative RT at the primary tumour region is recommended in case of T3-T4 disease, high/intermediate-grade disease, close or incomplete resection margins and/or perineural growth. 45, 58 The use of intensity-modulated RT (IMRT) or volumetric modulated arc therapy (VMAT) is recommended. For parotid gland cancer invading the deep lobe, the infratemporal fossa and the parapharyngeal space should be included in the field. After incomplete resection, a dose of 33 × 2 Gy is described for the primary tumour region plus a 1 cm margin, with 30 × 2 Gy after a clear resection. 45, 58 In case of extensive perineural invasion the nerve pathway to the base of the skull should be delineated. 59 
+
+Indications for ENI (25 × 2 Gy over 5 weeks) are the same as the indications for END. In general, ENI is indicated in case of T3-T4 cN0 tumours and high- or intermediate-grade subtypes, and also depends on the primary site. 58 The ipsilateral neck node levels II and III should be treated in parotid gland tumours and ipsilateral levels I, II and III in submandibular gland tumours. Bilateral ENI is indicated for tumours crossing the midline. For minor SGC, the highest risk for subclinical neck disease is a pharyngeal location, high-grade disease and T3-T4 tumours. Ipsilateral ENI is recommended for levels I, II and III.
+
+Post-operative RT is indicated for all cases of pN+ neck. A dose of 30 × 2 Gy is recommended for the involved level, and 33 × 2 Gy in case of extranodal disease. For the ipsilateral elective levels I-V, a dose of 25 × 2 Gy is recommended. 58 
+
+#### Combining post-operative RT with chemotherapy
+
+There are no large series analysing the role of combined chemotherapy (ChT) and RT in the post-operative setting in SGC. In the phase II Radiation Therapy Oncology Group (RTOG) 1008 study (NCT01220583) both scenarios are being compared, but no results are available yet.
+
+Combining post-operative ChT with RT in major SGC has been evaluated retrospectively using data from the US National Cancer Database. The addition of ChT was restricted to late-stage tumours with adverse features and did not result in a survival benefit. 60 In a retrospective cohort study, platinum-based post-operative chemoradiotherapy (n = 37) was compared with post-operative RT only (n = 103). In the chemoradiotherapy group, more patients had N+ disease, positive surgical margins and perineural invasion. In multivariate analysis, progression-free survival (PFS) was not improved by the addition of ChT. 61 Comparable results were reported in a subset of patients with high-risk SGC. 62, 63 In an ongoing phase III, multicentre, randomised, open-label, French study, post-operative or primary RT alone is being compared with concomitant RT plus cisplatin on days 1, 22 and 43 for SGC and nasal cancer. No results are available yet. 64 
+
+The level of evidence for combining ChT with RT is low and this treatment is not recommended outside of a clinical study.
+
+#### Primary RT for unresectable SGC
+
+The primary treatment for SGC without distant metastasis is surgery with post-operative RT when indicated; however, curative primary RT is indicated for patients with functionally unresectable disease or who are unsuitable for surgery due to comorbidities.
+
+Taking locoregional control, survival and complications into account, the treatment options are photon treatment or particle treatment with protons, neutrons or carbon ions (C12). In most institutes, primary photon therapy up to 70 Gy is still applied. Particle treatment, particularly C12 and especially for AdCC and tumours involving the base of the skull, may be an alternative with a potentially higher locoregional cure rate compared with photons; however, these treatment options have limited availability. The literature supporting the use of particle treatment is described in Section 5 of the Supplementary Material, available at https://doi.org/10.1016/j.esmoop.2022.100602.
+
+No randomised studies have been carried out to compare primary treatment with chemoradiotherapy versus RT alone. Most published studies report small series with different histological subtypes, using a variety of ChT regimens. 62 
+
+There is currently no evidence to support the combination of particle therapy and simultaneous ChT in SGC. 65 
+
+### Recommendations
+
+#### Surgical management of the primary: parotid gland cancer
+
+• The reference procedure is total parotidectomy [IV, A].
+
+• For low-grade tumours, especially post-operatively discovered, a superficial parotidectomy can be considered sufficient [IV, A].
+
+• If the nVII is not infiltrated or grossly encased by tumour, the nerve should be preserved [IV, A].
+
+• A preoperatively paralysed nVII requires nVII resection and primary reconstruction and/or reanimation procedures [IV, A].
+
+• It is important to collect as much information as possible about the tumour before surgery, discuss scenarios with the patient and be able to do a graft during the ablative procedure [IV, A].
+
+#### Surgical management of the primary: submandibular gland cancer
+
+• Malignant tumours confined within the submandibular gland require at least resection of the gland and the surrounding level Ib lymph nodes [IV, A].
+
+• In case of high-grade malignancy without clinical evidence of cervical lymph node involvement, including the gland in a selective neck dissection involving levels I, II and III is indicated [IV, A].
+
+#### Surgical management of the cN+ neck in SGC
+
+• Patients with positive lymph nodes (clinical or radiological) should undergo a comprehensive lymph node dissection involving levels I-V [IV, A].
+
+#### Surgical management of the cN0 neck in parotid gland cancer
+
+• Patients at low risk for cN0 pN+ before surgery (T1-T2, low grade, <54 years of age) have three options: (i) watch-and-wait; (ii) selective level II dissection (followed by watch-and-wait if pN0 or extend neck dissection to levels I-V if pN+); (iii) END to levels II, III and IV [IV, B].
+
+• Patients with risk factors for cN0 pN+ discovered post-operatively should undergo ENI (cN0 at least levels II and III unilaterally; pN+ levels I-V) [IV, B].
+
+• Patients at high risk for cN0 pN+ (T3-T4, high grade, >54 years of age) have three options: (i) selective level II dissection (followed by watch-and-wait if pN0 or extend neck dissection to levels I-V if pN+); (ii) END to levels II, III and IV (followed by watch-and-wait if pN0 or RT to levels I-V if pN+); (iii) ENI to levels I-V [IV, B].
+
+#### Surgical management of the cN0 neck in minor SGC
+
+• As a general rule, END should be carried out when the neck is entered as an approach to the primary or for reconstruction [IV, B].
+
+• In tumours of laryngeal, sinonasal, external acoustic meatus and lacrimal gland origin, pN+ rates are too low to justify END [IV, B].
+
+• For oral cavity, oropharynx, T3-T4 and high-grade tumours, END or ENI should be carried out. Levels depend on tumour location and are comparable with treatment for cN0 head and neck SCC [IV, B].
+
+#### Surgical management of the cN0 neck in submandibular gland cancer
+
+• Including the gland in a selective neck dissection involving levels I, II and III is indicated, unless the tumour is intraglandular and if low-grade histology is proven (in which case resection of the gland and level Ib lymph nodes may suffice) [IV, B].
+
+#### Post-operative or primary RT or chemoradiotherapy
+
+• Post-operative local RT is recommended for T3-T4 and intermediate/high-grade tumours and in cases with close resection margins (1-5 mm; 30 × 2 Gy), incomplete resection margins (33 × 2 Gy) or perineural growth [IV, A].
+
+• Post-operative regional RT is recommended for cases with pN+ (30 × 2 Gy) and extranodal extension (33 × 2 Gy). Unilateral ENI (25 × 2 Gy) is recommended based on the same inclusion criteria as for END [IV, A].
+
+• There is no proof of a beneficial effect of adding ChT to post-operative RT of the primary tumour and neck [IV, C].
+
+• Curative primary RT is indicated for patients with functionally unresectable disease or who are unsuitable for surgery due to comorbidities [IV, B].
+
+• Primary IMRT/VMAT photon RT up to 35 × 2 Gy to the primary tumour and positive neck nodes with ENI with equal indications as for primary surgery may result in ∼50% locoregional control [IV, B].
+
+• Primary particle treatment, namely C12, may result in higher locoregional control rates compared with photon RT (but with limited availability) [IV, C].
+
+• There is no proof of a beneficial effect of adding ChT to primary RT in patients with unresectable SGC or those who are unsuitable for surgery [IV, C].
+
+## Management of locally recurrent and metastatic disease
+
+### RT
+
+RT may be used for the management of locally recurrent disease and/or for palliation.
+
+#### RT for recurrent disease
+
+Local recurrence within the high-dose area following initial RT remains a challenge. When surgery is not an option, systemic treatments (either ChT or targeted agents) offer limited benefit with very moderate overall response rates and are therefore rarely successful in alleviating local symptoms. Before the introduction of particle therapy, re-irradiation with photons was used with utmost caution, especially in anatomically challenging sites. Meanwhile, three groups have shared their experience of re-irradiation using scanned C12 in SGC,66, 67, 68 reporting 1-year and 2-year overall survival (OS) rates of up to 90% and 64%, respectively, although late toxicities were observed. Based on these studies, re-irradiation with C12 appears feasible with response rates of around 60% and moderate toxicities in heavily pre-treated patients; however, C12 has limited availability in Europe. Protons are becoming more widely available, but evidence is lacking to support the added value. Further dose escalation should be employed cautiously. There is no evidence to support the combination of re-irradiation and ChT for primary treatment of SGC.
+
+#### RT for palliation
+
+In the RTOG 8502 study, an RT regimen of 4 × 3.7 Gy over 2 days was repeated in cycles of 4 weeks. Seven out of 75 patients had salivary gland histology. Palliative response was observed in 65% of patients, significantly correlating with the number of cycles. 69 For palliative RT of head and neck cancer, the ‘Christie scheme’ (16 × 3.125 Gy over 4 weeks) resulted in a 45% complete response rate and 28% partial response rate. 70 This schedule may also be considered in patients with metastatic SGC with a relatively long life expectancy. For patients with AdCC or AcCC and a WHO performance status score of 0-1, an even more prolonged RT schedule for palliation of locoregional disease or symptomatic distant metastases might be considered. Nevertheless, in case of short life expectancy or a WHO performance status of 2-3, a short fractionation schedule is usually preferred.
+
+#### Oligometastatic disease
+
+For oligometastatic disease, locoregional treatments such as surgery,71, 72, 73 radiofrequency ablation 74 or stereotactic RT 75 can be considered in selected cases, especially in AdCC. In one study, a prolonged disease-free interval (>36 months) and radical resection were the main prognostic factors in 109 patients with AdCC and lung metastases who underwent metastasectomy. 71 
+
+### Systemic treatment for recurrent and/or metastatic disease
+
+In case of R/M disease, systemic treatment is challenging but can be urgent, depending on tumour subtype and behaviour. For all types of SGC with distant metastases (71% of patients will present or develop R/M disease), median OS is 15 months and 1-, 3- and 5-year OS rates are 54.5%, 28.4% and 14.8%, respectively. 76 This, however, varies widely between subtypes.
+
+The rarity of SGC and its extensive heterogeneity hinders large-scale patient accrual in prospective trials. The number of clinical trials evaluating systemic therapy in R/M SGC is low and their interpretation is difficult because most phase II studies include all SGC subtypes, pathological review for correct histopathological subtyping is missing and data on efficacy are not presented by subtype. 77 
+
+An overview of targeted therapies evaluated in SGC is presented in Supplementary Table S6, available at https://doi.org/10.1016/j.esmoop.2022.100602.
+
+#### MEC
+
+The reported risk of distant metastasis in MEC is 16% at 10 years. 78 In R/M MEC, responses with cisplatin alone or in combination with other agents [e.g. cisplatin–adriamycin–cyclophosphamide (CAP) or cisplatin–gemcitabine] and paclitaxel as monotherapy have been observed in small patient cohorts (three responses on paclitaxel monotherapy in 14 patients in the largest MEC cohort). 79 The CRTC1-MAML2 gene fusion, which is commonly present in MECs, causes up-regulation of the epidermal growth factor receptor (EGFR) ligand amphiregulin, 80 suggesting a potential role for EGFR inhibitors. Reports of clinical benefit with an EGFR inhibitor in patients with MEC are, however, anecdotal and require further investigation.
+
+#### AdCC
+
+To date, no systemic treatment has been shown to improve OS in patients with R/M AdCC. Metastatic AdCC is generally characterised by multiple locoregional recurrences accompanied by distant metastases in about half of cases. The lung is the most common site of distant spread followed by the lymph nodes, bone, liver, etc. Despite these characteristics, survival of patients with R/M AdCC is generally prolonged, with an OS rate of 40% at 10 years. 71 In this context, active surveillance could be a rational proposal in highly selected patients (asymptomatic, low tumour burden, lung metastases and stable disease). Lung metastasectomy should be considered in patients without other R/M tumour deposits, provided that a complete surgical resection is feasible and disease-free interval from primary diagnosis is >36 months. 71 Systemic treatment should be reserved for patients with progressive and/or symptomatic disease that is not otherwise manageable. A cisplatin-based regimen seems to guarantee the highest response rate: 13% with cisplatin alone and 25% (95% CI 11% to 39%) with CAP. 81 Duration of response ranges widely from 7 to 77 months. Carboplatin seems to have limited activity, and no response has been reported with paclitaxel or gemcitabine. 81 Compounds tailored for actionable targets such as EGFR, KIT and fibroblast growth factor receptor have failed to demonstrate any activity. 79 Strategies focused on pathogenetic targets seem more promising. Clinical trials are currently evaluating two agents with different strategies: CB103, which targets NOTCH oncogene transcription factors (NCT03422679), and AL101, which inhibits gamma secretase (ACCURACY; NCT03691207). Partial response was observed in 15% of patients (6/39) treated with AL101 at 4 mg, and further drug titration is being studied. 82 Trials targeting MYB, the hallmark of AdCC, are underway. A study combining MYB DNA vaccination with anti-programmed cell death protein 1 immunotherapy is currently recruiting patients (MYPHISMO; NCT03287427). Antiangiogenic agents (sorafenib, lenvatinib and axitinib) have been investigated in recent years, but response rates did not exceed 15% 79 (see Supplementary Table S7, available at https://doi.org/10.1016/j.esmoop.2022.100602). In this context, axitinib was the first agent to demonstrate a significant PFS prolongation compared with placebo in a phase II randomised trial (hazard ratio 0.25, 95% CI 0.14-0.48), 83 becoming the new backbone for future trials. The activity of immune checkpoint inhibitors alone is null in patients with R/M AdCC. 79 Given the disappointing results of systemic treatments, participation in clinical trials is strongly recommended.
+
+#### AcCC
+
+Distant metastases occur in 19% of patients with AcCC. No data on ChT are available and the role of the HTN3-MSANTD3 fusion gene (present in 4% of patients) is unknown and not targetable yet. Nevertheless, NTRK gene fusion analysis must be carried out in patients with R/M AcCC because secretory carcinoma is often misclassified as AcCC, and tumours with NTRK fusion genes respond extremely well to targeted therapy (see below).
+
+#### Polymorphous adenocarcinoma
+
+The prognosis of patients with polymorphous adenocarcinoma is generally good and distant metastases are rare, reported in only 4.3% of patients at presentation. 84 No data on ChT or targeted therapy are available.
+
+#### Adenocarcinoma NOS
+
+CAP, paclitaxel monotherapy and gemcitabine or vinorelbine in combination with cisplatin have led to limited response rates in adenocarcinoma NOS. If the tumour is androgen receptor positive and/or has HER2 amplification, it is most likely a salivary duct carcinoma and must be treated in the same way as salivary duct carcinoma (see below). 85 
+
+#### Salivary duct carcinoma
+
+Fifty-four percent of patients with salivary duct carcinoma treated with curative intent will develop locoregional recurrences and/or distant metastases. In patients with distant metastases, spread to lungs (54%) and bones (46%) has been reported most frequently, but a high rate of brain metastasis has also been observed (18%). 86 Given the dismal prognosis and high prevalence of distant metastasis (also in case of local or locoregional recurrence), systemic therapy is often required. The median OS for patients with R/M disease receiving best supportive care is only 5 months. 87 
+
+Agents targeting androgen receptors and/or HER2 are promising and are the best studied therapies in patients with salivary duct carcinoma. A prospective phase II trial evaluating the effect of combined androgen blockade with leuprorelin acetate and bicalutamide in 36 patients with SGC (of which 34 were salivary duct carcinoma) demonstrated partial or complete response in 41.7% of patients (95% CI 25.5% to 59.2%) and stable disease in 44.4% (95% CI 27.9% to 61.9%). 88 Given the low rate of grade 3/4 toxicity, combined androgen blockade plays an important role in the palliative treatment of androgen receptor-positive salivary duct carcinoma. Androgen deprivation therapy (ADT) may also be beneficial in the adjuvant setting. Based on retrospective data, adjuvant ADT results in significantly improved 3-year disease-free survival in patients with stage IVa androgen receptor-positive salivary duct carcinoma [48.2% (95% CI 14.0% to 82.4%) versus 27.7% (95% CI 18.5% to 36.9%) in the control group, which did not receive adjuvant ADT]. 89 
+
+In HER2-positive salivary duct carcinoma, trastuzumab combined with taxane-based ChT is the best studied regimen, with an overall response rate of 70.2% (95% CI 56.6% to 81.6%) and median OS of 39.7 months (95% CI not reached) reported for trastuzumab–docetaxel in 57 patients with salivary duct carcinoma. 90 This combination could potentially be amplified with the addition of another agent targeting HER2 (e.g. pertuzumab, lapatinib) or, after progressive disease, replacement of trastuzumab with the antibody–drug conjugate trastuzumab–emtansine (T-DM1). An oral presentation at the American Society of Clinical Oncology congress in 2019 emphasised the potential of T-DM1 in HER2-amplified SGC, as 9 out of 10 patients (0-3 lines of prior treatment, median of 2) responded to this treatment. Presumably most of these patients had salivary duct carcinoma. Median PFS was not reached after a median follow-up of 12 months. 91 In analogy with the positive results achieved in HER2-positive breast cancer by adding pertuzumab to docetaxel–trastuzumab and the cases reported for this combination in salivary duct carcinoma, this triple combination deserves pursuit in clinical studies in salivary duct carcinoma. In patients co-expressing HER2 and androgen receptors, it is currently unclear whether targeting androgen receptors or HER2 is the best approach. In case of extensive or rapidly progressive disease, HER2-targeting therapy in combination with taxane-based ChT is the reasonable choice over antihormonal therapy, as in breast cancer, but there is no evidence for this approach (expert opinion).
+
+Besides androgen receptors and HER2, a number of mutations are observed in lower frequencies in salivary duct carcinoma, which form a genetic landscape highly similar to apocrine breast cancer. 92 These include mutations in TP53 (53%-68%), PIK3CA (18%-26%), HRAS (16%-23%), BRAF (4%) and AKT1 (1.5%). Reports of use of these targets in clinical practice are scarce. 93 When these mutations are identified, patients should be preferably treated in basket studies.
+
+The most frequently used ChT regimen in R/M salivary duct carcinoma is carboplatin–paclitaxel. 79 Although 30%-60% of salivary duct carcinomas demonstrate IHC positivity for programmed death-ligand 1, no phase II data with immune checkpoint inhibitors are available. 94 
+
+#### Secretory carcinoma
+
+The body of evidence for the efficacy of tropomyosin receptor kinase (TRK) inhibitors (e.g. larotrectinib, entrectinib, repotrectinib, LOXO-195) in patients with secretory carcinoma and NTRK gene fusions is expanding. 95 A recent phase II trial evaluating the efficacy of larotrectinib in NTRK fusion-positive patients included 12 patients with secretory carcinoma and reported a response rate of 75%. Median PFS was not reached after a median follow-up of 9.9 months. 96 Responses in patients with secretory carcinoma have also been observed with entrectinib and repotrectinib. 97, 98 A phase I/II trial evaluating LOXO-195 in second-line treatment is currently recruiting and is open for inclusion of patients with NTRK fusion-positive SGC who have previously been treated with a TRK inhibitor and are showing progressive disease, unresponsiveness or intolerance (NCT03215511). Positive IHC staining for TRK generally correlates with NTRK1 and NTRK2 fusions, even if specificity is lower for SGCs (52%) compared with other malignant tumours. 99 For treatment with TRK inhibitors, RNA confirmation is needed.
+
+#### Other SGC subtypes
+
+For some histological subtypes, little or no clinical evidence is available to make hard recommendations for additional IHC staining or molecular evaluation to identify therapeutic targets. For these subtypes, IHC staining for androgen receptors and evaluation of HER2 expression, preferably by IHC staining and FISH, are advocated. Besides this, use of an NGS panel which includes frequently affected genes in other cancers that are currently targetable with anticancer drugs (e.g. PIK3CA, BRAF, NRAS, MET) is suggested. Regarding gene fusions, which are often not present in commercially available panels, it is important to test specifically for NTRK gene fusions, as these have great implications for individual patients.
+
+### Recommendations
+
+#### RT
+
+• Re-irradiation with C12 can be considered [IV, B]. Evidence is lacking to support the added value of proton treatment [V, C].
+
+• There is currently no evidence to support the combination of re-irradiation and ChT for primary treatment of SGC [IV, C].
+
+#### Systemic treatment
+
+• In case of R/M disease, consider sequencing (NGS) of the tumour [V, C].
+
+• Participation in clinical trials is strongly recommended [V, C].
+
+#### AdCC
+
+• In case of activated NOTCH mutation, participation in a NOTCH inhibitor clinical study is recommended, if possible [V, B].
+
+• In case of only lung metastases without local recurrence, a watch-and-wait strategy is recommended until complaints or rapid growth (local treatment of lung metastases could be considered in selected cases) [III, B].
+
+• In case of liver and/or bone involvement, there is a lower threshold to start (often more aggressive) systemic treatment [IV, C].
+
+• When starting systemic treatment, consider angiogenesis inhibitors [III, C] or platinum-based ChT (i.e. CAP or doxorubicin–cisplatin) [III, B].
+
+#### Salivary duct carcinoma
+
+• In case of R/M disease, start systemic treatment immediately [III, B].
+
+• In case of androgen receptor positivity (>70% by IHC) consider ADT (combined antihormonal or antiandrogen as a single agent) [III, B; ESCAT score: II-B].
+
+• In case of HER2 positivity (IHC score 3+ or FISH positivity) consider docetaxel–trastuzumab or T-DM1 [III, B; ESCAT score: II-B; not European Medicines Agency (EMA) or Food and Drug Administration (FDA) approved].
+
+• For systemic ChT, carboplatin–paclitaxel should be considered [III, B].
+
+#### Secretory carcinoma
+
+• In patients with secretory carcinoma and NTRK gene fusions, treatment with a TRK inhibitor (entrectinib or larotrectinib) is recommended [III, A; ESMO-Magnitude of Clinical Benefit Scale (MCBS) v1.1 score: 3; ESCAT score: I-C].
+
+#### Other SGC
+
+• Consider platinum-based palliative ChT [III, B].
+
+## Follow-up, long-term implications and survivorship
+
+Follow-up is designed to detect R/M disease. Strict rules cannot be provided in the absence of formal studies. Recommended follow-up may include MRI and chest CT. There is no consensus on the value of positron emission tomography for assessing local recurrence compared with conventional imaging. 100 
+
+Further information on follow-up, long-term implications and survivorship is provided in Section 6 of the Supplementary Material, available at https://doi.org/10.1016/j.esmoop.2022.100602.
+
+### Recommendations
+
+• Follow-up may include the use of MRI for locoregional recurrence and chest CT for lung metastases [V, C].
+
+• In AdCC, locoregional imaging (preferably head and neck MRI with contrast agent administration) is suggested every 3-4 months for the first 2 years, every 6 months from the third to the fifth year and then on an annual basis thereafter [V, C]. A lung CT at least annually should also be considered.
+
+• For other patients with SGC who do not have any evidence of disease activity, regular scans 1-2 times per year are suggested for the first 1-2 years, before moving to less frequent scans. Patients with residual/recurrent or metastatic disease should be scanned more regularly (i.e. 2-4 times per year), but when a low growth rate is present, the imaging frequency can be decreased [V, C].
+
+• MRI scans are the best imaging tool for locoregional recurrent disease [V, C].
+
+• A good multidisciplinary recovery programme is needed for every patient with SGC [V, B].
+
+## Methodology
+
+This Clinical Practice Guideline (CPG) was developed in accordance with the ESMO standard operating procedures for CPG development (http://www.esmo.org/Guidelines/ESMO-Guidelines-Methodology). The relevant literature has been selected by the expert authors. An ESCAT table with ESCAT scores is included in Supplementary Table S3, available at https://doi.org/10.1016/j.esmoop.2022.100602. ESCAT scores have been defined by the authors and validated by the ESMO Translational Research and Precision Medicine Working Group. 101 An ESMO-MCBS table with ESMO-MCBS scores is included in Supplementary Table S8, available at https://doi.org/10.1016/j.esmoop.2022.100602. ESMO-MCBS v1.1 102 was used to calculate scores for new therapies/indications approved by the EMA or FDA (https://www.esmo.org/Guidelines/ESMO-MCBS). The scores have been calculated by the ESMO-MCBS Working Group and validated by the ESMO Guidelines Committee. The FDA/EMA or other regulatory body approval status of new therapies/indications is reported at the time of writing this CPG. Levels of evidence and grades of recommendation have been applied using the system shown in Supplementary Table S9, available at https://doi.org/10.1016/j.esmoop.2022.100602. 103, 104 Statements without grading were considered justified standard clinical practice by the authors. Future updates to this CPG will be published on esmo.org as a Living Guideline version or an eUpdate, to be made available at: https://www.esmo.org/guidelines/head-and-neck-cancers/salivary-gland-cancer.
+
+## Acknowledgements
+
+Manuscript editing support was provided by Louise Green and Jennifer Lamarre (ESMO Guidelines staff) and Angela Corstorphine and Sian-Marie Lucas of Kstorfin Medical Communications Ltd (KMC); this support was funded by ESMO. Nathan Cherny, Chair of the ESMO-MCBS Working Group, Urani Dafni, ESMO-MCBS Working Group Member/Frontier Science Foundation Hellas and Giota Zygoura of Frontier Science Foundation Hellas provided review and validation of the ESMO-MCBS scores. Nicola Latino (ESMO Scientific Affairs staff) provided coordination and support of the ESMO-MCBS scores and Angela Corstorphine and Sian-Marie Lucas of KMC provided medical writing and editing support in the preparation of the ESMO-MCBS table; this support was funded by ESMO. Joaquin Mateo (Chair of the ESMO Translational Research and Precision Medicine Working Group) and Dr Svetlana Jezdic (ESMO Medical Affairs Advisor) provided validation support for ESCAT scores.
+
+## Funding
+
+No external funding has been received for the preparation of this guideline. Production costs have been covered by ESMO from central funds.
+
+## Disclosure
+
+VVP reports fees paid to his institute as an invited speaker from Atos Medical, Bristol Myers Squibb (BMS) and Ethicon – Johnson & Johnson and non-remunerated roles as a member of the Board of Directors and Secretary General of the Multidisciplinary Salivary Gland Society. BB reports personal fees for advisory board participation from Merck Sharp & Dohme (MSD) and Merck, personal fees as an invited speaker for Sanofi and fees paid to his institute as local Principal Investigator (PI) for BMS. LDL reports personal fees for advisory board membership of Eli Lilly, Merck Serono and MSD, personal fees as an invited speaker for Biogen, EISAI, IPSEN, Sanofi Regeneron and SunPharma and fees paid to her institute as local PI for EISAI. She also reports non-remunerated leadership roles with the Endocrine Tumour Group and as an Officer for the Scientific Chairs Council of European Organisation for Research and Treatment of Cancer (EORTC), affiliate for the Italian Association of Medical Oncology (AIOM) and the Multidisciplinary Salivary Gland Society (MSGS) and an advisory role for Associazione Italiana Oncologia Cervico Cefalica (AIOCC). JH reports personal fees from stocks/shares from RiverD/MarginGuide. EK reports personal fees for full- or part-time employment as the Consumer Lead for the National Cancer Research Institute (NCRI) and a non-remunerated role as a member of the Board of Directors of Salivary Gland Cancer UK. CE reports personal fees for advisory board membership of BMS, MSD, Merck Serono and Innate Pharma, fees paid to her institute for advisory board membership for F-star Therapeutics and institutional funding as a local or coordinating PI for BMS, AstraZeneca, ISA Pharmaceutics, MSD, Debiopharma, Ayala and Novartis. JPM reports fees paid to his institute for advisory board participation from ALX Oncology, AstraZeneca (Steering Committee member), Bayer, BMS, Boehringer Ingelheim, Cue Biopharma, DeBio, F-star Therapeutics, Incyte, Innate, Janssen, Johnson & Johnson, Merck Serono, MSD (uncompensated), Nanobiotix, Nektar Therapeutics, Novartis, Pfizer and Roche; travel support from Gilead; institutional research support as local or coordinating PI from AbbVie, Amgen, Bayer, Boehringer Ingelheim, Ceylad Oncology, eTheRNA, GlaxoSmithKline, Incyte, iTeos Therapeutics, Janssen, Johnson & Johnson, Kura Oncology, Lilly, MSD (Steering Committee member), Novartis, Pfizer, Roche, Sanofi-Aventis and Merck Serono. He also reports a non-remunerated leadership role as Chair with the EORTC Head and Neck Group. All other authors have declared no conflicts of interest.
+
+## Supplementary data
+
+*Supplementary data*
+
+## References
+
+- 1 Ferlay J., Ervik M., Lam F., et al. Global Cancer Observatory: Cancer Today. Lyon, France: International Agency for Research on Cancer Available at https://gco.iarc.fr/today
+- 2 RARECARENet. Information Network on Rare Cancers Available at http://rarecarenet.istitutotumori.mi.it/
+- 3 Radoi L., Barul C., Menvielle G., et al. Risk factors for salivary gland cancers in France: results from a case-control study, the ICARE study Oral Oncol 80 2018 56 63 pmid: 29706189 doi: 10.1016/j.oraloncology.2018.03.019
+- 4 Lin H.H., Limesand K.H., Ann D.K. Current state of knowledge on salivary gland cancers Crit Rev Oncog 23 3-4 2018 139 151 pmid: 30311570 doi: 10.1615/CritRevOncog.2018027598 pmcid: PMC6415949
+- 5 Cong X. Air pollution from industrial waste gas emissions is associated with cancer incidences in Shanghai, China Environ Sci Pollut Res Int 25 13 2018 13067 13078 pmid: 29484620 doi: 10.1007/s11356-018-1538-9
+- 6 Sawabe M., Ito H., Takahara T., et al. Heterogeneous impact of smoking on major salivary gland cancer according to histopathological subtype: a case-control study Cancer 124 1 2018 118 124 pmid: 28881386 doi: 10.1002/cncr.30957
+- 7 Boukheris H., Curtis R.E., Land C.E., et al. Incidence of carcinoma of the major salivary glands according to the WHO classification, 1992 to 2006: a population-based study in the United States Cancer Epidemiol Biomarkers Prev 18 11 2009 2899 2906 pmid: 19861510 doi: 10.1158/1055-9965.EPI-09-0638 pmcid: PMC2779732
+- 8 Alvi S., Chudek D., Limaiem F. Cancer, Parotid. Treasure 2020 StatPearls Publishing Island, FL pmid: 30855924
+- 9 Bradley P.J., McGurk M. Incidence of salivary gland neoplasms in a defined UK population Br J Oral Maxillofac Surg 51 5 2013 399 403 pmid: 23103239 doi: 10.1016/j.bjoms.2012.10.002
+- 10 Gatta G., Capocaccia R., Botta L., et al. Burden and centralised treatment in Europe of rare tumours: results of RARECAREnet – a population-based study Lancet Oncol 18 8 2017 1022 1039 pmid: 28687376 doi: 10.1016/S1470-2045(17)30445-X
+- 11 El Naggar A.K., Chan J.K., Grandis J.R., et al. World Health Organization (WHO) Classification of Head and Neck Tumours 4th ed. 2017 IARC Press Lyon, France
+- 12 Faquin W., Rossi E.D. The Milan System for Reporting Salivary Gland Cytopathology 2018 Springer New York, NY
+- 13 Farahani S.J., Baloch Z. Retrospective assessment of the effectiveness of the Milan system for reporting salivary gland cytology: a systematic review and meta-analysis of published literature Diagn Cytopathol 47 2 2019 67 87 pmid: 30375201 doi: 10.1002/dc.24097
+- 14 Kim B.Y., Hyeon J., Ryu G., et al. Diagnostic accuracy of fine needle aspiration cytology for high-grade salivary gland tumors Ann Surg Oncol 20 7 2013 2380 2387 pmid: 23440550 doi: 10.1245/s10434-013-2903-z
+- 15 Howlett D.C., Triantafyllou A. Evaluation: fine needle aspiration cytology, ultrasound-guided core biopsy and open biopsy techniques Adv Otorhinolaryngol 78 2016 39 45 pmid: 27093205 doi: 10.1159/000442123
+- 16 Cho J., Kim J., Lee J.S., et al. Comparison of core needle biopsy and fine-needle aspiration in diagnosis of malignant salivary gland neoplasm: systematic review and meta-analysis Head Neck 42 10 2020 3041 3050 pmid: 32671867 doi: 10.1002/hed.26377
+- 17 Romano E.B., Wagner J.M., Alleman A.M., et al. Fine-needle aspiration with selective use of core needle biopsy of major salivary gland tumors Laryngoscope 127 11 2017 2522 2527 pmid: 28543000 doi: 10.1002/lary.26643
+- 18 Ihrler S., Agaimy A., Guntinas-Lichius O., et al. Why is the histomorphological diagnosis of tumours of minor salivary glands much more difficult? Histopathology 79 5 2021 779 790 pmid: 34042205 doi: 10.1111/his.14421
+- 19 Seethala R.R. An update on grading of salivary gland carcinomas Head Neck Pathol 3 1 2009 69 77 pmid: 20596994 doi: 10.1007/s12105-009-0102-9 pmcid: PMC2807532
+- 20 Skalova A., Stenman G., Simpson R.H.W., et al. The role of molecular testing in the differential diagnosis of salivary gland carcinomas Am J Surg Pathol 42 2 2018 e11 e27 pmid: 29076877 doi: 10.1097/PAS.0000000000000980
+- 21 O'Sullivan B. Major salivary glands Brierley J.D., Gospodarowicz M.K., Wittekind C. UICC TNM Classification of Malignant Tumours 8th ed. 2017 Wiley-Blackwell Oxford, UK
+- 22 Lombardi D., Tomasoni M., Paderno A., et al. The impact of nodal status in major salivary gland carcinoma: a multicenter experience and proposal of a novel N-classification Oral Oncol 112 2021 105076 doi: 10.1016/j.oraloncology.2020.105076 pmid: 33137587
+- 23 Seethala R.R., Altemani A., Ferris R.L., et al. Data set for the reporting of carcinomas of the major salivary glands: explanations and recommendations of the guidelines from the International Collaboration on Cancer Reporting Arch Pathol Lab Med 143 5 2019 578 586 pmid: 30500293 doi: 10.5858/arpa.2018-0422-SA
+- 24 Lombardi D., McGurk M., Vander Poorten V., et al. Surgical treatment of salivary malignant tumors Oral Oncol 65 2017 102 113 pmid: 28017651 doi: 10.1016/j.oraloncology.2016.12.007
+- 25 Sood S., McGurk M., Vaz F. Management of salivary gland tumours: United Kingdom National Multidisciplinary Guidelines J Laryngol Otol 130 S2 2016 S142 S149 pmid: 27841127 doi: 10.1017/S0022215116000566 pmcid: PMC4873929
+- 26 Dillon P.M., Chakraborty S., Moskaluk C.A., et al. Adenoid cystic carcinoma: a review of recent advances, molecular targets, and clinical trials Head Neck 38 4 2016 620 627 pmid: 25487882 doi: 10.1002/hed.23925 pmcid: PMC6166139
+- 27 Renkonen S., Sayed F., Keski-Santti H., et al. Reconstruction of facial nerve after radical parotidectomy Acta Otolaryngol 135 10 2015 1065 1069 pmid: 26061795 doi: 10.3109/00016489.2015.1050604
+- 28 Bollig C.A., Wang K., Llerena P., et al. National analysis of oropharyngeal salivary gland malignancies treated with transoral robotic surgery Otolaryngol Head Neck Surg 166 5 2022 886 893 pmid: 34311621 doi: 10.1177/01945998211031161
+- 29 Hay A.J., Migliacci J., Karassawa Zanoni D., et al. Minor salivary gland tumors of the head and neck-Memorial Sloan Kettering experience: incidence and outcomes by site and histological type Cancer 125 19 2019 3354 3366 pmid: 31174233 doi: 10.1002/cncr.32208 pmcid: PMC6744325
+- 30 Goel A.N., Badran K.W., Braun A.P.G., et al. Minor salivary gland carcinoma of the oropharynx: a population-based analysis of 1426 patients Otolaryngol Head Neck Surg 158 2 2018 287 294 pmid: 28971745 doi: 10.1177/0194599817735309
+- 31 Han M.W., Cho K.J., Roh J.L., et al. Patterns of lymph node metastasis and their influence on outcomes in patients with submandibular gland carcinoma J Surg Oncol 106 4 2012 475 480 pmid: 22457044 doi: 10.1002/jso.23100
+- 32 Aro K., Tarkkanen J., Saat R., et al. Submandibular gland cancer: specific features and treatment considerations Head Neck 40 1 2018 154 162 pmid: 29083518 doi: 10.1002/hed.24981
+- 33 Vander Poorten V.L., Balm A.J., Hilgers F.J., et al. Prognostic factors for long term results of the treatment of patients with malignant submandibular gland tumors Cancer 85 10 1999 2255 2264 pmid: 10326706 doi: 10.1002/(sici)1097-0142(19990515)85:10<2255::aid-cncr22>3.3.co;2-4
+- 34 International Head and Neck Scientific Group. Cervical lymph node metastasis in adenoid cystic carcinoma of the major salivary glands J Laryngol Otol 131 2 2017 96 105 pmid: 27974071 doi: 10.1017/S0022215116009749
+- 35 Yoo S.H., Roh J.L., Kim S.O., et al. Patterns and treatment of neck metastases in patients with salivary gland cancers J Surg Oncol 111 8 2015 1000 1006 pmid: 25976866 doi: 10.1002/jso.23914
+- 36 Stennert E., Kisner D., Jungehuelsing M., et al. High incidence of lymph node metastasis in major salivary gland cancer Arch Otolaryngol Head Neck Surg 129 7 2003 720 723 pmid: 12874071 doi: 10.1001/archotol.129.7.720
+- 37 Guzzo M., Locati L.D., Prott F.J., et al. Major and minor salivary gland tumors Crit Rev Oncol Hematol 74 2 2010 134 148 pmid: 19939701 doi: 10.1016/j.critrevonc.2009.10.004
+- 38 Klussmann J.P., Ponert T., Mueller R.P., et al. Patterns of lymph node spread and its influence on outcome in resectable parotid cancer Eur J Surg Oncol 34 8 2008 932 937 pmid: 18358679 doi: 10.1016/j.ejso.2008.02.004
+- 39 Ali S., Palmer F.L., DiLorenzo M., et al. Treatment of the neck in carcinoma of the parotid gland Ann Surg Oncol 21 9 2014 3042 3048 pmid: 24719019 doi: 10.1245/s10434-014-3681-y
+- 40 Armstrong J.G., Harrison L.B., Thaler H.T., et al. The indications for elective treatment of the neck in cancer of the major salivary glands Cancer 69 3 1992 615 619 pmid: 1730113 doi: 10.1002/1097-0142(19920201)69:3<615::aid-cncr2820690303>3.0.co;2-9
+- 41 Frankenthaler R.A., Byers R.M., Luna M.A., et al. Predicting occult lymph node metastasis in parotid cancer Arch Otolaryngol Head Neck Surg 119 5 1993 517 520 pmid: 8484940 doi: 10.1001/archotol.1993.01880170041008
+- 42 Regis De Brito Santos I., Kowalski L.P., Cavalcante De Araujo V., et al. Multivariate analysis of risk factors for neck metastases in surgically treated parotid carcinomas Arch Otolaryngol Head Neck Surg 127 1 2001 56 60 pmid: 11177015 doi: 10.1001/archotol.127.1.56
+- 43 Stenner M., Molls C., Luers J.C., et al. Occurrence of lymph node metastasis in early-stage parotid gland cancer Eur Arch Otorhinolaryngol 269 2 2012 643 648 pmid: 21671057 doi: 10.1007/s00405-011-1663-2
+- 44 Kawata R., Koutetsu L., Yoshimura K., et al. Indication for elective neck dissection for N0 carcinoma of the parotid gland: a single institution’s 20-year experience Acta Otolaryngol 130 2 2010 286 292 pmid: 19544204 doi: 10.3109/00016480903062160
+- 45 Lau V.H., Aouad R., Farwell D.G., et al. Patterns of nodal involvement for clinically N0 salivary gland carcinoma: refining the role of elective neck irradiation Head Neck 36 10 2014 1435 1439 pmid: 24038533 doi: 10.1002/hed.23467
+- 46 Vander Poorten V., Triantafyllou A., Thompson L.D., et al. Salivary acinic cell carcinoma: reappraisal and update Eur Arch Otorhinolaryngol 273 11 2016 3511 3531 pmid: 26685679 doi: 10.1007/s00405-015-3855-7
+- 47 Terhaard C.H., Lubsen H., Rasch C.R., et al. The role of radiotherapy in the treatment of malignant salivary gland tumors Int J Radiat Oncol Biol Phys 61 1 2005 103 111 pmid: 15629600 doi: 10.1016/j.ijrobp.2004.03.018
+- 48 Chen A.M., Garcia J., Lee N.Y., et al. Patterns of nodal relapse after surgery and postoperative radiation therapy for carcinomas of the major and minor salivary glands: what is the role of elective neck irradiation? Int J Radiat Oncol Biol Phys 67 4 2007 988 994 pmid: 17234357 doi: 10.1016/j.ijrobp.2006.10.044
+- 49 Herman M.P., Werning J.W., Morris C.G., et al. Elective neck management for high-grade salivary gland carcinoma Am J Otolaryngol 34 3 2013 205 208 pmid: 23332405 doi: 10.1016/j.amjoto.2012.11.012
+- 50 Zbaren P., Schupbach J., Nuyens M., et al. Elective neck dissection versus observation in primary parotid carcinoma Otolaryngol Head Neck Surg 132 3 2005 387 391 pmid: 15746848 doi: 10.1016/j.otohns.2004.09.029
+- 51 Nobis C.P., Rohleder N.H., Wolff K.D., et al. Head and neck salivary gland carcinomas--elective neck dissection, yes or no? J Oral Maxillofac Surg 72 1 2014 205 210 pmid: 23891016 doi: 10.1016/j.joms.2013.05.024
+- 52 Olsen K.D., Moore E.J. Deep lobe parotidectomy: clinical rationale in the management of primary and metastatic cancer Eur Arch Otorhinolaryngol 271 5 2014 1181 1185 pmid: 23832259 doi: 10.1007/s00405-013-2616-8
+- 53 Vander Poorten V., Hunt J., Bradley P.J., et al. Recent trends in the management of minor salivary gland carcinoma Head Neck 36 3 2014 444 455 pmid: 23559518 doi: 10.1002/hed.23249
+- 54 Hellquist H., Skalova A., Barnes L., et al. Cervical lymph node metastasis in high-grade transformation of head and neck adenoid cystic carcinoma: a collective international review Adv Ther 33 3 2016 357 368 pmid: 26895332 doi: 10.1007/s12325-016-0298-5 pmcid: PMC4833802
+- 55 Atallah S., Moya-Plana A., Malard O., et al. Should a neck dissection be performed on patients with cN0 adenoid cystic carcinoma? A REFCOR propensity score matching study Eur J Cancer 130 2020 250 258 pmid: 32008920 doi: 10.1016/j.ejca.2019.12.026
+- 56 Ellis M.A., Graboyes E.M., Day T.A., et al. Prognostic factors and occult nodal disease in mucoepidermoid carcinoma of the oral cavity and oropharynx: an analysis of the National Cancer Database Oral Oncol 72 2017 174 178 pmid: 28797455 doi: 10.1016/j.oraloncology.2017.07.025 pmcid: PMC5949444
+- 57 Roh J.L., Choi S.H., Lee S.W., et al. Carcinomas arising in the submandibular gland: high propensity for systemic failure J Surg Oncol 97 6 2008 533 537 pmid: 18286522 doi: 10.1002/jso.20993
+- 58 Salivary glands Halperin E.C., Wazer D.E., Perez C.A., Brady L.W. Perez & Brady’s Principles and Practice of Radiation Oncology 7th ed. 2018 Wolters Kluwer Health Philadelphia, PA
+- 59 Armstrong K., Ward J., Hughes N.M., et al. Guidelines for clinical target volume definition for perineural spread of major salivary gland cancers Clin Oncol (R Coll Radiol) 30 12 2018 773 779 pmid: 30224202 doi: 10.1016/j.clon.2018.08.018
+- 60 Cheraghlou S., Kuo P., Mehra S., et al. Adjuvant therapy in major salivary gland cancers: analysis of 8580 patients in the National Cancer Database Head Neck 40 7 2018 1343 1355 pmid: 29756412 doi: 10.1002/hed.24984
+- 61 Mifsud M.J., Tanvetyanon T., McCaffrey J.C., et al. Adjuvant radiotherapy versus concurrent chemoradiotherapy for the management of high-risk salivary gland carcinomas Head Neck 38 11 2016 1628 1633 pmid: 27098984 doi: 10.1002/hed.24484
+- 62 Gebhardt B.J., Ohr J.P., Ferris R.L., et al. Concurrent chemoradiotherapy in the adjuvant treatment of high-risk primary salivary gland malignancies Am J Clin Oncol 41 9 2018 888 893 pmid: 28394767 doi: 10.1097/COC.0000000000000386 pmcid: PMC6587550
+- 63 Amini A., Waxweiler T.V., Brower J.V., et al. Association of adjuvant chemoradiotherapy vs radiotherapy alone with survival in patients with resected major salivary gland carcinoma: data from the National Cancer Data Base JAMA Otolaryngol Head Neck Surg 142 11 2016 1100 1110 pmid: 27541166 doi: 10.1001/jamaoto.2016.2168
+- 64 Cerda T., Sun X.S., Vignot S., et al. A rationale for chemoradiation (vs radiotherapy) in salivary gland cancers? On behalf of the REFCOR (French rare head and neck cancer network) Crit Rev Oncol Hematol 91 2 2014 142 158 pmid: 24636481 doi: 10.1016/j.critrevonc.2014.02.002
+- 65 Pelak M.J., Walser M., Bachtiary B., et al. Clinical outcomes of head and neck adenoid cystic carcinoma patients treated with pencil beam-scanning proton therapy Oral Oncol 107 2020 104752 doi: 10.1016/j.oraloncology.2020.104752 pmid: 32413727
+- 66 Vischioni B., Dhanireddy B., Severo C., et al. Reirradiation of salivary gland tumors with carbon ion radiotherapy at CNAO Radiother Oncol 145 2020 172 177 pmid: 32044529 doi: 10.1016/j.radonc.2020.01.004
+- 67 Hayashi K., Koto M., Ikawa H., et al. Feasibility of re-irradiation using carbon ions for recurrent head and neck malignancies after carbon-ion radiotherapy Radiother Oncol 136 2019 148 153 pmid: 31015117 doi: 10.1016/j.radonc.2019.04.007
+- 68 Jensen A.D., Poulakis M., Nikoghosyan A.V., et al. Re-irradiation of adenoid cystic carcinoma: analysis and evaluation of outcome in 52 consecutive patients treated with raster-scanned carbon ion therapy Radiother Oncol 114 2 2015 182 188 pmid: 25640299 doi: 10.1016/j.radonc.2015.01.002
+- 69 Lok B.H., Jiang G., Gutiontov S., et al. Palliative head and neck radiotherapy with the RTOG 8502 regimen for incurable primary or metastatic cancers Oral Oncol 51 10 2015 957 962 pmid: 26282714 doi: 10.1016/j.oraloncology.2015.07.011 pmcid: PMC4758812
+- 70 Al-mamgani A., Tans L., Van rooij P.H., et al. Hypofractionated radiotherapy denoted as the “Christie scheme”: an effective means of palliating patients with head and neck cancers not suitable for curative treatment Acta Oncol 48 4 2009 562 570 pmid: 19373698 doi: 10.1080/02841860902740899
+- 71 Girelli L., Locati L., Galeone C., et al. Lung metastasectomy in adenoid cystic cancer: is it worth it? Oral Oncol 65 2017 114 118 pmid: 28341276 doi: 10.1016/j.oraloncology.2016.10.018
+- 72 Locati L.D., Guzzo M., Bossi P., et al. Lung metastasectomy in adenoid cystic carcinoma (ACC) of salivary gland Oral Oncol 41 9 2005 890 894 pmid: 16043380 doi: 10.1016/j.oraloncology.2005.04.014
+- 73 Bobbio A., Copelli C., Ampollini L., et al. Lung metastasis resection of adenoid cystic carcinoma of salivary glands Eur J Cardiothorac Surg 33 5 2008 790 793 pmid: 18343149 doi: 10.1016/j.ejcts.2007.12.057
+- 74 Bergamini C., Cavalieri S., Cascella T., et al. Local therapies for liver metastases of rare head and neck cancers: a monoinstitutional case series Tumori 107 3 2021 188 195 pmid: 32924878 doi: 10.1177/0300891620952844
+- 75 Franzese C., Ingargiola R., Tomatis S., et al. Metastatic salivary gland carcinoma: a role for stereotactic body radiation therapy? A study of AIRO-Head and Neck working group Oral Dis 28 2 2022 345 351 pmid: 33320410 doi: 10.1111/odi.13755
+- 76 Nam S.J., Roh J.L., Cho K.J., et al. Risk factors and survival associated with distant metastasis in patients with carcinoma of the salivary gland Ann Surg Oncol 23 13 2016 4376 4383 pmid: 27338749 doi: 10.1245/s10434-016-5356-3
+- 77 Lassche G., van Boxtel W., Ligtenberg M.J.L., et al. Advances and challenges in precision medicine in salivary gland cancer Cancer Treat Rev 80 2019 101906 doi: 10.1016/j.ctrv.2019.101906 pmid: 31644971
+- 78 Terhaard C.H., Lubsen H., Van der Tweel I., et al. Salivary gland carcinoma: independent prognostic factors for locoregional control, distant metastases, and overall survival: results of the Dutch Head and Neck Oncology Cooperative Group Head Neck 26 8 2004 681 692 pmid: 15287035 doi: 10.1002/hed.10400
+- 79 Alfieri S., Granata R., Bergamini C., et al. Systemic therapy in metastatic salivary gland carcinomas: a pathology-driven paradigm? Oral Oncol 66 2017 58 63 pmid: 28249649 doi: 10.1016/j.oraloncology.2016.12.016
+- 80 Chen Z., Chen J., Gu Y., et al. Aberrantly activated AREG-EGFR signaling is required for the growth and survival of CRTC1-MAML2 fusion-positive mucoepidermoid carcinoma cells Oncogene 33 29 2014 3869 3877 pmid: 23975434 doi: 10.1038/onc.2013.348
+- 81 Laurie S.A., Ho A.L., Fury M.G., et al. Systemic therapy in the management of metastatic or locally recurrent adenoid cystic carcinoma of the salivary glands: a systematic review Lancet Oncol 12 8 2011 815 824 pmid: 21147032 doi: 10.1016/S1470-2045(10)70245-X
+- 82 Ferrarotto R., Wirth L.J., Muzaffar J., et al. 919MO ACCURACY a phase II trial of AL101, a selective gamma secretase inhibitor, in subjects with recurrent/metastatic (R/M) adenoid cystic carcinoma (ACC) harboring Notch activating mutations (Notchmut) Ann Oncol 31 suppl 4 2020 S663
+- 83 Kang E.J., Ahn M.J., Ock C.Y., et al. Randomized phase II study of axitinib versus observation in patients with recurred or metastatic adenoid cystic carcinoma Clin Cancer Res 27 19 2021 5272 5279 pmid: 34315722 doi: 10.1158/1078-0432.CCR-21-1061
+- 84 Vander Poorten V., Triantafyllou A., Skalova A., et al. Polymorphous adenocarcinoma of the salivary glands: reappraisal and update Eur Arch Otorhinolaryngol 275 7 2018 1681 1695 pmid: 29761209 doi: 10.1007/s00405-018-4985-5
+- 85 Locati L.D., Perrone F., Losa M., et al. Treatment relevant target immunophenotyping of 139 salivary gland carcinomas (SGCs) Oral Oncol 45 11 2009 986 990 pmid: 19574086 doi: 10.1016/j.oraloncology.2009.05.635
+- 86 Uijen M.J.M., Lassche G., van Engen-van Grunsven A.C.H., et al. Systemic therapy in the management of recurrent or metastatic salivary duct carcinoma: a systematic review Cancer Treat Rev 89 2020 102069 doi: 10.1016/j.ctrv.2020.102069 pmid: 32717621
+- 87 Boon E., van Boxtel W., Buter J., et al. Androgen deprivation therapy for androgen receptor-positive advanced salivary duct carcinoma: a nationwide case series of 35 patients in The Netherlands Head Neck 40 3 2018 605 613 pmid: 29272069 doi: 10.1002/hed.25035 pmcid: PMC5838735
+- 88 Fushimi C., Tada Y., Takahashi H., et al. A prospective phase II study of combined androgen blockade in patients with androgen receptor-positive metastatic or locally advanced unresectable salivary gland carcinoma Ann Oncol 29 4 2018 979 984 pmid: 29211833 doi: 10.1093/annonc/mdx771 pmcid: PMC5913639
+- 89 van Boxtel W., Locati L.D., van Engen-van Grunsven A.C.H., et al. Adjuvant androgen deprivation therapy for poor-risk, androgen receptor-positive salivary duct carcinoma Eur J Cancer 110 2019 62 70 pmid: 30771738 doi: 10.1016/j.ejca.2018.12.035
+- 90 Takahashi H., Tada Y., Saotome T., et al. Phase II trial of trastuzumab and docetaxel in patients with human epidermal growth factor receptor 2-positive salivary duct carcinoma J Clin Oncol 37 2 2019 125 134 pmid: 30452336 doi: 10.1200/JCO.18.00545
+- 91 Li B.T., Shen R., Offin M., et al. Ado-trastuzumab emtansine in patients with HER2 amplified salivary gland cancers (SGCs): results from a phase II basket trial J Clin Oncol 37 suppl 15 2019 6001 doi: 10.1200/JCO.2018.77.9777 pmcid: PMC6366814 pmid: 29989854
+- 92 Dalin M.G., Desrichard A., Katabi N., et al. Comprehensive molecular characterization of salivary duct carcinoma reveals actionable targets and similarity to apocrine breast cancer Clin Cancer Res 22 18 2016 4623 4633 pmid: 27103403 doi: 10.1158/1078-0432.CCR-16-0637 pmcid: PMC5026550
+- 93 Lin V.T.G., Nabell L.M., Spencer S.A., et al. First-line treatment of widely metastatic BRAF-mutated salivary duct carcinoma with combined BRAF and MEK inhibition J Natl Compr Canc Netw 16 10 2018 1166 1170 pmid: 30323086 doi: 10.6004/jnccn.2018.7056 pmcid: PMC6292446
+- 94 Xu B., Jungbluth A.A., Frosina D., et al. The immune microenvironment and expression of PD-L1, PD-1, PRAME and MHC I in salivary duct carcinoma Histopathology 75 5 2019 672 682 pmid: 31237963 doi: 10.1111/his.13944 pmcid: PMC6812589
+- 95 Cocco E., Scaltriti M., Drilon A. NTRK fusion-positive cancers and TRK inhibitor therapy Nat Rev Clin Oncol 15 12 2018 731 747 pmid: 30333516 doi: 10.1038/s41571-018-0113-0 pmcid: PMC6419506
+- 96 Drilon A., Laetsch T.W., Kummar S., et al. Efficacy of larotrectinib in TRK fusion-positive cancers in adults and children N Engl J Med 378 8 2018 731 739 pmid: 29466156 doi: 10.1056/NEJMoa1714448 pmcid: PMC5857389
+- 97 Drilon A., Li G., Dogan S., et al. What hides behind the MASC: clinical response and acquired resistance to entrectinib after ETV6-NTRK3 identification in a mammary analogue secretory carcinoma (MASC) Ann Oncol 27 5 2016 920 926 pmid: 26884591 doi: 10.1093/annonc/mdw042 pmcid: PMC4843186
+- 98 Drilon A., Ou S.I., Cho B.C., et al. Repotrectinib (TPX-0005) is a next-generation ROS1/TRK/ALK inhibitor that potently inhibits ROS1/TRK/ALK solvent-front mutations Cancer Discov 8 10 2018 1227 1236 pmid: 30093503 doi: 10.1158/2159-8290.CD-18-0484
+- 99 Solomon J.P., Linkov I., Rosado A., et al. NTRK fusion detection across multiple assays and 33,997 cases: diagnostic implications and pitfalls Mod Pathol 33 1 2020 38 46 pmid: 31375766 doi: 10.1038/s41379-019-0324-7 pmcid: PMC7437403
+- 100 Broski S.M., Johnson D.R., Packard A.T., et al. 18)F-fluorodeoxyglucose PET/computed tomography: head and neck salivary gland tumors PET Clin 17 2 2022 249 263 pmid: 35232668 doi: 10.1016/j.cpet.2021.12.002
+- 101 Mateo J., Chakravarty D., Dienstmann R., et al. A framework to rank genomic alterations as targets for cancer precision medicine: the ESMO Scale for Clinical Actionability of molecular Targets (ESCAT) Ann Oncol 29 9 2018 1895 1902 pmid: 30137196 doi: 10.1093/annonc/mdy263 pmcid: PMC6158764
+- 102 Cherny N.I., Dafni U., Bogaerts J., et al. ESMO-Magnitude of Clinical Benefit Scale version 1.1 Ann Oncol 28 10 2017 2340 2366 pmid: 28945867 doi: 10.1093/annonc/mdx310
+- 103 Dykewicz C.A. Summary of the guidelines for preventing opportunistic infections among hematopoietic stem cell transplant recipients Clin Infect Dis 33 2 2001 139 144 pmid: 11418871 doi: 10.1086/321805
+- 104 Gross P.A., Barrett T.L., Dellinger E.P., et al. Purpose of quality standards for infectious diseases. Infectious Diseases Society of America Clin Infect Dis 18 3 1994 421 pmid: 8011826 doi: 10.1093/clinids/18.3.421
