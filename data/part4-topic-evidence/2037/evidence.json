@@ -1,0 +1,21 @@
+{
+  "catalogueId": "2037",
+  "spreadsheetRow": 166,
+  "topic": "TNF and IL-17 inhibitors in axSpA: secukinumab, ixekizumab, comparative efficacy",
+  "specialty": "Rheumatology",
+  "decision": "downloaded_open_source",
+  "source": {
+    "title": "Biologic and targeted synthetic therapies in ankylosing spondylitis: a pharmacological review",
+    "year": 2026,
+    "pmid": "42719014",
+    "pmcid": "PMC13553827",
+    "doi": "10.3389/fphar.2026.1865621",
+    "sourceBody": "Frontiers in Pharmacology",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC13553827/",
+    "whyItFits": "Open pharmacology review of ankylosing spondylitis biologics that states TNF-inhibitor and IL-17-inhibitor roles and cites MEASURE secukinumab and COAST-X ixekizumab results."
+  },
+  "whyItFits": "Open pharmacology review of ankylosing spondylitis biologics that states TNF-inhibitor and IL-17-inhibitor roles and cites MEASURE secukinumab and COAST-X ixekizumab results.",
+  "coverageNote": "Comparative statements are the review's own summary, not a head-to-head trial. Trial percentages are those the review reports.",
+  "rejectedInAppHints": "A secukinumab-only AS review did not cover ixekizumab. A later axSpA utilization paper did not name either drug.",
+  "sourceFile": "source.txt"
+}

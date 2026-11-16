@@ -1,0 +1,21 @@
+{
+  "catalogueId": "1008",
+  "spreadsheetRow": 148,
+  "topic": "RA in pregnancy: disease course, drug safety, biologics, MTX cessation",
+  "specialty": "Rheumatology",
+  "decision": "downloaded_open_source",
+  "source": {
+    "title": "Management of rheumatoid arthritis during pregnancy: challenges and solutions",
+    "year": 2016,
+    "pmid": "27843367",
+    "pmcid": "PMC5098768",
+    "doi": "10.2147/OARRR.S89324",
+    "sourceBody": "Open Access Rheumatology: Research and Reviews",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5098768/",
+    "whyItFits": "Open review of rheumatoid arthritis drug safety in pregnancy, including methotrexate, leflunomide, sulfasalazine, and differential placental transfer of TNF inhibitors."
+  },
+  "whyItFits": "Open review of rheumatoid arthritis drug safety in pregnancy, including methotrexate, leflunomide, sulfasalazine, and differential placental transfer of TNF inhibitors.",
+  "coverageNote": "Drug-safety statements are taken from this review. A 2020 ACR reproductive guideline was not the open full text retrieved.",
+  "rejectedInAppHints": "A diabetes-in-pregnancy technology paper was the spreadsheet's best in-app title and was rejected.",
+  "sourceFile": "source.txt"
+}

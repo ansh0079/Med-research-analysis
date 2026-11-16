@@ -1,0 +1,149 @@
+{
+  "reviewState": "unreviewed",
+  "method": "Hand-written single-best-answer MCQs grounded only in the accepted open full text.",
+  "topic": {
+    "topicKey": "nsaid-gastrointestinal-and-renal-toxicity-cox-2-selectivity-ppi-co-pre",
+    "topicDisplayName": "NSAID gastrointestinal and renal toxicity: COX-2 selectivity, PPI co-prescription, renal monitoring",
+    "catalogueId": "536",
+    "aliases": [],
+    "storedRowCount": 0,
+    "coverageNote": "Gastrointestinal risk reduction, COX-2 selection, and PPI co-prescription are explicit. Renal toxicity is named, but no monitoring interval is given, so none was invented.",
+    "mcqs": [
+      {
+        "id": "c536-01",
+        "question": "A patient who needs an NSAID has a prior ulcer. Which preventive strategy does the 2015 safe-prescribing consensus endorse?",
+        "options": {
+          "A": "Continue a full-dose non-selective NSAID with no gastroprotection",
+          "B": "Use the lowest effective dose, add a gastroprotective drug, or choose a COX-2 selective agent",
+          "C": "Substitute a high-dose COX-2 inhibitor specifically to protect the kidney",
+          "D": "Rely on PPI therapy to prevent both upper- and lower-GI injury",
+          "E": "Eradicate H. pylori and then stop all gastroprotection"
+        },
+        "correctAnswer": "B",
+        "correctAnswerText": "Use the lowest effective dose, add a gastroprotective drug, or choose a COX-2 selective agent",
+        "explanation": "The consensus states that patients at upper-GI risk should use the lowest effective NSAID dose, co-therapy with a gastroprotective drug, or a COX-2 selective agent.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "BMC Medicine",
+            "sourceYear": 2015,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4365808/",
+            "pmid": "25857826",
+            "pmcid": "PMC4365808",
+            "doi": "10.1186/s12916-015-0285-8",
+            "status": "open_full_text",
+            "excerpt": "patients at upper GI risk should have preventative strategies in place, including the use of the lowest effective dose of NSAID, co-therapy with a gastroprotective drug, or the use of a COX-2 selective agent"
+          }
+        ]
+      },
+      {
+        "id": "c536-02",
+        "question": "According to that consensus, what is the limitation of a PPI when an NSAID injures the gut distal to the duodenum?",
+        "options": {
+          "A": "PPIs prevent NSAID damage throughout the small bowel",
+          "B": "PPIs are unable to prevent NSAID-associated intestinal damage",
+          "C": "PPIs increase COX-2 selectivity",
+          "D": "PPIs replace the need for H. pylori testing in every NSAID user",
+          "E": "PPIs are contraindicated with every COX-2 selective drug"
+        },
+        "correctAnswer": "B",
+        "correctAnswerText": "PPIs are unable to prevent NSAID-associated intestinal damage",
+        "explanation": "The consensus reports that PPIs do not prevent NSAID-associated intestinal damage, and that some COX-2 selective inhibitors showed better intestinal tolerability than non-selective NSAIDs with or without acid inhibition.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "BMC Medicine",
+            "sourceYear": 2015,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4365808/",
+            "pmid": "25857826",
+            "pmcid": "PMC4365808",
+            "doi": "10.1186/s12916-015-0285-8",
+            "status": "open_full_text",
+            "excerpt": "proton pump inhibitors (PPIs) are unable to prevent NSAID-associated intestinal damage and that some COX-2 selective inhibitors display a better intestinal tolerability compared to traditional (i.e. non selective) NSAIDs, with or without acid inhibition"
+          }
+        ]
+      },
+      {
+        "id": "c536-03",
+        "question": "Which organs does the consensus list among sites of NSAID adverse reactions?",
+        "options": {
+          "A": "Only the gastric mucosa",
+          "B": "Liver, kidney, cardiovascular system, skin, and gut",
+          "C": "Only the cardiovascular system",
+          "D": "Bone marrow and retina only",
+          "E": "The consensus states NSAIDs have no organ toxicity"
+        },
+        "correctAnswer": "B",
+        "correctAnswerText": "Liver, kidney, cardiovascular system, skin, and gut",
+        "explanation": "The text says NSAID use is associated with adverse reactions involving the liver, kidney, cardiovascular system, skin, and gut, with GI effects the most common.",
+        "difficulty": "easy",
+        "sourceRefs": [
+          {
+            "sourceBody": "BMC Medicine",
+            "sourceYear": 2015,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4365808/",
+            "pmid": "25857826",
+            "pmcid": "PMC4365808",
+            "doi": "10.1186/s12916-015-0285-8",
+            "status": "open_full_text",
+            "excerpt": "their use is associated with a broad spectrum of adverse reactions involving the liver, kidney, CV system, skin, and"
+          }
+        ]
+      },
+      {
+        "id": "c536-04",
+        "question": "A prescribing audit cited in the consensus found which pattern of PPI co-prescription?",
+        "options": {
+          "A": "High rates of PPI co-prescription with non-selective NSAIDs in patients with increased GI risk",
+          "B": "PPIs were never co-prescribed with NSAIDs",
+          "C": "PPIs were reserved only for COX-2 selective drugs",
+          "D": "Every low-GI-risk patient was left without a PPI, matching guidance exactly",
+          "E": "PPI use was limited to people with a history of H. pylori"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "High rates of PPI co-prescription with non-selective NSAIDs in patients with increased GI risk",
+        "explanation": "The cited audit showed high rates of PPI co-prescription with non-selective NSAIDs when GI risk was increased, while also describing inappropriate use in some lower-risk patients.",
+        "difficulty": "hard",
+        "sourceRefs": [
+          {
+            "sourceBody": "BMC Medicine",
+            "sourceYear": 2015,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4365808/",
+            "pmid": "25857826",
+            "pmcid": "PMC4365808",
+            "doi": "10.1186/s12916-015-0285-8",
+            "status": "open_full_text",
+            "excerpt": "The study showed high rates of PPI co-prescription with ns-NSAIDs in patients with increased GI risk."
+          }
+        ]
+      },
+      {
+        "id": "c536-05",
+        "question": "What does this consensus provide about a schedule for renal-function monitoring during NSAID use?",
+        "options": {
+          "A": "Check creatinine weekly for the first month",
+          "B": "It lists the kidney as a toxicity site but does not set a monitoring interval",
+          "C": "Stop NSAIDs if eGFR falls by 1%",
+          "D": "COX-2 selective drugs require no renal consideration",
+          "E": "Renal monitoring is required only after a PPI is added"
+        },
+        "correctAnswer": "B",
+        "correctAnswerText": "It lists the kidney as a toxicity site but does not set a monitoring interval",
+        "explanation": "Kidney injury is named among NSAID adverse reactions, but the consensus text used here does not specify a creatinine or eGFR monitoring schedule.",
+        "difficulty": "easy",
+        "sourceRefs": [
+          {
+            "sourceBody": "BMC Medicine",
+            "sourceYear": 2015,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4365808/",
+            "pmid": "25857826",
+            "pmcid": "PMC4365808",
+            "doi": "10.1186/s12916-015-0285-8",
+            "status": "open_full_text",
+            "excerpt": "adverse reactions involving the liver, kidney, CV system, skin, and gut"
+          }
+        ]
+      }
+    ]
+  }
+}

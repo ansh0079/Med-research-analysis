@@ -1,0 +1,860 @@
+{
+  "batch": "4",
+  "spreadsheet": "Topics_without_evidence_part4of4.xlsx",
+  "spreadsheetRows": "131-172",
+  "topicCount": 42,
+  "mcqCount": 210,
+  "counts": {
+    "in_app_document": 1,
+    "downloaded_open_source": 41,
+    "unresolved": 0
+  },
+  "notes": [
+    "Prior spreadsheet labels were hints. Each source was read and accepted only when the text could support a synopsis and five single-best-answer MCQs.",
+    "One stored document was accepted: NICE NG219 in data/question-repair-source-import.json for catalogue 2057.",
+    "Shared curated-topic-mcqs indexes were not edited.",
+    "Partial coverage is recorded on the topic, not counted as unresolved: catalogue 896 has no shared-decision protocol; catalogue 92 has no revision-rate table; catalogue 1168 does not name Beck's triad; catalogue 1129 has no viscosity threshold."
+  ],
+  "topics": [
+    {
+      "spreadsheetRow": 131,
+      "catalogueId": "536",
+      "topic": "NSAID gastrointestinal and renal toxicity: COX-2 selectivity, PPI co-prescription, renal monitoring",
+      "decision": "downloaded_open_source",
+      "title": "Safe prescribing of non-steroidal anti-inflammatory drugs in patients with osteoarthritis – an expert consensus addressing benefits as well as gastrointestinal and cardiovascular risks",
+      "year": 2015,
+      "pmid": "25857826",
+      "pmcid": "PMC4365808",
+      "doi": "10.1186/s12916-015-0285-8",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4365808/",
+      "mcqCount": 5,
+      "coverageNote": "Gastrointestinal risk reduction, COX-2 selection, and PPI co-prescription are explicit. Renal toxicity is named, but no monitoring interval is given, so none was invented.",
+      "files": {
+        "evidence": "data/part4-topic-evidence/536/evidence.json",
+        "synopsis": "data/part4-topic-evidence/536/synopsis.json",
+        "mcqs": "data/part4-topic-evidence/536/mcqs.json",
+        "source": "data/part4-topic-evidence/536/source.txt"
+      }
+    },
+    {
+      "spreadsheetRow": 132,
+      "catalogueId": "720",
+      "topic": "NSAID therapy in axSpA: continuous vs on-demand, radiographic progression",
+      "decision": "downloaded_open_source",
+      "title": "Nonsteroidal Antiinflammatory Drugs as Potential Disease-Modifying Medications in Axial Spondyloarthritis",
+      "year": 2020,
+      "pmid": "31705611",
+      "pmcid": "PMC7113090",
+      "doi": "10.1002/art.41164",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7113090/",
+      "mcqCount": 5,
+      "coverageNote": "Covers continuous versus on-demand NSAID use and radiographic progression. The two trials disagree, and that disagreement is preserved rather than resolved by adding numbers that are not in the review.",
+      "files": {
+        "evidence": "data/part4-topic-evidence/720/evidence.json",
+        "synopsis": "data/part4-topic-evidence/720/synopsis.json",
+        "mcqs": "data/part4-topic-evidence/720/mcqs.json",
+        "source": "data/part4-topic-evidence/720/source.txt"
+      }
+    },
+    {
+      "spreadsheetRow": 133,
+      "catalogueId": "717",
+      "topic": "Neonatal Lupus and Congenital Heart Block",
+      "decision": "downloaded_open_source",
+      "title": "A review of neonatal lupus syndrome",
+      "year": 2024,
+      "pmid": "39285783",
+      "pmcid": "PMC11418246",
+      "doi": "10.1097/JCMA.0000000000001117",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11418246/",
+      "mcqCount": 5,
+      "coverageNote": "Same open review is used for catalogue 1934 with different questions. ACR 2020 reproductive-health guideline PMIDs in the spreadsheet did not resolve to that paper in Europe PMC.",
+      "files": {
+        "evidence": "data/part4-topic-evidence/717/evidence.json",
+        "synopsis": "data/part4-topic-evidence/717/synopsis.json",
+        "mcqs": "data/part4-topic-evidence/717/mcqs.json",
+        "source": "data/part4-topic-evidence/717/source.txt"
+      }
+    },
+    {
+      "spreadsheetRow": 134,
+      "catalogueId": "1934",
+      "topic": "Neonatal lupus: anti-Ro, anti-La, congenital heart block, counselling",
+      "decision": "downloaded_open_source",
+      "title": "A review of neonatal lupus syndrome",
+      "year": 2024,
+      "pmid": "39285783",
+      "pmcid": "PMC11418246",
+      "doi": "10.1097/JCMA.0000000000001117",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11418246/",
+      "mcqCount": 5,
+      "coverageNote": "Questions emphasize antibody pattern, preconception drugs, and surveillance. Numeric risks are those stated in the review.",
+      "files": {
+        "evidence": "data/part4-topic-evidence/1934/evidence.json",
+        "synopsis": "data/part4-topic-evidence/1934/synopsis.json",
+        "mcqs": "data/part4-topic-evidence/1934/mcqs.json",
+        "source": "data/part4-topic-evidence/1934/source.txt"
+      }
+    },
+    {
+      "spreadsheetRow": 135,
+      "catalogueId": "24",
+      "topic": "Neuropsychiatric SLE",
+      "decision": "downloaded_open_source",
+      "title": "Neuropsychiatric Systemic Lupus Erythematosus: A Systematic Review",
+      "year": 2024,
+      "pmid": "38975440",
+      "pmcid": "PMC11227614",
+      "doi": "10.7759/cureus.62787",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11227614/",
+      "mcqCount": 5,
+      "coverageNote": "EULAR 2010 NPSLE recommendations were not in PMC. This systematic review is the open full text that covers syndromes and the immunosuppression-versus-anticoagulation split.",
+      "files": {
+        "evidence": "data/part4-topic-evidence/24/evidence.json",
+        "synopsis": "data/part4-topic-evidence/24/synopsis.json",
+        "mcqs": "data/part4-topic-evidence/24/mcqs.json",
+        "source": "data/part4-topic-evidence/24/source.txt"
+      }
+    },
+    {
+      "spreadsheetRow": 136,
+      "catalogueId": "2159",
+      "topic": "Neuropsychiatric SLE: NPSLE syndromes, attribution, immunosuppression vs anticoagulation",
+      "decision": "downloaded_open_source",
+      "title": "Neuropsychiatric Systemic Lupus Erythematosus: A Systematic Review",
+      "year": 2024,
+      "pmid": "38975440",
+      "pmcid": "PMC11227614",
+      "doi": "10.7759/cureus.62787",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11227614/",
+      "mcqCount": 5,
+      "coverageNote": "Questions focus on when the review uses immunosuppression versus anticoagulation. No attribution score was invented.",
+      "files": {
+        "evidence": "data/part4-topic-evidence/2159/evidence.json",
+        "synopsis": "data/part4-topic-evidence/2159/synopsis.json",
+        "mcqs": "data/part4-topic-evidence/2159/mcqs.json",
+        "source": "data/part4-topic-evidence/2159/source.txt"
+      }
+    },
+    {
+      "spreadsheetRow": 137,
+      "catalogueId": "626",
+      "topic": "ORAL Surveillance trial: cardiovascular safety of tofacitinib vs TNFi in RA",
+      "decision": "downloaded_open_source",
+      "title": "Risk of major adverse cardiovascular events with tofacitinib versus tumour necrosis factor inhibitors in patients with rheumatoid arthritis",
+      "year": 2023,
+      "pmid": "36137735",
+      "pmcid": "PMC9811099",
+      "doi": "10.1136/ard-2022-222259",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9811099/",
+      "mcqCount": 5,
+      "coverageNote": "The NEJM primary paper was not open on PMC. This open paper reports the ORAL Surveillance cardiovascular comparison and is used only for figures it states.",
+      "files": {
+        "evidence": "data/part4-topic-evidence/626/evidence.json",
+        "synopsis": "data/part4-topic-evidence/626/synopsis.json",
+        "mcqs": "data/part4-topic-evidence/626/mcqs.json",
+        "source": "data/part4-topic-evidence/626/source.txt"
+      }
+    },
+    {
+      "spreadsheetRow": 138,
+      "catalogueId": "722",
+      "topic": "Osteoarthritis",
+      "decision": "downloaded_open_source",
+      "title": "2019 American College of Rheumatology/Arthritis Foundation Guideline for the Management of Osteoarthritis of the Hand, Hip, and Knee",
+      "year": 2020,
+      "pmid": "31908149",
+      "pmcid": "PMC11488261",
+      "doi": "10.1002/acr.24131",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11488261/",
+      "mcqCount": 5,
+      "coverageNote": "Management guideline. Pathophysiology and Kellgren-Lawrence grading are not its subject; those are covered for catalogue 723 by a separate review.",
+      "files": {
+        "evidence": "data/part4-topic-evidence/722/evidence.json",
+        "synopsis": "data/part4-topic-evidence/722/synopsis.json",
+        "mcqs": "data/part4-topic-evidence/722/mcqs.json",
+        "source": "data/part4-topic-evidence/722/source.txt"
+      }
+    },
+    {
+      "spreadsheetRow": 139,
+      "catalogueId": "723",
+      "topic": "Osteoarthritis: pathophysiology, risk factors, radiographic grading, pharmacological management",
+      "decision": "downloaded_open_source",
+      "title": "Diagnosis and Treatment of Hip and Knee Osteoarthritis: A Review",
+      "year": 2021,
+      "pmid": "33560326",
+      "pmcid": "PMC8225295",
+      "doi": "10.1001/jama.2020.22171",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8225295/",
+      "mcqCount": 5,
+      "coverageNote": "Covers risk factors, Kellgren-Lawrence grading, and drug therapy. It is a review, not a society guideline.",
+      "files": {
+        "evidence": "data/part4-topic-evidence/723/evidence.json",
+        "synopsis": "data/part4-topic-evidence/723/synopsis.json",
+        "mcqs": "data/part4-topic-evidence/723/mcqs.json",
+        "source": "data/part4-topic-evidence/723/source.txt"
+      }
+    },
+    {
+      "spreadsheetRow": 140,
+      "catalogueId": "360",
+      "topic": "Osteopetrosis",
+      "decision": "downloaded_open_source",
+      "title": "Autosomal dominant osteopetrosis",
+      "year": 2023,
+      "pmid": "36863500",
+      "pmcid": "PMC10042314",
+      "doi": "10.1016/j.bone.2023.116723",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10042314/",
+      "mcqCount": 5,
+      "coverageNote": "The 2017 osteopetrosis working-group consensus was not free full text. This open review covers adult autosomal-dominant disease and states how infantile recessive disease is treated differently.",
+      "files": {
+        "evidence": "data/part4-topic-evidence/360/evidence.json",
+        "synopsis": "data/part4-topic-evidence/360/synopsis.json",
+        "mcqs": "data/part4-topic-evidence/360/mcqs.json",
+        "source": "data/part4-topic-evidence/360/source.txt"
+      }
+    },
+    {
+      "spreadsheetRow": 141,
+      "catalogueId": "1003",
+      "topic": "Pegloticase and lesinurad in refractory gout: indications, infusion reactions",
+      "decision": "downloaded_open_source",
+      "title": "2020 American College of Rheumatology Guideline for the Management of Gout",
+      "year": 2020,
+      "pmid": "32391934",
+      "pmcid": "PMC10563586",
+      "doi": "10.1002/art.41247",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10563586/",
+      "mcqCount": 5,
+      "coverageNote": "Pegloticase indications and allergic/infusion burden are explicit. Lesinurad is covered as a withdrawn-but-still-approved drug whose data were considered; a dosing regimen was not copied from memory.",
+      "files": {
+        "evidence": "data/part4-topic-evidence/1003/evidence.json",
+        "synopsis": "data/part4-topic-evidence/1003/synopsis.json",
+        "mcqs": "data/part4-topic-evidence/1003/mcqs.json",
+        "source": "data/part4-topic-evidence/1003/source.txt"
+      }
+    },
+    {
+      "spreadsheetRow": 142,
+      "catalogueId": "16",
+      "topic": "Perioperative management of RA: holding DMARDs and biologics for surgery",
+      "decision": "downloaded_open_source",
+      "title": "Perioperative management of immunosuppression in patients with rheumatoid arthritis",
+      "year": 2019,
+      "pmid": "30920454",
+      "pmcid": "PMC6446585",
+      "doi": "10.1097/BOR.0000000000000589",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6446585/",
+      "mcqCount": 5,
+      "coverageNote": "Gives continue-versus-hold rules and two biologic examples. The 2022 ACR/AAHKS update was not an open PMC full text, so newer changes after 2019 are not added.",
+      "files": {
+        "evidence": "data/part4-topic-evidence/16/evidence.json",
+        "synopsis": "data/part4-topic-evidence/16/synopsis.json",
+        "mcqs": "data/part4-topic-evidence/16/mcqs.json",
+        "source": "data/part4-topic-evidence/16/source.txt"
+      }
+    },
+    {
+      "spreadsheetRow": 143,
+      "catalogueId": "1461",
+      "topic": "Plantar Fasciitis and Calcaneal Spurs",
+      "decision": "downloaded_open_source",
+      "title": "Plantar Fasciitis: An Updated Review",
+      "year": 2023,
+      "pmid": "38264606",
+      "pmcid": "PMC10802877",
+      "doi": "10.7759/cureus.46897",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10802877/",
+      "mcqCount": 5,
+      "coverageNote": "Diagnosis, spur interpretation, and examination are grounded. A specific first-line injection protocol was not quoted because a clear 'first-line' sentence was not used.",
+      "files": {
+        "evidence": "data/part4-topic-evidence/1461/evidence.json",
+        "synopsis": "data/part4-topic-evidence/1461/synopsis.json",
+        "mcqs": "data/part4-topic-evidence/1461/mcqs.json",
+        "source": "data/part4-topic-evidence/1461/source.txt"
+      }
+    },
+    {
+      "spreadsheetRow": 144,
+      "catalogueId": "549",
+      "topic": "Polymyositis differentiation",
+      "decision": "downloaded_open_source",
+      "title": "2017 European League Against Rheumatism/American College of Rheumatology classification criteria for adult and juvenile idiopathic inflammatory myopathies and their major subgroups",
+      "year": 2017,
+      "pmid": "29106061",
+      "pmcid": "PMC5846474",
+      "doi": "10.1002/art.40320",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5846474/",
+      "mcqCount": 5,
+      "coverageNote": "Differentiates polymyositis within the inflammatory myopathy subgroups using the 2017 probability model. Polymyalgia rheumatica referral criteria were not used.",
+      "files": {
+        "evidence": "data/part4-topic-evidence/549/evidence.json",
+        "synopsis": "data/part4-topic-evidence/549/synopsis.json",
+        "mcqs": "data/part4-topic-evidence/549/mcqs.json",
+        "source": "data/part4-topic-evidence/549/source.txt"
+      }
+    },
+    {
+      "spreadsheetRow": 145,
+      "catalogueId": "542",
+      "topic": "Pulmonary arterial hypertension in connective tissue disease: screening, ERA, PDE5 inhibitors",
+      "decision": "downloaded_open_source",
+      "title": "Pulmonary Arterial Hypertension In Systemic Sclerosis: Challenges In Diagnosis, Screening And Treatment",
+      "year": 2019,
+      "pmid": "31920409",
+      "pmcid": "PMC6939800",
+      "doi": "10.2147/OARRR.S228234",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6939800/",
+      "mcqCount": 5,
+      "coverageNote": "Screening rationale plus ERA and PDE5 evidence are in one review. DETECT score cut-offs are not copied unless stated in the sentences used.",
+      "files": {
+        "evidence": "data/part4-topic-evidence/542/evidence.json",
+        "synopsis": "data/part4-topic-evidence/542/synopsis.json",
+        "mcqs": "data/part4-topic-evidence/542/mcqs.json",
+        "source": "data/part4-topic-evidence/542/source.txt"
+      }
+    },
+    {
+      "spreadsheetRow": 146,
+      "catalogueId": "1055",
+      "topic": "Pyoderma Gangrenosum",
+      "decision": "downloaded_open_source",
+      "title": "Pyoderma Gangrenosum: An Updated Literature Review on Established and Emerging Pharmacological Treatments",
+      "year": 2022,
+      "pmid": "35606650",
+      "pmcid": "PMC9464730",
+      "doi": "10.1007/s40257-022-00699-8",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9464730/",
+      "mcqCount": 5,
+      "coverageNote": "Diagnosis frameworks and first-line systemic therapy are both in the review. A short 'guide to diagnosis' PMC record contained only an abstract and was not used.",
+      "files": {
+        "evidence": "data/part4-topic-evidence/1055/evidence.json",
+        "synopsis": "data/part4-topic-evidence/1055/synopsis.json",
+        "mcqs": "data/part4-topic-evidence/1055/mcqs.json",
+        "source": "data/part4-topic-evidence/1055/source.txt"
+      }
+    },
+    {
+      "spreadsheetRow": 148,
+      "catalogueId": "1008",
+      "topic": "RA in pregnancy: disease course, drug safety, biologics, MTX cessation",
+      "decision": "downloaded_open_source",
+      "title": "Management of rheumatoid arthritis during pregnancy: challenges and solutions",
+      "year": 2016,
+      "pmid": "27843367",
+      "pmcid": "PMC5098768",
+      "doi": "10.2147/OARRR.S89324",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5098768/",
+      "mcqCount": 5,
+      "coverageNote": "Drug-safety statements are taken from this review. A 2020 ACR reproductive guideline was not the open full text retrieved.",
+      "files": {
+        "evidence": "data/part4-topic-evidence/1008/evidence.json",
+        "synopsis": "data/part4-topic-evidence/1008/synopsis.json",
+        "mcqs": "data/part4-topic-evidence/1008/mcqs.json",
+        "source": "data/part4-topic-evidence/1008/source.txt"
+      }
+    },
+    {
+      "spreadsheetRow": 149,
+      "catalogueId": "589",
+      "topic": "RA treat-to-target strategy: DAS28, SDAI, CDAI remission thresholds",
+      "decision": "downloaded_open_source",
+      "title": "Treating rheumatoid arthritis to target: 2014 update of the recommendations of an international task force",
+      "year": 2016,
+      "pmid": "25969430",
+      "pmcid": "PMC4717393",
+      "doi": "10.1136/annrheumdis-2015-207526",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4717393/",
+      "mcqCount": 5,
+      "coverageNote": "DAS28 <2.6 is the numeric threshold explicitly used. SDAI and CDAI are named; their numeric cut-offs are not invented.",
+      "files": {
+        "evidence": "data/part4-topic-evidence/589/evidence.json",
+        "synopsis": "data/part4-topic-evidence/589/synopsis.json",
+        "mcqs": "data/part4-topic-evidence/589/mcqs.json",
+        "source": "data/part4-topic-evidence/589/source.txt"
+      }
+    },
+    {
+      "spreadsheetRow": 150,
+      "catalogueId": "210",
+      "topic": "Relapsing Polychondritis",
+      "decision": "downloaded_open_source",
+      "title": "Relapsing Polychondritis: An Updated Review",
+      "year": 2018,
+      "pmid": "30072598",
+      "pmcid": "PMC6164217",
+      "doi": "10.3390/biomedicines6030084",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6164217/",
+      "mcqCount": 5,
+      "coverageNote": "Clinical review used because the short PMC record titled only 'Relapsing Polychondritis' was under 2,000 characters.",
+      "files": {
+        "evidence": "data/part4-topic-evidence/210/evidence.json",
+        "synopsis": "data/part4-topic-evidence/210/synopsis.json",
+        "mcqs": "data/part4-topic-evidence/210/mcqs.json",
+        "source": "data/part4-topic-evidence/210/source.txt"
+      }
+    },
+    {
+      "spreadsheetRow": 150,
+      "catalogueId": "640",
+      "topic": "RA and cardiovascular risk: accelerated atherosclerosis, NSAIDs, coxib caution",
+      "decision": "downloaded_open_source",
+      "title": "Cardiovascular safety of celecoxib in rheumatoid arthritis and osteoarthritis patients: A systematic review and meta-analysis",
+      "year": 2021,
+      "pmid": "34932581",
+      "pmcid": "PMC8691614",
+      "doi": "10.1371/journal.pone.0261239",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8691614/",
+      "mcqCount": 5,
+      "coverageNote": "Connects accelerated coronary atherosclerosis in RA with the coxib safety question. The EULAR 2016 cardiovascular-risk recommendations were not open on PMC.",
+      "files": {
+        "evidence": "data/part4-topic-evidence/640/evidence.json",
+        "synopsis": "data/part4-topic-evidence/640/synopsis.json",
+        "mcqs": "data/part4-topic-evidence/640/mcqs.json",
+        "source": "data/part4-topic-evidence/640/source.txt"
+      }
+    },
+    {
+      "spreadsheetRow": 151,
+      "catalogueId": "574",
+      "topic": "Remission maintenance in AAV: azathioprine, rituximab, MAINRITSAN trial",
+      "decision": "downloaded_open_source",
+      "title": "Rituximab versus azathioprine for maintenance of remission for patients with ANCA-associated vasculitis and relapsing disease: an international randomised controlled trial",
+      "year": 2023,
+      "pmid": "36958796",
+      "pmcid": "PMC10313987",
+      "doi": "10.1136/ard-2022-223559",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10313987/",
+      "mcqCount": 5,
+      "coverageNote": "The MAINRITSAN trial report itself was not open. This paper is accepted only for the MAINRITSAN results it explicitly states. RITAZAREM efficacy numbers are not presented as MAINRITSAN results.",
+      "files": {
+        "evidence": "data/part4-topic-evidence/574/evidence.json",
+        "synopsis": "data/part4-topic-evidence/574/synopsis.json",
+        "mcqs": "data/part4-topic-evidence/574/mcqs.json",
+        "source": "data/part4-topic-evidence/574/source.txt"
+      }
+    },
+    {
+      "spreadsheetRow": 152,
+      "catalogueId": "1011",
+      "topic": "Rituximab in rheumatic disease: dosing, pre-treatment screening, hypogammaglobulinaemia",
+      "decision": "downloaded_open_source",
+      "title": "Rituximab for Rheumatoid Arthritis",
+      "year": 2015,
+      "pmid": "27747531",
+      "pmcid": "PMC4883263",
+      "doi": "10.1007/s40744-015-0016-9",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4883263/",
+      "mcqCount": 5,
+      "coverageNote": "Screening and hypogammaglobulinemia are explicit. A separate hypogammaglobulinemia cohort used a 2×1 g then 1 g every 6 months schedule; that dosing schedule is not imported into this paper's MCQs.",
+      "files": {
+        "evidence": "data/part4-topic-evidence/1011/evidence.json",
+        "synopsis": "data/part4-topic-evidence/1011/synopsis.json",
+        "mcqs": "data/part4-topic-evidence/1011/mcqs.json",
+        "source": "data/part4-topic-evidence/1011/source.txt"
+      }
+    },
+    {
+      "spreadsheetRow": 153,
+      "catalogueId": "2170",
+      "topic": "Rotator Cuff Tendinopathy and Adhesive Capsulitis",
+      "decision": "downloaded_open_source",
+      "title": "Current Non-operative Management of Shoulder Pathologies: A Narrative Review",
+      "year": 2025,
+      "pmid": "41492609",
+      "pmcid": "PMC12765153",
+      "doi": "10.7759/cureus.98500",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12765153/",
+      "mcqCount": 5,
+      "coverageNote": "One review covers both named conditions. It does not give operative indications.",
+      "files": {
+        "evidence": "data/part4-topic-evidence/2170/evidence.json",
+        "synopsis": "data/part4-topic-evidence/2170/synopsis.json",
+        "mcqs": "data/part4-topic-evidence/2170/mcqs.json",
+        "source": "data/part4-topic-evidence/2170/source.txt"
+      }
+    },
+    {
+      "spreadsheetRow": 154,
+      "catalogueId": "371",
+      "topic": "SLE flare vs infection: distinguishing features, complement, anti-dsDNA, CRP",
+      "decision": "downloaded_open_source",
+      "title": "The ratio of erythrocyte sedimentation rate to C-reactive protein is useful in distinguishing infection from flare in systemic lupus erythematosus",
+      "year": 2018,
+      "pmid": "29546774",
+      "pmcid": "PMC5938146",
+      "doi": "10.1093/rheumatology/key054",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5938146/",
+      "mcqCount": 5,
+      "coverageNote": "Uses complement and anti-dsDNA as markers that do not track CRP, plus the ESR:CRP ratio. It is a cohort study, not a diagnostic guideline.",
+      "files": {
+        "evidence": "data/part4-topic-evidence/371/evidence.json",
+        "synopsis": "data/part4-topic-evidence/371/synopsis.json",
+        "mcqs": "data/part4-topic-evidence/371/mcqs.json",
+        "source": "data/part4-topic-evidence/371/source.txt"
+      }
+    },
+    {
+      "spreadsheetRow": 155,
+      "catalogueId": "2007",
+      "topic": "SLE: SLICC 2012 and ACR/EULAR 2019 classification criteria compared",
+      "decision": "downloaded_open_source",
+      "title": "2019 European League Against Rheumatism/American College of Rheumatology classification criteria for systemic lupus erythematosus",
+      "year": 2019,
+      "pmid": "31385462",
+      "pmcid": "PMC6827566",
+      "doi": "10.1002/art.40930",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6827566/",
+      "mcqCount": 5,
+      "coverageNote": "Direct comparison of the 2019 structure with SLICC 2012 and ACR 1997. The SLICC derivation paper alone cannot describe the 2019 criteria.",
+      "files": {
+        "evidence": "data/part4-topic-evidence/2007/evidence.json",
+        "synopsis": "data/part4-topic-evidence/2007/synopsis.json",
+        "mcqs": "data/part4-topic-evidence/2007/mcqs.json",
+        "source": "data/part4-topic-evidence/2007/source.txt"
+      }
+    },
+    {
+      "spreadsheetRow": 156,
+      "catalogueId": "829",
+      "topic": "Scleroderma ILD: HRCT patterns, nintedanib, mycophenolate, cyclophosphamide",
+      "decision": "downloaded_open_source",
+      "title": "Expert consensus on the management of systemic sclerosis-associated interstitial lung disease",
+      "year": 2023,
+      "pmid": "36624431",
+      "pmcid": "PMC9830797",
+      "doi": "10.1186/s12931-023-02319-3",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9830797/",
+      "mcqCount": 5,
+      "coverageNote": "HRCT is the diagnostic standard in the cited consensus. Pattern-subtype frequencies are not invented.",
+      "files": {
+        "evidence": "data/part4-topic-evidence/829/evidence.json",
+        "synopsis": "data/part4-topic-evidence/829/synopsis.json",
+        "mcqs": "data/part4-topic-evidence/829/mcqs.json",
+        "source": "data/part4-topic-evidence/829/source.txt"
+      }
+    },
+    {
+      "spreadsheetRow": 157,
+      "catalogueId": "461",
+      "topic": "Scleroderma Renal Crisis",
+      "decision": "downloaded_open_source",
+      "title": "Renal Disease and Systemic Sclerosis: an Update on Scleroderma Renal Crisis",
+      "year": 2023,
+      "pmid": "35648373",
+      "pmcid": "PMC10167155",
+      "doi": "10.1007/s00296-022-05149-6",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10167155/",
+      "mcqCount": 5,
+      "coverageNote": "Same open update is used for catalogue 1510. UKSSG 2015 was not the open full text retrieved.",
+      "files": {
+        "evidence": "data/part4-topic-evidence/461/evidence.json",
+        "synopsis": "data/part4-topic-evidence/461/synopsis.json",
+        "mcqs": "data/part4-topic-evidence/461/mcqs.json",
+        "source": "data/part4-topic-evidence/461/source.txt"
+      }
+    },
+    {
+      "spreadsheetRow": 158,
+      "catalogueId": "1510",
+      "topic": "Scleroderma renal crisis: ACE inhibitors, hypertensive emergency, captopril",
+      "decision": "downloaded_open_source",
+      "title": "Renal Disease and Systemic Sclerosis: an Update on Scleroderma Renal Crisis",
+      "year": 2023,
+      "pmid": "35648373",
+      "pmcid": "PMC10167155",
+      "doi": "10.1007/s00296-022-05149-6",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10167155/",
+      "mcqCount": 5,
+      "coverageNote": "Questions are limited to ACE-inhibitor choice, titration, and pregnancy.",
+      "files": {
+        "evidence": "data/part4-topic-evidence/1510/evidence.json",
+        "synopsis": "data/part4-topic-evidence/1510/synopsis.json",
+        "mcqs": "data/part4-topic-evidence/1510/mcqs.json",
+        "source": "data/part4-topic-evidence/1510/source.txt"
+      }
+    },
+    {
+      "spreadsheetRow": 159,
+      "catalogueId": "772",
+      "topic": "Septic Arthritis",
+      "decision": "downloaded_open_source",
+      "title": "Guideline for management of septic arthritis in native joints (SANJO)",
+      "year": 2023,
+      "pmid": "36756304",
+      "pmcid": "PMC9901514",
+      "doi": "10.1302/2058-5241.8.220083",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9901514/",
+      "mcqCount": 5,
+      "coverageNote": "Native-joint septic arthritis guideline. Prosthetic-joint papers were not used.",
+      "files": {
+        "evidence": "data/part4-topic-evidence/772/evidence.json",
+        "synopsis": "data/part4-topic-evidence/772/synopsis.json",
+        "mcqs": "data/part4-topic-evidence/772/mcqs.json",
+        "source": "data/part4-topic-evidence/772/source.txt"
+      }
+    },
+    {
+      "spreadsheetRow": 160,
+      "catalogueId": "590",
+      "topic": "Septic arthritis: diagnosis, Gram stain, joint aspiration, empirical antibiotics, surgical drainage",
+      "decision": "downloaded_open_source",
+      "title": "Guideline for management of septic arthritis in native joints (SANJO)",
+      "year": 2023,
+      "pmid": "36756304",
+      "pmcid": "PMC9901514",
+      "doi": "10.1302/2058-5241.8.220083",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9901514/",
+      "mcqCount": 5,
+      "coverageNote": "Same SANJO guideline, with questions on aspiration timing, Gram stain, and drainage.",
+      "files": {
+        "evidence": "data/part4-topic-evidence/590/evidence.json",
+        "synopsis": "data/part4-topic-evidence/590/synopsis.json",
+        "mcqs": "data/part4-topic-evidence/590/mcqs.json",
+        "source": "data/part4-topic-evidence/590/source.txt"
+      }
+    },
+    {
+      "spreadsheetRow": 161,
+      "catalogueId": "896",
+      "topic": "Shared decision making and patient reported outcomes in rheumatology: HAQ, PROMIS, PROs",
+      "decision": "downloaded_open_source",
+      "title": "2019 Update of the American College of Rheumatology Recommended Rheumatoid Arthritis Disease Activity Measures",
+      "year": 2019,
+      "pmid": "31709779",
+      "pmcid": "PMC6884664",
+      "doi": "10.1002/acr.24042",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6884664/",
+      "mcqCount": 5,
+      "coverageNote": "Grounds HAQ, PROMIS, and preferred patient-reported disease-activity measures. It does not describe a shared-decision-making method, so none is taught.",
+      "files": {
+        "evidence": "data/part4-topic-evidence/896/evidence.json",
+        "synopsis": "data/part4-topic-evidence/896/synopsis.json",
+        "mcqs": "data/part4-topic-evidence/896/mcqs.json",
+        "source": "data/part4-topic-evidence/896/source.txt"
+      }
+    },
+    {
+      "spreadsheetRow": 162,
+      "catalogueId": "14",
+      "topic": "Sjogren syndrome: sicca symptoms, anti-Ro, anti-La, MALT lymphoma risk, systemic features",
+      "decision": "downloaded_open_source",
+      "title": "Manifestations and management of Sjögren's disease",
+      "year": 2024,
+      "pmid": "38331820",
+      "pmcid": "PMC10851604",
+      "doi": "10.1186/s13075-024-03262-4",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10851604/",
+      "mcqCount": 5,
+      "coverageNote": "Covers sicca from glandular hypofunction, anti-Ro, anti-La, systemic disease including ILD, and MALT lymphoma risk.",
+      "files": {
+        "evidence": "data/part4-topic-evidence/14/evidence.json",
+        "synopsis": "data/part4-topic-evidence/14/synopsis.json",
+        "mcqs": "data/part4-topic-evidence/14/mcqs.json",
+        "source": "data/part4-topic-evidence/14/source.txt"
+      }
+    },
+    {
+      "spreadsheetRow": 163,
+      "catalogueId": "1526",
+      "topic": "Spondylolysis and Spondylolisthesis",
+      "decision": "downloaded_open_source",
+      "title": "Spondylolysis and Isthmic Spondylolisthesis: A Guide to Diagnosis and Management",
+      "year": 2022,
+      "pmid": "36526328",
+      "pmcid": null,
+      "doi": "10.3122/jabfm.2022.220130R1",
+      "url": "https://www.jabfm.org/content/35/6/1204",
+      "mcqCount": 5,
+      "coverageNote": "Open JABFM review of pars defects, isthmic slip, Meyerding grades, and conservative care. Degenerative spondylolisthesis is named in the classification but is not the focus.",
+      "files": {
+        "evidence": "data/part4-topic-evidence/1526/evidence.json",
+        "synopsis": "data/part4-topic-evidence/1526/synopsis.json",
+        "mcqs": "data/part4-topic-evidence/1526/mcqs.json",
+        "source": "data/part4-topic-evidence/1526/source.txt"
+      }
+    },
+    {
+      "spreadsheetRow": 164,
+      "catalogueId": "1129",
+      "topic": "Synovial fluid analysis: WBC thresholds, crystals, viscosity, culture interpretation",
+      "decision": "downloaded_open_source",
+      "title": "Guideline for management of septic arthritis in native joints (SANJO)",
+      "year": 2023,
+      "pmid": "36756304",
+      "pmcid": "PMC9901514",
+      "doi": "10.1302/2058-5241.8.220083",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9901514/",
+      "mcqCount": 5,
+      "coverageNote": "WBC thresholds, crystals, Gram stain, and culture are in SANJO. Viscosity is explicitly absent and is not invented.",
+      "files": {
+        "evidence": "data/part4-topic-evidence/1129/evidence.json",
+        "synopsis": "data/part4-topic-evidence/1129/synopsis.json",
+        "mcqs": "data/part4-topic-evidence/1129/mcqs.json",
+        "source": "data/part4-topic-evidence/1129/source.txt"
+      }
+    },
+    {
+      "spreadsheetRow": 165,
+      "catalogueId": "2038",
+      "topic": "TNF Receptor-Associated Periodic Syndrome",
+      "decision": "downloaded_open_source",
+      "title": "Revisiting TNF Receptor-Associated Periodic Syndrome (TRAPS): Current Perspectives",
+      "year": 2020,
+      "pmid": "32380704",
+      "pmcid": "PMC7246474",
+      "doi": "10.3390/ijms21093263",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7246474/",
+      "mcqCount": 5,
+      "coverageNote": "Genetics, attack phenotype, amyloidosis, etanercept, and IL-1 are all in this review.",
+      "files": {
+        "evidence": "data/part4-topic-evidence/2038/evidence.json",
+        "synopsis": "data/part4-topic-evidence/2038/synopsis.json",
+        "mcqs": "data/part4-topic-evidence/2038/mcqs.json",
+        "source": "data/part4-topic-evidence/2038/source.txt"
+      }
+    },
+    {
+      "spreadsheetRow": 166,
+      "catalogueId": "2037",
+      "topic": "TNF and IL-17 inhibitors in axSpA: secukinumab, ixekizumab, comparative efficacy",
+      "decision": "downloaded_open_source",
+      "title": "Biologic and targeted synthetic therapies in ankylosing spondylitis: a pharmacological review",
+      "year": 2026,
+      "pmid": "42719014",
+      "pmcid": "PMC13553827",
+      "doi": "10.3389/fphar.2026.1865621",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC13553827/",
+      "mcqCount": 5,
+      "coverageNote": "Comparative statements are the review's own summary, not a head-to-head trial. Trial percentages are those the review reports.",
+      "files": {
+        "evidence": "data/part4-topic-evidence/2037/evidence.json",
+        "synopsis": "data/part4-topic-evidence/2037/synopsis.json",
+        "mcqs": "data/part4-topic-evidence/2037/mcqs.json",
+        "source": "data/part4-topic-evidence/2037/source.txt"
+      }
+    },
+    {
+      "spreadsheetRow": 167,
+      "catalogueId": "92",
+      "topic": "Total joint replacement in OA: indications, outcomes, complications, revision rates",
+      "decision": "downloaded_open_source",
+      "title": "Osteoarthritis in over 16s: diagnosis and management (NICE NG226)",
+      "year": 2022,
+      "pmid": null,
+      "pmcid": null,
+      "doi": null,
+      "url": "https://www.nice.org.uk/guidance/ng226",
+      "mcqCount": 5,
+      "coverageNote": "Indications for referral are grounded in NG226. Numeric outcomes, complication rates, and revision rates are not in this recommendations chapter and are not invented.",
+      "files": {
+        "evidence": "data/part4-topic-evidence/92/evidence.json",
+        "synopsis": "data/part4-topic-evidence/92/synopsis.json",
+        "mcqs": "data/part4-topic-evidence/92/mcqs.json",
+        "source": "data/part4-topic-evidence/92/source.txt"
+      }
+    },
+    {
+      "spreadsheetRow": 168,
+      "catalogueId": "1267",
+      "topic": "Trochanteric Bursitis",
+      "decision": "downloaded_open_source",
+      "title": "Greater trochanteric pain syndrome: Evaluation and management of a wide spectrum of pathology",
+      "year": 2021,
+      "pmid": "34158938",
+      "pmcid": "PMC8182177",
+      "doi": "10.1177/20503121211022582",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8182177/",
+      "mcqCount": 5,
+      "coverageNote": "Trochanteric bursitis is handled as part of GTPS, which is the diagnosis the source says should replace isolated-bursitis labelling.",
+      "files": {
+        "evidence": "data/part4-topic-evidence/1267/evidence.json",
+        "synopsis": "data/part4-topic-evidence/1267/synopsis.json",
+        "mcqs": "data/part4-topic-evidence/1267/mcqs.json",
+        "source": "data/part4-topic-evidence/1267/source.txt"
+      }
+    },
+    {
+      "spreadsheetRow": 169,
+      "catalogueId": "2057",
+      "topic": "Urate-lowering therapy: allopurinol, febuxostat, target serum urate, titration",
+      "decision": "in_app_document",
+      "title": "Gout: diagnosis and management (NICE NG219)",
+      "year": 2022,
+      "pmid": null,
+      "pmcid": null,
+      "doi": null,
+      "url": "https://www.nice.org.uk/guidance/ng219",
+      "mcqCount": 5,
+      "coverageNote": "In-app NICE NG219 recommendations chapter (question-repair source import, guideline document for https://www.nice.org.uk/guidance/ng219). Dose-step tables from the evidence reviews are not in the stored chapter.",
+      "files": {
+        "evidence": "data/part4-topic-evidence/2057/evidence.json",
+        "synopsis": "data/part4-topic-evidence/2057/synopsis.json",
+        "mcqs": "data/part4-topic-evidence/2057/mcqs.json",
+        "source": "data/part4-topic-evidence/2057/source.txt"
+      }
+    },
+    {
+      "spreadsheetRow": 170,
+      "catalogueId": "1911",
+      "topic": "methotrexate early rheumatoid arthritis combination therapy TEAR",
+      "decision": "downloaded_open_source",
+      "title": "A randomized comparative effectiveness study of oral triple therapy versus etanercept plus methotrexate in early aggressive rheumatoid arthritis: the Treatment of Early Aggressive Rheumatoid Arthritis trial",
+      "year": 2012,
+      "pmid": "22508468",
+      "pmcid": "PMC4036119",
+      "doi": "10.1002/art.34498",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4036119/",
+      "mcqCount": 5,
+      "coverageNote": "Early-RA methotrexate strategies in TEAR: immediate combination, step-up at DAS28-ESR ≥3.2, and the primary equivalence of etanercept-methotrexate versus triple therapy.",
+      "files": {
+        "evidence": "data/part4-topic-evidence/1911/evidence.json",
+        "synopsis": "data/part4-topic-evidence/1911/synopsis.json",
+        "mcqs": "data/part4-topic-evidence/1911/mcqs.json",
+        "source": "data/part4-topic-evidence/1911/source.txt"
+      }
+    },
+    {
+      "spreadsheetRow": 171,
+      "catalogueId": "1168",
+      "topic": "Cardiac tamponade: Beck's triad, pericardiocentesis, surgical drainage",
+      "decision": "downloaded_open_source",
+      "title": "2015 ESC Guidelines for the diagnosis and management of pericardial diseases",
+      "year": 2015,
+      "pmid": "26320112",
+      "pmcid": "PMC7539677",
+      "doi": "10.1093/eurheartj/ehv318",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7539677/",
+      "mcqCount": 5,
+      "coverageNote": "ESC 2015 tamponade section. Beck's triad is not named in the text; the listed signs are used instead. A stored 2024 pericardial-imaging statement did not discuss tamponade.",
+      "files": {
+        "evidence": "data/part4-topic-evidence/1168/evidence.json",
+        "synopsis": "data/part4-topic-evidence/1168/synopsis.json",
+        "mcqs": "data/part4-topic-evidence/1168/mcqs.json",
+        "source": "data/part4-topic-evidence/1168/source.txt"
+      }
+    },
+    {
+      "spreadsheetRow": 172,
+      "catalogueId": "132",
+      "topic": "Meniere's disease: intratympanic therapy, low-salt diet, surgical options",
+      "decision": "downloaded_open_source",
+      "title": "Optimal management of Ménière's disease",
+      "year": 2015,
+      "pmid": "25750534",
+      "pmcid": "PMC4348125",
+      "doi": "10.2147/TCRM.S59023",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4348125/",
+      "mcqCount": 5,
+      "coverageNote": "Covers sodium restriction, intratympanic steroid, endolymphatic surgery, and destructive surgery for Ménière disease. A stored BPPV document was not used.",
+      "files": {
+        "evidence": "data/part4-topic-evidence/132/evidence.json",
+        "synopsis": "data/part4-topic-evidence/132/synopsis.json",
+        "mcqs": "data/part4-topic-evidence/132/mcqs.json",
+        "source": "data/part4-topic-evidence/132/source.txt"
+      }
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "catalogueId": "360",
+  "topic": "Osteopetrosis",
+  "groundedIn": "36863500",
+  "synopsis": "This review distinguishes two historical autosomal-dominant phenotypes. ADO1 was characterized by generalized osteosclerosis, most pronounced in the cranial vault, without an increased risk of fracture or osteomyelitis. ADO2 is most pronounced in the spine and long bones and carries an increased risk of fracture and of osteomyelitis, particularly of the mandible. Genetic testing later showed these are mechanistically distinct. Hematopoietic-cell transplantation is described as standard of care for infants with most autosomal-recessive forms, whereas data in autosomal-dominant disease are limited. Interferon gamma-1b is FDA-approved for severe infantile osteopetrosis, but the trials included too few people with non-infantile autosomal-dominant disease to show whether it works in that group.",
+  "teachingPoints": [
+    {
+      "claim": "ADO2, unlike ADO1, carries increased fracture and osteomyelitis risk, especially mandibular.",
+      "sourceExcerpt": "the osteosclerosis of ADO2 is most pronounced in the spine and long bones and is characterized by an increased risk of fracture and osteomyelitis, particularly of the mandible."
+    },
+    {
+      "claim": "Hematopoietic-cell transplantation is standard of care for most infantile autosomal-recessive osteopetrosis, with limited human ADO data.",
+      "sourceExcerpt": "Hematopoietic cell transplantation (HCT) is standard of care for infants with most forms of autosomal recessive osteopetrosis."
+    },
+    {
+      "claim": "IFN-γ1b is approved for severe infantile osteopetrosis, not proven here for non-infantile ADO.",
+      "sourceExcerpt": "FDA approval of IFN-γ1b for the treatment of “severe infantile osteopetrosis”. Insufficient numbers of individuals with non-infantile ADO were included"
+    }
+  ],
+  "uncertaintiesNotedInSource": [
+    "Effectiveness of interferon gamma and transplant in autosomal-dominant disease is not established in this review."
+  ]
+}

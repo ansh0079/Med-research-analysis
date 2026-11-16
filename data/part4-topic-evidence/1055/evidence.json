@@ -1,0 +1,21 @@
+{
+  "catalogueId": "1055",
+  "spreadsheetRow": 146,
+  "topic": "Pyoderma Gangrenosum",
+  "specialty": "Rheumatology",
+  "decision": "downloaded_open_source",
+  "source": {
+    "title": "Pyoderma Gangrenosum: An Updated Literature Review on Established and Emerging Pharmacological Treatments",
+    "year": 2022,
+    "pmid": "35606650",
+    "pmcid": "PMC9464730",
+    "doi": "10.1007/s40257-022-00699-8",
+    "sourceBody": "American Journal of Clinical Dermatology",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9464730/",
+    "whyItFits": "Open review of pyoderma gangrenosum diagnosis frameworks and first-line systemic treatment, including the STOP GAP comparison of prednisolone and cyclosporine."
+  },
+  "whyItFits": "Open review of pyoderma gangrenosum diagnosis frameworks and first-line systemic treatment, including the STOP GAP comparison of prednisolone and cyclosporine.",
+  "coverageNote": "Diagnosis frameworks and first-line systemic therapy are both in the review. A short 'guide to diagnosis' PMC record contained only an abstract and was not used.",
+  "rejectedInAppHints": "In-app title match was not accepted without full text sufficient for these recommendations.",
+  "sourceFile": "source.txt"
+}

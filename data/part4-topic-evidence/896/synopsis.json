@@ -1,0 +1,23 @@
+{
+  "catalogueId": "896",
+  "topic": "Shared decision making and patient reported outcomes in rheumatology: HAQ, PROMIS, PROs",
+  "groundedIn": "31709779",
+  "synopsis": "The 2019 ACR update recommends RA disease-activity measures for regular use. Five measures were selected as preferred: CDAI, DAS28-ESR/CRP, PAS-II, RAPID3, and SDAI. Disease-activity scores are built from combinations of patient-reported measures, provider assessments, laboratory values, and imaging. PAS-II and RAPID3 are patient-report-heavy indices; the Health Assessment Questionnaire sits inside PAS, and RAPID3 contains the Multi-Dimensional HAQ. A parallel functional-status project recommended PROMIS Physical Function 10, MD-HAQ, and HAQ-II. Patient-reported components matter clinically: disease-activity scores that include them are higher in patients with comorbid fibromyalgia. The update tells clinicians who are integrating a measure into the record to select one of the preferred measures, and it does not preclude other measures that meet a minimum standard. This paper does not set out a shared-decision-making procedure, so none is stated here.",
+  "teachingPoints": [
+    {
+      "claim": "Preferred regular-use measures are CDAI, DAS28-ESR/CRP, PAS-II, RAPID3, and SDAI.",
+      "sourceExcerpt": "Five preferred RA disease activity measures for regular clinical use were selected: CDAI, DAS28-ESR/CRP, PAS-II, RAPID3, and SDAI."
+    },
+    {
+      "claim": "Functional recommendations name PROMIS Physical Function 10, MD-HAQ, and HAQ-II.",
+      "sourceExcerpt": "recommendations for the use of PROMIS Physical Function 10, MD-HAQ, and HAQ-II"
+    },
+    {
+      "claim": "Scores that include patient-reported measures run higher when fibromyalgia is comorbid.",
+      "sourceExcerpt": "Disease activity scores including patient reported measures are higher in patients with comorbid fibromyalgia"
+    }
+  ],
+  "uncertaintiesNotedInSource": [
+    "A shared-decision protocol is not described in this measures update."
+  ]
+}

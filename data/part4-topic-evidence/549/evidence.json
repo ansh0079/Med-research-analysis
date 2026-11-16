@@ -1,0 +1,21 @@
+{
+  "catalogueId": "549",
+  "spreadsheetRow": 144,
+  "topic": "Polymyositis differentiation",
+  "specialty": "Rheumatology",
+  "decision": "downloaded_open_source",
+  "source": {
+    "title": "2017 European League Against Rheumatism/American College of Rheumatology classification criteria for adult and juvenile idiopathic inflammatory myopathies and their major subgroups",
+    "year": 2017,
+    "pmid": "29106061",
+    "pmcid": "PMC5846474",
+    "doi": "10.1002/art.40320",
+    "sourceBody": "Arthritis & Rheumatology",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5846474/",
+    "whyItFits": "Open EULAR/ACR classification paper whose purpose is to separate idiopathic inflammatory myopathies and their subgroups, including polymyositis, dermatomyositis, and inclusion-body myositis."
+  },
+  "whyItFits": "Open EULAR/ACR classification paper whose purpose is to separate idiopathic inflammatory myopathies and their subgroups, including polymyositis, dermatomyositis, and inclusion-body myositis.",
+  "coverageNote": "Differentiates polymyositis within the inflammatory myopathy subgroups using the 2017 probability model. Polymyalgia rheumatica referral criteria were not used.",
+  "rejectedInAppHints": "A polymyalgia rheumatica referral paper was the in-app keyword neighbor and was rejected.",
+  "sourceFile": "source.txt"
+}

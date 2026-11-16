@@ -1,0 +1,23 @@
+{
+  "catalogueId": "536",
+  "topic": "NSAID gastrointestinal and renal toxicity: COX-2 selectivity, PPI co-prescription, renal monitoring",
+  "groundedIn": "25857826",
+  "synopsis": "This 2015 expert consensus frames NSAID prescribing as a balance between analgesic benefit and organ toxicity. Gastrointestinal effects are described as the most common, ranging from dyspepsia to ulcer with bleeding or perforation, and patients at upper-GI risk are advised to use the lowest effective dose, add a gastroprotective drug, or use a COX-2 selective agent. PPIs are reported not to prevent NSAID-associated intestinal (lower-GI) damage, whereas some COX-2 selective inhibitors had better intestinal tolerability than non-selective NSAIDs with or without acid suppression. The same text lists the kidney among organs affected by NSAID adverse reactions, but it does not give a renal-function monitoring schedule.",
+  "teachingPoints": [
+    {
+      "claim": "Upper-GI risk should be managed with the lowest effective NSAID dose, a gastroprotective co-therapy, or a COX-2 selective agent.",
+      "sourceExcerpt": "patients at upper GI risk should have preventative strategies in place, including the use of the lowest effective dose of NSAID, co-therapy with a gastroprotective drug, or the use of a COX-2 selective agent"
+    },
+    {
+      "claim": "PPIs do not prevent NSAID-associated intestinal damage.",
+      "sourceExcerpt": "proton pump inhibitors (PPIs) are unable to prevent NSAID-associated intestinal damage"
+    },
+    {
+      "claim": "NSAID adverse reactions involve the kidney as well as the gut and cardiovascular system.",
+      "sourceExcerpt": "their use is associated with a broad spectrum of adverse reactions involving the liver, kidney, CV system, skin, and gut"
+    }
+  ],
+  "uncertaintiesNotedInSource": [
+    "The consensus does not specify a serum-creatinine or eGFR monitoring interval."
+  ]
+}

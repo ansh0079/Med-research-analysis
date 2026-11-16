@@ -1,0 +1,21 @@
+{
+  "catalogueId": "589",
+  "spreadsheetRow": 149,
+  "topic": "RA treat-to-target strategy: DAS28, SDAI, CDAI remission thresholds",
+  "specialty": "Rheumatology",
+  "decision": "downloaded_open_source",
+  "source": {
+    "title": "Treating rheumatoid arthritis to target: 2014 update of the recommendations of an international task force",
+    "year": 2016,
+    "pmid": "25969430",
+    "pmcid": "PMC4717393",
+    "doi": "10.1136/annrheumdis-2015-207526",
+    "sourceBody": "Annals of the Rheumatic Diseases",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4717393/",
+    "whyItFits": "Open task-force update on treat-to-target in rheumatoid arthritis, including which composite scores to use and the evidence that a target beats usual care."
+  },
+  "whyItFits": "Open task-force update on treat-to-target in rheumatoid arthritis, including which composite scores to use and the evidence that a target beats usual care.",
+  "coverageNote": "DAS28 <2.6 is the numeric threshold explicitly used. SDAI and CDAI are named; their numeric cut-offs are not invented.",
+  "rejectedInAppHints": "A giant-cell arteritis treat-to-target paper was the in-app neighbor and was not used for RA thresholds.",
+  "sourceFile": "source.txt"
+}

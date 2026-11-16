@@ -1,0 +1,149 @@
+{
+  "reviewState": "unreviewed",
+  "method": "Hand-written single-best-answer MCQs grounded only in the accepted open full text.",
+  "topic": {
+    "topicKey": "perioperative-management-of-ra-holding-dmards-and-biologics-for-surger",
+    "topicDisplayName": "Perioperative management of RA: holding DMARDs and biologics for surgery",
+    "catalogueId": "16",
+    "aliases": [],
+    "storedRowCount": 0,
+    "coverageNote": "Gives continue-versus-hold rules and two biologic examples. The 2022 ACR/AAHKS update was not an open PMC full text, so newer changes after 2019 are not added.",
+    "mcqs": [
+      {
+        "id": "c16-01",
+        "question": "Which conventional DMARDs does the summarized perioperative guidance say to continue without interruption?",
+        "options": {
+          "A": "Methotrexate, leflunomide, sulfasalazine, and hydroxychloroquine",
+          "B": "Only rituximab",
+          "C": "Methotrexate is always stopped 8 weeks before surgery",
+          "D": "Leflunomide is the only drug that must be stopped",
+          "E": "All DMARDs are held for one dosing interval"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "Methotrexate, leflunomide, sulfasalazine, and hydroxychloroquine",
+        "explanation": "Guidance summarized in the review continues methotrexate, leflunomide, sulfasalazine, and hydroxychloroquine throughout the perioperative period.",
+        "difficulty": "easy",
+        "sourceRefs": [
+          {
+            "sourceBody": "Current Opinion in Rheumatology",
+            "sourceYear": 2019,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6446585/",
+            "pmid": "30920454",
+            "pmcid": "PMC6446585",
+            "doi": "10.1097/BOR.0000000000000589",
+            "status": "open_full_text",
+            "excerpt": "continuing conventional DMARDs methotrexate, leflunomide, sulfasalazine, and hydroxychloroquine throughout the perioperative period without interruption."
+          }
+        ]
+      },
+      {
+        "id": "c16-02",
+        "question": "What evidence does the review cite for not stopping conventional DMARDs?",
+        "options": {
+          "A": "Low non-operative infection risk with methotrexate, and small trials in which stopping conventional DMARDs gave a similar or higher postoperative infection risk",
+          "B": "A 4000-patient trial proving biologics are safe to continue",
+          "C": "Infection risk rises if methotrexate is continued",
+          "D": "Hydroxychloroquine must be washed out for 6 months",
+          "E": "No surgical data exist"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "Low non-operative infection risk with methotrexate, and small trials in which stopping conventional DMARDs gave a similar or higher postoperative infection risk",
+        "explanation": "Infection risk with methotrexate outside surgery was low, and small randomized trials showed similar or increased postoperative infection when conventional DMARDs were stopped.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Current Opinion in Rheumatology",
+            "sourceYear": 2019,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6446585/",
+            "pmid": "30920454",
+            "pmcid": "PMC6446585",
+            "doi": "10.1097/BOR.0000000000000589",
+            "status": "open_full_text",
+            "excerpt": "and data from small randomized trials showing similar or increased risk of post-operative infections with discontinuation of conventional DMARDs before surgery"
+          }
+        ]
+      },
+      {
+        "id": "c16-03",
+        "question": "How long before surgery are biologics held?",
+        "options": {
+          "A": "One dosing interval, not a half-life-based interval",
+          "B": "Always 48 hours",
+          "C": "They are continued on the morning of surgery",
+          "D": "Six months for every biologic",
+          "E": "Only the day of surgery"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "One dosing interval, not a half-life-based interval",
+        "explanation": "Biologics are held for one dosing interval. The dosing interval was chosen rather than half-life because half-life was felt not to correlate as well with duration of action.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Current Opinion in Rheumatology",
+            "sourceYear": 2019,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6446585/",
+            "pmid": "30920454",
+            "pmcid": "PMC6446585",
+            "doi": "10.1097/BOR.0000000000000589",
+            "status": "open_full_text",
+            "excerpt": "the panel recommended holding biologics for one dosing interval prior to surgery. The dosing interval was used rather than half-life because the half-life was not felt to correlate as well with the duration of action."
+          }
+        ]
+      },
+      {
+        "id": "c16-04",
+        "question": "A patient receives infliximab every 8 weeks. When is the last dose before surgery under this guidance?",
+        "options": {
+          "A": "9 weeks before surgery",
+          "B": "The morning of surgery",
+          "C": "1 week before surgery",
+          "D": "6 months before surgery",
+          "E": "Infliximab is not held"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "9 weeks before surgery",
+        "explanation": "Infliximab every 8 weeks means the last dose is 9 weeks before surgery.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Current Opinion in Rheumatology",
+            "sourceYear": 2019,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6446585/",
+            "pmid": "30920454",
+            "pmcid": "PMC6446585",
+            "doi": "10.1097/BOR.0000000000000589",
+            "status": "open_full_text",
+            "excerpt": "a patient receiving infliximab every 8 weeks would last receive the medication 9 weeks before surgery"
+          }
+        ]
+      },
+      {
+        "id": "c16-05",
+        "question": "A patient receives adalimumab every 2 weeks. When is the last preoperative dose?",
+        "options": {
+          "A": "3 weeks before surgery",
+          "B": "9 weeks before surgery",
+          "C": "The day of surgery",
+          "D": "Adalimumab is continued without a gap",
+          "E": "12 weeks before surgery"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "3 weeks before surgery",
+        "explanation": "Adalimumab every two weeks means the last dose is 3 weeks before surgery.",
+        "difficulty": "easy",
+        "sourceRefs": [
+          {
+            "sourceBody": "Current Opinion in Rheumatology",
+            "sourceYear": 2019,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6446585/",
+            "pmid": "30920454",
+            "pmcid": "PMC6446585",
+            "doi": "10.1097/BOR.0000000000000589",
+            "status": "open_full_text",
+            "excerpt": "a patient receiving adalimumab every two weeks would receive the medication 3 weeks"
+          }
+        ]
+      }
+    ]
+  }
+}

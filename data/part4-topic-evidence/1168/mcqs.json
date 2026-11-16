@@ -1,0 +1,149 @@
+{
+  "reviewState": "unreviewed",
+  "method": "Hand-written single-best-answer MCQs grounded only in the accepted open full text.",
+  "topic": {
+    "topicKey": "cardiac-tamponade-beck-s-triad-pericardiocentesis-surgical-drainage",
+    "topicDisplayName": "Cardiac tamponade: Beck's triad, pericardiocentesis, surgical drainage",
+    "catalogueId": "1168",
+    "aliases": [],
+    "storedRowCount": 0,
+    "coverageNote": "ESC 2015 tamponade section. Beck's triad is not named in the text; the listed signs are used instead. A stored 2024 pericardial-imaging statement did not discuss tamponade.",
+    "mcqs": [
+      {
+        "id": "c1168-01",
+        "question": "How does the 2015 ESC guideline define cardiac tamponade?",
+        "options": {
+          "A": "Life-threatening compression of the heart by pericardial fluid, pus, blood, clot, or gas",
+          "B": "Any pericardial effusion, regardless of haemodynamic effect",
+          "C": "Constriction of a thickened pericardium without effusion",
+          "D": "Isolated hypotension after myocardial infarction",
+          "E": "Electrical alternans without effusion"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "Life-threatening compression of the heart by pericardial fluid, pus, blood, clot, or gas",
+        "explanation": "Cardiac tamponade is life-threatening slow or rapid compression of the heart due to pericardial accumulation of fluid, pus, blood, clots, or gas.",
+        "difficulty": "easy",
+        "sourceRefs": [
+          {
+            "sourceBody": "European Heart Journal",
+            "sourceYear": 2015,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7539677/",
+            "pmid": "26320112",
+            "pmcid": "PMC7539677",
+            "doi": "10.1093/eurheartj/ehv318",
+            "status": "open_full_text",
+            "excerpt": "Cardiac tamponade is a life-threatening, slow or rapid compression of the heart due to the pericardial accumulation of fluid, pus, blood, clots or gas"
+          }
+        ]
+      },
+      {
+        "id": "c1168-02",
+        "question": "Which clinical signs does the guideline list?",
+        "options": {
+          "A": "Tachycardia, hypotension, pulsus paradoxus, raised jugular venous pressure, and muffled heart sounds",
+          "B": "Fever, splinter haemorrhages, and a new murmur",
+          "C": "Bradycardia, hypertension, and a loud first heart sound",
+          "D": "Only chest pain",
+          "E": "Only a normal examination with a large effusion on CT"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "Tachycardia, hypotension, pulsus paradoxus, raised jugular venous pressure, and muffled heart sounds",
+        "explanation": "The guideline lists tachycardia, hypotension, pulsus paradoxus, raised jugular venous pressure, muffled heart sounds, low voltage with electrical alternans, and an enlarged silhouette when accumulation is slow. It does not name Beck's triad.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "European Heart Journal",
+            "sourceYear": 2015,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7539677/",
+            "pmid": "26320112",
+            "pmcid": "PMC7539677",
+            "doi": "10.1093/eurheartj/ehv318",
+            "status": "open_full_text",
+            "excerpt": "Clinical signs in a patient with cardiac tamponade include tachycardia, hypotension, pulsus paradoxus, raised jugular venous pressure, muffled heart sounds"
+          }
+        ]
+      },
+      {
+        "id": "c1168-03",
+        "question": "What is the guideline's definition of pulsus paradoxus?",
+        "options": {
+          "A": "An inspiratory decrease in systolic arterial pressure of more than 10 mmHg during normal breathing",
+          "B": "A rise in systolic pressure during inspiration",
+          "C": "Absence of the radial pulse for one minute",
+          "D": "Electrical alternans on the ECG",
+          "E": "A pericardial rub"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "An inspiratory decrease in systolic arterial pressure of more than 10 mmHg during normal breathing",
+        "explanation": "Pulsus paradoxus is conventionally an inspiratory decrease in systolic arterial pressure of more than 10 mmHg during normal breathing. The guideline calls it a key diagnostic finding.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "European Heart Journal",
+            "sourceYear": 2015,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7539677/",
+            "pmid": "26320112",
+            "pmcid": "PMC7539677",
+            "doi": "10.1093/eurheartj/ehv318",
+            "status": "open_full_text",
+            "excerpt": "pulsus paradoxus (conventionally defined as an inspiratory decrease in systolic arterial pressure of >10 mmHg during normal breathing)"
+          }
+        ]
+      },
+      {
+        "id": "c1168-04",
+        "question": "Which test does the guideline call the single most useful diagnostic tool, and what procedure does it also guide?",
+        "options": {
+          "A": "Echocardiography, which also guides pericardiocentesis",
+          "B": "Chest radiograph alone",
+          "C": "Cardiac catheterization in every case",
+          "D": "CT before any echo",
+          "E": "ECG, which replaces drainage"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "Echocardiography, which also guides pericardiocentesis",
+        "explanation": "Echocardiography is the single most useful diagnostic tool to identify the effusion and estimate its haemodynamic impact, and it is used to guide pericardiocentesis.",
+        "difficulty": "easy",
+        "sourceRefs": [
+          {
+            "sourceBody": "European Heart Journal",
+            "sourceYear": 2015,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7539677/",
+            "pmid": "26320112",
+            "pmcid": "PMC7539677",
+            "doi": "10.1093/eurheartj/ehv318",
+            "status": "open_full_text",
+            "excerpt": "Echocardiography is the single most useful diagnostic tool to identify pericardial effusion and estimate its size, location and degree of haemodynamic impact"
+          }
+        ]
+      },
+      {
+        "id": "c1168-05",
+        "question": "How should tamponade be drained?",
+        "options": {
+          "A": "Preferably needle pericardiocentesis with echo or fluoroscopic guidance, without delay if unstable; surgery especially for purulent pericarditis or bleeding",
+          "B": "Oral colchicine as the definitive drainage method",
+          "C": "Observation for 48 hours in shock",
+          "D": "Pericardiectomy as the first step for every free-flowing effusion",
+          "E": "Needle drainage is contraindicated"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "Preferably needle pericardiocentesis with echo or fluoroscopic guidance, without delay if unstable; surgery especially for purulent pericarditis or bleeding",
+        "explanation": "Drainage is preferably by needle pericardiocentesis with echocardiographic or fluoroscopic guidance and should not be delayed in unstable patients. Surgery is the alternative especially for purulent pericarditis or bleeding into the pericardium.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "European Heart Journal",
+            "sourceYear": 2015,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7539677/",
+            "pmid": "26320112",
+            "pmcid": "PMC7539677",
+            "doi": "10.1093/eurheartj/ehv318",
+            "status": "open_full_text",
+            "excerpt": "preferably by needle pericardiocentesis, with the use of echocardiographic or fluoroscopic guidance, and should be performed without delay in unstable patients. Alternatively, drainage is performed by a surgical approach, especially in some situations such as purulent pericarditis or in urgent situations with bleeding into the pericardium"
+          }
+        ]
+      }
+    ]
+  }
+}

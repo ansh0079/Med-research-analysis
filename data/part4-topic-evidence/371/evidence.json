@@ -1,0 +1,21 @@
+{
+  "catalogueId": "371",
+  "spreadsheetRow": 154,
+  "topic": "SLE flare vs infection: distinguishing features, complement, anti-dsDNA, CRP",
+  "specialty": "Rheumatology",
+  "decision": "downloaded_open_source",
+  "source": {
+    "title": "The ratio of erythrocyte sedimentation rate to C-reactive protein is useful in distinguishing infection from flare in systemic lupus erythematosus",
+    "year": 2018,
+    "pmid": "29546774",
+    "pmcid": "PMC5938146",
+    "doi": "10.1093/rheumatology/key054",
+    "sourceBody": "Rheumatology",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5938146/",
+    "whyItFits": "Open study whose purpose is to separate SLE flare from infection using CRP, ESR, and the relationship of CRP to complement and anti-dsDNA."
+  },
+  "whyItFits": "Open study whose purpose is to separate SLE flare from infection using CRP, ESR, and the relationship of CRP to complement and anti-dsDNA.",
+  "coverageNote": "Uses complement and anti-dsDNA as markers that do not track CRP, plus the ESR:CRP ratio. It is a cohort study, not a diagnostic guideline.",
+  "rejectedInAppHints": "No stored flare-versus-infection document was accepted.",
+  "sourceFile": "source.txt"
+}

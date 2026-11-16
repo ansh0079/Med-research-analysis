@@ -1,0 +1,21 @@
+{
+  "catalogueId": "829",
+  "spreadsheetRow": 156,
+  "topic": "Scleroderma ILD: HRCT patterns, nintedanib, mycophenolate, cyclophosphamide",
+  "specialty": "Rheumatology",
+  "decision": "downloaded_open_source",
+  "source": {
+    "title": "Expert consensus on the management of systemic sclerosis-associated interstitial lung disease",
+    "year": 2023,
+    "pmid": "36624431",
+    "pmcid": "PMC9830797",
+    "doi": "10.1186/s12931-023-02319-3",
+    "sourceBody": "Respiratory Research",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9830797/",
+    "whyItFits": "Open expert consensus that names HRCT as the primary diagnostic tool for systemic-sclerosis ILD and discusses cyclophosphamide, mycophenolate, and nintedanib."
+  },
+  "whyItFits": "Open expert consensus that names HRCT as the primary diagnostic tool for systemic-sclerosis ILD and discusses cyclophosphamide, mycophenolate, and nintedanib.",
+  "coverageNote": "HRCT is the diagnostic standard in the cited consensus. Pattern-subtype frequencies are not invented.",
+  "rejectedInAppHints": "A rheumatoid-arthritis ILD ultrasound paper was off-topic for systemic sclerosis.",
+  "sourceFile": "source.txt"
+}

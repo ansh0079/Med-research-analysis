@@ -1,0 +1,23 @@
+{
+  "catalogueId": "371",
+  "topic": "SLE flare vs infection: distinguishing features, complement, anti-dsDNA, CRP",
+  "groundedIn": "29546774",
+  "synopsis": "Immunosuppression for a presumed flare is dangerous if the driver is infection, so the authors look for laboratory clues. They note that CRP does not tend to track other lupus-activity markers such as anti-dsDNA antibodies and complement. CRP above 6.0 mg/dl has been associated with infection in several studies, and CRP is higher in SLE infection than in flare without infection, although serositis, nephritis, or myositis flares can also raise CRP. In 53 hospitalizations (28 flares and 25 infections) among 39 patients, fevers were documented in 48 (90.6%). The ESR:CRP ratio separated the groups: infections predominated at ratios of 2 or lower, and flares predominated at ratios of 15 or higher (p<0.000). Serosal flares had higher CRP than flares without serositis (8.7±8.3 versus 3.6±4.6 mg/dl, p=0.04).",
+  "teachingPoints": [
+    {
+      "claim": "CRP does not correlate with anti-dsDNA or complement the way it might be expected to track disease activity.",
+      "sourceExcerpt": "CRP levels do not tend to correlate with other markers of disease activity such as anti-double stranded DNA antibodies and complement levels"
+    },
+    {
+      "claim": "Infections predominated at ESR:CRP ≤2 and flares at ESR:CRP ≥15.",
+      "sourceExcerpt": "infections predominant for ratios of ≤2, and flares predominant for ratios of ≥15; p<0.000"
+    },
+    {
+      "claim": "Serosal flares had higher CRP than non-serosal flares.",
+      "sourceExcerpt": "CRP levels were higher for the 10 flares with a serosal component compared to the 18 flares without a serosal component [8.7 ±8.3 vs 3.6 ±4.6 (p=0.04)"
+    }
+  ],
+  "uncertaintiesNotedInSource": [
+    "This is a single-center hospitalization series of 53 events, not a guideline."
+  ]
+}

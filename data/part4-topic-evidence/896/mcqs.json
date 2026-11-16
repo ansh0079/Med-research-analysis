@@ -1,0 +1,149 @@
+{
+  "reviewState": "unreviewed",
+  "method": "Hand-written single-best-answer MCQs grounded only in the accepted open full text.",
+  "topic": {
+    "topicKey": "shared-decision-making-and-patient-reported-outcomes-in-rheumatology-h",
+    "topicDisplayName": "Shared decision making and patient reported outcomes in rheumatology: HAQ, PROMIS, PROs",
+    "catalogueId": "896",
+    "aliases": [],
+    "storedRowCount": 0,
+    "coverageNote": "Grounds HAQ, PROMIS, and preferred patient-reported disease-activity measures. It does not describe a shared-decision-making method, so none is taught.",
+    "mcqs": [
+      {
+        "id": "c896-01",
+        "question": "Which five measures did the 2019 ACR update select as preferred for regular clinical use?",
+        "options": {
+          "A": "CDAI, DAS28-ESR/CRP, PAS-II, RAPID3, and SDAI",
+          "B": "HAQ, ESR, CRP, rheumatoid factor, and anti-CCP only",
+          "C": "PROMIS alone",
+          "D": "Sharp score, MRI synovitis, ultrasound, PET, and arthroscopy",
+          "E": "Pain VAS as the only acceptable measure"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "CDAI, DAS28-ESR/CRP, PAS-II, RAPID3, and SDAI",
+        "explanation": "Five preferred RA disease-activity measures were selected: CDAI, DAS28-ESR/CRP, PAS-II, RAPID3, and SDAI.",
+        "difficulty": "easy",
+        "sourceRefs": [
+          {
+            "sourceBody": "Arthritis Care & Research",
+            "sourceYear": 2019,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6884664/",
+            "pmid": "31709779",
+            "pmcid": "PMC6884664",
+            "doi": "10.1002/acr.24042",
+            "status": "open_full_text",
+            "excerpt": "Five preferred RA disease activity measures for regular clinical use were selected: CDAI, DAS28-ESR/CRP, PAS-II, RAPID3, and SDAI."
+          }
+        ]
+      },
+      {
+        "id": "c896-02",
+        "question": "Which functional-status instruments does the parallel recommendation name?",
+        "options": {
+          "A": "PROMIS Physical Function 10, MD-HAQ, and HAQ-II",
+          "B": "Only the original HAQ, with PROMIS excluded",
+          "C": "BASDAI, ASDAS, and ASAS",
+          "D": "SLEDAI and SLICC damage index",
+          "E": "No functional measure was recommended"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "PROMIS Physical Function 10, MD-HAQ, and HAQ-II",
+        "explanation": "Functional-status recommendations include PROMIS Physical Function 10, the Multi-Dimensional HAQ, and HAQ-II.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Arthritis Care & Research",
+            "sourceYear": 2019,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6884664/",
+            "pmid": "31709779",
+            "pmcid": "PMC6884664",
+            "doi": "10.1002/acr.24042",
+            "status": "open_full_text",
+            "excerpt": "recommendations for the use of PROMIS Physical Function 10, MD-HAQ, and HAQ-II"
+          }
+        ]
+      },
+      {
+        "id": "c896-03",
+        "question": "Where do the HAQ and the MDHAQ sit inside the preferred disease-activity indices named here?",
+        "options": {
+          "A": "PAS contains the HAQ, and RAPID3 contains the MDHAQ",
+          "B": "CDAI is composed only of the HAQ",
+          "C": "SDAI replaces both questionnaires with CRP",
+          "D": "DAS28 contains the full HAQ disability index",
+          "E": "Neither questionnaire is used in any preferred index"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "PAS contains the HAQ, and RAPID3 contains the MDHAQ",
+        "explanation": "PAS contains the Health Assessment Questionnaire, and RAPID3 contains the Multi-Dimensional Health Assessment Questionnaire.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Arthritis Care & Research",
+            "sourceYear": 2019,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6884664/",
+            "pmid": "31709779",
+            "pmcid": "PMC6884664",
+            "doi": "10.1002/acr.24042",
+            "status": "open_full_text",
+            "excerpt": "PAS contains the Health Assessment Questionnaire ( ) and RAPID3 contains the MultiDimensional Health Assessment Questionnaire (MDHAQ)"
+          }
+        ]
+      },
+      {
+        "id": "c896-04",
+        "question": "What does the update say about disease-activity scores that include patient-reported measures when fibromyalgia is also present?",
+        "options": {
+          "A": "Those scores are higher in patients with comorbid fibromyalgia",
+          "B": "Those scores fall to zero",
+          "C": "Fibromyalgia does not change any patient-reported score",
+          "D": "Only laboratory-based scores rise, and patient-reported scores fall",
+          "E": "The update says fibromyalgia invalidates the CDAI but not RAPID3"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "Those scores are higher in patients with comorbid fibromyalgia",
+        "explanation": "Disease-activity scores that include patient-reported measures are higher in patients with comorbid fibromyalgia.",
+        "difficulty": "hard",
+        "sourceRefs": [
+          {
+            "sourceBody": "Arthritis Care & Research",
+            "sourceYear": 2019,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6884664/",
+            "pmid": "31709779",
+            "pmcid": "PMC6884664",
+            "doi": "10.1002/acr.24042",
+            "status": "open_full_text",
+            "excerpt": "Disease activity scores including patient reported measures are higher in patients with comorbid fibromyalgia"
+          }
+        ]
+      },
+      {
+        "id": "c896-05",
+        "question": "What does this update actually recommend a clinician do when putting a measure into routine use?",
+        "options": {
+          "A": "Select one preferred measure (CDAI, DAS28, PAS-II, RAPID3, or SDAI), without precluding other measures",
+          "B": "Use every preferred measure at every visit",
+          "C": "Replace disease-activity measurement with a shared-decision checklist that this paper defines",
+          "D": "Stop collecting patient-reported items",
+          "E": "Use imaging as the only regular measure"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "Select one preferred measure (CDAI, DAS28, PAS-II, RAPID3, or SDAI), without precluding other measures",
+        "explanation": "When integrating measurement into the record, the update recommends selecting a preferred measure and does not preclude other RA disease-activity measures. It does not define a shared-decision procedure.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Arthritis Care & Research",
+            "sourceYear": 2019,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6884664/",
+            "pmid": "31709779",
+            "pmcid": "PMC6884664",
+            "doi": "10.1002/acr.24042",
+            "status": "open_full_text",
+            "excerpt": "we recommend selecting a preferred RA disease activity measure (CDAI, DAS28, PAS-II, RAPID3, SDAI)"
+          }
+        ]
+      }
+    ]
+  }
+}

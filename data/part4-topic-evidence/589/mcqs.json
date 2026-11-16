@@ -1,0 +1,149 @@
+{
+  "reviewState": "unreviewed",
+  "method": "Hand-written single-best-answer MCQs grounded only in the accepted open full text.",
+  "topic": {
+    "topicKey": "ra-treat-to-target-strategy-das28-sdai-cdai-remission-thresholds",
+    "topicDisplayName": "RA treat-to-target strategy: DAS28, SDAI, CDAI remission thresholds",
+    "catalogueId": "589",
+    "aliases": [],
+    "storedRowCount": 0,
+    "coverageNote": "DAS28 <2.6 is the numeric threshold explicitly used. SDAI and CDAI are named; their numeric cut-offs are not invented.",
+    "mcqs": [
+      {
+        "id": "c589-01",
+        "question": "What did the studies reviewed here, including a late-RA cohort treated to DAS28 <2.6, show?",
+        "options": {
+          "A": "Targeted therapy was superior to conventional care",
+          "B": "Usual care produced higher remission rates",
+          "C": "Targets worsened radiographic outcomes in every study",
+          "D": "Only ultrasound targets improved outcomes",
+          "E": "Late RA did not benefit from any target"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "Targeted therapy was superior to conventional care",
+        "explanation": "Early-RA remission and low-disease-activity targets, and a late-RA comparison of DAS28 <2.6 versus conventional therapy, confirmed that targeted therapy is superior to conventional approaches.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Annals of the Rheumatic Diseases",
+            "sourceYear": 2016,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4717393/",
+            "pmid": "25969430",
+            "pmcid": "PMC4717393",
+            "doi": "10.1136/annrheumdis-2015-207526",
+            "status": "open_full_text",
+            "excerpt": "one comparative cohort study addressed treatment to target of DAS28 <2.6 versus conventional therapy in late RA;"
+          }
+        ]
+      },
+      {
+        "id": "c589-02",
+        "question": "Which measures did participants agree should generally be used to assess disease activity?",
+        "options": {
+          "A": "CDAI, DAS, DAS28, or SDAI",
+          "B": "ESR alone",
+          "C": "Patient global score alone",
+          "D": "Radiographic Sharp score at every visit",
+          "E": "CRP only"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "CDAI, DAS, DAS28, or SDAI",
+        "explanation": "With few exceptions, participants agreed that composite measures, in particular CDAI, DAS, DAS28, or SDAI, should generally be used.",
+        "difficulty": "easy",
+        "sourceRefs": [
+          {
+            "sourceBody": "Annals of the Rheumatic Diseases",
+            "sourceYear": 2016,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4717393/",
+            "pmid": "25969430",
+            "pmcid": "PMC4717393",
+            "doi": "10.1136/annrheumdis-2015-207526",
+            "status": "open_full_text",
+            "excerpt": "composite measures, in particular Clinical Disease Activity Index (CDAI), DAS, DAS28 or Simplified Disease Activity Index (SDAI),"
+          }
+        ]
+      },
+      {
+        "id": "c589-03",
+        "question": "What disagreement remained about remission definitions?",
+        "options": {
+          "A": "Some would not dismiss DAS or DAS28 remission; others preferred Boolean or SDAI-based ACR/EULAR remission",
+          "B": "Everyone rejected DAS28",
+          "C": "Boolean remission was declared invalid",
+          "D": "Only ultrasound remission was accepted",
+          "E": "Remission was removed as a target"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "Some would not dismiss DAS or DAS28 remission; others preferred Boolean or SDAI-based ACR/EULAR remission",
+        "explanation": "Some participants would not dismiss DAS and DAS28 remission, while others wanted the Boolean or SDAI-based definition used.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Annals of the Rheumatic Diseases",
+            "sourceYear": 2016,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4717393/",
+            "pmid": "25969430",
+            "pmcid": "PMC4717393",
+            "doi": "10.1136/annrheumdis-2015-207526",
+            "status": "open_full_text",
+            "excerpt": "one should not dismiss DAS and DAS28 remission, while others were of the opinion that the new definition of remission (Boolean or SDAI-based) should be used"
+          }
+        ]
+      },
+      {
+        "id": "c589-04",
+        "question": "Which practical remission definitions does the update say were also presented, not only trial definitions?",
+        "options": {
+          "A": "Boolean criteria without CRP, and CDAI remission",
+          "B": "MRI remission only",
+          "C": "A pain score under 1",
+          "D": "Normal hand radiographs",
+          "E": "Steroid-free status regardless of joint counts"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "Boolean criteria without CRP, and CDAI remission",
+        "explanation": "The task force notes that Boolean criteria without CRP and CDAI remission criteria had been presented for clinical practice as well as trials.",
+        "difficulty": "hard",
+        "sourceRefs": [
+          {
+            "sourceBody": "Annals of the Rheumatic Diseases",
+            "sourceYear": 2016,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4717393/",
+            "pmid": "25969430",
+            "pmcid": "PMC4717393",
+            "doi": "10.1136/annrheumdis-2015-207526",
+            "status": "open_full_text",
+            "excerpt": "also remission definitions for clinical practice (Boolean criteria without C-reactive protein (CRP) and CDAI remission criteria) had been presented"
+          }
+        ]
+      },
+      {
+        "id": "c589-05",
+        "question": "Two studies compared a clinical target with sonographic remission. What outcome does the update report?",
+        "options": {
+          "A": "Similar outcomes",
+          "B": "Sonographic remission was clearly superior",
+          "C": "Clinical targets increased flares",
+          "D": "Ultrasound was required to show any benefit of treat-to-target",
+          "E": "Those studies were excluded"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "Similar outcomes",
+        "explanation": "Two studies comparing treatment aimed at good clinical outcomes versus sonographic remission showed similar outcomes.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Annals of the Rheumatic Diseases",
+            "sourceYear": 2016,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4717393/",
+            "pmid": "25969430",
+            "pmcid": "PMC4717393",
+            "doi": "10.1136/annrheumdis-2015-207526",
+            "status": "open_full_text",
+            "excerpt": "Two studies compared treatment approaches targeting good clinical outcomes versus sonographic remission, showing similar outcomes."
+          }
+        ]
+      }
+    ]
+  }
+}

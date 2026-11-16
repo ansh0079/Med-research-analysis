@@ -1,0 +1,149 @@
+{
+  "reviewState": "unreviewed",
+  "method": "Hand-written single-best-answer MCQs grounded only in the accepted open full text.",
+  "topic": {
+    "topicKey": "pulmonary-arterial-hypertension-in-connective-tissue-disease-screening",
+    "topicDisplayName": "Pulmonary arterial hypertension in connective tissue disease: screening, ERA, PDE5 inhibitors",
+    "catalogueId": "542",
+    "aliases": [],
+    "storedRowCount": 0,
+    "coverageNote": "Screening rationale plus ERA and PDE5 evidence are in one review. DETECT score cut-offs are not copied unless stated in the sentences used.",
+    "mcqs": [
+      {
+        "id": "c542-01",
+        "question": "What survival contrast does the review cite for screening in systemic-sclerosis PAH?",
+        "options": {
+          "A": "Better survival when PAH was found in a systematic detection program than when it was diagnosed from symptoms alone",
+          "B": "Screening worsened survival",
+          "C": "Symptoms are a more sensitive screen than any test",
+          "D": "Survival was identical either way",
+          "E": "Screening is discouraged because PAH is rare and benign"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "Better survival when PAH was found in a systematic detection program than when it was diagnosed from symptoms alone",
+        "explanation": "A French program showed improved systemic-sclerosis PAH survival when diagnosis occurred during systematic detection rather than after symptoms alone.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Open Access Rheumatology: Research and Reviews",
+            "sourceYear": 2019,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6939800/",
+            "pmid": "31920409",
+            "pmcid": "PMC6939800",
+            "doi": "10.2147/OARRR.S228234",
+            "status": "open_full_text",
+            "excerpt": "improved SSc-PAH-related survival when patients were diagnosed during a systematic PAH detection program compared to those diagnosed on symptoms alone."
+          }
+        ]
+      },
+      {
+        "id": "c542-02",
+        "question": "Which drugs does the review list as endothelin-receptor antagonists?",
+        "options": {
+          "A": "Bosentan, macitentan, and ambrisentan",
+          "B": "Sildenafil, tadalafil, and vardenafil",
+          "C": "Nintedanib and pirfenidone",
+          "D": "Methotrexate and hydroxychloroquine",
+          "E": "Captopril and losartan"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "Bosentan, macitentan, and ambrisentan",
+        "explanation": "ERAs named are the non-selective antagonists bosentan and macitentan and the endothelin-A-selective antagonist ambrisentan.",
+        "difficulty": "easy",
+        "sourceRefs": [
+          {
+            "sourceBody": "Open Access Rheumatology: Research and Reviews",
+            "sourceYear": 2019,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6939800/",
+            "pmid": "31920409",
+            "pmcid": "PMC6939800",
+            "doi": "10.2147/OARRR.S228234",
+            "status": "open_full_text",
+            "excerpt": "ERAs include nonselective endothelin-A and B receptor antagonists (bosentan and macitentan) and the endothelin-A specific receptor antagonist, ambrisentan."
+          }
+        ]
+      },
+      {
+        "id": "c542-03",
+        "question": "In which WHO functional classes does the review say ERAs may be used alone or combined, versus with parenteral therapy?",
+        "options": {
+          "A": "Alone or combined in class II and III; with parenteral therapy in class IV",
+          "B": "Only in class I",
+          "C": "Parenteral therapy is required before any ERA",
+          "D": "ERAs are restricted to class IV monotherapy",
+          "E": "Functional class does not affect ERA use"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "Alone or combined in class II and III; with parenteral therapy in class IV",
+        "explanation": "ERAs can be used alone or in combination in WHO class II and III, and in combination with parenteral therapy in class IV.",
+        "difficulty": "hard",
+        "sourceRefs": [
+          {
+            "sourceBody": "Open Access Rheumatology: Research and Reviews",
+            "sourceYear": 2019,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6939800/",
+            "pmid": "31920409",
+            "pmcid": "PMC6939800",
+            "doi": "10.2147/OARRR.S228234",
+            "status": "open_full_text",
+            "excerpt": "ERAs can be used alone or in combination with WHO class II and III patients, and in combination with parenteral therapy in WHO class IV patients."
+          }
+        ]
+      },
+      {
+        "id": "c542-04",
+        "question": "What does the review say about tadalafil or vardenafil monotherapy in systemic-sclerosis PAH?",
+        "options": {
+          "A": "No such monotherapy studies were known to the authors",
+          "B": "Both are first-line on the basis of large scleroderma-only trials",
+          "C": "They are contraindicated",
+          "D": "They replace right-heart catheterization",
+          "E": "They were superior to bosentan in a head-to-head scleroderma trial cited here"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "No such monotherapy studies were known to the authors",
+        "explanation": "The authors knew of no monotherapy studies of tadalafil or vardenafil in systemic-sclerosis PAH.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Open Access Rheumatology: Research and Reviews",
+            "sourceYear": 2019,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6939800/",
+            "pmid": "31920409",
+            "pmcid": "PMC6939800",
+            "doi": "10.2147/OARRR.S228234",
+            "status": "open_full_text",
+            "excerpt": "no studies have been done on the use of tadalafil and vardenafil as monotherapy in SSc-PAH."
+          }
+        ]
+      },
+      {
+        "id": "c542-05",
+        "question": "What did the SUPER-1 post-hoc analysis show for connective-tissue-disease PAH treated with sildenafil?",
+        "options": {
+          "A": "Improvement in exercise capacity, hemodynamics, and functional class at 12 weeks",
+          "B": "No change in any endpoint",
+          "C": "Worsening of six-minute-walk distance",
+          "D": "A mortality increase at one week",
+          "E": "The analysis excluded connective-tissue disease"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "Improvement in exercise capacity, hemodynamics, and functional class at 12 weeks",
+        "explanation": "A post-hoc SUPER-1 subgroup analysis showed improvement in exercise capacity, hemodynamics, and functional class with 12 weeks of sildenafil in connective-tissue-disease PAH.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Open Access Rheumatology: Research and Reviews",
+            "sourceYear": 2019,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6939800/",
+            "pmid": "31920409",
+            "pmcid": "PMC6939800",
+            "doi": "10.2147/OARRR.S228234",
+            "status": "open_full_text",
+            "excerpt": "subgroup analysis of double-blind, placebo-controlled SUPER-1 trial showed improvement in exercise capacity, hemodynamics and functional class with 12 weeks of sildenafil use in patients with CTD-PAH"
+          }
+        ]
+      }
+    ]
+  }
+}

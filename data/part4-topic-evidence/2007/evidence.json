@@ -1,0 +1,21 @@
+{
+  "catalogueId": "2007",
+  "spreadsheetRow": 155,
+  "topic": "SLE: SLICC 2012 and ACR/EULAR 2019 classification criteria compared",
+  "specialty": "Rheumatology",
+  "decision": "downloaded_open_source",
+  "source": {
+    "title": "2019 European League Against Rheumatism/American College of Rheumatology classification criteria for systemic lupus erythematosus",
+    "year": 2019,
+    "pmid": "31385462",
+    "pmcid": "PMC6827566",
+    "doi": "10.1002/art.40930",
+    "sourceBody": "Arthritis & Rheumatology",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6827566/",
+    "whyItFits": "Open 2019 EULAR/ACR SLE classification paper that explains how it differs from SLICC 2012, including ANA as an entry criterion and the sensitivity-specificity trade-off."
+  },
+  "whyItFits": "Open 2019 EULAR/ACR SLE classification paper that explains how it differs from SLICC 2012, including ANA as an entry criterion and the sensitivity-specificity trade-off.",
+  "coverageNote": "Direct comparison of the 2019 structure with SLICC 2012 and ACR 1997. The SLICC derivation paper alone cannot describe the 2019 criteria.",
+  "rejectedInAppHints": "A lupus-nephritis synopsis was not the classification comparison.",
+  "sourceFile": "source.txt"
+}

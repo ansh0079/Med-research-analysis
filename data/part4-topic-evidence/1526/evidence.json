@@ -1,0 +1,21 @@
+{
+  "catalogueId": "1526",
+  "spreadsheetRow": 163,
+  "topic": "Spondylolysis and Spondylolisthesis",
+  "specialty": "Rheumatology",
+  "decision": "downloaded_open_source",
+  "source": {
+    "title": "Spondylolysis and Isthmic Spondylolisthesis: A Guide to Diagnosis and Management",
+    "year": 2022,
+    "pmid": "36526328",
+    "pmcid": null,
+    "doi": "10.3122/jabfm.2022.220130R1",
+    "sourceBody": "Journal of the American Board of Family Medicine",
+    "url": "https://www.jabfm.org/content/35/6/1204",
+    "whyItFits": "Open JABFM review defining spondylolysis and isthmic spondylolisthesis, Meyerding grading, and conservative versus operative care."
+  },
+  "whyItFits": "Open JABFM review defining spondylolysis and isthmic spondylolisthesis, Meyerding grading, and conservative versus operative care.",
+  "coverageNote": "Open JABFM review of pars defects, isthmic slip, Meyerding grades, and conservative care. Degenerative spondylolisthesis is named in the classification but is not the focus.",
+  "rejectedInAppHints": "No stored full text defined pars defects or Meyerding grades.",
+  "sourceFile": "source.txt"
+}

@@ -1,0 +1,21 @@
+{
+  "catalogueId": "2057",
+  "spreadsheetRow": 169,
+  "topic": "Urate-lowering therapy: allopurinol, febuxostat, target serum urate, titration",
+  "specialty": "Rheumatology",
+  "decision": "in_app_document",
+  "source": {
+    "title": "Gout: diagnosis and management (NICE NG219)",
+    "year": 2022,
+    "pmid": null,
+    "pmcid": null,
+    "doi": null,
+    "sourceBody": "NICE",
+    "url": "https://www.nice.org.uk/guidance/ng219",
+    "whyItFits": "Stored full text of NICE NG219 already in the app. It specifies treat-to-target urate-lowering therapy, the 360 and 300 micromol/litre targets, and allopurinol versus febuxostat."
+  },
+  "whyItFits": "Stored full text of NICE NG219 already in the app. It specifies treat-to-target urate-lowering therapy, the 360 and 300 micromol/litre targets, and allopurinol versus febuxostat.",
+  "coverageNote": "In-app NICE NG219 recommendations chapter (question-repair source import, guideline document for https://www.nice.org.uk/guidance/ng219). Dose-step tables from the evidence reviews are not in the stored chapter.",
+  "rejectedInAppHints": "Other gout papers in the library were not the stored guideline text.",
+  "sourceFile": "source.txt"
+}

@@ -1,0 +1,149 @@
+{
+  "reviewState": "unreviewed",
+  "method": "Hand-written single-best-answer MCQs grounded only in the accepted open full text.",
+  "topic": {
+    "topicKey": "methotrexate-early-rheumatoid-arthritis-combination-therapy-tear",
+    "topicDisplayName": "methotrexate early rheumatoid arthritis combination therapy TEAR",
+    "catalogueId": "1911",
+    "aliases": [],
+    "storedRowCount": 0,
+    "coverageNote": "Early-RA methotrexate strategies in TEAR: immediate combination, step-up at DAS28-ESR ≥3.2, and the primary equivalence of etanercept-methotrexate versus triple therapy.",
+    "mcqs": [
+      {
+        "id": "c1911-01",
+        "question": "Who was eligible for TEAR?",
+        "options": {
+          "A": "Adults with RA by 1987 criteria, disease duration under 3 years, and active disease",
+          "B": "Only patients with more than 10 years of disease",
+          "C": "Patients who had already failed two biologic drugs",
+          "D": "Children with juvenile idiopathic arthritis",
+          "E": "Patients in DAS28 remission at entry"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "Adults with RA by 1987 criteria, disease duration under 3 years, and active disease",
+        "explanation": "Entry required disease duration under 3 years from diagnosis, age over 18, 1987 ACR criteria, and active disease with at least 4 swollen and 4 tender joints.",
+        "difficulty": "easy",
+        "sourceRefs": [
+          {
+            "sourceBody": "Arthritis & Rheumatism",
+            "sourceYear": 2012,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4036119/",
+            "pmid": "22508468",
+            "pmcid": "PMC4036119",
+            "doi": "10.1002/art.34498",
+            "status": "open_full_text",
+            "excerpt": "entry criteria included disease duration < 3 years from the time of diagnosis; age over 18 years; RA diagnosis by the 1987 ACR criteria"
+          }
+        ]
+      },
+      {
+        "id": "c1911-02",
+        "question": "What methotrexate schedule did every participant follow?",
+        "options": {
+          "A": "Oral methotrexate escalated to 20 mg weekly by week 12, or a lower dose if the joints were already inactive",
+          "B": "A fixed 7.5 mg weekly dose for two years",
+          "C": "Intravenous methotrexate only",
+          "D": "Methotrexate was withheld in the etanercept arm",
+          "E": "Methotrexate was added only after week 48"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "Oral methotrexate escalated to 20 mg weekly by week 12, or a lower dose if the joints were already inactive",
+        "explanation": "All participants received oral methotrexate, escalated to 20 mg per week, or a lower dose if it produced no active tender or swollen joints, by week 12.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Arthritis & Rheumatism",
+            "sourceYear": 2012,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4036119/",
+            "pmid": "22508468",
+            "pmcid": "PMC4036119",
+            "doi": "10.1002/art.34498",
+            "status": "open_full_text",
+            "excerpt": "All participants received oral MTX, escalated to 20 mg/wk, or a lower dose if it resulted in no active tender/painful or swollen joints, by Week 12."
+          }
+        ]
+      },
+      {
+        "id": "c1911-03",
+        "question": "When was step-up therapy added in the initial-methotrexate arms?",
+        "options": {
+          "A": "At week 24 if DAS28-ESR was 3.2 or higher",
+          "B": "At week 2 for every participant",
+          "C": "Only if DAS28-ESR was below 2.6",
+          "D": "At week 102",
+          "E": "Step-up was not allowed"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "At week 24 if DAS28-ESR was 3.2 or higher",
+        "explanation": "Participants who started on methotrexate stepped up to etanercept, or to sulfasalazine plus hydroxychloroquine, if DAS28-ESR was at least 3.2 at week 24.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Arthritis & Rheumatism",
+            "sourceYear": 2012,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4036119/",
+            "pmid": "22508468",
+            "pmcid": "PMC4036119",
+            "doi": "10.1002/art.34498",
+            "status": "open_full_text",
+            "excerpt": "initial MTX, with step-up treatment adding ETN if DAS28-ESR was ≥ 3.2 at week 24"
+          }
+        ]
+      },
+      {
+        "id": "c1911-04",
+        "question": "What was the primary comparison of etanercept plus methotrexate versus oral triple therapy?",
+        "options": {
+          "A": "No difference between the two treatment approaches",
+          "B": "Etanercept was superior on the primary outcome",
+          "C": "Triple therapy was superior on the primary outcome",
+          "D": "The primary outcome could not be analysed",
+          "E": "Methotrexate monotherapy was superior to both combinations"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "No difference between the two treatment approaches",
+        "explanation": "TEAR is described as the only randomized double-blind comparison of oral triple DMARD therapy with etanercept plus methotrexate, and the primary outcome revealed no difference between the two approaches.",
+        "difficulty": "easy",
+        "sourceRefs": [
+          {
+            "sourceBody": "Arthritis & Rheumatism",
+            "sourceYear": 2012,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4036119/",
+            "pmid": "22508468",
+            "pmcid": "PMC4036119",
+            "doi": "10.1002/art.34498",
+            "status": "open_full_text",
+            "excerpt": "The primary outcome revealed no differences between the two treatment approaches."
+          }
+        ]
+      },
+      {
+        "id": "c1911-05",
+        "question": "Which week-102 difference does the paper report as the only significant treatment difference?",
+        "options": {
+          "A": "ACR70 of 18.2% with etanercept versus 11.3% with triple therapy (p=0.02)",
+          "B": "A large DAS28 difference favouring triple therapy",
+          "C": "Modified HAQ was worse with etanercept",
+          "D": "Radiographic remission only in the placebo arm",
+          "E": "No week-102 comparison was statistically significant"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "ACR70 of 18.2% with etanercept versus 11.3% with triple therapy (p=0.02)",
+        "explanation": "The only significant treatment difference at week 102 was ACR70, 18.2% in the etanercept group versus 11.3% in the triple-therapy group (p=0.02). Function improved similarly across groups.",
+        "difficulty": "hard",
+        "sourceRefs": [
+          {
+            "sourceBody": "Arthritis & Rheumatism",
+            "sourceYear": 2012,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4036119/",
+            "pmid": "22508468",
+            "pmcid": "PMC4036119",
+            "doi": "10.1002/art.34498",
+            "status": "open_full_text",
+            "excerpt": "the only significant treatment difference at week 102 was between the ETN and triple therapy groups for ACR70 (18.2% vs. 11.3%, p=0.02)."
+          }
+        ]
+      }
+    ]
+  }
+}

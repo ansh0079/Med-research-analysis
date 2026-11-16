@@ -1,0 +1,23 @@
+{
+  "catalogueId": "1055",
+  "topic": "Pyoderma Gangrenosum",
+  "groundedIn": "35606650",
+  "synopsis": "This review treats diagnosis as clinical, citing an international Delphi consensus and the PARACELSUS score proposed especially to separate pyoderma gangrenosum from venous leg ulcers. Pathogenesis is described as dysregulation of innate and adaptive immunity with Th17/Th1 skewing and a neutrophil-dominant infiltrate, the follicular unit being a putative early target. For severe or multi-lesional disease, systemic corticosteroids are combined with an immunosuppressant, most often cyclosporine. Intravenous methylprednisolone 1000 mg for 3–5 days may be used as pulse therapy before oral corticosteroids. STOP GAP randomized patients to oral prednisolone 0.75 mg/kg/day or cyclosporine 4 mg/kg/day and found no difference in speed of healing over 6 weeks, time to healing, treatment response, inflammation, pain, quality of life, treatment failure, or time to recurrence. Almost half of those on either drug had unhealed ulcers at 6 months, and almost a third recurred, with a median time to recurrence of 582 days in both groups. The review notes STOP GAP limitations: no diagnostic framework was required, and most cases were mild.",
+  "teachingPoints": [
+    {
+      "claim": "STOP GAP found no difference between prednisolone 0.75 mg/kg/day and cyclosporine 4 mg/kg/day on healing speed and related outcomes.",
+      "sourceExcerpt": "There was no difference between the two treatments in terms of speed of healing over 6 weeks, time to healing, treatment response, inflammation resolution, pain, quality of life, treatment failures, and time to recurrence."
+    },
+    {
+      "claim": "Almost half were unhealed at 6 months and almost a third recurred.",
+      "sourceExcerpt": "almost half of the enrolled patients receiving systemic CS or cyclosporine did not obtain healing of PG ulcers at 6 months, and almost a third of patients in both treatment groups developed a disease recurrence"
+    },
+    {
+      "claim": "Cyclosporine is described as a first-line systemic choice, often combined with corticosteroids in severe disease.",
+      "sourceExcerpt": "Cyclosporine is an immunosuppressive drug used as a first-line choice for PG treatment."
+    }
+  ],
+  "uncertaintiesNotedInSource": [
+    "STOP GAP did not require a diagnostic framework and mostly enrolled mild disease, so misdiagnosis is a stated limitation."
+  ]
+}

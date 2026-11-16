@@ -1,0 +1,149 @@
+{
+  "reviewState": "unreviewed",
+  "method": "Hand-written single-best-answer MCQs grounded only in the accepted open full text.",
+  "topic": {
+    "topicKey": "septic-arthritis-diagnosis-gram-stain-joint-aspiration-empirical-antib",
+    "topicDisplayName": "Septic arthritis: diagnosis, Gram stain, joint aspiration, empirical antibiotics, surgical drainage",
+    "catalogueId": "590",
+    "aliases": [],
+    "storedRowCount": 0,
+    "coverageNote": "Same SANJO guideline, with questions on aspiration timing, Gram stain, and drainage.",
+    "mcqs": [
+      {
+        "id": "c590-01",
+        "question": "If only a little synovial fluid is obtained, what is the analysis priority?",
+        "options": {
+          "A": "Bacterial identification, then white-cell count including PMN percentage, then crystals",
+          "B": "Crystals first, culture last",
+          "C": "Glucose only",
+          "D": "Viscosity, then color, then culture",
+          "E": "The guideline says not to prioritize"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "Bacterial identification, then white-cell count including PMN percentage, then crystals",
+        "explanation": "Priority if volume is limited is bacterial identification, white-cell count with PMN percentage, then crystals.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "EFORT Open Reviews",
+            "sourceYear": 2023,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9901514/",
+            "pmid": "36756304",
+            "pmcid": "PMC9901514",
+            "doi": "10.1302/2058-5241.8.220083",
+            "status": "open_full_text",
+            "excerpt": "white blood cell count including polymorphonuclear (PMN) percentage, and presence of crystals (in that priority order if the quantity of liquid is not enough"
+          }
+        ]
+      },
+      {
+        "id": "c590-02",
+        "question": "How should a synovial white-cell count above 50,000 per microlitre be used?",
+        "options": {
+          "A": "It suggests septic arthritis but is not sufficient alone",
+          "B": "It confirms septic arthritis without culture",
+          "C": "It excludes crystal arthritis",
+          "D": "It is normal synovial fluid",
+          "E": "The guideline does not use a 50,000 threshold"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "It suggests septic arthritis but is not sufficient alone",
+        "explanation": "A count above 50,000/µL suggests septic arthritis but alone is not sufficient for the diagnosis.",
+        "difficulty": "easy",
+        "sourceRefs": [
+          {
+            "sourceBody": "EFORT Open Reviews",
+            "sourceYear": 2023,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9901514/",
+            "pmid": "36756304",
+            "pmcid": "PMC9901514",
+            "doi": "10.1302/2058-5241.8.220083",
+            "status": "open_full_text",
+            "excerpt": "A synovial white blood cell count of > 50 000 cells µ L - 1 is suggestive of SANJO, but alone is not sufficient for the diagnosis"
+          }
+        ]
+      },
+      {
+        "id": "c590-03",
+        "question": "What does a synovial white-cell count below 25,000 per microlitre mean?",
+        "options": {
+          "A": "It decreases the post-test probability but does not exclude septic arthritis",
+          "B": "It excludes infection",
+          "C": "It is diagnostic of gout",
+          "D": "It mandates immediate open arthrotomy",
+          "E": "It is the threshold for antibiotics before culture"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "It decreases the post-test probability but does not exclude septic arthritis",
+        "explanation": "A count below 25,000/µL lowers post-test probability but cannot exclude septic arthritis. Cut-offs may not apply in immunosuppressed patients.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "EFORT Open Reviews",
+            "sourceYear": 2023,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9901514/",
+            "pmid": "36756304",
+            "pmcid": "PMC9901514",
+            "doi": "10.1302/2058-5241.8.220083",
+            "status": "open_full_text",
+            "excerpt": "Low synovial white blood cell count ( < 25 000 cells µ L - 1 ) decreases post-test probability, but it cannot exclude SANJO"
+          }
+        ]
+      },
+      {
+        "id": "c590-04",
+        "question": "Why perform a Gram stain despite limited sensitivity?",
+        "options": {
+          "A": "Specificity is excellent, so a positive stain is early proof of infection and can guide empirical treatment",
+          "B": "Sensitivity is 100%",
+          "C": "A negative stain ends the work-up",
+          "D": "Gram stain replaces culture",
+          "E": "The guideline advises against Gram stain"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "Specificity is excellent, so a positive stain is early proof of infection and can guide empirical treatment",
+        "explanation": "Gram stain is recommended despite limited sensitivity because excellent specificity can provide early proof of infection and help guide empirical treatment.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "EFORT Open Reviews",
+            "sourceYear": 2023,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9901514/",
+            "pmid": "36756304",
+            "pmcid": "PMC9901514",
+            "doi": "10.1302/2058-5241.8.220083",
+            "status": "open_full_text",
+            "excerpt": "Performing Gram staining on synovial fluid is recommended despite its limited sensitivity; given its excellent specificity, it can provide early proof of infection and help guiding empirical treatment"
+          }
+        ]
+      },
+      {
+        "id": "c590-05",
+        "question": "How should the remaining fluid be cultured?",
+        "options": {
+          "A": "Inoculate blood-culture bottles; also plate sterile-tube fluid on agar and enrichment broth; incubate 5–7 days",
+          "B": "A dry swab of the skin is sufficient",
+          "C": "Culture is optional if the white-cell count is high",
+          "D": "Incubate for 24 hours only",
+          "E": "Use viral culture media only"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "Inoculate blood-culture bottles; also plate sterile-tube fluid on agar and enrichment broth; incubate 5–7 days",
+        "explanation": "Remaining fluid should go into blood-culture bottles. Sterile-tube fluid should be plated on agar and thioglycolate enrichment broth as well or instead. Incubation of 5–7 days is recommended according to local practice.",
+        "difficulty": "hard",
+        "sourceRefs": [
+          {
+            "sourceBody": "EFORT Open Reviews",
+            "sourceYear": 2023,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9901514/",
+            "pmid": "36756304",
+            "pmcid": "PMC9901514",
+            "doi": "10.1302/2058-5241.8.220083",
+            "status": "open_full_text",
+            "excerpt": "Synovial fluid from a sterile tube should be plated on agar plates and enrichment broth (thioglycolate)"
+          }
+        ]
+      }
+    ]
+  }
+}

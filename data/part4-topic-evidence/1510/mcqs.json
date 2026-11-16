@@ -1,0 +1,149 @@
+{
+  "reviewState": "unreviewed",
+  "method": "Hand-written single-best-answer MCQs grounded only in the accepted open full text.",
+  "topic": {
+    "topicKey": "scleroderma-renal-crisis-ace-inhibitors-hypertensive-emergency-captopr",
+    "topicDisplayName": "Scleroderma renal crisis: ACE inhibitors, hypertensive emergency, captopril",
+    "catalogueId": "1510",
+    "aliases": [],
+    "storedRowCount": 0,
+    "coverageNote": "Questions are limited to ACE-inhibitor choice, titration, and pregnancy.",
+    "mcqs": [
+      {
+        "id": "c1510-01",
+        "question": "Which ACE inhibitor does the update prefer in pregnancy, and why?",
+        "options": {
+          "A": "Captopril, because of a lower risk of fetal renal complications",
+          "B": "Ramipril, because it is long-acting and non-teratogenic",
+          "C": "Enalapril, as the only ACE inhibitor studied",
+          "D": "No ACE inhibitor may be used in pregnancy even if the mother is dying",
+          "E": "Losartan is preferred to any ACE inhibitor"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "Captopril, because of a lower risk of fetal renal complications",
+        "explanation": "In pregnancy, captopril is preferred because of a lower risk of fetal renal complications. The teratogenic risk is outweighed by the threat of renal crisis to the mother.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Rheumatology International",
+            "sourceYear": 2023,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10167155/",
+            "pmid": "35648373",
+            "pmcid": "PMC10167155",
+            "doi": "10.1007/s00296-022-05149-6",
+            "status": "open_full_text",
+            "excerpt": "Captopril is the preferred choice due to lower risk of foetal renal complications. ACEi carries a teratogenic risk to the foetus but in this scenario, this is outweighed by the life-threatening complication of SRC to the mother."
+          }
+        ]
+      },
+      {
+        "id": "c1510-02",
+        "question": "Which ACE inhibitor is most often used, and when is captopril suitable outside pregnancy?",
+        "options": {
+          "A": "A long-acting agent such as ramipril is most used; captopril may suit hemodynamic compromise",
+          "B": "Captopril is mandatory in every outpatient",
+          "C": "Ramipril is contraindicated",
+          "D": "Only intravenous enalaprilat is described",
+          "E": "ACE inhibitors are interchangeable with beta-blockers as first-line"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "A long-acting agent such as ramipril is most used; captopril may suit hemodynamic compromise",
+        "explanation": "A long-acting ACE inhibitor such as ramipril is most used, but short-acting captopril may be suitable when there is hemodynamic compromise.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Rheumatology International",
+            "sourceYear": 2023,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10167155/",
+            "pmid": "35648373",
+            "pmcid": "PMC10167155",
+            "doi": "10.1007/s00296-022-05149-6",
+            "status": "open_full_text",
+            "excerpt": "A long-acting ACEi such as ramipril is most used but short-acting agents such as captopril may be suitable in cases of haemodynamic compromise."
+          }
+        ]
+      },
+      {
+        "id": "c1510-03",
+        "question": "How is a long-acting ACE inhibitor titrated?",
+        "options": {
+          "A": "The dose is normally doubled at about 24-hour intervals",
+          "B": "The dose is fixed and never increased",
+          "C": "It is doubled every 15 minutes until creatinine normalizes",
+          "D": "Titration waits until dialysis starts",
+          "E": "It is reduced by half each day"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "The dose is normally doubled at about 24-hour intervals",
+        "explanation": "A long-acting agent is doubled at 24-hour intervals up toward the maximum dose. Adequate blood-pressure control often takes 3–5 days.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Rheumatology International",
+            "sourceYear": 2023,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10167155/",
+            "pmid": "35648373",
+            "pmcid": "PMC10167155",
+            "doi": "10.1007/s00296-022-05149-6",
+            "status": "open_full_text",
+            "excerpt": "A long-acting agent is preferable in most cases as it can be easily up-titrated to maximum dose, normally by doubling the dose at 24-h intervals. Adequate control of blood pressure often takes 3–5 days."
+          }
+        ]
+      },
+      {
+        "id": "c1510-04",
+        "question": "A patient with prior renal crisis is planning pregnancy. What does the update recommend about the ACE inhibitor?",
+        "options": {
+          "A": "Continue the ACE inhibitor during pregnancy and optimize blood pressure before conception",
+          "B": "Stop it three months before conception in every case",
+          "C": "Switch to an ARB",
+          "D": "Pregnancy is impossible after renal crisis",
+          "E": "Continue it only in the third trimester"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "Continue the ACE inhibitor during pregnancy and optimize blood pressure before conception",
+        "explanation": "For patients with a history of renal crisis who are planning pregnancy, the ACE inhibitor should continue and blood pressure should be optimized before conception, acknowledging teratogenic risk.",
+        "difficulty": "hard",
+        "sourceRefs": [
+          {
+            "sourceBody": "Rheumatology International",
+            "sourceYear": 2023,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10167155/",
+            "pmid": "35648373",
+            "pmcid": "PMC10167155",
+            "doi": "10.1007/s00296-022-05149-6",
+            "status": "open_full_text",
+            "excerpt": "In patients with history of SRC planning a pregnancy, it is recommended that ACEi continue during the pregnancy and BP is optimised prior to conceiving."
+          }
+        ]
+      },
+      {
+        "id": "c1510-05",
+        "question": "If the patient is already on an ACE inhibitor when crisis is recognized, what is the next dose change?",
+        "options": {
+          "A": "Increase the dose",
+          "B": "Stop it because it caused the crisis",
+          "C": "Hold it for 72 hours",
+          "D": "Replace it with methyldopa as in historical practice",
+          "E": "No change until biopsy"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "Increase the dose",
+        "explanation": "If the patient is already taking an ACE inhibitor, the dose should be increased.",
+        "difficulty": "easy",
+        "sourceRefs": [
+          {
+            "sourceBody": "Rheumatology International",
+            "sourceYear": 2023,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10167155/",
+            "pmid": "35648373",
+            "pmcid": "PMC10167155",
+            "doi": "10.1007/s00296-022-05149-6",
+            "status": "open_full_text",
+            "excerpt": "If the patient is already taking an ACEi, then the dose should be increased."
+          }
+        ]
+      }
+    ]
+  }
+}

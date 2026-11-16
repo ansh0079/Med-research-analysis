@@ -1,0 +1,21 @@
+{
+  "catalogueId": "1003",
+  "spreadsheetRow": 141,
+  "topic": "Pegloticase and lesinurad in refractory gout: indications, infusion reactions",
+  "specialty": "Rheumatology",
+  "decision": "downloaded_open_source",
+  "source": {
+    "title": "2020 American College of Rheumatology Guideline for the Management of Gout",
+    "year": 2020,
+    "pmid": "32391934",
+    "pmcid": "PMC10563586",
+    "doi": "10.1002/art.41247",
+    "sourceBody": "Arthritis & Rheumatology",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10563586/",
+    "whyItFits": "Open ACR gout guideline that states when pegloticase is strongly recommended or strongly advised against, including infusion burden and allergic reactions, and records the regulatory status of lesinurad."
+  },
+  "whyItFits": "Open ACR gout guideline that states when pegloticase is strongly recommended or strongly advised against, including infusion burden and allergic reactions, and records the regulatory status of lesinurad.",
+  "coverageNote": "Pegloticase indications and allergic/infusion burden are explicit. Lesinurad is covered as a withdrawn-but-still-approved drug whose data were considered; a dosing regimen was not copied from memory.",
+  "rejectedInAppHints": "No in-app pegloticase full text was accepted. NICE NG219, which is used for catalogue 2057, does not mention pegloticase or lesinurad.",
+  "sourceFile": "source.txt"
+}

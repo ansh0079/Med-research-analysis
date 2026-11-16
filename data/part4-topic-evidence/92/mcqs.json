@@ -1,0 +1,149 @@
+{
+  "reviewState": "unreviewed",
+  "method": "Hand-written single-best-answer MCQs grounded only in the accepted open full text.",
+  "topic": {
+    "topicKey": "total-joint-replacement-in-oa-indications-outcomes-complications-revis",
+    "topicDisplayName": "Total joint replacement in OA: indications, outcomes, complications, revision rates",
+    "catalogueId": "92",
+    "aliases": [],
+    "storedRowCount": 0,
+    "coverageNote": "Indications for referral are grounded in NG226. Numeric outcomes, complication rates, and revision rates are not in this recommendations chapter and are not invented.",
+    "mcqs": [
+      {
+        "id": "c92-01",
+        "question": "When does NG226 say to consider referral for hip, knee, or shoulder replacement?",
+        "options": {
+          "A": "When symptoms substantially affect quality of life and non-surgical management is ineffective or unsuitable",
+          "B": "At the first report of any joint pain, before exercise or analgesia",
+          "C": "Only after a Kellgren-Lawrence grade is assigned on imaging",
+          "D": "Only if BMI is above 40",
+          "E": "Never, because replacement is outside this guideline"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "When symptoms substantially affect quality of life and non-surgical management is ineffective or unsuitable",
+        "explanation": "Consider referral if pain, stiffness, reduced function, or progressive deformity substantially affects quality of life and non-surgical care (exercise, weight loss, pain relief) is ineffective or unsuitable.",
+        "difficulty": "easy",
+        "sourceRefs": [
+          {
+            "sourceBody": "NICE",
+            "sourceYear": 2022,
+            "sourceUrl": "https://www.nice.org.uk/guidance/ng226",
+            "pmid": null,
+            "pmcid": null,
+            "doi": null,
+            "status": "open_full_text",
+            "excerpt": "Consider referring people with hip, knee or shoulder osteoarthritis for joint replacement if: their joint symptoms (such as pain, stiffness, reduced function or progressive joint deformity) are substantially impacting their quality of life and non-surgical management (for example, therapeutic exercise, weight loss, pain relief) is ineffective or unsuitable."
+          }
+        ]
+      },
+      {
+        "id": "c92-02",
+        "question": "What should be used instead of a numerical severity score when deciding on referral?",
+        "options": {
+          "A": "Clinical assessment",
+          "B": "BMI alone",
+          "C": "A mandatory MRI score",
+          "D": "Age cut-offs",
+          "E": "The Sharp radiographic score"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "Clinical assessment",
+        "explanation": "NG226 says to use clinical assessment when deciding to refer, instead of systems that numerically score disease severity.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "NICE",
+            "sourceYear": 2022,
+            "sourceUrl": "https://www.nice.org.uk/guidance/ng226",
+            "pmid": null,
+            "pmcid": null,
+            "doi": null,
+            "status": "open_full_text",
+            "excerpt": "Use clinical assessment when deciding to refer someone for joint replacement, instead of systems that numerically score severity of disease."
+          }
+        ]
+      },
+      {
+        "id": "c92-03",
+        "question": "Which factors must not be used to exclude someone from referral?",
+        "options": {
+          "A": "Age, sex or gender, smoking, comorbidities, and overweight or obesity including BMI",
+          "B": "Only age; BMI is an absolute exclusion",
+          "C": "Smoking is an absolute exclusion and the others are not mentioned",
+          "D": "Comorbidity is required before referral can be considered",
+          "E": "The guideline lists no equity statement"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "Age, sex or gender, smoking, comorbidities, and overweight or obesity including BMI",
+        "explanation": "Do not exclude people because of age, sex or gender, smoking, comorbidities, or overweight or obesity based on measurements such as BMI.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "NICE",
+            "sourceYear": 2022,
+            "sourceUrl": "https://www.nice.org.uk/guidance/ng226",
+            "pmid": null,
+            "pmcid": null,
+            "doi": null,
+            "status": "open_full_text",
+            "excerpt": "Do not exclude people with osteoarthritis from referral for joint replacement because of: age sex or gender smoking comorbidities overweight or obesity, based on measurements such as body mass index (BMI)."
+          }
+        ]
+      },
+      {
+        "id": "c92-04",
+        "question": "What does NG226 say to explain about risk if referral is being discussed?",
+        "options": {
+          "A": "The risks of joint replacement can vary depending on age, sex, smoking, comorbidities, and obesity",
+          "B": "Risk is identical for every patient",
+          "C": "Risk cannot be discussed before surgery",
+          "D": "BMI removes all perioperative risk",
+          "E": "The guideline forbids mentioning risk"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "The risks of joint replacement can vary depending on age, sex, smoking, comorbidities, and obesity",
+        "explanation": "If discussing referral, explain that the risks of joint replacement can vary depending on the factors in recommendation 1.6.3.",
+        "difficulty": "easy",
+        "sourceRefs": [
+          {
+            "sourceBody": "NICE",
+            "sourceYear": 2022,
+            "sourceUrl": "https://www.nice.org.uk/guidance/ng226",
+            "pmid": null,
+            "pmcid": null,
+            "doi": null,
+            "status": "open_full_text",
+            "excerpt": "If discussing referral for joint replacement, explain to the person with osteoarthritis that the risks of joint replacement can vary depending on the factors listed in recommendation 1.6.3."
+          }
+        ]
+      },
+      {
+        "id": "c92-05",
+        "question": "Does the NG226 recommendations chapter give revision-rate figures for hip or knee replacement?",
+        "options": {
+          "A": "No. It states referral indications and that risk varies, without publishing revision rates",
+          "B": "Yes, a 2% ten-year revision rate for every implant",
+          "C": "Yes, a 30% one-year revision rate",
+          "D": "Revision is described as unnecessary",
+          "E": "It reports a single national revision percentage that applies to all joints"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "No. It states referral indications and that risk varies, without publishing revision rates",
+        "explanation": "The recommendations used here cover when to refer and what must not exclude referral. They do not publish revision rates, so no rate is taught from this chapter.",
+        "difficulty": "hard",
+        "sourceRefs": [
+          {
+            "sourceBody": "NICE",
+            "sourceYear": 2022,
+            "sourceUrl": "https://www.nice.org.uk/guidance/ng226",
+            "pmid": null,
+            "pmcid": null,
+            "doi": null,
+            "status": "open_full_text",
+            "excerpt": "the risks of joint replacement can vary depending on the factors listed in recommendation 1.6.3"
+          }
+        ]
+      }
+    ]
+  }
+}

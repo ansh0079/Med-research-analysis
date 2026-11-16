@@ -1,0 +1,21 @@
+{
+  "catalogueId": "24",
+  "spreadsheetRow": 135,
+  "topic": "Neuropsychiatric SLE",
+  "specialty": "Rheumatology",
+  "decision": "downloaded_open_source",
+  "source": {
+    "title": "Neuropsychiatric Systemic Lupus Erythematosus: A Systematic Review",
+    "year": 2024,
+    "pmid": "38975440",
+    "pmcid": "PMC11227614",
+    "doi": "10.7759/cureus.62787",
+    "sourceBody": "Cureus",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11227614/",
+    "whyItFits": "Open systematic review organized around the ACR neuropsychiatric SLE syndromes and the treatment patterns reported for them, including immunosuppression and anticoagulation."
+  },
+  "whyItFits": "Open systematic review organized around the ACR neuropsychiatric SLE syndromes and the treatment patterns reported for them, including immunosuppression and anticoagulation.",
+  "coverageNote": "EULAR 2010 NPSLE recommendations were not in PMC. This systematic review is the open full text that covers syndromes and the immunosuppression-versus-anticoagulation split.",
+  "rejectedInAppHints": "In-app text labelled 'SLE treatment lupus nephritis synopsis' was lupus nephritis, not NPSLE. Keyword-only hits were rejected.",
+  "sourceFile": "source.txt"
+}

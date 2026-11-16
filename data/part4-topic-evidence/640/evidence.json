@@ -1,0 +1,21 @@
+{
+  "catalogueId": "640",
+  "spreadsheetRow": 150,
+  "topic": "RA and cardiovascular risk: accelerated atherosclerosis, NSAIDs, coxib caution",
+  "specialty": "Rheumatology",
+  "decision": "downloaded_open_source",
+  "source": {
+    "title": "Cardiovascular safety of celecoxib in rheumatoid arthritis and osteoarthritis patients: A systematic review and meta-analysis",
+    "year": 2021,
+    "pmid": "34932581",
+    "pmcid": "PMC8691614",
+    "doi": "10.1371/journal.pone.0261239",
+    "sourceBody": "PLOS ONE",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8691614/",
+    "whyItFits": "Open systematic review whose introduction states the atherosclerotic cardiovascular burden of rheumatoid arthritis and whose conclusion addresses celecoxib versus placebo and non-selective NSAIDs."
+  },
+  "whyItFits": "Open systematic review whose introduction states the atherosclerotic cardiovascular burden of rheumatoid arthritis and whose conclusion addresses celecoxib versus placebo and non-selective NSAIDs.",
+  "coverageNote": "Connects accelerated coronary atherosclerosis in RA with the coxib safety question. The EULAR 2016 cardiovascular-risk recommendations were not open on PMC.",
+  "rejectedInAppHints": "A heart-failure guideline was the spreadsheet's best in-app document and does not address RA-specific NSAID decisions.",
+  "sourceFile": "source.txt"
+}

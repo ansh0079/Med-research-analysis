@@ -1,0 +1,21 @@
+{
+  "catalogueId": "1168",
+  "spreadsheetRow": 171,
+  "topic": "Cardiac tamponade: Beck's triad, pericardiocentesis, surgical drainage",
+  "specialty": "Surgery",
+  "decision": "downloaded_open_source",
+  "source": {
+    "title": "2015 ESC Guidelines for the diagnosis and management of pericardial diseases",
+    "year": 2015,
+    "pmid": "26320112",
+    "pmcid": "PMC7539677",
+    "doi": "10.1093/eurheartj/ehv318",
+    "sourceBody": "European Heart Journal",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7539677/",
+    "whyItFits": "Open 2015 ESC pericardial guideline with a cardiac-tamponade section covering clinical signs, echocardiography, needle pericardiocentesis, and surgical drainage."
+  },
+  "whyItFits": "Open 2015 ESC pericardial guideline with a cardiac-tamponade section covering clinical signs, echocardiography, needle pericardiocentesis, and surgical drainage.",
+  "coverageNote": "ESC 2015 tamponade section. Beck's triad is not named in the text; the listed signs are used instead. A stored 2024 pericardial-imaging statement did not discuss tamponade.",
+  "rejectedInAppHints": "The in-app pericardial imaging paper had no tamponade, pericardiocentesis, or Beck content.",
+  "sourceFile": "source.txt"
+}

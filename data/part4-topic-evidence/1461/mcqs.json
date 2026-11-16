@@ -1,0 +1,149 @@
+{
+  "reviewState": "unreviewed",
+  "method": "Hand-written single-best-answer MCQs grounded only in the accepted open full text.",
+  "topic": {
+    "topicKey": "plantar-fasciitis-and-calcaneal-spurs",
+    "topicDisplayName": "Plantar Fasciitis and Calcaneal Spurs",
+    "catalogueId": "1461",
+    "aliases": [],
+    "storedRowCount": 0,
+    "coverageNote": "Diagnosis, spur interpretation, and examination are grounded. A specific first-line injection protocol was not quoted because a clear 'first-line' sentence was not used.",
+    "mcqs": [
+      {
+        "id": "c1461-01",
+        "question": "Which clinical pattern does the review describe for plantar fasciitis?",
+        "options": {
+          "A": "Pain with the first steps out of bed, often easing after activity starts, and tenderness at the medial calcaneal tubercle",
+          "B": "Night pain only, with a warm swollen ankle",
+          "C": "Bilateral calf swelling and dyspnea",
+          "D": "Pain exclusively on the dorsum of the midfoot",
+          "E": "Painless stiffness of the toes"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "Pain with the first steps out of bed, often easing after activity starts, and tenderness at the medial calcaneal tubercle",
+        "explanation": "Pain is worst with the first morning steps, may ease as activity begins and worsen later in the day, and tenderness may be at the medial calcaneal tubercle.",
+        "difficulty": "easy",
+        "sourceRefs": [
+          {
+            "sourceBody": "Cureus",
+            "sourceYear": 2023,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10802877/",
+            "pmid": "38264606",
+            "pmcid": "PMC10802877",
+            "doi": "10.7759/cureus.46897",
+            "status": "open_full_text",
+            "excerpt": "Pain often decreases after activities begin, but can worsen at the end of the day. Tenderness may present at the medial calcaneal tubercle."
+          }
+        ]
+      },
+      {
+        "id": "c1461-02",
+        "question": "What performance does the review give for the windlass test?",
+        "options": {
+          "A": "Specificity 100% and sensitivity 32%",
+          "B": "Sensitivity 100% and specificity 32%",
+          "C": "Both sensitivity and specificity above 95%",
+          "D": "Neither sensitivity nor specificity has been estimated",
+          "E": "It is obsolete and should not be used"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "Specificity 100% and sensitivity 32%",
+        "explanation": "The windlass test has high specificity (100%) but low sensitivity (32%), so it helps confirm the diagnosis more than it excludes it.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Cureus",
+            "sourceYear": 2023,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10802877/",
+            "pmid": "38264606",
+            "pmcid": "PMC10802877",
+            "doi": "10.7759/cureus.46897",
+            "status": "open_full_text",
+            "excerpt": "The windlass test [ Figure 1 ] have high specificity (100%) but low sensitivity (32%) for PF, which may be helpful in confirming the disease during physical examination."
+          }
+        ]
+      },
+      {
+        "id": "c1461-03",
+        "question": "How should a calcaneal spur on a lateral radiograph be interpreted?",
+        "options": {
+          "A": "It is more common in plantar fasciitis than in controls in the cited study, but it can remain after symptoms resolve, so causation is not settled",
+          "B": "The spur must be removed or pain cannot improve",
+          "C": "A spur excludes plantar fasciitis",
+          "D": "Spurs occur only in people without heel pain",
+          "E": "Radiographs are contraindicated"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "It is more common in plantar fasciitis than in controls in the cited study, but it can remain after symptoms resolve, so causation is not settled",
+        "explanation": "One study found spurs in 89% of plantar fasciitis versus 32% of controls, but the review says causation needs further study and the spur remains after symptoms resolve.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Cureus",
+            "sourceYear": 2023,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10802877/",
+            "pmid": "38264606",
+            "pmcid": "PMC10802877",
+            "doi": "10.7759/cureus.46897",
+            "status": "open_full_text",
+            "excerpt": "the prevalence is significantly higher compared with the control group (89% vs. 32%), but the causal relationship needed to be further examined."
+          }
+        ]
+      },
+      {
+        "id": "c1461-04",
+        "question": "What ultrasound findings does the review call major?",
+        "options": {
+          "A": "Increased plantar-fascia thickness and a hypoechoic plantar fascia",
+          "B": "A Doppler-positive Morton neuroma as the required finding",
+          "C": "A tear of the Achilles tendon in every case",
+          "D": "Normal thickness excludes the need for any clinical exam",
+          "E": "Ultrasound cannot assess the plantar fascia"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "Increased plantar-fascia thickness and a hypoechoic plantar fascia",
+        "explanation": "Major sonographic findings are increased plantar-fascia thickness and a hypoechoic plantar fascia.",
+        "difficulty": "easy",
+        "sourceRefs": [
+          {
+            "sourceBody": "Cureus",
+            "sourceYear": 2023,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10802877/",
+            "pmid": "38264606",
+            "pmcid": "PMC10802877",
+            "doi": "10.7759/cureus.46897",
+            "status": "open_full_text",
+            "excerpt": "Major sonographic findings included increased plantar fascia thickness and hypoechoic plantar fascia"
+          }
+        ]
+      },
+      {
+        "id": "c1461-05",
+        "question": "How often is plantar fasciitis bilateral in this review?",
+        "options": {
+          "A": "Most cases are unilateral, but up to 30% are bilateral",
+          "B": "It is always bilateral",
+          "C": "Bilateral disease does not occur",
+          "D": "Bilateral disease is limited to children",
+          "E": "Laterality was not described"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "Most cases are unilateral, but up to 30% are bilateral",
+        "explanation": "Most patients have unilateral disease, but up to 30% of cases are bilateral.",
+        "difficulty": "easy",
+        "sourceRefs": [
+          {
+            "sourceBody": "Cureus",
+            "sourceYear": 2023,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10802877/",
+            "pmid": "38264606",
+            "pmcid": "PMC10802877",
+            "doi": "10.7759/cureus.46897",
+            "status": "open_full_text",
+            "excerpt": "Most patients with PF are unilateral, but up to 30% of cases have a bilateral presentation."
+          }
+        ]
+      }
+    ]
+  }
+}

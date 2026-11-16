@@ -1,0 +1,23 @@
+{
+  "catalogueId": "2038",
+  "topic": "TNF Receptor-Associated Periodic Syndrome",
+  "groundedIn": "32380704",
+  "synopsis": "TRAPS is a dominantly inherited autoinflammatory disease caused by pathogenic variants in TNFRSF1A on chromosome 12, which encodes TNF receptor 1. Attacks are recurrent fevers that sometimes last for weeks, with severe abdominal pain, myalgia, arthralgia, a migratory erythematous rash, and eye inflammation; the central nervous system is typically spared. During attacks, acute-phase reactants rise, and some patients have very high serum amyloid A, which predisposes to AA amyloidosis. Before the molecular diagnosis, AA amyloidosis was a severe consequence with high morbidity and mortality. Etanercept, used because of the TNF-receptor defect, was only partially beneficial. Gene-expression studies showed that IL-1β expression normalized after canakinumab, which the authors read as evidence that IL-1β has an essential pathogenic role. Eurofever/PRINTO classification uses a confirmatory TNFRSF1A genotype plus at least one of: episode longer than 7 days, myalgia, migratory rash, periorbital edema, or an affected relative.",
+  "teachingPoints": [
+    {
+      "claim": "TRAPS is caused by dominant pathogenic TNFRSF1A variants.",
+      "sourceExcerpt": "pathogenic variants in the TNF receptor superfamily member 1A (TNFRSF1A ) gene on chromosome 12"
+    },
+    {
+      "claim": "Attacks can last weeks and include abdominal pain, myalgia, rash, and eye inflammation.",
+      "sourceExcerpt": "recurrent fever attacks, sometimes lasting for weeks, accompanied by severe abdominal pain, myalgia, arthralgia, migratory erythematous rash, and eye inflammation"
+    },
+    {
+      "claim": "Etanercept was only partially beneficial; IL-1β is implicated pathogenetically.",
+      "sourceExcerpt": "Etanercept was only partially beneficial in suppressing TRAPS symptoms"
+    }
+  ],
+  "uncertaintiesNotedInSource": [
+    "Classification criteria are quoted from the Eurofever/PRINTO proposal as summarized in this review."
+  ]
+}

@@ -1,0 +1,149 @@
+{
+  "reviewState": "unreviewed",
+  "method": "Hand-written single-best-answer MCQs grounded only in the accepted open full text.",
+  "topic": {
+    "topicKey": "neuropsychiatric-sle",
+    "topicDisplayName": "Neuropsychiatric SLE",
+    "catalogueId": "24",
+    "aliases": [],
+    "storedRowCount": 0,
+    "coverageNote": "EULAR 2010 NPSLE recommendations were not in PMC. This systematic review is the open full text that covers syndromes and the immunosuppression-versus-anticoagulation split.",
+    "mcqs": [
+      {
+        "id": "c24-01",
+        "question": "How many neuropsychiatric conditions does the review attribute to the 1999 ACR nomenclature for NPSLE?",
+        "options": {
+          "A": "19, affecting the central or peripheral nervous system",
+          "B": "4, all psychiatric",
+          "C": "Only seizure and stroke",
+          "D": "19, all limited to the peripheral nerves",
+          "E": "The ACR list is not used"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "19, affecting the central or peripheral nervous system",
+        "explanation": "The review states that the 1999 ACR guidelines describe 19 NPSLE conditions, classified as central or peripheral.",
+        "difficulty": "easy",
+        "sourceRefs": [
+          {
+            "sourceBody": "Cureus",
+            "sourceYear": 2024,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11227614/",
+            "pmid": "38975440",
+            "pmcid": "PMC11227614",
+            "doi": "10.7759/cureus.62787",
+            "status": "open_full_text",
+            "excerpt": "According to the 1999 American College of Rheumatology (ACR) guidelines, there are 19 conditions that can be observed in NPSLE, including headaches, seizure disorders,"
+          }
+        ]
+      },
+      {
+        "id": "c24-02",
+        "question": "Which antibody does the review single out as a prognostic biomarker in NPSLE?",
+        "options": {
+          "A": "Antiphospholipid antibodies",
+          "B": "Anti-Jo-1",
+          "C": "Anti-CCP",
+          "D": "ANCA",
+          "E": "Anti-glomerular basement membrane antibody"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "Antiphospholipid antibodies",
+        "explanation": "Antiphospholipid antibodies are described as a biomarker that also indicates prognosis.",
+        "difficulty": "easy",
+        "sourceRefs": [
+          {
+            "sourceBody": "Cureus",
+            "sourceYear": 2024,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11227614/",
+            "pmid": "38975440",
+            "pmcid": "PMC11227614",
+            "doi": "10.7759/cureus.62787",
+            "status": "open_full_text",
+            "excerpt": "One important biomarker which also serves as an indication of disease prognosis is antiphospholipid antibodies."
+          }
+        ]
+      },
+      {
+        "id": "c24-03",
+        "question": "For most NPSLE symptoms, what treatment pattern does the review describe as most common?",
+        "options": {
+          "A": "Immunosuppression, typically with cyclophosphamide",
+          "B": "Anticoagulation alone for every syndrome",
+          "C": "Antibiotics without immunosuppression",
+          "D": "Immediate plasma exchange for headache only",
+          "E": "Cholinesterase inhibitors"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "Immunosuppression, typically with cyclophosphamide",
+        "explanation": "The review says the most common treatment for most symptoms is immunosuppression, typically with cyclophosphamide.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Cureus",
+            "sourceYear": 2024,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11227614/",
+            "pmid": "38975440",
+            "pmcid": "PMC11227614",
+            "doi": "10.7759/cureus.62787",
+            "status": "open_full_text",
+            "excerpt": "The most common treatment option for most symptoms is immunosuppression, typically with cyclophosphamide"
+          }
+        ]
+      },
+      {
+        "id": "c24-04",
+        "question": "How does the review say cerebral venous sinus thrombosis should be treated in NPSLE?",
+        "options": {
+          "A": "Heparin then a vitamin K antagonist, as in non-SLE CVST, with glucocorticoids and immunosuppressants also reported as efficacious",
+          "B": "Antiplatelet therapy only, never anticoagulation",
+          "C": "Cyclophosphamide without anticoagulation",
+          "D": "Surgical thrombectomy as the sole therapy",
+          "E": "Observation because CVST does not occur in SLE"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "Heparin then a vitamin K antagonist, as in non-SLE CVST, with glucocorticoids and immunosuppressants also reported as efficacious",
+        "explanation": "CVST treatment is the same as in patients without SLE: heparin followed by a vitamin K antagonist such as warfarin. Glucocorticoids plus immunosuppressants have also shown efficacy in NPSLE.",
+        "difficulty": "hard",
+        "sourceRefs": [
+          {
+            "sourceBody": "Cureus",
+            "sourceYear": 2024,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11227614/",
+            "pmid": "38975440",
+            "pmcid": "PMC11227614",
+            "doi": "10.7759/cureus.62787",
+            "status": "open_full_text",
+            "excerpt": "Treatment is the same as for non-SLE patients with CVST and includes anticoagulation with heparin followed by vitamin K anticoagulants such as warfarin. For patients with NPSLE, treatment with a combination of glucocorticoids and immunosuppressants has shown clinical efficacy"
+          }
+        ]
+      },
+      {
+        "id": "c24-05",
+        "question": "What initial corticosteroid regimen does the review report for isolated optic neuritis in SLE?",
+        "options": {
+          "A": "High-dose corticosteroids, starting with three days of intravenous methylprednisolone",
+          "B": "Topical steroid drops only",
+          "C": "Oral prednisone 5 mg for one year before any intravenous therapy",
+          "D": "No corticosteroids if antiphospholipid antibodies are present",
+          "E": "Intrathecal methotrexate"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "High-dose corticosteroids, starting with three days of intravenous methylprednisolone",
+        "explanation": "Isolated optic neuritis is often treated with high-dose corticosteroids, starting with three days of IV methylprednisolone.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Cureus",
+            "sourceYear": 2024,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11227614/",
+            "pmid": "38975440",
+            "pmcid": "PMC11227614",
+            "doi": "10.7759/cureus.62787",
+            "status": "open_full_text",
+            "excerpt": "SLE patients with isolated optic neuritis are often treated with high-dose corticosteroids, starting with three days of IV methylprednisolone."
+          }
+        ]
+      }
+    ]
+  }
+}

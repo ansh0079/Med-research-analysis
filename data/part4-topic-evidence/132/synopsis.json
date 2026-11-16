@@ -1,0 +1,23 @@
+{
+  "catalogueId": "132",
+  "topic": "Meniere's disease: intratympanic therapy, low-salt diet, surgical options",
+  "groundedIn": "25750534",
+  "synopsis": "This review separates interim treatments for Ménière disease from destructive ones. Dietary sodium restriction has been widely used since 1931. Reducing dietary sodium together with diuretics has been reported to slow progression of hearing loss. Some authors advocate moderate sodium regulation rather than harsh restriction, and the review says the literature lacks controlled studies using modern disease definitions. A combination of hydrochlorothiazide and triamterene is described as the most commonly used medical treatment; acetazolamide, furosemide, and spironolactone are also used. Intratympanic steroids are said to have a calming effect on Ménière ears, with the number and severity of spells seeming to decrease for up to 2 years. Endolymphatic shunts, cochleosacculotomy, and endolymphatic sac decompression have been used for decades. Vertigo control improved in about two-thirds of surgically treated patients, similar to improvement in nonsurgical cases over time. When the goal is to stop spells from a failing ear, the favoured destructive methods named are gentamicin ablation, vestibular neurectomy, and labyrinthectomy. Destructive procedures are not usually used when disease is bilateral.",
+  "teachingPoints": [
+    {
+      "claim": "Sodium restriction has been used since 1931; controlled modern evidence is lacking.",
+      "sourceExcerpt": "Sodium restriction This has been widely used to control symptoms of Ménière’s disease since 1931."
+    },
+    {
+      "claim": "Intratympanic steroids are reported to calm spells for up to 2 years.",
+      "sourceExcerpt": "Intratympanic steroids have been noted to have a calming effect on Ménière’s ears."
+    },
+    {
+      "claim": "Destructive options named are gentamicin, vestibular neurectomy, and labyrinthectomy.",
+      "sourceExcerpt": "the favored means are destructive: gentamicin ablation, vestibular neurectomy, and labyrinthectomy."
+    }
+  ],
+  "uncertaintiesNotedInSource": [
+    "The review is explicit that sodium-restriction studies are not controlled to modern definitions, and that shunt results resemble the natural history."
+  ]
+}

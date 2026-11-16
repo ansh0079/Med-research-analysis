@@ -1,0 +1,21 @@
+{
+  "catalogueId": "542",
+  "spreadsheetRow": 145,
+  "topic": "Pulmonary arterial hypertension in connective tissue disease: screening, ERA, PDE5 inhibitors",
+  "specialty": "Rheumatology",
+  "decision": "downloaded_open_source",
+  "source": {
+    "title": "Pulmonary Arterial Hypertension In Systemic Sclerosis: Challenges In Diagnosis, Screening And Treatment",
+    "year": 2019,
+    "pmid": "31920409",
+    "pmcid": "PMC6939800",
+    "doi": "10.2147/OARRR.S228234",
+    "sourceBody": "Open Access Rheumatology: Research and Reviews",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6939800/",
+    "whyItFits": "Open review of systemic-sclerosis-associated pulmonary arterial hypertension that covers why screening matters and the evidence for endothelin-receptor antagonists and PDE5 inhibitors."
+  },
+  "whyItFits": "Open review of systemic-sclerosis-associated pulmonary arterial hypertension that covers why screening matters and the evidence for endothelin-receptor antagonists and PDE5 inhibitors.",
+  "coverageNote": "Screening rationale plus ERA and PDE5 evidence are in one review. DETECT score cut-offs are not copied unless stated in the sentences used.",
+  "rejectedInAppHints": "The full 2022 ESC/ERS guideline was not in PMC as retrievable JATS. A general PAH quality-indicator paper was not specific enough.",
+  "sourceFile": "source.txt"
+}

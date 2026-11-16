@@ -1,0 +1,149 @@
+{
+  "reviewState": "unreviewed",
+  "method": "Hand-written single-best-answer MCQs grounded only in the accepted open full text.",
+  "topic": {
+    "topicKey": "neuropsychiatric-sle-npsle-syndromes-attribution-immunosuppression-vs-",
+    "topicDisplayName": "Neuropsychiatric SLE: NPSLE syndromes, attribution, immunosuppression vs anticoagulation",
+    "catalogueId": "2159",
+    "aliases": [],
+    "storedRowCount": 0,
+    "coverageNote": "Questions focus on when the review uses immunosuppression versus anticoagulation. No attribution score was invented.",
+    "mcqs": [
+      {
+        "id": "c2159-01",
+        "question": "For transverse myelitis, what did the reviewed studies show about methylprednisolone pulses plus cyclophosphamide?",
+        "options": {
+          "A": "Neither treatment was associated with improved neurological outcomes in the authors' reading of those studies",
+          "B": "The combination is curative in AIS grade A",
+          "C": "Cyclophosphamide is required before imaging",
+          "D": "Methylprednisolone is contraindicated",
+          "E": "Outcomes improved only if anticoagulation was withheld"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "Neither treatment was associated with improved neurological outcomes in the authors' reading of those studies",
+        "explanation": "The review says that despite earlier recommendations, neither methylprednisolone pulses nor cyclophosphamide was associated with improved neurological outcomes in the transverse-myelitis studies examined, and treatment should be stratified by initial severity.",
+        "difficulty": "hard",
+        "sourceRefs": [
+          {
+            "sourceBody": "Cureus",
+            "sourceYear": 2024,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11227614/",
+            "pmid": "38975440",
+            "pmcid": "PMC11227614",
+            "doi": "10.7759/cureus.62787",
+            "status": "open_full_text",
+            "excerpt": "Despite initial studies showing that methylprednisolone pulse treatments with cyclophosphamide are recommended for NPSLE, the authors found that neither treatment was associated with improved neurological outcomes. Instead, they suggest that treatment plans should be stratified based on the initial severity of TM"
+          }
+        ]
+      },
+      {
+        "id": "c2159-02",
+        "question": "Which add-on therapies does the review say are recommended promptly for poor-prognosis transverse myelitis (AIS A, B, or C)?",
+        "options": {
+          "A": "Rituximab, plasma exchange, or an anti-IL-6 agent",
+          "B": "Aspirin monotherapy",
+          "C": "Oral hydroxychloroquine alone",
+          "D": "Antibiotics for presumed bacterial myelitis",
+          "E": "No escalation beyond acetaminophen"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "Rituximab, plasma exchange, or an anti-IL-6 agent",
+        "explanation": "Patients with poor prognosis (AIS A, B, or C) are recommended to receive rituximab, plasma exchange, or anti-IL-6 agents as soon as possible.",
+        "difficulty": "hard",
+        "sourceRefs": [
+          {
+            "sourceBody": "Cureus",
+            "sourceYear": 2024,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11227614/",
+            "pmid": "38975440",
+            "pmcid": "PMC11227614",
+            "doi": "10.7759/cureus.62787",
+            "status": "open_full_text",
+            "excerpt": "Patients with poor prognosis indicated by an AIS grade of A, B, or C are recommended to be given rituximab, plasma exchange, or anti-IL-6 agents as soon as possible"
+          }
+        ]
+      },
+      {
+        "id": "c2159-03",
+        "question": "Why might hydroxychloroquine and antithrombotic therapy be added in isolated optic neuritis?",
+        "options": {
+          "A": "Hydroxychloroquine is described as add-on therapy, and aspirin or a vitamin K antagonist may be used because of an association with antiphospholipid syndrome",
+          "B": "Optic neuritis is caused by hydroxychloroquine deficiency",
+          "C": "Anticoagulation replaces corticosteroids",
+          "D": "The review advises against hydroxychloroquine in any eye disease",
+          "E": "Antiphospholipid antibodies protect the optic nerve so treatment is withheld"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "Hydroxychloroquine is described as add-on therapy, and aspirin or a vitamin K antagonist may be used because of an association with antiphospholipid syndrome",
+        "explanation": "The review lists hydroxychloroquine as add-on therapy to reduce thrombotic risk to vessels supplying the optic nerve, and aspirin or a vitamin K antagonist because isolated optic neuritis is associated with antiphospholipid syndrome.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Cureus",
+            "sourceYear": 2024,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11227614/",
+            "pmid": "38975440",
+            "pmcid": "PMC11227614",
+            "doi": "10.7759/cureus.62787",
+            "status": "open_full_text",
+            "excerpt": "As an add-on therapy to reduce risk of thrombosis in blood vessels supplying the optic nerve, hydroxychloroquine may be used. Lastly, because of the association between isolated optic neuritis and APS, aspirin and vitamin K ant"
+          }
+        ]
+      },
+      {
+        "id": "c2159-04",
+        "question": "What additional NPSLE manifestations, beyond the ACR 19, does the review set out to discuss?",
+        "options": {
+          "A": "It discusses further manifestations reported in the literature, including cerebral venous sinus thrombosis, PRES, and isolated optic neuritis among others",
+          "B": "Only fibromyalgia",
+          "C": "Only peripheral neuropathy from diabetes",
+          "D": "No manifestation outside the ACR list",
+          "E": "Only seizure"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "It discusses further manifestations reported in the literature, including cerebral venous sinus thrombosis, PRES, and isolated optic neuritis among others",
+        "explanation": "Besides the 19 ACR syndromes, the review addresses additional manifestations including cerebral venous sinus thrombosis, PRES, isolated optic neuritis, PML, and idiopathic intracranial hypertension.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Cureus",
+            "sourceYear": 2024,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11227614/",
+            "pmid": "38975440",
+            "pmcid": "PMC11227614",
+            "doi": "10.7759/cureus.62787",
+            "status": "open_full_text",
+            "excerpt": "there are five well-documented neuropsychiatric manifestations of SLE including CVST, PRES, isolated optic neuritis, PML, and idiopathic intracranial h"
+          }
+        ]
+      },
+      {
+        "id": "c2159-05",
+        "question": "How should an SLE headache be approached, according to the review's treatment discussion?",
+        "options": {
+          "A": "Secondary causes should be addressed independently rather than labelling every headache as SLE-associated",
+          "B": "Every headache is treated as cerebral vasculitis",
+          "C": "Headache excludes NPSLE",
+          "D": "Cyclophosphamide is first-line for tension-type headache",
+          "E": "Imaging is never appropriate"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "Secondary causes should be addressed independently rather than labelling every headache as SLE-associated",
+        "explanation": "The review says headache should be addressed independently rather than as an SLE-associated headache.",
+        "difficulty": "easy",
+        "sourceRefs": [
+          {
+            "sourceBody": "Cureus",
+            "sourceYear": 2024,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11227614/",
+            "pmid": "38975440",
+            "pmcid": "PMC11227614",
+            "doi": "10.7759/cureus.62787",
+            "status": "open_full_text",
+            "excerpt": "be addressed independently, rather than as a SLE-associated headache."
+          }
+        ]
+      }
+    ]
+  }
+}

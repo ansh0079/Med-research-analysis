@@ -1,0 +1,149 @@
+{
+  "reviewState": "unreviewed",
+  "method": "Hand-written single-best-answer MCQs grounded only in the accepted open full text.",
+  "topic": {
+    "topicKey": "ra-and-cardiovascular-risk-accelerated-atherosclerosis-nsaids-coxib-ca",
+    "topicDisplayName": "RA and cardiovascular risk: accelerated atherosclerosis, NSAIDs, coxib caution",
+    "catalogueId": "640",
+    "aliases": [],
+    "storedRowCount": 0,
+    "coverageNote": "Connects accelerated coronary atherosclerosis in RA with the coxib safety question. The EULAR 2016 cardiovascular-risk recommendations were not open on PMC.",
+    "mcqs": [
+      {
+        "id": "c640-01",
+        "question": "How does the review explain excess mortality in rheumatoid arthritis?",
+        "options": {
+          "A": "It is largely attributable to cardiovascular disease, particularly myocardial infarction from coronary atherosclerosis",
+          "B": "It is largely attributable to gastrointestinal bleeding only",
+          "C": "Mortality is lower than in the general population",
+          "D": "It is explained by infection alone",
+          "E": "The review does not discuss mortality"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "It is largely attributable to cardiovascular disease, particularly myocardial infarction from coronary atherosclerosis",
+        "explanation": "Mortality is higher than in the general population and largely attributable to cardiovascular disease, particularly fatal and non-fatal myocardial infarction due to coronary atherosclerosis.",
+        "difficulty": "easy",
+        "sourceRefs": [
+          {
+            "sourceBody": "PLOS ONE",
+            "sourceYear": 2021,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8691614/",
+            "pmid": "34932581",
+            "pmcid": "PMC8691614",
+            "doi": "10.1371/journal.pone.0261239",
+            "status": "open_full_text",
+            "excerpt": "the mortality rate among rheumatoid arthritis patients is higher, which is largely attributable to cardiovascular disease, particularly (fatal and non-fatal) myocardial infarction due to coronary atherosclerosis"
+          }
+        ]
+      },
+      {
+        "id": "c640-02",
+        "question": "What mechanism does the review offer for amplified myocardial infarction and stroke risk?",
+        "options": {
+          "A": "Inflammation-associated vascular damage",
+          "B": "COX-2 selectivity protecting arteries",
+          "C": "A direct toxic effect of methotrexate",
+          "D": "Underuse of aspirin only",
+          "E": "No mechanism is suggested"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "Inflammation-associated vascular damage",
+        "explanation": "Risks of myocardial infarction and stroke are amplified and may result from inflammation-associated vascular damage.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "PLOS ONE",
+            "sourceYear": 2021,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8691614/",
+            "pmid": "34932581",
+            "pmcid": "PMC8691614",
+            "doi": "10.1371/journal.pone.0261239",
+            "status": "open_full_text",
+            "excerpt": "Risks of both myocardial infarctions and strokes are amplified in individuals with rheumatoid arthritis, which may be the result of inflammation-associated vascular damage"
+          }
+        ]
+      },
+      {
+        "id": "c640-03",
+        "question": "Why were coxibs developed, and what happened to rofecoxib?",
+        "options": {
+          "A": "To reduce upper-gastrointestinal toxicity of non-selective NSAIDs; rofecoxib was withdrawn worldwide in 2004 after increased cardiovascular events",
+          "B": "To treat heart failure; rofecoxib became first-line",
+          "C": "To replace statins; rofecoxib lowered LDL",
+          "D": "Coxibs have no gastrointestinal purpose",
+          "E": "Rofecoxib was withdrawn for liver failure only"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "To reduce upper-gastrointestinal toxicity of non-selective NSAIDs; rofecoxib was withdrawn worldwide in 2004 after increased cardiovascular events",
+        "explanation": "Coxibs were developed as alternatives to minimize upper-gastrointestinal toxicity. Rofecoxib increased cardiovascular events and was withdrawn worldwide in 2004.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "PLOS ONE",
+            "sourceYear": 2021,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8691614/",
+            "pmid": "34932581",
+            "pmcid": "PMC8691614",
+            "doi": "10.1371/journal.pone.0261239",
+            "status": "open_full_text",
+            "excerpt": "However, the subsequent coxib, rofecoxib, was found to increase cardiovascular events, which led to its worldwide withdrawal in"
+          }
+        ]
+      },
+      {
+        "id": "c640-04",
+        "question": "What is this meta-analysis's conclusion about celecoxib and cardiovascular events?",
+        "options": {
+          "A": "Celecoxib does not significantly increase cardiovascular events versus placebo and slightly decreases all-cause and cardiovascular mortality versus non-selective NSAIDs",
+          "B": "Celecoxib doubles cardiovascular events versus placebo",
+          "C": "Celecoxib is inferior to placebo for pain and unsafe in every analysis",
+          "D": "Non-selective NSAIDs had lower mortality than celecoxib",
+          "E": "No comparison with placebo was possible"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "Celecoxib does not significantly increase cardiovascular events versus placebo and slightly decreases all-cause and cardiovascular mortality versus non-selective NSAIDs",
+        "explanation": "Overall, celecoxib did not significantly increase cardiovascular events compared with placebo and slightly decreased all-cause and cardiovascular mortality compared with non-selective NSAIDs.",
+        "difficulty": "hard",
+        "sourceRefs": [
+          {
+            "sourceBody": "PLOS ONE",
+            "sourceYear": 2021,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8691614/",
+            "pmid": "34932581",
+            "pmcid": "PMC8691614",
+            "doi": "10.1371/journal.pone.0261239",
+            "status": "open_full_text",
+            "excerpt": "celecoxib does not significantly increase cardiovascular events compared with placebo and slightly decreases the risk of all-cause mortality and cardiovascular mortality compared with nsNSAIDs"
+          }
+        ]
+      },
+      {
+        "id": "c640-05",
+        "question": "Which trial does the review say its conclusion lines up with?",
+        "options": {
+          "A": "PRECISION, in which celecoxib was non-inferior to naproxen or ibuprofen for cardiovascular outcomes",
+          "B": "ORAL Surveillance",
+          "C": "STOP GAP",
+          "D": "TEAR",
+          "E": "MAINRITSAN"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "PRECISION, in which celecoxib was non-inferior to naproxen or ibuprofen for cardiovascular outcomes",
+        "explanation": "The authors say their conclusion was basically in line with PRECISION, where celecoxib was non-inferior to naproxen or ibuprofen for cardiovascular outcomes.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "PLOS ONE",
+            "sourceYear": 2021,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8691614/",
+            "pmid": "34932581",
+            "pmcid": "PMC8691614",
+            "doi": "10.1371/journal.pone.0261239",
+            "status": "open_full_text",
+            "excerpt": "Our conclusion was basically in line with the result of the PRECISION trial, in which celecoxib was found to be non-inferior to naproxen or ibuprofen for cardio"
+          }
+        ]
+      }
+    ]
+  }
+}

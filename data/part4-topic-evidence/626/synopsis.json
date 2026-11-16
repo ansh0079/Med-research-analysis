@@ -1,0 +1,23 @@
+{
+  "catalogueId": "626",
+  "topic": "ORAL Surveillance trial: cardiovascular safety of tofacitinib vs TNFi in RA",
+  "groundedIn": "36137735",
+  "synopsis": "ORAL Surveillance compared tofacitinib with TNF inhibitors in a cardiovascular-risk-enriched rheumatoid arthritis population. This open report of the primary findings gives a hazard ratio for major adverse cardiovascular events of 1.33 (95% CI 0.91 to 1.94) for tofacitinib versus TNF inhibitors. Non-inferiority was not met because the prespecified criterion required the upper 95% confidence limit to be no higher than 1.80. Incidence rates were 0.98 per 100 patient-years (95% CI 0.79 to 1.19) with tofacitinib and 0.73 (95% CI 0.52 to 1.01) with TNF inhibitors. The excess MACE risk was more pronounced at age 65 years or older than under 65. The same summary states that malignancies excluding non-melanoma skin cancer, and infections, were also higher with tofacitinib than with TNF inhibitors.",
+  "teachingPoints": [
+    {
+      "claim": "MACE HR for tofacitinib versus TNFi was 1.33 (95% CI 0.91 to 1.94), and non-inferiority was not met.",
+      "sourceExcerpt": "hazard ratio=1.33; 95% confidence interval (CI) 0.91 to 1.94). The non-inferiority criterion was not met (upper limit of 95% CI was >1.80)."
+    },
+    {
+      "claim": "The MACE increase was more pronounced at age ≥65 than under 65.",
+      "sourceExcerpt": "The increased risk of MACE with tofacitinib versus TNFi was more pronounced in patients aged ≥65 years than in patients aged <65 years."
+    },
+    {
+      "claim": "Malignancies excluding non-melanoma skin cancer, and infections, were also higher with tofacitinib.",
+      "sourceExcerpt": "Risk of malignancies (excluding non-melanoma skin cancer) and infections was also higher with tofacitinib versus TNFi in ORAL Surveillance."
+    }
+  ],
+  "uncertaintiesNotedInSource": [
+    "The hazard-ratio confidence interval crosses 1; the trial failed its non-inferiority criterion rather than proving a precise excess in every subgroup."
+  ]
+}

@@ -1,0 +1,149 @@
+{
+  "reviewState": "unreviewed",
+  "method": "Hand-written single-best-answer MCQs grounded only in the accepted open full text.",
+  "topic": {
+    "topicKey": "sle-flare-vs-infection-distinguishing-features-complement-anti-dsdna-c",
+    "topicDisplayName": "SLE flare vs infection: distinguishing features, complement, anti-dsDNA, CRP",
+    "catalogueId": "371",
+    "aliases": [],
+    "storedRowCount": 0,
+    "coverageNote": "Uses complement and anti-dsDNA as markers that do not track CRP, plus the ESR:CRP ratio. It is a cohort study, not a diagnostic guideline.",
+    "mcqs": [
+      {
+        "id": "c371-01",
+        "question": "How does CRP relate to anti-dsDNA and complement in the background cited here?",
+        "options": {
+          "A": "CRP does not tend to correlate with anti-dsDNA or complement",
+          "B": "CRP falls whenever anti-dsDNA rises, in a fixed ratio",
+          "C": "Complement and CRP always move together",
+          "D": "Anti-dsDNA is a CRP assay",
+          "E": "The paper says CRP replaces complement testing"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "CRP does not tend to correlate with anti-dsDNA or complement",
+        "explanation": "CRP levels do not tend to correlate with anti-dsDNA antibodies or complement levels.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Rheumatology",
+            "sourceYear": 2018,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5938146/",
+            "pmid": "29546774",
+            "pmcid": "PMC5938146",
+            "doi": "10.1093/rheumatology/key054",
+            "status": "open_full_text",
+            "excerpt": "CRP levels do not tend to correlate with other markers of disease activity such as anti-double stranded DNA antibodies and complement levels"
+          }
+        ]
+      },
+      {
+        "id": "c371-02",
+        "question": "Which CRP threshold has been associated with infection in SLE in the studies this paper cites?",
+        "options": {
+          "A": "CRP greater than 6.0 mg/dl",
+          "B": "CRP less than 0.1 mg/dl",
+          "C": "Any detectable CRP excludes infection",
+          "D": "CRP is never raised in infection",
+          "E": "Only ESR, not CRP, has been linked to infection"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "CRP greater than 6.0 mg/dl",
+        "explanation": "CRP values above 6.0 mg/dl in SLE have been associated with infectious processes in several studies, and CRP is higher in infection than in flare without infection.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Rheumatology",
+            "sourceYear": 2018,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5938146/",
+            "pmid": "29546774",
+            "pmcid": "PMC5938146",
+            "doi": "10.1093/rheumatology/key054",
+            "status": "open_full_text",
+            "excerpt": "CRP values of >6.0 mg/dl in SLE patients have been associated with infectious processes in several studies"
+          }
+        ]
+      },
+      {
+        "id": "c371-03",
+        "question": "In this series, which ESR:CRP ratios pointed toward infection versus flare?",
+        "options": {
+          "A": "Infection predominated at ≤2 and flare at ≥15",
+          "B": "Flare predominated at ≤2 and infection at ≥15",
+          "C": "The ratio did not differ",
+          "D": "Only ratios above 100 were informative",
+          "E": "A ratio of 2 diagnosed lupus nephritis"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "Infection predominated at ≤2 and flare at ≥15",
+        "explanation": "Infections predominated when the ESR:CRP ratio was 2 or lower, and flares predominated at ratios of 15 or higher.",
+        "difficulty": "easy",
+        "sourceRefs": [
+          {
+            "sourceBody": "Rheumatology",
+            "sourceYear": 2018,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5938146/",
+            "pmid": "29546774",
+            "pmcid": "PMC5938146",
+            "doi": "10.1093/rheumatology/key054",
+            "status": "open_full_text",
+            "excerpt": "infections predominant for ratios of ≤2, and flares predominant for ratios of ≥15; p<0.000"
+          }
+        ]
+      },
+      {
+        "id": "c371-04",
+        "question": "Which flare features were associated with higher CRP?",
+        "options": {
+          "A": "Serosal flares had higher CRP than flares without serositis",
+          "B": "Arthritis flares had the highest CRP in every comparison",
+          "C": "CRP was lower in serositis",
+          "D": "Myositis flares had undetectable CRP by definition",
+          "E": "CRP was identical in all flare types"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "Serosal flares had higher CRP than flares without serositis",
+        "explanation": "The 10 flares with a serosal component had higher CRP than the 18 without (8.7±8.3 versus 3.6±4.6, p=0.04).",
+        "difficulty": "hard",
+        "sourceRefs": [
+          {
+            "sourceBody": "Rheumatology",
+            "sourceYear": 2018,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5938146/",
+            "pmid": "29546774",
+            "pmcid": "PMC5938146",
+            "doi": "10.1093/rheumatology/key054",
+            "status": "open_full_text",
+            "excerpt": "CRP levels were higher for the 10 flares with a serosal component compared to the 18 flares without a serosal component [8.7 ±8.3 vs 3.6 ±4.6 (p=0.04)"
+          }
+        ]
+      },
+      {
+        "id": "c371-05",
+        "question": "Why do the authors say a flare-versus-infection distinction matters before immunosuppression?",
+        "options": {
+          "A": "High-dose glucocorticoids and other immunosuppression can be dangerous if the process is infection",
+          "B": "Immunosuppression treats bacterial infection",
+          "C": "Antibiotics treat lupus flares",
+          "D": "Complement is therapeutic",
+          "E": "ESR must be normalized before any culture"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "High-dose glucocorticoids and other immunosuppression can be dangerous if the process is infection",
+        "explanation": "Presumptive flare treatment with immunosuppressants, including high-dose glucocorticoids, can be dangerous if infection is present, so aggressive immunosuppression is usually postponed until infection is excluded.",
+        "difficulty": "easy",
+        "sourceRefs": [
+          {
+            "sourceBody": "Rheumatology",
+            "sourceYear": 2018,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5938146/",
+            "pmid": "29546774",
+            "pmcid": "PMC5938146",
+            "doi": "10.1093/rheumatology/key054",
+            "status": "open_full_text",
+            "excerpt": "presumptive treatment of SLE flares with immunosuppressive medications, including high dose glucocorticoids, can be dangerous in the setting of an infection"
+          }
+        ]
+      }
+    ]
+  }
+}

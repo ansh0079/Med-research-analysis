@@ -1,0 +1,23 @@
+{
+  "catalogueId": "16",
+  "topic": "Perioperative management of RA: holding DMARDs and biologics for surgery",
+  "groundedIn": "30920454",
+  "synopsis": "This review summarizes perioperative guidance for rheumatoid arthritis, including the ACR/American Association of Hip and Knee Surgeons recommendations for elective hip or knee arthroplasty. Conventional DMARDs—methotrexate, leflunomide, sulfasalazine, and hydroxychloroquine—are continued through the perioperative period. The rationale cited is a low infection risk with methotrexate outside surgery and small randomized trials in which stopping conventional DMARDs before surgery produced a similar or higher postoperative infection risk. Biologics are held for one dosing interval before surgery, using the dosing interval rather than the half-life because half-life was thought to match duration of action less well. Worked examples are infliximab every 8 weeks, last dose 9 weeks before surgery, and adalimumab every 2 weeks, last dose 3 weeks before surgery.",
+  "teachingPoints": [
+    {
+      "claim": "Continue methotrexate, leflunomide, sulfasalazine, and hydroxychloroquine through the perioperative period.",
+      "sourceExcerpt": "continuing conventional DMARDs methotrexate, leflunomide, sulfasalazine, and hydroxychloroquine throughout the perioperative period without interruption."
+    },
+    {
+      "claim": "Hold biologics for one dosing interval before surgery.",
+      "sourceExcerpt": "the panel recommended holding biologics for one dosing interval prior to surgery."
+    },
+    {
+      "claim": "Infliximab every 8 weeks is last given 9 weeks before surgery; adalimumab every 2 weeks is last given 3 weeks before.",
+      "sourceExcerpt": "a patient receiving infliximab every 8 weeks would last receive the medication 9 weeks before surgery, while a patient receiving adalimumab every two weeks would receive the medication 3 weeks"
+    }
+  ],
+  "uncertaintiesNotedInSource": [
+    "The review says a randomized trial of stopping versus continuing biologics is not feasible at the sample size needed to detect small differences in prosthetic infection."
+  ]
+}
