@@ -1,0 +1,29 @@
+{
+  "takeaway": "Give 1 g IV tranexamic acid as soon as possible after postpartum haemorrhage starts: death due to bleeding fell from 1.9% to 1.5% overall and from 1.7% to 1.2% when treatment was within 3 hours [1].",
+  "clinicalQuestion": "Does the timing of tranexamic acid change death from bleeding in postpartum haemorrhage?",
+  "background": "Trauma data had already shown that tranexamic acid must be given early. WOMAN tested that question in postpartum haemorrhage [1].",
+  "studyDesign": "International randomised, double-blind, placebo-controlled trial.",
+  "population": "Women with postpartum haemorrhage; 10,036 assigned tranexamic acid and 9,985 placebo were analysed.",
+  "intervention": "1 g IV tranexamic acid, with a second 1 g if bleeding continued after 30 minutes or restarted within 24 hours.",
+  "comparator": "Matching placebo plus usual care.",
+  "primaryOutcome": "Death due to bleeding.",
+  "mainFindings": "Death due to bleeding was 155/10,036 (1.5%) with tranexamic acid versus 191/9,985 (1.9%) with placebo (RR 0.81, 95% CI 0.65–1.00; p=0.045). Within 3 hours of birth the figures were 1.2% versus 1.7% (RR 0.69, 95% CI 0.52–0.91; p=0.008). Hysterectomy was not reduced. The authors conclude the drug should be given as soon as possible after bleeding onset [1].",
+  "clinicalMeaning": "Timing is part of the treatment. Waiting past the early window gives up the bleeding-death benefit seen in the trial [1].",
+  "limitations": "The overall bleeding-death result was borderline (p=0.045). Hysterectomy did not fall. The within-3-hour analysis is a subgroup, prespecified in the sense that the trial emphasised early treatment [1].",
+  "bottomLine": "Give 1 g IV as soon as postpartum haemorrhage is diagnosed, and do not expect the trial to show fewer hysterectomies [1].",
+  "practiceImplication": "Do not delay the first dose for theatre or for a second uterotonic cycle if bleeding is already diagnosed [1].",
+  "safetyOutcomes": [
+    "The trial report states no adverse effects offsetting the bleeding-death reduction."
+  ],
+  "trustRating": "HIGH",
+  "trustRationale": "Large international double-blind randomised trial with a prespecified emphasis on early treatment.",
+  "quizFocusPoints": [
+    "1 g dose and repeat",
+    "within 3 hours",
+    "hysterectomy not reduced"
+  ],
+  "whatNotToOverclaim": [
+    "Do not use a prevention meta-analysis as the source for treatment timing.",
+    "Do not claim fewer hysterectomies."
+  ]
+}

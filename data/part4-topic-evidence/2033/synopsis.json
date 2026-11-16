@@ -1,0 +1,26 @@
+{
+  "takeaway": "If pituitary disease is not suspected, consider TSH alone, then add FT4 or FT4 plus FT3 depending on the TSH; offer levothyroxine for primary hypothyroidism and do not routinely offer liothyronine [1].",
+  "clinicalQuestion": "How should suspected thyroid disease be tested and how is primary hypothyroidism treated?",
+  "background": "NICE NG145 covers information, testing, hypothyroidism, thyrotoxicosis, and thyroid enlargement with normal function. It was published in 2019 and updated in 2023 [1].",
+  "studyDesign": "NICE clinical guideline.",
+  "population": "Adults, children, and young people with suspected or confirmed thyroid disease.",
+  "intervention": "TSH-based testing and levothyroxine for primary hypothyroidism.",
+  "comparator": "Routine liothyronine, which is not offered.",
+  "primaryOutcome": "Accurate diagnosis and first-line replacement.",
+  "mainFindings": "Consider TSH alone in adults when secondary thyroid dysfunction is not suspected. If TSH is above the reference range, measure FT4 in the same sample. If TSH is below the reference range, measure FT4 and FT3 in the same sample. Consider both TSH and FT4 when secondary dysfunction is suspected. Offer levothyroxine as first-line treatment for primary hypothyroidism. Do not routinely offer liothyronine, alone or with levothyroxine, because there is not enough evidence that it offers benefit over levothyroxine [1].",
+  "clinicalMeaning": "Start with the right test for the suspected level of disease, and treat primary hypothyroidism with levothyroxine [1].",
+  "limitations": "These are selected NG145 recommendations on testing and primary hypothyroidism, not the whole thyrotoxicosis pathway [1].",
+  "bottomLine": "TSH first when the pituitary is not the suspect; levothyroxine, not routine liothyronine, for primary hypothyroidism [1].",
+  "practiceImplication": "Do not order a full panel reflexively, and do not start combination T3 as routine care [1].",
+  "safetyOutcomes": [],
+  "trustRating": "HIGH",
+  "trustRationale": "Current NICE guideline recommendations, openly published and updated in 2023.",
+  "quizFocusPoints": [
+    "TSH-only testing",
+    "when to add FT3",
+    "no routine liothyronine"
+  ],
+  "whatNotToOverclaim": [
+    "Do not use a refractory thyroid-cancer consensus as the source for general thyroid disease."
+  ]
+}

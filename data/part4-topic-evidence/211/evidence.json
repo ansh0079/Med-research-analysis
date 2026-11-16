@@ -1,0 +1,11 @@
+{
+  "catalogueId": "211",
+  "topic": "Salivary Gland and Rare Head and Neck Tumours",
+  "specialty": "Oncology",
+  "decision": "unresolved",
+  "rejected": [
+    "ESR acute head-and-neck infection recommendations"
+  ],
+  "unresolvedReason": "The ASCO salivary-gland malignancy guideline is not open full text. Open head-and-neck papers in the search were acute infection guidance or imaging, not management of salivary-gland carcinoma.",
+  "source": null
+}

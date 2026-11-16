@@ -1,0 +1,23 @@
+{
+  "catalogueId": "2105",
+  "topic": "what do the sepsis guidelines say about fluid resuscitation targets?",
+  "specialty": null,
+  "decision": "downloaded open source",
+  "rejected": [
+    "The in-app 2012 sepsis file is mislabelled and is not the 2021 guideline."
+  ],
+  "unresolvedReason": null,
+  "source": {
+    "title": "Surviving Sepsis Campaign: International Guidelines for Management of Sepsis and Septic Shock 2021",
+    "year": 2021,
+    "pmid": "34599691",
+    "pmcid": "PMC8486643",
+    "doi": "10.1007/s00134-021-06506-y",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8486643/",
+    "sourceBody": "Intensive Care Medicine",
+    "type": "clinical_practice_guideline",
+    "whyItFits": "This question asks what the sepsis guidelines say about fluid targets. The 2021 guideline states the initial volume, the time window, and how to judge further fluid."
+  },
+  "evidenceTextFile": "data/part4-topic-evidence/2105/evidence.txt",
+  "evidenceChars": 210633
+}

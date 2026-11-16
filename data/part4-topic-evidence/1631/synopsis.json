@@ -1,0 +1,29 @@
+{
+  "takeaway": "An antibody-drug conjugate is an antibody, usually IgG, joined by a linker to a cytotoxic payload. Brentuximab vedotin (2011) and T-DM1 (2013) opened the class; nine ADCs were approved by the time of this review [1].",
+  "clinicalQuestion": "What is an antibody-drug conjugate and which approvals defined the class?",
+  "background": "The idea is old, but clinical ADCs arrived when linker and payload chemistry became reliable enough for approval [1].",
+  "studyDesign": "Narrative clinical review.",
+  "population": "Patients treated with approved anticancer ADCs.",
+  "intervention": "Antibody plus linker plus payload.",
+  "comparator": null,
+  "primaryOutcome": "Structure of the class and the approvals that proved it.",
+  "mainFindings": "Nine different ADCs had been approved for cancer by publication, with dozens more in development. Brentuximab vedotin, targeting CD30, was approved in 2011 for relapsed/refractory classical Hodgkin lymphoma and systemic ALCL. Ado-trastuzumab emtansine (T-DM1), targeting HER2, was approved in 2013 for trastuzumab-resistant metastatic breast cancer. IgG is the predominant antibody backbone. Human IgG has four subclasses that differ in half-life and Fc-receptor binding; IgG3 has generally been avoided because of a relatively short half-life. Cleavable linkers show varying stability and can degrade in plasma [1].",
+  "clinicalMeaning": "Choose an ADC for its target, not as ordinary chemotherapy. Linker instability in plasma is a real design limit [1].",
+  "limitations": "The approval count is the count at this 2021 review, not a 2026 formulary [1].",
+  "bottomLine": "Teach the three-part structure and the two landmark approvals, and do not freeze the class at nine drugs [1].",
+  "practiceImplication": "Name the antigen (CD30 or HER2) when you name the drug [1].",
+  "safetyOutcomes": [
+    "Plasma degradation of cleavable linkers is a stated limitation."
+  ],
+  "trustRating": "MODERATE",
+  "trustRationale": "Expert review in a major oncology journal; approval counts age.",
+  "quizFocusPoints": [
+    "three components",
+    "brentuximab 2011",
+    "T-DM1 2013"
+  ],
+  "whatNotToOverclaim": [
+    "Do not say only nine ADCs exist in 2026.",
+    "A paper limited to resistance in breast cancer is not the class overview."
+  ]
+}

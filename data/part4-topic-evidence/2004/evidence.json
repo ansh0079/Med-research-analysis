@@ -1,0 +1,23 @@
+{
+  "catalogueId": "2004",
+  "topic": "should I start an SGLT2 inhibitor for my patient with HFrEF?",
+  "specialty": null,
+  "decision": "downloaded open source",
+  "rejected": [
+    "DAPA-HF (PMID 31535829) and the 2022 AHA/ACC/HFSA guideline full text are not openly in PMC. The stored guideline abstract does not state an SGLT2 recommendation."
+  ],
+  "unresolvedReason": null,
+  "source": {
+    "title": "SGLT2 inhibitors decrease cardiovascular death and heart failure hospitalizations in patients with heart failure: A systematic review and meta-analysis",
+    "year": 2021,
+    "pmid": "34308311",
+    "pmcid": "PMC8257984",
+    "doi": "10.1016/j.ahj.2021.06.001",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8257984/",
+    "sourceBody": "American Heart Journal",
+    "type": "systematic_review",
+    "whyItFits": "Meta-analysis of randomised SGLT2-inhibitor trials in heart failure, with a reduced-ejection-fraction subgroup for the composite of cardiovascular death or worsening heart failure."
+  },
+  "evidenceTextFile": "data/part4-topic-evidence/2004/evidence.txt",
+  "evidenceChars": 31331
+}

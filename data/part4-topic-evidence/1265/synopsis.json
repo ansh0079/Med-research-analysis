@@ -1,0 +1,27 @@
+{
+  "takeaway": "Triple-negative breast cancer is treated with surgery, chemotherapy, and radiotherapy, but many patients are already unresectable. The review cites an 80% response to single-agent cisplatin in an early trial of BRCA-mutant disease, and it reports that immunotherapy improves survival and response [1].",
+  "clinicalQuestion": "Why is triple-negative breast cancer treated by subtype rather than by one regimen?",
+  "background": "TNBC is described as the most malignant breast-cancer subtype, with a poor prognosis and limited standard options [1].",
+  "studyDesign": "Narrative review of molecular subtypes and trials.",
+  "setting": "Breast oncology.",
+  "population": "Patients with triple-negative breast cancer.",
+  "intervention": "Chemotherapy, immunotherapy, and targeted therapy against DNA repair, androgen receptor, and kinases.",
+  "comparator": "A single regimen for every triple-negative tumour.",
+  "primaryOutcome": "Matching treatment to the molecular subtype.",
+  "mainFindings": "Standard options are surgery, adjuvant chemotherapy, and radiotherapy, but a proportion of patients have already missed the surgical window. The disease is heterogeneous, with specific mutations and pathway activation. Targeted approaches include DNA-repair pathways, androgen-receptor signalling, and kinases. Immunotherapy has been shown to improve overall survival and response. Homologous-recombination deficiency, including BRCA dysfunction, correlates with a good response to cisplatin. An early phase 2 trial cited in the review reported an overall response rate of 80% with single-agent cisplatin in BRCA-mutant triple-negative disease [1].",
+  "clinicalMeaning": "Ask about BRCA and homologous-recombination status before choosing a platinum. Do not treat every triple-negative tumour as identical [1].",
+  "limitations": "The 80% figure is one early phase 2 trial cited by the review, not a modern first-line standard. Pembrolizumab schedules in the review's trial table are not turned into doses [1].",
+  "bottomLine": "Heterogeneous disease. Chemotherapy remains the base. Platinum sensitivity and immunotherapy are the additions this review supports [1].",
+  "practiceImplication": "Test BRCA when a platinum or a DNA-repair drug is being considered [1].",
+  "safetyOutcomes": [],
+  "trustRating": "MODERATE",
+  "trustRationale": "Review that cites an early small trial for the cisplatin response. That limitation is stated in the questions.",
+  "quizFocusPoints": [
+    "not one disease",
+    "cisplatin ORR 80% in a cited BRCA trial",
+    "immunotherapy improves survival"
+  ],
+  "whatNotToOverclaim": [
+    "Do not promote single-agent cisplatin as current standard first-line therapy."
+  ]
+}

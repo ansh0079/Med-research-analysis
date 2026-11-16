@@ -1,0 +1,107 @@
+[
+  {
+    "type": "multiple_choice",
+    "questionType": "clinical_application",
+    "question": "An asymptomatic patient with a high serum viscosity should:",
+    "options": {
+      "A": "Not receive plasma exchange for the number alone",
+      "B": "Be exchanged immediately regardless of symptoms",
+      "C": "Be given rituximab the same day",
+      "D": "Have a splenectomy",
+      "E": "Start aspirin as the treatment of hyperviscosity"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "Not receive plasma exchange for the number alone",
+    "explanation": "Asymptomatic elevation of serum viscosity does not require plasma exchange [1].",
+    "difficulty": "easy",
+    "sourceArticle": "Acute hyperviscosity: syndromes and management",
+    "sourceReference": "PMID 30104220",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "clinical_application",
+    "question": "When is plasma exchange the therapy of choice?",
+    "options": {
+      "A": "Bleeding or central-nervous-system manifestations",
+      "B": "Every IgM above 1000 mg/dL",
+      "C": "Only after the viscosity result returns",
+      "D": "Isolated mild anaemia",
+      "E": "A normal eye examination and no symptoms"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "Bleeding or central-nervous-system manifestations",
+    "explanation": "For hemorrhagic or central-nervous-system manifestations, plasma exchange is the therapy of choice and is relatively safe [1].",
+    "difficulty": "medium",
+    "sourceArticle": "Acute hyperviscosity: syndromes and management",
+    "sourceReference": "PMID 30104220",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "pitfall",
+    "question": "If the presentation is typical, what is the role of the viscosity measurement?",
+    "options": {
+      "A": "Do not delay treatment for it, but send a sample to confirm the diagnosis",
+      "B": "It must be reported before any exchange",
+      "C": "It replaces the need for a diagnosis",
+      "D": "It is useless",
+      "E": "It is required only in children"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "Do not delay treatment for it, but send a sample to confirm the diagnosis",
+    "explanation": "Viscosity measurements are not required to initiate therapy when suspicion is high and the presentation is typical, but a confirmatory sample should be sent [1].",
+    "difficulty": "medium",
+    "sourceArticle": "Acute hyperviscosity: syndromes and management",
+    "sourceReference": "PMID 30104220",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "recall",
+    "question": "Why can IgM cause symptoms at a lower level than IgG?",
+    "options": {
+      "A": "Its size and shape raise viscosity disproportionately; the UCSF median IgM at hyperviscosity was about 5000 mg/dL, versus often over 10000 mg/dL for monomeric IgG",
+      "B": "IgM is smaller than albumin",
+      "C": "IgG cannot be measured",
+      "D": "IgM is removed by the kidney",
+      "E": "There is no difference"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "Its size and shape raise viscosity disproportionately; the UCSF median IgM at hyperviscosity was about 5000 mg/dL, versus often over 10000 mg/dL for monomeric IgG",
+    "explanation": "IgM has high intrinsic viscosity. The review cites a median IgM of about 5000 mg/dL for hyperviscosity in Waldenström macroglobulinaemia, against levels often above 10000 mg/dL for monomeric IgG [1].",
+    "difficulty": "hard",
+    "sourceArticle": "Acute hyperviscosity: syndromes and management",
+    "sourceReference": "PMID 30104220",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "pitfall",
+    "question": "What problem can rituximab cause in newly diagnosed Waldenström macroglobulinaemia?",
+    "options": {
+      "A": "An IgM flare in 22%, which can produce symptomatic hyperviscosity",
+      "B": "Immediate cure of hyperviscosity",
+      "C": "A fall in viscosity in every patient",
+      "D": "Haemolysis as the only issue",
+      "E": "No change in IgM"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "An IgM flare in 22%, which can produce symptomatic hyperviscosity",
+    "explanation": "Transient IgM increases after rituximab can occur in 22% and can produce symptomatic hyperviscosity. Some protocols delay rituximab until after cycle 1 [1].",
+    "difficulty": "medium",
+    "sourceArticle": "Acute hyperviscosity: syndromes and management",
+    "sourceReference": "PMID 30104220",
+    "sourceIndices": [
+      1
+    ]
+  }
+]

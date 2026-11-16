@@ -1,0 +1,12 @@
+{
+  "catalogueId": "2009",
+  "topic": "solid organ transplant induction immunosuppression",
+  "specialty": "Transplantation",
+  "decision": "unresolved",
+  "rejected": [
+    "Korean CMV-prevention guidance",
+    "ABO-incompatible single-centre series"
+  ],
+  "unresolvedReason": "No stored document was an induction-immunosuppression guideline. KDIGO kidney-transplant guidance is not available as open full text. Open papers found were about CMV prevention, ABO-incompatible transplantation, or urinary infection, not the choice of induction antibody.",
+  "source": null
+}

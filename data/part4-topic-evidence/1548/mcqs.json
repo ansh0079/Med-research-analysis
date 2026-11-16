@@ -1,0 +1,107 @@
+[
+  {
+    "type": "multiple_choice",
+    "questionType": "recall",
+    "question": "What do kinases do?",
+    "options": {
+      "A": "Transfer the gamma-phosphate of ATP onto substrates",
+      "B": "Cut DNA directly",
+      "C": "Pump the drug out of the cell as their only function",
+      "D": "Replace antibodies",
+      "E": "Synthesise folic acid"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "Transfer the gamma-phosphate of ATP onto substrates",
+    "explanation": "Kinases transfer the gamma-phosphate from ATP onto diverse substrates and thereby regulate cell functions [1].",
+    "difficulty": "easy",
+    "sourceArticle": "Kinase-targeted cancer therapies: progress, challenges and future directions",
+    "sourceReference": "PMID 29455673",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "recall",
+    "question": "About what share of industry protein targets are kinases?",
+    "options": {
+      "A": "About one-third",
+      "B": "Under 1%",
+      "C": "All of them",
+      "D": "None",
+      "E": "Only antibodies"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "About one-third",
+    "explanation": "About one-third of all protein targets under research in the pharmaceutical industry are kinase-based [1].",
+    "difficulty": "easy",
+    "sourceArticle": "Kinase-targeted cancer therapies: progress, challenges and future directions",
+    "sourceReference": "PMID 29455673",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "recall",
+    "question": "Imatinib and dasatinib are cited as improving outcomes in:",
+    "options": {
+      "A": "Chronic myeloid leukaemia and gastrointestinal stromal tumour",
+      "B": "Only small-cell lung cancer",
+      "C": "Melanoma through PD-1",
+      "D": "Myeloma through BCMA",
+      "E": "Prostate cancer through androgen receptor"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "Chronic myeloid leukaemia and gastrointestinal stromal tumour",
+    "explanation": "These inhibitors increased survival in CML and GIST compared with conventional cytotoxic therapy [1].",
+    "difficulty": "medium",
+    "sourceArticle": "Kinase-targeted cancer therapies: progress, challenges and future directions",
+    "sourceReference": "PMID 29455673",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "recall",
+    "question": "Most approved kinase inhibitors act by:",
+    "options": {
+      "A": "Targeting ATP binding",
+      "B": "Binding tubulin",
+      "C": "Alkylating DNA",
+      "D": "Blocking PD-1",
+      "E": "Chelating iron"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "Targeting ATP binding",
+    "explanation": "The review says most FDA-approved kinase inhibitors target ATP binding [1].",
+    "difficulty": "medium",
+    "sourceArticle": "Kinase-targeted cancer therapies: progress, challenges and future directions",
+    "sourceReference": "PMID 29455673",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "clinical_application",
+    "question": "Which factors determine whether a kinase inhibitor will work in a given cancer?",
+    "options": {
+      "A": "Genetics, microenvironment, resistance, and pharmacogenomics",
+      "B": "The tablet colour",
+      "C": "Only the patient's age",
+      "D": "Only the hospital",
+      "E": "None, because resistance does not occur"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "Genetics, microenvironment, resistance, and pharmacogenomics",
+    "explanation": "Genetics, tumour microenvironment, drug resistance, and pharmacogenomics determine how useful a compound will be [1].",
+    "difficulty": "medium",
+    "sourceArticle": "Kinase-targeted cancer therapies: progress, challenges and future directions",
+    "sourceReference": "PMID 29455673",
+    "sourceIndices": [
+      1
+    ]
+  }
+]

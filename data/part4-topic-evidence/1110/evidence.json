@@ -1,0 +1,21 @@
+{
+  "catalogueId": "1110",
+  "topic": "Retroperitoneal Sarcoma and Rare Sarcomas",
+  "specialty": "Oncology",
+  "decision": "downloaded open source",
+  "rejected": [],
+  "unresolvedReason": null,
+  "source": {
+    "title": "Management of Primary Retroperitoneal Sarcoma (RPS) in the Adult: An Updated Consensus Approach from the Transatlantic Australasian RPS Working Group",
+    "year": 2021,
+    "pmid": "33852100",
+    "pmcid": "PMC9257997",
+    "doi": "10.1245/s10434-021-09654-z",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9257997/",
+    "sourceBody": "Annals of Surgical Oncology",
+    "type": "consensus",
+    "whyItFits": "TARPSWG consensus on biopsy, en bloc resection, and why routine neoadjuvant radiotherapy is not recommended after STRASS."
+  },
+  "evidenceTextFile": "data/part4-topic-evidence/1110/evidence.txt",
+  "evidenceChars": 53769
+}

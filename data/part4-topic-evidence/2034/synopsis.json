@@ -1,0 +1,26 @@
+{
+  "takeaway": "Generally evaluate nodules larger than 1 cm; a focal FDG-avid nodule of at least 1 cm should have FNA, and sonographic pattern plus size guides which nodules are biopsied [1].",
+  "clinicalQuestion": "Which adult thyroid nodules should be biopsied?",
+  "background": "Many small cancers are found incidentally. The ATA guideline separates clinically significant nodules from those that can be observed [1].",
+  "studyDesign": "ATA clinical practice guideline.",
+  "population": "Adults with thyroid nodules, including nodules found on FDG-PET.",
+  "intervention": "Fine-needle aspiration guided by size and ultrasound pattern.",
+  "comparator": "Observation of subcentimetre nodules without high-risk features.",
+  "primaryOutcome": "Selection of nodules for FNA.",
+  "mainFindings": "Generally only nodules larger than 1 cm should be evaluated, because they have greater potential to be clinically significant cancers. Occasionally nodules under 1 cm need evaluation for symptoms or lymphadenopathy. A focal FDG-PET-avid nodule conveys increased cancer risk, and FNA is recommended for those nodules of at least 1 cm (strong recommendation, moderate-quality evidence). Diffuse FDG uptake with clinical and sonographic chronic lymphocytic thyroiditis does not require further imaging or FNA (strong recommendation). Sonographic pattern and size guide FNA in the guideline's Recommendation 8 [1].",
+  "clinicalMeaning": "Do not biopsy every subcentimetre incidental nodule; do biopsy a focal PET-avid nodule of 1 cm or more [1].",
+  "limitations": "This summary uses the nodule-selection recommendations, not the entire differentiated-cancer treatment section [1].",
+  "bottomLine": "Size over 1 cm, suspicious ultrasound, or focal FDG avidity at 1 cm or more drives FNA. Diffuse PET uptake from thyroiditis does not [1].",
+  "practiceImplication": "Match the sonographic pattern in Recommendation 8 to the size cut-off before booking FNA [1].",
+  "safetyOutcomes": [],
+  "trustRating": "HIGH",
+  "trustRationale": "ATA guideline with graded recommendations; openly readable on PMC.",
+  "quizFocusPoints": [
+    "1 cm threshold",
+    "focal versus diffuse FDG uptake",
+    "occasional subcentimetre exceptions"
+  ],
+  "whatNotToOverclaim": [
+    "A Raman-spectroscopy adjunct paper is not the decision rule for FNA."
+  ]
+}

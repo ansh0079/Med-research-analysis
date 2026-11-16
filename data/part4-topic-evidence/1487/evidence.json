@@ -1,0 +1,24 @@
+{
+  "catalogueId": "1487",
+  "topic": "prognosis of aortic stenosis",
+  "specialty": null,
+  "decision": "downloaded open source",
+  "rejected": [
+    "Low-flow low-gradient outcome papers and VARC-3 endpoint definitions in the app do not describe the natural history of aortic stenosis.",
+    "The 2020 ACC/AHA valvular guideline full text is not in PMC."
+  ],
+  "unresolvedReason": null,
+  "source": {
+    "title": "A Contemporary Approach to the Management of Asymptomatic Severe Aortic Stenosis",
+    "year": 2026,
+    "pmid": "42123138",
+    "pmcid": "PMC13163651",
+    "doi": "10.3390/jcm15093405",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC13163651/",
+    "sourceBody": "Journal of Clinical Medicine",
+    "type": "review",
+    "whyItFits": "Opens with the natural history of severe aortic stenosis and the guideline triggers for valve replacement that are based on that prognosis."
+  },
+  "evidenceTextFile": "data/part4-topic-evidence/1487/evidence.txt",
+  "evidenceChars": 40482
+}

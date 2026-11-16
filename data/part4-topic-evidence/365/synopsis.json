@@ -1,0 +1,29 @@
+{
+  "takeaway": "The EAU-ASCO penile-cancer guideline separates organ-sparing treatment of the primary tumour from radical inguinal node dissection for clinically node-positive disease [1].",
+  "clinicalQuestion": "How is the primary penile tumour separated from the inguinal nodes in this guideline?",
+  "background": "The March 2023 update is a joint EAU and ASCO guideline [1].",
+  "studyDesign": "Evidence-based collaborative guideline.",
+  "setting": "Urologic oncology.",
+  "population": "Patients with penile carcinoma.",
+  "intervention": "Organ-sparing local treatment where appropriate, and radical inguinal lymphadenectomy for cN1–N2 disease.",
+  "comparator": "Amputation or node dissection applied without regard to stage.",
+  "primaryOutcome": "Local control and appropriate nodal surgery.",
+  "mainFindings": "The guideline has a dedicated section on local treatment, including local recurrence after organ-sparing surgery, and a separate section on clinically evident regional nodes. Radical inguinal lymph-node dissection is the operation discussed for cN1–N2 disease, with quality metrics that include node yield and the timing of surgery. HPV is addressed as its own pathologic factor. The text is explicit that following a recommendation does not replace clinical expertise or the patient's values [1].",
+  "clinicalMeaning": "Preserve the organ when the guideline's local-treatment criteria are met, and do not skip inguinal dissection when nodes are clinically positive in the cN1–N2 range [1].",
+  "limitations": "Numeric margins and the exact indication sentence for dissection were in the guideline tables and are not restated beyond the section structure that was read [1].",
+  "bottomLine": "Organ-sparing surgery is part of local management. Clinically positive inguinal nodes are a surgical problem, not only a local one [1].",
+  "practiceImplication": "Record HPV and plan the groin separately from the primary tumour [1].",
+  "safetyOutcomes": [
+    "Node dissection has a complication section in the guideline."
+  ],
+  "trustRating": "HIGH",
+  "trustRationale": "Current joint society guideline. Fine-grained operative criteria were not copied from unscanned tables.",
+  "quizFocusPoints": [
+    "organ-sparing for the primary",
+    "inguinal dissection for cN1–N2",
+    "HPV as a pathologic factor"
+  ],
+  "whatNotToOverclaim": [
+    "Do not invent a surgical margin in millimetres."
+  ]
+}

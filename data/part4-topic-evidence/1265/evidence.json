@@ -1,0 +1,21 @@
+{
+  "catalogueId": "1265",
+  "topic": "Triple-Negative Breast Cancer",
+  "specialty": "Oncology",
+  "decision": "downloaded open source",
+  "rejected": [],
+  "unresolvedReason": null,
+  "source": {
+    "title": "Review of molecular subtypes and therapeutic strategies in triple-negative breast cancer",
+    "year": null,
+    "pmid": null,
+    "pmcid": null,
+    "doi": null,
+    "url": null,
+    "sourceBody": "open review",
+    "type": "review",
+    "whyItFits": "Open review of TNBC heterogeneity, chemotherapy, immunotherapy, and a cited cisplatin response in BRCA-mutant disease."
+  },
+  "evidenceTextFile": "data/part4-topic-evidence/1265/evidence.txt",
+  "evidenceChars": 109348
+}

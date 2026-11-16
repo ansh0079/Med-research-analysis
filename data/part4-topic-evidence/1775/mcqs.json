@@ -1,0 +1,107 @@
+[
+  {
+    "type": "multiple_choice",
+    "questionType": "guideline",
+    "question": "Which patients are low-risk in this FIGO update?",
+    "options": {
+      "A": "Stages I–III with a score under 7",
+      "B": "Any stage IV",
+      "C": "Score of 7 or more",
+      "D": "Only choriocarcinoma",
+      "E": "Only partial mole"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "Stages I–III with a score under 7",
+    "explanation": "Low-risk GTN is FIGO stages I–III with a score under 7, treated with single-agent chemotherapy [1].",
+    "difficulty": "easy",
+    "sourceArticle": "Diagnosis and management of gestational trophoblastic disease: 2021 update",
+    "sourceReference": "PMID 34669197",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "guideline",
+    "question": "What survival does the update give for low-risk disease, including scores of 5–6?",
+    "options": {
+      "A": "Overall survival approaches 100%, although scores 5–6 have more drug resistance",
+      "B": "About 40%",
+      "C": "Under 10%",
+      "D": "Survival is not discussed",
+      "E": "Scores 5–6 are unsurvivable"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "Overall survival approaches 100%, although scores 5–6 have more drug resistance",
+    "explanation": "Scores of 5–6 are associated with more drug resistance, but overall survival approaches 100% [1].",
+    "difficulty": "medium",
+    "sourceArticle": "Diagnosis and management of gestational trophoblastic disease: 2021 update",
+    "sourceReference": "PMID 34669197",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "clinical_application",
+    "question": "High-risk disease is treated with:",
+    "options": {
+      "A": "Multiagent chemotherapy, plus surgery or brain radiotherapy when needed",
+      "B": "Surveillance only",
+      "C": "Single-agent chemotherapy for stage IV",
+      "D": "Hysterectomy as the only treatment",
+      "E": "Radioiodine"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "Multiagent chemotherapy, plus surgery or brain radiotherapy when needed",
+    "explanation": "High-risk GTN (stages II–III with score 7 or more, and stage IV) is treated with multiagent chemotherapy, with or without surgery for resistant foci or radiotherapy for brain metastases [1].",
+    "difficulty": "medium",
+    "sourceArticle": "Diagnosis and management of gestational trophoblastic disease: 2021 update",
+    "sourceReference": "PMID 34669197",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "clinical_application",
+    "question": "Why is gentle induction chemotherapy used?",
+    "options": {
+      "A": "To reduce early deaths when the tumour burden is extensive",
+      "B": "To replace hCG monitoring",
+      "C": "Because multiagent chemotherapy is ineffective",
+      "D": "To treat a partial mole that is regressing",
+      "E": "To avoid all subsequent chemotherapy"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "To reduce early deaths when the tumour burden is extensive",
+    "explanation": "Gentle induction chemotherapy helps reduce early deaths in patients with extensive tumour burden [1].",
+    "difficulty": "medium",
+    "sourceArticle": "Diagnosis and management of gestational trophoblastic disease: 2021 update",
+    "sourceReference": "PMID 34669197",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "recall",
+    "question": "Which marker is essential for early diagnosis of neoplasia after a mole?",
+    "options": {
+      "A": "hCG",
+      "B": "CA-125",
+      "C": "AFP",
+      "D": "CEA",
+      "E": "LDH alone"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "hCG",
+    "explanation": "Follow-up with hCG is essential for early diagnosis of gestational trophoblastic neoplasia. Duration varies with histology and regression rate [1].",
+    "difficulty": "easy",
+    "sourceArticle": "Diagnosis and management of gestational trophoblastic disease: 2021 update",
+    "sourceReference": "PMID 34669197",
+    "sourceIndices": [
+      1
+    ]
+  }
+]

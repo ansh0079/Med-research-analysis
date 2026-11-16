@@ -1,0 +1,30 @@
+{
+  "takeaway": "PTHrP accounts for about 80% of hypercalcaemia of malignancy. Treat with hydration, then calcitonin and a bisphosphonate or denosumab, and use dialysis if the kidneys have failed and the calcium stays dangerously high [1].",
+  "clinicalQuestion": "What causes hypercalcaemia of malignancy and how is it treated?",
+  "background": "The review describes hypercalcaemia of malignancy as common in cancer, particularly advanced cancer, and associated with survival measured in months [1].",
+  "studyDesign": "Narrative review of studies published through December 2014.",
+  "setting": "Inpatient management of cancer-related hypercalcaemia.",
+  "population": "Patients with hypercalcaemia caused by cancer.",
+  "intervention": "Hydration, calcitonin, bisphosphonates, denosumab, and selected use of prednisone, cinacalcet, or haemodialysis.",
+  "comparator": null,
+  "primaryOutcome": "Mechanism and acute control of calcium.",
+  "mainFindings": "The review states that hypercalcaemia of malignancy affects up to 44.1% of patients with cancer in the series it cites, and is particularly a feature of advanced cancer. Survival is typically several months. The major mechanism, about 80%, is PTHrP. Other mechanisms are osteolytic metastases, 1,25-dihydroxyvitamin D, and PTH from parathyroid carcinoma or rare extraparathyroid cancers. Treatment is hydration, calcitonin, bisphosphonates, and denosumab, with prednisone or cinacalcet in selected patients. Haemodialysis is for advanced kidney disease with refractory severe hypercalcaemia. Haematology or oncology and palliative care should be involved early [1].",
+  "clinicalMeaning": "Start saline and do not wait for the bisphosphonate to work before using calcitonin for a severe level. Look for the mechanism if the cancer type is unexpected [1].",
+  "limitations": "The 44.1% figure is the upper estimate cited by the review, not a prevalence to memorise as typical. Doses are not copied beyond the drug classes named [1].",
+  "bottomLine": "About 80% is humoral, from PTHrP. Hydrate, then use a bone-targeted drug, and dialyse refractory renal failure [1].",
+  "practiceImplication": "Involve palliative care early because the prognosis is often months [1].",
+  "safetyOutcomes": [
+    "Fluid overload is a concern when the heart or kidneys are failing; the review reserves dialysis for refractory severe hypercalcaemia with advanced kidney disease."
+  ],
+  "trustRating": "MODERATE",
+  "trustRationale": "Open narrative review that names mechanisms and drug classes; it is not a graded endocrine-society guideline.",
+  "quizFocusPoints": [
+    "PTHrP about 80%",
+    "hydration plus antiresorptive drugs",
+    "dialysis if kidneys have failed"
+  ],
+  "whatNotToOverclaim": [
+    "Do not teach a zoledronic-acid dose from this summary.",
+    "Do not treat 44.1% as the usual prevalence."
+  ]
+}

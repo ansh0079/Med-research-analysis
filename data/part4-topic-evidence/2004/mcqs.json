@@ -1,0 +1,107 @@
+[
+  {
+    "type": "multiple_choice",
+    "questionType": "trial_interpretation",
+    "question": "In the HFrEF subgroup of this meta-analysis, what happened to cardiovascular death or heart-failure hospitalisation/urgent visits with an SGLT2 inhibitor?",
+    "options": {
+      "A": "25% relative increase",
+      "B": "No change",
+      "C": "25% relative reduction (OR 0.75)",
+      "D": "50% relative reduction",
+      "E": "Benefit only if LVEF was above 50%"
+    },
+    "correctAnswer": "C",
+    "correctAnswerText": "25% relative reduction (OR 0.75)",
+    "explanation": "The HFrEF subgroup showed a 25% relative risk reduction, OR 0.75 (95% CI 0.62–0.91), for cardiovascular death or heart-failure hospitalisation/urgent visits [1].",
+    "difficulty": "medium",
+    "sourceArticle": "SGLT2 inhibitors decrease cardiovascular death and heart failure hospitalizations in patients with heart failure: A systematic review and meta-analysis",
+    "sourceReference": "PMID 34308311",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "trial_interpretation",
+    "question": "What all-cause mortality result does the meta-analysis report for SGLT2 inhibitors versus placebo in heart failure?",
+    "options": {
+      "A": "HR 0.86 (95% CI 0.79–0.94)",
+      "B": "HR 1.20",
+      "C": "HR 0.50",
+      "D": "No mortality data",
+      "E": "Absolute mortality increase"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "HR 0.86 (95% CI 0.79–0.94)",
+    "explanation": "All-cause mortality was HR 0.86 (95% CI 0.79–0.94; p=0.0007). Cardiovascular mortality was also HR 0.86 (0.78–0.96) [1].",
+    "difficulty": "medium",
+    "sourceArticle": "SGLT2 inhibitors decrease cardiovascular death and heart failure hospitalizations in patients with heart failure: A systematic review and meta-analysis",
+    "sourceReference": "PMID 34308311",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "recall",
+    "question": "How many randomised trials and patients did the review include?",
+    "options": {
+      "A": "2 trials and 500 patients",
+      "B": "15 trials and 20,241 patients",
+      "C": "50 trials and 5,000 patients",
+      "D": "1 trial, DAPA-HF only",
+      "E": "No randomised trials"
+    },
+    "correctAnswer": "B",
+    "correctAnswerText": "15 trials and 20,241 patients",
+    "explanation": "The authors included 15 randomised trials and 20,241 patients, of whom 10,594 (52.3%) received an SGLT2 inhibitor [1].",
+    "difficulty": "easy",
+    "sourceArticle": "SGLT2 inhibitors decrease cardiovascular death and heart failure hospitalizations in patients with heart failure: A systematic review and meta-analysis",
+    "sourceReference": "PMID 34308311",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "clinical_application",
+    "question": "A patient with HFrEF has no diabetes. Does this paper restrict the heart-failure benefit to people with diabetes?",
+    "options": {
+      "A": "No. It is a meta-analysis of SGLT2 inhibitors in patients with heart failure",
+      "B": "Yes. Only diabetic ketoacidosis trials were included",
+      "C": "Yes. The HFrEF result applied only when HbA1c was above 8%",
+      "D": "The paper excluded all patients with heart failure",
+      "E": "Benefit was seen only in HFpEF"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "No. It is a meta-analysis of SGLT2 inhibitors in patients with heart failure",
+    "explanation": "The review's question is SGLT2 inhibitors in heart failure. It reports mortality reductions in that population and a separate HFrEF composite result. It is not a diabetes-only analysis [1].",
+    "difficulty": "medium",
+    "sourceArticle": "SGLT2 inhibitors decrease cardiovascular death and heart failure hospitalizations in patients with heart failure: A systematic review and meta-analysis",
+    "sourceReference": "PMID 34308311",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "pitfall",
+    "question": "Which stored document should not be used to answer this question?",
+    "options": {
+      "A": "The 2022 heart-failure guideline abstract that does not state an SGLT2 recommendation",
+      "B": "The HFrEF subgroup of this meta-analysis",
+      "C": "A randomised SGLT2 heart-failure trial included in the review",
+      "D": "The reported mortality hazard ratio",
+      "E": "The composite outcome definition"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "The 2022 heart-failure guideline abstract that does not state an SGLT2 recommendation",
+    "explanation": "The in-app 2022 AHA/ACC/HFSA abstract describes the guideline's scope but does not state an SGLT2 recommendation. The meta-analysis does, including the HFrEF subgroup OR of 0.75 [1].",
+    "difficulty": "hard",
+    "sourceArticle": "SGLT2 inhibitors decrease cardiovascular death and heart failure hospitalizations in patients with heart failure: A systematic review and meta-analysis",
+    "sourceReference": "PMID 34308311",
+    "sourceIndices": [
+      1
+    ]
+  }
+]

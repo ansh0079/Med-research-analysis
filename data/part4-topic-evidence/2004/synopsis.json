@@ -1,0 +1,27 @@
+{
+  "takeaway": "In heart failure, SGLT2 inhibitors lower all-cause and cardiovascular mortality versus placebo, and in HFrEF they reduce cardiovascular death or heart-failure hospitalisation/urgent visits by about 25% [1].",
+  "clinicalQuestion": "Should an SGLT2 inhibitor be started for heart failure with reduced ejection fraction?",
+  "background": "Individual trials were not all powered for mortality. This meta-analysis pools them [1].",
+  "studyDesign": "Systematic review and meta-analysis of randomised trials.",
+  "population": "20,241 patients in 15 randomised trials; 10,594 (52.3%) received an SGLT2 inhibitor.",
+  "intervention": "SGLT2 inhibitor.",
+  "comparator": "Placebo.",
+  "primaryOutcome": "Mortality and the composite of cardiovascular death, heart-failure hospitalisation, or urgent heart-failure visit.",
+  "mainFindings": "All-cause mortality HR 0.86 (95% CI 0.79–0.94; p=0.0007). Cardiovascular mortality HR 0.86 (0.78–0.96; p=0.006). In the HFrEF subgroup the composite of cardiovascular death or heart-failure hospitalisation/urgent visit had a 25% relative reduction (OR 0.75; 95% CI 0.62–0.91). The composite was also reduced across sex, age, race, eGFR, and NYHA class subgroups reported by the authors [1].",
+  "clinicalMeaning": "For a patient with HFrEF, the pooled trials support starting an SGLT2 inhibitor to reduce worsening heart failure and cardiovascular death, not only glucose [1].",
+  "limitations": "The HFrEF result is a subgroup odds ratio. The paper pools more than one ejection-fraction phenotype, so it is not a single HFrEF trial [1].",
+  "bottomLine": "Yes: start an SGLT2 inhibitor in HFrEF on the basis of a pooled reduction in mortality and a 25% relative reduction in the HFrEF composite [1].",
+  "practiceImplication": "Do not withhold an SGLT2 inhibitor in HFrEF solely because the patient does not have diabetes; the meta-analysis is of heart-failure trials [1].",
+  "safetyOutcomes": [],
+  "trustRating": "MODERATE",
+  "trustRationale": "Pooled randomised trials with a prespecified-looking HFrEF subgroup, but not one dedicated trial.",
+  "quizFocusPoints": [
+    "HFrEF composite OR 0.75",
+    "mortality HR 0.86",
+    "indication is heart failure, not only diabetes"
+  ],
+  "whatNotToOverclaim": [
+    "Do not quote DAPA-HF's primary hazard ratio as if this paper reported it separately.",
+    "An in-hospital acute-heart-failure trial is a different question."
+  ]
+}

@@ -1,0 +1,107 @@
+[
+  {
+    "type": "multiple_choice",
+    "questionType": "recall",
+    "question": "Which mechanism accounts for about 80% of hypercalcaemia of malignancy in this review?",
+    "options": {
+      "A": "PTHrP",
+      "B": "Primary hyperparathyroidism in every case",
+      "C": "Exogenous calcium supplements",
+      "D": "Hypothyroidism",
+      "E": "Iron overload"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "PTHrP",
+    "explanation": "The major mechanism, about 80%, is production of PTHrP [1].",
+    "difficulty": "easy",
+    "sourceArticle": "Hypercalcemia of Malignancy: An Update on Pathogenesis and Management",
+    "sourceReference": "PMID 26713296",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "clinical_application",
+    "question": "Which treatments does the review include for acute management?",
+    "options": {
+      "A": "Hydration, calcitonin, bisphosphonates, and denosumab",
+      "B": "Observation only",
+      "C": "Radioiodine",
+      "D": "A loop diuretic before any fluid",
+      "E": "Oral phosphate as the only therapy"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "Hydration, calcitonin, bisphosphonates, and denosumab",
+    "explanation": "Management includes hydration, calcitonin, bisphosphonates, and denosumab, with prednisone or cinacalcet in certain patients [1].",
+    "difficulty": "medium",
+    "sourceArticle": "Hypercalcemia of Malignancy: An Update on Pathogenesis and Management",
+    "sourceReference": "PMID 26713296",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "clinical_application",
+    "question": "When does the review say to consider haemodialysis?",
+    "options": {
+      "A": "Advanced kidney disease with refractory severe hypercalcaemia",
+      "B": "Every mild elevation",
+      "C": "Only if PTHrP is undetectable",
+      "D": "Instead of hydration in a patient with normal kidneys",
+      "E": "Never"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "Advanced kidney disease with refractory severe hypercalcaemia",
+    "explanation": "Patients with advanced underlying kidney disease and refractory severe hypercalcaemia should be considered for haemodialysis [1].",
+    "difficulty": "medium",
+    "sourceArticle": "Hypercalcemia of Malignancy: An Update on Pathogenesis and Management",
+    "sourceReference": "PMID 26713296",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "recall",
+    "question": "Besides PTHrP, which mechanisms does the review name?",
+    "options": {
+      "A": "Osteolytic metastases, 1,25-dihydroxyvitamin D, and PTH from parathyroid carcinoma",
+      "B": "Only dietary calcium",
+      "C": "Only hypothyroidism",
+      "D": "Only myeloma proteins",
+      "E": "None"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "Osteolytic metastases, 1,25-dihydroxyvitamin D, and PTH from parathyroid carcinoma",
+    "explanation": "The review lists osteolytic metastases, 1,25-vitamin D, and PTH-mediated hypercalcaemia from parathyroid carcinoma and rare extraparathyroid cancers, in addition to PTHrP [1].",
+    "difficulty": "medium",
+    "sourceArticle": "Hypercalcemia of Malignancy: An Update on Pathogenesis and Management",
+    "sourceReference": "PMID 26713296",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "clinical_application",
+    "question": "Why should palliative care be involved early?",
+    "options": {
+      "A": "Survival is often only several months, and goals of care matter alongside the cancer treatment",
+      "B": "Because calcium never falls",
+      "C": "Because bisphosphonates cure the cancer",
+      "D": "The review advises against palliative care",
+      "E": "Only after dialysis has been declined"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "Survival is often only several months, and goals of care matter alongside the cancer treatment",
+    "explanation": "Patients tend to have survival of several months. The review says haematology or oncology and palliative care should be involved early, including comfort-oriented discussion [1].",
+    "difficulty": "easy",
+    "sourceArticle": "Hypercalcemia of Malignancy: An Update on Pathogenesis and Management",
+    "sourceReference": "PMID 26713296",
+    "sourceIndices": [
+      1
+    ]
+  }
+]

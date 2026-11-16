@@ -1,0 +1,29 @@
+{
+  "takeaway": "About half of people with cancer receive radiotherapy, and it contributes to about 40% of cures. Fractionation exploits better repair in normal tissue. The lethal target is DNA [1].",
+  "clinicalQuestion": "Why is radiotherapy fractionated, and how is it delivered?",
+  "background": "Radiotherapy remains one of the main cancer treatments alongside surgery, drugs, immunotherapy, and hormones [1].",
+  "studyDesign": "Narrative review.",
+  "setting": "Radiation oncology principles.",
+  "population": "People treated with radiotherapy.",
+  "intervention": "Fractionated external beam, including 3D conformal planning, and brachytherapy.",
+  "comparator": "A single large dose when fractionation would spare normal tissue, discussed as the reason fractionation exists.",
+  "primaryOutcome": "Tumour control with sparing of normal tissue.",
+  "mainFindings": "About 50% of patients receive radiotherapy during the illness, and it contributes about 40% of curative cancer treatment. The goal is to stop cancer cells dividing. Radiation damages DNA in both tumour and normal cells, so the dose to tumour is maximised and the dose to normal tissue minimised. Fractionation uses the better ability of normal tissues to repair between fractions. Internal radiotherapy, or brachytherapy, places sealed sources in catheters or seeds into the tumour and is routine in gynaecologic and prostate cancer and in some retreatments. Rectangular 2D fields have largely been replaced by CT-based 3D conformal radiotherapy, helped by modern linear accelerators [1].",
+  "clinicalMeaning": "Fractionation is a normal-tissue strategy, not a delay. Brachytherapy is radiotherapy given from inside the tumour [1].",
+  "limitations": "This is a principles review from 2012. It is not a dose catalogue for a named cancer [1].",
+  "bottomLine": "Half of patients are irradiated. Fractionate to spare normal tissue. The target is DNA [1].",
+  "practiceImplication": "Explain 3D planning as tumour localisation from CT, and brachytherapy as a sealed internal source [1].",
+  "safetyOutcomes": [
+    "Normal-tissue dose is the constraint fractionation is designed to reduce."
+  ],
+  "trustRating": "MODERATE",
+  "trustRationale": "Clear open review of mechanism. Practice has moved on in technique, so no modern dose is added.",
+  "quizFocusPoints": [
+    "50% receive radiotherapy",
+    "fractionation and repair",
+    "brachytherapy is internal"
+  ],
+  "whatNotToOverclaim": [
+    "Do not quote a gray-per-fraction prescription from this review."
+  ]
+}

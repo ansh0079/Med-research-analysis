@@ -1,0 +1,29 @@
+{
+  "takeaway": "In almost two-thirds of patients who already have cancer, the pericardial effusion is not malignant. A neoplastic effusion without tamponade is treated with systemic anticancer therapy, pericardiocentesis, and intrapericardial sclerosant or cytostatic drugs to prevent return [1].",
+  "clinicalQuestion": "How should a pericardial effusion in a patient with cancer be interpreted and treated?",
+  "background": "Malignant effusions can be the first sign of cancer and can present with impending tamponade or constriction [1].",
+  "studyDesign": "ESC clinical practice guideline, 2015.",
+  "setting": "Diagnosis and treatment of pericardial disease, including neoplastic effusion.",
+  "population": "Patients with pericardial effusion, including those with known malignancy.",
+  "intervention": "Systemic antineoplastic therapy, pericardiocentesis, and intrapericardial instillation for neoplastic effusion without tamponade; drainage of large effusions.",
+  "comparator": "Assuming every effusion in cancer is malignant.",
+  "primaryOutcome": "Correct cause and control of recurrence.",
+  "mainFindings": "The diagnosis of malignant effusion requires confirmation of malignant infiltration of the pericardium. In almost two-thirds of patients with documented malignancy, the effusion is caused by non-malignant disease such as radiation, other treatment, or opportunistic infection. For neoplastic effusion without tamponade the guideline lists systemic antineoplastic treatment as baseline therapy, pericardiocentesis to relieve symptoms and establish the diagnosis, and intrapericardial cytostatic or sclerosing agents to prevent recurrence. Drainage is recommended for all large effusions because the recurrence rate is 40–70%. In published series of pericardial effusion, malignant or infectious causes account for 15–50% [1].",
+  "clinicalMeaning": "Do not label an effusion malignant because the patient has cancer. Prove it, drain a large effusion, and treat the cancer [1].",
+  "limitations": "The extracted recommendations used here are those for neoplastic effusion without tamponade and for large effusions. A separate chylopericardium paragraph is not applied to ordinary malignant effusion [1].",
+  "bottomLine": "Two-thirds of effusions in known cancer are not malignant. Large effusions are drained because 40–70% recur [1].",
+  "practiceImplication": "Send the fluid and, when needed, pericardial tissue. Use systemic therapy as the baseline for a proven neoplastic effusion [1].",
+  "safetyOutcomes": [
+    "Recurrence after a large effusion is 40–70% if not drained."
+  ],
+  "trustRating": "HIGH",
+  "trustRationale": "ESC guideline with an explicit statement on cause and on drainage.",
+  "quizFocusPoints": [
+    "two-thirds non-malignant",
+    "three-part treatment",
+    "40–70% recurrence"
+  ],
+  "whatNotToOverclaim": [
+    "Do not apply the chylopericardium recommendation, radical pericardiectomy, to a routine malignant effusion."
+  ]
+}

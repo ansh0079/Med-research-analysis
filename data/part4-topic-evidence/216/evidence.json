@@ -1,0 +1,21 @@
+{
+  "catalogueId": "216",
+  "topic": "Superior Vena Cava Syndrome",
+  "specialty": "Oncology",
+  "decision": "downloaded open source",
+  "rejected": [],
+  "unresolvedReason": null,
+  "source": {
+    "title": "Superior vena cava syndrome: etiology and management review",
+    "year": null,
+    "pmid": null,
+    "pmcid": null,
+    "doi": null,
+    "url": null,
+    "sourceBody": "open review",
+    "type": "review",
+    "whyItFits": "Open review distinguishing malignant from thrombotic or infectious SVCS, and stenting from radiotherapy and chemotherapy."
+  },
+  "evidenceTextFile": "data/part4-topic-evidence/216/evidence.txt",
+  "evidenceChars": 50488
+}

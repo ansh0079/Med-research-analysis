@@ -1,0 +1,107 @@
+[
+  {
+    "type": "multiple_choice",
+    "questionType": "trial_interpretation",
+    "question": "Compared with placebo, what did this meta-analysis find for opioids and breathlessness?",
+    "options": {
+      "A": "No greater effectiveness (SMD −0.14; 95% CI −0.47 to 0.18)",
+      "B": "A large benefit with SMD −1.5",
+      "C": "Benefit only by the nebulised route",
+      "D": "Benefit confined to anxiolytics",
+      "E": "Improved exercise capacity with SMD 1.2"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "No greater effectiveness (SMD −0.14; 95% CI −0.47 to 0.18)",
+    "explanation": "Opioids were not associated with more effectiveness than placebo (SMD −0.14; 95% CI −0.47 to 0.18). Exercise capacity was also unchanged (SMD 0.06) [1].",
+    "difficulty": "medium",
+    "sourceArticle": "Pharmacologic Interventions for Breathlessness in Patients With Advanced Cancer: A Systematic Review and Meta-analysis",
+    "sourceReference": "PMID 33630086",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "trial_interpretation",
+    "question": "How did different opioid doses or routes compare?",
+    "options": {
+      "A": "They did not differ (SMD 0.15; 95% CI −0.22 to 0.52)",
+      "B": "Nebulised opioid was clearly superior",
+      "C": "Oral opioid was clearly superior",
+      "D": "Only subcutaneous opioid worked",
+      "E": "The comparison was not made"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "They did not differ (SMD 0.15; 95% CI −0.22 to 0.52)",
+    "explanation": "Specific dose or route did not differ in effectiveness (SMD 0.15; 95% CI −0.22 to 0.52), with low strength of evidence [1].",
+    "difficulty": "medium",
+    "sourceArticle": "Pharmacologic Interventions for Breathlessness in Patients With Advanced Cancer: A Systematic Review and Meta-analysis",
+    "sourceReference": "PMID 33630086",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "pitfall",
+    "question": "What did the review find for anxiolytics versus placebo?",
+    "options": {
+      "A": "No greater effectiveness for breathlessness or anxiety",
+      "B": "They are first-line and clearly effective",
+      "C": "They replace oxygen",
+      "D": "They improved survival",
+      "E": "They were not studied"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "No greater effectiveness for breathlessness or anxiety",
+    "explanation": "Anxiolytics were not associated with more effectiveness than placebo for breathlessness or anxiety (mean difference −0.52; 95% CI −1.045 to 0.005) [1].",
+    "difficulty": "medium",
+    "sourceArticle": "Pharmacologic Interventions for Breathlessness in Patients With Advanced Cancer: A Systematic Review and Meta-analysis",
+    "sourceReference": "PMID 33630086",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "clinical_application",
+    "question": "Which statement matches the authors' conclusion?",
+    "options": {
+      "A": "Drugs may be considered in selected patients, weighing harms and the evidence for non-drug measures",
+      "B": "Opioids should be started for every patient with cancer",
+      "C": "Pharmacologic treatment is futile and must never be used",
+      "D": "Oxygen is the only effective drug",
+      "E": "The evidence strength was high for every comparison"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "Drugs may be considered in selected patients, weighing harms and the evidence for non-drug measures",
+    "explanation": "The conclusion says pharmacologic interventions should be considered in selected patients, in the context of harms and of evidence that nonpharmacologic interventions are associated with improved breathlessness [1].",
+    "difficulty": "easy",
+    "sourceArticle": "Pharmacologic Interventions for Breathlessness in Patients With Advanced Cancer: A Systematic Review and Meta-analysis",
+    "sourceReference": "PMID 33630086",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "recall",
+    "question": "How large was the evidence base for the drug comparisons?",
+    "options": {
+      "A": "19 studies, 17 of them randomised, with 1424 patients",
+      "B": "Two case reports",
+      "C": "A single randomised trial of 40 patients",
+      "D": "Only observational series",
+      "E": "No randomised evidence"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "19 studies, 17 of them randomised, with 1424 patients",
+    "explanation": "The review included 19 studies (17 randomised trials and 2 retrospective studies) and 1424 patients. Lung cancer was the most commonly reported cancer [1].",
+    "difficulty": "easy",
+    "sourceArticle": "Pharmacologic Interventions for Breathlessness in Patients With Advanced Cancer: A Systematic Review and Meta-analysis",
+    "sourceReference": "PMID 33630086",
+    "sourceIndices": [
+      1
+    ]
+  }
+]

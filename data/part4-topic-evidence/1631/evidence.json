@@ -1,0 +1,23 @@
+{
+  "catalogueId": "1631",
+  "topic": "Antibody-Drug Conjugates",
+  "specialty": "Oncology",
+  "decision": "downloaded open source",
+  "rejected": [
+    "A review limited to ADC resistance in breast cancer does not cover the class."
+  ],
+  "unresolvedReason": null,
+  "source": {
+    "title": "Unlocking the potential of antibody-drug conjugates for cancer therapy",
+    "year": 2021,
+    "pmid": "33558752",
+    "pmcid": "PMC8287784",
+    "doi": "10.1038/s41571-021-00470-8",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8287784/",
+    "sourceBody": "Nature Reviews Clinical Oncology",
+    "type": "review",
+    "whyItFits": "A clinical review of how antibody-drug conjugates are built and which agents had reached patients by 2021."
+  },
+  "evidenceTextFile": "data/part4-topic-evidence/1631/evidence.txt",
+  "evidenceChars": 75157
+}

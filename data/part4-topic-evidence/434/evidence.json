@@ -1,0 +1,21 @@
+{
+  "catalogueId": "434",
+  "topic": "Pancreatic Cancer",
+  "specialty": "Oncology",
+  "decision": "downloaded open source",
+  "rejected": [],
+  "unresolvedReason": null,
+  "source": {
+    "title": "Review of pancreatic adenocarcinoma risk, diagnosis, treatment, and outcomes",
+    "year": null,
+    "pmid": null,
+    "pmcid": null,
+    "doi": null,
+    "url": null,
+    "sourceBody": "open review",
+    "type": "review",
+    "whyItFits": "An open review that states prognosis, the limits of CA19-9, adjuvant gemcitabine in CONKO-001, and FOLFIRINOX versus gemcitabine."
+  },
+  "evidenceTextFile": "data/part4-topic-evidence/434/evidence.txt",
+  "evidenceChars": 56243
+}

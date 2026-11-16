@@ -1,0 +1,27 @@
+{
+  "takeaway": "Anticoagulate AF when estimated annual thromboembolic risk is at least 2% (CHA2DS2-VASc at least 2 in men or 3 in women); anticoagulation is reasonable at 1% to under 2% [1].",
+  "clinicalQuestion": "Who with atrial fibrillation should receive anticoagulation to prevent stroke?",
+  "background": "The 2023 multisociety guideline updates stroke-prevention advice from the 2014 guideline and 2019 focused update [1].",
+  "studyDesign": "Clinical practice guideline with class of recommendation and level of evidence.",
+  "population": "Patients with atrial fibrillation.",
+  "intervention": "Oral anticoagulation.",
+  "comparator": "No anticoagulation, stratified by estimated annual risk.",
+  "primaryOutcome": "Prevention of stroke and systemic thromboembolism.",
+  "mainFindings": "Class 1, level A: anticoagulation is recommended when estimated annual thromboembolic risk is at least 2% per year, for example CHA2DS2-VASc of at least 2 in men and at least 3 in women. Class 2a, level A: anticoagulation is reasonable when risk is at least 1% but under 2% per year, equivalent to a score of 1 in men and 2 in women [1].",
+  "clinicalMeaning": "The decision is risk-based. A score that maps to 2% or more per year is a recommendation, not a suggestion [1].",
+  "limitations": "The extracted recommendation uses annual risk, with CHA2DS2-VASc as the example. Other modifiers in the full guideline are not repeated here [1].",
+  "bottomLine": "Recommend anticoagulation at CHA2DS2-VASc of 2 or more in men and 3 or more in women; consider it at 1 in men and 2 in women [1].",
+  "practiceImplication": "Do not use one threshold for both sexes [1].",
+  "safetyOutcomes": [],
+  "trustRating": "HIGH",
+  "trustRationale": "Current ACC/AHA/ACCP/HRS guideline recommendation with Class 1, Level A evidence for the higher-risk group.",
+  "quizFocusPoints": [
+    "2% threshold",
+    "sex-specific CHA2DS2-VASc",
+    "Class 2a intermediate risk"
+  ],
+  "whatNotToOverclaim": [
+    "Do not apply the Class 1 recommendation to a man with a score of 1.",
+    "An AF-burden consensus statement is not this anticoagulation recommendation."
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "takeaway": "Overall survival, time from randomisation to death from any cause in the intent-to-treat population, is usually the preferred cancer endpoint. Accelerated approval can rest on a surrogate reasonably likely to predict benefit, but the clinical benefit must later be verified [1].",
+  "clinicalQuestion": "Which cancer-trial endpoint does FDA prefer, and what may support accelerated approval?",
+  "background": "FDA guidance for industry, December 2018, from the Oncology Center of Excellence [1].",
+  "studyDesign": "Regulatory guidance.",
+  "setting": "Trials intended to support approval of cancer drugs and biologics.",
+  "population": "Participants in cancer registration trials.",
+  "intervention": "Choice of overall survival or of a surrogate under accelerated approval.",
+  "comparator": "External, non-randomised controls for a time-to-event endpoint.",
+  "primaryOutcome": "A measure FDA considers evidence of clinical benefit.",
+  "mainFindings": "Overall survival is the time from randomisation until death from any cause and is measured in the intent-to-treat population. It is considered the most reliable cancer endpoint and is usually preferred when it can be assessed. It is precise, documented by the date of death, and measurement bias is not a factor. It should be evaluated in randomised controlled studies. External controls are seldom reliable for time-to-event endpoints, including overall survival, because apparent differences can come from patient selection, better imaging, or better supportive care. A statistically significant survival improvement can be considered clinically significant if toxicity is acceptable. Accelerated approval, from the 1992 regulations, is for serious or life-threatening disease and generally requires improvement over available therapy, or a therapy where none exists. Approval may use a surrogate reasonably likely to predict clinical benefit, or an earlier clinical endpoint reasonably likely to predict irreversible morbidity or mortality. The surrogate is less well established than surrogates used for traditional approval. Approval is conditional on studies that verify the clinical benefit [1].",
+  "clinicalMeaning": "Prefer a randomised survival comparison when follow-up is feasible. A response-rate approval is provisional until benefit is confirmed [1].",
+  "limitations": "This summary uses the survival and accelerated-approval sections. It does not restate every tumour-assessment formula [1].",
+  "bottomLine": "Randomised overall survival is the preferred endpoint. Accelerated approval borrows a likely surrogate and then has to prove the benefit [1].",
+  "practiceImplication": "Do not accept a historical control as proof of a survival gain [1].",
+  "safetyOutcomes": [
+    "Clinical significance of a survival gain still depends on an acceptable toxicity profile."
+  ],
+  "trustRating": "HIGH",
+  "trustRationale": "FDA guidance stating the endpoint definitions used for approval.",
+  "quizFocusPoints": [
+    "ITT overall survival",
+    "external controls seldom reliable",
+    "accelerated approval must be verified"
+  ],
+  "whatNotToOverclaim": [
+    "Do not define progression-free survival with a formula this summary did not quote."
+  ]
+}

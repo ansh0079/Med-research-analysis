@@ -1,0 +1,107 @@
+[
+  {
+    "type": "multiple_choice",
+    "questionType": "guideline",
+    "question": "Which nodules does the ATA guideline say should generally be evaluated?",
+    "options": {
+      "A": "All nodules seen on any scan",
+      "B": "Only nodules under 5 mm",
+      "C": "Nodules larger than 1 cm",
+      "D": "Only purely cystic nodules",
+      "E": "Only nodules in children"
+    },
+    "correctAnswer": "C",
+    "correctAnswerText": "Nodules larger than 1 cm",
+    "explanation": "Generally only nodules larger than 1 cm should be evaluated, because they have greater potential to be clinically significant cancers [1].",
+    "difficulty": "easy",
+    "sourceArticle": "2015 American Thyroid Association Management Guidelines for Adult Patients with Thyroid Nodules and Differentiated Thyroid Cancer",
+    "sourceReference": "PMID 26462967",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "guideline",
+    "question": "A PET scan shows a focal FDG-avid thyroid nodule measuring 1.4 cm. What does the ATA recommend?",
+    "options": {
+      "A": "FNA",
+      "B": "No further test ever",
+      "C": "Immediate thyroidectomy without cytology",
+      "D": "Radioiodine ablation",
+      "E": "Ignore it because PET cannot see thyroid tissue"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "FNA",
+    "explanation": "A focal FDG-PET-positive nodule conveys increased cancer risk, and FNA is recommended when the nodule is at least 1 cm. That is a strong recommendation with moderate-quality evidence [1].",
+    "difficulty": "medium",
+    "sourceArticle": "2015 American Thyroid Association Management Guidelines for Adult Patients with Thyroid Nodules and Differentiated Thyroid Cancer",
+    "sourceReference": "PMID 26462967",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "guideline",
+    "question": "FDG uptake is diffuse and ultrasound shows chronic lymphocytic thyroiditis. What does the strong recommendation say?",
+    "options": {
+      "A": "Further imaging or FNA is not required",
+      "B": "Total thyroidectomy this week",
+      "C": "FNA of every lobe",
+      "D": "Start chemotherapy",
+      "E": "Repeat PET monthly"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "Further imaging or FNA is not required",
+    "explanation": "Diffuse FDG-PET uptake with sonographic and clinical chronic lymphocytic thyroiditis does not require further imaging or FNA (strong recommendation) [1].",
+    "difficulty": "medium",
+    "sourceArticle": "2015 American Thyroid Association Management Guidelines for Adult Patients with Thyroid Nodules and Differentiated Thyroid Cancer",
+    "sourceReference": "PMID 26462967",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "clinical_application",
+    "question": "When might a nodule under 1 cm still need evaluation?",
+    "options": {
+      "A": "Never",
+      "B": "Clinical symptoms or associated lymphadenopathy",
+      "C": "Only if the patient requests a scan",
+      "D": "Only after age 80",
+      "E": "If it is purely cystic and asymptomatic"
+    },
+    "correctAnswer": "B",
+    "correctAnswerText": "Clinical symptoms or associated lymphadenopathy",
+    "explanation": "Occasionally nodules under 1 cm require further evaluation because of clinical symptoms or associated lymphadenopathy [1].",
+    "difficulty": "medium",
+    "sourceArticle": "2015 American Thyroid Association Management Guidelines for Adult Patients with Thyroid Nodules and Differentiated Thyroid Cancer",
+    "sourceReference": "PMID 26462967",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "recall",
+    "question": "What else, besides size, guides the FNA decision in Recommendation 8?",
+    "options": {
+      "A": "Sonographic pattern",
+      "B": "Serum sodium",
+      "C": "Shoe size",
+      "D": "Fasting glucose",
+      "E": "The patient's occupation"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "Sonographic pattern",
+    "explanation": "Sonographic pattern, combined with nodule size, guides FNA decision-making in the ATA nodule algorithm [1].",
+    "difficulty": "easy",
+    "sourceArticle": "2015 American Thyroid Association Management Guidelines for Adult Patients with Thyroid Nodules and Differentiated Thyroid Cancer",
+    "sourceReference": "PMID 26462967",
+    "sourceIndices": [
+      1
+    ]
+  }
+]

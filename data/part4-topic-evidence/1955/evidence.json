@@ -1,0 +1,21 @@
+{
+  "catalogueId": "1955",
+  "topic": "Oncology Clinical Trial Endpoints",
+  "specialty": "Oncology",
+  "decision": "downloaded open source",
+  "rejected": [],
+  "unresolvedReason": null,
+  "source": {
+    "title": "Clinical Trial Endpoints for the Approval of Cancer Drugs and Biologics: Guidance for Industry",
+    "year": 2018,
+    "pmid": null,
+    "pmcid": null,
+    "doi": null,
+    "url": "https://www.fda.gov/media/71195/download",
+    "sourceBody": "FDA",
+    "type": "regulatory_guidance",
+    "whyItFits": "FDA's 2018 guidance defines overall survival and the accelerated-approval standard for a surrogate."
+  },
+  "evidenceTextFile": "data/part4-topic-evidence/1955/evidence.txt",
+  "evidenceChars": 54501
+}

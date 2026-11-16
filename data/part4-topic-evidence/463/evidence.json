@@ -1,0 +1,21 @@
+{
+  "catalogueId": "463",
+  "topic": "Hypercalcaemia of Malignancy",
+  "specialty": "Oncology",
+  "decision": "downloaded open source",
+  "rejected": [],
+  "unresolvedReason": null,
+  "source": {
+    "title": "Hypercalcemia of Malignancy: An Update on Pathogenesis and Management",
+    "year": 2015,
+    "pmid": "26713296",
+    "pmcid": "PMC4683803",
+    "doi": "10.4103/1947-2714.170600",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4683803/",
+    "sourceBody": "North American Journal of Medical Sciences",
+    "type": "review",
+    "whyItFits": "Open review of the mechanisms and the acute treatment sequence for hypercalcaemia of malignancy."
+  },
+  "evidenceTextFile": "data/part4-topic-evidence/463/evidence.txt",
+  "evidenceChars": 38640
+}

@@ -1,0 +1,107 @@
+[
+  {
+    "type": "multiple_choice",
+    "questionType": "guideline",
+    "question": "Secondary thyroid disease is not suspected in an adult. Which initial test does NG145 say to consider?",
+    "options": {
+      "A": "TSH alone",
+      "B": "FT3 alone",
+      "C": "Thyroid ultrasound first",
+      "D": "Thyroglobulin",
+      "E": "Calcitonin"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "TSH alone",
+    "explanation": "NG145 says consider measuring TSH alone for adults when secondary thyroid dysfunction is not suspected [1].",
+    "difficulty": "easy",
+    "sourceArticle": "Thyroid disease: assessment and management (NICE guideline NG145)",
+    "sourceReference": "PMID 31996347",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "guideline",
+    "question": "TSH is below the reference range on that initial test. What should be measured in the same sample?",
+    "options": {
+      "A": "Nothing further",
+      "B": "FT4 and FT3",
+      "C": "FT4 only",
+      "D": "PTH",
+      "E": "Cortisol only"
+    },
+    "correctAnswer": "B",
+    "correctAnswerText": "FT4 and FT3",
+    "explanation": "If TSH is below the reference range, measure FT4 and FT3 in the same sample. If TSH is above the range, measure FT4 in the same sample [1].",
+    "difficulty": "medium",
+    "sourceArticle": "Thyroid disease: assessment and management (NICE guideline NG145)",
+    "sourceReference": "PMID 31996347",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "guideline",
+    "question": "TSH is above the reference range. Which free hormone does NG145 add?",
+    "options": {
+      "A": "FT4",
+      "B": "FT3 only",
+      "C": "Both FT3 and reverse T3",
+      "D": "None",
+      "E": "Thyroid-binding globulin"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "FT4",
+    "explanation": "If TSH is above the reference range, measure free thyroxine (FT4) in the same sample [1].",
+    "difficulty": "medium",
+    "sourceArticle": "Thyroid disease: assessment and management (NICE guideline NG145)",
+    "sourceReference": "PMID 31996347",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "guideline",
+    "question": "What is first-line treatment of primary hypothyroidism in NG145?",
+    "options": {
+      "A": "Levothyroxine",
+      "B": "Liothyronine monotherapy",
+      "C": "Carbimazole",
+      "D": "Radioiodine",
+      "E": "Routine combination T4 and T3"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "Levothyroxine",
+    "explanation": "Offer levothyroxine as first-line treatment for adults, children, and young people with primary hypothyroidism [1].",
+    "difficulty": "easy",
+    "sourceArticle": "Thyroid disease: assessment and management (NICE guideline NG145)",
+    "sourceReference": "PMID 31996347",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "pitfall",
+    "question": "Why does NG145 say not to offer liothyronine routinely?",
+    "options": {
+      "A": "It is first-line in pregnancy only",
+      "B": "There is not enough evidence that it offers benefit over levothyroxine, alone or in combination",
+      "C": "It is more effective than levothyroxine in every trial",
+      "D": "It replaces the need for TSH monitoring",
+      "E": "It is recommended for all subclinical disease"
+    },
+    "correctAnswer": "B",
+    "correctAnswerText": "There is not enough evidence that it offers benefit over levothyroxine, alone or in combination",
+    "explanation": "Do not routinely offer liothyronine for primary hypothyroidism, either alone or combined with levothyroxine, because there is not enough evidence that it offers additional benefit [1].",
+    "difficulty": "medium",
+    "sourceArticle": "Thyroid disease: assessment and management (NICE guideline NG145)",
+    "sourceReference": "PMID 31996347",
+    "sourceIndices": [
+      1
+    ]
+  }
+]

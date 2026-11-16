@@ -1,0 +1,107 @@
+[
+  {
+    "type": "multiple_choice",
+    "questionType": "recall",
+    "question": "The most common histologic subtype is:",
+    "options": {
+      "A": "Clear cell, 75–80%, with VHL inactivation",
+      "B": "Papillary in 90%",
+      "C": "Transitional cell",
+      "D": "Oncocytoma as the malignant majority",
+      "E": "Lymphoma"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "Clear cell, 75–80%, with VHL inactivation",
+    "explanation": "Clear-cell renal cell carcinoma is 75–80% of cases and is characterised by inactivation of VHL [1].",
+    "difficulty": "easy",
+    "sourceArticle": "Renal Cell Carcinoma",
+    "sourceReference": "PMID 39196544",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "recall",
+    "question": "How are many renal cell carcinomas found?",
+    "options": {
+      "A": "Incidentally, in 37–61%",
+      "B": "Only after haematuria in every case",
+      "C": "By a screening programme that finds them all",
+      "D": "At autopsy only",
+      "E": "Never on ultrasound"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "Incidentally, in 37–61%",
+    "explanation": "Many patients, 37–61%, are diagnosed incidentally on abdominal imaging [1].",
+    "difficulty": "easy",
+    "sourceArticle": "Renal Cell Carcinoma",
+    "sourceReference": "PMID 39196544",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "clinical_application",
+    "question": "Partial nephrectomy for a mass under 4 cm can achieve:",
+    "options": {
+      "A": "Five-year cancer-specific survival above 94%",
+      "B": "Five-year survival of 20%",
+      "C": "No cancer-specific survival figure",
+      "D": "Cure only if the mass is over 10 cm",
+      "E": "A median survival of 6 months"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "Five-year cancer-specific survival above 94%",
+    "explanation": "For renal masses under 4 cm, partial nephrectomy can result in five-year cancer-specific survival of more than 94% [1].",
+    "difficulty": "medium",
+    "sourceArticle": "Renal Cell Carcinoma",
+    "sourceReference": "PMID 39196544",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "clinical_application",
+    "question": "Active surveillance is especially relevant for:",
+    "options": {
+      "A": "Masses under 2 cm",
+      "B": "Tumour thrombus in the atrium",
+      "C": "Every metastatic patient",
+      "D": "Masses over 10 cm",
+      "E": "Collecting-duct carcinoma"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "Masses under 2 cm",
+    "explanation": "Active surveillance is an option for some patients, especially those with renal masses under 2 cm [1].",
+    "difficulty": "medium",
+    "sourceArticle": "Renal Cell Carcinoma",
+    "sourceReference": "PMID 39196544",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "trial_interpretation",
+    "question": "Metastatic immune-checkpoint combinations, with or without a tyrosine-kinase inhibitor, are associated with:",
+    "options": {
+      "A": "Response in 42–71% and median overall survival of 46–56 months",
+      "B": "No responses",
+      "C": "Median survival of 6 months in every series",
+      "D": "Cure without drug therapy",
+      "E": "Benefit only in clear-cell tumours under 1 cm"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "Response in 42–71% and median overall survival of 46–56 months",
+    "explanation": "The review reports tumour response of 42–71% and median overall survival of 46–56 months for these combinations [1].",
+    "difficulty": "hard",
+    "sourceArticle": "Renal Cell Carcinoma",
+    "sourceReference": "PMID 39196544",
+    "sourceIndices": [
+      1
+    ]
+  }
+]

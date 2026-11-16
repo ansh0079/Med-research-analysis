@@ -1,0 +1,27 @@
+{
+  "takeaway": "Once severe aortic stenosis becomes symptomatic, most patients die within 2–3 years without valve intervention; up to half of asymptomatic patients become symptomatic within two years [1].",
+  "clinicalQuestion": "What is the prognosis of severe aortic stenosis, and when does that prognosis justify valve replacement?",
+  "background": "Calcific aortic stenosis is common in older adults. Symptoms mark a change in natural history [1].",
+  "studyDesign": "Narrative review of natural history, guidelines, and early-intervention trials.",
+  "population": "Adults with severe aortic stenosis, emphasising asymptomatic severe disease.",
+  "intervention": "Aortic valve replacement when indicated.",
+  "comparator": "Conservative management after symptoms develop.",
+  "primaryOutcome": "Progression to symptoms and survival without intervention.",
+  "mainFindings": "Prevalence is cited as 1–2% at age 65 or older and about 12% over 75. Up to 50% of asymptomatic patients progress to symptomatic stenosis over two years. Classic symptoms are angina, syncope, and dyspnoea. Most symptomatic cases are fatal within 2–3 years without valvular intervention. The review states that the 2020 ACC/AHA guideline gives a Class I recommendation for AVR in symptomatic severe high-gradient, low-flow low-gradient with reduced LVEF, and low-flow low-gradient with normal LVEF disease, and a Class I recommendation for asymptomatic patients with LVEF under 50% [1].",
+  "clinicalMeaning": "Symptoms or reduced ejection fraction change severe stenosis from a watched lesion into a lesion with a short untreated survival [1].",
+  "limitations": "This is a review, not a new cohort. It summarises the 2020 guideline rather than replacing it, and it focuses on asymptomatic severe disease [1].",
+  "bottomLine": "Tell a symptomatic patient that untreated severe aortic stenosis is usually fatal within 2–3 years, and do not wait for symptoms if LVEF is already under 50% [1].",
+  "practiceImplication": "Use symptoms and LVEF under 50% as the Class I triggers the review attributes to the 2020 ACC/AHA guideline [1].",
+  "safetyOutcomes": [],
+  "trustRating": "MODERATE",
+  "trustRationale": "Open contemporary review that quotes natural-history figures and guideline classes; it is not the guideline document itself.",
+  "quizFocusPoints": [
+    "Untreated symptomatic survival",
+    "Two-year progression",
+    "Class I LVEF threshold"
+  ],
+  "whatNotToOverclaim": [
+    "Do not apply the 2–3 year figure to asymptomatic severe stenosis.",
+    "The pulmonary-hypertension-after-TAVR paper does not answer general prognosis."
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "catalogueId": "145",
+  "topic": "Cervical Cancer",
+  "specialty": "Oncology",
+  "decision": "downloaded open source",
+  "rejected": [
+    "Self-collected HPV screening advice is not the treatment guideline for established cervical cancer."
+  ],
+  "unresolvedReason": null,
+  "source": {
+    "title": "Cervical cancer: ESMO Clinical Practice Guideline for diagnosis, treatment and follow-up",
+    "year": 2026,
+    "pmid": "42914498",
+    "pmcid": "PMC13728282",
+    "doi": "10.1016/j.esmoop.2026.108364",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC13728282/",
+    "sourceBody": "ESMO Open",
+    "type": "clinical_practice_guideline",
+    "whyItFits": "Current ESMO cervical-cancer guideline covering HPV, histology, staging, and graded recommendations."
+  },
+  "evidenceTextFile": "data/part4-topic-evidence/145/evidence.txt",
+  "evidenceChars": 64606
+}

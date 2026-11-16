@@ -1,0 +1,29 @@
+{
+  "takeaway": "Statins reduce major vascular events at all ages studied, with no adverse effect on cancer or non-vascular mortality at any age, but direct evidence is thinner for primary prevention over age 75 without occlusive vascular disease [1].",
+  "clinicalQuestion": "Are statins effective and safe in older adults, including those older than 75?",
+  "background": "Efficacy and safety of statins in older people had been uncertain [1].",
+  "studyDesign": "Individual-participant meta-analysis of 28 randomised trials (Cholesterol Treatment Trialists).",
+  "population": "186,854 participants; 14,483 (8%) were older than 75 at randomisation. Median follow-up 4.9 years.",
+  "intervention": "Statin therapy or a more intensive statin regimen.",
+  "comparator": "Control or a less intensive regimen, per 1.0 mmol/L LDL reduction.",
+  "primaryOutcome": "Major vascular events, cause-specific mortality, and cancer.",
+  "mainFindings": "Overall, a 21% proportional reduction in major vascular events per 1.0 mmol/L lower LDL (RR 0.79, 95% CI 0.77–0.81). Major coronary events RR 0.76 (0.73–0.79), with a trend to smaller proportional reductions at older ages (p-trend 0.009). Stroke RR 0.84 (0.80–0.89) without a significant age trend. Statin therapy had no effect at any age on non-vascular mortality, cancer death, or cancer incidence. The authors state there is less direct evidence of benefit among patients older than 75 who do not already have occlusive vascular disease [1].",
+  "clinicalMeaning": "Age alone is not a reason to expect cancer harm or loss of vascular benefit, but primary prevention over 75 rests on less direct evidence [1].",
+  "limitations": "Effects are per 1.0 mmol/L LDL reduction, not a single dose. Four trials limited to heart failure or dialysis were excluded in a sensitivity analysis because statins had not been shown effective there [1].",
+  "bottomLine": "Use a statin in older adults with vascular disease; do not cite this paper as evidence of a cancer hazard. Be more cautious claiming primary-prevention benefit over age 75 without vascular disease [1].",
+  "practiceImplication": "Discuss vascular-event reduction and the absence of a cancer signal; do not promise the same direct evidence for primary prevention after 75 [1].",
+  "safetyOutcomes": [
+    "No effect at any age on non-vascular mortality, cancer death, or cancer incidence."
+  ],
+  "trustRating": "HIGH",
+  "trustRationale": "Individual-participant data from 28 randomised trials, with age-stratified safety analyses.",
+  "quizFocusPoints": [
+    "No cancer signal by age",
+    "21% major vascular event reduction",
+    "thinner evidence over 75 without vascular disease"
+  ],
+  "whatNotToOverclaim": [
+    "Do not present the cited historical myopathy estimate of 1 per 10,000 as a result calculated in this meta-analysis.",
+    "A high-intensity-versus-ezetimibe trial is not an older-adult safety study."
+  ]
+}

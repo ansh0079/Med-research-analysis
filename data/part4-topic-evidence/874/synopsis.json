@@ -1,0 +1,30 @@
+{
+  "takeaway": "Early palliative care, begun at or soon after the diagnosis of advanced cancer, slightly improved quality of life (SMD 0.27) and symptom intensity (SMD −0.23). Survival and depression effects were uncertain [1].",
+  "clinicalQuestion": "What does early palliative care change, compared with usual cancer care?",
+  "background": "Usual care often starts palliative measures when disease-modifying treatment has failed or death is expected. Early palliative care starts much earlier and is often combined with chemotherapy or radiotherapy [1].",
+  "studyDesign": "Cochrane systematic review and meta-analysis of randomised and cluster-randomised trials, searched to October 2016.",
+  "setting": "Mostly outpatient care in Australia, Canada, Italy, and the United States.",
+  "population": "1614 adults with advanced cancer in seven trials. Survival was expected to be about two years or less.",
+  "intervention": "Early palliative care: communication about prognosis, advance care planning, symptom control, and, in trials such as Temel 2010, establishing goals of care.",
+  "comparator": "Usual or standard cancer care.",
+  "primaryOutcome": "Health-related quality of life, survival, depression, and symptom intensity.",
+  "mainFindings": "Quality of life improved by a small amount (SMD 0.27; 95% CI 0.15 to 0.38; 1028 participants; low certainty), about 4.59 FACT-G points (95% CI 2.55 to 6.46). Symptom intensity was lower (SMD −0.23; 95% CI −0.35 to −0.10; 1054 participants; low certainty). Death hazard ratio was 0.85 (95% CI 0.56 to 1.28; four studies, 800 participants; very low certainty), so a survival difference was not shown. Depression was not significantly different (SMD −0.11; 95% CI −0.26 to 0.03; very low certainty). A consensus definition cited in the review calls palliative care early when it is given within eight weeks of the diagnosis of advanced cancer. The model of delivery did not change the results [1].",
+  "clinicalMeaning": "Offer the conversation about prognosis and goals early. Do not promise longer survival from the palliative-care referral itself [1].",
+  "limitations": "Certainty is low or very low. The included trials did not show a significant difference in place of death. Hospice-referral rates were not a pooled primary result of this review [1].",
+  "bottomLine": "Early palliative care may slightly improve quality of life and symptoms. Effects on survival and depression are uncertain [1].",
+  "practiceImplication": "Start it near the diagnosis of incurable cancer, alongside cancer treatment, and include advance care planning [1].",
+  "safetyOutcomes": [
+    "One trial reported more severe pain and poor appetite scores; six trials' investigators reported no adverse events on request."
+  ],
+  "trustRating": "MODERATE",
+  "trustRationale": "Cochrane review of seven trials, with GRADE ratings of low or very low certainty.",
+  "quizFocusPoints": [
+    "SMD 0.27 for quality of life",
+    "survival HR crosses 1",
+    "within eight weeks"
+  ],
+  "whatNotToOverclaim": [
+    "Do not say early palliative care prolongs life.",
+    "Do not quote a hospice-referral percentage this review did not pool."
+  ]
+}

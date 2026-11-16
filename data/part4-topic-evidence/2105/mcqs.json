@@ -1,0 +1,107 @@
+[
+  {
+    "type": "multiple_choice",
+    "questionType": "guideline",
+    "question": "Which phrase matches the 2021 guideline's initial fluid target?",
+    "options": {
+      "A": "Suggest at least 30 mL/kg IV crystalloid within 3 hours (weak, low quality)",
+      "B": "Strongly recommend 60 mL/kg in 1 hour",
+      "C": "Target a central venous pressure of 8–12 mmHg",
+      "D": "Give no fluid in the first 6 hours",
+      "E": "Use starch to reach a urine output of 2 mL/kg/h"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "Suggest at least 30 mL/kg IV crystalloid within 3 hours (weak, low quality)",
+    "explanation": "The suggestion is at least 30 mL/kg of IV crystalloid within the first 3 hours, graded weak with low-quality evidence [1].",
+    "difficulty": "easy",
+    "sourceArticle": "Surviving Sepsis Campaign: International Guidelines for Management of Sepsis and Septic Shock 2021",
+    "sourceReference": "PMID 34599691",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "guideline",
+    "question": "Why is 30 mL/kg not a strong recommendation in 2021?",
+    "options": {
+      "A": "There are no prospective trials comparing different initial volumes",
+      "B": "The panel found high-quality harm from any crystalloid",
+      "C": "30 mL/kg was never mentioned",
+      "D": "Only children were studied",
+      "E": "The number came from a single negative trial of albumin"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "There are no prospective trials comparing different initial volumes",
+    "explanation": "The panel notes that the fixed initial volume came from observational evidence and that there are no prospective intervention studies comparing different initial volumes in sepsis or septic shock [1].",
+    "difficulty": "hard",
+    "sourceArticle": "Surviving Sepsis Campaign: International Guidelines for Management of Sepsis and Septic Shock 2021",
+    "sourceReference": "PMID 34599691",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "guideline",
+    "question": "What should guide fluid after the initial resuscitation, according to the guideline?",
+    "options": {
+      "A": "Dynamic measures rather than examination or static parameters",
+      "B": "A repeated 30 mL/kg every hour",
+      "C": "Daily body weight only",
+      "D": "A mandatory pulmonary-artery catheter",
+      "E": "Serum sodium alone"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "Dynamic measures rather than examination or static parameters",
+    "explanation": "The guideline suggests dynamic measures to guide fluid resuscitation over physical examination or static parameters [1].",
+    "difficulty": "medium",
+    "sourceArticle": "Surviving Sepsis Campaign: International Guidelines for Management of Sepsis and Septic Shock 2021",
+    "sourceReference": "PMID 34599691",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "recall",
+    "question": "What does the guideline say about measuring lactate in suspected sepsis?",
+    "options": {
+      "A": "Suggest measuring it (weak, low-quality evidence)",
+      "B": "Never measure lactate",
+      "C": "Lactate replaces antibiotics",
+      "D": "Measure lactate only after 24 hours",
+      "E": "A lactate below 1 forbids fluids"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "Suggest measuring it (weak, low-quality evidence)",
+    "explanation": "For adults suspected of having sepsis, the guideline suggests measuring blood lactate. The recommendation is weak, with low-quality evidence, and lactate is part of the Hour-1 bundle because of its association with mortality [1].",
+    "difficulty": "medium",
+    "sourceArticle": "Surviving Sepsis Campaign: International Guidelines for Management of Sepsis and Septic Shock 2021",
+    "sourceReference": "PMID 34599691",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "pitfall",
+    "question": "A commentary titled 'what is new in 2021' is not the guideline. Which document states the fluid target?",
+    "options": {
+      "A": "The 2021 Surviving Sepsis Campaign guideline itself",
+      "B": "A near-drowning case report",
+      "C": "A 2012 file that discusses paediatric glucose",
+      "D": "A pancreatitis trial",
+      "E": "An analgesia review"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "The 2021 Surviving Sepsis Campaign guideline itself",
+    "explanation": "The fluid volume, its weak grading, and the dynamic-measure suggestion are in the 2021 guideline text used for this topic [1].",
+    "difficulty": "medium",
+    "sourceArticle": "Surviving Sepsis Campaign: International Guidelines for Management of Sepsis and Septic Shock 2021",
+    "sourceReference": "PMID 34599691",
+    "sourceIndices": [
+      1
+    ]
+  }
+]

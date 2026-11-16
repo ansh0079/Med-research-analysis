@@ -1,0 +1,27 @@
+{
+  "takeaway": "SVCS is an emergency when there is laryngeal or cerebral oedema. A stent relieves symptoms quickly and still allows a biopsy. Only radiotherapy and chemotherapy can treat a malignant cause with curative intent [1].",
+  "clinicalQuestion": "When is superior vena cava syndrome an emergency, and what does a stent add?",
+  "background": "SVCS is a relatively common consequence of mediastinal malignancy and causes marked distress [1].",
+  "studyDesign": "Narrative review.",
+  "setting": "Oncology and interventional radiology.",
+  "population": "Patients with superior vena cava syndrome.",
+  "intervention": "Anticoagulation or antibiotics for benign causes; stent, radiotherapy, and chemotherapy for malignant causes.",
+  "comparator": "Irradiating before a tissue diagnosis in a stable patient.",
+  "primaryOutcome": "Symptom relief without losing the chance of a histologic diagnosis.",
+  "mainFindings": "Laryngeal or cerebral oedema makes SVCS a medical emergency. Non-malignant SVCS is typically infectious or thrombotic and is managed with antibiotics or anticoagulation. Radiotherapy has long been a mainstay of malignant SVCS, and chemotherapy is also used. Over about 20 years, percutaneous stenting has become a palliative option. Radiotherapy and chemotherapy remain the only modalities that can provide curative treatment of a malignant cause. Stenting does not alter local tissue, so a subsequent biopsy and histologic diagnosis remain possible. Emergent laryngeal or cerebral oedema is treated with endovascular stenting followed by radiotherapy. Most other patients should be offered prompt stent palliation, and accurate diagnosis and biopsy should precede emergent treatment when the patient is stable [1].",
+  "clinicalMeaning": "If the airway or brain is involved, stent and then irradiate. If the patient is stable, get tissue first [1].",
+  "limitations": "Device brands and radiation doses are not in this summary [1].",
+  "bottomLine": "Emergency equals laryngeal or cerebral oedema. Stent for speed. Tissue if there is time. Radiotherapy or chemotherapy for the cancer [1].",
+  "practiceImplication": "Do not anticoagulate a malignant obstruction as if it were a simple thrombus, and do not irradiate a thrombus as if it were a tumour [1].",
+  "safetyOutcomes": [],
+  "trustRating": "MODERATE",
+  "trustRationale": "Open clinical review with a clear emergency threshold. It is not a graded guideline.",
+  "quizFocusPoints": [
+    "laryngeal or cerebral oedema",
+    "stent preserves biopsy",
+    "stable patients are biopsied first"
+  ],
+  "whatNotToOverclaim": [
+    "Do not quote a stent patency percentage this summary does not contain."
+  ]
+}

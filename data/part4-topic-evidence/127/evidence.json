@@ -1,0 +1,21 @@
+{
+  "catalogueId": "127",
+  "topic": "Hyperviscosity Syndrome",
+  "specialty": "Oncology",
+  "decision": "downloaded open source",
+  "rejected": [],
+  "unresolvedReason": null,
+  "source": {
+    "title": "Acute hyperviscosity: syndromes and management",
+    "year": 2018,
+    "pmid": "30104220",
+    "pmcid": "PMC6161773",
+    "doi": "10.1182/blood-2018-06-846816",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6161773/",
+    "sourceBody": "Blood",
+    "type": "review",
+    "whyItFits": "Gertz's open review of when to exchange plasma, what viscosity means, and the rituximab IgM flare."
+  },
+  "evidenceTextFile": "data/part4-topic-evidence/127/evidence.txt",
+  "evidenceChars": 28237
+}

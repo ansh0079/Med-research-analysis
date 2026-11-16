@@ -1,0 +1,107 @@
+[
+  {
+    "type": "multiple_choice",
+    "questionType": "recall",
+    "question": "A man with severe aortic stenosis develops exertional dyspnoea and refuses valve replacement. Which untreated prognosis does the review state?",
+    "options": {
+      "A": "Most such cases are fatal within 2–3 years",
+      "B": "Median survival exceeds 10 years",
+      "C": "Symptoms do not change prognosis",
+      "D": "Death is rare unless the valve area is under 0.5 cm2",
+      "E": "Syncope is benign if angina is absent"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "Most such cases are fatal within 2–3 years",
+    "explanation": "The review states that emergence of symptoms is ominous and that most cases are fatal within 2–3 years of symptom onset without valvular intervention. Angina, syncope, and dyspnoea are the classic symptoms [1].",
+    "difficulty": "easy",
+    "sourceArticle": "A Contemporary Approach to the Management of Asymptomatic Severe Aortic Stenosis",
+    "sourceReference": "PMID 42123138",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "recall",
+    "question": "What proportion of asymptomatic patients does the review say progress to symptomatic aortic stenosis over two years?",
+    "options": {
+      "A": "Under 5%",
+      "B": "About 10%",
+      "C": "Up to 50%",
+      "D": "About 90%",
+      "E": "None, if the gradient is high"
+    },
+    "correctAnswer": "C",
+    "correctAnswerText": "Up to 50%",
+    "explanation": "The review states that up to 50% of patients with asymptomatic aortic stenosis progress to symptomatic disease over two years [1].",
+    "difficulty": "medium",
+    "sourceArticle": "A Contemporary Approach to the Management of Asymptomatic Severe Aortic Stenosis",
+    "sourceReference": "PMID 42123138",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "guideline",
+    "question": "According to the review's account of the 2020 ACC/AHA guideline, which asymptomatic patient has a Class I indication for AVR?",
+    "options": {
+      "A": "LVEF 60% and no symptoms",
+      "B": "LVEF under 50%",
+      "C": "Moderate stenosis with a bicuspid valve",
+      "D": "Any patient older than 80",
+      "E": "Mild stenosis with hypertension"
+    },
+    "correctAnswer": "B",
+    "correctAnswerText": "LVEF under 50%",
+    "explanation": "The review says AVR is strongly indicated (Class I) for asymptomatic patients with LVEF under 50%, and also when the patient is already having cardiac surgery for another reason [1].",
+    "difficulty": "medium",
+    "sourceArticle": "A Contemporary Approach to the Management of Asymptomatic Severe Aortic Stenosis",
+    "sourceReference": "PMID 42123138",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "recall",
+    "question": "Which symptom triad does the review name for severe aortic stenosis?",
+    "options": {
+      "A": "Fever, rash, and murmur",
+      "B": "Angina, syncope, and dyspnoea",
+      "C": "Haemoptysis, oedema, and jaundice",
+      "D": "Palpitations, cough, and wheeze",
+      "E": "Chest wall pain, headache, and vertigo"
+    },
+    "correctAnswer": "B",
+    "correctAnswerText": "Angina, syncope, and dyspnoea",
+    "explanation": "The review lists angina, syncope, and dyspnoea as the three classic symptoms, as expected in a lesion that causes heart-failure physiology [1].",
+    "difficulty": "easy",
+    "sourceArticle": "A Contemporary Approach to the Management of Asymptomatic Severe Aortic Stenosis",
+    "sourceReference": "PMID 42123138",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "pitfall",
+    "question": "A colleague uses a paper on pulmonary hypertension after TAVR as the source for general aortic-stenosis prognosis. Why is the review a better fit?",
+    "options": {
+      "A": "It states the natural history before and after symptoms and the Class I replacement triggers",
+      "B": "It is a randomised trial of statins in mild stenosis",
+      "C": "It shows that symptoms do not affect survival",
+      "D": "It replaces echocardiography with CT for every patient",
+      "E": "It recommends medical therapy instead of AVR for symptomatic severe stenosis"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "It states the natural history before and after symptoms and the Class I replacement triggers",
+    "explanation": "The accepted review covers prevalence, progression from asymptomatic to symptomatic disease, the 2–3 year untreated survival after symptoms, and the Class I AVR indications including LVEF under 50% [1].",
+    "difficulty": "hard",
+    "sourceArticle": "A Contemporary Approach to the Management of Asymptomatic Severe Aortic Stenosis",
+    "sourceReference": "PMID 42123138",
+    "sourceIndices": [
+      1
+    ]
+  }
+]
