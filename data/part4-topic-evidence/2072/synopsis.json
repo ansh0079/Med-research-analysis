@@ -1,0 +1,36 @@
+{
+  "catalogueId": "2072",
+  "topic": "Vulvar and Vaginal Cancers",
+  "scope": "2023 ESGO guideline for patients with vulvar cancer: staging, groin assessment, sentinel nodes, and treatment of primary and recurrent disease.",
+  "keyRecommendations": [
+    {
+      "text": "FIGO and TNM are both used to stage vulvar cancer and are closely aligned; FIGO staging was last reviewed in 2021.",
+      "strength": "not_graded",
+      "population": "Vulvar cancer"
+    },
+    {
+      "text": "Ultrasound alone is the method of choice for preoperative assessment when inguinofemoral nodes are clinically palpable (suspicious or bulky), to confirm the suspicion and to judge distance from skin and vessels.",
+      "strength": "not_graded",
+      "population": "Clinically palpable groin nodes"
+    },
+    {
+      "text": "The guideline addresses surgical treatment, groin treatment, the sentinel lymph node procedure, reconstructive surgery, (chemo)radiotherapy, systemic treatment, and recurrence.",
+      "strength": "not_graded",
+      "population": "Vulvar cancer"
+    }
+  ],
+  "clinicalBottomLine": "Stage vulvar cancer with the aligned FIGO/TNM systems, assess suspicious groin nodes with ultrasound, and plan groin and primary treatment within the 2023 ESGO pathways, including sentinel-node surgery where indicated.",
+  "notableCaveats": [
+    "Vaginal-cancer treatment is not specified in the extracted vulvar guideline text, so it is not covered by these MCQs."
+  ],
+  "source": {
+    "title": "European Society of Gynaecological Oncology Guidelines for the Management of Patients with Vulvar Cancer - Update 2023.",
+    "year": 2023,
+    "pmid": "37369376",
+    "pmcid": "PMC10359596",
+    "doi": "10.1136/ijgc-2023-004486",
+    "url": "https://europepmc.org/articles/PMC10359596",
+    "sourceBody": "ESGO / Int J Gynecol Cancer",
+    "storedAs": ""
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "catalogueId": "1889",
+  "topic": "Lung cancer screening low-dose CT",
+  "scope": "National Lung Screening Trial: low-dose CT versus chest radiography, with the reported relative reduction in lung-cancer mortality.",
+  "keyRecommendations": [
+    {
+      "text": "Low-dose CT screening produced a relative reduction in mortality from lung cancer of 20.0% (95% CI 6.8 to 26.7) compared with chest radiography.",
+      "strength": "not_graded",
+      "population": "NLST participants"
+    },
+    {
+      "text": "Death from any cause was reduced by 6.7% (95% CI 1.2 to 13.6) in the low-dose CT group compared with the radiography group.",
+      "strength": "not_graded",
+      "population": "NLST participants"
+    }
+  ],
+  "clinicalBottomLine": "In the NLST, low-dose CT reduced lung-cancer mortality by a relative 20.0% versus chest radiography, and all-cause mortality by 6.7%. The comparator was radiography, not no screening.",
+  "notableCaveats": [
+    "The PMC text is the public author manuscript. USPSTF eligibility is a separate topic and is not restated as an NLST result."
+  ],
+  "source": {
+    "title": "Reduced lung-cancer mortality with low-dose computed tomographic screening.",
+    "year": 2011,
+    "pmid": "21714641",
+    "pmcid": "PMC4356534",
+    "doi": "10.1056/NEJMoa1102873",
+    "url": "https://europepmc.org/articles/PMC4356534",
+    "sourceBody": "NLST / N Engl J Med",
+    "storedAs": ""
+  }
+}

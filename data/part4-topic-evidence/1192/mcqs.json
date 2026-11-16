@@ -1,0 +1,136 @@
+{
+  "catalogueId": "1192",
+  "topic": "High Altitude Pulmonary Edema",
+  "mcqs": [
+    {
+      "id": "1192-01",
+      "question": "What untreated mortality does this review give for HAPE?",
+      "options": {
+        "A": "Approaches 50%",
+        "B": "Under 1%",
+        "C": "100% within minutes in every case",
+        "D": "Mortality is not stated",
+        "E": "HAPE is never fatal"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Approaches 50%",
+      "explanation": "The review says untreated mortality approaches 50%.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "Open review",
+          "sourceYear": 2021,
+          "sourceUrl": "https://europepmc.org/articles/PMC7947961",
+          "pmid": "33732460",
+          "pmcid": "PMC7947961",
+          "doi": "",
+          "excerpt": "Untreated mortality approaches 50%."
+        }
+      ]
+    },
+    {
+      "id": "1192-02",
+      "question": "Which treatments does the review list for HAPE?",
+      "options": {
+        "A": "Descent, oxygen, and pulmonary vasodilators",
+        "B": "Ascent to a higher camp",
+        "C": "Diuretics as the only treatment, with no descent",
+        "D": "Antibiotics alone",
+        "E": "No treatment is effective"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Descent, oxygen, and pulmonary vasodilators",
+      "explanation": "Treatment includes descent, oxygen, and pulmonary vasodilator medications.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "Open review",
+          "sourceYear": 2021,
+          "sourceUrl": "https://europepmc.org/articles/PMC7947961",
+          "pmid": "33732460",
+          "pmcid": "PMC7947961",
+          "doi": "",
+          "excerpt": "Treatment for HAPE includes descent, oxygen and pulmonary vasodilator medications"
+        }
+      ]
+    },
+    {
+      "id": "1192-03",
+      "question": "Above what altitude does the review place typical onset of HAPE?",
+      "options": {
+        "A": "After ascent above 3000 m",
+        "B": "At sea level only",
+        "C": "Below 500 m",
+        "D": "Only in a hyperbaric chamber",
+        "E": "Altitude is not mentioned"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "After ascent above 3000 m",
+      "explanation": "HAPE occurs after ascent above 3000 m.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "Open review",
+          "sourceYear": 2021,
+          "sourceUrl": "https://europepmc.org/articles/PMC7947961",
+          "pmid": "33732460",
+          "pmcid": "PMC7947961",
+          "doi": "",
+          "excerpt": "after ascent above 3000 m"
+        }
+      ]
+    },
+    {
+      "id": "1192-04",
+      "question": "What two mechanisms does the review give for HAPE?",
+      "options": {
+        "A": "Pulmonary arterial vasoconstriction raising pressure, and increased capillary permeability",
+        "B": "Left-ventricular failure",
+        "C": "Aspiration of gastric contents",
+        "D": "Pulmonary embolism as the only mechanism",
+        "E": "Bronchial infection"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Pulmonary arterial vasoconstriction raising pressure, and increased capillary permeability",
+      "explanation": "HAPE is caused by increased pulmonary pressure from widespread arterial vasoconstriction and by increased capillary permeability.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "Open review",
+          "sourceYear": 2021,
+          "sourceUrl": "https://europepmc.org/articles/PMC7947961",
+          "pmid": "33732460",
+          "pmcid": "PMC7947961",
+          "doi": "",
+          "excerpt": "increased pressure in the pulmonary circulation due to widespread pulmonary arterial vasoconstriction and an increase in capillary permeability"
+        }
+      ]
+    },
+    {
+      "id": "1192-05",
+      "question": "How does the review classify the oedema of HAPE?",
+      "options": {
+        "A": "A severe manifestation of high-altitude illness",
+        "B": "Cardiogenic oedema from mitral stenosis",
+        "C": "Pleural transudate only",
+        "D": "Lymphatic carcinoma",
+        "E": "It is not oedema"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "A severe manifestation of high-altitude illness",
+      "explanation": "HAPE is a severe high-altitude illness with pulmonary oedema.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "Open review",
+          "sourceYear": 2021,
+          "sourceUrl": "https://europepmc.org/articles/PMC7947961",
+          "pmid": "33732460",
+          "pmcid": "PMC7947961",
+          "doi": "",
+          "excerpt": "HAPE is a severe manifestation of high-altitude illness"
+        }
+      ]
+    }
+  ]
+}

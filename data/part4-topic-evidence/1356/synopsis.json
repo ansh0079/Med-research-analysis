@@ -1,0 +1,36 @@
+{
+  "catalogueId": "1356",
+  "topic": "Pulmonary Langerhans Cell Histiocytosis",
+  "scope": "Adult-disease review of pulmonary Langerhans cell histiocytosis: smoking, bronchiolar inflammation, cysts, and HRCT.",
+  "keyRecommendations": [
+    {
+      "text": "Patients are smokers, but the mechanisms by which smoking induces the disease are not known.",
+      "strength": "not_graded",
+      "population": "Pulmonary LCH"
+    },
+    {
+      "text": "Early disease is bronchiolar inflammation; advanced disease has cystic destruction.",
+      "strength": "not_graded",
+      "population": "Pulmonary LCH"
+    },
+    {
+      "text": "HRCT should be obtained in every patient because it can separate PLCH from other cystic lung diseases.",
+      "strength": "not_graded",
+      "population": "Suspected PLCH"
+    }
+  ],
+  "clinicalBottomLine": "Think of pulmonary LCH in a smoker with nodules and cysts. Get HRCT. Management depends on whether disease is limited to the lung or is multisystem.",
+  "notableCaveats": [
+    "A paediatric LCH paper was not used. BRAF treatment is not in the sentences used here."
+  ],
+  "source": {
+    "title": "Pulmonary Langerhans cell histiocytosis.",
+    "year": 2012,
+    "pmid": "22429393",
+    "pmcid": "PMC3342091",
+    "doi": "",
+    "url": "https://europepmc.org/articles/PMC3342091",
+    "sourceBody": "Open review",
+    "storedAs": ""
+  }
+}

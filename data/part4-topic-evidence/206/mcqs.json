@@ -1,0 +1,136 @@
+{
+  "catalogueId": "206",
+  "topic": "Pancoast Tumors",
+  "mcqs": [
+    {
+      "id": "206-01",
+      "question": "Which presentations does the review name for superior sulcus tumours?",
+      "options": {
+        "A": "Arm or shoulder pain, or Horner syndrome",
+        "B": "Only haematuria",
+        "C": "Only jaundice",
+        "D": "A silent peripheral nodule with no local symptoms by definition",
+        "E": "The review lists no symptoms"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Arm or shoulder pain, or Horner syndrome",
+      "explanation": "Symptoms include arm or shoulder pain or Horner syndrome.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "Open review",
+          "sourceYear": 2016,
+          "sourceUrl": "https://europepmc.org/articles/PMC4930518",
+          "pmid": "27429965",
+          "pmcid": "PMC4930518",
+          "doi": "",
+          "excerpt": "like arm or shoulder pain or Horner’s syndrome"
+        }
+      ]
+    },
+    {
+      "id": "206-02",
+      "question": "How does the review describe the original outlook?",
+      "options": {
+        "A": "Universally fatal",
+        "B": "Usually cured by resection alone in 1950",
+        "C": "A benign tumour",
+        "D": "The outlook was never described",
+        "E": "Survival was already above 80%"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Universally fatal",
+      "explanation": "They were originally deemed universally fatal.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "Open review",
+          "sourceYear": 2016,
+          "sourceUrl": "https://europepmc.org/articles/PMC4930518",
+          "pmid": "27429965",
+          "pmcid": "PMC4930518",
+          "doi": "",
+          "excerpt": "Originally deemed universally fatal"
+        }
+      ]
+    },
+    {
+      "id": "206-03",
+      "question": "What 5-year survival does the review attach to the Shaw and Paulson combination of radiotherapy and surgery?",
+      "options": {
+        "A": "Approximately 30%",
+        "B": "Approximately 5%",
+        "C": "100%",
+        "D": "The combination was not used",
+        "E": "Survival was not stated"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Approximately 30%",
+      "explanation": "Combined radiotherapy and surgery was associated with 5-year survival of approximately 30%.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "Open review",
+          "sourceYear": 2016,
+          "sourceUrl": "https://europepmc.org/articles/PMC4930518",
+          "pmid": "27429965",
+          "pmcid": "PMC4930518",
+          "doi": "",
+          "excerpt": "Shaw and Paulson introduced a new treatment paradigm with combined radiotherapy and surgery ensuring 5-year survival of approximately 30%"
+        }
+      ]
+    },
+    {
+      "id": "206-04",
+      "question": "What treatment sequence does the review say became standard in the 1990s?",
+      "options": {
+        "A": "Induction concurrent chemoradiotherapy followed by surgical resection",
+        "B": "Surgery alone with no radiation",
+        "C": "Chemotherapy without resection as the only standard",
+        "D": "Observation",
+        "E": "Radiotherapy after recurrence only"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Induction concurrent chemoradiotherapy followed by surgical resection",
+      "explanation": "Induction concurrent chemoradiotherapy followed by surgical resection became the standard approach.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "Open review",
+          "sourceYear": 2016,
+          "sourceUrl": "https://europepmc.org/articles/PMC4930518",
+          "pmid": "27429965",
+          "pmcid": "PMC4930518",
+          "doi": "",
+          "excerpt": "induction concurrent chemoradiotherapy followed by surgical resection"
+        }
+      ]
+    },
+    {
+      "id": "206-05",
+      "question": "What 5-year survival does the review cite for that trimodality era?",
+      "options": {
+        "A": "Up to 44%",
+        "B": "Up to 10%",
+        "C": "No survival figure is given",
+        "D": "90% in every series",
+        "E": "Worse than the 1956 results in the same sentence"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Up to 44%",
+      "explanation": "The text cites 5-year survival rates up to 44%.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "Open review",
+          "sourceYear": 2016,
+          "sourceUrl": "https://europepmc.org/articles/PMC4930518",
+          "pmid": "27429965",
+          "pmcid": "PMC4930518",
+          "doi": "",
+          "excerpt": "reaching 5-year survival rates up to 44%"
+        }
+      ]
+    }
+  ]
+}

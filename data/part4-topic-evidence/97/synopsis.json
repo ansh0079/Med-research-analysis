@@ -1,0 +1,36 @@
+{
+  "catalogueId": "97",
+  "topic": "Hepatopulmonary Syndrome",
+  "scope": "Open review of hepatopulmonary syndrome as a liver-disease complication with intrapulmonary vascular dilatations, shunting, and liver transplantation as the disease-modifying treatment.",
+  "keyRecommendations": [
+    {
+      "text": "HPS is a pulmonary complication of liver disease that adversely affects prognosis.",
+      "strength": "not_graded",
+      "population": "Chronic liver disease"
+    },
+    {
+      "text": "It is characterised by intrapulmonary vascular dilatations and shunts causing impaired gas exchange.",
+      "strength": "not_graded",
+      "population": "HPS"
+    },
+    {
+      "text": "Liver transplantation is the only therapeutic option and generally reverses HPS. Outcomes improved after the MELD standard-exception policy.",
+      "strength": "not_graded",
+      "population": "HPS listed for transplant"
+    }
+  ],
+  "clinicalBottomLine": "Recognise HPS as gas-exchange failure from intrapulmonary vascular dilatations in liver disease. Liver transplantation is the treatment that generally reverses it.",
+  "notableCaveats": [
+    "The stored hepatitis B guidance is a different disease and was not used. Platypnoea is not stated in the sentences used here."
+  ],
+  "source": {
+    "title": "Hepatopulmonary syndrome.",
+    "year": 2022,
+    "pmid": "36035361",
+    "pmcid": "PMC9403489",
+    "doi": "",
+    "url": "https://europepmc.org/articles/PMC9403489",
+    "sourceBody": "Open review",
+    "storedAs": ""
+  }
+}

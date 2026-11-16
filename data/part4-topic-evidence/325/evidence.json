@@ -1,0 +1,26 @@
+{
+  "catalogueId": "325",
+  "spreadsheetRow": 59,
+  "topic": "Benign lung tumors",
+  "specialty": "Pulmonology",
+  "decision": "unresolved",
+  "source": {
+    "title": "",
+    "year": "",
+    "pmid": "",
+    "pmcid": "",
+    "doi": "",
+    "url": "",
+    "sourceBody": "",
+    "storedAs": ""
+  },
+  "whyItFits": "No stored document reviews the class of benign lung neoplasms. Carcinoid-syndrome papers, Fleischner nodule guidance, and single hamartoma reports do not cover the topic. A 2025 comprehensive review is not open. Synopsis and MCQs were not written.",
+  "limitations": "No stored document reviews the class of benign lung neoplasms. Carcinoid-syndrome papers, Fleischner nodule guidance, and single hamartoma reports do not cover the topic. A 2025 comprehensive review is not open. Synopsis and MCQs were not written.",
+  "search": [
+    "In-app corpus and question-repair texts for benign lung tumour, hamartoma, and carcinoid.",
+    "Europe PMC title search for an open review of benign lung neoplasms.",
+    "StatPearls NBK539806 could not be downloaded (site challenge; PubMed returns the abstract only)."
+  ],
+  "synopsisWritten": false,
+  "mcqsWritten": false
+}

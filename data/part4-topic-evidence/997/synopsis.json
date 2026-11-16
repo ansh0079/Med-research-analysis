@@ -1,0 +1,36 @@
+{
+  "catalogueId": "997",
+  "topic": "Obstructive Sleep Apnea",
+  "scope": "AASM 2019 PAP guideline. The PMC XML has no article body; the abstract contains the recommendation statements used here.",
+  "keyRecommendations": [
+    {
+      "text": "Use PAP rather than no therapy for OSA with excessive sleepiness (strong).",
+      "strength": "strong",
+      "population": "Adults with OSA and excessive sleepiness"
+    },
+    {
+      "text": "Start PAP with home APAP or in-laboratory titration when there are no significant comorbidities (strong). Continue with CPAP or APAP (strong).",
+      "strength": "strong",
+      "population": "Adults with OSA without significant comorbidities"
+    },
+    {
+      "text": "Educational interventions at initiation are a strong recommendation. PAP for impaired sleep-related quality of life or comorbid hypertension is conditional.",
+      "strength": "conditional",
+      "population": "Adults starting PAP"
+    }
+  ],
+  "clinicalBottomLine": "Offer PAP to adults with OSA and sleepiness, start with home APAP or a lab titration if there are no major comorbidities, and give education when treatment starts.",
+  "notableCaveats": [
+    "Recommendation labels are those printed in the abstract. The full evidence profiles are not in the XML."
+  ],
+  "source": {
+    "title": "Treatment of adult obstructive sleep apnea with positive airway pressure: an American Academy of Sleep Medicine clinical practice guideline.",
+    "year": 2019,
+    "pmid": "30736887",
+    "pmcid": "PMC6374094",
+    "doi": "10.5664/jcsm.7640",
+    "url": "https://europepmc.org/articles/PMC6374094",
+    "sourceBody": "AASM",
+    "storedAs": ""
+  }
+}

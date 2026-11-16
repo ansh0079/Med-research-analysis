@@ -1,0 +1,22 @@
+{
+  "catalogueId": "997",
+  "spreadsheetRow": 80,
+  "topic": "Obstructive Sleep Apnea",
+  "specialty": "Pulmonology",
+  "decision": "downloaded open source",
+  "source": {
+    "title": "Treatment of adult obstructive sleep apnea with positive airway pressure: an American Academy of Sleep Medicine clinical practice guideline.",
+    "year": 2019,
+    "pmid": "30736887",
+    "pmcid": "PMC6374094",
+    "doi": "10.5664/jcsm.7640",
+    "url": "https://europepmc.org/articles/PMC6374094",
+    "sourceBody": "AASM",
+    "storedAs": ""
+  },
+  "whyItFits": "AASM 2019 PAP guideline. The PMC XML has no article body; the abstract contains the recommendation statements used here.",
+  "limitations": "Abstract contains the recommendations. The PMC record has no full guideline body.",
+  "synopsisWritten": true,
+  "mcqsWritten": true,
+  "mcqCount": 5
+}

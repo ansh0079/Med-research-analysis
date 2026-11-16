@@ -1,0 +1,36 @@
+{
+  "catalogueId": "165",
+  "topic": "Lymphangioleiomyomatosis",
+  "scope": "Open abstract of the ATS/JRS LAM guideline. The PMC XML has no recommendation body, so only statements in the abstract are used.",
+  "keyRecommendations": [
+    {
+      "text": "LAM is a rare cystic lung disease that primarily affects women.",
+      "strength": "not_graded",
+      "population": "LAM"
+    },
+    {
+      "text": "The guideline recommends sirolimus and VEGF-D testing.",
+      "strength": "not_graded",
+      "population": "LAM"
+    },
+    {
+      "text": "The guideline recommends against doxycycline and against hormonal therapy.",
+      "strength": "not_graded",
+      "population": "LAM"
+    }
+  ],
+  "clinicalBottomLine": "LAM is a rare cystic lung disease of women. This abstract supports sirolimus and VEGF-D testing, and recommends against doxycycline and hormonal therapy. Doses and VEGF-D cutoffs are not in the open text.",
+  "notableCaveats": [
+    "Full recommendation text, doses, and thresholds are not in the PMC XML."
+  ],
+  "source": {
+    "title": "Official American Thoracic Society/Japanese Respiratory Society Clinical Practice Guidelines: Lymphangioleiomyomatosis Diagnosis and Management.",
+    "year": 2016,
+    "pmid": "27628078",
+    "pmcid": "PMC5803656",
+    "doi": "10.1164/rccm.201607-1384ST",
+    "url": "https://europepmc.org/articles/PMC5803656",
+    "sourceBody": "ATS/JRS",
+    "storedAs": ""
+  }
+}

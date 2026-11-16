@@ -1,0 +1,36 @@
+{
+  "catalogueId": "1035",
+  "topic": "Depression: diagnosis, pharmacotherapy and monitoring",
+  "scope": "NICE NG222 recommendations on severity, first-line choice, and antidepressant withdrawal.",
+  "keyRecommendations": [
+    {
+      "text": "PHQ-9 under 16 was defined as less severe depression and 16 or more as more severe depression.",
+      "strength": "not_graded",
+      "population": "Adults with depression"
+    },
+    {
+      "text": "Consider the least intrusive and least resource-intensive treatment first (guided self-help).",
+      "strength": "not_graded",
+      "population": "Less severe depression"
+    },
+    {
+      "text": "Paroxetine and venlafaxine are more likely to be associated with withdrawal symptoms.",
+      "strength": "not_graded",
+      "population": "People stopping antidepressants"
+    }
+  ],
+  "clinicalBottomLine": "Use the guideline severity split, start with the least intrusive appropriate treatment, and take extra care with withdrawal from paroxetine and venlafaxine.",
+  "notableCaveats": [
+    "The PHQ-9 cut-point is the one this guideline used to define less versus more severe depression."
+  ],
+  "source": {
+    "title": "Depression in adults: treatment and management. NICE guideline NG222.",
+    "year": 2022,
+    "pmid": "",
+    "pmcid": "",
+    "doi": "",
+    "url": "https://www.nice.org.uk/guidance/ng222",
+    "sourceBody": "NICE",
+    "storedAs": ""
+  }
+}

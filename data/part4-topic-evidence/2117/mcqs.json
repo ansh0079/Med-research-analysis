@@ -1,0 +1,136 @@
+{
+  "catalogueId": "2117",
+  "topic": "Asthma severity classification and step-care",
+  "mcqs": [
+    {
+      "id": "2117-01",
+      "question": "Compared with SABA alone in mild asthma, what does the GINA 2021 summary say about ICS-formoterol and severe exacerbations?",
+      "options": {
+        "A": "It reduces them by at least 60%",
+        "B": "It increases them",
+        "C": "It has no effect",
+        "D": "It is inferior to SABA alone",
+        "E": "The comparison was not made"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "It reduces them by at least 60%",
+      "explanation": "ICS-formoterol reduces severe exacerbations by at least 60% versus SABA alone in mild asthma.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "GINA / Eur Respir J",
+          "sourceYear": 2022,
+          "sourceUrl": "https://europepmc.org/articles/PMC8719459",
+          "pmid": "34667060",
+          "pmcid": "PMC8719459",
+          "doi": "10.1183/13993003.02730-2021",
+          "excerpt": "combination ICS–formoterol reduces severe exacerbations by ≥60% in mild asthma compared with SABA alone"
+        }
+      ]
+    },
+    {
+      "id": "2117-02",
+      "question": "How does the summary describe treatment across steps?",
+      "options": {
+        "A": "Track 1 uses low-dose ICS-formoterol as the reliever at all steps",
+        "B": "SABA alone at every step",
+        "C": "Oral steroid at step 1",
+        "D": "No inhaled treatment before step 5",
+        "E": "Theophylline as the only reliever"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Track 1 uses low-dose ICS-formoterol as the reliever at all steps",
+      "explanation": "That is the track described: as-needed ICS-formoterol across steps, plus regular ICS or ICS-LABA at the higher steps.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "GINA / Eur Respir J",
+          "sourceYear": 2022,
+          "sourceUrl": "https://europepmc.org/articles/PMC8719459",
+          "pmid": "34667060",
+          "pmcid": "PMC8719459",
+          "doi": "10.1183/13993003.02730-2021",
+          "excerpt": "Track 1 (preferred) has low-dose ICS"
+        }
+      ]
+    },
+    {
+      "id": "2117-03",
+      "question": "What does GINA add at step 5 for adults with moderate-to-severe asthma?",
+      "options": {
+        "A": "LAMA and azithromycin, and biologics for severe asthma",
+        "B": "Only SABA",
+        "C": "Only antibiotics for infection",
+        "D": "Lung transplant",
+        "E": "No add-on treatment exists"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "LAMA and azithromycin, and biologics for severe asthma",
+      "explanation": "Step 5 recommendations include add-on LAMA and azithromycin, with biologics for severe asthma.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "GINA / Eur Respir J",
+          "sourceYear": 2022,
+          "sourceUrl": "https://europepmc.org/articles/PMC8719459",
+          "pmid": "34667060",
+          "pmcid": "PMC8719459",
+          "doi": "10.1183/13993003.02730-2021",
+          "excerpt": "Step 5 for add-on long-acting muscarinic antagonists and azithromycin, with add-on biologic therapies for severe asthma."
+        }
+      ]
+    },
+    {
+      "id": "2117-04",
+      "question": "Where does the summary place new treatment options for children aged 6–11 years?",
+      "options": {
+        "A": "At steps 3–4",
+        "B": "Only at step 1",
+        "C": "Children are excluded",
+        "D": "Only after age 18",
+        "E": "Only as oral therapy at step 5"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "At steps 3–4",
+      "explanation": "For children 6–11 years, new treatment options are added at steps 3–4.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "GINA / Eur Respir J",
+          "sourceYear": 2022,
+          "sourceUrl": "https://europepmc.org/articles/PMC8719459",
+          "pmid": "34667060",
+          "pmcid": "PMC8719459",
+          "doi": "10.1183/13993003.02730-2021",
+          "excerpt": "For children 6–11 years, new treatment options are added at Steps 3–4."
+        }
+      ]
+    },
+    {
+      "id": "2117-05",
+      "question": "What does the summary say about patients whose symptoms seem controlled?",
+      "options": {
+        "A": "They can still have severe or life-threatening exacerbations",
+        "B": "They cannot have exacerbations",
+        "C": "They should stop all inhalers",
+        "D": "Symptom control replaces the need for a written plan",
+        "E": "Exacerbations occur only in untreated asthma"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "They can still have severe or life-threatening exacerbations",
+      "explanation": "Patients with symptom control can still have severe or life-threatening exacerbations.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "GINA / Eur Respir J",
+          "sourceYear": 2022,
+          "sourceUrl": "https://europepmc.org/articles/PMC8719459",
+          "pmid": "34667060",
+          "pmcid": "PMC8719459",
+          "doi": "10.1183/13993003.02730-2021",
+          "excerpt": "symptom control can still have severe or life-threatening exacerbations"
+        }
+      ]
+    }
+  ]
+}

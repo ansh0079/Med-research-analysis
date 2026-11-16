@@ -1,0 +1,136 @@
+{
+  "catalogueId": "1493",
+  "topic": "Pulmonary Veno-Occlusive Disease",
+  "mcqs": [
+    {
+      "id": "1493-01",
+      "question": "What current name does the review give alongside pulmonary veno-occlusive disease?",
+      "options": {
+        "A": "PAH with overt features of venous/capillary involvement",
+        "B": "Chronic thromboembolic disease as a synonym",
+        "C": "Asthma",
+        "D": "Left-heart disease by definition",
+        "E": "The review uses no alternate name"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "PAH with overt features of venous/capillary involvement",
+      "explanation": "PVOD is also known as PAH with overt features of venous/capillary involvement.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "Open review",
+          "sourceYear": 2024,
+          "sourceUrl": "https://europepmc.org/articles/PMC10792437",
+          "pmid": "38232988",
+          "pmcid": "PMC10792437",
+          "doi": "",
+          "excerpt": "pulmonary arterial hypertension (PAH) with overt features of venous/capillary involvement"
+        }
+      ]
+    },
+    {
+      "id": "1493-02",
+      "question": "Why does the review say early lung-transplant referral is essential?",
+      "options": {
+        "A": "The response to therapy is poor compared with other PAH",
+        "B": "PVOD is cured by oral anticoagulation",
+        "C": "Transplant is never used",
+        "D": "The response is better than other PAH",
+        "E": "Referral is optional after many years of stability in every patient"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "The response to therapy is poor compared with other PAH",
+      "explanation": "Early referral is essential because of the poor response to therapy compared with other forms of PAH.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "Open review",
+          "sourceYear": 2024,
+          "sourceUrl": "https://europepmc.org/articles/PMC10792437",
+          "pmid": "38232988",
+          "pmcid": "PMC10792437",
+          "doi": "",
+          "excerpt": "Early referral to a lung transplant centre is essential due to the poor response to therapy when compared with other forms of PAH."
+        }
+      ]
+    },
+    {
+      "id": "1493-03",
+      "question": "What histologic lesion does the review say lung explants show?",
+      "options": {
+        "A": "Fibrous veno-occlusive lesions",
+        "B": "Only squamous carcinoma",
+        "C": "Normal veins",
+        "D": "Only capillary haemangiomas of the skin",
+        "E": "Histology is not described"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Fibrous veno-occlusive lesions",
+      "explanation": "Explants show microvascular remodelling with typical fibrous veno-occlusive lesions.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "Open review",
+          "sourceYear": 2024,
+          "sourceUrl": "https://europepmc.org/articles/PMC10792437",
+          "pmid": "38232988",
+          "pmcid": "PMC10792437",
+          "doi": "",
+          "excerpt": "typical fibrous veno-occlusive lesions"
+        }
+      ]
+    },
+    {
+      "id": "1493-04",
+      "question": "When does the review say immunosuppressive drugs may be used in PVOD?",
+      "options": {
+        "A": "Generally not, except in systemic diseases such as SLE",
+        "B": "In every patient as first-line treatment",
+        "C": "They are the cure",
+        "D": "They are mandatory before any other drug",
+        "E": "The review does not mention immunosuppression"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Generally not, except in systemic diseases such as SLE",
+      "explanation": "Immunosuppressive drugs are generally not recommended except in systemic diseases such as SLE.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "Open review",
+          "sourceYear": 2024,
+          "sourceUrl": "https://europepmc.org/articles/PMC10792437",
+          "pmid": "38232988",
+          "pmcid": "PMC10792437",
+          "doi": "",
+          "excerpt": "Immunosuppressive drugs are generally not recommended for PAH and PVOD, except in cases of systemic diseases such as systemic lupus erythematosus."
+        }
+      ]
+    },
+    {
+      "id": "1493-05",
+      "question": "What haemodynamic consequence does the review link to the venous and capillary involvement?",
+      "options": {
+        "A": "Increased pulmonary vascular resistance",
+        "B": "A fall in pulmonary pressure",
+        "C": "Isolated systemic hypertension",
+        "D": "No change in resistance",
+        "E": "The review does not mention resistance"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Increased pulmonary vascular resistance",
+      "explanation": "Venous and capillary involvement leads to increased pulmonary vascular resistance. The question uses that phrase from the review.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "Open review",
+          "sourceYear": 2024,
+          "sourceUrl": "https://europepmc.org/articles/PMC10792437",
+          "pmid": "38232988",
+          "pmcid": "PMC10792437",
+          "doi": "",
+          "excerpt": "increased pulmonary vascular resistance"
+        }
+      ]
+    }
+  ]
+}

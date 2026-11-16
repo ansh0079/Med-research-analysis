@@ -1,0 +1,26 @@
+{
+  "catalogueId": "110",
+  "spreadsheetRow": 77,
+  "topic": "Lymphangitic Carcinomatosis",
+  "specialty": "Pulmonology",
+  "decision": "unresolved",
+  "source": {
+    "title": "",
+    "year": "",
+    "pmid": "",
+    "pmcid": "",
+    "doi": "",
+    "url": "",
+    "sourceBody": "",
+    "storedAs": ""
+  },
+  "whyItFits": "Case reports do not support a synopsis of the entity. Synopsis and MCQs were not written.",
+  "limitations": "Case reports do not support a synopsis of the entity. Synopsis and MCQs were not written.",
+  "search": [
+    "In-app search for lymphangitic carcinomatosis.",
+    "Open PMC hits are case reports (ALK-positive lung cancer; occult gastric cancer).",
+    "The classic radiology review is not in PMC. StatPearls NBK560921 full text was blocked."
+  ],
+  "synopsisWritten": false,
+  "mcqsWritten": false
+}

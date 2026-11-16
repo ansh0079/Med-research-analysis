@@ -1,0 +1,36 @@
+{
+  "catalogueId": "1375",
+  "topic": "Diffuse Alveolar Hemorrhage",
+  "scope": "Open review of diffuse alveolar haemorrhage with emphasis on SLE, including the capillaritis versus bland histologic split and the rapid onset of haemoptysis.",
+  "keyRecommendations": [
+    {
+      "text": "DAH has a capillaritis phenotype and a bland non-inflammatory phenotype.",
+      "strength": "not_graded",
+      "population": "Diffuse alveolar haemorrhage"
+    },
+    {
+      "text": "Haemoptysis can develop over hours or a few days. ANCA vasculitis and antiphospholipid syndrome are other groups at risk.",
+      "strength": "not_graded",
+      "population": "Autoimmune DAH"
+    },
+    {
+      "text": "Risk is higher in active lupus nephritis.",
+      "strength": "not_graded",
+      "population": "SLE"
+    }
+  ],
+  "clinicalBottomLine": "Treat suspected DAH as a rapidly evolving pulmonary haemorrhage syndrome that may be capillaritis or bland haemorrhage, and look for SLE, ANCA vasculitis, and antiphospholipid syndrome.",
+  "notableCaveats": [
+    "The review is centred on SLE. It is used because it states the general histologic split and the clinical tempo of DAH."
+  ],
+  "source": {
+    "title": "Systemic lupus erythematosus and diffuse alveolar hemorrhage, etiology and novel treatment strategies.",
+    "year": 2020,
+    "pmid": "32036761",
+    "pmcid": "PMC7436451",
+    "doi": "",
+    "url": "https://europepmc.org/articles/PMC7436451",
+    "sourceBody": "Lupus",
+    "storedAs": ""
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "catalogueId": "2015",
+  "topic": "substance use disorder",
+  "scope": "Opening summary of the 2023 Volkow and Blanco review of substance use disorders.",
+  "keyRecommendations": [
+    {
+      "text": "Medications have clinically significant benefit in opioid, nicotine, and alcohol use disorders; behavioural therapies in all SUDs; neuromodulation in nicotine use disorder.",
+      "strength": "not_graded",
+      "population": "SUD"
+    },
+    {
+      "text": "Use a chronic care model and match intensity to severity, treating psychiatric and physical comorbidity.",
+      "strength": "not_graded",
+      "population": "SUD"
+    },
+    {
+      "text": "Prevention aimed at social risks in childhood and adolescence can decrease risk.",
+      "strength": "not_graded",
+      "population": "Children and adolescents"
+    }
+  ],
+  "clinicalBottomLine": "Treat SUD as a chronic illness: medication for opioid, nicotine, and alcohol use disorders, behavioural therapy for all SUDs, and referral of severe cases to specialised care.",
+  "notableCaveats": [
+    "Only the open summary in the PMC record was available, not the full article body."
+  ],
+  "source": {
+    "title": "Substance use disorders: a comprehensive update of classification, epidemiology, neurobiology, clinical aspects, treatment and prevention.",
+    "year": 2023,
+    "pmid": "37159360",
+    "pmcid": "PMC10168177",
+    "doi": "10.1002/wps.21073",
+    "url": "https://europepmc.org/articles/PMC10168177",
+    "sourceBody": "World Psychiatry",
+    "storedAs": ""
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "catalogueId": "59",
+  "topic": "Pulmonary Capillaritis",
+  "scope": "Case report that states a four-part classification of diffuse alveolar haemorrhage without systemic vasculitis.",
+  "keyRecommendations": [
+    {
+      "text": "DAH without systemic vasculitis is divided into limited anti-GBM disease, pulmonary-limited MPA, isolated pauci-immune pulmonary capillaritis, and idiopathic pulmonary haemosiderosis.",
+      "strength": "not_graded",
+      "population": "DAH without systemic vasculitis"
+    },
+    {
+      "text": "Isolated pauci-immune pulmonary capillaritis is ANCA-negative neutrophilic capillaritis.",
+      "strength": "not_graded",
+      "population": "Isolated pauci-immune capillaritis"
+    }
+  ],
+  "clinicalBottomLine": "When DAH has no systemic vasculitis, the classification in this paper separates limited anti-GBM disease, lung-limited MPA, ANCA-negative pauci-immune capillaritis, and idiopathic pulmonary haemosiderosis.",
+  "notableCaveats": [
+    "This is a case report plus a classification paragraph, not a guideline. The single case is not used as the natural history."
+  ],
+  "source": {
+    "title": "Isolated pauci-immune pulmonary capillaritis.",
+    "year": 2015,
+    "pmid": "25624599",
+    "pmcid": "PMC4298921",
+    "doi": "",
+    "url": "https://europepmc.org/articles/PMC4298921",
+    "sourceBody": "Case report with classification",
+    "storedAs": ""
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "catalogueId": "1506",
+  "spreadsheetRow": 46,
+  "topic": "Retinal detachment: presentation and emergency management",
+  "specialty": "Ophthalmology",
+  "decision": "downloaded open source",
+  "source": {
+    "title": "Rhegmatogenous Retinal Detachment—an Ophthalmologic Emergency.",
+    "year": 2014,
+    "pmid": "24565273",
+    "pmcid": "PMC3948016",
+    "doi": "10.3238/arztebl.2014.0012",
+    "url": "https://europepmc.org/articles/PMC3948016",
+    "sourceBody": "Dtsch Arztebl Int",
+    "storedAs": ""
+  },
+  "whyItFits": "Open summary of a CME review of rhegmatogenous retinal detachment as an ophthalmic emergency.",
+  "limitations": "The PMC record’s extractable text is the article summary, which is specific enough to ground these items. The longer CME body was not in the XML.",
+  "synopsisWritten": true,
+  "mcqsWritten": true,
+  "mcqCount": 5
+}

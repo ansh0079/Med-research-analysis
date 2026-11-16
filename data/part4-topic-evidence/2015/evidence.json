@@ -1,0 +1,22 @@
+{
+  "catalogueId": "2015",
+  "spreadsheetRow": 54,
+  "topic": "substance use disorder",
+  "specialty": "Psychiatry",
+  "decision": "downloaded open source",
+  "source": {
+    "title": "Substance use disorders: a comprehensive update of classification, epidemiology, neurobiology, clinical aspects, treatment and prevention.",
+    "year": 2023,
+    "pmid": "37159360",
+    "pmcid": "PMC10168177",
+    "doi": "10.1002/wps.21073",
+    "url": "https://europepmc.org/articles/PMC10168177",
+    "sourceBody": "World Psychiatry",
+    "storedAs": ""
+  },
+  "whyItFits": "Opening summary of the 2023 Volkow and Blanco review of substance use disorders.",
+  "limitations": "",
+  "synopsisWritten": true,
+  "mcqsWritten": true,
+  "mcqCount": 5
+}

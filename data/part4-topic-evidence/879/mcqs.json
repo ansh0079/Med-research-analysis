@@ -1,0 +1,136 @@
+{
+  "catalogueId": "879",
+  "topic": "Paediatric asthma: diagnosis, assessment and stepwise management",
+  "mcqs": [
+    {
+      "id": "879-01",
+      "question": "How does the 2020 NAEPP update separate stepwise asthma care by age?",
+      "options": {
+        "A": "One figure for all ages",
+        "B": "Fig 2 for ages 0–4, Fig 3 for ages 5–11, and Fig 4 for ages 12 and older",
+        "C": "Steps apply only under 2 years",
+        "D": "Adolescents use the 0–4 figure",
+        "E": "Age is ignored if spirometry is normal"
+      },
+      "correctAnswer": "B",
+      "correctAnswerText": "Fig 2 for ages 0–4, Fig 3 for ages 5–11, and Fig 4 for ages 12 and older",
+      "explanation": "The update states that each figure applies to one age group: 0–4, 5–11, and 12 years and older.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "NAEPP / J Allergy Clin Immunol",
+          "sourceYear": 2020,
+          "sourceUrl": "https://europepmc.org/articles/PMC7924476",
+          "pmid": "33280709",
+          "pmcid": "PMC7924476",
+          "doi": "10.1016/j.jaci.2020.10.003",
+          "excerpt": "Fig 2 applies only to ages 0 to 4 years. Fig 3 applies only to ages 5 to 11 years. Fig 4 applies only to ages 12 years and older."
+        }
+      ]
+    },
+    {
+      "id": "879-02",
+      "question": "What does the update call the currently preferred pharmacologic controller for persistent asthma?",
+      "options": {
+        "A": "Scheduled daily inhaled corticosteroid",
+        "B": "Daily oral prednisolone for all ages",
+        "C": "Theophylline monotherapy",
+        "D": "As-needed SABA with no controller",
+        "E": "Long-term macrolide as the only controller"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Scheduled daily inhaled corticosteroid",
+      "explanation": "The background text says scheduled daily ICS is the preferred controller for persistent asthma at all ages.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "NAEPP / J Allergy Clin Immunol",
+          "sourceYear": 2020,
+          "sourceUrl": "https://europepmc.org/articles/PMC7924476",
+          "pmid": "33280709",
+          "pmcid": "PMC7924476",
+          "doi": "10.1016/j.jaci.2020.10.003",
+          "excerpt": "Scheduled, daily ICS treatment is the currently preferred pharmacologic controller therapy for persistent asthma in individuals of all ages."
+        }
+      ]
+    },
+    {
+      "id": "879-03",
+      "question": "With which LABA does the NAEPP text say SMART has been used?",
+      "options": {
+        "A": "Salmeterol only",
+        "B": "Formoterol",
+        "C": "Vilanterol only",
+        "D": "Indacaterol only",
+        "E": "Any LABA is interchangeable in the cited SMART studies"
+      },
+      "correctAnswer": "B",
+      "correctAnswerText": "Formoterol",
+      "explanation": "The update says this form of therapy has only been used with formoterol as the LABA.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "NAEPP / J Allergy Clin Immunol",
+          "sourceYear": 2020,
+          "sourceUrl": "https://europepmc.org/articles/PMC7924476",
+          "pmid": "33280709",
+          "pmcid": "PMC7924476",
+          "doi": "10.1016/j.jaci.2020.10.003",
+          "excerpt": "This form of therapy has only been used with formoterol as the LABA."
+        }
+      ]
+    },
+    {
+      "id": "879-04",
+      "question": "What maximum total daily formoterol dose does the update give for ages 4 to 11 years on SMART?",
+      "options": {
+        "A": "8 puffs (36 μg)",
+        "B": "12 puffs (54 μg)",
+        "C": "2 puffs",
+        "D": "20 puffs",
+        "E": "No upper limit is stated"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "8 puffs (36 μg)",
+      "explanation": "The text caps formoterol at 8 puffs (36 μg) for ages 4 to 11 years and 12 puffs (54 μg) from age 12.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "NAEPP / J Allergy Clin Immunol",
+          "sourceYear": 2020,
+          "sourceUrl": "https://europepmc.org/articles/PMC7924476",
+          "pmid": "33280709",
+          "pmcid": "PMC7924476",
+          "doi": "10.1016/j.jaci.2020.10.003",
+          "excerpt": "The maximum total daily dose of formoterol should not exceed 8 puffs (36 μg) for ages4 to11 years and12puffs (54 μg) for ages12 years and above."
+        }
+      ]
+    },
+    {
+      "id": "879-05",
+      "question": "What does the update say clinicians use to choose the step of care?",
+      "options": {
+        "A": "Only the blood eosinophil count",
+        "B": "Whether the child is newly diagnosed (treatment-naive) or already on treatment, within the age-specific figure",
+        "C": "Adult GINA step 5 for every child",
+        "D": "Peak flow alone, ignoring symptoms",
+        "E": "A single step for life"
+      },
+      "correctAnswer": "B",
+      "correctAnswerText": "Whether the child is newly diagnosed (treatment-naive) or already on treatment, within the age-specific figure",
+      "explanation": "Clinicians choose the step according to whether the individual is newly diagnosed or already treated, using the figure for that age.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "NAEPP / J Allergy Clin Immunol",
+          "sourceYear": 2020,
+          "sourceUrl": "https://europepmc.org/articles/PMC7924476",
+          "pmid": "33280709",
+          "pmcid": "PMC7924476",
+          "doi": "10.1016/j.jaci.2020.10.003",
+          "excerpt": "Clinicians decide which step of care is appropriate depending on whether the individual is newly diagnosed"
+        }
+      ]
+    }
+  ]
+}

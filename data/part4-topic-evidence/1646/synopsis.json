@@ -1,0 +1,36 @@
+{
+  "catalogueId": "1646",
+  "topic": "Aspiration Pneumonia",
+  "scope": "Open review of aspiration pneumonia risk factors, including dysphagia and impaired consciousness, and the microbiology of the oropharynx.",
+  "keyRecommendations": [
+    {
+      "text": "Oropharyngeal dysphagia is a relevant risk factor for aspiration pneumonia.",
+      "strength": "not_graded",
+      "population": "People at risk of aspiration"
+    },
+    {
+      "text": "Risk factors named include impaired swallowing (dysphagia, COPD, stroke or dementia, mechanical ventilation) and impaired consciousness.",
+      "strength": "not_graded",
+      "population": "Aspiration pneumonia"
+    },
+    {
+      "text": "The oral environment can affect growth of potentially pathogenic anaerobic bacteria.",
+      "strength": "not_graded",
+      "population": "Aspiration pneumonia microbiology"
+    }
+  ],
+  "clinicalBottomLine": "Look for dysphagia and impaired consciousness when assessing aspiration pneumonia, and do not treat the microbiology as identical to ordinary community pneumonia.",
+  "notableCaveats": [
+    "The NEJM review suggested in some catalogues is not open. This PMC review is the open text used."
+  ],
+  "source": {
+    "title": "Aspiration pneumonia.",
+    "year": 2022,
+    "pmid": "35488832",
+    "pmcid": "PMC9106188",
+    "doi": "",
+    "url": "https://europepmc.org/articles/PMC9106188",
+    "sourceBody": "Open review",
+    "storedAs": ""
+  }
+}

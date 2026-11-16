@@ -1,0 +1,22 @@
+{
+  "catalogueId": "1146",
+  "spreadsheetRow": 56,
+  "topic": "Acute severe asthma",
+  "specialty": "Pulmonology",
+  "decision": "downloaded open source",
+  "source": {
+    "title": "Status Asthmaticus in the Pediatric ICU: A Comprehensive Review of Management and Challenges.",
+    "year": 2024,
+    "pmid": "39189288",
+    "pmcid": "PMC11348376",
+    "doi": "",
+    "url": "https://europepmc.org/articles/PMC11348376",
+    "sourceBody": "Pediatric status asthmaticus review",
+    "storedAs": ""
+  },
+  "whyItFits": "Open review of status asthmaticus management in the paediatric ICU.",
+  "limitations": "",
+  "synopsisWritten": true,
+  "mcqsWritten": true,
+  "mcqCount": 5
+}

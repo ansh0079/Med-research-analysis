@@ -1,0 +1,36 @@
+{
+  "catalogueId": "353",
+  "topic": "Lung Volumes and Spirometry interpretation",
+  "scope": "2019 ATS/ERS spirometry technical statement on acceptability of the forced manoeuvre. Static lung-volume interpretation is not in this document.",
+  "keyRecommendations": [
+    {
+      "text": "A cough in the first second makes the FEV1 neither acceptable nor usable.",
+      "strength": "not_graded",
+      "population": "Forced spirometry"
+    },
+    {
+      "text": "An FET of 15 seconds is an end-of-forced-expiration criterion, with an indicator and a double beep.",
+      "strength": "not_graded",
+      "population": "Forced expiration"
+    },
+    {
+      "text": "If FIVC minus FVC exceeds 0.100 L or 5% of FVC, FEV1 and FVC are not acceptable.",
+      "strength": "not_graded",
+      "population": "Manoeuvre quality"
+    }
+  ],
+  "clinicalBottomLine": "Do not report an FEV1 from a manoeuvre with a cough in the first second. Use the end-of-test and the FIVC–FVC checks before calling FEV1 and FVC acceptable.",
+  "notableCaveats": [
+    "The 2022 ATS/ERS interpretive strategies document and a static lung-volume standard were not openly available. These questions cover spirometry performance only."
+  ],
+  "source": {
+    "title": "Standardization of Spirometry 2019 Update. An Official American Thoracic Society and European Respiratory Society Technical Statement.",
+    "year": 2019,
+    "pmid": "31613151",
+    "pmcid": "PMC6794117",
+    "doi": "",
+    "url": "https://europepmc.org/articles/PMC6794117",
+    "sourceBody": "ATS/ERS",
+    "storedAs": ""
+  }
+}

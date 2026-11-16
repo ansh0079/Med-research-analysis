@@ -1,0 +1,26 @@
+{
+  "catalogueId": "1032",
+  "spreadsheetRow": 64,
+  "topic": "Diffusing Capacity of the Lung for Carbon Monoxide",
+  "specialty": "Pulmonology",
+  "decision": "unresolved",
+  "source": {
+    "title": "",
+    "year": "",
+    "pmid": "",
+    "pmcid": "",
+    "doi": "",
+    "url": "",
+    "sourceBody": "",
+    "storedAs": ""
+  },
+  "whyItFits": "No open interpretive standard for DLCO was available. An office-spirometry abstract and a carbon-monoxide poisoning paper were rejected as off topic. Synopsis and MCQs were not written.",
+  "limitations": "No open interpretive standard for DLCO was available. An office-spirometry abstract and a carbon-monoxide poisoning paper were rejected as off topic. Synopsis and MCQs were not written.",
+  "search": [
+    "In-app spirometry and gas-transfer records.",
+    "2017 ERS/ATS single-breath DLCO standard PMID 28049168 is not in PMC.",
+    "StatPearls NBK556149 full text was not obtainable."
+  ],
+  "synopsisWritten": false,
+  "mcqsWritten": false
+}

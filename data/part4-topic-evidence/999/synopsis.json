@@ -1,0 +1,36 @@
+{
+  "catalogueId": "999",
+  "topic": "paediatric dehydration",
+  "scope": "NICE CG84 assessment of dehydration and shock, and oral rehydration, in children under 5 with gastroenteritis.",
+  "keyRecommendations": [
+    {
+      "text": "Ask whether the child appears unwell, has altered responsiveness, decreased urine output, pale or mottled skin, or cold extremities.",
+      "strength": "not_graded",
+      "population": "Gastroenteritis under 5"
+    },
+    {
+      "text": "For oral rehydration, use a low-osmolarity solution (240–250 mOsm/L) and give 50 ml/kg for deficit replacement over 4 hours plus maintenance fluid.",
+      "strength": "not_graded",
+      "population": "Children needing ORS for deficit"
+    },
+    {
+      "text": "Measure venous acid–base status and chloride if shock is suspected or confirmed.",
+      "strength": "not_graded",
+      "population": "Suspected shock"
+    }
+  ],
+  "clinicalBottomLine": "Recognise dehydration and shock from the clinical features in CG84, replace deficit with low-osmolarity ORS at 50 ml/kg over 4 hours plus maintenance when oral rehydration is used, and check acid–base and chloride if shock is suspected.",
+  "notableCaveats": [
+    "The ESPGHAN/ESPID guideline suggested in the spreadsheet is not in PMC. CG84 is the open recommendation text."
+  ],
+  "source": {
+    "title": "Diarrhoea and vomiting caused by gastroenteritis in under 5s: diagnosis and management. NICE guideline CG84.",
+    "year": 2009,
+    "pmid": "",
+    "pmcid": "",
+    "doi": "",
+    "url": "https://www.nice.org.uk/guidance/cg84",
+    "sourceBody": "NICE",
+    "storedAs": ""
+  }
+}

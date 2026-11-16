@@ -1,0 +1,136 @@
+{
+  "catalogueId": "1375",
+  "topic": "Diffuse Alveolar Hemorrhage",
+  "mcqs": [
+    {
+      "id": "1375-01",
+      "question": "Which two histologic phenotypes of diffuse alveolar haemorrhage does the review name?",
+      "options": {
+        "A": "Capillaritis and a bland non-inflammatory phenotype",
+        "B": "Only squamous carcinoma",
+        "C": "Only organising pneumonia",
+        "D": "Only embolism",
+        "E": "Only oedema without haemorrhage"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Capillaritis and a bland non-inflammatory phenotype",
+      "explanation": "The review distinguishes capillaritis and a bland non-inflammatory phenotype.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "Lupus",
+          "sourceYear": 2020,
+          "sourceUrl": "https://europepmc.org/articles/PMC7436451",
+          "pmid": "32036761",
+          "pmcid": "PMC7436451",
+          "doi": "",
+          "excerpt": "capillaritis and a bland non-inflammatory phenotype"
+        }
+      ]
+    },
+    {
+      "id": "1375-02",
+      "question": "Over what time course does the review say haemoptysis and symptoms of DAH may develop?",
+      "options": {
+        "A": "Hours or a few days",
+        "B": "Several years of stable mild cough only",
+        "C": "Only after months of fever",
+        "D": "Symptoms do not include haemoptysis",
+        "E": "Only during sleep"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Hours or a few days",
+      "explanation": "Symptoms, including haemoptysis, can develop rapidly in hours or over a few days.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "Lupus",
+          "sourceYear": 2020,
+          "sourceUrl": "https://europepmc.org/articles/PMC7436451",
+          "pmid": "32036761",
+          "pmcid": "PMC7436451",
+          "doi": "",
+          "excerpt": "hemoptysis, with symptoms developing rapidly in hours or over a few days"
+        }
+      ]
+    },
+    {
+      "id": "1375-03",
+      "question": "Besides SLE, which groups does the review say are susceptible to DAH?",
+      "options": {
+        "A": "ANCA vasculitides, and patients with antiphospholipid syndrome can develop DAH",
+        "B": "Only osteoarthritis",
+        "C": "Only iron-deficiency anaemia",
+        "D": "No other autoimmune disease",
+        "E": "Only asthma"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "ANCA vasculitides, and patients with antiphospholipid syndrome can develop DAH",
+      "explanation": "The disorder is more common in ANCA vasculitides, and patients with APS can develop DAH.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "Lupus",
+          "sourceYear": 2020,
+          "sourceUrl": "https://europepmc.org/articles/PMC7436451",
+          "pmid": "32036761",
+          "pmcid": "PMC7436451",
+          "doi": "",
+          "excerpt": "the disorder is more common in ANCA-vasculitides and patients with APS can develop DAH"
+        }
+      ]
+    },
+    {
+      "id": "1375-04",
+      "question": "When is DAH risk increased in the SLE discussion?",
+      "options": {
+        "A": "During active renal disease, especially lupus nephritis",
+        "B": "Only in cutaneous lupus in remission",
+        "C": "Only after the kidneys have recovered for a decade",
+        "D": "Renal disease is protective",
+        "E": "Only in drug-induced lupus from statins, which the paper does not discuss"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "During active renal disease, especially lupus nephritis",
+      "explanation": "An increased risk is reported during active renal disease, especially lupus nephritis.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "Lupus",
+          "sourceYear": 2020,
+          "sourceUrl": "https://europepmc.org/articles/PMC7436451",
+          "pmid": "32036761",
+          "pmcid": "PMC7436451",
+          "doi": "",
+          "excerpt": "increased risk of DAH has been reported during active renal disease, especially when manifesting as lupus nephritis"
+        }
+      ]
+    },
+    {
+      "id": "1375-05",
+      "question": "Which sampling fluid does the review discuss in the DAH work-up?",
+      "options": {
+        "A": "Bronchoalveolar lavage fluid",
+        "B": "Cerebrospinal fluid only",
+        "C": "Pleural fluid as the only sample",
+        "D": "Stool",
+        "E": "No lavage is mentioned"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Bronchoalveolar lavage fluid",
+      "explanation": "Bronchoalveolar lavage fluid is discussed; the paper notes some findings may appear only after several days.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "Lupus",
+          "sourceYear": 2020,
+          "sourceUrl": "https://europepmc.org/articles/PMC7436451",
+          "pmid": "32036761",
+          "pmcid": "PMC7436451",
+          "doi": "",
+          "excerpt": "bronchoalveolar lavage fluid (BALF)"
+        }
+      ]
+    }
+  ]
+}

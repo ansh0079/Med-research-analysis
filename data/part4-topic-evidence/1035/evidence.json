@@ -1,0 +1,22 @@
+{
+  "catalogueId": "1035",
+  "spreadsheetRow": 53,
+  "topic": "Depression: diagnosis, pharmacotherapy and monitoring",
+  "specialty": "Psychiatry",
+  "decision": "downloaded open source",
+  "source": {
+    "title": "Depression in adults: treatment and management. NICE guideline NG222.",
+    "year": 2022,
+    "pmid": "",
+    "pmcid": "",
+    "doi": "",
+    "url": "https://www.nice.org.uk/guidance/ng222",
+    "sourceBody": "NICE",
+    "storedAs": ""
+  },
+  "whyItFits": "NICE NG222 recommendations on severity, first-line choice, and antidepressant withdrawal.",
+  "limitations": "",
+  "synopsisWritten": true,
+  "mcqsWritten": true,
+  "mcqCount": 5
+}

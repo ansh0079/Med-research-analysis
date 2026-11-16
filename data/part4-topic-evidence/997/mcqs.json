@@ -1,0 +1,136 @@
+{
+  "catalogueId": "997",
+  "topic": "Obstructive Sleep Apnea",
+  "mcqs": [
+    {
+      "id": "997-01",
+      "question": "What is the AASM recommendation on PAP for adults with OSA and excessive sleepiness?",
+      "options": {
+        "A": "Use PAP rather than no therapy (strong)",
+        "B": "Do not use PAP",
+        "C": "PAP is conditional in sleepy patients",
+        "D": "Surgery first",
+        "E": "No recommendation is made"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Use PAP rather than no therapy (strong)",
+      "explanation": "The guideline says we recommend PAP compared with no therapy for excessive sleepiness, and marks it STRONG.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "AASM",
+          "sourceYear": 2019,
+          "sourceUrl": "https://europepmc.org/articles/PMC6374094",
+          "pmid": "30736887",
+          "pmcid": "PMC6374094",
+          "doi": "10.5664/jcsm.7640",
+          "excerpt": "We recommend that clinicians use PAP, compared to no therapy, to treat OSA in adults with excessive sleepiness. (STRONG)"
+        }
+      ]
+    },
+    {
+      "id": "997-02",
+      "question": "How does the guideline say to initiate PAP in adults with OSA and no significant comorbidities?",
+      "options": {
+        "A": "Either home APAP or in-laboratory titration (strong)",
+        "B": "BPAP only",
+        "C": "No titration of any kind",
+        "D": "Oxygen alone",
+        "E": "The recommendation is against PAP"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Either home APAP or in-laboratory titration (strong)",
+      "explanation": "Initiate with either APAP at home or in-laboratory PAP titration. The recommendation is strong.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "AASM",
+          "sourceYear": 2019,
+          "sourceUrl": "https://europepmc.org/articles/PMC6374094",
+          "pmid": "30736887",
+          "pmcid": "PMC6374094",
+          "doi": "10.5664/jcsm.7640",
+          "excerpt": "PAP therapy be initiated using either APAP at home or in-laboratory PAP titration in adults with OSA and no significant comorbidities. (STRONG)"
+        }
+      ]
+    },
+    {
+      "id": "997-03",
+      "question": "What does the strong recommendation say about ongoing treatment?",
+      "options": {
+        "A": "Use either CPAP or APAP",
+        "B": "Use BPAP for every patient",
+        "C": "Stop PAP after one week",
+        "D": "Use only an oral appliance",
+        "E": "Ongoing treatment is not addressed"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Use either CPAP or APAP",
+      "explanation": "Clinicians should use either CPAP or APAP for ongoing treatment. That recommendation is strong.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "AASM",
+          "sourceYear": 2019,
+          "sourceUrl": "https://europepmc.org/articles/PMC6374094",
+          "pmid": "30736887",
+          "pmcid": "PMC6374094",
+          "doi": "10.5664/jcsm.7640",
+          "excerpt": "We recommend that clinicians use either CPAP or APAP for ongoing treatment of OSA in adults. (STRONG)"
+        }
+      ]
+    },
+    {
+      "id": "997-04",
+      "question": "What strong recommendation accompanies the start of PAP?",
+      "options": {
+        "A": "Give educational interventions",
+        "B": "Avoid all education",
+        "C": "Education is conditional only",
+        "D": "Education replaces the need for a machine",
+        "E": "No statement on education"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Give educational interventions",
+      "explanation": "Educational interventions should be given with initiation of PAP. The recommendation is strong.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "AASM",
+          "sourceYear": 2019,
+          "sourceUrl": "https://europepmc.org/articles/PMC6374094",
+          "pmid": "30736887",
+          "pmcid": "PMC6374094",
+          "doi": "10.5664/jcsm.7640",
+          "excerpt": "We recommend that educational interventions be given with initiation of PAP therapy in adults with OSA. (STRONG)"
+        }
+      ]
+    },
+    {
+      "id": "997-05",
+      "question": "How is PAP labelled for adults with OSA and comorbid hypertension?",
+      "options": {
+        "A": "A conditional suggestion to use PAP rather than no therapy",
+        "B": "A strong recommendation against PAP",
+        "C": "Hypertension is an absolute contraindication",
+        "D": "PAP is mandatory surgery",
+        "E": "Hypertension is not mentioned"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "A conditional suggestion to use PAP rather than no therapy",
+      "explanation": "The guideline suggests PAP compared with no therapy for comorbid hypertension and marks it CONDITIONAL.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "AASM",
+          "sourceYear": 2019,
+          "sourceUrl": "https://europepmc.org/articles/PMC6374094",
+          "pmid": "30736887",
+          "pmcid": "PMC6374094",
+          "doi": "10.5664/jcsm.7640",
+          "excerpt": "We suggest that clinicians use PAP, compared to no therapy, to treat OSA in adults with comorbid hypertension. (CONDITIONAL)"
+        }
+      ]
+    }
+  ]
+}

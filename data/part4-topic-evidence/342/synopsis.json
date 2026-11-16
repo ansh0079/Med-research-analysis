@@ -1,0 +1,31 @@
+{
+  "catalogueId": "342",
+  "topic": "GOLD COPD strategies",
+  "scope": "GOLD 2023 executive summary, including replacement of groups C and D by group E and initial therapy for group E.",
+  "keyRecommendations": [
+    {
+      "text": "GOLD 2023 keeps groups A and B and merges former groups C and D into group E for exacerbations.",
+      "strength": "not_graded",
+      "population": "COPD assessment"
+    },
+    {
+      "text": "Initial therapy for group E is LAMA+LABA, except when blood eosinophils are at least 300 cells/μL, when starting triple therapy can be considered.",
+      "strength": "not_graded",
+      "population": "GOLD group E"
+    }
+  ],
+  "clinicalBottomLine": "Assess COPD with the ABE tool. For frequent exacerbators (group E), start LAMA+LABA unless the blood eosinophil count is at least 300 cells/μL, when triple therapy can be considered.",
+  "notableCaveats": [
+    "Symptom and exacerbation thresholds are said to be unchanged, but the figure itself is not reproduced as a table in the extract."
+  ],
+  "source": {
+    "title": "Global Initiative for Chronic Obstructive Lung Disease 2023 Report: GOLD Executive Summary.",
+    "year": 2023,
+    "pmid": "36856433",
+    "pmcid": "PMC10111975",
+    "doi": "10.1164/rccm.202301-0106pp",
+    "url": "https://europepmc.org/articles/PMC10111975",
+    "sourceBody": "GOLD / Am J Respir Crit Care Med",
+    "storedAs": ""
+  }
+}

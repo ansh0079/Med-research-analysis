@@ -1,0 +1,22 @@
+{
+  "catalogueId": "1029",
+  "spreadsheetRow": 87,
+  "topic": "Sleep-related hypoxemia in COPD",
+  "specialty": "Pulmonology",
+  "decision": "downloaded open source",
+  "source": {
+    "title": "Prognostic value of oxygen inhalation therapy for simple nocturnal hypoxemia in COPD: a meta-analysis.",
+    "year": 2023,
+    "pmid": "37663258",
+    "pmcid": "PMC10469590",
+    "doi": "10.3389/fphar.2023.1123945",
+    "url": "https://europepmc.org/articles/PMC10469590",
+    "sourceBody": "Front Pharmacol",
+    "storedAs": ""
+  },
+  "whyItFits": "Meta-analysis of oxygen for simple nocturnal hypoxemia (NOD) in COPD, reporting survival, progression to long-term oxygen, and daytime PaO2.",
+  "limitations": "",
+  "synopsisWritten": true,
+  "mcqsWritten": true,
+  "mcqCount": 5
+}

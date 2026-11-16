@@ -1,0 +1,136 @@
+{
+  "catalogueId": "2072",
+  "topic": "Vulvar and Vaginal Cancers",
+  "mcqs": [
+    {
+      "id": "2072-01",
+      "question": "Which statement about staging systems is made in the 2023 ESGO vulvar cancer guideline?",
+      "options": {
+        "A": "Only a local institutional staging system is accepted",
+        "B": "FIGO and TNM are both used and are closely aligned, and FIGO staging was last reviewed in 2021",
+        "C": "TNM has been withdrawn for vulvar cancer",
+        "D": "FIGO staging for vulvar cancer was last revised in 1988 and is unchanged",
+        "E": "Clinical staging without pathology is preferred to FIGO"
+      },
+      "correctAnswer": "B",
+      "correctAnswerText": "FIGO and TNM are both used and are closely aligned, and FIGO staging was last reviewed in 2021",
+      "explanation": "The guideline states that FIGO and TNM are both used, are closely aligned, and that FIGO staging was last reviewed in 2021.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "ESGO / Int J Gynecol Cancer",
+          "sourceYear": 2023,
+          "sourceUrl": "https://europepmc.org/articles/PMC10359596",
+          "pmid": "37369376",
+          "pmcid": "PMC10359596",
+          "doi": "10.1136/ijgc-2023-004486",
+          "excerpt": "The FIGO staging system was last reviewed in 2021 by the FIGO Committee on Gynecologic Oncology"
+        }
+      ]
+    },
+    {
+      "id": "2072-02",
+      "question": "For clinically palpable (suspicious or bulky) inguinofemoral nodes, what does the ESGO text identify as the method of choice for preoperative assessment?",
+      "options": {
+        "A": "PET-CT alone",
+        "B": "Pelvic MRI alone",
+        "C": "Ultrasound examination alone",
+        "D": "Sentinel-node biopsy without imaging",
+        "E": "Chest radiograph"
+      },
+      "correctAnswer": "C",
+      "correctAnswerText": "Ultrasound examination alone",
+      "explanation": "The guideline says ultrasound examination alone is the method of choice for that preoperative assessment, including distance of metastasis from skin and vessels.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "ESGO / Int J Gynecol Cancer",
+          "sourceYear": 2023,
+          "sourceUrl": "https://europepmc.org/articles/PMC10359596",
+          "pmid": "37369376",
+          "pmcid": "PMC10359596",
+          "doi": "10.1136/ijgc-2023-004486",
+          "excerpt": "Ultrasound examination alone is the method of choice for pre-operative assessment"
+        }
+      ]
+    },
+    {
+      "id": "2072-03",
+      "question": "Which procedure is explicitly within the scope of the 2023 ESGO vulvar cancer guideline?",
+      "options": {
+        "A": "Sentinel lymph node procedure",
+        "B": "Fetal surgery",
+        "C": "Coronary stenting",
+        "D": "Cochlear implantation",
+        "E": "Liver transplantation"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Sentinel lymph node procedure",
+      "explanation": "The guideline’s scope includes the sentinel lymph node procedure together with groin treatment, surgery, and (chemo)radiotherapy.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "ESGO / Int J Gynecol Cancer",
+          "sourceYear": 2023,
+          "sourceUrl": "https://europepmc.org/articles/PMC10359596",
+          "pmid": "37369376",
+          "pmcid": "PMC10359596",
+          "doi": "10.1136/ijgc-2023-004486",
+          "excerpt": "sentinel lymph node procedure"
+        }
+      ]
+    },
+    {
+      "id": "2072-04",
+      "question": "Besides surgery, which treatment categories does the 2023 ESGO vulvar guideline set out to cover?",
+      "options": {
+        "A": "Only topical oestrogen",
+        "B": "(Chemo)radiotherapy, systemic treatment, and treatment of recurrent disease",
+        "C": "Only palliative care, with no primary treatment",
+        "D": "Antimicrobial prophylaxis alone",
+        "E": "Observation without any adjuvant modality"
+      },
+      "correctAnswer": "B",
+      "correctAnswerText": "(Chemo)radiotherapy, systemic treatment, and treatment of recurrent disease",
+      "explanation": "The introduction lists (chemo)radiotherapy, systemic treatment, and treatment of recurrent disease among the domains covered.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "ESGO / Int J Gynecol Cancer",
+          "sourceYear": 2023,
+          "sourceUrl": "https://europepmc.org/articles/PMC10359596",
+          "pmid": "37369376",
+          "pmcid": "PMC10359596",
+          "doi": "10.1136/ijgc-2023-004486",
+          "excerpt": "(chemo)radiotherapy, systemic treatment, treatment of recurrent disease"
+        }
+      ]
+    },
+    {
+      "id": "2072-05",
+      "question": "When does the ESGO text call for ultrasound of the groins to confirm suspicion and to measure distance from skin and blood vessels?",
+      "options": {
+        "A": "Only after distant metastasis is proven",
+        "B": "When inguinofemoral nodes are clinically palpable (suspicious or bulky)",
+        "C": "In every patient with a normal groin examination",
+        "D": "Only during pregnancy",
+        "E": "Only after radiotherapy is completed"
+      },
+      "correctAnswer": "B",
+      "correctAnswerText": "When inguinofemoral nodes are clinically palpable (suspicious or bulky)",
+      "explanation": "Ultrasound is described for clinically palpable suspicious or bulky inguinofemoral nodes, to confirm the finding and to assess distance from skin and vessels.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "ESGO / Int J Gynecol Cancer",
+          "sourceYear": 2023,
+          "sourceUrl": "https://europepmc.org/articles/PMC10359596",
+          "pmid": "37369376",
+          "pmcid": "PMC10359596",
+          "doi": "10.1136/ijgc-2023-004486",
+          "excerpt": "if the inguinofemoral lymph nodes are clinically palpable (suspicious or bulky)"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,136 @@
+{
+  "catalogueId": "424",
+  "topic": "Alcohol withdrawal syndrome and delirium tremens management in ICU",
+  "mcqs": [
+    {
+      "id": "424-01",
+      "question": "Who does CG100 say should be offered admission for medically assisted withdrawal?",
+      "options": {
+        "A": "People in acute withdrawal who have, or are at high risk of, seizures or delirium tremens",
+        "B": "Every adult who drinks any alcohol",
+        "C": "Only people already in the community on day 10",
+        "D": "People with mild craving and no risk features, as a routine",
+        "E": "Children with viral gastroenteritis"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "People in acute withdrawal who have, or are at high risk of, seizures or delirium tremens",
+      "explanation": "CG100 offers admission when there are, or there is high risk of, alcohol withdrawal seizures or delirium tremens.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "NICE",
+          "sourceYear": 2010,
+          "sourceUrl": "https://www.nice.org.uk/guidance/cg100",
+          "pmid": "",
+          "pmcid": "",
+          "doi": "",
+          "excerpt": "offer admission to hospital for medically assisted alcohol withdrawal"
+        }
+      ]
+    },
+    {
+      "id": "424-02",
+      "question": "How does CG100 position the CIWA–Ar scale?",
+      "options": {
+        "A": "As a replacement for clinical judgement",
+        "B": "As an adjunct to clinical judgement, within a local protocol",
+        "C": "As a test only for liver transplant listing",
+        "D": "As a contraindication to benzodiazepines",
+        "E": "It is not mentioned"
+      },
+      "correctAnswer": "B",
+      "correctAnswerText": "As an adjunct to clinical judgement, within a local protocol",
+      "explanation": "CG100 says follow a local protocol and consider CIWA–Ar as an adjunct to clinical judgement.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "NICE",
+          "sourceYear": 2010,
+          "sourceUrl": "https://www.nice.org.uk/guidance/cg100",
+          "pmid": "",
+          "pmcid": "",
+          "doi": "",
+          "excerpt": "Consider using a tool (such as the Clinical Institute Withdrawal Assessment – Alcohol, revised [CIWA–Ar] scale ) as an adjunct to clinical judgement."
+        }
+      ]
+    },
+    {
+      "id": "424-03",
+      "question": "Which regimen does CG100 say to follow for drug treatment of acute withdrawal in hospital?",
+      "options": {
+        "A": "A symptom-triggered regimen",
+        "B": "A fixed 30-day phenytoin course",
+        "C": "No medication until delirium is established",
+        "D": "Alcohol taper prescribed for home use only",
+        "E": "Immediate disulfiram loading"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "A symptom-triggered regimen",
+      "explanation": "In hospital, or where 24-hour monitoring is available, CG100 says follow a symptom-triggered regimen.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "NICE",
+          "sourceYear": 2010,
+          "sourceUrl": "https://www.nice.org.uk/guidance/cg100",
+          "pmid": "",
+          "pmcid": "",
+          "doi": "",
+          "excerpt": "Follow a symptom-triggered regimen for drug treatment for people in acute alcohol withdrawal who are: in hospital"
+        }
+      ]
+    },
+    {
+      "id": "424-04",
+      "question": "What is CG100 first-line drug treatment for delirium tremens?",
+      "options": {
+        "A": "Oral lorazepam",
+        "B": "Phenytoin",
+        "C": "Haloperidol before any benzodiazepine",
+        "D": "Chlormethiazole in the community",
+        "E": "No pharmacotherapy"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Oral lorazepam",
+      "explanation": "Offer oral lorazepam first. Parenteral lorazepam or haloperidol is for persistent symptoms or when oral medication is declined.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "NICE",
+          "sourceYear": 2010,
+          "sourceUrl": "https://www.nice.org.uk/guidance/cg100",
+          "pmid": "",
+          "pmcid": "",
+          "doi": "",
+          "excerpt": "In people with delirium tremens, offer oral lorazepam as first-line treatment. If symptoms persist or oral medication is declined, offer parenteral lorazepam or haloperidol."
+        }
+      ]
+    },
+    {
+      "id": "424-05",
+      "question": "What does CG100 say about phenytoin for alcohol withdrawal seizures?",
+      "options": {
+        "A": "Do not offer it",
+        "B": "It is first-line",
+        "C": "Use it only with lorazepam in every case",
+        "D": "It prevents delirium tremens",
+        "E": "Give a loading dose to all dependent drinkers"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Do not offer it",
+      "explanation": "CG100 says do not offer phenytoin to treat alcohol withdrawal seizures.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "NICE",
+          "sourceYear": 2010,
+          "sourceUrl": "https://www.nice.org.uk/guidance/cg100",
+          "pmid": "",
+          "pmcid": "",
+          "doi": "",
+          "excerpt": "Do not offer phenytoin to treat alcohol withdrawal seizures."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "catalogueId": "2108",
+  "topic": "Acute asthma and COPD exacerbations",
+  "scope": "Open expert consensus on initial drug therapy and aerosol delivery for acute asthma and COPD exacerbations.",
+  "keyRecommendations": [
+    {
+      "text": "Salbutamol plus ipratropium remains the mainstay of initial therapy for both acute asthma and COPD exacerbations.",
+      "strength": "not_graded",
+      "population": "Acute asthma or COPD exacerbation"
+    },
+    {
+      "text": "The panel prioritised early corticosteroid therapy and optimising bronchodilator dosing to limit toxicity.",
+      "strength": "not_graded",
+      "population": "Acute exacerbations"
+    },
+    {
+      "text": "The panel reached unanimous consensus that aerosol delivery device selection significantly influences treatment success.",
+      "strength": "not_graded",
+      "population": "Aerosolised treatment"
+    }
+  ],
+  "clinicalBottomLine": "Start acute asthma and COPD exacerbations with salbutamol plus ipratropium, give corticosteroids early, and choose the aerosol device deliberately because the panel judged device choice to affect success.",
+  "notableCaveats": [
+    "This is a device-and-initial-therapy consensus, not a full ICU ventilation guideline."
+  ],
+  "source": {
+    "title": "Saudi expert consensus on the management of acute asthma and COPD exacerbations with algorithm of aerosol drug delivery device recommendations.",
+    "year": 2026,
+    "pmid": "42625150",
+    "pmcid": "PMC13491584",
+    "doi": "",
+    "url": "https://europepmc.org/articles/PMC13491584",
+    "sourceBody": "Int J Emerg Med",
+    "storedAs": ""
+  }
+}

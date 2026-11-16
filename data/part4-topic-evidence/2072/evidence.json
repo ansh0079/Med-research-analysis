@@ -1,0 +1,22 @@
+{
+  "catalogueId": "2072",
+  "spreadsheetRow": 45,
+  "topic": "Vulvar and Vaginal Cancers",
+  "specialty": "Oncology",
+  "decision": "downloaded open source",
+  "source": {
+    "title": "European Society of Gynaecological Oncology Guidelines for the Management of Patients with Vulvar Cancer - Update 2023.",
+    "year": 2023,
+    "pmid": "37369376",
+    "pmcid": "PMC10359596",
+    "doi": "10.1136/ijgc-2023-004486",
+    "url": "https://europepmc.org/articles/PMC10359596",
+    "sourceBody": "ESGO / Int J Gynecol Cancer",
+    "storedAs": ""
+  },
+  "whyItFits": "2023 ESGO guideline for patients with vulvar cancer: staging, groin assessment, sentinel nodes, and treatment of primary and recurrent disease.",
+  "limitations": "Open PMC full text of the vulvar guideline. Vaginal cancer is named in a keyword string but management recommendations for vaginal cancer are not in the extracted body, so those MCQs were not written.",
+  "synopsisWritten": true,
+  "mcqsWritten": true,
+  "mcqCount": 5
+}

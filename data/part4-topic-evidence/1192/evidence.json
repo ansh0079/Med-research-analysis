@@ -1,0 +1,22 @@
+{
+  "catalogueId": "1192",
+  "spreadsheetRow": 70,
+  "topic": "High Altitude Pulmonary Edema",
+  "specialty": "Pulmonology",
+  "decision": "downloaded open source",
+  "source": {
+    "title": "High-altitude pulmonary edema.",
+    "year": 2021,
+    "pmid": "33732460",
+    "pmcid": "PMC7947961",
+    "doi": "",
+    "url": "https://europepmc.org/articles/PMC7947961",
+    "sourceBody": "Open review",
+    "storedAs": ""
+  },
+  "whyItFits": "Short open review of high-altitude pulmonary oedema: ascent above 3000 m, noncardiogenic oedema, and treatment by descent, oxygen, and pulmonary vasodilators.",
+  "limitations": "",
+  "synopsisWritten": true,
+  "mcqsWritten": true,
+  "mcqCount": 5
+}

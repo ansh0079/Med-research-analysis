@@ -1,0 +1,136 @@
+{
+  "catalogueId": "353",
+  "topic": "Lung Volumes and Spirometry interpretation",
+  "mcqs": [
+    {
+      "id": "353-01",
+      "question": "What is the status of FEV1 if the patient coughs during the first second?",
+      "options": {
+        "A": "Neither acceptable nor usable",
+        "B": "Acceptable if the FVC is large",
+        "C": "The preferred value",
+        "D": "Usable but not reportable only if the cough is silent",
+        "E": "The standard does not mention cough"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Neither acceptable nor usable",
+      "explanation": "A cough in the first second can affect FEV1, and that FEV1 is neither acceptable nor usable.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "ATS/ERS",
+          "sourceYear": 2019,
+          "sourceUrl": "https://europepmc.org/articles/PMC6794117",
+          "pmid": "31613151",
+          "pmcid": "PMC6794117",
+          "doi": "",
+          "excerpt": "A cough during the first second of the maneuver can affect the measured FEV 1 value, and the FEV 1 from such a maneuver is neither acceptable nor usable."
+        }
+      ]
+    },
+    {
+      "id": "353-02",
+      "question": "Which forced-expiratory-time criterion does the standard describe as an end-of-test signal, with a double beep?",
+      "options": {
+        "A": "An FET of 15 seconds",
+        "B": "An FET of 1 second",
+        "C": "An FET of 60 seconds",
+        "D": "No time criterion exists",
+        "E": "Only a slow vital capacity"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "An FET of 15 seconds",
+      "explanation": "Achieving an FET of 15 seconds is an end-of-forced-expiration criterion, signalled on the display and by a double beep.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "ATS/ERS",
+          "sourceYear": 2019,
+          "sourceUrl": "https://europepmc.org/articles/PMC6794117",
+          "pmid": "31613151",
+          "pmcid": "PMC6794117",
+          "doi": "",
+          "excerpt": "The patient has achieved an FET of 15 seconds."
+        }
+      ]
+    },
+    {
+      "id": "353-03",
+      "question": "When are FEV1 and FVC not acceptable because of the inspiratory comparison?",
+      "options": {
+        "A": "When FIVC minus FVC is greater than 0.100 L or 5% of FVC, whichever is greater",
+        "B": "When they are equal",
+        "C": "When FIVC is smaller than FVC",
+        "D": "The comparison is not used",
+        "E": "Only if the patient is a child"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "When FIVC minus FVC is greater than 0.100 L or 5% of FVC, whichever is greater",
+      "explanation": "If FIVC−FVC exceeds 0.100 L or 5% of FVC, whichever is greater, FEV1 and FVC are not acceptable.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "ATS/ERS",
+          "sourceYear": 2019,
+          "sourceUrl": "https://europepmc.org/articles/PMC6794117",
+          "pmid": "31613151",
+          "pmcid": "PMC6794117",
+          "doi": "",
+          "excerpt": "FIVC − FVC > 0.100 L or 5% of FVC, whichever is greater"
+        }
+      ]
+    },
+    {
+      "id": "353-04",
+      "question": "When spirometry is done for diagnosis, what does the standard say about bronchodilator timing?",
+      "options": {
+        "A": "It should be done before and after a bronchodilator",
+        "B": "Only after a bronchodilator",
+        "C": "Bronchodilator testing is forbidden",
+        "D": "Only peak flow is required",
+        "E": "The sentence is not in the standard"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "It should be done before and after a bronchodilator",
+      "explanation": "All initial spirometry done for diagnostic reasons should be performed before and after bronchodilator administration.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "ATS/ERS",
+          "sourceYear": 2019,
+          "sourceUrl": "https://europepmc.org/articles/PMC6794117",
+          "pmid": "31613151",
+          "pmcid": "PMC6794117",
+          "doi": "",
+          "excerpt": "all initial spirometry done for diagnostic reasons should be performed before and after bronchodilator administration"
+        }
+      ]
+    },
+    {
+      "id": "353-05",
+      "question": "What does the standard say is needed to note a complete set of acceptable measurements?",
+      "options": {
+        "A": "Three acceptable FEV1 and three acceptable FVC measurements, not necessarily from the same manoeuvres",
+        "B": "One manoeuvre only",
+        "C": "A single peak-flow blow",
+        "D": "No acceptability rules",
+        "E": "Ten slow breaths without forced expiration"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Three acceptable FEV1 and three acceptable FVC measurements, not necessarily from the same manoeuvres",
+      "explanation": "The note refers to three acceptable FEV1 and three acceptable FVC measurements, not necessarily from the same manoeuvre.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "ATS/ERS",
+          "sourceYear": 2019,
+          "sourceUrl": "https://europepmc.org/articles/PMC6794117",
+          "pmid": "31613151",
+          "pmcid": "PMC6794117",
+          "doi": "",
+          "excerpt": "three acceptable FEV 1 and three acceptable FVC measurements"
+        }
+      ]
+    }
+  ]
+}

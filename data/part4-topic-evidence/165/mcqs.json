@@ -1,0 +1,136 @@
+{
+  "catalogueId": "165",
+  "topic": "Lymphangioleiomyomatosis",
+  "mcqs": [
+    {
+      "id": "165-01",
+      "question": "Whom does the guideline abstract say LAM primarily affects?",
+      "options": {
+        "A": "Women",
+        "B": "Men only",
+        "C": "Infants of both sexes equally as the primary group",
+        "D": "Only smokers with COPD",
+        "E": "The abstract does not say"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Women",
+      "explanation": "LAM is a rare cystic lung disease that primarily affects women.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "ATS/JRS",
+          "sourceYear": 2016,
+          "sourceUrl": "https://europepmc.org/articles/PMC5803656",
+          "pmid": "27628078",
+          "pmcid": "PMC5803656",
+          "doi": "10.1164/rccm.201607-1384ST",
+          "excerpt": "LAM) is a rare cystic lung disease that primarily affects women."
+        }
+      ]
+    },
+    {
+      "id": "165-02",
+      "question": "Which drug does the abstract say the guideline recommends?",
+      "options": {
+        "A": "Sirolimus",
+        "B": "Doxycycline as a recommended treatment",
+        "C": "Hormonal therapy as a recommended treatment",
+        "D": "Amphotericin",
+        "E": "No drug recommendation is stated"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Sirolimus",
+      "explanation": "The abstract includes recommendations for sirolimus treatment.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "ATS/JRS",
+          "sourceYear": 2016,
+          "sourceUrl": "https://europepmc.org/articles/PMC5803656",
+          "pmid": "27628078",
+          "pmcid": "PMC5803656",
+          "doi": "10.1164/rccm.201607-1384ST",
+          "excerpt": "recommendations for sirolimus treatment"
+        }
+      ]
+    },
+    {
+      "id": "165-03",
+      "question": "Which test does the abstract include among the recommendations?",
+      "options": {
+        "A": "Vascular endothelial growth factor D testing",
+        "B": "Serum ACE as the required test",
+        "C": "Methacholine challenge",
+        "D": "No biomarker testing",
+        "E": "Sweat chloride"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Vascular endothelial growth factor D testing",
+      "explanation": "Recommendations include vascular endothelial growth factor D testing.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "ATS/JRS",
+          "sourceYear": 2016,
+          "sourceUrl": "https://europepmc.org/articles/PMC5803656",
+          "pmid": "27628078",
+          "pmcid": "PMC5803656",
+          "doi": "10.1164/rccm.201607-1384ST",
+          "excerpt": "vascular endothelial growth factor D testing"
+        }
+      ]
+    },
+    {
+      "id": "165-04",
+      "question": "Which treatments does the abstract say the guideline recommends against?",
+      "options": {
+        "A": "Doxycycline and hormonal therapy",
+        "B": "Sirolimus",
+        "C": "Oxygen",
+        "D": "VEGF-D testing",
+        "E": "None"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Doxycycline and hormonal therapy",
+      "explanation": "The abstract records recommendations against doxycycline and hormonal therapy.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "ATS/JRS",
+          "sourceYear": 2016,
+          "sourceUrl": "https://europepmc.org/articles/PMC5803656",
+          "pmid": "27628078",
+          "pmcid": "PMC5803656",
+          "doi": "10.1164/rccm.201607-1384ST",
+          "excerpt": "recommendations against doxycycline and hormonal therapy"
+        }
+      ]
+    },
+    {
+      "id": "165-05",
+      "question": "How does the abstract classify LAM?",
+      "options": {
+        "A": "A rare cystic lung disease",
+        "B": "A common obstructive disease",
+        "C": "An acute infection",
+        "D": "A pleural tumour",
+        "E": "A pulmonary vascular stenosis"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "A rare cystic lung disease",
+      "explanation": "LAM is described as a rare cystic lung disease.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "ATS/JRS",
+          "sourceYear": 2016,
+          "sourceUrl": "https://europepmc.org/articles/PMC5803656",
+          "pmid": "27628078",
+          "pmcid": "PMC5803656",
+          "doi": "10.1164/rccm.201607-1384ST",
+          "excerpt": "rare cystic lung disease"
+        }
+      ]
+    }
+  ]
+}

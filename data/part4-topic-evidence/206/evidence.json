@@ -1,0 +1,22 @@
+{
+  "catalogueId": "206",
+  "spreadsheetRow": 82,
+  "topic": "Pancoast Tumors",
+  "specialty": "Pulmonology",
+  "decision": "downloaded open source",
+  "source": {
+    "title": "Superior sulcus tumors (Pancoast tumors).",
+    "year": 2016,
+    "pmid": "27429965",
+    "pmcid": "PMC4930518",
+    "doi": "",
+    "url": "https://europepmc.org/articles/PMC4930518",
+    "sourceBody": "Open review",
+    "storedAs": ""
+  },
+  "whyItFits": "Open review abstract of superior sulcus (Pancoast) tumours: local invasion, historical survival, and trimodality treatment.",
+  "limitations": "Abstract-level PMC text. Not the full SWOG protocol.",
+  "synopsisWritten": true,
+  "mcqsWritten": true,
+  "mcqCount": 5
+}

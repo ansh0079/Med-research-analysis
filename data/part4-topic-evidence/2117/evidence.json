@@ -1,0 +1,22 @@
+{
+  "catalogueId": "2117",
+  "spreadsheetRow": 58,
+  "topic": "Asthma severity classification and step-care",
+  "specialty": "Pulmonology",
+  "decision": "downloaded open source",
+  "source": {
+    "title": "Global Initiative for Asthma Strategy 2021: executive summary and rationale for key changes.",
+    "year": 2022,
+    "pmid": "34667060",
+    "pmcid": "PMC8719459",
+    "doi": "10.1183/13993003.02730-2021",
+    "url": "https://europepmc.org/articles/PMC8719459",
+    "sourceBody": "GINA / Eur Respir J",
+    "storedAs": ""
+  },
+  "whyItFits": "GINA 2021 executive summary on treatment steps, ICS-formoterol, and the fact that symptom control does not exclude severe exacerbations.",
+  "limitations": "",
+  "synopsisWritten": true,
+  "mcqsWritten": true,
+  "mcqCount": 5
+}

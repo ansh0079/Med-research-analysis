@@ -1,0 +1,22 @@
+{
+  "catalogueId": "327",
+  "spreadsheetRow": 61,
+  "topic": "Byssinosis",
+  "specialty": "Pulmonology",
+  "decision": "downloaded open source",
+  "source": {
+    "title": "Byssinosis and lung health among cotton textile workers: baseline findings of the MultiTex trial in Karachi, Pakistan.",
+    "year": 2023,
+    "pmid": "36717255",
+    "pmcid": "PMC9985716",
+    "doi": "",
+    "url": "https://europepmc.org/articles/PMC9985716",
+    "sourceBody": "Occupational research",
+    "storedAs": ""
+  },
+  "whyItFits": "Open baseline paper from the MultiTex trial defining byssinosis assessment in cotton textile workers, including Schilling criteria.",
+  "limitations": "",
+  "synopsisWritten": true,
+  "mcqsWritten": true,
+  "mcqCount": 5
+}

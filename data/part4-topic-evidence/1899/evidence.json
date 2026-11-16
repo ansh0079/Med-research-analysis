@@ -1,0 +1,22 @@
+{
+  "catalogueId": "1899",
+  "spreadsheetRow": 78,
+  "topic": "Massive Hemoptysis management",
+  "specialty": "Pulmonology",
+  "decision": "downloaded open source",
+  "source": {
+    "title": "Efficacy and safety of bronchial artery embolization in the treatment of hemoptysis: a systematic review and meta-analysis of RCTs.",
+    "year": 2026,
+    "pmid": "",
+    "pmcid": "PMC13733285",
+    "doi": "10.3389/fmed.2026.1959450",
+    "url": "https://europepmc.org/articles/PMC13733285",
+    "sourceBody": "Front Med",
+    "storedAs": ""
+  },
+  "whyItFits": "Open meta-analysis of randomised trials of bronchial artery embolization for haemoptysis, including studies of massive haemoptysis.",
+  "limitations": "BAE outcome meta-analysis. Not a complete resuscitation protocol for massive haemoptysis.",
+  "synopsisWritten": true,
+  "mcqsWritten": true,
+  "mcqCount": 5
+}

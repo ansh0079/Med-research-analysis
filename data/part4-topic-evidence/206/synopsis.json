@@ -1,0 +1,36 @@
+{
+  "catalogueId": "206",
+  "topic": "Pancoast Tumors",
+  "scope": "Open review abstract of superior sulcus (Pancoast) tumours: local invasion, historical survival, and trimodality treatment.",
+  "keyRecommendations": [
+    {
+      "text": "These tumours invade the apical chest wall and can involve the lower brachial plexus, ribs, vertebrae, subclavian vessels, or stellate ganglion, producing arm or shoulder pain or Horner syndrome.",
+      "strength": "not_graded",
+      "population": "Superior sulcus tumours"
+    },
+    {
+      "text": "They were originally considered universally fatal. Shaw and Paulson in 1956 combined radiotherapy and surgery, with 5-year survival of about 30%.",
+      "strength": "not_graded",
+      "population": "Historical treatment"
+    },
+    {
+      "text": "Trimodality treatment, induction concurrent chemoradiotherapy followed by resection, became standard in the 1990s, with 5-year survival up to 44% in the text.",
+      "strength": "not_graded",
+      "population": "Superior sulcus tumours"
+    }
+  ],
+  "clinicalBottomLine": "A Pancoast tumour is an apical lung cancer that can cause arm or shoulder pain or Horner syndrome. Modern treatment in this review is induction chemoradiotherapy followed by resection.",
+  "notableCaveats": [
+    "The PMC XML is essentially the abstract. Operative details and trial doses are not in the open text."
+  ],
+  "source": {
+    "title": "Superior sulcus tumors (Pancoast tumors).",
+    "year": 2016,
+    "pmid": "27429965",
+    "pmcid": "PMC4930518",
+    "doi": "",
+    "url": "https://europepmc.org/articles/PMC4930518",
+    "sourceBody": "Open review",
+    "storedAs": ""
+  }
+}

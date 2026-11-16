@@ -1,0 +1,136 @@
+{
+  "catalogueId": "2015",
+  "topic": "substance use disorder",
+  "mcqs": [
+    {
+      "id": "2015-01",
+      "question": "In this review, addiction refers to which severity of SUD?",
+      "options": {
+        "A": "Moderate or severe",
+        "B": "Mild only",
+        "C": "Any single use",
+        "D": "Tobacco only",
+        "E": "A legal finding rather than a clinical one"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Moderate or severe",
+      "explanation": "The text uses addiction for moderate or severe SUD.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "World Psychiatry",
+          "sourceYear": 2023,
+          "sourceUrl": "https://europepmc.org/articles/PMC10168177",
+          "pmid": "37159360",
+          "pmcid": "PMC10168177",
+          "doi": "10.1002/wps.21073",
+          "excerpt": "addiction (moderate or severe SUD)"
+        }
+      ]
+    },
+    {
+      "id": "2015-02",
+      "question": "Where does the review locate clinically significant benefit from medications?",
+      "options": {
+        "A": "Opioid, nicotine, and alcohol use disorders",
+        "B": "Caffeine only",
+        "C": "No SUD",
+        "D": "Cannabis only",
+        "E": "Inhalant use only"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Opioid, nicotine, and alcohol use disorders",
+      "explanation": "Medications are cited for opioid, nicotine, and alcohol use disorders; behavioural therapies for all SUDs; neuromodulation for nicotine use disorder.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "World Psychiatry",
+          "sourceYear": 2023,
+          "sourceUrl": "https://europepmc.org/articles/PMC10168177",
+          "pmid": "37159360",
+          "pmcid": "PMC10168177",
+          "doi": "10.1002/wps.21073",
+          "excerpt": "medications (in opioid, nicotine and alcohol use disorders), behavioral therapies (in all SUDs), and neuromodulation (in nicotine use disorder)"
+        }
+      ]
+    },
+    {
+      "id": "2015-03",
+      "question": "Which care model does the review recommend for SUD treatment?",
+      "options": {
+        "A": "A chronic care model",
+        "B": "A single unplanned detoxification with no follow-up",
+        "C": "Incarceration as treatment",
+        "D": "Watchful waiting for severe disorder",
+        "E": "Emergency surgery"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "A chronic care model",
+      "explanation": "SUD treatment should be considered within a chronic care model, with intensity adjusted to severity.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "World Psychiatry",
+          "sourceYear": 2023,
+          "sourceUrl": "https://europepmc.org/articles/PMC10168177",
+          "pmid": "37159360",
+          "pmcid": "PMC10168177",
+          "doi": "10.1002/wps.21073",
+          "excerpt": "Treatment of SUDs should be considered within the context of a Chronic Care Model"
+        }
+      ]
+    },
+    {
+      "id": "2015-04",
+      "question": "Prevention aimed at social risk factors can decrease risk when it is deployed at which stage?",
+      "options": {
+        "A": "Childhood and adolescence",
+        "B": "Only after retirement",
+        "C": "Only during withdrawal seizures",
+        "D": "The review says prevention cannot work",
+        "E": "Only in intensive care"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Childhood and adolescence",
+      "explanation": "The summary says that when deployed in childhood and adolescence, such prevention can decrease risk.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "World Psychiatry",
+          "sourceYear": 2023,
+          "sourceUrl": "https://europepmc.org/articles/PMC10168177",
+          "pmid": "37159360",
+          "pmcid": "PMC10168177",
+          "doi": "10.1002/wps.21073",
+          "excerpt": "when deployed in childhood and adolescence, can decrease the risk"
+        }
+      ]
+    },
+    {
+      "id": "2015-05",
+      "question": "What does the review include for severe cases?",
+      "options": {
+        "A": "Referral to specialized care",
+        "B": "Mandatory discharge",
+        "C": "Withholding of all behavioural therapy",
+        "D": "Treatment only in prison",
+        "E": "No role for health services"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Referral to specialized care",
+      "explanation": "Detection and management include referral of severe cases to specialized care.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "World Psychiatry",
+          "sourceYear": 2023,
+          "sourceUrl": "https://europepmc.org/articles/PMC10168177",
+          "pmid": "37159360",
+          "pmcid": "PMC10168177",
+          "doi": "10.1002/wps.21073",
+          "excerpt": "referral of severe cases to specialized care"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,136 @@
+{
+  "catalogueId": "1646",
+  "topic": "Aspiration Pneumonia",
+  "mcqs": [
+    {
+      "id": "1646-01",
+      "question": "What does the review call a relevant risk factor for aspiration pneumonia?",
+      "options": {
+        "A": "Oropharyngeal dysphagia",
+        "B": "Isolated hyperlipidaemia",
+        "C": "Myopia",
+        "D": "A normal swallow study",
+        "E": "Well-controlled allergic rhinitis alone"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Oropharyngeal dysphagia",
+      "explanation": "Oropharyngeal dysphagia is a relevant risk factor.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "Open review",
+          "sourceYear": 2022,
+          "sourceUrl": "https://europepmc.org/articles/PMC9106188",
+          "pmid": "35488832",
+          "pmcid": "PMC9106188",
+          "doi": "",
+          "excerpt": "Oropharyngeal dysphagia is a relevant risk factor for aspiration pneumonia"
+        }
+      ]
+    },
+    {
+      "id": "1646-02",
+      "question": "Which states does the review group with impaired consciousness as a risk setting?",
+      "options": {
+        "A": "Acute stroke and head injury are named in that list",
+        "B": "Only insomnia",
+        "C": "Only anxiety",
+        "D": "Fully alert patients only",
+        "E": "Consciousness is irrelevant"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Acute stroke and head injury are named in that list",
+      "explanation": "Impaired consciousness is illustrated with acute stroke and head injury.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "Open review",
+          "sourceYear": 2022,
+          "sourceUrl": "https://europepmc.org/articles/PMC9106188",
+          "pmid": "35488832",
+          "pmcid": "PMC9106188",
+          "doi": "",
+          "excerpt": "impaired consciousness (acute stroke, head inju"
+        }
+      ]
+    },
+    {
+      "id": "1646-03",
+      "question": "Which neurological diseases are named among impaired-swallowing risks?",
+      "options": {
+        "A": "Stroke or dementia",
+        "B": "Migraine only",
+        "C": "Bell’s palsy only",
+        "D": "No neurological disease is mentioned",
+        "E": "Multiple sclerosis is the only one named"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Stroke or dementia",
+      "explanation": "Impaired swallowing includes neurological diseases such as stroke or dementia.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "Open review",
+          "sourceYear": 2022,
+          "sourceUrl": "https://europepmc.org/articles/PMC9106188",
+          "pmid": "35488832",
+          "pmcid": "PMC9106188",
+          "doi": "",
+          "excerpt": "neurological diseases such as stroke or dementia"
+        }
+      ]
+    },
+    {
+      "id": "1646-04",
+      "question": "What does the review say the oral environment can influence?",
+      "options": {
+        "A": "Growth of potentially pathogenic anaerobic bacteria",
+        "B": "Only viral replication in the liver",
+        "C": "Bone density",
+        "D": "Nothing microbiological",
+        "E": "Only fungal nail infection"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Growth of potentially pathogenic anaerobic bacteria",
+      "explanation": "The text refers to growth of potentially pathogenic anaerobic bacteria.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "Open review",
+          "sourceYear": 2022,
+          "sourceUrl": "https://europepmc.org/articles/PMC9106188",
+          "pmid": "35488832",
+          "pmcid": "PMC9106188",
+          "doi": "",
+          "excerpt": "potentially pathogenic anaerobic bacteria"
+        }
+      ]
+    },
+    {
+      "id": "1646-05",
+      "question": "How does the review describe recurrent aspiration in its risk list?",
+      "options": {
+        "A": "More than one episode of pneumonia",
+        "B": "A single cough",
+        "C": "Only ventilator-associated pneumonia on day 1",
+        "D": "Recurrence is not discussed",
+        "E": "Only chemical pneumonitis without infection"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "More than one episode of pneumonia",
+      "explanation": "Recurrent aspiration is described as more than one episode of pneumonia.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "Open review",
+          "sourceYear": 2022,
+          "sourceUrl": "https://europepmc.org/articles/PMC9106188",
+          "pmid": "35488832",
+          "pmcid": "PMC9106188",
+          "doi": "",
+          "excerpt": "risk of recurrent aspiration (more than one episode of pneumonia)"
+        }
+      ]
+    }
+  ]
+}

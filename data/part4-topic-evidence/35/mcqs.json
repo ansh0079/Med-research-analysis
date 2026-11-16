@@ -1,0 +1,136 @@
+{
+  "catalogueId": "35",
+  "topic": "COPD diagnosis and staging",
+  "mcqs": [
+    {
+      "id": "35-01",
+      "question": "In whom does NG115 say to suspect COPD?",
+      "options": {
+        "A": "People over 35 with a risk factor, generally smoking, plus characteristic symptoms",
+        "B": "Any teenager with a cough",
+        "C": "Only never-smokers under 30",
+        "D": "Only people with a normal chest X-ray and no symptoms",
+        "E": "Only people already on oxygen"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "People over 35 with a risk factor, generally smoking, plus characteristic symptoms",
+      "explanation": "Suspect COPD over age 35 with a risk factor, generally smoking, and one or more of the listed symptoms.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "NICE",
+          "sourceYear": 2018,
+          "sourceUrl": "https://www.nice.org.uk/guidance/ng115",
+          "pmid": "",
+          "pmcid": "",
+          "doi": "",
+          "excerpt": "Suspect a diagnosis of COPD in people over 35 who have a risk factor (generally smoking or a history of smoking)"
+        }
+      ]
+    },
+    {
+      "id": "35-02",
+      "question": "What spirometry does NG115 require to confirm COPD?",
+      "options": {
+        "A": "Post-bronchodilator spirometry",
+        "B": "Pre-bronchodilator peak flow only",
+        "C": "No spirometry if the history is typical",
+        "D": "Inspiratory sniff test",
+        "E": "Exhaled nitric oxide alone"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Post-bronchodilator spirometry",
+      "explanation": "Measure post-bronchodilator spirometry to confirm the diagnosis.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "NICE",
+          "sourceYear": 2018,
+          "sourceUrl": "https://www.nice.org.uk/guidance/ng115",
+          "pmid": "",
+          "pmcid": "",
+          "doi": "",
+          "excerpt": "Measure post-bronchodilator spirometry to confirm the diagnosis of COPD."
+        }
+      ]
+    },
+    {
+      "id": "35-03",
+      "question": "What does NG115 say about older people with FEV1/FVC below 0.7 but without typical COPD symptoms?",
+      "options": {
+        "A": "Think about alternative diagnoses or investigations",
+        "B": "Diagnose COPD immediately",
+        "C": "Start triple therapy the same day",
+        "D": "The ratio is irrelevant",
+        "E": "Repeat the ratio only after lung transplant"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Think about alternative diagnoses or investigations",
+      "explanation": "Think about alternative diagnoses or investigations in that situation.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "NICE",
+          "sourceYear": 2018,
+          "sourceUrl": "https://www.nice.org.uk/guidance/ng115",
+          "pmid": "",
+          "pmcid": "",
+          "doi": "",
+          "excerpt": "FEV1/FVC ratio below 0.7 but do not have typical symptoms of COPD"
+        }
+      ]
+    },
+    {
+      "id": "35-04",
+      "question": "How does NG115 say to assess the severity of airflow obstruction?",
+      "options": {
+        "A": "According to the reduction in FEV1",
+        "B": "According to the eosinophil count alone",
+        "C": "According to body-mass index alone",
+        "D": "It should not be assessed",
+        "E": "According to the number of inhalers"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "According to the reduction in FEV1",
+      "explanation": "Assess severity according to the reduction in FEV1, as in the guideline table.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "NICE",
+          "sourceYear": 2018,
+          "sourceUrl": "https://www.nice.org.uk/guidance/ng115",
+          "pmid": "",
+          "pmcid": "",
+          "doi": "",
+          "excerpt": "Assess the severity of airflow obstruction according to the reduction in FEV1"
+        }
+      ]
+    },
+    {
+      "id": "35-05",
+      "question": "Which symptoms does NG115 list as reasons to suspect COPD when a risk factor is present?",
+      "options": {
+        "A": "Exertional breathlessness, chronic cough, regular sputum, frequent winter bronchitis, or wheeze",
+        "B": "Only haemoptysis",
+        "C": "Only chest pain",
+        "D": "Only ankle swelling",
+        "E": "Only weight gain"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Exertional breathlessness, chronic cough, regular sputum, frequent winter bronchitis, or wheeze",
+      "explanation": "Those symptoms are the list in the recommendation on suspecting COPD. Chest pain and haemoptysis are called uncommon and suggest other diagnoses.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "NICE",
+          "sourceYear": 2018,
+          "sourceUrl": "https://www.nice.org.uk/guidance/ng115",
+          "pmid": "",
+          "pmcid": "",
+          "doi": "",
+          "excerpt": "exertional breathlessness chronic cough regular sputum production frequent winter 'bronchitis' wheeze"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,136 @@
+{
+  "catalogueId": "1506",
+  "topic": "Retinal detachment: presentation and emergency management",
+  "mcqs": [
+    {
+      "id": "1506-01",
+      "question": "Which symptom cluster does the review give as the typical presentation of rhegmatogenous retinal detachment?",
+      "options": {
+        "A": "Painful red eye with hypopyon",
+        "B": "Light flashes, floaters, or a dark curtain",
+        "C": "Gradual loss of colour vision only",
+        "D": "Binocular double vision",
+        "E": "A sudden corneal foreign-body sensation"
+      },
+      "correctAnswer": "B",
+      "correctAnswerText": "Light flashes, floaters, or a dark curtain",
+      "explanation": "The open text says the typical presentation is light flashes, floaters, or a dark curtain.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "Dtsch Arztebl Int",
+          "sourceYear": 2014,
+          "sourceUrl": "https://europepmc.org/articles/PMC3948016",
+          "pmid": "24565273",
+          "pmcid": "PMC3948016",
+          "doi": "10.3238/arztebl.2014.0012",
+          "excerpt": "Rhegmatogenous retinal detachment typically presents with the perception of light flashes, floaters, or a “dark curtain.”"
+        }
+      ]
+    },
+    {
+      "id": "1506-02",
+      "question": "Which pair does the review name as the main epidemiologic risk factors?",
+      "options": {
+        "A": "Myopia and prior cataract surgery",
+        "B": "Diabetes and glaucoma",
+        "C": "Contact-lens wear and dry eye",
+        "D": "Smoking and hypertension",
+        "E": "Uveitis and rheumatoid arthritis"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Myopia and prior cataract surgery",
+      "explanation": "The review identifies myopia and prior cataract surgery as the main risk factors.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "Dtsch Arztebl Int",
+          "sourceYear": 2014,
+          "sourceUrl": "https://europepmc.org/articles/PMC3948016",
+          "pmid": "24565273",
+          "pmcid": "PMC3948016",
+          "doi": "10.3238/arztebl.2014.0012",
+          "excerpt": "Epidemiologic studies have identified myopia and prior cataract surgery as the main risk factors."
+        }
+      ]
+    },
+    {
+      "id": "1506-03",
+      "question": "How quickly should a patient with suspected rhegmatogenous retinal detachment be seen by an ophthalmologist?",
+      "options": {
+        "A": "Within 6 weeks",
+        "B": "On the same day that symptoms arise",
+        "C": "Only if visual acuity falls below 6/60",
+        "D": "After a routine optometry review next month",
+        "E": "Only if the fellow eye is blind"
+      },
+      "correctAnswer": "B",
+      "correctAnswerText": "On the same day that symptoms arise",
+      "explanation": "The text states that all such patients should be seen by an ophthalmologist on the same day symptoms arise.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "Dtsch Arztebl Int",
+          "sourceYear": 2014,
+          "sourceUrl": "https://europepmc.org/articles/PMC3948016",
+          "pmid": "24565273",
+          "pmcid": "PMC3948016",
+          "doi": "10.3238/arztebl.2014.0012",
+          "excerpt": "all patients should be seen by an ophthalmologist on the same day that symptoms arise"
+        }
+      ]
+    },
+    {
+      "id": "1506-04",
+      "question": "Which treatment statement is in the review?",
+      "options": {
+        "A": "Topical antibiotics alone cure most detachments",
+        "B": "Treatment is scleral buckle, vitrectomy, or both, with anatomical success about 85% to 90%",
+        "C": "Laser is contraindicated in every case",
+        "D": "Enucleation is first-line",
+        "E": "Observation for 3 months is standard"
+      },
+      "correctAnswer": "B",
+      "correctAnswerText": "Treatment is scleral buckle, vitrectomy, or both, with anatomical success about 85% to 90%",
+      "explanation": "The review lists buckle, vitrectomy, or a combination, with anatomical success of 85% to 90%.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "Dtsch Arztebl Int",
+          "sourceYear": 2014,
+          "sourceUrl": "https://europepmc.org/articles/PMC3948016",
+          "pmid": "24565273",
+          "pmcid": "PMC3948016",
+          "doi": "10.3238/arztebl.2014.0012",
+          "excerpt": "The treatment consists of scleral buckle, removal of the vitreous body (vitrectomy), or a combination of the two. Anatomical success rates are in the range of 85% to 90%."
+        }
+      ]
+    },
+    {
+      "id": "1506-05",
+      "question": "What does the review say follows vitrectomy in more than 70% of cases?",
+      "options": {
+        "A": "Lens opacification",
+        "B": "Retinal arterial occlusion",
+        "C": "Optic neuritis",
+        "D": "Angle-closure glaucoma",
+        "E": "Corneal graft rejection"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Lens opacification",
+      "explanation": "The text states that vitrectomy is followed by lens opacification in more than 70% of cases.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "Dtsch Arztebl Int",
+          "sourceYear": 2014,
+          "sourceUrl": "https://europepmc.org/articles/PMC3948016",
+          "pmid": "24565273",
+          "pmcid": "PMC3948016",
+          "doi": "10.3238/arztebl.2014.0012",
+          "excerpt": "Vitrectomy is followed by lens opacification in more than 70% of cases."
+        }
+      ]
+    }
+  ]
+}

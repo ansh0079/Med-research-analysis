@@ -1,0 +1,26 @@
+{
+  "catalogueId": "124",
+  "spreadsheetRow": 68,
+  "topic": "Hard Metal Lung Disease",
+  "specialty": "Pulmonology",
+  "decision": "unresolved",
+  "source": {
+    "title": "",
+    "year": "",
+    "pmid": "",
+    "pmcid": "",
+    "doi": "",
+    "url": "",
+    "sourceBody": "",
+    "storedAs": ""
+  },
+  "whyItFits": "No open review states the clinical picture of hard-metal lung disease. Teaching the atypical letter would mis-state the disease. Synopsis and MCQs were not written.",
+  "limitations": "No open review states the clinical picture of hard-metal lung disease. Teaching the atypical letter would mis-state the disease. Synopsis and MCQs were not written.",
+  "search": [
+    "In-app search for hard metal, cobalt, and giant-cell interstitial pneumonia.",
+    "PMC5510327 is a letter of hard-metal exposure without giant-cell interstitial pneumonia and was rejected.",
+    "Classic reviews are not open. A biomarker paper is not a disease review."
+  ],
+  "synopsisWritten": false,
+  "mcqsWritten": false
+}

@@ -1,0 +1,22 @@
+{
+  "catalogueId": "1237",
+  "spreadsheetRow": 79,
+  "topic": "Neuromuscular Respiratory Failure",
+  "specialty": "Pulmonology",
+  "decision": "downloaded open source",
+  "source": {
+    "title": "Acute on Chronic Neuromuscular Respiratory Failure in the Intensive Care Unit: A Narrative Review.",
+    "year": 2021,
+    "pmid": "34381654",
+    "pmcid": "PMC8351614",
+    "doi": "",
+    "url": "https://europepmc.org/articles/PMC8351614",
+    "sourceBody": "Open narrative review",
+    "storedAs": ""
+  },
+  "whyItFits": "Narrative review of acute-on-chronic neuromuscular respiratory failure, written around ALS patients without a tracheostomy.",
+  "limitations": "Narrative review centred on ALS. Not a vital-capacity protocol.",
+  "synopsisWritten": true,
+  "mcqsWritten": true,
+  "mcqCount": 5
+}

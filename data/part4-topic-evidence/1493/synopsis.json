@@ -1,0 +1,36 @@
+{
+  "catalogueId": "1493",
+  "topic": "Pulmonary Veno-Occlusive Disease",
+  "scope": "Review of pulmonary veno-occlusive disease, including its current PAH classification name, transplant referral, and histology.",
+  "keyRecommendations": [
+    {
+      "text": "PVOD is also called PAH with overt features of venous/capillary involvement.",
+      "strength": "not_graded",
+      "population": "PVOD"
+    },
+    {
+      "text": "Early referral to a lung transplant centre is essential because the response to therapy is poor compared with other PAH.",
+      "strength": "not_graded",
+      "population": "PVOD"
+    },
+    {
+      "text": "Explants show fibrous veno-occlusive lesions. Immunosuppression is generally not recommended except in systemic diseases such as SLE.",
+      "strength": "not_graded",
+      "population": "PVOD"
+    }
+  ],
+  "clinicalBottomLine": "Treat PVOD as a venous form of pulmonary arterial hypertension that responds poorly to the usual PAH drugs. Refer early for lung transplant.",
+  "notableCaveats": [
+    "Individual case haemodynamics are not generalised as the definition."
+  ],
+  "source": {
+    "title": "Pulmonary veno-occlusive disease: illustrative cases and literature review.",
+    "year": 2024,
+    "pmid": "38232988",
+    "pmcid": "PMC10792437",
+    "doi": "",
+    "url": "https://europepmc.org/articles/PMC10792437",
+    "sourceBody": "Open review",
+    "storedAs": ""
+  }
+}

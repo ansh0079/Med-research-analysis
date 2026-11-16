@@ -1,0 +1,136 @@
+{
+  "catalogueId": "991",
+  "topic": "Neonatal jaundice: assessment, phototherapy and exchange transfusion",
+  "mcqs": [
+    {
+      "id": "991-01",
+      "question": "What does CG98 say about bilirubin assays when using the threshold tables?",
+      "options": {
+        "A": "All laboratory assays are interchangeable without local advice",
+        "B": "There is variability between manufacturers, so consult the local pathology laboratory when interpreting thresholds",
+        "C": "Only transcutaneous bilirubin may be used after 24 hours",
+        "D": "Capillary bilirubin should be ignored",
+        "E": "Thresholds apply only to conjugated bilirubin"
+      },
+      "correctAnswer": "B",
+      "correctAnswerText": "There is variability between manufacturers, so consult the local pathology laboratory when interpreting thresholds",
+      "explanation": "CG98 notes assay variability and tells professionals to consult their local laboratory when interpreting the threshold tables.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "NICE",
+          "sourceYear": 2010,
+          "sourceUrl": "https://www.nice.org.uk/guidance/cg98",
+          "pmid": "",
+          "pmcid": "",
+          "doi": "",
+          "excerpt": "Note that there is variability between assays from different manufacturers in reported bilirubin measurement."
+        }
+      ]
+    },
+    {
+      "id": "991-02",
+      "question": "In the CG98 consensus table for babies 38 weeks or more, which actions match a bilirubin above 200 and above 300 micromol/L at 24 hours?",
+      "options": {
+        "A": "Above 200 start phototherapy; above 300 perform exchange transfusion unless the level falls while treatment is prepared",
+        "B": "Above 200 observe only; above 300 start phototherapy",
+        "C": "Both thresholds require immediate exchange",
+        "D": "Neither threshold changes management before 72 hours",
+        "E": "Above 200 give phenobarbitone; above 300 give agar"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Above 200 start phototherapy; above 300 perform exchange transfusion unless the level falls while treatment is prepared",
+      "explanation": "The consensus table row at 24 hours is >200 and >300 micromol/L, and the action line that follows the table is start phototherapy, then perform an exchange transfusion unless the bilirubin falls below threshold while treatment is prepared.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "NICE",
+          "sourceYear": 2010,
+          "sourceUrl": "https://www.nice.org.uk/guidance/cg98",
+          "pmid": "",
+          "pmcid": "",
+          "doi": "",
+          "excerpt": "24 >200 >300 30 >212 >350 36 >225 >400 42 >237 >450 48 >250 >450 54 >262 >450 60 >275 >450 66 >287 >450 72 >300 >450 78 >312 >450 84 >325 >450 90 >337 >450 96+ >350 >450 Action Start phototherapy Perform an exchange transfusion"
+        }
+      ]
+    },
+    {
+      "id": "991-03",
+      "question": "At 96 hours or more, for babies 38 weeks or more, which CG98 thresholds apply?",
+      "options": {
+        "A": "Phototherapy above 350 micromol/L and exchange above 450 micromol/L",
+        "B": "Phototherapy above 100 and exchange above 150",
+        "C": "No treatment after 72 hours",
+        "D": "Exchange at any visible jaundice",
+        "E": "Phototherapy only if the baby is under 35 weeks"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Phototherapy above 350 micromol/L and exchange above 450 micromol/L",
+      "explanation": "The row for 96 hours or more is >350 and >450 micromol/L. The action line orders the columns as start phototherapy, then exchange transfusion.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "NICE",
+          "sourceYear": 2010,
+          "sourceUrl": "https://www.nice.org.uk/guidance/cg98",
+          "pmid": "",
+          "pmcid": "",
+          "doi": "",
+          "excerpt": "96+ >350 >450 Action Start phototherapy Perform an exchange transfusion"
+        }
+      ]
+    },
+    {
+      "id": "991-04",
+      "question": "Which action does CG98 say not to take during an exchange transfusion?",
+      "options": {
+        "A": "Continue intensified phototherapy",
+        "B": "Stop continuous intensified phototherapy",
+        "C": "Measure bilirubin after the procedure",
+        "D": "Use a double-volume exchange",
+        "E": "Discuss consent"
+      },
+      "correctAnswer": "B",
+      "correctAnswerText": "Stop continuous intensified phototherapy",
+      "explanation": "CG98 says do not stop continuous intensified phototherapy during exchange, and do not do a single-volume exchange, routine albumin priming, or routine intravenous calcium.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "NICE",
+          "sourceYear": 2010,
+          "sourceUrl": "https://www.nice.org.uk/guidance/cg98",
+          "pmid": "",
+          "pmcid": "",
+          "doi": "",
+          "excerpt": "During exchange transfusion do not: stop continuous intensified phototherapy perform a single‑volume exchange use albumin priming routinely administer intravenous calcium."
+        }
+      ]
+    },
+    {
+      "id": "991-05",
+      "question": "Which list does CG98 say not to use to treat hyperbilirubinaemia?",
+      "options": {
+        "A": "Agar, albumin, barbiturates, and charcoal, among other agents",
+        "B": "Intensified phototherapy",
+        "C": "Exchange transfusion at the exchange threshold",
+        "D": "Breastfeeding support",
+        "E": "Serum bilirubin measurement"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Agar, albumin, barbiturates, and charcoal, among other agents",
+      "explanation": "CG98 lists agar, albumin, barbiturates, charcoal and several other agents as treatments not to use for hyperbilirubinaemia.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "NICE",
+          "sourceYear": 2010,
+          "sourceUrl": "https://www.nice.org.uk/guidance/cg98",
+          "pmid": "",
+          "pmcid": "",
+          "doi": "",
+          "excerpt": "Do not use any of the following to treat hyperbilirubinaemia: agar albumin barbiturates charcoal"
+        }
+      ]
+    }
+  ]
+}

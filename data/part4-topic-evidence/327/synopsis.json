@@ -1,0 +1,36 @@
+{
+  "catalogueId": "327",
+  "topic": "Byssinosis",
+  "scope": "Open baseline paper from the MultiTex trial defining byssinosis assessment in cotton textile workers, including Schilling criteria.",
+  "keyRecommendations": [
+    {
+      "text": "The paper studies byssinosis and lung health in cotton textile workers.",
+      "strength": "not_graded",
+      "population": "Cotton textile workers"
+    },
+    {
+      "text": "Schilling’s criteria are symptoms with a decreased FEV1.",
+      "strength": "not_graded",
+      "population": "Epidemiological classification"
+    },
+    {
+      "text": "An FEV1/FVC below the lower limit of normal after bronchodilator was treated as chronic airflow obstruction in the study.",
+      "strength": "not_graded",
+      "population": "Study spirometry"
+    }
+  ],
+  "clinicalBottomLine": "Byssinosis in this source is an occupational cotton-dust disease assessed with symptom criteria, including Schilling’s criteria of symptoms plus a fall in FEV1, not a community COPD label.",
+  "notableCaveats": [
+    "This is a single-city baseline cohort, not a treatment guideline. Do not generalise its prevalence as the natural history of byssinosis."
+  ],
+  "source": {
+    "title": "Byssinosis and lung health among cotton textile workers: baseline findings of the MultiTex trial in Karachi, Pakistan.",
+    "year": 2023,
+    "pmid": "36717255",
+    "pmcid": "PMC9985716",
+    "doi": "",
+    "url": "https://europepmc.org/articles/PMC9985716",
+    "sourceBody": "Occupational research",
+    "storedAs": ""
+  }
+}

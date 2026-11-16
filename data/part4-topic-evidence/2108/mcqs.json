@@ -1,0 +1,136 @@
+{
+  "catalogueId": "2108",
+  "topic": "Acute asthma and COPD exacerbations",
+  "mcqs": [
+    {
+      "id": "2108-01",
+      "question": "What does the consensus call the mainstay of initial therapy for both acute asthma and COPD exacerbations?",
+      "options": {
+        "A": "Salbutamol plus ipratropium",
+        "B": "Oral theophylline alone",
+        "C": "Inhaled corticosteroid monotherapy",
+        "D": "Long-term azithromycin",
+        "E": "Heliox as the only drug"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Salbutamol plus ipratropium",
+      "explanation": "Salbutamol combined with ipratropium remains the mainstay of initial therapy for both.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "Int J Emerg Med",
+          "sourceYear": 2026,
+          "sourceUrl": "https://europepmc.org/articles/PMC13491584",
+          "pmid": "42625150",
+          "pmcid": "PMC13491584",
+          "doi": "",
+          "excerpt": "Short-acting beta-agonists (Salbutamol) combined with short-acting muscarinic antagonists (SAMAs; Ipratropium) remain the mainstay of initial therapy for both acute asthma and COPD exacerbations."
+        }
+      ]
+    },
+    {
+      "id": "2108-02",
+      "question": "What did the panel prioritise alongside bronchodilator dosing?",
+      "options": {
+        "A": "Early corticosteroid therapy",
+        "B": "Delaying steroids for 72 hours",
+        "C": "Routine neuromuscular blockade",
+        "D": "Immediate lung transplant",
+        "E": "Antibiotics for every asthma attack"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Early corticosteroid therapy",
+      "explanation": "Recommendations prioritised early corticosteroid therapy and optimising bronchodilator dosing to mitigate toxicity.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "Int J Emerg Med",
+          "sourceYear": 2026,
+          "sourceUrl": "https://europepmc.org/articles/PMC13491584",
+          "pmid": "42625150",
+          "pmcid": "PMC13491584",
+          "doi": "",
+          "excerpt": "prioritizing early corticosteroid therapy and optimizing bronchodilator dosing to mitigate toxicity"
+        }
+      ]
+    },
+    {
+      "id": "2108-03",
+      "question": "What was the panel’s unanimous view of aerosol device selection?",
+      "options": {
+        "A": "It significantly influences treatment success",
+        "B": "Device choice is irrelevant",
+        "C": "Only nebulisers are forbidden",
+        "D": "Dry-powder inhalers are mandatory in respiratory failure",
+        "E": "Devices were not discussed"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "It significantly influences treatment success",
+      "explanation": "The panel reached unanimous consensus that device selection significantly influences treatment success.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "Int J Emerg Med",
+          "sourceYear": 2026,
+          "sourceUrl": "https://europepmc.org/articles/PMC13491584",
+          "pmid": "42625150",
+          "pmcid": "PMC13491584",
+          "doi": "",
+          "excerpt": "unanimous consensus that aerosol delivery device selection significantly influences treatment success"
+        }
+      ]
+    },
+    {
+      "id": "2108-04",
+      "question": "What severity classification did the panel adopt for the emergency department?",
+      "options": {
+        "A": "A binary non-severe versus severe model for rapid ED triage, then the four-tier SINA classification",
+        "B": "GOLD groups A and B only",
+        "C": "No severity classification",
+        "D": "A paediatric coma score",
+        "E": "CURB-65 as the only scale"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "A binary non-severe versus severe model for rapid ED triage, then the four-tier SINA classification",
+      "explanation": "The panel adopted a dual-phase severity classification: a binary non-severe versus severe model for rapid ED triage, followed by the four-tier SINA classification for clinical management.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "Int J Emerg Med",
+          "sourceYear": 2026,
+          "sourceUrl": "https://europepmc.org/articles/PMC13491584",
+          "pmid": "42625150",
+          "pmcid": "PMC13491584",
+          "doi": "",
+          "excerpt": "The panel adopted a dual-phase severity classification: a binary “Non-Severe vs. Severe” model for rapid ED triage, followed by the four-tier SINA classification for clinical management."
+        }
+      ]
+    },
+    {
+      "id": "2108-05",
+      "question": "The initial bronchodilator recommendation applies to which conditions?",
+      "options": {
+        "A": "Both acute asthma and COPD exacerbations",
+        "B": "Asthma only",
+        "C": "COPD only",
+        "D": "Pulmonary fibrosis",
+        "E": "Pneumothorax"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Both acute asthma and COPD exacerbations",
+      "explanation": "The mainstay statement covers both acute asthma and COPD exacerbations.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "Int J Emerg Med",
+          "sourceYear": 2026,
+          "sourceUrl": "https://europepmc.org/articles/PMC13491584",
+          "pmid": "42625150",
+          "pmcid": "PMC13491584",
+          "doi": "",
+          "excerpt": "both acute asthma and COPD exacerbations"
+        }
+      ]
+    }
+  ]
+}

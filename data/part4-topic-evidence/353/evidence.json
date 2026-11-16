@@ -1,0 +1,22 @@
+{
+  "catalogueId": "353",
+  "spreadsheetRow": 74,
+  "topic": "Lung Volumes and Spirometry interpretation",
+  "specialty": "Pulmonology",
+  "decision": "downloaded open source",
+  "source": {
+    "title": "Standardization of Spirometry 2019 Update. An Official American Thoracic Society and European Respiratory Society Technical Statement.",
+    "year": 2019,
+    "pmid": "31613151",
+    "pmcid": "PMC6794117",
+    "doi": "",
+    "url": "https://europepmc.org/articles/PMC6794117",
+    "sourceBody": "ATS/ERS",
+    "storedAs": ""
+  },
+  "whyItFits": "2019 ATS/ERS spirometry technical statement on acceptability of the forced manoeuvre. Static lung-volume interpretation is not in this document.",
+  "limitations": "",
+  "synopsisWritten": true,
+  "mcqsWritten": true,
+  "mcqCount": 5
+}

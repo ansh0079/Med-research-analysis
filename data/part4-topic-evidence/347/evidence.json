@@ -1,0 +1,22 @@
+{
+  "catalogueId": "347",
+  "spreadsheetRow": 71,
+  "topic": "Hyperventilation Syndrome",
+  "specialty": "Pulmonology",
+  "decision": "downloaded open source",
+  "source": {
+    "title": "Dysfunctional breathing: a review of the literature and proposal for classification.",
+    "year": 2016,
+    "pmid": "27581828",
+    "pmcid": "PMC9487208",
+    "doi": "",
+    "url": "https://europepmc.org/articles/PMC9487208",
+    "sourceBody": "Eur Respir Rev",
+    "storedAs": ""
+  },
+  "whyItFits": "Boulding review that classifies dysfunctional breathing, with hyperventilation syndrome as the first subtype.",
+  "limitations": "",
+  "synopsisWritten": true,
+  "mcqsWritten": true,
+  "mcqCount": 5
+}

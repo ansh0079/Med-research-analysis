@@ -1,0 +1,22 @@
+{
+  "catalogueId": "2177",
+  "spreadsheetRow": 49,
+  "topic": "The febrile child: assessment, red flags and paediatric sepsis",
+  "specialty": "Paediatrics",
+  "decision": "downloaded open source",
+  "source": {
+    "title": "Fever in under 5s: assessment and initial management. NICE guideline NG143.",
+    "year": 2019,
+    "pmid": "",
+    "pmcid": "",
+    "doi": "",
+    "url": "https://www.nice.org.uk/guidance/ng143",
+    "sourceBody": "NICE",
+    "storedAs": ""
+  },
+  "whyItFits": "NICE NG143 on assessing fever in children under 5, including the traffic-light system and when to think of sepsis.",
+  "limitations": "",
+  "synopsisWritten": true,
+  "mcqsWritten": true,
+  "mcqCount": 5
+}

@@ -1,0 +1,22 @@
+{
+  "catalogueId": "426",
+  "spreadsheetRow": 81,
+  "topic": "Occupational Asthma",
+  "specialty": "Pulmonology",
+  "decision": "downloaded open source",
+  "source": {
+    "title": "Work-related asthma.",
+    "year": 2021,
+    "pmid": "34406224",
+    "pmcid": "PMC8352763",
+    "doi": "",
+    "url": "https://europepmc.org/articles/PMC8352763",
+    "sourceBody": "Open review",
+    "storedAs": ""
+  },
+  "whyItFits": "Open review of work-related asthma, including sensitizer-induced occupational asthma, latency, and removal from exposure.",
+  "limitations": "Open review. The ACCP work-related asthma consensus was not in PMC.",
+  "synopsisWritten": true,
+  "mcqsWritten": true,
+  "mcqCount": 5
+}

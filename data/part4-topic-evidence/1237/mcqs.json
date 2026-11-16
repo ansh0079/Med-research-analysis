@@ -1,0 +1,136 @@
+{
+  "catalogueId": "1237",
+  "topic": "Neuromuscular Respiratory Failure",
+  "mcqs": [
+    {
+      "id": "1237-01",
+      "question": "In this review, acute respiratory failure that requires intubation commonly leads to what?",
+      "options": {
+        "A": "Tracheostomy or palliative-focused care",
+        "B": "Full recovery without airway support in every case",
+        "C": "Immediate lung transplant",
+        "D": "No change in care",
+        "E": "The outcome is not discussed"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Tracheostomy or palliative-focused care",
+      "explanation": "Intubation and invasive ventilation commonly lead to tracheostomy or palliative-focused care.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "Open narrative review",
+          "sourceYear": 2021,
+          "sourceUrl": "https://europepmc.org/articles/PMC8351614",
+          "pmid": "34381654",
+          "pmcid": "PMC8351614",
+          "doi": "",
+          "excerpt": "commonly leading to tracheostomy or palliative-focused care"
+        }
+      ]
+    },
+    {
+      "id": "1237-02",
+      "question": "How does the review say new hypoxia and hypercapnia should be regarded at first?",
+      "options": {
+        "A": "Not initially presumed to be end-stage neuromuscular failure",
+        "B": "Always end-stage disease",
+        "C": "Ignored if the diagnosis is ALS",
+        "D": "Treated only with antibiotics and no respiratory assessment",
+        "E": "The sentence is about cardiac arrest only"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Not initially presumed to be end-stage neuromuscular failure",
+      "explanation": "New causes of hypoxia and hypercapnia are not initially presumed to be progression or end-stage failure.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "Open narrative review",
+          "sourceYear": 2021,
+          "sourceUrl": "https://europepmc.org/articles/PMC8351614",
+          "pmid": "34381654",
+          "pmcid": "PMC8351614",
+          "doi": "",
+          "excerpt": "not initially presumed to be secondary to progression or end-stage neuromuscular respiratory failure"
+        }
+      ]
+    },
+    {
+      "id": "1237-03",
+      "question": "What airway support does the review say select patients may need?",
+      "options": {
+        "A": "Intubation or advanced adjustments of NIV",
+        "B": "No ventilatory support is ever appropriate",
+        "C": "Only inhaled steroids",
+        "D": "Only cough syrup",
+        "E": "ECMO as the first step in every patient"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Intubation or advanced adjustments of NIV",
+      "explanation": "In select patients this may involve intubation or advanced adjustments of NIV machines.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "Open narrative review",
+          "sourceYear": 2021,
+          "sourceUrl": "https://europepmc.org/articles/PMC8351614",
+          "pmid": "34381654",
+          "pmcid": "PMC8351614",
+          "doi": "",
+          "excerpt": "this may involve intubation or advanced adjustments of NIV machines"
+        }
+      ]
+    },
+    {
+      "id": "1237-04",
+      "question": "Which group does the review focus on?",
+      "options": {
+        "A": "Patients with ALS without a tracheostomy",
+        "B": "Only Guillain-Barré syndrome",
+        "C": "Only spinal cord injury",
+        "D": "Only COPD",
+        "E": "Children with asthma"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Patients with ALS without a tracheostomy",
+      "explanation": "The review focuses on patients with ALS without tracheostomy.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "Open narrative review",
+          "sourceYear": 2021,
+          "sourceUrl": "https://europepmc.org/articles/PMC8351614",
+          "pmid": "34381654",
+          "pmcid": "PMC8351614",
+          "doi": "",
+          "excerpt": "patients with ALS without tracheostomy"
+        }
+      ]
+    },
+    {
+      "id": "1237-05",
+      "question": "After the acute cause is treated, what does the review shift toward?",
+      "options": {
+        "A": "Training and use of mechanical airway clearance",
+        "B": "Stopping all respiratory care",
+        "C": "A ban on physiotherapy",
+        "D": "Immediate decannulation in every patient",
+        "E": "Airway clearance is not mentioned"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Training and use of mechanical airway clearance",
+      "explanation": "The focus shifts to training and use of mechanical airway clearance to optimise pulmonary function.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "Open narrative review",
+          "sourceYear": 2021,
+          "sourceUrl": "https://europepmc.org/articles/PMC8351614",
+          "pmid": "34381654",
+          "pmcid": "PMC8351614",
+          "doi": "",
+          "excerpt": "mechanical airway clearance"
+        }
+      ]
+    }
+  ]
+}

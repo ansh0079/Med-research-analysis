@@ -1,0 +1,136 @@
+{
+  "catalogueId": "2100",
+  "topic": "Severe CAP requiring ICU admission",
+  "mcqs": [
+    {
+      "id": "2100-01",
+      "question": "How does the guideline define severe community-acquired pneumonia?",
+      "options": {
+        "A": "One major criterion or three or more minor criteria",
+        "B": "Any cough",
+        "C": "A CURB-65 of zero",
+        "D": "Only a positive blood culture",
+        "E": "Admission to a ward is the definition, with no criteria"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "One major criterion or three or more minor criteria",
+      "explanation": "Severe CAP is either one major criterion or three or more minor criteria.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "ATS/IDSA",
+          "sourceYear": 2019,
+          "sourceUrl": "https://europepmc.org/articles/PMC6812437",
+          "pmid": "31573350",
+          "pmcid": "PMC6812437",
+          "doi": "10.1164/rccm.201908-1581ST",
+          "excerpt": "either one major criterion or three or more minor criteria"
+        }
+      ]
+    },
+    {
+      "id": "2100-02",
+      "question": "Which of the following is a major criterion in the table?",
+      "options": {
+        "A": "Septic shock with need for vasopressors",
+        "B": "Respiratory rate of 20",
+        "C": "A single lobe infiltrate",
+        "D": "Temperature of 37.5 °C",
+        "E": "Leukocytosis"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Septic shock with need for vasopressors",
+      "explanation": "Septic shock needing vasopressors is a major criterion.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "ATS/IDSA",
+          "sourceYear": 2019,
+          "sourceUrl": "https://europepmc.org/articles/PMC6812437",
+          "pmid": "31573350",
+          "pmcid": "PMC6812437",
+          "doi": "10.1164/rccm.201908-1581ST",
+          "excerpt": "Septic shock with need for vasopressors"
+        }
+      ]
+    },
+    {
+      "id": "2100-03",
+      "question": "What is the other major criterion printed with septic shock?",
+      "options": {
+        "A": "Respiratory failure requiring mechanical ventilation",
+        "B": "Hypoxaemia corrected by 2 L of oxygen",
+        "C": "Pleuritic pain",
+        "D": "A positive urinary antigen",
+        "E": "Age over 65 alone"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Respiratory failure requiring mechanical ventilation",
+      "explanation": "Respiratory failure requiring mechanical ventilation is the other major criterion.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "ATS/IDSA",
+          "sourceYear": 2019,
+          "sourceUrl": "https://europepmc.org/articles/PMC6812437",
+          "pmid": "31573350",
+          "pmcid": "PMC6812437",
+          "doi": "10.1164/rccm.201908-1581ST",
+          "excerpt": "Respiratory failure requiring mechanical ventilation"
+        }
+      ]
+    },
+    {
+      "id": "2100-04",
+      "question": "Which respiratory rate is listed among the minor criteria?",
+      "options": {
+        "A": "At least 30 breaths/min",
+        "B": "At least 12 breaths/min",
+        "C": "A rate below 10",
+        "D": "Rate is not a criterion",
+        "E": "At least 18 breaths/min"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "At least 30 breaths/min",
+      "explanation": "Respiratory rate of 30 breaths/min or more is a minor criterion.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "ATS/IDSA",
+          "sourceYear": 2019,
+          "sourceUrl": "https://europepmc.org/articles/PMC6812437",
+          "pmid": "31573350",
+          "pmcid": "PMC6812437",
+          "doi": "10.1164/rccm.201908-1581ST",
+          "excerpt": "Respiratory rate ≥ 30 breaths/min"
+        }
+      ]
+    },
+    {
+      "id": "2100-05",
+      "question": "Which neurologic finding is a minor criterion?",
+      "options": {
+        "A": "Confusion or disorientation",
+        "B": "A normal mental state",
+        "C": "Headache alone",
+        "D": "The table lists no mental-status item",
+        "E": "Seizure as the only neurologic criterion"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Confusion or disorientation",
+      "explanation": "Confusion/disorientation is listed among the minor criteria.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "ATS/IDSA",
+          "sourceYear": 2019,
+          "sourceUrl": "https://europepmc.org/articles/PMC6812437",
+          "pmid": "31573350",
+          "pmcid": "PMC6812437",
+          "doi": "10.1164/rccm.201908-1581ST",
+          "excerpt": "Confusion/disorientation"
+        }
+      ]
+    }
+  ]
+}

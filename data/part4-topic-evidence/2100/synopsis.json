@@ -1,0 +1,36 @@
+{
+  "catalogueId": "2100",
+  "topic": "Severe CAP requiring ICU admission",
+  "scope": "ATS/IDSA 2019 CAP guideline criteria that define severe pneumonia, carried forward from the 2007 IDSA/ATS rule.",
+  "keyRecommendations": [
+    {
+      "text": "Severe CAP is one major criterion or three or more minor criteria.",
+      "strength": "not_graded",
+      "population": "Adults with CAP"
+    },
+    {
+      "text": "Major criteria are septic shock needing vasopressors and respiratory failure needing mechanical ventilation.",
+      "strength": "not_graded",
+      "population": "Severe CAP"
+    },
+    {
+      "text": "Minor criteria include respiratory rate at least 30, PaO2/FiO2 ratio 250 or less, multilobar infiltrates, confusion, uraemia, leukopenia, thrombocytopenia, hypothermia, and hypotension needing aggressive fluid resuscitation.",
+      "strength": "not_graded",
+      "population": "Severe CAP"
+    }
+  ],
+  "clinicalBottomLine": "Use the major and minor criteria to recognise severe CAP. One major criterion, or three minor criteria, defines severe disease in this guideline.",
+  "notableCaveats": [
+    "The CAPE COD steroid trial is not an open full text and is not used. These questions are about severity criteria, not adjunct steroids."
+  ],
+  "source": {
+    "title": "Diagnosis and Treatment of Adults with Community-acquired Pneumonia. An Official Clinical Practice Guideline of the American Thoracic Society and Infectious Diseases Society of America.",
+    "year": 2019,
+    "pmid": "31573350",
+    "pmcid": "PMC6812437",
+    "doi": "10.1164/rccm.201908-1581ST",
+    "url": "https://europepmc.org/articles/PMC6812437",
+    "sourceBody": "ATS/IDSA",
+    "storedAs": ""
+  }
+}

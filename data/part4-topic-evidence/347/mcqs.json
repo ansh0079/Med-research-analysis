@@ -1,0 +1,136 @@
+{
+  "catalogueId": "347",
+  "topic": "Hyperventilation Syndrome",
+  "mcqs": [
+    {
+      "id": "347-01",
+      "question": "How does the review define hyperventilation syndrome within dysfunctional breathing?",
+      "options": {
+        "A": "Symptoms related to respiratory alkalosis and symptoms independent of hypocapnia",
+        "B": "Only a panic attack with normal carbon dioxide and no breathing change",
+        "C": "Asthma that is fully steroid-responsive",
+        "D": "Pulmonary embolism",
+        "E": "A restrictive lung disease"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Symptoms related to respiratory alkalosis and symptoms independent of hypocapnia",
+      "explanation": "Hyperventilation syndrome is associated with symptoms both related to respiratory alkalosis and independent of hypocapnia.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "Eur Respir Rev",
+          "sourceYear": 2016,
+          "sourceUrl": "https://europepmc.org/articles/PMC9487208",
+          "pmid": "27581828",
+          "pmcid": "PMC9487208",
+          "doi": "",
+          "excerpt": "1) Hyperventilation syndrome: associated with symptoms both related to respiratory alkalosis and independent of hypocapnia."
+        }
+      ]
+    },
+    {
+      "id": "347-02",
+      "question": "What is the second pattern in the proposed classification?",
+      "options": {
+        "A": "Periodic deep sighing, with frequent sighing and an irregular pattern",
+        "B": "Cheyne–Stokes breathing from heart failure only",
+        "C": "Kussmaul breathing",
+        "D": "Apnoea of prematurity",
+        "E": "Stridor"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Periodic deep sighing, with frequent sighing and an irregular pattern",
+      "explanation": "Periodic deep sighing is frequent sighing with an irregular breathing pattern.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "Eur Respir Rev",
+          "sourceYear": 2016,
+          "sourceUrl": "https://europepmc.org/articles/PMC9487208",
+          "pmid": "27581828",
+          "pmcid": "PMC9487208",
+          "doi": "",
+          "excerpt": "2) Periodic deep sighing: frequent sighing with an irregular breathing pattern."
+        }
+      ]
+    },
+    {
+      "id": "347-03",
+      "question": "What does thoraco-abdominal asynchrony mean in this classification?",
+      "options": {
+        "A": "Delay between rib-cage and abdominal contraction, with ineffective mechanics",
+        "B": "Perfect synchrony",
+        "C": "Diaphragmatic paralysis proven on every case",
+        "D": "A radiographic mass",
+        "E": "Upper-airway collapse only"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Delay between rib-cage and abdominal contraction, with ineffective mechanics",
+      "explanation": "There is delay between rib-cage and abdominal contraction, resulting in ineffective breathing mechanics.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "Eur Respir Rev",
+          "sourceYear": 2016,
+          "sourceUrl": "https://europepmc.org/articles/PMC9487208",
+          "pmid": "27581828",
+          "pmcid": "PMC9487208",
+          "doi": "",
+          "excerpt": "5) Thoraco-abdominal asynchrony: where there is delay between rib cage and abdominal contraction resulting in ineffective breathing mechanics."
+        }
+      ]
+    },
+    {
+      "id": "347-04",
+      "question": "When does the review consider thoracic-dominant breathing dysfunctional?",
+      "options": {
+        "A": "When it occurs without somatic disease, and it results in dyspnoea",
+        "B": "Whenever a person is exercising",
+        "C": "Only in sleep",
+        "D": "It is never dysfunctional",
+        "E": "Only after pneumonectomy"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "When it occurs without somatic disease, and it results in dyspnoea",
+      "explanation": "It can occur in somatic disease; without disease it may be considered dysfunctional and results in dyspnoea.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "Eur Respir Rev",
+          "sourceYear": 2016,
+          "sourceUrl": "https://europepmc.org/articles/PMC9487208",
+          "pmid": "27581828",
+          "pmcid": "PMC9487208",
+          "doi": "",
+          "excerpt": "3) Thoracic dominant breathing: can often manifest in somatic disease, if occurring without disease it may be considered dysfunctional and results in dyspnoea."
+        }
+      ]
+    },
+    {
+      "id": "347-05",
+      "question": "What muscle pattern defines forced abdominal expiration in the review?",
+      "options": {
+        "A": "Inappropriate and excessive abdominal muscle contraction to aid expiration",
+        "B": "Paralysis of the abdominal wall",
+        "C": "Diaphragmatic flutter only",
+        "D": "No muscle activity",
+        "E": "Inspiratory stridor"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Inappropriate and excessive abdominal muscle contraction to aid expiration",
+      "explanation": "Patients use inappropriate and excessive abdominal muscle contraction to aid expiration.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "Eur Respir Rev",
+          "sourceYear": 2016,
+          "sourceUrl": "https://europepmc.org/articles/PMC9487208",
+          "pmid": "27581828",
+          "pmcid": "PMC9487208",
+          "doi": "",
+          "excerpt": "4) Forced abdominal expiration: these patients utilise inappropriate and excessive abdominal muscle contraction to aid expiration."
+        }
+      ]
+    }
+  ]
+}
