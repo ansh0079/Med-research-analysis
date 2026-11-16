@@ -1,0 +1,25 @@
+{
+  "catalogueId": 1124,
+  "topic": "Steroids in pneumonia",
+  "specialty": "Pulmonology",
+  "decision": "downloaded_open_source",
+  "source": {
+    "title": "Systemic corticosteroids in critical illness: an evidence-based framework for clinical decision-making",
+    "year": 2026,
+    "pmid": "42980831",
+    "pmcid": "PMC13736467",
+    "doi": null,
+    "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC13736467/",
+    "sourceBody": "European Journal of Clinical Pharmacology",
+    "tier": "review",
+    "whyItFits": "Open review that synthesises corticosteroid evidence in severe community-acquired pneumonia, including the CAPE COD hydrocortisone trial and the advice against routine steroids in influenza-associated ARDS. The 2019 ATS/IDSA CAP guideline is also in PMC but predates CAPE COD and recommends against routine steroids; it was not used as the teaching source."
+  },
+  "notes": [
+    "Rejected the stored 2025 CAP update abstract: it states that steroids may be used in severe CAP and not in non-severe CAP, but it is a short summary and does not carry trial figures. Rejected COVID-19 hydrocortisone papers as a different disease."
+  ],
+  "files": {
+    "source": "/workspace/data/part4-topic-evidence/1124/source.txt",
+    "synopsis": "/workspace/data/part4-topic-evidence/1124/synopsis.json",
+    "mcqs": "/workspace/data/part4-topic-evidence/1124/mcqs.json"
+  }
+}

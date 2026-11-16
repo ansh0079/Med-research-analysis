@@ -1,0 +1,23 @@
+{
+  "catalogueId": 648,
+  "topic": "Fibromyalgia Syndrome",
+  "specialty": "Rheumatology",
+  "decision": "downloaded_open_source",
+  "source": {
+    "title": "Evolving Concepts in the Diagnosis and Management of Fibromyalgia: A Moving Target",
+    "year": 2026,
+    "pmid": "42764960",
+    "pmcid": "PMC13589972",
+    "doi": "10.2147/JPR.S615824",
+    "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC13589972/",
+    "sourceBody": "Journal of Pain Research",
+    "tier": "review",
+    "whyItFits": "Open review of fibromyalgia diagnosis, including the move from tender points to the Widespread Pain Index and Symptom Severity Scale and the 2016 generalised-pain revision, plus first-line non-drug care and FDA-approved drugs. The stored NG117 bronchiectasis text is the wrong disease."
+  },
+  "notes": [],
+  "files": {
+    "source": "/workspace/data/part4-topic-evidence/648/source.txt",
+    "synopsis": "/workspace/data/part4-topic-evidence/648/synopsis.json",
+    "mcqs": "/workspace/data/part4-topic-evidence/648/mcqs.json"
+  }
+}

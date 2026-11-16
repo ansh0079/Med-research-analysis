@@ -1,0 +1,24 @@
+{
+  "scope": "Indirect comparison of belimumab and anifrolumab from randomised trials in SLE and lupus nephritis.",
+  "keyRecommendations": [
+    {
+      "text": "Belimumab is described as approved for SLE and lupus nephritis; anifrolumab is not described as approved for lupus nephritis.",
+      "strength": "not_graded",
+      "population": "SLE and lupus nephritis"
+    },
+    {
+      "text": "Belimumab had a higher SRI-4 odds ratio versus anifrolumab in the indirect comparison (OR 1.99, 95% CI 1.25–3.16).",
+      "strength": "not_graded",
+      "population": "SLE trials"
+    },
+    {
+      "text": "Anifrolumab was favoured for steroid tapering (OR 0.31, 95% CI 0.19–0.51) and was linked to more herpes zoster (7.2% vs 3.2–4.6%).",
+      "strength": "not_graded",
+      "population": "SLE trials"
+    }
+  ],
+  "clinicalBottomLine": "In this indirect comparison, belimumab looked better on SRI-4 and is the agent described as approved for lupus nephritis, while anifrolumab looked better for steroid taper and had more herpes zoster. Renal complete-response comparisons were inconclusive.",
+  "notableCaveats": [
+    "No head-to-head trial is included. Mechanism of action is absent from the abstract. Some immunologic odds ratios have confidence intervals that cross 1."
+  ]
+}

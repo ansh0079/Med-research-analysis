@@ -1,0 +1,24 @@
+{
+  "catalogueId": 1669,
+  "topic": "Belimumab and anifrolumab in SLE: mechanism, indications, trial data",
+  "specialty": "Rheumatology",
+  "decision": "in_app_document",
+  "source": {
+    "title": "Indirect comparative efficacy and safety of belimumab vs. anifrolumab in systemic lupus erythematosus and lupus nephritis",
+    "year": 2026,
+    "pmid": "41342907",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/41342907/",
+    "sourceBody": "Zeitschrift fur Rheumatologie",
+    "tier": "review",
+    "inAppPath": "data/question-repair-source-import.json",
+    "whyItFits": "Stored abstract of an indirect comparison of the two biologics, including indication differences, SRI-4, steroid taper, herpes zoster, and lupus nephritis uncertainty. Molecular mechanism is not described in the abstract, so it is not questioned."
+  },
+  "notes": [
+    "TULIP-2 full text is not open. Mechanism (BAFF versus IFNAR) is not in the stored abstract and was not added."
+  ],
+  "files": {
+    "source": "/workspace/data/part4-topic-evidence/1669/source.txt",
+    "synopsis": "/workspace/data/part4-topic-evidence/1669/synopsis.json",
+    "mcqs": "/workspace/data/part4-topic-evidence/1669/mcqs.json"
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "scope": "Flare treatment choices in NG219 when first-line drugs are contraindicated, not tolerated, or ineffective.",
+  "keyRecommendations": [
+    {
+      "text": "Consider an intra-articular or intramuscular corticosteroid if NSAIDs and colchicine are contraindicated, not tolerated, or ineffective.",
+      "strength": "not_graded",
+      "population": "Gout flare"
+    },
+    {
+      "text": "Do not offer an IL-1 inhibitor unless NSAIDs, colchicine, and corticosteroids are contraindicated, not tolerated, or ineffective, and refer to rheumatology before prescribing it.",
+      "strength": "not_graded",
+      "population": "Gout flare"
+    },
+    {
+      "text": "Consider a PPI for people taking an NSAID for a flare.",
+      "strength": "not_graded",
+      "population": "Gout flare treated with an NSAID"
+    }
+  ],
+  "clinicalBottomLine": "NG219 steps from an NSAID, colchicine, or oral corticosteroid to an intra-articular or intramuscular corticosteroid, and only then to an IL-1 inhibitor after rheumatology referral. It does not describe intravenous corticosteroid or a colchicine interaction list.",
+  "notableCaveats": [
+    "Questions do not invent clarithromycin, renal-dose colchicine rules, or intravenous steroid doses, because those statements are not in the stored NG219 text."
+  ]
+}

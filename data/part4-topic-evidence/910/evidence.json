@@ -1,0 +1,23 @@
+{
+  "catalogueId": 910,
+  "topic": "Acute gout attack in hospital: colchicine contraindications, IV corticosteroids, IL-1 inhibition",
+  "specialty": "Rheumatology",
+  "decision": "in_app_document",
+  "source": {
+    "title": "Gout: diagnosis and management (NICE NG219)",
+    "year": 2022,
+    "url": "https://www.nice.org.uk/guidance/ng219",
+    "sourceBody": "NICE",
+    "tier": "guideline",
+    "inAppPath": "data/question-repair-source-import.json",
+    "whyItFits": "The same stored NG219 text is the in-app source for hospital flare sequencing: when colchicine or NSAIDs cannot be used, when injectable corticosteroid is considered, and when an IL-1 inhibitor is allowed. It does not list named colchicine drug interactions or recommend intravenous corticosteroid."
+  },
+  "notes": [
+    "Specific colchicine contraindications and intravenous corticosteroids are not in the stored NG219 text, so they were not turned into answers."
+  ],
+  "files": {
+    "source": "/workspace/data/part4-topic-evidence/910/source.txt",
+    "synopsis": "/workspace/data/part4-topic-evidence/910/synopsis.json",
+    "mcqs": "/workspace/data/part4-topic-evidence/910/mcqs.json"
+  }
+}

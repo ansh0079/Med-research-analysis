@@ -1,0 +1,17 @@
+{
+  "catalogueId": 828,
+  "topic": "Musculoskeletal ultrasound in rheumatology: synovitis, power Doppler, guided injection",
+  "specialty": "Rheumatology",
+  "decision": "unresolved",
+  "source": {
+    "title": null
+  },
+  "notes": [
+    "Unresolved."
+  ],
+  "files": {
+    "source": null,
+    "synopsis": "/workspace/data/part4-topic-evidence/828/synopsis.json",
+    "mcqs": null
+  }
+}

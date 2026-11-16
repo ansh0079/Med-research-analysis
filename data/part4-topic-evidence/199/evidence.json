@@ -1,0 +1,17 @@
+{
+  "catalogueId": 199,
+  "topic": "Leflunomide in RA: mechanism, dosing, washout procedure, hepatotoxicity monitoring",
+  "specialty": "Rheumatology",
+  "decision": "unresolved",
+  "source": {
+    "title": null
+  },
+  "notes": [
+    "Unresolved."
+  ],
+  "files": {
+    "source": null,
+    "synopsis": "/workspace/data/part4-topic-evidence/199/synopsis.json",
+    "mcqs": null
+  }
+}

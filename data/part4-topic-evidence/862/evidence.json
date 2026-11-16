@@ -1,0 +1,22 @@
+{
+  "catalogueId": 862,
+  "topic": "Denosumab, romosozumab, teriparatide: anabolic and resorption-inhibiting agents in osteoporosis",
+  "specialty": "Rheumatology",
+  "decision": "in_app_document",
+  "source": {
+    "title": "Effectiveness and Safety of Treatments to Prevent Fractures in People With Low Bone Mass or Primary Osteoporosis: A Living Systematic Review and Network Meta-analysis for the American College of Physicians",
+    "year": 2023,
+    "pmid": "36592455",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/36592455/",
+    "sourceBody": "Annals of Internal Medicine",
+    "tier": "meta-analysis",
+    "inAppPath": "data/question-repair-source-import.json",
+    "whyItFits": "Stored abstract of the ACP evidence review reporting fracture effects of denosumab, teriparatide, and sequential romosozumab then alendronate. The library's year and journal fields on this row are inconsistent with the PMID; the PMID record is the 2023 Annals review. Mechanism labels such as RANKL or sclerostin are not in the abstract and are not asked."
+  },
+  "notes": [],
+  "files": {
+    "source": "/workspace/data/part4-topic-evidence/862/source.txt",
+    "synopsis": "/workspace/data/part4-topic-evidence/862/synopsis.json",
+    "mcqs": "/workspace/data/part4-topic-evidence/862/mcqs.json"
+  }
+}

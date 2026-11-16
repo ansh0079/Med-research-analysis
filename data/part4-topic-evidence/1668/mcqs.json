@@ -1,0 +1,129 @@
+{
+  "topic": {
+    "topicKey": "behcet-disease-oral-and-genital-ulcers-uveitis-pathergy-colchicine-imm",
+    "topicDisplayName": "Behcet disease: oral and genital ulcers, uveitis, pathergy, colchicine, immunosuppression",
+    "aliases": [
+      "1668",
+      "Rheumatology"
+    ],
+    "storedRowCount": 1,
+    "coverageNote": "The stored abstract of the 2025 EULAR update states the overarching principles and the organ-grouped treatment recommendations, including colchicine first-line for mucocutaneous and joint disease and early monoclonal TNF inhibitors for organ-threatening disease. The 2018 full text is not in PMC. A 2026 organ-involvement systematic review was downloaded but does not state the colchicine recommendation.",
+    "mcqs": [
+      {
+        "id": "1668-behcet-01",
+        "question": "What does the 2025 EULAR update recommend as first-line treatment for mucocutaneous and joint involvement?",
+        "options": {
+          "A": "Colchicine",
+          "B": "Cyclophosphamide for every oral ulcer",
+          "C": "Anticoagulation alone",
+          "D": "Topical antibiotic as the only therapy"
+        },
+        "correctAnswer": "A",
+        "explanation": "The update says colchicine is recommended as the first-line treatment for mucocutaneous and joint involvement.",
+        "difficulty": "easy",
+        "sourceRefs": [
+          {
+            "sourceBody": "EULAR",
+            "sourceYear": 2026,
+            "sourceUrl": "https://pubmed.ncbi.nlm.nih.gov/41876291/",
+            "excerpt": "For mucocutaneous and joint involvement, colchicine is recommended as the first-line treatment modality.",
+            "status": "source_verified",
+            "pmid": "41876291"
+          }
+        ]
+      },
+      {
+        "id": "1668-behcet-02",
+        "question": "What is recommended for refractory mucocutaneous disease in this update?",
+        "options": {
+          "A": "Apremilast and immunosuppressives such as TNF-alpha inhibitors",
+          "B": "Colchicine dose reduction only",
+          "C": "Observation without further treatment",
+          "D": "Antiviral therapy as the stated next step"
+        },
+        "correctAnswer": "A",
+        "explanation": "The update recommends apremilast and immunosuppressives such as TNF-alpha inhibitors for refractory patients.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "EULAR",
+            "sourceYear": 2026,
+            "sourceUrl": "https://pubmed.ncbi.nlm.nih.gov/41876291/",
+            "excerpt": "Apremilast and immunosuppressives such as tumour necrosis factor alpha (TNFα) inhibitors are recommended for refractory patients.",
+            "status": "source_verified",
+            "pmid": "41876291"
+          }
+        ]
+      },
+      {
+        "id": "1668-behcet-03",
+        "question": "How should organ involvement be treated, according to the update?",
+        "options": {
+          "A": "More aggressive treatment with glucocorticoids and immunosuppressives for rapid induction of remission",
+          "B": "Colchicine alone even if the disease is organ-threatening",
+          "C": "Antibiotics for presumed infection only",
+          "D": "No systemic treatment"
+        },
+        "correctAnswer": "A",
+        "explanation": "For organ involvement the update recommends more aggressive treatment with glucocorticoids and immunosuppressives to induce remission rapidly.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "EULAR",
+            "sourceYear": 2026,
+            "sourceUrl": "https://pubmed.ncbi.nlm.nih.gov/41876291/",
+            "excerpt": "For patients with organ involvement, more aggressive treatment with glucocorticoids and immunosuppressives is recommended for rapid induction of remission.",
+            "status": "source_verified",
+            "pmid": "41876291"
+          }
+        ]
+      },
+      {
+        "id": "1668-behcet-04",
+        "question": "When does the update encourage early monoclonal antibodies against TNF-alpha?",
+        "options": {
+          "A": "Organ or life-threatening manifestations",
+          "B": "Isolated recurrent oral ulcers that respond to colchicine",
+          "C": "Every patient at diagnosis regardless of organ involvement",
+          "D": "Only after surgical resection of an aneurysm as the sole remaining option"
+        },
+        "correctAnswer": "A",
+        "explanation": "The update encourages early use of monoclonal antibodies against TNF-alpha in organ or life-threatening manifestations.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "EULAR",
+            "sourceYear": 2026,
+            "sourceUrl": "https://pubmed.ncbi.nlm.nih.gov/41876291/",
+            "excerpt": "Early use of monoclonal antibodies against TNFα is encouraged in patients with organ or life-threatening manifestations.",
+            "status": "source_verified",
+            "pmid": "41876291"
+          }
+        ]
+      },
+      {
+        "id": "1668-behcet-05",
+        "question": "Which overarching point does the update emphasise?",
+        "options": {
+          "A": "The disease relapses and remits, so treatment is individualised to activity and prognostic factors, with a multidisciplinary approach",
+          "B": "One fixed drug regimen fits every organ",
+          "C": "Patient education is unnecessary",
+          "D": "Surgery replaces medical treatment for oral ulcers"
+        },
+        "correctAnswer": "A",
+        "explanation": "The overarching principles focus on the relapsing and remitting course, individualising treatment by activity and prognostic risk factors, and a multidisciplinary approach with education and shared decisions.",
+        "difficulty": "easy",
+        "sourceRefs": [
+          {
+            "sourceBody": "EULAR",
+            "sourceYear": 2026,
+            "sourceUrl": "https://pubmed.ncbi.nlm.nih.gov/41876291/",
+            "excerpt": "The overarching principles focus on the importance of recognising the relapsing and remitting disease course and individualising treatment according to disease activity and prognostic risk factors",
+            "status": "source_verified",
+            "pmid": "41876291"
+          }
+        ]
+      }
+    ]
+  }
+}

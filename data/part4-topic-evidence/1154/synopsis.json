@@ -1,0 +1,29 @@
+{
+  "scope": "Adults with antiphospholipid antibodies or APS.",
+  "keyRecommendations": [
+    {
+      "text": "Low-dose aspirin is recommended for asymptomatic high-risk aPL carriers, patients with SLE without prior thrombotic or obstetric APS, and non-pregnant women with a history of obstetric APS only, all with high-risk aPL profiles.",
+      "strength": "not_graded",
+      "population": "High-risk aPL profiles"
+    },
+    {
+      "text": "First unprovoked venous thrombosis should receive long-term VKA with INR 2–3.",
+      "strength": "not_graded",
+      "population": "APS with first unprovoked venous thrombosis"
+    },
+    {
+      "text": "Rivaroxaban should not be used in triple aPL positivity.",
+      "strength": "not_graded",
+      "population": "Triple-positive APS"
+    },
+    {
+      "text": "Prior obstetric APS is treated with low-dose aspirin plus prophylactic heparin during pregnancy.",
+      "strength": "not_graded",
+      "population": "Pregnant women with prior obstetric APS"
+    }
+  ],
+  "clinicalBottomLine": "EULAR 2019 uses risk-stratified aspirin, long-term VKA after unprovoked venous thrombosis, avoids rivaroxaban in triple-positive patients, and combines aspirin with prophylactic heparin in obstetric APS.",
+  "notableCaveats": [
+    "High-quality evidence is limited, which the recommendations themselves state."
+  ]
+}

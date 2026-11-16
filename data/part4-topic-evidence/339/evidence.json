@@ -1,0 +1,17 @@
+{
+  "catalogueId": 339,
+  "topic": "Erythema Nodosum differential diagnosis",
+  "specialty": "Rheumatology",
+  "decision": "unresolved",
+  "source": {
+    "title": null
+  },
+  "notes": [
+    "Unresolved."
+  ],
+  "files": {
+    "source": null,
+    "synopsis": "/workspace/data/part4-topic-evidence/339/synopsis.json",
+    "mcqs": null
+  }
+}

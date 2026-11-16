@@ -1,0 +1,23 @@
+{
+  "catalogueId": 815,
+  "topic": "Infection risk with biologics: TB, HBV reactivation, PJP prophylaxis thresholds",
+  "specialty": "Rheumatology",
+  "decision": "downloaded_open_source",
+  "source": {
+    "title": "Systematic literature review informing the 2022 EULAR recommendations for screening and prophylaxis of chronic and opportunistic infections in adults with autoimmune inflammatory rheumatic diseases",
+    "year": 2022,
+    "pmid": "36323488",
+    "pmcid": "PMC9639159",
+    "doi": "10.1136/rmdopen-2022-002726",
+    "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9639159/",
+    "sourceBody": "RMD Open",
+    "tier": "review",
+    "whyItFits": "Open systematic review behind the 2022 EULAR infection-screening recommendations. It states the IGRA versus TST comparison, HBsAg reactivation risk, anti-HBc monitoring, and a prednisolone threshold at which Pneumocystis prophylaxis should be considered."
+  },
+  "notes": [],
+  "files": {
+    "source": "/workspace/data/part4-topic-evidence/815/source.txt",
+    "synopsis": "/workspace/data/part4-topic-evidence/815/synopsis.json",
+    "mcqs": "/workspace/data/part4-topic-evidence/815/mcqs.json"
+  }
+}

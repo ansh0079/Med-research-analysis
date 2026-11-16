@@ -1,0 +1,24 @@
+{
+  "scope": "Evaluation of livedo reticularis and livedo racemosa.",
+  "keyRecommendations": [
+    {
+      "text": "Livedo reticularis is a transient or persistent blotchy, reddish-blue to purple, net-like pattern and is described as benign, mainly in middle-aged women.",
+      "strength": "not_graded",
+      "population": "Livedo reticularis"
+    },
+    {
+      "text": "Livedo racemosa is pathologic and commonly associated with antiphospholipid syndrome.",
+      "strength": "not_graded",
+      "population": "Livedo racemosa"
+    },
+    {
+      "text": "Every patient needs careful evaluation because of possible systemic disease. Livedo racemosa is the classical sign of Sneddon syndrome and is also seen with APS, SLE, and several prothrombotic diseases.",
+      "strength": "not_graded",
+      "population": "Patients presenting with livedo"
+    }
+  ],
+  "clinicalBottomLine": "Distinguish the benign net-like livedo reticularis from broken, pathologic livedo racemosa, and work up the latter for antiphospholipid syndrome and related systemic disease.",
+  "notableCaveats": [
+    "The review's algorithms are described but not reproduced as a numbered test sequence beyond the diseases it names."
+  ]
+}

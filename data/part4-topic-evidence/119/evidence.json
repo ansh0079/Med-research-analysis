@@ -1,0 +1,17 @@
+{
+  "catalogueId": 119,
+  "topic": "Biologic-Induced Psoriasis and Paradoxical Reactions",
+  "specialty": "Rheumatology",
+  "decision": "unresolved",
+  "source": {
+    "title": null
+  },
+  "notes": [
+    "Rejected keyword-overlapping paradoxical-reaction papers that were not about psoriasis induced by biologics."
+  ],
+  "files": {
+    "source": null,
+    "synopsis": "/workspace/data/part4-topic-evidence/119/synopsis.json",
+    "mcqs": null
+  }
+}

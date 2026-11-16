@@ -1,0 +1,134 @@
+{
+  "topic": {
+    "topicKey": "antiphospholipid-syndrome",
+    "topicDisplayName": "Antiphospholipid Syndrome",
+    "aliases": [
+      "1154",
+      "Rheumatology"
+    ],
+    "storedRowCount": 1,
+    "coverageNote": "The 2019 EULAR adult APS recommendations are in PMC and state aspirin, VKA targets, the rivaroxaban restriction in triple-positive patients, and obstetric combination treatment. Stored APS items were short abstracts.",
+    "mcqs": [
+      {
+        "id": "1154-aps-01",
+        "question": "For whom does EULAR 2019 recommend low-dose aspirin, provided the aPL profile is high risk?",
+        "options": {
+          "A": "Asymptomatic aPL carriers, patients with SLE without prior thrombotic or obstetric APS, and non-pregnant women with obstetric APS only",
+          "B": "Every person with a negative aPL test",
+          "C": "Only people with triple-positive APS and an acute arterial thrombus, as the sole treatment",
+          "D": "No one; aspirin is contraindicated in all aPL states"
+        },
+        "correctAnswer": "A",
+        "explanation": "The recommendations recommend low-dose aspirin for those three groups, all with high-risk aPL profiles.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Annals of the Rheumatic Diseases",
+            "sourceYear": 2019,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC11034817/",
+            "excerpt": "Low-dose aspirin (LDA) is recommended for asymptomatic aPL carriers, patients with systemic lupus erythematosus without prior thrombotic or obstetric APS, and non-pregnant women with a history of obstetric APS only, all with high-risk aPL profiles.",
+            "status": "source_verified",
+            "pmid": "31092409",
+            "pmcid": "PMC11034817"
+          }
+        ]
+      },
+      {
+        "id": "1154-aps-02",
+        "question": "What long-term treatment and INR target does EULAR give for APS with a first unprovoked venous thrombosis?",
+        "options": {
+          "A": "Vitamin K antagonist with INR 2–3",
+          "B": "Rivaroxaban for triple-positive patients",
+          "C": "Aspirin alone",
+          "D": "INR target above 4 with heparin stopped"
+        },
+        "correctAnswer": "A",
+        "explanation": "EULAR says patients with APS and first unprovoked venous thrombosis should receive long-term VKA with a target INR of 2–3.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Annals of the Rheumatic Diseases",
+            "sourceYear": 2019,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC11034817/",
+            "excerpt": "Patients with APS and first unprovoked venous thrombosis should receive long-term treatment with vitamin K antagonists (VKA) with a target international normalised ratio (INR) of 2–3.",
+            "status": "source_verified",
+            "pmid": "31092409",
+            "pmcid": "PMC11034817"
+          }
+        ]
+      },
+      {
+        "id": "1154-aps-03",
+        "question": "In which APS situation does EULAR say rivaroxaban should not be used?",
+        "options": {
+          "A": "Triple aPL positivity",
+          "B": "Isolated low-titre anticardiolipin IgM",
+          "C": "Obstetric APS after delivery",
+          "D": "Asymptomatic aPL carriers"
+        },
+        "correctAnswer": "A",
+        "explanation": "The recommendations state that rivaroxaban should not be used in patients with APS with triple aPL positivity.",
+        "difficulty": "easy",
+        "sourceRefs": [
+          {
+            "sourceBody": "Annals of the Rheumatic Diseases",
+            "sourceYear": 2019,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC11034817/",
+            "excerpt": "Rivaroxaban should not be used in patients with APS with triple aPL positivity.",
+            "status": "source_verified",
+            "pmid": "31092409",
+            "pmcid": "PMC11034817"
+          }
+        ]
+      },
+      {
+        "id": "1154-aps-04",
+        "question": "What pregnancy treatment does EULAR recommend for women with prior obstetric APS?",
+        "options": {
+          "A": "Low-dose aspirin plus prophylactic-dose heparin",
+          "B": "Warfarin throughout the third trimester as the stated standard",
+          "C": "Rivaroxaban monotherapy",
+          "D": "No antithrombotic drug"
+        },
+        "correctAnswer": "A",
+        "explanation": "EULAR recommends combination treatment with low-dose aspirin and prophylactic dosage heparin during pregnancy for women with prior obstetric APS.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Annals of the Rheumatic Diseases",
+            "sourceYear": 2019,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC11034817/",
+            "excerpt": "In women with prior obstetric APS, combination treatment with LDA and prophylactic dosage heparin during pregnancy is recommended.",
+            "status": "source_verified",
+            "pmid": "31092409",
+            "pmcid": "PMC11034817"
+          }
+        ]
+      },
+      {
+        "id": "1154-aps-05",
+        "question": "If pregnancy complications recur despite standard treatment, what may be considered?",
+        "options": {
+          "A": "Increasing heparin to a therapeutic dose, adding hydroxychloroquine, or adding low-dose prednisolone in the first trimester",
+          "B": "Stopping all antithrombotic drugs",
+          "C": "Starting rivaroxaban in triple-positive patients",
+          "D": "Immediate splenectomy"
+        },
+        "correctAnswer": "A",
+        "explanation": "EULAR says that in recurrent pregnancy complications, increasing heparin to a therapeutic dose, adding hydroxychloroquine, or adding low-dose prednisolone in the first trimester may be considered.",
+        "difficulty": "hard",
+        "sourceRefs": [
+          {
+            "sourceBody": "Annals of the Rheumatic Diseases",
+            "sourceYear": 2019,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC11034817/",
+            "excerpt": "In patients with recurrent pregnancy complications, increase of heparin to therapeutic dose, addition of hydroxychloroquine or addition of low-dose prednisolone in the first trimester may be considered.",
+            "status": "source_verified",
+            "pmid": "31092409",
+            "pmcid": "PMC11034817"
+          }
+        ]
+      }
+    ]
+  }
+}

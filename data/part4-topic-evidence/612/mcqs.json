@@ -1,0 +1,124 @@
+{
+  "topic": {
+    "topicKey": "hypermobility-spectrum-disorders-and-heds-beighton-score-management-po",
+    "topicDisplayName": "Hypermobility spectrum disorders and hEDS: Beighton score, management, POTS association",
+    "aliases": [
+      "612",
+      "Rheumatology"
+    ],
+    "storedRowCount": 1,
+    "coverageNote": "Stored AGA expert review that links hEDS and hypermobility spectrum disorders with POTS, tells gastroenterologists to use the Beighton score as a screen and then the 2017 hEDS criteria, and gives a postural vital-sign definition of POTS. It is a GI-facing document, not the full 2017 classification checklist.",
+    "mcqs": [
+      {
+        "id": "612-heds-01",
+        "question": "What association does AGA best-practice advice 1 tell clinicians to recognise?",
+        "options": {
+          "A": "Associations among hEDS or hypermobility spectrum disorders and POTS and/or mast-cell activation syndrome",
+          "B": "An association only with rheumatoid factor",
+          "C": "No autonomic association",
+          "D": "An association only with gout"
+        },
+        "correctAnswer": "A",
+        "explanation": "Advice 1 says clinicians should be aware of the observed associations between hEDS or HSDs and POTS and/or MCAS.",
+        "difficulty": "easy",
+        "sourceRefs": [
+          {
+            "sourceBody": "American Gastroenterological Association",
+            "sourceYear": null,
+            "sourceUrl": "https://www.gastrojournal.org/",
+            "excerpt": "Clinicians should be aware of the observed associations between hEDS or HSDs and POTS and/or MCAS",
+            "status": "source_verified"
+          }
+        ]
+      },
+      {
+        "id": "612-heds-02",
+        "question": "Does the update support testing every person with hEDS or HSD for POTS and MCAS?",
+        "options": {
+          "A": "No. Testing should be targeted, and universal testing is not supported",
+          "B": "Yes, universal testing is required",
+          "C": "Only genetic testing is supported",
+          "D": "Testing is recommended solely in asymptomatic children"
+        },
+        "correctAnswer": "A",
+        "explanation": "Advice 2 says testing for POTS/MCAS should be targeted to clinical manifestations, and universal testing in all patients with hEDS/HSDs is not supported.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "American Gastroenterological Association",
+            "sourceYear": null,
+            "sourceUrl": "https://www.gastrojournal.org/",
+            "excerpt": "universal testing for POTS/MCAS in all patients with hEDS/HSDs is not supported by the current evidence.",
+            "status": "source_verified"
+          }
+        ]
+      },
+      {
+        "id": "612-heds-03",
+        "question": "How should the Beighton score be used, in advice 3?",
+        "options": {
+          "A": "As a screening tool for joint hypermobility; a positive screen can lead to the 2017 hEDS criteria or referral",
+          "B": "As a score that by itself replaces the 2017 criteria",
+          "C": "It is discouraged",
+          "D": "It diagnoses POTS"
+        },
+        "correctAnswer": "A",
+        "explanation": "Advice 3 says to incorporate the Beighton score as a screening tool and, if positive, consider applying the 2017 diagnostic criteria or referring.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "American Gastroenterological Association",
+            "sourceYear": null,
+            "sourceUrl": "https://www.gastrojournal.org/",
+            "excerpt": "incorporating the Beighton score for assessing joint hypermobility into their practice as a screening tool; if the screen is positive, gastroenterologists may consider applying 2017 diagnostic criteria",
+            "status": "source_verified"
+          }
+        ]
+      },
+      {
+        "id": "612-heds-04",
+        "question": "What postural finding does the update give as an example of POTS testing?",
+        "options": {
+          "A": "A symptomatic heart-rate increase of 30 beats per minute or more within 10 minutes of standing, without orthostatic hypotension",
+          "B": "A fall in systolic pressure of 40 mmHg as the definition of POTS",
+          "C": "A heart-rate rise of 5 beats per minute",
+          "D": "Bradycardia on standing"
+        },
+        "correctAnswer": "A",
+        "explanation": "Advice 4 describes testing for POTS with postural vital signs, for example a symptomatic increase in heart rate of 30 beats/min or more with 10 minutes of standing, in the absence of orthostasis.",
+        "difficulty": "hard",
+        "sourceRefs": [
+          {
+            "sourceBody": "American Gastroenterological Association",
+            "sourceYear": null,
+            "sourceUrl": "https://www.gastrojournal.org/",
+            "excerpt": "symptomatic increase in heart rate of 30 beats/min or more with 10 minutes of standing during an active stand or head-up tilt table test in the absence of orthostasis",
+            "status": "source_verified"
+          }
+        ]
+      },
+      {
+        "id": "612-heds-05",
+        "question": "When should that POTS testing be considered?",
+        "options": {
+          "A": "In hEDS/HSD with refractory GI symptoms and orthostatic intolerance, after medication effects and simple measures such as hydration and exercise have been addressed",
+          "B": "In every patient who reports any GI symptom",
+          "C": "Only after a positive gene panel",
+          "D": "Never if the Beighton screen is positive"
+        },
+        "correctAnswer": "A",
+        "explanation": "Advice 4 says POTS testing should be considered in patients with hEDS/HSDs and refractory GI symptoms who also report orthostatic intolerance, after excluding medication effects and trying hydration and exercise, and is not required for GI symptoms alone.",
+        "difficulty": "hard",
+        "sourceRefs": [
+          {
+            "sourceBody": "American Gastroenterological Association",
+            "sourceYear": null,
+            "sourceUrl": "https://www.gastrojournal.org/",
+            "excerpt": "should be considered in patients with hEDS/HSDs and refractory GI symptoms who also report orthostatic intolerance after exclusion of medication side effects",
+            "status": "source_verified"
+          }
+        ]
+      }
+    ]
+  }
+}

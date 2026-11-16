@@ -1,0 +1,134 @@
+{
+  "topic": {
+    "topicKey": "adult-onset-stills-disease-aosd-quotidian-fever-salmon-rash-ferritin-i",
+    "topicDisplayName": "Adult-onset Stills disease AOSD: quotidian fever, salmon rash, ferritin, IL-1 inhibition",
+    "aliases": [
+      "780",
+      "Rheumatology"
+    ],
+    "storedRowCount": 1,
+    "coverageNote": "Open review of adult-onset Still's disease covering fever, the salmon-pink rash, Yamaguchi criteria, innate cytokines including IL-1, and anakinra. A stored file titled as an AOSD review contained no Still's-disease text and was rejected.",
+    "mcqs": [
+      {
+        "id": "780-aosd-01",
+        "question": "How does this review describe the typical skin rash of adult-onset Still's disease?",
+        "options": {
+          "A": "Salmon pink, macular or maculopapular, transient, and mainly visible during fever spikes on the proximal limbs or trunk",
+          "B": "A fixed purple livedo on the legs",
+          "C": "A scarring discoid rash on the face",
+          "D": "Gottron papules over the knuckles only"
+        },
+        "correctAnswer": "A",
+        "explanation": "The review says the skin rash is typically salmon pink and macular or maculopapular, transient, and mainly visible during fever spikes on the proximal limbs or trunk.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Nature Reviews Rheumatology",
+            "sourceYear": 2018,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7097309/",
+            "excerpt": "The skin rash in AoSD is typically coloured salmon pink and macular or maculopapular",
+            "status": "source_verified",
+            "pmid": "30218025",
+            "pmcid": "PMC7097309"
+          }
+        ]
+      },
+      {
+        "id": "780-aosd-02",
+        "question": "What does the review say about fever when AoSD is active?",
+        "options": {
+          "A": "Fever is constant when the disease is active, typically starting suddenly and rapidly reaching 39 °C or more",
+          "B": "Fever is absent in active disease",
+          "C": "Fever never exceeds 37.5 °C",
+          "D": "Fever occurs only after treatment"
+        },
+        "correctAnswer": "A",
+        "explanation": "The review says fever is constant when the disease is active, starts suddenly, and the temperature rapidly reaches 39 °C or more, with shivers.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Nature Reviews Rheumatology",
+            "sourceYear": 2018,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7097309/",
+            "excerpt": "Fever is constant when the disease is active, except in patients with established disease, in whom residual inflammation might remain without fever. Typically, fever starts suddenly, and temperature rapidly reaches 39 °C or more, with associated shivers",
+            "status": "source_verified",
+            "pmid": "30218025",
+            "pmcid": "PMC7097309"
+          }
+        ]
+      },
+      {
+        "id": "780-aosd-03",
+        "question": "How should the Yamaguchi criteria be used, according to this review?",
+        "options": {
+          "A": "They are the most widely used criteria, but only after a broad work-up because they exclude infection, malignancy, and other rheumatic diseases",
+          "B": "They replace all laboratory testing",
+          "C": "They require a positive rheumatoid factor",
+          "D": "They apply only to children under 2 years"
+        },
+        "correctAnswer": "A",
+        "explanation": "The review says the Yamaguchi criteria, published in 1992, are the most widely used, include exclusion of infections, malignancies, and other rheumatic diseases, and should be used only after a broad diagnostic work-up.",
+        "difficulty": "hard",
+        "sourceRefs": [
+          {
+            "sourceBody": "Nature Reviews Rheumatology",
+            "sourceYear": 2018,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7097309/",
+            "excerpt": "The Yamaguchi criteria, published in 1992, are the most widely used",
+            "status": "source_verified",
+            "pmid": "30218025",
+            "pmcid": "PMC7097309"
+          }
+        ]
+      },
+      {
+        "id": "780-aosd-04",
+        "question": "Which cytokines does the review place at the centre of AoSD pathogenesis?",
+        "options": {
+          "A": "IL-1, IL-6, and IL-18 from intensely activated innate immune cells",
+          "B": "Only IgE",
+          "C": "Only interferon-gamma from eosinophils",
+          "D": "Parathyroid hormone"
+        },
+        "correctAnswer": "A",
+        "explanation": "The review states that central pathogenesis is intense activation of innate immune cells and overproduction of IL-1, IL-6, and IL-18.",
+        "difficulty": "easy",
+        "sourceRefs": [
+          {
+            "sourceBody": "Nature Reviews Rheumatology",
+            "sourceYear": 2018,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7097309/",
+            "excerpt": "Central to the pathogenesis of AoSD is the intense activation of innate immune cells and overproduction of several pro-inflammatory cytokines including IL-1, IL-6 and IL-18.",
+            "status": "source_verified",
+            "pmid": "30218025",
+            "pmcid": "PMC7097309"
+          }
+        ]
+      },
+      {
+        "id": "780-aosd-05",
+        "question": "What does the review say has been approved for AoSD, and what is anakinra?",
+        "options": {
+          "A": "Two IL-1 antagonists have been approved; anakinra is a recombinant IL-1 receptor antagonist",
+          "B": "No biologic has any reported effect",
+          "C": "Anakinra is a TNF inhibitor approved only for rheumatoid arthritis in this text",
+          "D": "Corticosteroids are described as contraindicated"
+        },
+        "correctAnswer": "A",
+        "explanation": "The review states that two IL-1 antagonists have been approved for AoSD, and it describes anakinra as a recombinant IL-1 receptor antagonist that was the first biologic to show benefit in case series, uncontrolled trials, and national surveys.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Nature Reviews Rheumatology",
+            "sourceYear": 2018,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7097309/",
+            "excerpt": "Two IL-1 antagonists have been approved for treatment of AoSD",
+            "status": "source_verified",
+            "pmid": "30218025",
+            "pmcid": "PMC7097309"
+          }
+        ]
+      }
+    ]
+  }
+}

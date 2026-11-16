@@ -1,0 +1,24 @@
+{
+  "scope": "RAVE: rituximab versus daily cyclophosphamide for induction of remission in ANCA-associated vasculitis.",
+  "keyRecommendations": [
+    {
+      "text": "Rituximab 375 mg/m2 weekly for 4 weeks was noninferior to cyclophosphamide 2 mg/kg/day for prednisone-free remission at 6 months.",
+      "strength": "not_graded",
+      "population": "ANCA-positive Wegener granulomatosis or microscopic polyangiitis"
+    },
+    {
+      "text": "64% of the rituximab group and 53% of the control group reached the primary end point (noninferiority P<0.001).",
+      "strength": "not_graded",
+      "population": "RAVE population, n=197"
+    },
+    {
+      "text": "Rituximab was more efficacious than cyclophosphamide for relapsing disease.",
+      "strength": "not_graded",
+      "population": "Relapsing AAV in RAVE"
+    }
+  ],
+  "clinicalBottomLine": "In RAVE, rituximab was noninferior to cyclophosphamide for steroid-free remission at 6 months and better than cyclophosphamide for relapsing disease.",
+  "notableCaveats": [
+    "RITUXVAS numbers are not in this paper and are not asked. Adverse-event rates did not differ significantly."
+  ]
+}

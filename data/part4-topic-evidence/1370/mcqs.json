@@ -1,0 +1,134 @@
+{
+  "topic": {
+    "topicKey": "dermatomyositis-and-antisynthetase-syndrome",
+    "topicDisplayName": "Dermatomyositis and Antisynthetase Syndrome",
+    "aliases": [
+      "1370",
+      "Rheumatology"
+    ],
+    "storedRowCount": 1,
+    "coverageNote": "Open review defining antisynthetase syndrome by tRNA-synthetase antibodies plus ILD, myositis, Raynaud phenomenon, arthritis, fever, or mechanic's hands, and comparing its ILD burden with dermatomyositis and polymyositis.",
+    "mcqs": [
+      {
+        "id": "1370-ass-01",
+        "question": "What defines antisynthetase syndrome in this review?",
+        "options": {
+          "A": "Autoantibodies against an aminoacyl-tRNA synthetase plus features that can include ILD, myositis, Raynaud phenomenon, and arthritis",
+          "B": "Anti-CCP alone",
+          "C": "ANCA vasculitis",
+          "D": "A positive rheumatoid factor without lung disease"
+        },
+        "correctAnswer": "A",
+        "explanation": "The review defines the syndrome by antibodies against an aminoacyl transfer RNA synthetase with clinical features that can include ILD, myositis, Raynaud phenomenon, and arthritis.",
+        "difficulty": "easy",
+        "sourceRefs": [
+          {
+            "sourceBody": "Clinical Pulmonary Medicine",
+            "sourceYear": 2016,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5006392/",
+            "excerpt": "characterized by antibodies directed against an aminoacycl transfer RNA synthetase along with clinical features that can include interstitial lung disease, myositis, Raynaud’s phenomenon, and arthritis.",
+            "status": "source_verified",
+            "pmid": "27594777",
+            "pmcid": "PMC5006392"
+          }
+        ]
+      },
+      {
+        "id": "1370-ass-02",
+        "question": "Which additional clinical features does the introduction list?",
+        "options": {
+          "A": "Unexplained fever and mechanic's hands",
+          "B": "Gottron sign as a required criterion in this sentence",
+          "C": "Tophi",
+          "D": "Heberden nodes"
+        },
+        "correctAnswer": "A",
+        "explanation": "The introduction lists ILD, non-erosive arthritis, myositis, Raynaud phenomenon, unexplained fever, and/or mechanic's hands.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Clinical Pulmonary Medicine",
+            "sourceYear": 2016,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5006392/",
+            "excerpt": "unexplained fever and/or mechanic’s hands",
+            "status": "source_verified",
+            "pmid": "27594777",
+            "pmcid": "PMC5006392"
+          }
+        ]
+      },
+      {
+        "id": "1370-ass-03",
+        "question": "How does ILD in antisynthetase syndrome compare with dermatomyositis and polymyositis?",
+        "options": {
+          "A": "ILD is more prevalent and more severe",
+          "B": "ILD does not occur",
+          "C": "ILD is milder than in dermatomyositis",
+          "D": "The review says the lung is spared"
+        },
+        "correctAnswer": "A",
+        "explanation": "The review says there is a higher prevalence and increased severity of ILD compared with dermatomyositis and polymyositis.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Clinical Pulmonary Medicine",
+            "sourceYear": 2016,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5006392/",
+            "excerpt": "There is a higher prevalence and increased severity of interstitial lung disease in patients with anti-synthetase syndrome, as compared to dermatomyositis and polymyositis",
+            "status": "source_verified",
+            "pmid": "27594777",
+            "pmcid": "PMC5006392"
+          }
+        ]
+      },
+      {
+        "id": "1370-ass-04",
+        "question": "How is the diagnosis made?",
+        "options": {
+          "A": "A multidisciplinary synthesis of rheumatology and pulmonary evaluations, serology, imaging, and occasionally biopsy",
+          "B": "A single autoantibody without clinical correlation",
+          "C": "Skin biopsy alone",
+          "D": "Response to antibiotics"
+        },
+        "correctAnswer": "A",
+        "explanation": "The review says diagnosis is made by a multidisciplinary approach synthesizing rheumatology and pulmonary evaluations with serologic, radiographic, and occasionally biopsy results.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Clinical Pulmonary Medicine",
+            "sourceYear": 2016,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5006392/",
+            "excerpt": "Diagnosis is made by a multidisciplinary approach, synthesizing rheumatology and pulmonary evaluations, along with serologic, radiographic, and occasionally muscle and/or lung biopsy results.",
+            "status": "source_verified",
+            "pmid": "27594777",
+            "pmcid": "PMC5006392"
+          }
+        ]
+      },
+      {
+        "id": "1370-ass-05",
+        "question": "Why are management choices usually experiential?",
+        "options": {
+          "A": "Prospective data to guide treatment are lacking",
+          "B": "A single randomised regimen is mandated",
+          "C": "Only antibiotics are effective",
+          "D": "Immunosuppression is contraindicated in every case"
+        },
+        "correctAnswer": "A",
+        "explanation": "The review says that given the lack of prospective data, management is typically based on practitioner experience and patient response, with attention to harms of chronic immunosuppression and progressive ILD.",
+        "difficulty": "hard",
+        "sourceRefs": [
+          {
+            "sourceBody": "Clinical Pulmonary Medicine",
+            "sourceYear": 2016,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5006392/",
+            "excerpt": "Given the lack of prospective data to guide treatments decisions, management choices are typically made based on practitioner experience and patient response to therapy.",
+            "status": "source_verified",
+            "pmid": "27594777",
+            "pmcid": "PMC5006392"
+          }
+        ]
+      }
+    ]
+  }
+}

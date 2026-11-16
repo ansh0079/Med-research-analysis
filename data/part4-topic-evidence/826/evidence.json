@@ -1,0 +1,17 @@
+{
+  "catalogueId": 826,
+  "topic": "Microscopic Polyangiitis",
+  "specialty": "Rheumatology",
+  "decision": "unresolved",
+  "source": {
+    "title": null
+  },
+  "notes": [
+    "Unresolved."
+  ],
+  "files": {
+    "source": null,
+    "synopsis": "/workspace/data/part4-topic-evidence/826/synopsis.json",
+    "mcqs": null
+  }
+}

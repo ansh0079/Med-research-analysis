@@ -1,0 +1,23 @@
+{
+  "catalogueId": 2128,
+  "topic": "CIRT and CANTOS trials: methotrexate and canakinumab for cardiovascular inflammation",
+  "specialty": "Rheumatology",
+  "decision": "in_app_document",
+  "source": {
+    "title": "Targeting Inflammation to Reduce Residual Cardiovascular Risk",
+    "year": 2020,
+    "pmid": "32880743",
+    "doi": "10.1007/s11883-020-00883-3",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/32880743/",
+    "sourceBody": "Current Atherosclerosis Reports",
+    "tier": "review",
+    "inAppPath": "data/mcq-review/sources-eligible-incomplete-2026-10-10.json",
+    "whyItFits": "Stored abstract names CANTOS and CIRT, the populations enrolled, canakinumab's MACE result, and the early stop of low-dose methotrexate for lack of benefit."
+  },
+  "notes": [],
+  "files": {
+    "source": "/workspace/data/part4-topic-evidence/2128/source.txt",
+    "synopsis": "/workspace/data/part4-topic-evidence/2128/synopsis.json",
+    "mcqs": "/workspace/data/part4-topic-evidence/2128/mcqs.json"
+  }
+}

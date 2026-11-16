@@ -1,0 +1,25 @@
+{
+  "catalogueId": 2055,
+  "topic": "Upper Airway Resistance Syndrome",
+  "specialty": "Pulmonology",
+  "decision": "downloaded_open_source",
+  "source": {
+    "title": "Treatment of upper airway resistance syndrome in adults: Where do we stand?",
+    "year": 2015,
+    "pmid": "26483942",
+    "pmcid": "PMC4608900",
+    "doi": null,
+    "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4608900/",
+    "sourceBody": "Sleep Science",
+    "tier": "review",
+    "whyItFits": "Open adult review of UARS that states the diagnostic criterion is not settled, records the heterogeneous polysomnographic thresholds used in treatment studies, and summarises CPAP, oral appliances, and surgery."
+  },
+  "notes": [
+    "The Pes excerpt in the source has a space inside mmH2O from XML flattening; the stored source.txt is the text that was checked."
+  ],
+  "files": {
+    "source": "/workspace/data/part4-topic-evidence/2055/source.txt",
+    "synopsis": "/workspace/data/part4-topic-evidence/2055/synopsis.json",
+    "mcqs": "/workspace/data/part4-topic-evidence/2055/mcqs.json"
+  }
+}

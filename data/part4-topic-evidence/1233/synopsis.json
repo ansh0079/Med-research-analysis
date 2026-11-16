@@ -1,0 +1,19 @@
+{
+  "scope": "Osteoarticular tuberculosis and fungal arthritis, from two open reviews stored together.",
+  "keyRecommendations": [
+    {
+      "text": "Questions on mycobacterial arthritis use only the bone-and-joint tuberculosis review.",
+      "strength": "not_graded",
+      "population": "Bone and joint tuberculosis"
+    },
+    {
+      "text": "Questions on fungal arthritis use only the fungal arthritis review.",
+      "strength": "not_graded",
+      "population": "Fungal arthritis"
+    }
+  ],
+  "clinicalBottomLine": "Osteoarticular infection that is mycobacterial or fungal is diagnosed from the joint and bone findings in these two reviews, not from an ICU invasive-fungal definition set.",
+  "notableCaveats": [
+    "The tuberculosis series is dominated by spinal disease (77.6%). That figure is reported as written and is not generalised to every joint. Drug-resistance percentages describe the analysed strains in that paper."
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "catalogueId": 23,
+  "topic": "Behçet's Disease",
+  "specialty": "Rheumatology",
+  "decision": "in_app_document",
+  "source": {
+    "title": "EULAR recommendations for the management of Behçet's syndrome: 2025 update",
+    "year": 2026,
+    "pmid": "41876291",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/41876291/",
+    "sourceBody": "EULAR",
+    "tier": "guideline",
+    "inAppPath": "data/question-repair-source-import.json",
+    "whyItFits": "The stored abstract of the 2025 EULAR update states the overarching principles and the organ-grouped treatment recommendations, including colchicine first-line for mucocutaneous and joint disease and early monoclonal TNF inhibitors for organ-threatening disease. The 2018 full text is not in PMC. A 2026 organ-involvement systematic review was downloaded but does not state the colchicine recommendation."
+  },
+  "notes": [
+    "Same stored 2025 abstract as catalogue 1668, with different questions. Full 2018 text was not openly available in PMC."
+  ],
+  "files": {
+    "source": "/workspace/data/part4-topic-evidence/23/source.txt",
+    "synopsis": "/workspace/data/part4-topic-evidence/23/synopsis.json",
+    "mcqs": "/workspace/data/part4-topic-evidence/23/mcqs.json"
+  }
+}

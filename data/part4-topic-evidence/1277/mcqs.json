@@ -1,0 +1,134 @@
+{
+  "topic": {
+    "topicKey": "vocal-cord-dysfunction",
+    "topicDisplayName": "Vocal Cord Dysfunction",
+    "aliases": [
+      "1277",
+      "Pulmonology"
+    ],
+    "storedRowCount": 1,
+    "coverageNote": "This is the Melbourne roundtable report named in the spreadsheet, and the full text is in PMC. It states the conventional laryngoscopic definition of VCD/ILO.",
+    "mcqs": [
+      {
+        "id": "1277-vocal-cord-01",
+        "question": "What conventional laryngoscopic finding does the Melbourne roundtable report use for a definitive diagnosis of VCD/ILO?",
+        "options": {
+          "A": "Inspiratory vocal-fold narrowing greater than 50%",
+          "B": "Expiratory tracheal collapse greater than 90%",
+          "C": "A normal larynx with a low peak flow",
+          "D": "Bilateral vocal-fold paralysis in expiration only"
+        },
+        "correctAnswer": "A",
+        "explanation": "The report states that definitive diagnosis conventionally uses laryngoscopy demonstrating inspiratory vocal fold narrowing greater than 50%.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Respirology",
+            "sourceYear": 2023,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC10947219/",
+            "excerpt": "Definitive diagnosis of VCD/ILO conventionally utilizes laryngoscopy demonstrating inspiratory vocal fold narrowing >50%.",
+            "status": "source_verified",
+            "pmid": "37221142",
+            "pmcid": "PMC10947219"
+          }
+        ]
+      },
+      {
+        "id": "1277-vocal-cord-02",
+        "question": "How does the report treat computed tomography of the larynx?",
+        "options": {
+          "A": "A new technology with potential for swift diagnosis that requires validation in clinical pathways",
+          "B": "The gold standard that replaces laryngoscopy",
+          "C": "Contraindicated because it always misses ILO",
+          "D": "Useful only to diagnose pulmonary embolism"
+        },
+        "correctAnswer": "A",
+        "explanation": "The report calls laryngeal CT a new technology with potential for swift diagnosis that requires validation in clinical pathways.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Respirology",
+            "sourceYear": 2023,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC10947219/",
+            "excerpt": "Computed tomography of the larynx is a new technology with potential for swift diagnosis that requires validation in clinical pathways.",
+            "status": "source_verified",
+            "pmid": "37221142",
+            "pmcid": "PMC10947219"
+          }
+        ]
+      },
+      {
+        "id": "1277-vocal-cord-03",
+        "question": "What did roundtable participants emphasise as cardinal before testing?",
+        "options": {
+          "A": "The case history",
+          "B": "Immediate tracheostomy",
+          "C": "Methacholine challenge as the only test",
+          "D": "Routine lung biopsy"
+        },
+        "correctAnswer": "A",
+        "explanation": "The report says participants emphasised the cardinal importance of the case history in establishing the pre-test assessment.",
+        "difficulty": "easy",
+        "sourceRefs": [
+          {
+            "sourceBody": "Respirology",
+            "sourceYear": 2023,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC10947219/",
+            "excerpt": "Roundtable participants emphasized the cardinal importance of case history in establishing pre‐test",
+            "status": "source_verified",
+            "pmid": "37221142",
+            "pmcid": "PMC10947219"
+          }
+        ]
+      },
+      {
+        "id": "1277-vocal-cord-04",
+        "question": "Which paired names does the report use for this condition in its title and diagnostic sentence?",
+        "options": {
+          "A": "Vocal cord dysfunction and inducible laryngeal obstruction",
+          "B": "Asthma and COPD",
+          "C": "Tracheomalacia and bronchiectasis",
+          "D": "Angioedema and anaphylaxis"
+        },
+        "correctAnswer": "A",
+        "explanation": "The report's title and diagnostic sentence use vocal cord dysfunction / inducible laryngeal obstruction (VCD/ILO).",
+        "difficulty": "easy",
+        "sourceRefs": [
+          {
+            "sourceBody": "Respirology",
+            "sourceYear": 2023,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC10947219/",
+            "excerpt": "Definitive diagnosis of VCD/ILO conventionally utilizes laryngoscopy",
+            "status": "source_verified",
+            "pmid": "37221142",
+            "pmcid": "PMC10947219"
+          }
+        ]
+      },
+      {
+        "id": "1277-vocal-cord-05",
+        "question": "How does the report describe the biology of VCD/ILO?",
+        "options": {
+          "A": "Pathogenesis and multimorbidity interactions are complex",
+          "B": "It is a single-gene disorder with one trigger",
+          "C": "It is caused only by inhaled corticosteroid withdrawal",
+          "D": "It never coexists with asthma"
+        },
+        "correctAnswer": "A",
+        "explanation": "The report states that disease pathogenesis and multimorbidity interactions are complex.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Respirology",
+            "sourceYear": 2023,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC10947219/",
+            "excerpt": "Disease pathogenesis and multimorbidity interactions are complex",
+            "status": "source_verified",
+            "pmid": "37221142",
+            "pmcid": "PMC10947219"
+          }
+        ]
+      }
+    ]
+  }
+}

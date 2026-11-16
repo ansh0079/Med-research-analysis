@@ -1,0 +1,24 @@
+{
+  "scope": "Recent case literature on drug-induced lupus erythematosus.",
+  "keyRecommendations": [
+    {
+      "text": "Among 29 recent case reports, anti-TNF drugs were the most frequent (41.7%) among systemic DILE reports.",
+      "strength": "not_graded",
+      "population": "Published DILE cases in the review window"
+    },
+    {
+      "text": "Chemotherapeutic drugs were the most common class (54.5%) in the subacute cutaneous lupus cases, with a higher incidence in females.",
+      "strength": "not_graded",
+      "population": "Subacute cutaneous DILE cases in the review"
+    },
+    {
+      "text": "Stopping the culprit drug usually improves the drug-induced manifestations.",
+      "strength": "not_graded",
+      "population": "DILE"
+    }
+  ],
+  "clinicalBottomLine": "Recognise an expanding list of culprit drugs, including anti-TNF agents in recent systemic cases, and stop the drug. Procainamide and hydralazine are discussed as NET inducers, not as a ranked incidence list.",
+  "notableCaveats": [
+    "The 41.7% and 54.5% figures describe this review's recent case reports, not lifetime population incidence."
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "scope": "No accepted source.",
+  "keyRecommendations": [],
+  "clinicalBottomLine": "No stored or open document was accepted for the common acute findings on both CT head and CT pulmonary angiography.",
+  "notableCaveats": [
+    "In-app hits were treatment papers (balloon pulmonary angioplasty) or decision rules for when to scan, not a description of acute imaging findings.",
+    "PMC searches returned machine-learning detection papers and prognostic CTPA studies, not a teaching source covering both examinations.",
+    "No synopsis teaching points or MCQs were written."
+  ]
+}

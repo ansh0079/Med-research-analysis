@@ -1,0 +1,19 @@
+{
+  "scope": "Diagnosis and multidisciplinary management of fibromyalgia.",
+  "keyRecommendations": [
+    {
+      "text": "Non-pharmacological care is first-line: education, aerobic and resistance exercise, and psychological therapy such as CBT.",
+      "strength": "not_graded",
+      "population": "Fibromyalgia"
+    },
+    {
+      "text": "Pregabalin, duloxetine, milnacipran, and cyclobenzaprine are described as FDA-approved and clinically meaningful. Other opioids are generally not recommended; tramadol may be considered.",
+      "strength": "not_graded",
+      "population": "Fibromyalgia"
+    }
+  ],
+  "clinicalBottomLine": "Start with education, exercise, and psychological therapy. Add an approved analgesic or antidepressant when needed, and do not use ordinary opioids as routine treatment.",
+  "notableCaveats": [
+    "The review reports what it calls recommended and FDA-approved care; it is not a NICE guideline."
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "catalogueId": 1836,
+  "topic": "Induction therapy in AAV: rituximab vs cyclophosphamide, RITUXVAS, RAVE trials",
+  "specialty": "Rheumatology",
+  "decision": "downloaded_open_source",
+  "source": {
+    "title": "Rituximab versus Cyclophosphamide for ANCA-Associated Vasculitis",
+    "year": 2010,
+    "pmid": "20647199",
+    "pmcid": "PMC3137658",
+    "doi": "10.1056/NEJMoa0909905",
+    "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3137658/",
+    "sourceBody": "New England Journal of Medicine",
+    "tier": "trial",
+    "whyItFits": "The RAVE trial full text is in PMC and reports the noninferiority comparison of rituximab and cyclophosphamide for remission induction. RITUXVAS (PMID 20647198) is not in PMC, so its results are not used."
+  },
+  "notes": [
+    "RITUXVAS was not in PMC. Questions use RAVE only."
+  ],
+  "files": {
+    "source": "/workspace/data/part4-topic-evidence/1836/source.txt",
+    "synopsis": "/workspace/data/part4-topic-evidence/1836/synopsis.json",
+    "mcqs": "/workspace/data/part4-topic-evidence/1836/mcqs.json"
+  }
+}

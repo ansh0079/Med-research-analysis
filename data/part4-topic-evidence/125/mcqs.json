@@ -1,0 +1,134 @@
+{
+  "topic": {
+    "topicKey": "hyper-igd-syndrome",
+    "topicDisplayName": "Hyper-IgD Syndrome",
+    "aliases": [
+      "125",
+      "Rheumatology"
+    ],
+    "storedRowCount": 1,
+    "coverageNote": "Open review placing hyper-IgD syndrome and mevalonic aciduria on one mevalonate-kinase spectrum, with the laboratory clues and genetic confirmation. The Eurofever registry paper is not in PMC.",
+    "mcqs": [
+      {
+        "id": "125-hids-01",
+        "question": "How does this review relate hyper-IgD syndrome to mevalonic aciduria?",
+        "options": {
+          "A": "They are two ends of one spectrum caused by mevalonate kinase deficiency",
+          "B": "They are unrelated diseases",
+          "C": "HIDS is a complement deficiency",
+          "D": "Mevalonic aciduria is an acquired infection"
+        },
+        "correctAnswer": "A",
+        "explanation": "The review says mevalonic aciduria and hyperimmunoglobulinemia D syndrome are the two ends of a clinical spectrum caused by deficiency of mevalonate kinase.",
+        "difficulty": "easy",
+        "sourceRefs": [
+          {
+            "sourceBody": "Orphanet Journal of Rare Diseases",
+            "sourceYear": 2006,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1475558/",
+            "excerpt": "Mevalonic aciduria (MVA) and hyperimmunoglobulinemia D syndrome (HIDS) represent the two ends of a clinical spectrum of disease caused by deficiency of mevalonate kinase (MVK)",
+            "status": "source_verified",
+            "pmid": "16722536",
+            "pmcid": "PMC1475558"
+          }
+        ]
+      },
+      {
+        "id": "125-hids-02",
+        "question": "What is the clinical picture of HIDS in this review, and what else may a subgroup develop?",
+        "options": {
+          "A": "Febrile attacks, with neurological abnormalities such as mental retardation, ataxia, ocular symptoms, or epilepsy in a subgroup",
+          "B": "Only a chronic rash without fever",
+          "C": "Isolated hypercalcaemia",
+          "D": "Large-vessel vasculitis as the defining feature"
+        },
+        "correctAnswer": "A",
+        "explanation": "The review says that in HIDS only febrile attacks are present, but a subgroup may develop neurological abnormalities of varying degree.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Orphanet Journal of Rare Diseases",
+            "sourceYear": 2006,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1475558/",
+            "excerpt": "In HIDS, only febrile attacks are present, but a subgroup of patients may also develop neurological abnormalities of varying degree such as mental retardation, ataxia, ocular symptoms and epilepsy.",
+            "status": "source_verified",
+            "pmid": "16722536",
+            "pmcid": "PMC1475558"
+          }
+        ]
+      },
+      {
+        "id": "125-hids-03",
+        "question": "Which laboratory pattern does the review call strong evidence for HIDS?",
+        "options": {
+          "A": "Increased IgD and, in most patients, IgA, together with enhanced urinary mevalonic acid",
+          "B": "A positive anti-CCP",
+          "C": "Low IgD",
+          "D": "Sterile blood cultures alone"
+        },
+        "correctAnswer": "A",
+        "explanation": "The review says increased IgD and, in most patients, IgA, plus enhanced excretion of mevalonic acid, provide strong evidence for HIDS.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Orphanet Journal of Rare Diseases",
+            "sourceYear": 2006,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1475558/",
+            "excerpt": "Increased levels of immunoglobulin D (IgD) and, in most patients of immunoglobulin A (IgA), in combination with enhanced excretion of mevalonic acid provide strong evidence for HIDS.",
+            "status": "source_verified",
+            "pmid": "16722536",
+            "pmcid": "PMC1475558"
+          }
+        ]
+      },
+      {
+        "id": "125-hids-04",
+        "question": "How is the diagnosis confirmed?",
+        "options": {
+          "A": "Low mevalonate kinase activity or a disease-causing mutation",
+          "B": "A skin pathergy test",
+          "C": "A normal cholesterol level alone",
+          "D": "Response to colchicine"
+        },
+        "correctAnswer": "A",
+        "explanation": "The review says the diagnosis is confirmed by low mevalonate kinase activity or by demonstration of disease-causing mutations.",
+        "difficulty": "easy",
+        "sourceRefs": [
+          {
+            "sourceBody": "Orphanet Journal of Rare Diseases",
+            "sourceYear": 2006,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1475558/",
+            "excerpt": "The diagnosis is confirmed by low activity of mevalonate kinase or by demonstration of disease-causing mutations.",
+            "status": "source_verified",
+            "pmid": "16722536",
+            "pmcid": "PMC1475558"
+          }
+        ]
+      },
+      {
+        "id": "125-hids-05",
+        "question": "Where does mevalonate kinase sit in metabolism, according to the review?",
+        "options": {
+          "A": "It is the first committed enzyme of cholesterol biosynthesis",
+          "B": "It is a tyrosine kinase",
+          "C": "It degrades urate",
+          "D": "It is a complement protein"
+        },
+        "correctAnswer": "A",
+        "explanation": "The review calls mevalonate kinase the first committed enzyme of cholesterol biosynthesis.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Orphanet Journal of Rare Diseases",
+            "sourceYear": 2006,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1475558/",
+            "excerpt": "deficiency of mevalonate kinase (MVK), the first committed enzyme of cholesterol biosynthesis.",
+            "status": "source_verified",
+            "pmid": "16722536",
+            "pmcid": "PMC1475558"
+          }
+        ]
+      }
+    ]
+  }
+}

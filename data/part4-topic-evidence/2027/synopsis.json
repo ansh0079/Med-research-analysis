@@ -1,0 +1,24 @@
+{
+  "scope": "Bedside lung ultrasound signs in critical illness.",
+  "keyRecommendations": [
+    {
+      "text": "A-lines are horizontal repetitions of the pleural line and indicate gas.",
+      "strength": "not_graded",
+      "population": "Critically ill patients"
+    },
+    {
+      "text": "Lung sliding is a to-and-fro movement at the pleural line; M-mode shows the seashore sign and indicates that the visceral pleura is included.",
+      "strength": "not_graded",
+      "population": "Critically ill patients"
+    },
+    {
+      "text": "In the BLUE protocol, only anterolateral lung rockets are used, because posterior interstitial changes can be due to gravity.",
+      "strength": "not_graded",
+      "population": "Acute respiratory failure"
+    }
+  ],
+  "clinicalBottomLine": "Thoracic ultrasound in this review is a pattern of signs: gas (A-lines), sliding pleura, interstitial rockets, effusion (quad and sinusoid signs), and consolidation (fractal and tissue-like signs).",
+  "notableCaveats": [
+    "This is a critical-care ultrasound review, not a radiology curriculum for every thoracic indication."
+  ]
+}

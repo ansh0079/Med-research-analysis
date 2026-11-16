@@ -1,0 +1,134 @@
+{
+  "topic": {
+    "topicKey": "infection-risk-with-biologics-tb-hbv-reactivation-pjp-prophylaxis-thre",
+    "topicDisplayName": "Infection risk with biologics: TB, HBV reactivation, PJP prophylaxis thresholds",
+    "aliases": [
+      "815",
+      "Rheumatology"
+    ],
+    "storedRowCount": 1,
+    "coverageNote": "Open systematic review behind the 2022 EULAR infection-screening recommendations. It states the IGRA versus TST comparison, HBsAg reactivation risk, anti-HBc monitoring, and a prednisolone threshold at which Pneumocystis prophylaxis should be considered.",
+    "mcqs": [
+      {
+        "id": "815-infection-01",
+        "question": "How does this EULAR systematic review compare the tuberculin skin test with IGRA for tuberculosis screening?",
+        "options": {
+          "A": "TST is affected by glucocorticoids and conventional synthetic DMARDs and its performance is inferior to IGRA",
+          "B": "TST is more accurate than IGRA in every study",
+          "C": "The tests agree perfectly",
+          "D": "Neither test is mentioned"
+        },
+        "correctAnswer": "A",
+        "explanation": "The review says TST is affected by glucocorticoids and csDMARDs and its performance is inferior to IGRA, with moderate to low agreement between the tests.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "RMD Open",
+            "sourceYear": 2022,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9639159/",
+            "excerpt": "tuberculin skin test (TST) is affected by treatment with glucocorticoids and conventional synthetic disease modifying anti-rheumatic drugs (DMARDs) and its performance is inferior to interferon gamma release assay (IGRA).",
+            "status": "source_verified",
+            "pmid": "36323488",
+            "pmcid": "PMC9639159"
+          }
+        ]
+      },
+      {
+        "id": "815-infection-02",
+        "question": "Who has an increased risk of hepatitis B reactivation in this review?",
+        "options": {
+          "A": "Patients positive for hepatitis B surface antigen",
+          "B": "Patients with negative HBV serology only",
+          "C": "Only patients with hepatitis C",
+          "D": "Patients on hydroxychloroquine monotherapy as the named high-risk group"
+        },
+        "correctAnswer": "A",
+        "explanation": "The review says the risk of HBV reactivation is increased in patients positive for hepatitis B surface antigen.",
+        "difficulty": "easy",
+        "sourceRefs": [
+          {
+            "sourceBody": "RMD Open",
+            "sourceYear": 2022,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9639159/",
+            "excerpt": "risk of reactivation is increased in patients positive for hepatitis B surface antigen.",
+            "status": "source_verified",
+            "pmid": "36323488",
+            "pmcid": "PMC9639159"
+          }
+        ]
+      },
+      {
+        "id": "815-infection-03",
+        "question": "What does the review advise for anti-HBc-positive patients?",
+        "options": {
+          "A": "They are at low risk but should be monitored with liver function tests and/or HBV viral load",
+          "B": "They need immediate liver transplantation",
+          "C": "They have the same risk as HBsAg-positive patients and prophylaxis is forbidden",
+          "D": "No monitoring is suggested"
+        },
+        "correctAnswer": "A",
+        "explanation": "Anti-HBcore-positive patients are described as low risk for reactivation but should be monitored periodically with liver function tests and/or HBV viral load.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "RMD Open",
+            "sourceYear": 2022,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9639159/",
+            "excerpt": "Anti-HBcore positive patients are at low risk for reactivation but should be monitored periodically with liver function tests and/or HBV-viral load.",
+            "status": "source_verified",
+            "pmid": "36323488",
+            "pmcid": "PMC9639159"
+          }
+        ]
+      },
+      {
+        "id": "815-infection-04",
+        "question": "When should Pneumocystis jirovecii prophylaxis be considered?",
+        "options": {
+          "A": "Prednisolone at least 15–30 mg/day for more than 2–4 weeks",
+          "B": "Any dose of prednisolone for one day",
+          "C": "Only in HIV, which is the only population named",
+          "D": "Never, because the review found no risk"
+        },
+        "correctAnswer": "A",
+        "explanation": "The review says Pneumocystis prophylaxis should be considered in patients treated with prednisolone at least 15–30 mg/day for more than 2–4 weeks.",
+        "difficulty": "hard",
+        "sourceRefs": [
+          {
+            "sourceBody": "RMD Open",
+            "sourceYear": 2022,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9639159/",
+            "excerpt": "prophylaxis treatment should be considered in patients treated with prednisolone ≥15–30 mg/day for >2–4 weeks.",
+            "status": "source_verified",
+            "pmid": "36323488",
+            "pmcid": "PMC9639159"
+          }
+        ]
+      },
+      {
+        "id": "815-infection-05",
+        "question": "What does the review say about hepatitis C reactivation on biological DMARDs?",
+        "options": {
+          "A": "A risk exists but is low",
+          "B": "Reactivation is universal",
+          "C": "Hepatitis C was not discussed",
+          "D": "Biological DMARDs eradicate hepatitis C"
+        },
+        "correctAnswer": "A",
+        "explanation": "The review says a risk of hepatitis C reactivation exists but is low in patients treated with biological DMARDs.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "RMD Open",
+            "sourceYear": 2022,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9639159/",
+            "excerpt": "Risk for Hepatitis C reactivation is existing but low in patients treated with biological DMARDs.",
+            "status": "source_verified",
+            "pmid": "36323488",
+            "pmcid": "PMC9639159"
+          }
+        ]
+      }
+    ]
+  }
+}

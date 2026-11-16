@@ -1,0 +1,24 @@
+{
+  "scope": "Structural basis of pulmonary gas exchange and ventilation-perfusion matching.",
+  "keyRecommendations": [
+    {
+      "text": "In the normal lung, correlated airway and vascular branching creates well-matched VA/Q distributions; active matching is invoked mostly under perturbed conditions.",
+      "strength": "not_graded",
+      "population": "Normal human lung"
+    },
+    {
+      "text": "The acinus is described as the basic unit of gas exchange.",
+      "strength": "not_graded",
+      "population": "Human lung"
+    },
+    {
+      "text": "Hypoxic pulmonary vasoconstriction preserves ventilation-perfusion matching after lung resection but also limits the compensatory rise in capillary blood volume.",
+      "strength": "not_graded",
+      "population": "After pneumonectomy"
+    }
+  ],
+  "clinicalBottomLine": "This review teaches V/Q matching as a structural property of the normal lung, with active mechanisms such as hypoxic vasoconstriction used mainly when matching is disturbed.",
+  "notableCaveats": [
+    "Classic textbook zone numbers were not taken from this paper and are not used in the questions."
+  ]
+}

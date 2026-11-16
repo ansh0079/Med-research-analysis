@@ -1,0 +1,24 @@
+{
+  "scope": "Fracture prevention in postmenopausal osteoporosis from the ACP living evidence review abstract.",
+  "keyRecommendations": [
+    {
+      "text": "Bisphosphonates and denosumab reduced hip, clinical and radiographic vertebral, and other clinical fractures in postmenopausal females with osteoporosis.",
+      "strength": "not_graded",
+      "population": "Postmenopausal females with osteoporosis"
+    },
+    {
+      "text": "Abaloparatide and teriparatide reduced clinical and radiographic vertebral fractures but increased withdrawals due to adverse events.",
+      "strength": "not_graded",
+      "population": "Postmenopausal females with osteoporosis"
+    },
+    {
+      "text": "Sequential romosozumab then alendronate may be more effective than bisphosphonates for clinical fractures over 17 to 24 months in older postmenopausal females at very high fracture risk, at low to moderate certainty.",
+      "strength": "conditional",
+      "population": "Very high fracture risk"
+    }
+  ],
+  "clinicalBottomLine": "Denosumab reduces fractures including hip fractures; teriparatide reduces vertebral fractures but causes more adverse-event withdrawals; romosozumab followed by alendronate may reduce clinical fractures more than bisphosphonates in very high-risk patients, with lower certainty.",
+  "notableCaveats": [
+    "Longer bisphosphonate use may increase atypical femoral fracture and osteonecrosis of the jaw, with low absolute risk. Certainty for the anabolic-sequence comparison is low to moderate."
+  ]
+}

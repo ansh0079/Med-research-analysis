@@ -1,0 +1,18 @@
+{
+  "catalogueId": 1181,
+  "topic": "CT head and CT pulmonary angiography: common acute findings",
+  "specialty": "Radiology",
+  "decision": "unresolved",
+  "source": {
+    "title": null,
+    "whyItFits": null
+  },
+  "notes": [
+    "Unresolved. A title match is not enough, and no single open text covered acute CT head findings and acute CTPA findings together."
+  ],
+  "files": {
+    "source": null,
+    "synopsis": "/workspace/data/part4-topic-evidence/1181/synopsis.json",
+    "mcqs": null
+  }
+}

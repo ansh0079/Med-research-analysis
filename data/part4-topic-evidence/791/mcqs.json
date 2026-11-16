@@ -1,0 +1,134 @@
+{
+  "topic": {
+    "topicKey": "carpal-tunnel-syndrome-median-nerve-compression-phalen-emg-conservativ",
+    "topicDisplayName": "Carpal tunnel syndrome: median nerve compression, Phalen, EMG, conservative vs surgical",
+    "aliases": [
+      "791",
+      "Rheumatology"
+    ],
+    "storedRowCount": 1,
+    "coverageNote": "Open clinical review stating that CTS diagnosis uses history, examination, and electrophysiology, that individual provocative tests are not diagnostic alone, and listing splints and local steroid among non-surgical options. The stored AAOS summary did not contain the recommendations themselves.",
+    "mcqs": [
+      {
+        "id": "791-cts-01",
+        "question": "On what does this review say the diagnosis of carpal tunnel syndrome should be based?",
+        "options": {
+          "A": "History, physical examination, and electrophysiological studies",
+          "B": "Phalen's test alone",
+          "C": "A hand radiograph alone",
+          "D": "Serum urate"
+        },
+        "correctAnswer": "A",
+        "explanation": "The review says the diagnosis of CTS should be based on history, physical examination, and results of electrophysiological studies.",
+        "difficulty": "easy",
+        "sourceRefs": [
+          {
+            "sourceBody": "Ulster Medical Journal",
+            "sourceYear": 2008,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2397020/",
+            "excerpt": "The diagnosis of CTS should be based on history, physical examination and results of electrophysiological studies.",
+            "status": "source_verified",
+            "pmid": "18269111",
+            "pmcid": "PMC2397020"
+          }
+        ]
+      },
+      {
+        "id": "791-cts-02",
+        "question": "How does the review treat provocative tests such as those in the tradition of Phalen?",
+        "options": {
+          "A": "None is diagnostic on its own; the tests are complementary",
+          "B": "Phalen's test alone confirms CTS",
+          "C": "A positive Phalen test replaces nerve conduction studies",
+          "D": "Provocative tests are obsolete and never used"
+        },
+        "correctAnswer": "A",
+        "explanation": "The review says several tests help diagnosis, none is diagnostic on its own, and most are complementary rather than diagnostic.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Ulster Medical Journal",
+            "sourceYear": 2008,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2397020/",
+            "excerpt": "None of these tests are diagnostic on their own. Most of the tests are complementary to each other rather than diagnostic",
+            "status": "source_verified",
+            "pmid": "18269111",
+            "pmcid": "PMC2397020"
+          }
+        ]
+      },
+      {
+        "id": "791-cts-03",
+        "question": "Which non-surgical options does the review list?",
+        "options": {
+          "A": "Wrist splinting and local corticosteroid injection are among the methods listed",
+          "B": "Only immediate open release",
+          "C": "Only oral colchicine",
+          "D": "Only antibiotics"
+        },
+        "correctAnswer": "A",
+        "explanation": "The review lists a hand brace, wrist splinting, and local injection of corticosteroids among non-surgical methods.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Ulster Medical Journal",
+            "sourceYear": 2008,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2397020/",
+            "excerpt": "splinting of the wrist",
+            "status": "source_verified",
+            "pmid": "18269111",
+            "pmcid": "PMC2397020"
+          }
+        ]
+      },
+      {
+        "id": "791-cts-04",
+        "question": "What limitation of nerve-conduction studies does the review mention?",
+        "options": {
+          "A": "They are associated with false positive and false negative results",
+          "B": "They are perfectly sensitive and specific",
+          "C": "They are never used in CTS",
+          "D": "They diagnose only ulnar neuropathy"
+        },
+        "correctAnswer": "A",
+        "explanation": "The review says nerve conduction studies are associated with false positive and false negative results, which is why diagnosis also uses history and examination.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Ulster Medical Journal",
+            "sourceYear": 2008,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2397020/",
+            "excerpt": "they are also associated with false positive and false negative results.",
+            "status": "source_verified",
+            "pmid": "18269111",
+            "pmcid": "PMC2397020"
+          }
+        ]
+      },
+      {
+        "id": "791-cts-05",
+        "question": "How may a patient with mild symptoms be managed, in the sentence that introduces non-surgical care?",
+        "options": {
+          "A": "The patient with mild symptoms can be managed with non-surgical methods such as splinting",
+          "B": "Mild symptoms require emergency surgery the same day",
+          "C": "Mild symptoms are left with no options listed",
+          "D": "Mild CTS is treated as septic arthritis"
+        },
+        "correctAnswer": "A",
+        "explanation": "The review says the patient with mild symptoms of CTS can be managed with the non-surgical measures it then discusses, which include splinting.",
+        "difficulty": "easy",
+        "sourceRefs": [
+          {
+            "sourceBody": "Ulster Medical Journal",
+            "sourceYear": 2008,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2397020/",
+            "excerpt": "The patient with mild symptoms of CTS can be managed with",
+            "status": "source_verified",
+            "pmid": "18269111",
+            "pmcid": "PMC2397020"
+          }
+        ]
+      }
+    ]
+  }
+}

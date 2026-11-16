@@ -1,0 +1,1005 @@
+{
+  "batch": 3,
+  "spreadsheet": "Topics_without_evidence_part4of4.xlsx",
+  "rows": "88-130",
+  "catalogueRange": "1124-1233",
+  "generatedAt": "2026-11-16",
+  "counts": {
+    "topics": 43,
+    "in_app_document": 8,
+    "downloaded_open_source": 25,
+    "unresolved": 10,
+    "mcqs": 165
+  },
+  "import": {
+    "curatedMcqs": "data/part4-topic-evidence/batch-3.json",
+    "curatedMcqImporter": "node server/scripts/importCuratedTopicMcqs.js --dir data/part4-topic-evidence",
+    "fullTextJsonl": "data/part4-topic-evidence/batch-3-fulltext.jsonl",
+    "fullTextImporter": "node server/scripts/ingestLocalFullText.js --file data/part4-topic-evidence/batch-3-fulltext.jsonl",
+    "topicLinksJsonl": "data/part4-topic-evidence/batch-3-topic-links.jsonl",
+    "topicLinkImporter": "node server/scripts/loadTopicDocuments.js --file data/part4-topic-evidence/batch-3-topic-links.jsonl --batch part4-batch-3",
+    "sharedIndexesEdited": false
+  },
+  "topics": [
+    {
+      "catalogueId": 1124,
+      "topic": "Steroids in pneumonia",
+      "specialty": "Pulmonology",
+      "decision": "downloaded_open_source",
+      "source": {
+        "title": "Systemic corticosteroids in critical illness: an evidence-based framework for clinical decision-making",
+        "year": 2026,
+        "pmid": "42980831",
+        "pmcid": "PMC13736467",
+        "doi": null,
+        "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC13736467/",
+        "sourceBody": "European Journal of Clinical Pharmacology",
+        "tier": "review",
+        "whyItFits": "Open review that synthesises corticosteroid evidence in severe community-acquired pneumonia, including the CAPE COD hydrocortisone trial and the advice against routine steroids in influenza-associated ARDS. The 2019 ATS/IDSA CAP guideline is also in PMC but predates CAPE COD and recommends against routine steroids; it was not used as the teaching source."
+      },
+      "notes": [
+        "Rejected the stored 2025 CAP update abstract: it states that steroids may be used in severe CAP and not in non-severe CAP, but it is a short summary and does not carry trial figures. Rejected COVID-19 hydrocortisone papers as a different disease."
+      ],
+      "files": {
+        "source": "/workspace/data/part4-topic-evidence/1124/source.txt",
+        "synopsis": "/workspace/data/part4-topic-evidence/1124/synopsis.json",
+        "mcqs": "/workspace/data/part4-topic-evidence/1124/mcqs.json"
+      }
+    },
+    {
+      "catalogueId": 2027,
+      "topic": "Thoracic Ultrasound",
+      "specialty": "Pulmonology",
+      "decision": "downloaded_open_source",
+      "source": {
+        "title": "Lung ultrasound in the critically ill",
+        "year": 2014,
+        "pmid": "24401163",
+        "pmcid": "PMC3895677",
+        "doi": "10.1186/2110-5820-4-1",
+        "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3895677/",
+        "sourceBody": "Annals of Intensive Care",
+        "tier": "review",
+        "whyItFits": "Open review of the core thoracic ultrasound signs used at the bedside: A-lines, lung sliding, B-lines, effusion signs, and consolidation signs. The often-cited Volpicelli international recommendations are not in PMC."
+      },
+      "notes": [
+        "The BLUE-protocol paper's PMC record returned only a short file and was not used. Volpicelli 2012 is not in PMC."
+      ],
+      "files": {
+        "source": "/workspace/data/part4-topic-evidence/2027/source.txt",
+        "synopsis": "/workspace/data/part4-topic-evidence/2027/synopsis.json",
+        "mcqs": "/workspace/data/part4-topic-evidence/2027/mcqs.json"
+      }
+    },
+    {
+      "catalogueId": 2043,
+      "topic": "Tracheobronchomalacia",
+      "specialty": "Pulmonology",
+      "decision": "downloaded_open_source",
+      "source": {
+        "title": "Tracheomalacia and Tracheobronchomalacia in Pediatrics: An Overview of Evaluation, Medical Management, and Surgical Treatment",
+        "year": 2019,
+        "pmid": "31921725",
+        "pmcid": "PMC6922019",
+        "doi": "10.3389/fped.2019.00512",
+        "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6922019/",
+        "sourceBody": "Frontiers in Pediatrics",
+        "tier": "review",
+        "whyItFits": "Open review of tracheomalacia and tracheobronchomalacia covering dynamic collapse, bronchoscopy as the diagnostic reference, and the commonly used >50% narrowing threshold. No comparable adult full text was in PMC. The scope is paediatric."
+      },
+      "notes": [
+        "Adult in-depth reviews suggested by the spreadsheet were not in PMC as full text."
+      ],
+      "files": {
+        "source": "/workspace/data/part4-topic-evidence/2043/source.txt",
+        "synopsis": "/workspace/data/part4-topic-evidence/2043/synopsis.json",
+        "mcqs": "/workspace/data/part4-topic-evidence/2043/mcqs.json"
+      }
+    },
+    {
+      "catalogueId": 2055,
+      "topic": "Upper Airway Resistance Syndrome",
+      "specialty": "Pulmonology",
+      "decision": "downloaded_open_source",
+      "source": {
+        "title": "Treatment of upper airway resistance syndrome in adults: Where do we stand?",
+        "year": 2015,
+        "pmid": "26483942",
+        "pmcid": "PMC4608900",
+        "doi": null,
+        "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4608900/",
+        "sourceBody": "Sleep Science",
+        "tier": "review",
+        "whyItFits": "Open adult review of UARS that states the diagnostic criterion is not settled, records the heterogeneous polysomnographic thresholds used in treatment studies, and summarises CPAP, oral appliances, and surgery."
+      },
+      "notes": [
+        "The Pes excerpt in the source has a space inside mmH2O from XML flattening; the stored source.txt is the text that was checked."
+      ],
+      "files": {
+        "source": "/workspace/data/part4-topic-evidence/2055/source.txt",
+        "synopsis": "/workspace/data/part4-topic-evidence/2055/synopsis.json",
+        "mcqs": "/workspace/data/part4-topic-evidence/2055/mcqs.json"
+      }
+    },
+    {
+      "catalogueId": 1269,
+      "topic": "V/Q Mismatch and pulmonary gas exchange",
+      "specialty": "Pulmonology",
+      "decision": "downloaded_open_source",
+      "source": {
+        "title": "Lung Structure and the Intrinsic Challenges of Gas Exchange",
+        "year": 2016,
+        "pmid": "27065169",
+        "pmcid": "PMC5026132",
+        "doi": null,
+        "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5026132/",
+        "sourceBody": "Comprehensive Physiology",
+        "tier": "review",
+        "whyItFits": "Open physiology review that explains ventilation-perfusion matching, the acinus as the gas-exchange unit, and how hypoxic pulmonary vasoconstriction preserves matching. The classic Petersson and Glenny ERJ review is not in PMC. West-zone numbers and a 0.8 ratio are not stated in the passages used."
+      },
+      "notes": [
+        "Stored pulmonary-embolism gas-exchange note was 659 characters and was not accepted."
+      ],
+      "files": {
+        "source": "/workspace/data/part4-topic-evidence/1269/source.txt",
+        "synopsis": "/workspace/data/part4-topic-evidence/1269/synopsis.json",
+        "mcqs": "/workspace/data/part4-topic-evidence/1269/mcqs.json"
+      }
+    },
+    {
+      "catalogueId": 1277,
+      "topic": "Vocal Cord Dysfunction",
+      "specialty": "Pulmonology",
+      "decision": "downloaded_open_source",
+      "source": {
+        "title": "Vocal cord dysfunction/inducible laryngeal obstruction-2022 Melbourne Roundtable Report",
+        "year": 2023,
+        "pmid": "37221142",
+        "pmcid": "PMC10947219",
+        "doi": "10.1111/resp.14518",
+        "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC10947219/",
+        "sourceBody": "Respirology",
+        "tier": "review",
+        "whyItFits": "This is the Melbourne roundtable report named in the spreadsheet, and the full text is in PMC. It states the conventional laryngoscopic definition of VCD/ILO."
+      },
+      "notes": [],
+      "files": {
+        "source": "/workspace/data/part4-topic-evidence/1277/source.txt",
+        "synopsis": "/workspace/data/part4-topic-evidence/1277/synopsis.json",
+        "mcqs": "/workspace/data/part4-topic-evidence/1277/mcqs.json"
+      }
+    },
+    {
+      "catalogueId": 1181,
+      "topic": "CT head and CT pulmonary angiography: common acute findings",
+      "specialty": "Radiology",
+      "decision": "unresolved",
+      "source": {
+        "title": null,
+        "whyItFits": null
+      },
+      "notes": [
+        "Unresolved. A title match is not enough, and no single open text covered acute CT head findings and acute CTPA findings together."
+      ],
+      "files": {
+        "source": null,
+        "synopsis": "/workspace/data/part4-topic-evidence/1181/synopsis.json",
+        "mcqs": null
+      }
+    },
+    {
+      "catalogueId": 668,
+      "topic": "Acute Gouty Arthritis",
+      "specialty": "Rheumatology",
+      "decision": "in_app_document",
+      "source": {
+        "title": "Gout: diagnosis and management (NICE NG219)",
+        "year": 2022,
+        "pmid": null,
+        "pmcid": null,
+        "url": "https://www.nice.org.uk/guidance/ng219",
+        "sourceBody": "NICE",
+        "tier": "guideline",
+        "inAppPath": "data/question-repair-source-import.json",
+        "whyItFits": "The stored question-repair library contains the NG219 recommendation text, including diagnosis, flare treatment, and urate-lowering therapy. It is long enough to support questions without adding facts from elsewhere."
+      },
+      "notes": [
+        "EULAR gout Part II and the ACP diagnosis abstract in the library are much shorter and were not needed once NG219 recommendation text was read."
+      ],
+      "files": {
+        "source": "/workspace/data/part4-topic-evidence/668/source.txt",
+        "synopsis": "/workspace/data/part4-topic-evidence/668/synopsis.json",
+        "mcqs": "/workspace/data/part4-topic-evidence/668/mcqs.json"
+      }
+    },
+    {
+      "catalogueId": 910,
+      "topic": "Acute gout attack in hospital: colchicine contraindications, IV corticosteroids, IL-1 inhibition",
+      "specialty": "Rheumatology",
+      "decision": "in_app_document",
+      "source": {
+        "title": "Gout: diagnosis and management (NICE NG219)",
+        "year": 2022,
+        "url": "https://www.nice.org.uk/guidance/ng219",
+        "sourceBody": "NICE",
+        "tier": "guideline",
+        "inAppPath": "data/question-repair-source-import.json",
+        "whyItFits": "The same stored NG219 text is the in-app source for hospital flare sequencing: when colchicine or NSAIDs cannot be used, when injectable corticosteroid is considered, and when an IL-1 inhibitor is allowed. It does not list named colchicine drug interactions or recommend intravenous corticosteroid."
+      },
+      "notes": [
+        "Specific colchicine contraindications and intravenous corticosteroids are not in the stored NG219 text, so they were not turned into answers."
+      ],
+      "files": {
+        "source": "/workspace/data/part4-topic-evidence/910/source.txt",
+        "synopsis": "/workspace/data/part4-topic-evidence/910/synopsis.json",
+        "mcqs": "/workspace/data/part4-topic-evidence/910/mcqs.json"
+      }
+    },
+    {
+      "catalogueId": 780,
+      "topic": "Adult-onset Stills disease AOSD: quotidian fever, salmon rash, ferritin, IL-1 inhibition",
+      "specialty": "Rheumatology",
+      "decision": "downloaded_open_source",
+      "source": {
+        "title": "Mechanisms, biomarkers and targets for adult-onset Still's disease",
+        "year": 2018,
+        "pmid": "30218025",
+        "pmcid": "PMC7097309",
+        "doi": "10.1038/s41584-018-0081-x",
+        "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7097309/",
+        "sourceBody": "Nature Reviews Rheumatology",
+        "tier": "review",
+        "whyItFits": "Open review of adult-onset Still's disease covering fever, the salmon-pink rash, Yamaguchi criteria, innate cytokines including IL-1, and anakinra. A stored file titled as an AOSD review contained no Still's-disease text and was rejected."
+      },
+      "notes": [
+        "The in-app file titled Adult-Onset Still's Disease contained inflammasome text and the words Still, AOSD, and adult-onset did not appear. It was rejected."
+      ],
+      "files": {
+        "source": "/workspace/data/part4-topic-evidence/780/source.txt",
+        "synopsis": "/workspace/data/part4-topic-evidence/780/synopsis.json",
+        "mcqs": "/workspace/data/part4-topic-evidence/780/mcqs.json"
+      }
+    },
+    {
+      "catalogueId": 1154,
+      "topic": "Antiphospholipid Syndrome",
+      "specialty": "Rheumatology",
+      "decision": "downloaded_open_source",
+      "source": {
+        "title": "EULAR recommendations for the management of antiphospholipid syndrome in adults",
+        "year": 2019,
+        "pmid": "31092409",
+        "pmcid": "PMC11034817",
+        "doi": "10.1136/annrheumdis-2019-215213",
+        "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC11034817/",
+        "sourceBody": "Annals of the Rheumatic Diseases",
+        "tier": "guideline",
+        "whyItFits": "The 2019 EULAR adult APS recommendations are in PMC and state aspirin, VKA targets, the rivaroxaban restriction in triple-positive patients, and obstetric combination treatment. Stored APS items were short abstracts."
+      },
+      "notes": [],
+      "files": {
+        "source": "/workspace/data/part4-topic-evidence/1154/source.txt",
+        "synopsis": "/workspace/data/part4-topic-evidence/1154/synopsis.json",
+        "mcqs": "/workspace/data/part4-topic-evidence/1154/mcqs.json"
+      }
+    },
+    {
+      "catalogueId": 599,
+      "topic": "Autoantibody panel interpretation: ANA, ENA, dsDNA, ANCA, RF, anti-CCP clinical utility",
+      "specialty": "Rheumatology",
+      "decision": "downloaded_open_source",
+      "source": {
+        "title": "Clinical relevance of HEp-2 indirect immunofluorescent patterns: the International Consensus on ANA patterns (ICAP) perspective",
+        "year": 2019,
+        "pmid": "30862649",
+        "pmcid": "PMC6585284",
+        "doi": "10.1136/annrheumdis-2018-214436",
+        "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6585284/",
+        "sourceBody": "Annals of the Rheumatic Diseases",
+        "tier": "guideline",
+        "whyItFits": "Open ICAP paper on how HEp-2 IIFA titre and pattern should be interpreted and followed up. It does not cover ANCA, rheumatoid factor, or anti-CCP, so questions stay inside ANA pattern interpretation. A Brazilian HEp-2 consensus in the library was about nomenclature harmonisation and was thinner."
+      },
+      "notes": [
+        "The topic name lists ENA, dsDNA, ANCA, RF, and anti-CCP. Those assays are outside this ICAP paper. Questions do not invent their operating characteristics."
+      ],
+      "files": {
+        "source": "/workspace/data/part4-topic-evidence/599/source.txt",
+        "synopsis": "/workspace/data/part4-topic-evidence/599/synopsis.json",
+        "mcqs": "/workspace/data/part4-topic-evidence/599/mcqs.json"
+      }
+    },
+    {
+      "catalogueId": 666,
+      "topic": "AA Amyloidosis secondary to chronic arthritis",
+      "specialty": "Rheumatology",
+      "decision": "downloaded_open_source",
+      "source": {
+        "title": "Systemic AA amyloidosis: epidemiology, diagnosis, and management",
+        "year": 2014,
+        "pmid": "25378951",
+        "pmcid": "PMC4218891",
+        "doi": "10.2147/CLEP.S39981",
+        "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4218891/",
+        "sourceBody": "Clinical Epidemiology",
+        "tier": "review",
+        "whyItFits": "Open review of systemic AA amyloidosis. It names rheumatoid arthritis, ankylosing spondylitis, and chronic juvenile arthritis among the inflammatory causes, and it gives the precursor protein, the Congo-red standard, SAP scintigraphy, and the proteinuria presentation."
+      },
+      "notes": [],
+      "files": {
+        "source": "/workspace/data/part4-topic-evidence/666/source.txt",
+        "synopsis": "/workspace/data/part4-topic-evidence/666/synopsis.json",
+        "mcqs": "/workspace/data/part4-topic-evidence/666/mcqs.json"
+      }
+    },
+    {
+      "catalogueId": 928,
+      "topic": "Avascular Necrosis of Bone",
+      "specialty": "Rheumatology",
+      "decision": "downloaded_open_source",
+      "source": {
+        "title": "Guidelines for clinical diagnosis and treatment of osteonecrosis of the femoral head in adults (2019 version)",
+        "year": 2020,
+        "pmid": "32309135",
+        "pmcid": "PMC7152793",
+        "doi": "10.1016/j.jot.2019.12.004",
+        "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7152793/",
+        "sourceBody": "Journal of Orthopaedic Translation",
+        "tier": "guideline",
+        "whyItFits": "Open adult ONFH guideline covering aetiology, staging, and stage-based surgical and non-surgical treatment, including core decompression. The suggested 5-year update was only an abstract on PMC."
+      },
+      "notes": [
+        "Question 5 uses a short excerpt that is present; the explanation does not add a core-decompression indication that was not checked. Core decompression occurs in the file (count 10) but the keyed point is stage-based choice."
+      ],
+      "files": {
+        "source": "/workspace/data/part4-topic-evidence/928/source.txt",
+        "synopsis": "/workspace/data/part4-topic-evidence/928/synopsis.json",
+        "mcqs": "/workspace/data/part4-topic-evidence/928/mcqs.json"
+      }
+    },
+    {
+      "catalogueId": 52,
+      "topic": "Azathioprine in rheumatic disease: TPMT testing, dosing, bone marrow suppression",
+      "specialty": "Rheumatology",
+      "decision": "downloaded_open_source",
+      "source": {
+        "title": "Clinical Pharmacogenetics Implementation Consortium Guideline for Thiopurine Dosing Based on TPMT and NUDT15 Genotypes: 2018 Update",
+        "year": 2019,
+        "pmid": "30447069",
+        "pmcid": "PMC6576267",
+        "doi": null,
+        "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6576267/",
+        "sourceBody": "Clinical Pharmacology and Therapeutics",
+        "tier": "guideline",
+        "whyItFits": "CPIC states azathioprine dosing from TPMT and NUDT15 genotypes and the myelosuppression risk in poor metabolizers. It explicitly extrapolates pharmacokinetic dosing to non-malignant immunologic disorders, which includes rheumatic use. NICE Crohn's guidance that mentions thiopurines was rejected as the wrong disease."
+      },
+      "notes": [],
+      "files": {
+        "source": "/workspace/data/part4-topic-evidence/52/source.txt",
+        "synopsis": "/workspace/data/part4-topic-evidence/52/synopsis.json",
+        "mcqs": "/workspace/data/part4-topic-evidence/52/mcqs.json"
+      }
+    },
+    {
+      "catalogueId": 1668,
+      "topic": "Behcet disease: oral and genital ulcers, uveitis, pathergy, colchicine, immunosuppression",
+      "specialty": "Rheumatology",
+      "decision": "in_app_document",
+      "source": {
+        "title": "EULAR recommendations for the management of Behçet's syndrome: 2025 update",
+        "year": 2026,
+        "pmid": "41876291",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/41876291/",
+        "sourceBody": "EULAR",
+        "tier": "guideline",
+        "inAppPath": "data/question-repair-source-import.json",
+        "whyItFits": "The stored abstract of the 2025 EULAR update states the overarching principles and the organ-grouped treatment recommendations, including colchicine first-line for mucocutaneous and joint disease and early monoclonal TNF inhibitors for organ-threatening disease. The 2018 full text is not in PMC. A 2026 organ-involvement systematic review was downloaded but does not state the colchicine recommendation."
+      },
+      "notes": [
+        "Pathergy and a specific uveitis drug ladder are not in the stored abstract."
+      ],
+      "files": {
+        "source": "/workspace/data/part4-topic-evidence/1668/source.txt",
+        "synopsis": "/workspace/data/part4-topic-evidence/1668/synopsis.json",
+        "mcqs": "/workspace/data/part4-topic-evidence/1668/mcqs.json"
+      }
+    },
+    {
+      "catalogueId": 23,
+      "topic": "Behçet's Disease",
+      "specialty": "Rheumatology",
+      "decision": "in_app_document",
+      "source": {
+        "title": "EULAR recommendations for the management of Behçet's syndrome: 2025 update",
+        "year": 2026,
+        "pmid": "41876291",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/41876291/",
+        "sourceBody": "EULAR",
+        "tier": "guideline",
+        "inAppPath": "data/question-repair-source-import.json",
+        "whyItFits": "The stored abstract of the 2025 EULAR update states the overarching principles and the organ-grouped treatment recommendations, including colchicine first-line for mucocutaneous and joint disease and early monoclonal TNF inhibitors for organ-threatening disease. The 2018 full text is not in PMC. A 2026 organ-involvement systematic review was downloaded but does not state the colchicine recommendation."
+      },
+      "notes": [
+        "Same stored 2025 abstract as catalogue 1668, with different questions. Full 2018 text was not openly available in PMC."
+      ],
+      "files": {
+        "source": "/workspace/data/part4-topic-evidence/23/source.txt",
+        "synopsis": "/workspace/data/part4-topic-evidence/23/synopsis.json",
+        "mcqs": "/workspace/data/part4-topic-evidence/23/mcqs.json"
+      }
+    },
+    {
+      "catalogueId": 1669,
+      "topic": "Belimumab and anifrolumab in SLE: mechanism, indications, trial data",
+      "specialty": "Rheumatology",
+      "decision": "in_app_document",
+      "source": {
+        "title": "Indirect comparative efficacy and safety of belimumab vs. anifrolumab in systemic lupus erythematosus and lupus nephritis",
+        "year": 2026,
+        "pmid": "41342907",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/41342907/",
+        "sourceBody": "Zeitschrift fur Rheumatologie",
+        "tier": "review",
+        "inAppPath": "data/question-repair-source-import.json",
+        "whyItFits": "Stored abstract of an indirect comparison of the two biologics, including indication differences, SRI-4, steroid taper, herpes zoster, and lupus nephritis uncertainty. Molecular mechanism is not described in the abstract, so it is not questioned."
+      },
+      "notes": [
+        "TULIP-2 full text is not open. Mechanism (BAFF versus IFNAR) is not in the stored abstract and was not added."
+      ],
+      "files": {
+        "source": "/workspace/data/part4-topic-evidence/1669/source.txt",
+        "synopsis": "/workspace/data/part4-topic-evidence/1669/synopsis.json",
+        "mcqs": "/workspace/data/part4-topic-evidence/1669/mcqs.json"
+      }
+    },
+    {
+      "catalogueId": 119,
+      "topic": "Biologic-Induced Psoriasis and Paradoxical Reactions",
+      "specialty": "Rheumatology",
+      "decision": "unresolved",
+      "source": {
+        "title": null
+      },
+      "notes": [
+        "Rejected keyword-overlapping paradoxical-reaction papers that were not about psoriasis induced by biologics."
+      ],
+      "files": {
+        "source": null,
+        "synopsis": "/workspace/data/part4-topic-evidence/119/synopsis.json",
+        "mcqs": null
+      }
+    },
+    {
+      "catalogueId": 683,
+      "topic": "Biologics and malignancy risk: lymphoma, solid tumours, non-melanoma skin cancer",
+      "specialty": "Rheumatology",
+      "decision": "downloaded_open_source",
+      "source": {
+        "title": "Use of Biologic or Targeted Synthetic Disease-Modifying Antirheumatic Drugs and Cancer Risk",
+        "year": 2024,
+        "pmid": "39565623",
+        "pmcid": "PMC11579790",
+        "doi": null,
+        "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC11579790/",
+        "sourceBody": "JAMA Network Open",
+        "tier": "review",
+        "whyItFits": "Open cohort study of cancer incidence after new biologic or targeted synthetic DMARD starts in rheumatoid arthritis, comparing rituximab, abatacept, and JAK inhibitors with TNF inhibitors and stating the confounding-by-indication limit."
+      },
+      "notes": [],
+      "files": {
+        "source": "/workspace/data/part4-topic-evidence/683/source.txt",
+        "synopsis": "/workspace/data/part4-topic-evidence/683/synopsis.json",
+        "mcqs": "/workspace/data/part4-topic-evidence/683/mcqs.json"
+      }
+    },
+    {
+      "catalogueId": 2128,
+      "topic": "CIRT and CANTOS trials: methotrexate and canakinumab for cardiovascular inflammation",
+      "specialty": "Rheumatology",
+      "decision": "in_app_document",
+      "source": {
+        "title": "Targeting Inflammation to Reduce Residual Cardiovascular Risk",
+        "year": 2020,
+        "pmid": "32880743",
+        "doi": "10.1007/s11883-020-00883-3",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/32880743/",
+        "sourceBody": "Current Atherosclerosis Reports",
+        "tier": "review",
+        "inAppPath": "data/mcq-review/sources-eligible-incomplete-2026-10-10.json",
+        "whyItFits": "Stored abstract names CANTOS and CIRT, the populations enrolled, canakinumab's MACE result, and the early stop of low-dose methotrexate for lack of benefit."
+      },
+      "notes": [],
+      "files": {
+        "source": "/workspace/data/part4-topic-evidence/2128/source.txt",
+        "synopsis": "/workspace/data/part4-topic-evidence/2128/synopsis.json",
+        "mcqs": "/workspace/data/part4-topic-evidence/2128/mcqs.json"
+      }
+    },
+    {
+      "catalogueId": 260,
+      "topic": "Calcium Hydroxyapatite Deposition Disease",
+      "specialty": "Rheumatology",
+      "decision": "downloaded_open_source",
+      "source": {
+        "title": "Pathogenic role of basic calcium phosphate crystals in destructive arthropathies",
+        "year": 2013,
+        "pmid": "23468973",
+        "pmcid": "PMC3585350",
+        "doi": null,
+        "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3585350/",
+        "sourceBody": "PLOS ONE",
+        "tier": "review",
+        "whyItFits": "Open paper that names hydroxyapatite among basic calcium phosphate crystals and links them to osteoarthritis, calcific tendinitis, acute arthritis, and Milwaukee shoulder. A rotator-cuff calcific-tendinopathy review did not use the word hydroxyapatite and was not the primary source."
+      },
+      "notes": [],
+      "files": {
+        "source": "/workspace/data/part4-topic-evidence/260/source.txt",
+        "synopsis": "/workspace/data/part4-topic-evidence/260/synopsis.json",
+        "mcqs": "/workspace/data/part4-topic-evidence/260/mcqs.json"
+      }
+    },
+    {
+      "catalogueId": 791,
+      "topic": "Carpal tunnel syndrome: median nerve compression, Phalen, EMG, conservative vs surgical",
+      "specialty": "Rheumatology",
+      "decision": "downloaded_open_source",
+      "source": {
+        "title": "Carpal tunnel syndrome",
+        "year": 2008,
+        "pmid": "18269111",
+        "pmcid": "PMC2397020",
+        "doi": null,
+        "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2397020/",
+        "sourceBody": "Ulster Medical Journal",
+        "tier": "review",
+        "whyItFits": "Open clinical review stating that CTS diagnosis uses history, examination, and electrophysiology, that individual provocative tests are not diagnostic alone, and listing splints and local steroid among non-surgical options. The stored AAOS summary did not contain the recommendations themselves."
+      },
+      "notes": [],
+      "files": {
+        "source": "/workspace/data/part4-topic-evidence/791/source.txt",
+        "synopsis": "/workspace/data/part4-topic-evidence/791/synopsis.json",
+        "mcqs": "/workspace/data/part4-topic-evidence/791/mcqs.json"
+      }
+    },
+    {
+      "catalogueId": 1060,
+      "topic": "De Quervain's Tenosynovitis",
+      "specialty": "Rheumatology",
+      "decision": "unresolved",
+      "source": {
+        "title": null
+      },
+      "notes": [
+        "Unresolved."
+      ],
+      "files": {
+        "source": null,
+        "synopsis": "/workspace/data/part4-topic-evidence/1060/synopsis.json",
+        "mcqs": null
+      }
+    },
+    {
+      "catalogueId": 862,
+      "topic": "Denosumab, romosozumab, teriparatide: anabolic and resorption-inhibiting agents in osteoporosis",
+      "specialty": "Rheumatology",
+      "decision": "in_app_document",
+      "source": {
+        "title": "Effectiveness and Safety of Treatments to Prevent Fractures in People With Low Bone Mass or Primary Osteoporosis: A Living Systematic Review and Network Meta-analysis for the American College of Physicians",
+        "year": 2023,
+        "pmid": "36592455",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/36592455/",
+        "sourceBody": "Annals of Internal Medicine",
+        "tier": "meta-analysis",
+        "inAppPath": "data/question-repair-source-import.json",
+        "whyItFits": "Stored abstract of the ACP evidence review reporting fracture effects of denosumab, teriparatide, and sequential romosozumab then alendronate. The library's year and journal fields on this row are inconsistent with the PMID; the PMID record is the 2023 Annals review. Mechanism labels such as RANKL or sclerostin are not in the abstract and are not asked."
+      },
+      "notes": [],
+      "files": {
+        "source": "/workspace/data/part4-topic-evidence/862/source.txt",
+        "synopsis": "/workspace/data/part4-topic-evidence/862/synopsis.json",
+        "mcqs": "/workspace/data/part4-topic-evidence/862/mcqs.json"
+      }
+    },
+    {
+      "catalogueId": 1370,
+      "topic": "Dermatomyositis and Antisynthetase Syndrome",
+      "specialty": "Rheumatology",
+      "decision": "downloaded_open_source",
+      "source": {
+        "title": "The Diagnosis and Treatment of Antisynthetase Syndrome",
+        "year": 2016,
+        "pmid": "27594777",
+        "pmcid": "PMC5006392",
+        "doi": "10.1097/CPM.0000000000000171",
+        "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5006392/",
+        "sourceBody": "Clinical Pulmonary Medicine",
+        "tier": "review",
+        "whyItFits": "Open review defining antisynthetase syndrome by tRNA-synthetase antibodies plus ILD, myositis, Raynaud phenomenon, arthritis, fever, or mechanic's hands, and comparing its ILD burden with dermatomyositis and polymyositis."
+      },
+      "notes": [],
+      "files": {
+        "source": "/workspace/data/part4-topic-evidence/1370/source.txt",
+        "synopsis": "/workspace/data/part4-topic-evidence/1370/synopsis.json",
+        "mcqs": "/workspace/data/part4-topic-evidence/1370/mcqs.json"
+      }
+    },
+    {
+      "catalogueId": 1762,
+      "topic": "Diffuse Idiopathic Skeletal Hyperostosis",
+      "specialty": "Rheumatology",
+      "decision": "unresolved",
+      "source": {
+        "title": null
+      },
+      "notes": [
+        "Unresolved."
+      ],
+      "files": {
+        "source": null,
+        "synopsis": "/workspace/data/part4-topic-evidence/1762/synopsis.json",
+        "mcqs": null
+      }
+    },
+    {
+      "catalogueId": 1763,
+      "topic": "Drug-Induced Lupus Erythematosus",
+      "specialty": "Rheumatology",
+      "decision": "downloaded_open_source",
+      "source": {
+        "title": "Drug-induced lupus erythematosus: an update on drugs and mechanisms",
+        "year": 2018,
+        "pmid": "29870500",
+        "pmcid": "PMC7299070",
+        "doi": null,
+        "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7299070/",
+        "sourceBody": "Current Opinion in Rheumatology",
+        "tier": "review",
+        "whyItFits": "Open update on recent drug-induced lupus cases, naming anti-TNF drugs among systemic cases, chemotherapy among subacute cutaneous cases, procainamide and hydralazine NET formation, and improvement after the drug is stopped. Classic anti-histone teaching is not in the text and is not asked."
+      },
+      "notes": [
+        "PMID year confirmed from the PMC record header during download; if the publisher year differs, the PMCID is the file used."
+      ],
+      "files": {
+        "source": "/workspace/data/part4-topic-evidence/1763/source.txt",
+        "synopsis": "/workspace/data/part4-topic-evidence/1763/synopsis.json",
+        "mcqs": "/workspace/data/part4-topic-evidence/1763/mcqs.json"
+      }
+    },
+    {
+      "catalogueId": 339,
+      "topic": "Erythema Nodosum differential diagnosis",
+      "specialty": "Rheumatology",
+      "decision": "unresolved",
+      "source": {
+        "title": null
+      },
+      "notes": [
+        "Unresolved."
+      ],
+      "files": {
+        "source": null,
+        "synopsis": "/workspace/data/part4-topic-evidence/339/synopsis.json",
+        "mcqs": null
+      }
+    },
+    {
+      "catalogueId": 648,
+      "topic": "Fibromyalgia Syndrome",
+      "specialty": "Rheumatology",
+      "decision": "downloaded_open_source",
+      "source": {
+        "title": "Evolving Concepts in the Diagnosis and Management of Fibromyalgia: A Moving Target",
+        "year": 2026,
+        "pmid": "42764960",
+        "pmcid": "PMC13589972",
+        "doi": "10.2147/JPR.S615824",
+        "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC13589972/",
+        "sourceBody": "Journal of Pain Research",
+        "tier": "review",
+        "whyItFits": "Open review of fibromyalgia diagnosis, including the move from tender points to the Widespread Pain Index and Symptom Severity Scale and the 2016 generalised-pain revision, plus first-line non-drug care and FDA-approved drugs. The stored NG117 bronchiectasis text is the wrong disease."
+      },
+      "notes": [],
+      "files": {
+        "source": "/workspace/data/part4-topic-evidence/648/source.txt",
+        "synopsis": "/workspace/data/part4-topic-evidence/648/synopsis.json",
+        "mcqs": "/workspace/data/part4-topic-evidence/648/mcqs.json"
+      }
+    },
+    {
+      "catalogueId": 756,
+      "topic": "Fibromyalgia: 2016 ACR diagnostic criteria, central sensitisation, non-pharmacological management",
+      "specialty": "Rheumatology",
+      "decision": "downloaded_open_source",
+      "source": {
+        "title": "Evolving Concepts in the Diagnosis and Management of Fibromyalgia: A Moving Target",
+        "year": 2026,
+        "pmid": "42764960",
+        "pmcid": "PMC13589972",
+        "doi": "10.2147/JPR.S615824",
+        "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC13589972/",
+        "sourceBody": "Journal of Pain Research",
+        "tier": "review",
+        "whyItFits": "Open review of fibromyalgia diagnosis, including the move from tender points to the Widespread Pain Index and Symptom Severity Scale and the 2016 generalised-pain revision, plus first-line non-drug care and FDA-approved drugs. The stored NG117 bronchiectasis text is the wrong disease."
+      },
+      "notes": [],
+      "files": {
+        "source": "/workspace/data/part4-topic-evidence/756/source.txt",
+        "synopsis": "/workspace/data/part4-topic-evidence/756/synopsis.json",
+        "mcqs": "/workspace/data/part4-topic-evidence/756/mcqs.json"
+      }
+    },
+    {
+      "catalogueId": 1784,
+      "topic": "Hand and erosive OA: Heberden nodes, Bouchard nodes, trapeziometacarpal OA",
+      "specialty": "Rheumatology",
+      "decision": "unresolved",
+      "source": {
+        "title": null
+      },
+      "notes": [
+        "Unresolved."
+      ],
+      "files": {
+        "source": null,
+        "synopsis": "/workspace/data/part4-topic-evidence/1784/synopsis.json",
+        "mcqs": null
+      }
+    },
+    {
+      "catalogueId": 125,
+      "topic": "Hyper-IgD Syndrome",
+      "specialty": "Rheumatology",
+      "decision": "downloaded_open_source",
+      "source": {
+        "title": "Mevalonate kinase deficiencies: from mevalonic aciduria to hyperimmunoglobulinemia D syndrome",
+        "year": 2006,
+        "pmid": "16722536",
+        "pmcid": "PMC1475558",
+        "doi": null,
+        "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1475558/",
+        "sourceBody": "Orphanet Journal of Rare Diseases",
+        "tier": "review",
+        "whyItFits": "Open review placing hyper-IgD syndrome and mevalonic aciduria on one mevalonate-kinase spectrum, with the laboratory clues and genetic confirmation. The Eurofever registry paper is not in PMC."
+      },
+      "notes": [],
+      "files": {
+        "source": "/workspace/data/part4-topic-evidence/125/source.txt",
+        "synopsis": "/workspace/data/part4-topic-evidence/125/synopsis.json",
+        "mcqs": "/workspace/data/part4-topic-evidence/125/mcqs.json"
+      }
+    },
+    {
+      "catalogueId": 612,
+      "topic": "Hypermobility spectrum disorders and hEDS: Beighton score, management, POTS association",
+      "specialty": "Rheumatology",
+      "decision": "in_app_document",
+      "source": {
+        "title": "AGA Clinical Practice Update on GI Manifestations and Autonomic or Immune Dysfunction in Hypermobile Ehlers-Danlos Syndrome",
+        "year": null,
+        "url": "https://www.gastrojournal.org/article/S0016-5085(24)00300-0/fulltext",
+        "sourceBody": "American Gastroenterological Association",
+        "tier": "guideline",
+        "inAppPath": "data/question-repair-source-import.json",
+        "whyItFits": "Stored AGA expert review that links hEDS and hypermobility spectrum disorders with POTS, tells gastroenterologists to use the Beighton score as a screen and then the 2017 hEDS criteria, and gives a postural vital-sign definition of POTS. It is a GI-facing document, not the full 2017 classification checklist."
+      },
+      "notes": [
+        "URL in the stored file is the journal page; the advice text is what was read."
+      ],
+      "files": {
+        "source": "/workspace/data/part4-topic-evidence/612/source.txt",
+        "synopsis": "/workspace/data/part4-topic-evidence/612/synopsis.json",
+        "mcqs": "/workspace/data/part4-topic-evidence/612/mcqs.json"
+      }
+    },
+    {
+      "catalogueId": 1836,
+      "topic": "Induction therapy in AAV: rituximab vs cyclophosphamide, RITUXVAS, RAVE trials",
+      "specialty": "Rheumatology",
+      "decision": "downloaded_open_source",
+      "source": {
+        "title": "Rituximab versus Cyclophosphamide for ANCA-Associated Vasculitis",
+        "year": 2010,
+        "pmid": "20647199",
+        "pmcid": "PMC3137658",
+        "doi": "10.1056/NEJMoa0909905",
+        "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3137658/",
+        "sourceBody": "New England Journal of Medicine",
+        "tier": "trial",
+        "whyItFits": "The RAVE trial full text is in PMC and reports the noninferiority comparison of rituximab and cyclophosphamide for remission induction. RITUXVAS (PMID 20647198) is not in PMC, so its results are not used."
+      },
+      "notes": [
+        "RITUXVAS was not in PMC. Questions use RAVE only."
+      ],
+      "files": {
+        "source": "/workspace/data/part4-topic-evidence/1836/source.txt",
+        "synopsis": "/workspace/data/part4-topic-evidence/1836/synopsis.json",
+        "mcqs": "/workspace/data/part4-topic-evidence/1836/mcqs.json"
+      }
+    },
+    {
+      "catalogueId": 815,
+      "topic": "Infection risk with biologics: TB, HBV reactivation, PJP prophylaxis thresholds",
+      "specialty": "Rheumatology",
+      "decision": "downloaded_open_source",
+      "source": {
+        "title": "Systematic literature review informing the 2022 EULAR recommendations for screening and prophylaxis of chronic and opportunistic infections in adults with autoimmune inflammatory rheumatic diseases",
+        "year": 2022,
+        "pmid": "36323488",
+        "pmcid": "PMC9639159",
+        "doi": "10.1136/rmdopen-2022-002726",
+        "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9639159/",
+        "sourceBody": "RMD Open",
+        "tier": "review",
+        "whyItFits": "Open systematic review behind the 2022 EULAR infection-screening recommendations. It states the IGRA versus TST comparison, HBsAg reactivation risk, anti-HBc monitoring, and a prednisolone threshold at which Pneumocystis prophylaxis should be considered."
+      },
+      "notes": [],
+      "files": {
+        "source": "/workspace/data/part4-topic-evidence/815/source.txt",
+        "synopsis": "/workspace/data/part4-topic-evidence/815/synopsis.json",
+        "mcqs": "/workspace/data/part4-topic-evidence/815/mcqs.json"
+      }
+    },
+    {
+      "catalogueId": 199,
+      "topic": "Leflunomide in RA: mechanism, dosing, washout procedure, hepatotoxicity monitoring",
+      "specialty": "Rheumatology",
+      "decision": "unresolved",
+      "source": {
+        "title": null
+      },
+      "notes": [
+        "Unresolved."
+      ],
+      "files": {
+        "source": null,
+        "synopsis": "/workspace/data/part4-topic-evidence/199/synopsis.json",
+        "mcqs": null
+      }
+    },
+    {
+      "catalogueId": 2154,
+      "topic": "Livedo Reticularis workup",
+      "specialty": "Rheumatology",
+      "decision": "downloaded_open_source",
+      "source": {
+        "title": "Livedo reticularis: A review of the literature",
+        "year": 2015,
+        "pmid": "26500860",
+        "pmcid": "PMC4594389",
+        "doi": null,
+        "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4594389/",
+        "sourceBody": "Indian Dermatology Online Journal",
+        "tier": "review",
+        "whyItFits": "This is the review named in the spreadsheet, and the full text is in PMC. It separates benign livedo reticularis from pathologic livedo racemosa and lists the systemic diseases that drive the workup."
+      },
+      "notes": [
+        "PMID taken from the PMC article record if present; the teaching text is the PMC full text."
+      ],
+      "files": {
+        "source": "/workspace/data/part4-topic-evidence/2154/source.txt",
+        "synopsis": "/workspace/data/part4-topic-evidence/2154/synopsis.json",
+        "mcqs": "/workspace/data/part4-topic-evidence/2154/mcqs.json"
+      }
+    },
+    {
+      "catalogueId": 1925,
+      "topic": "MRI in inflammatory arthritis: bone marrow oedema, erosions, tenosynovitis scoring",
+      "specialty": "Rheumatology",
+      "decision": "unresolved",
+      "source": {
+        "title": null
+      },
+      "notes": [
+        "Unresolved."
+      ],
+      "files": {
+        "source": null,
+        "synopsis": "/workspace/data/part4-topic-evidence/1925/synopsis.json",
+        "mcqs": null
+      }
+    },
+    {
+      "catalogueId": 826,
+      "topic": "Microscopic Polyangiitis",
+      "specialty": "Rheumatology",
+      "decision": "unresolved",
+      "source": {
+        "title": null
+      },
+      "notes": [
+        "Unresolved."
+      ],
+      "files": {
+        "source": null,
+        "synopsis": "/workspace/data/part4-topic-evidence/826/synopsis.json",
+        "mcqs": null
+      }
+    },
+    {
+      "catalogueId": 201,
+      "topic": "Monoarthritis differential diagnosis: crystal, septic, reactive, seronegative, trauma",
+      "specialty": "Rheumatology",
+      "decision": "downloaded_open_source",
+      "source": {
+        "title": "Guideline for management of septic arthritis in native joints (SANJO)",
+        "year": 2023,
+        "pmid": "36756304",
+        "pmcid": "PMC9901514",
+        "doi": "10.5194/jbji-8-29-2023",
+        "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9901514/",
+        "sourceBody": "Journal of Bone and Joint Infection",
+        "tier": "guideline",
+        "whyItFits": "Open guideline for the septic arm of an acute hot joint. It requires prompt synovial-fluid aspiration, microscopy for crystals, and holding empirical antibiotics until the sample is taken unless the patient is septic. Reactive, seronegative, and traumatic causes are not specified, so they are not questioned."
+      },
+      "notes": [],
+      "files": {
+        "source": "/workspace/data/part4-topic-evidence/201/source.txt",
+        "synopsis": "/workspace/data/part4-topic-evidence/201/synopsis.json",
+        "mcqs": "/workspace/data/part4-topic-evidence/201/mcqs.json"
+      }
+    },
+    {
+      "catalogueId": 828,
+      "topic": "Musculoskeletal ultrasound in rheumatology: synovitis, power Doppler, guided injection",
+      "specialty": "Rheumatology",
+      "decision": "unresolved",
+      "source": {
+        "title": null
+      },
+      "notes": [
+        "Unresolved."
+      ],
+      "files": {
+        "source": null,
+        "synopsis": "/workspace/data/part4-topic-evidence/828/synopsis.json",
+        "mcqs": null
+      }
+    },
+    {
+      "catalogueId": 1233,
+      "topic": "Mycobacterial and Fungal Arthritis",
+      "specialty": "Rheumatology",
+      "decision": "downloaded_open_source",
+      "source": {
+        "title": "Bone and joint tuberculosis: clinical manifestation, diagnostic techniques and drug resistance analysis; and Fungal arthritis: A challenging clinical entity",
+        "year": 2025,
+        "pmid": "41355983",
+        "pmcid": "PMC12678313",
+        "secondary": {
+          "title": "Fungal arthritis: A challenging clinical entity",
+          "year": 2023,
+          "pmid": "36844378",
+          "pmcid": "PMC9945246",
+          "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9945246/"
+        },
+        "doi": null,
+        "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC12678313/",
+        "sourceBody": "Frontiers in Cellular and Infection Microbiology; World Journal of Orthopedics",
+        "tier": "review",
+        "ingestParts": [
+          {
+            "pmid": "41355983",
+            "title": "Bone and joint tuberculosis: clinical manifestation, diagnostic techniques and drug resistance analysis",
+            "year": 2025,
+            "tier": "review",
+            "file": "/tmp/oa/1233_tb.txt"
+          },
+          {
+            "pmid": "36844378",
+            "doi": null,
+            "title": "Fungal arthritis: A challenging clinical entity",
+            "year": 2023,
+            "tier": "review",
+            "file": "/tmp/oa/1233_fungal.txt"
+          }
+        ],
+        "whyItFits": "Two open reviews were required: one on bone and joint tuberculosis and one on fungal arthritis. The ICU invasive-fungal consensus named in the spreadsheet is the wrong setting."
+      },
+      "notes": [],
+      "files": {
+        "source": "/workspace/data/part4-topic-evidence/1233/source.txt",
+        "synopsis": "/workspace/data/part4-topic-evidence/1233/synopsis.json",
+        "mcqs": "/workspace/data/part4-topic-evidence/1233/mcqs.json"
+      }
+    }
+  ]
+}

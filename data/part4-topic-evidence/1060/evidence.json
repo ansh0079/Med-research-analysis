@@ -1,0 +1,17 @@
+{
+  "catalogueId": 1060,
+  "topic": "De Quervain's Tenosynovitis",
+  "specialty": "Rheumatology",
+  "decision": "unresolved",
+  "source": {
+    "title": null
+  },
+  "notes": [
+    "Unresolved."
+  ],
+  "files": {
+    "source": null,
+    "synopsis": "/workspace/data/part4-topic-evidence/1060/synopsis.json",
+    "mcqs": null
+  }
+}

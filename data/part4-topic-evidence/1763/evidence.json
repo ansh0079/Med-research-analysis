@@ -1,0 +1,25 @@
+{
+  "catalogueId": 1763,
+  "topic": "Drug-Induced Lupus Erythematosus",
+  "specialty": "Rheumatology",
+  "decision": "downloaded_open_source",
+  "source": {
+    "title": "Drug-induced lupus erythematosus: an update on drugs and mechanisms",
+    "year": 2018,
+    "pmid": "29870500",
+    "pmcid": "PMC7299070",
+    "doi": null,
+    "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7299070/",
+    "sourceBody": "Current Opinion in Rheumatology",
+    "tier": "review",
+    "whyItFits": "Open update on recent drug-induced lupus cases, naming anti-TNF drugs among systemic cases, chemotherapy among subacute cutaneous cases, procainamide and hydralazine NET formation, and improvement after the drug is stopped. Classic anti-histone teaching is not in the text and is not asked."
+  },
+  "notes": [
+    "PMID year confirmed from the PMC record header during download; if the publisher year differs, the PMCID is the file used."
+  ],
+  "files": {
+    "source": "/workspace/data/part4-topic-evidence/1763/source.txt",
+    "synopsis": "/workspace/data/part4-topic-evidence/1763/synopsis.json",
+    "mcqs": "/workspace/data/part4-topic-evidence/1763/mcqs.json"
+  }
+}

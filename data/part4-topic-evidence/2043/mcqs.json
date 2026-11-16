@@ -1,0 +1,134 @@
+{
+  "topic": {
+    "topicKey": "tracheobronchomalacia",
+    "topicDisplayName": "Tracheobronchomalacia",
+    "aliases": [
+      "2043",
+      "Pulmonology"
+    ],
+    "storedRowCount": 1,
+    "coverageNote": "Open review of tracheomalacia and tracheobronchomalacia covering dynamic collapse, bronchoscopy as the diagnostic reference, and the commonly used >50% narrowing threshold. No comparable adult full text was in PMC. The scope is paediatric.",
+    "mcqs": [
+      {
+        "id": "2043-tracheobronchomalacia-01",
+        "question": "According to this paediatric review, when is airway narrowing most accentuated in tracheomalacia or tracheobronchomalacia?",
+        "options": {
+          "A": "During inspiration only",
+          "B": "During expiration, especially with coughing or crying",
+          "C": "Only during sleep",
+          "D": "Only after intubation"
+        },
+        "correctAnswer": "B",
+        "explanation": "The review states that physiological narrowing is accentuated during expiration and that, in severe cases, collapse occurs predominantly when expiratory effort increases, such as during coughing or crying.",
+        "difficulty": "easy",
+        "sourceRefs": [
+          {
+            "sourceBody": "Frontiers in Pediatrics",
+            "sourceYear": 2019,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6922019/",
+            "excerpt": "the physiological narrowing of the airway is accentuated during expiration, and in severe cases, a clinically obvious airway collapse occurs predominantly when the expiratory effort is increased, such as during coughing or crying.",
+            "status": "source_verified",
+            "pmid": "31921725",
+            "pmcid": "PMC6922019"
+          }
+        ]
+      },
+      {
+        "id": "2043-tracheobronchomalacia-02",
+        "question": "What does the review call the gold standard for diagnosing TM/TBM?",
+        "options": {
+          "A": "Inspiratory chest radiograph",
+          "B": "Three-phase dynamic bronchoscopy",
+          "C": "Spirometry alone",
+          "D": "A single static CT slice at full inspiration"
+        },
+        "correctAnswer": "B",
+        "explanation": "The review says three-phase dynamic bronchoscopy is considered the gold standard, within a broader statement that direct visualisation uses flexible and rigid endoscopy.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Frontiers in Pediatrics",
+            "sourceYear": 2019,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6922019/",
+            "excerpt": "Three-phase dynamic bronchoscopy is considered the gold standard for the diagnosis of TM/TBM.",
+            "status": "source_verified",
+            "pmid": "31921725",
+            "pmcid": "PMC6922019"
+          }
+        ]
+      },
+      {
+        "id": "2043-tracheobronchomalacia-03",
+        "question": "What endoscopic threshold do most surgeons in this review use, despite the lack of a standard criterion?",
+        "options": {
+          "A": "More than 50% dynamic narrowing with forced exhalation or coughing",
+          "B": "Any visible pulsation of the trachea",
+          "C": "Complete occlusion at rest",
+          "D": "Less than 10% narrowing"
+        },
+        "correctAnswer": "A",
+        "explanation": "The review says there are no standard endoscopic criteria, but most surgeons consider more than 50% dynamic narrowing with forced exhalation or coughing diagnostic.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Frontiers in Pediatrics",
+            "sourceYear": 2019,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6922019/",
+            "excerpt": "most surgeons consider a more than 50% dynamic narrowing in the airway lumen with forced exhalation or coughing to diagnose TM/TBM",
+            "status": "source_verified",
+            "pmid": "31921725",
+            "pmcid": "PMC6922019"
+          }
+        ]
+      },
+      {
+        "id": "2043-tracheobronchomalacia-04",
+        "question": "Which clinical sounds does the review say may be present in most patients with TM/TBM?",
+        "options": {
+          "A": "A barking cough with expiratory rhonchi or inspiratory stridor",
+          "B": "A pleural rub only",
+          "C": "Fixed monophonic wheeze that never varies",
+          "D": "Stridor exclusively on expiration and never on inspiration"
+        },
+        "correctAnswer": "A",
+        "explanation": "The review states that a barking cough with expiratory rhonchi or inspiratory stridor may be present in most patients.",
+        "difficulty": "easy",
+        "sourceRefs": [
+          {
+            "sourceBody": "Frontiers in Pediatrics",
+            "sourceYear": 2019,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6922019/",
+            "excerpt": "A barking cough with expiratory rhonchi or inspiratory stridor may be present in most patients with TM/TBM.",
+            "status": "source_verified",
+            "pmid": "31921725",
+            "pmcid": "PMC6922019"
+          }
+        ]
+      },
+      {
+        "id": "2043-tracheobronchomalacia-05",
+        "question": "What does the review say about the existence of a single standardised guideline for TM/TBM?",
+        "options": {
+          "A": "A definitive standardised guideline covers evaluation, diagnosis, and treatment",
+          "B": "There are no definitive standardised guidelines, so patients may be misdiagnosed at first",
+          "C": "Guidelines exist only for adults and are mandatory in children",
+          "D": "Diagnosis is standardised by spirometry cut-offs alone"
+        },
+        "correctAnswer": "B",
+        "explanation": "The review opens by stating there are no definitive standardised guidelines for evaluation, diagnosis, and treatment, and that patients may initially be misdiagnosed.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Frontiers in Pediatrics",
+            "sourceYear": 2019,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6922019/",
+            "excerpt": "There are no definitive standardized guidelines for the evaluation, diagnosis, and treatment of TBM; therefore, patients may be initially misdiagnosed and incorrectly treated.",
+            "status": "source_verified",
+            "pmid": "31921725",
+            "pmcid": "PMC6922019"
+          }
+        ]
+      }
+    ]
+  }
+}

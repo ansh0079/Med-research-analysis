@@ -1,0 +1,129 @@
+{
+  "topic": {
+    "topicKey": "belimumab-and-anifrolumab-in-sle-mechanism-indications-trial-data",
+    "topicDisplayName": "Belimumab and anifrolumab in SLE: mechanism, indications, trial data",
+    "aliases": [
+      "1669",
+      "Rheumatology"
+    ],
+    "storedRowCount": 1,
+    "coverageNote": "Stored abstract of an indirect comparison of the two biologics, including indication differences, SRI-4, steroid taper, herpes zoster, and lupus nephritis uncertainty. Molecular mechanism is not described in the abstract, so it is not questioned.",
+    "mcqs": [
+      {
+        "id": "1669-belimumab-01",
+        "question": "How does this indirect comparison describe regulatory indications?",
+        "options": {
+          "A": "Belimumab is approved for SLE and lupus nephritis; anifrolumab is not currently approved for lupus nephritis",
+          "B": "Both are approved for lupus nephritis",
+          "C": "Neither is used in SLE",
+          "D": "Anifrolumab is approved only for lupus nephritis and not for SLE"
+        },
+        "correctAnswer": "A",
+        "explanation": "The abstract says belimumab is approved for both SLE and lupus nephritis, whereas anifrolumab is not currently approved for lupus nephritis.",
+        "difficulty": "easy",
+        "sourceRefs": [
+          {
+            "sourceBody": "Zeitschrift fur Rheumatologie",
+            "sourceYear": 2026,
+            "sourceUrl": "https://pubmed.ncbi.nlm.nih.gov/41342907/",
+            "excerpt": "Belimumab is approved for both SLE and lupus nephritis (LN), whereas anifrolumab is not currently approved for LN",
+            "status": "source_verified",
+            "pmid": "41342907"
+          }
+        ]
+      },
+      {
+        "id": "1669-belimumab-02",
+        "question": "What SRI-4 result does the indirect comparison report for belimumab relative to anifrolumab in SLE?",
+        "options": {
+          "A": "Odds ratio 1.99 (95% CI 1.25–3.16), favouring belimumab",
+          "B": "Odds ratio 0.31 favouring belimumab on SRI-4",
+          "C": "No SRI-4 data",
+          "D": "Anifrolumab was superior on SRI-4 with a CI excluding 1"
+        },
+        "correctAnswer": "A",
+        "explanation": "The abstract says belimumab demonstrated superior SRI-4 response rates, OR 1.99, 95% CI 1.25–3.16, relative to anifrolumab.",
+        "difficulty": "hard",
+        "sourceRefs": [
+          {
+            "sourceBody": "Zeitschrift fur Rheumatologie",
+            "sourceYear": 2026,
+            "sourceUrl": "https://pubmed.ncbi.nlm.nih.gov/41342907/",
+            "excerpt": "belimumab demonstrated superior SRI‑4 response rates (OR = 1.99, 95% CI: 1.25-3.16) relative to anifrolumab",
+            "status": "source_verified",
+            "pmid": "41342907"
+          }
+        ]
+      },
+      {
+        "id": "1669-belimumab-03",
+        "question": "On corticosteroid tapering, which agent did the indirect comparison favour?",
+        "options": {
+          "A": "Anifrolumab, OR 0.31 (95% CI 0.19–0.51)",
+          "B": "Belimumab, with the same OR used for SRI-4",
+          "C": "Neither agent affected steroid dose",
+          "D": "The comparison excluded steroid outcomes"
+        },
+        "correctAnswer": "A",
+        "explanation": "The abstract says anifrolumab yielded greater benefit in steroid tapering, OR 0.31, 95% CI 0.19–0.51.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Zeitschrift fur Rheumatologie",
+            "sourceYear": 2026,
+            "sourceUrl": "https://pubmed.ncbi.nlm.nih.gov/41342907/",
+            "excerpt": "anifrolumab yielded greater benefit in steroid tapering (OR = 0.31, 95% CI: 0.19-0.51)",
+            "status": "source_verified",
+            "pmid": "41342907"
+          }
+        ]
+      },
+      {
+        "id": "1669-belimumab-04",
+        "question": "What safety difference does the abstract report?",
+        "options": {
+          "A": "Serious infections and mortality were similar, but anifrolumab was linked to more herpes zoster (7.2% vs 3.2–4.6%)",
+          "B": "Belimumab had more herpes zoster in this text",
+          "C": "Anifrolumab had excess mortality as the main finding",
+          "D": "No safety data were pooled"
+        },
+        "correctAnswer": "A",
+        "explanation": "The abstract says safety was similar for serious infections and mortality, although anifrolumab was linked to higher rates of herpes zoster, 7.2% versus 3.2–4.6% for belimumab.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Zeitschrift fur Rheumatologie",
+            "sourceYear": 2026,
+            "sourceUrl": "https://pubmed.ncbi.nlm.nih.gov/41342907/",
+            "excerpt": "anifrolumab was linked to higher rates of herpes zoster (7.2% vs. 3.2-4.6% for belimumab)",
+            "status": "source_verified",
+            "pmid": "41342907"
+          }
+        ]
+      },
+      {
+        "id": "1669-belimumab-05",
+        "question": "What does the abstract conclude about complete renal response in lupus nephritis?",
+        "options": {
+          "A": "Both agents improved complete renal response versus placebo, but the indirect comparison was not definitive because the confidence interval was wide",
+          "B": "Belimumab was clearly superior with a narrow CI",
+          "C": "Anifrolumab is approved for lupus nephritis on this result",
+          "D": "Renal outcomes were not studied"
+        },
+        "correctAnswer": "A",
+        "explanation": "The abstract says both agents improved complete renal response versus placebo, but the indirect comparison was not definitive because of a wide confidence interval (OR 0.83, 95% CI 0.22–3.10).",
+        "difficulty": "hard",
+        "sourceRefs": [
+          {
+            "sourceBody": "Zeitschrift fur Rheumatologie",
+            "sourceYear": 2026,
+            "sourceUrl": "https://pubmed.ncbi.nlm.nih.gov/41342907/",
+            "excerpt": "indirect comparisons between the two agents were not definitive due to wide confidence intervals (CRR: OR = 0.83, 95% CI: 0.22-3.10)",
+            "status": "source_verified",
+            "pmid": "41342907"
+          }
+        ]
+      }
+    ]
+  }
+}

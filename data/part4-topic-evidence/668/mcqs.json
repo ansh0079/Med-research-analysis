@@ -1,0 +1,124 @@
+{
+  "topic": {
+    "topicKey": "acute-gouty-arthritis",
+    "topicDisplayName": "Acute Gouty Arthritis",
+    "aliases": [
+      "668",
+      "Rheumatology"
+    ],
+    "storedRowCount": 1,
+    "coverageNote": "The stored question-repair library contains the NG219 recommendation text, including diagnosis, flare treatment, and urate-lowering therapy. It is long enough to support questions without adding facts from elsewhere.",
+    "mcqs": [
+      {
+        "id": "668-acute-gout-01",
+        "question": "Which presentation should make the clinician suspect gout, in the stored NICE NG219 text?",
+        "options": {
+          "A": "Rapid onset, often overnight, of severe pain with redness and swelling in one or both first MTP joints, or tophi",
+          "B": "Months of mild stiffness only in the shoulders",
+          "C": "A painless knee effusion without redness",
+          "D": "Isolated low back pain"
+        },
+        "correctAnswer": "A",
+        "explanation": "NG219 says to suspect gout with rapid-onset severe pain, redness and swelling in one or both first MTP joints, or with tophi.",
+        "difficulty": "easy",
+        "sourceRefs": [
+          {
+            "sourceBody": "NICE",
+            "sourceYear": 2022,
+            "sourceUrl": "https://www.nice.org.uk/guidance/ng219",
+            "excerpt": "Suspect gout in people presenting with any of the following: rapid onset (often overnight) of severe pain together with redness and swelling, in 1 or both first metatarsophalangeal (MTP) joints tophi.",
+            "status": "source_verified"
+          }
+        ]
+      },
+      {
+        "id": "668-acute-gout-02",
+        "question": "What serum urate does NG219 use to confirm the clinical diagnosis, and what if the level is lower during a flare?",
+        "options": {
+          "A": "360 micromol/L (6 mg/dL) or more; if lower during a flare and gout is strongly suspected, repeat at least 2 weeks after the flare settles",
+          "B": "Any detectable urate confirms gout",
+          "C": "A level below 360 during a flare excludes gout permanently",
+          "D": "Urate should never be measured during a flare"
+        },
+        "correctAnswer": "A",
+        "explanation": "NG219 uses a serum urate of 360 micromol/litre (6 mg/dl) or more. If the level is below that during a flare and gout is strongly suspected, it should be repeated at least 2 weeks after the flare has settled.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "NICE",
+            "sourceYear": 2022,
+            "sourceUrl": "https://www.nice.org.uk/guidance/ng219",
+            "excerpt": "serum urate level of 360 micromol/litre [6 mg/dl] or more). If serum urate level is below 360 micromol/litre (6 mg/dl) during a flare and gout is strongly suspected, repeat the serum urate level measurement at least 2 weeks after the flare has settled.",
+            "status": "source_verified"
+          }
+        ]
+      },
+      {
+        "id": "668-acute-gout-03",
+        "question": "What first-line flare treatments does NG219 say to offer?",
+        "options": {
+          "A": "An NSAID, colchicine, or a short course of an oral corticosteroid, taking comorbidities and co-prescriptions into account",
+          "B": "Allopurinol alone with no anti-inflammatory",
+          "C": "An IL-1 inhibitor for every first flare",
+          "D": "Long-term opioid monotherapy"
+        },
+        "correctAnswer": "A",
+        "explanation": "NG219 says to offer an NSAID, colchicine, or a short course of an oral corticosteroid as first-line flare treatment, taking comorbidities, co-prescriptions, and preferences into account.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "NICE",
+            "sourceYear": 2022,
+            "sourceUrl": "https://www.nice.org.uk/guidance/ng219",
+            "excerpt": "Offer a non-steroidal anti-inflammatory drug (NSAID), colchicine or a short course of an oral corticosteroid for first-line treatment of a gout flare, taking into account the person's comorbidities, co-prescriptions and preferences.",
+            "status": "source_verified"
+          }
+        ]
+      },
+      {
+        "id": "668-acute-gout-04",
+        "question": "Who does NG219 say should be offered urate-lowering therapy using a treat-to-target strategy?",
+        "options": {
+          "A": "People with multiple or troublesome flares, CKD stages 3 to 5, diuretic therapy, tophi, or chronic gouty arthritis",
+          "B": "Only people who have never had a flare",
+          "C": "Everyone with a single mild flare and normal kidneys, with no discussion",
+          "D": "Only people with calcium pyrophosphate disease"
+        },
+        "correctAnswer": "A",
+        "explanation": "NG219 says to offer treat-to-target ULT to people with multiple or troublesome flares, CKD stages 3 to 5, diuretic therapy, tophi, or chronic gouty arthritis.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "NICE",
+            "sourceYear": 2022,
+            "sourceUrl": "https://www.nice.org.uk/guidance/ng219",
+            "excerpt": "Offer ULT, using a treat-to-target strategy , to people with gout who have: multiple or troublesome flares CKD stages 3 to 5 (glomerular filtration rate [GFR] categories G3 to G5) diuretic therapy tophi chronic gouty arthritis.",
+            "status": "source_verified"
+          }
+        ]
+      },
+      {
+        "id": "668-acute-gout-05",
+        "question": "When does NG219 say to start urate-lowering therapy relative to a flare?",
+        "options": {
+          "A": "At least 2 to 4 weeks after the flare has settled, unless flares are more frequent, in which case it can be started during a flare",
+          "B": "Only after 12 months without symptoms",
+          "C": "Never during or after a flare",
+          "D": "In the first hour of every flare and then stopped the same day"
+        },
+        "correctAnswer": "A",
+        "explanation": "NG219 says to start ULT at least 2 to 4 weeks after a flare has settled. If flares are more frequent, ULT can be started during a flare.",
+        "difficulty": "hard",
+        "sourceRefs": [
+          {
+            "sourceBody": "NICE",
+            "sourceYear": 2022,
+            "sourceUrl": "https://www.nice.org.uk/guidance/ng219",
+            "excerpt": "Start ULT at least 2 to 4 weeks after a gout flare has settled. If flares are more frequent, ULT can be started during a flare",
+            "status": "source_verified"
+          }
+        ]
+      }
+    ]
+  }
+}
