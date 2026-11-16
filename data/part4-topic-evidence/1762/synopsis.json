@@ -1,8 +1,24 @@
 {
-  "scope": "No accepted source.",
-  "keyRecommendations": [],
-  "clinicalBottomLine": "No open full-text review of diffuse idiopathic skeletal hyperostosis was found.",
+  "scope": "Diagnosis of diffuse idiopathic skeletal hyperostosis.",
+  "keyRecommendations": [
+    {
+      "text": "DISH is a systemic non-inflammatory disease of entheseal ossification. Current theory centres on calcification of the anterior longitudinal ligament.",
+      "strength": "not_graded",
+      "population": "Suspected DISH"
+    },
+    {
+      "text": "Resnick criteria used here require anterolateral ossification of at least four contiguous thoracic segments, preserved disc spaces, and no apophyseal or sacroiliac inflammatory change.",
+      "strength": "not_graded",
+      "population": "Thoracic spinal ossification"
+    },
+    {
+      "text": "Ankylosing-spondylitis bridges are slender and spare the anterior longitudinal ligament, and sacroiliac erosions are not a feature of DISH.",
+      "strength": "not_graded",
+      "population": "DISH versus ankylosing spondylitis"
+    }
+  ],
+  "clinicalBottomLine": "Call DISH when flowing anterolateral thoracic ossification spans at least four contiguous segments, the discs are preserved, and the sacroiliac and apophyseal joints are not inflamed. It is associated with obesity, hypertension, diabetes, and related metabolic disease, and it is not ankylosing spondylitis.",
   "notableCaveats": [
-    "Cited PMC hits were unrelated bone papers. No MCQs were written."
+    "The review says there have been no well-designed studies of treatment and that therapy is symptomatic and empirical. No drug regimen is taken from this paper."
   ]
 }

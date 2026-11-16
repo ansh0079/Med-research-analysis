@@ -7,9 +7,9 @@
   "counts": {
     "topics": 43,
     "in_app_document": 8,
-    "downloaded_open_source": 25,
-    "unresolved": 10,
-    "mcqs": 165
+    "downloaded_open_source": 35,
+    "unresolved": 0,
+    "mcqs": 215
   },
   "import": {
     "curatedMcqs": "data/part4-topic-evidence/batch-3.json",
@@ -167,24 +167,6 @@
         "source": "/workspace/data/part4-topic-evidence/1277/source.txt",
         "synopsis": "/workspace/data/part4-topic-evidence/1277/synopsis.json",
         "mcqs": "/workspace/data/part4-topic-evidence/1277/mcqs.json"
-      }
-    },
-    {
-      "catalogueId": 1181,
-      "topic": "CT head and CT pulmonary angiography: common acute findings",
-      "specialty": "Radiology",
-      "decision": "unresolved",
-      "source": {
-        "title": null,
-        "whyItFits": null
-      },
-      "notes": [
-        "Unresolved. A title match is not enough, and no single open text covered acute CT head findings and acute CTPA findings together."
-      ],
-      "files": {
-        "source": null,
-        "synopsis": "/workspace/data/part4-topic-evidence/1181/synopsis.json",
-        "mcqs": null
       }
     },
     {
@@ -452,23 +434,6 @@
       }
     },
     {
-      "catalogueId": 119,
-      "topic": "Biologic-Induced Psoriasis and Paradoxical Reactions",
-      "specialty": "Rheumatology",
-      "decision": "unresolved",
-      "source": {
-        "title": null
-      },
-      "notes": [
-        "Rejected keyword-overlapping paradoxical-reaction papers that were not about psoriasis induced by biologics."
-      ],
-      "files": {
-        "source": null,
-        "synopsis": "/workspace/data/part4-topic-evidence/119/synopsis.json",
-        "mcqs": null
-      }
-    },
-    {
       "catalogueId": 683,
       "topic": "Biologics and malignancy risk: lymphoma, solid tumours, non-melanoma skin cancer",
       "specialty": "Rheumatology",
@@ -561,23 +526,6 @@
       }
     },
     {
-      "catalogueId": 1060,
-      "topic": "De Quervain's Tenosynovitis",
-      "specialty": "Rheumatology",
-      "decision": "unresolved",
-      "source": {
-        "title": null
-      },
-      "notes": [
-        "Unresolved."
-      ],
-      "files": {
-        "source": null,
-        "synopsis": "/workspace/data/part4-topic-evidence/1060/synopsis.json",
-        "mcqs": null
-      }
-    },
-    {
       "catalogueId": 862,
       "topic": "Denosumab, romosozumab, teriparatide: anabolic and resorption-inhibiting agents in osteoporosis",
       "specialty": "Rheumatology",
@@ -623,23 +571,6 @@
       }
     },
     {
-      "catalogueId": 1762,
-      "topic": "Diffuse Idiopathic Skeletal Hyperostosis",
-      "specialty": "Rheumatology",
-      "decision": "unresolved",
-      "source": {
-        "title": null
-      },
-      "notes": [
-        "Unresolved."
-      ],
-      "files": {
-        "source": null,
-        "synopsis": "/workspace/data/part4-topic-evidence/1762/synopsis.json",
-        "mcqs": null
-      }
-    },
-    {
       "catalogueId": 1763,
       "topic": "Drug-Induced Lupus Erythematosus",
       "specialty": "Rheumatology",
@@ -662,23 +593,6 @@
         "source": "/workspace/data/part4-topic-evidence/1763/source.txt",
         "synopsis": "/workspace/data/part4-topic-evidence/1763/synopsis.json",
         "mcqs": "/workspace/data/part4-topic-evidence/1763/mcqs.json"
-      }
-    },
-    {
-      "catalogueId": 339,
-      "topic": "Erythema Nodosum differential diagnosis",
-      "specialty": "Rheumatology",
-      "decision": "unresolved",
-      "source": {
-        "title": null
-      },
-      "notes": [
-        "Unresolved."
-      ],
-      "files": {
-        "source": null,
-        "synopsis": "/workspace/data/part4-topic-evidence/339/synopsis.json",
-        "mcqs": null
       }
     },
     {
@@ -725,23 +639,6 @@
         "source": "/workspace/data/part4-topic-evidence/756/source.txt",
         "synopsis": "/workspace/data/part4-topic-evidence/756/synopsis.json",
         "mcqs": "/workspace/data/part4-topic-evidence/756/mcqs.json"
-      }
-    },
-    {
-      "catalogueId": 1784,
-      "topic": "Hand and erosive OA: Heberden nodes, Bouchard nodes, trapeziometacarpal OA",
-      "specialty": "Rheumatology",
-      "decision": "unresolved",
-      "source": {
-        "title": null
-      },
-      "notes": [
-        "Unresolved."
-      ],
-      "files": {
-        "source": null,
-        "synopsis": "/workspace/data/part4-topic-evidence/1784/synopsis.json",
-        "mcqs": null
       }
     },
     {
@@ -839,23 +736,6 @@
       }
     },
     {
-      "catalogueId": 199,
-      "topic": "Leflunomide in RA: mechanism, dosing, washout procedure, hepatotoxicity monitoring",
-      "specialty": "Rheumatology",
-      "decision": "unresolved",
-      "source": {
-        "title": null
-      },
-      "notes": [
-        "Unresolved."
-      ],
-      "files": {
-        "source": null,
-        "synopsis": "/workspace/data/part4-topic-evidence/199/synopsis.json",
-        "mcqs": null
-      }
-    },
-    {
       "catalogueId": 2154,
       "topic": "Livedo Reticularis workup",
       "specialty": "Rheumatology",
@@ -881,40 +761,6 @@
       }
     },
     {
-      "catalogueId": 1925,
-      "topic": "MRI in inflammatory arthritis: bone marrow oedema, erosions, tenosynovitis scoring",
-      "specialty": "Rheumatology",
-      "decision": "unresolved",
-      "source": {
-        "title": null
-      },
-      "notes": [
-        "Unresolved."
-      ],
-      "files": {
-        "source": null,
-        "synopsis": "/workspace/data/part4-topic-evidence/1925/synopsis.json",
-        "mcqs": null
-      }
-    },
-    {
-      "catalogueId": 826,
-      "topic": "Microscopic Polyangiitis",
-      "specialty": "Rheumatology",
-      "decision": "unresolved",
-      "source": {
-        "title": null
-      },
-      "notes": [
-        "Unresolved."
-      ],
-      "files": {
-        "source": null,
-        "synopsis": "/workspace/data/part4-topic-evidence/826/synopsis.json",
-        "mcqs": null
-      }
-    },
-    {
       "catalogueId": 201,
       "topic": "Monoarthritis differential diagnosis: crystal, septic, reactive, seronegative, trauma",
       "specialty": "Rheumatology",
@@ -935,23 +781,6 @@
         "source": "/workspace/data/part4-topic-evidence/201/source.txt",
         "synopsis": "/workspace/data/part4-topic-evidence/201/synopsis.json",
         "mcqs": "/workspace/data/part4-topic-evidence/201/mcqs.json"
-      }
-    },
-    {
-      "catalogueId": 828,
-      "topic": "Musculoskeletal ultrasound in rheumatology: synovitis, power Doppler, guided injection",
-      "specialty": "Rheumatology",
-      "decision": "unresolved",
-      "source": {
-        "title": null
-      },
-      "notes": [
-        "Unresolved."
-      ],
-      "files": {
-        "source": null,
-        "synopsis": "/workspace/data/part4-topic-evidence/828/synopsis.json",
-        "mcqs": null
       }
     },
     {
@@ -999,6 +828,291 @@
         "source": "/workspace/data/part4-topic-evidence/1233/source.txt",
         "synopsis": "/workspace/data/part4-topic-evidence/1233/synopsis.json",
         "mcqs": "/workspace/data/part4-topic-evidence/1233/mcqs.json"
+      }
+    },
+    {
+      "catalogueId": 1181,
+      "topic": "CT head and CT pulmonary angiography: common acute findings",
+      "specialty": "Radiology",
+      "decision": "downloaded_open_source",
+      "source": {
+        "title": "Early signs of middle cerebral artery infarction on multidetector computed tomography: Review of 20 cases; and Comprehensive review of pulmonary embolism imaging",
+        "year": 2019,
+        "pmid": "31001598",
+        "pmcid": "PMC6458774",
+        "doi": "10.4103/bc.bc_28_18",
+        "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6458774/",
+        "sourceBody": "Brain Circulation; Japanese Journal of Radiology",
+        "tier": "review",
+        "secondary": {
+          "title": "Comprehensive review of pulmonary embolism imaging: past, present and future innovations in computed tomography (CT) and other diagnostic techniques",
+          "year": 2025,
+          "pmid": "40580273",
+          "pmcid": "PMC12479586",
+          "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC12479586/",
+          "tier": "review"
+        },
+        "ingestParts": [
+          {
+            "pmid": "31001598",
+            "doi": "10.4103/bc.bc_28_18",
+            "title": "Early signs of middle cerebral artery infarction on multidetector computed tomography: Review of 20 cases",
+            "year": 2019,
+            "tier": "review",
+            "file": "/tmp/oa2/1181_mca.txt"
+          },
+          {
+            "pmid": "40580273",
+            "doi": "10.1007/s11604-025-01811-8",
+            "title": "Comprehensive review of pulmonary embolism imaging",
+            "year": 2025,
+            "tier": "review",
+            "file": "/tmp/oa2/1181_pe.txt"
+          }
+        ],
+        "whyItFits": "No single open paper taught both examinations. The Brain Circulation review lists the early non-contrast CT signs of MCA infarction. The Japanese Journal of Radiology review states how acute PE looks on CT pulmonary angiography and which CTPA findings indicate right-ventricular dysfunction. Haemorrhage patterns are not in the CT-head paper, so they are not questioned."
+      },
+      "notes": [],
+      "files": {
+        "source": "/workspace/data/part4-topic-evidence/1181/source.txt",
+        "synopsis": "/workspace/data/part4-topic-evidence/1181/synopsis.json",
+        "mcqs": "/workspace/data/part4-topic-evidence/1181/mcqs.json"
+      }
+    },
+    {
+      "catalogueId": 119,
+      "topic": "Biologic-Induced Psoriasis and Paradoxical Reactions",
+      "specialty": "Rheumatology",
+      "decision": "downloaded_open_source",
+      "source": {
+        "title": "Paradoxical psoriasis: The flip side of idiopathic psoriasis or an autocephalous reversible drug reaction?",
+        "year": 2023,
+        "pmid": "37731549",
+        "pmcid": "PMC10507642",
+        "doi": "10.1016/j.jtauto.2023.100211",
+        "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC10507642/",
+        "sourceBody": "Journal of Translational Autoimmunity",
+        "tier": "review",
+        "whyItFits": "Open review of psoriasis that appears during biologic therapy. It defines the reaction, names TNF inhibitors and later cytokine inhibitors, describes the usual sites, and ties stopping or switching the drug to the underlying disease and the severity of the rash."
+      },
+      "notes": [],
+      "files": {
+        "source": "/workspace/data/part4-topic-evidence/119/source.txt",
+        "synopsis": "/workspace/data/part4-topic-evidence/119/synopsis.json",
+        "mcqs": "/workspace/data/part4-topic-evidence/119/mcqs.json"
+      }
+    },
+    {
+      "catalogueId": 1060,
+      "topic": "De Quervain's Tenosynovitis",
+      "specialty": "Rheumatology",
+      "decision": "downloaded_open_source",
+      "source": {
+        "title": "Management of de Quervain Tenosynovitis: A Systematic Review and Network Meta-Analysis",
+        "year": 2023,
+        "pmid": "37889490",
+        "pmcid": "PMC10611995",
+        "doi": "10.1001/jamanetworkopen.2023.37001",
+        "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC10611995/",
+        "sourceBody": "JAMA Network Open",
+        "tier": "meta-analysis",
+        "whyItFits": "Open systematic review whose introduction defines de Quervain tenosynovitis of the first extensor compartment and whose synthesis compares corticosteroid injection, thumb-spica immobilisation, and ultrasound guidance. Thyroiditis papers that share the name were not used."
+      },
+      "notes": [],
+      "files": {
+        "source": "/workspace/data/part4-topic-evidence/1060/source.txt",
+        "synopsis": "/workspace/data/part4-topic-evidence/1060/synopsis.json",
+        "mcqs": "/workspace/data/part4-topic-evidence/1060/mcqs.json"
+      }
+    },
+    {
+      "catalogueId": 1762,
+      "topic": "Diffuse Idiopathic Skeletal Hyperostosis",
+      "specialty": "Rheumatology",
+      "decision": "downloaded_open_source",
+      "source": {
+        "title": "Diffuse idiopathic skeletal hyperostosis: A review",
+        "year": 2014,
+        "pmid": "24843807",
+        "pmcid": "PMC4023007",
+        "doi": "10.4103/2152-7806.130675",
+        "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4023007/",
+        "sourceBody": "Surgical Neurology International",
+        "tier": "review",
+        "whyItFits": "Open clinical review of DISH. It gives the non-inflammatory entheseal definition, the anterior-longitudinal-ligament mechanism, the Resnick criteria for the thoracic spine, the contrast with ankylosing spondylitis, and the associated metabolic conditions."
+      },
+      "notes": [],
+      "files": {
+        "source": "/workspace/data/part4-topic-evidence/1762/source.txt",
+        "synopsis": "/workspace/data/part4-topic-evidence/1762/synopsis.json",
+        "mcqs": "/workspace/data/part4-topic-evidence/1762/mcqs.json"
+      }
+    },
+    {
+      "catalogueId": 339,
+      "topic": "Erythema Nodosum differential diagnosis",
+      "specialty": "Rheumatology",
+      "decision": "downloaded_open_source",
+      "source": {
+        "title": "Erythema Nodosum: A Practical Approach and Diagnostic Algorithm",
+        "year": 2021,
+        "pmid": "33683567",
+        "pmcid": "PMC7938036",
+        "doi": "10.1007/s40257-021-00592-w",
+        "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7938036/",
+        "sourceBody": "American Journal of Clinical Dermatology",
+        "tier": "review",
+        "whyItFits": "Open practical review of erythema nodosum. It gives the septal-panniculitis histology, the pretibial course, the common identifiable causes, Löfgren syndrome, and the main clinical differentials."
+      },
+      "notes": [],
+      "files": {
+        "source": "/workspace/data/part4-topic-evidence/339/source.txt",
+        "synopsis": "/workspace/data/part4-topic-evidence/339/synopsis.json",
+        "mcqs": "/workspace/data/part4-topic-evidence/339/mcqs.json"
+      }
+    },
+    {
+      "catalogueId": 1784,
+      "topic": "Hand and erosive OA: Heberden nodes, Bouchard nodes, trapeziometacarpal OA",
+      "specialty": "Rheumatology",
+      "decision": "downloaded_open_source",
+      "source": {
+        "title": "The clinical, functional, and radiological features of hand osteoarthritis: TLAR-osteoarthritis multi-center cohort study",
+        "year": 2022,
+        "pmid": "36589604",
+        "pmcid": "PMC9791555",
+        "doi": "10.46497/ArchRheumatol.2022.9234",
+        "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9791555/",
+        "sourceBody": "Archives of Rheumatology",
+        "tier": "literature",
+        "whyItFits": "Open multicentre description of hand osteoarthritis. It names Heberden and Bouchard nodes and bony enlargement as the clinical hallmarks, lists the target joints including the thumb base, and defines thumb-base deformity as subluxation and adduction. The 2018 EULAR hand-OA recommendations were not available as an open PDF from this environment."
+      },
+      "notes": [],
+      "files": {
+        "source": "/workspace/data/part4-topic-evidence/1784/source.txt",
+        "synopsis": "/workspace/data/part4-topic-evidence/1784/synopsis.json",
+        "mcqs": "/workspace/data/part4-topic-evidence/1784/mcqs.json"
+      }
+    },
+    {
+      "catalogueId": 199,
+      "topic": "Leflunomide in RA: mechanism, dosing, washout procedure, hepatotoxicity monitoring",
+      "specialty": "Rheumatology",
+      "decision": "downloaded_open_source",
+      "source": {
+        "title": "Leflunomide tablets, prescribing information",
+        "year": 2026,
+        "pmid": null,
+        "pmcid": null,
+        "doi": null,
+        "url": "https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=c66cacd1-93f7-483a-a2fc-aad53d5342b0",
+        "sourceBody": "DailyMed FDA label",
+        "tier": "literature",
+        "setid": "c66cacd1-93f7-483a-a2fc-aad53d5342b0",
+        "whyItFits": "The open FDA label states the dihydroorotate-dehydrogenase mechanism, the 20 mg daily dose and optional 100 mg loading dose, the cholestyramine or charcoal washout, and the ALT monitoring schedule. The BSR DMARD monitoring PDF was not retrievable from this environment."
+      },
+      "notes": [
+        "FDA label, DailyMed setid c66cacd1-93f7-483a-a2fc-aad53d5342b0, published 5 November 2026. No PMID, so it is stored beside the topic and is not in the PMID link file."
+      ],
+      "files": {
+        "source": "/workspace/data/part4-topic-evidence/199/source.txt",
+        "synopsis": "/workspace/data/part4-topic-evidence/199/synopsis.json",
+        "mcqs": "/workspace/data/part4-topic-evidence/199/mcqs.json"
+      }
+    },
+    {
+      "catalogueId": 1925,
+      "topic": "MRI in inflammatory arthritis: bone marrow oedema, erosions, tenosynovitis scoring",
+      "specialty": "Rheumatology",
+      "decision": "downloaded_open_source",
+      "source": {
+        "title": "Magnetic Resonance Imaging (MRI)-Based Semi-Quantitative Methods for Rheumatoid Arthritis: From Scoring to Measurement",
+        "year": 2024,
+        "pmid": "39064179",
+        "pmcid": "PMC11277801",
+        "doi": "10.3390/jcm13144137",
+        "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC11277801/",
+        "sourceBody": "Journal of Clinical Medicine",
+        "tier": "review",
+        "whyItFits": "Open review that states what the original RAMRIS scores, what the update added, and the 0–3 and 0–10 scales for synovitis, bone-marrow oedema, erosions, and tenosynovitis. The short OMERACT atlas record was not used."
+      },
+      "notes": [],
+      "files": {
+        "source": "/workspace/data/part4-topic-evidence/1925/source.txt",
+        "synopsis": "/workspace/data/part4-topic-evidence/1925/synopsis.json",
+        "mcqs": "/workspace/data/part4-topic-evidence/1925/mcqs.json"
+      }
+    },
+    {
+      "catalogueId": 826,
+      "topic": "Microscopic Polyangiitis",
+      "specialty": "Rheumatology",
+      "decision": "downloaded_open_source",
+      "source": {
+        "title": "Practical Management of ANCA-Associated Vasculitis: A Clinician's Perspective",
+        "year": 2025,
+        "pmid": "39991192",
+        "pmcid": "PMC11845170",
+        "doi": "10.1159/000543159",
+        "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC11845170/",
+        "sourceBody": "Glomerular Diseases",
+        "tier": "review",
+        "whyItFits": "Open clinician review of severe ANCA-associated vasculitis that separates microscopic polyangiitis from granulomatosis with polyangiitis and eosinophilic granulomatosis with polyangiitis, and states the pauci-immune small-vessel pathology, the MPO and PR3 antibodies, the kidney and lung patterns, and the worse kidney prognosis of MPO-ANCA MPA. A Watts epidemiology algorithm was not used as a clinical text."
+      },
+      "notes": [],
+      "files": {
+        "source": "/workspace/data/part4-topic-evidence/826/source.txt",
+        "synopsis": "/workspace/data/part4-topic-evidence/826/synopsis.json",
+        "mcqs": "/workspace/data/part4-topic-evidence/826/mcqs.json"
+      }
+    },
+    {
+      "catalogueId": 828,
+      "topic": "Musculoskeletal ultrasound in rheumatology: synovitis, power Doppler, guided injection",
+      "specialty": "Rheumatology",
+      "decision": "downloaded_open_source",
+      "source": {
+        "title": "Clinical utility of eco-color-power Doppler ultrasonography and contrast enhanced magnetic resonance imaging for interpretation and quantification of joint synovitis: a review; and Tips and tricks in ultrasound-guided musculoskeletal interventional procedures",
+        "year": 2018,
+        "pmid": "29350637",
+        "pmcid": "PMC6179068",
+        "doi": "10.23750/abm.v89i1-S.7010",
+        "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6179068/",
+        "sourceBody": "Acta Biomedica; Journal of Ultrasonography",
+        "tier": "review",
+        "secondary": {
+          "title": "Tips and tricks in ultrasound-guided musculoskeletal interventional procedures",
+          "year": 2023,
+          "pmid": "38020507",
+          "pmcid": "PMC10668939",
+          "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC10668939/",
+          "tier": "review"
+        },
+        "ingestParts": [
+          {
+            "pmid": "29350637",
+            "doi": "10.23750/abm.v89i1-S.7010",
+            "title": "Clinical utility of eco-color-power Doppler ultrasonography for joint synovitis",
+            "year": 2018,
+            "tier": "review",
+            "file": "/tmp/oa2/828_eco.txt"
+          },
+          {
+            "pmid": "38020507",
+            "doi": "10.15557/jou.2023.0039",
+            "title": "Tips and tricks in ultrasound-guided musculoskeletal interventional procedures",
+            "year": 2023,
+            "tier": "review",
+            "file": "/tmp/oa2/828_tips.txt"
+          }
+        ],
+        "whyItFits": "The 2017 EULAR ultrasound-procedure paper was not available as full text. These two open papers cover the missing pieces: the OMERACT/EULAR ultrasound definitions of effusion, synovial hypertrophy, and Doppler signal, and the practical conduct of an ultrasound-guided musculoskeletal injection."
+      },
+      "notes": [],
+      "files": {
+        "source": "/workspace/data/part4-topic-evidence/828/source.txt",
+        "synopsis": "/workspace/data/part4-topic-evidence/828/synopsis.json",
+        "mcqs": "/workspace/data/part4-topic-evidence/828/mcqs.json"
       }
     }
   ]

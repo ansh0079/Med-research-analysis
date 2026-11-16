@@ -1,8 +1,24 @@
 {
-  "scope": "No accepted source.",
-  "keyRecommendations": [],
-  "clinicalBottomLine": "No open full text covering leflunomide mechanism, dosing, cholestyramine washout, and liver monitoring was retrieved.",
+  "scope": "Leflunomide mechanism, adult dosing, accelerated elimination, and liver monitoring from the FDA label.",
+  "keyRecommendations": [
+    {
+      "text": "Leflunomide inhibits dihydroorotate dehydrogenase and has antiproliferative activity. The recommended dose is 20 mg once daily.",
+      "strength": "not_graded",
+      "population": "Adults treated with leflunomide"
+    },
+    {
+      "text": "A 100 mg daily loading dose for 3 days is for patients at low risk of hepatotoxicity and myelosuppression. High-risk patients, including those on methotrexate, start at 20 mg without a loading dose.",
+      "strength": "not_graded",
+      "population": "Starting leflunomide"
+    },
+    {
+      "text": "Cholestyramine 8 g three times daily for 11 days, or activated charcoal 50 g every 12 hours for 11 days, accelerates elimination of teriflunomide. ALT is checked at least monthly for six months, then every 6 to 8 weeks.",
+      "strength": "not_graded",
+      "population": "Leflunomide washout and liver monitoring"
+    }
+  ],
+  "clinicalBottomLine": "Leflunomide blocks pyrimidine synthesis through dihydroorotate dehydrogenase and is dosed at 20 mg daily. Wash out teriflunomide with cholestyramine or charcoal when accelerated elimination is needed, and do not start the drug when ALT is already above twice the upper limit of normal.",
   "notableCaveats": [
-    "PMC hits were pharmacogenetic papers or off-topic. The BSR non-biologic DMARD monitoring guideline was not in PMC as full text. No MCQs were written."
+    "Without accelerated elimination, plasma teriflunomide may take up to 2 years to become undetectable. The label says to interrupt treatment if ALT rises above three times the upper limit of normal and the rise is likely due to leflunomide."
   ]
 }

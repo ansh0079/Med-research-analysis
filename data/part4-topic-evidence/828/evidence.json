@@ -2,16 +2,48 @@
   "catalogueId": 828,
   "topic": "Musculoskeletal ultrasound in rheumatology: synovitis, power Doppler, guided injection",
   "specialty": "Rheumatology",
-  "decision": "unresolved",
+  "decision": "downloaded_open_source",
   "source": {
-    "title": null
+    "title": "Clinical utility of eco-color-power Doppler ultrasonography and contrast enhanced magnetic resonance imaging for interpretation and quantification of joint synovitis: a review; and Tips and tricks in ultrasound-guided musculoskeletal interventional procedures",
+    "year": 2018,
+    "pmid": "29350637",
+    "pmcid": "PMC6179068",
+    "doi": "10.23750/abm.v89i1-S.7010",
+    "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6179068/",
+    "sourceBody": "Acta Biomedica; Journal of Ultrasonography",
+    "tier": "review",
+    "secondary": {
+      "title": "Tips and tricks in ultrasound-guided musculoskeletal interventional procedures",
+      "year": 2023,
+      "pmid": "38020507",
+      "pmcid": "PMC10668939",
+      "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC10668939/",
+      "tier": "review"
+    },
+    "ingestParts": [
+      {
+        "pmid": "29350637",
+        "doi": "10.23750/abm.v89i1-S.7010",
+        "title": "Clinical utility of eco-color-power Doppler ultrasonography for joint synovitis",
+        "year": 2018,
+        "tier": "review",
+        "file": "/tmp/oa2/828_eco.txt"
+      },
+      {
+        "pmid": "38020507",
+        "doi": "10.15557/jou.2023.0039",
+        "title": "Tips and tricks in ultrasound-guided musculoskeletal interventional procedures",
+        "year": 2023,
+        "tier": "review",
+        "file": "/tmp/oa2/828_tips.txt"
+      }
+    ],
+    "whyItFits": "The 2017 EULAR ultrasound-procedure paper was not available as full text. These two open papers cover the missing pieces: the OMERACT/EULAR ultrasound definitions of effusion, synovial hypertrophy, and Doppler signal, and the practical conduct of an ultrasound-guided musculoskeletal injection."
   },
-  "notes": [
-    "Unresolved."
-  ],
+  "notes": [],
   "files": {
-    "source": null,
+    "source": "/workspace/data/part4-topic-evidence/828/source.txt",
     "synopsis": "/workspace/data/part4-topic-evidence/828/synopsis.json",
-    "mcqs": null
+    "mcqs": "/workspace/data/part4-topic-evidence/828/mcqs.json"
   }
 }

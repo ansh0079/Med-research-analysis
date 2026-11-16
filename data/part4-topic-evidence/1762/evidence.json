@@ -2,16 +2,22 @@
   "catalogueId": 1762,
   "topic": "Diffuse Idiopathic Skeletal Hyperostosis",
   "specialty": "Rheumatology",
-  "decision": "unresolved",
+  "decision": "downloaded_open_source",
   "source": {
-    "title": null
+    "title": "Diffuse idiopathic skeletal hyperostosis: A review",
+    "year": 2014,
+    "pmid": "24843807",
+    "pmcid": "PMC4023007",
+    "doi": "10.4103/2152-7806.130675",
+    "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4023007/",
+    "sourceBody": "Surgical Neurology International",
+    "tier": "review",
+    "whyItFits": "Open clinical review of DISH. It gives the non-inflammatory entheseal definition, the anterior-longitudinal-ligament mechanism, the Resnick criteria for the thoracic spine, the contrast with ankylosing spondylitis, and the associated metabolic conditions."
   },
-  "notes": [
-    "Unresolved."
-  ],
+  "notes": [],
   "files": {
-    "source": null,
+    "source": "/workspace/data/part4-topic-evidence/1762/source.txt",
     "synopsis": "/workspace/data/part4-topic-evidence/1762/synopsis.json",
-    "mcqs": null
+    "mcqs": "/workspace/data/part4-topic-evidence/1762/mcqs.json"
   }
 }

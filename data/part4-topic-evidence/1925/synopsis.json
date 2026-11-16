@@ -1,8 +1,24 @@
 {
-  "scope": "No accepted source.",
-  "keyRecommendations": [],
-  "clinicalBottomLine": "The EULAR-OMERACT RA MRI atlas introduction in PMC was only a few hundred characters, not enough to ground scoring questions.",
+  "scope": "RAMRIS scoring of rheumatoid-arthritis MRI.",
+  "keyRecommendations": [
+    {
+      "text": "RAMRIS, introduced in 2002, scores synovitis, bone erosion, and bone-marrow oedema or osteitis.",
+      "strength": "not_graded",
+      "population": "Rheumatoid arthritis MRI"
+    },
+    {
+      "text": "The updated score also evaluates joint-space narrowing and tenosynovitis.",
+      "strength": "not_graded",
+      "population": "Rheumatoid arthritis MRI"
+    },
+    {
+      "text": "Synovitis and bone-marrow oedema are scored 0 to 3 and erosions 0 to 10. Tenosynovitis is scored 0 to 3 from the maximum width of effusion or enhancement.",
+      "strength": "not_graded",
+      "population": "RAMRIS readers"
+    }
+  ],
+  "clinicalBottomLine": "Use RAMRIS for synovitis, erosions, and bone-marrow oedema, and the updated score when tenosynovitis and joint-space narrowing are also being graded. The scales are 0–3, 0–10, and a width-based 0–3 for tenosynovitis.",
   "notableCaveats": [
-    "The 2013 EULAR imaging recommendations are not in PMC. No MCQs were written."
+    "The review says RAMRIS is time-consuming and needs experience for reproducibility."
   ]
 }

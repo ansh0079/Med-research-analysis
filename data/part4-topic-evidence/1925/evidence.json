@@ -2,16 +2,22 @@
   "catalogueId": 1925,
   "topic": "MRI in inflammatory arthritis: bone marrow oedema, erosions, tenosynovitis scoring",
   "specialty": "Rheumatology",
-  "decision": "unresolved",
+  "decision": "downloaded_open_source",
   "source": {
-    "title": null
+    "title": "Magnetic Resonance Imaging (MRI)-Based Semi-Quantitative Methods for Rheumatoid Arthritis: From Scoring to Measurement",
+    "year": 2024,
+    "pmid": "39064179",
+    "pmcid": "PMC11277801",
+    "doi": "10.3390/jcm13144137",
+    "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC11277801/",
+    "sourceBody": "Journal of Clinical Medicine",
+    "tier": "review",
+    "whyItFits": "Open review that states what the original RAMRIS scores, what the update added, and the 0–3 and 0–10 scales for synovitis, bone-marrow oedema, erosions, and tenosynovitis. The short OMERACT atlas record was not used."
   },
-  "notes": [
-    "Unresolved."
-  ],
+  "notes": [],
   "files": {
-    "source": null,
+    "source": "/workspace/data/part4-topic-evidence/1925/source.txt",
     "synopsis": "/workspace/data/part4-topic-evidence/1925/synopsis.json",
-    "mcqs": null
+    "mcqs": "/workspace/data/part4-topic-evidence/1925/mcqs.json"
   }
 }

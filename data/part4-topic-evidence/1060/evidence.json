@@ -2,16 +2,22 @@
   "catalogueId": 1060,
   "topic": "De Quervain's Tenosynovitis",
   "specialty": "Rheumatology",
-  "decision": "unresolved",
+  "decision": "downloaded_open_source",
   "source": {
-    "title": null
+    "title": "Management of de Quervain Tenosynovitis: A Systematic Review and Network Meta-Analysis",
+    "year": 2023,
+    "pmid": "37889490",
+    "pmcid": "PMC10611995",
+    "doi": "10.1001/jamanetworkopen.2023.37001",
+    "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC10611995/",
+    "sourceBody": "JAMA Network Open",
+    "tier": "meta-analysis",
+    "whyItFits": "Open systematic review whose introduction defines de Quervain tenosynovitis of the first extensor compartment and whose synthesis compares corticosteroid injection, thumb-spica immobilisation, and ultrasound guidance. Thyroiditis papers that share the name were not used."
   },
-  "notes": [
-    "Unresolved."
-  ],
+  "notes": [],
   "files": {
-    "source": null,
+    "source": "/workspace/data/part4-topic-evidence/1060/source.txt",
     "synopsis": "/workspace/data/part4-topic-evidence/1060/synopsis.json",
-    "mcqs": null
+    "mcqs": "/workspace/data/part4-topic-evidence/1060/mcqs.json"
   }
 }

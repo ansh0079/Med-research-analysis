@@ -1,9 +1,24 @@
 {
-  "scope": "No accepted source.",
-  "keyRecommendations": [],
-  "clinicalBottomLine": "No stored or open document was accepted for biologic-induced psoriasis.",
+  "scope": "Paradoxical psoriasis induced by biologics.",
+  "keyRecommendations": [
+    {
+      "text": "New psoriasiform lesions during anti-TNF treatment of idiopathic psoriasis were named paradoxical psoriasis.",
+      "strength": "not_graded",
+      "population": "Patients on TNF inhibitors"
+    },
+    {
+      "text": "IL-12/23, IL-17, IL-23, IL-6, and IL-4/13 inhibitors have also been reported to induce it.",
+      "strength": "not_graded",
+      "population": "Patients on those biologics"
+    },
+    {
+      "text": "The highlights say discontinuation of the biologic is not necessary, and that withdrawal of the culprit drug is recommended when the underlying disease is uncontrolled.",
+      "strength": "not_graded",
+      "population": "Paradoxical psoriasis"
+    }
+  ],
+  "clinicalBottomLine": "New psoriasis during biologic therapy, especially a TNF inhibitor, is paradoxical psoriasis. Palms, soles, and scalp are usual sites. The review's highlights say the biologic does not have to be stopped, and that the culprit drug should be withdrawn when the underlying disease is uncontrolled.",
   "notableCaveats": [
-    "The open case series 'The Enigma of Paradoxical Reactions to Biological Therapies' describes pityriasis rosea-like, eczematous, lichenoid, and fixed drug eruptions, not psoriasis as the paradoxical disease.",
-    "No MCQs were written."
+    "An earlier sentence also says the decision to discontinue or switch depends on the underlying disease and lesion severity. The highlights are the management statement used in the question. The review describes the reaction as interferon-mediated."
   ]
 }

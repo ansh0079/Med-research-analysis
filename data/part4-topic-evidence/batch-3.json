@@ -4305,6 +4305,1316 @@
           ]
         }
       ]
+    },
+    {
+      "topicKey": "ct-head-and-ct-pulmonary-angiography-common-acute-findings",
+      "topicDisplayName": "CT head and CT pulmonary angiography: common acute findings",
+      "aliases": [
+        "1181",
+        "Radiology"
+      ],
+      "storedRowCount": 1,
+      "coverageNote": "No single open paper taught both examinations. The Brain Circulation review lists the early non-contrast CT signs of MCA infarction. The Japanese Journal of Radiology review states how acute PE looks on CT pulmonary angiography and which CTPA findings indicate right-ventricular dysfunction. Haemorrhage patterns are not in the CT-head paper, so they are not questioned.",
+      "mcqs": [
+        {
+          "id": "1181-ct-01",
+          "question": "Which early non-contrast CT signs of brain infarction does this review name together?",
+          "options": {
+            "A": "Hyperdense MCA sign, loss of the insular ribbon, loss of the grey-white junction, and effacement of cortical sulci",
+            "B": "A ring-enhancing mass as the first sign",
+            "C": "Only midline shift, with no parenchymal sign named",
+            "D": "A normal scan in every patient imaged within 6 hours"
+          },
+          "correctAnswer": "A",
+          "explanation": "The review lists the hyperdense MCA sign, loss of the insular ribbon, loss of the grey-white matter junction, sulcal effacement, subtle hypodensity, oedema, and midline shift among early signs.",
+          "difficulty": "medium",
+          "sourceRefs": [
+            {
+              "sourceBody": "Brain Circulation",
+              "sourceYear": 2019,
+              "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6458774/",
+              "excerpt": "Early signs of brain infarction are hyperdense MCA sign, loss of insular ribbon, loss of the gray-white matter junction, effacement of the cortical sulci, subtle hypodensity in the cerebral tissue, parenchymal hypodensity, cerebral edema with compression of the ipsilateral lateral ventricle, and midline shift.[ ]",
+              "status": "source_verified",
+              "pmid": "31001598",
+              "pmcid": "PMC6458774"
+            }
+          ]
+        },
+        {
+          "id": "1181-ct-02",
+          "question": "What does the same review say remains the primary imaging modality for patients with clinical features of acute stroke?",
+          "options": {
+            "A": "Non-contrast CT",
+            "B": "MRI spectroscopy",
+            "C": "Catheter angiography as the first test",
+            "D": "Chest radiography"
+          },
+          "correctAnswer": "A",
+          "explanation": "The review says non-contrast CT remains the primary imaging modality for evaluation of patients with clinical features of acute stroke.",
+          "difficulty": "easy",
+          "sourceRefs": [
+            {
+              "sourceBody": "Brain Circulation",
+              "sourceYear": 2019,
+              "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6458774/",
+              "excerpt": "Noncontrast CT remains the primary imaging modality for evaluation of patients with clinical features of acute stroke.[ ]",
+              "status": "source_verified",
+              "pmid": "31001598",
+              "pmcid": "PMC6458774"
+            }
+          ]
+        },
+        {
+          "id": "1181-ct-03",
+          "question": "How often does this review say CT appears healthy in hyperacute infarction?",
+          "options": {
+            "A": "Nearly 30% of cases, even though signs of infarction under 6 hours can usually be detected",
+            "B": "Never, once symptoms have started",
+            "C": "In 90% of scans performed after 24 hours",
+            "D": "Only when contrast has been given"
+          },
+          "correctAnswer": "A",
+          "explanation": "The review says CT can usually detect signs of hyperacute infarction under 6 hours, but it appears healthy in nearly 30% of cases.",
+          "difficulty": "hard",
+          "sourceRefs": [
+            {
+              "sourceBody": "Brain Circulation",
+              "sourceYear": 2019,
+              "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6458774/",
+              "excerpt": "Computed tomography (CT) can usually detect signs of hyperacute infarction (<6 h), but it appears healthy in nearly 30% of cases.[ ]",
+              "status": "source_verified",
+              "pmid": "31001598",
+              "pmcid": "PMC6458774"
+            }
+          ]
+        },
+        {
+          "id": "1181-ct-04",
+          "question": "How does the pulmonary-embolism imaging review describe the CT angiography appearance of PE?",
+          "options": {
+            "A": "An intraluminal filling defect that may obstruct the lumen completely or partly, centrally or eccentrically",
+            "B": "Only a Westermark sign on the chest radiograph",
+            "C": "A normal lumen with isolated pleural thickening",
+            "D": "A polo-mint sign defined there as an MRI-only finding and not described for CTA"
+          },
+          "correctAnswer": "A",
+          "explanation": "The review says that at CTA, PE appears as an intraluminal filling defect. The thrombus may obstruct the lumen completely, sometimes enlarging the vessel, or partly, in a central or eccentric location.",
+          "difficulty": "medium",
+          "sourceRefs": [
+            {
+              "sourceBody": "Japanese Journal of Radiology",
+              "sourceYear": 2025,
+              "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC12479586/",
+              "excerpt": "At CTA, PE appears as an intraluminal filling defect, and the thrombus may completely obstruct the lumen, sometimes causing the enlargement of the vessel, or it may partially obstruct blood flow in a central or eccentric location [ , ].",
+              "status": "source_verified",
+              "pmid": "40580273",
+              "pmcid": "PMC12479586"
+            }
+          ]
+        },
+        {
+          "id": "1181-ct-05",
+          "question": "Which CTPA finding does the review give as right-ventricular dilatation?",
+          "options": {
+            "A": "The RV cavity wider than the LV cavity in the short axis, with an RV/LV ratio greater than 0.9",
+            "B": "An RV cavity narrower than the LV",
+            "C": "Isolated left-atrial enlargement",
+            "D": "A normal septal position as the only RV-dysfunction sign"
+          },
+          "correctAnswer": "A",
+          "explanation": "The review says CTPA findings of right-ventricular dysfunction include RV dilatation, where the RV cavity is wider than the LV in the short axis (RV/LV ratio greater than 0.9), with or without hepatic-vein reflux and leftward septal shift.",
+          "difficulty": "hard",
+          "sourceRefs": [
+            {
+              "sourceBody": "Japanese Journal of Radiology",
+              "sourceYear": 2025,
+              "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC12479586/",
+              "excerpt": "CTPA findings related to right ventricular dysfunction consist of right ventricular dilatation, where the right ventricular (RV) cavity is wider than the left ventricular (LV) cavity in the short axis (RV/LV ratio > 0.9), with or without contrast material reflux into the hepatic veins, shift of the interventricular septum towards the left ventricle, azygos vein dilatation, and a PE index exceeding 60 [ , – ].",
+              "status": "source_verified",
+              "pmid": "40580273",
+              "pmcid": "PMC12479586"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "topicKey": "biologic-induced-psoriasis-and-paradoxical-reactions",
+      "topicDisplayName": "Biologic-Induced Psoriasis and Paradoxical Reactions",
+      "aliases": [
+        "119",
+        "Rheumatology"
+      ],
+      "storedRowCount": 1,
+      "coverageNote": "Open review of psoriasis that appears during biologic therapy. It defines the reaction, names TNF inhibitors and later cytokine inhibitors, describes the usual sites, and ties stopping or switching the drug to the underlying disease and the severity of the rash.",
+      "mcqs": [
+        {
+          "id": "119-pp-01",
+          "question": "What did this review say the new psoriasiform lesions during anti-TNF treatment of idiopathic psoriasis were named?",
+          "options": {
+            "A": "Paradoxical psoriasis",
+            "B": "Pityriasis rosea",
+            "C": "Fixed drug eruption",
+            "D": "Erythema nodosum"
+          },
+          "correctAnswer": "A",
+          "explanation": "The review says that during anti-TNF treatment of classical idiopathic psoriasis a small portion of patients develop new psoriasiform lesions, and this phenomenon was named paradoxical psoriasis.",
+          "difficulty": "easy",
+          "sourceRefs": [
+            {
+              "sourceBody": "Journal of Translational Autoimmunity",
+              "sourceYear": 2023,
+              "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC10507642/",
+              "excerpt": "This contradictory phenomenon was named paradoxical psoriasis which resembles idiopathic psoriasis clinically but presents overlapped histological patterns and distinct immunological processes.",
+              "status": "source_verified",
+              "pmid": "37731549",
+              "pmcid": "PMC10507642"
+            }
+          ]
+        },
+        {
+          "id": "119-pp-02",
+          "question": "Besides TNF inhibitors, which biologic classes does the review say have been reported to induce paradoxical psoriasis?",
+          "options": {
+            "A": "IL-12/23, IL-17A, IL-4/13, IL-6, and IL-23 inhibitors",
+            "B": "Only topical corticosteroids",
+            "C": "Only antibiotics",
+            "D": "No drug other than a TNF inhibitor is named"
+          },
+          "correctAnswer": "A",
+          "explanation": "The review lists ustekinumab, secukinumab, ixekizumab, brodalumab, dupilumab, tocilizumab, siltuximab, risankizumab, and guselkumab among biologics reported to have induced paradoxical psoriasis.",
+          "difficulty": "medium",
+          "sourceRefs": [
+            {
+              "sourceBody": "Journal of Translational Autoimmunity",
+              "sourceYear": 2023,
+              "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC10507642/",
+              "excerpt": "biologics (IL-12/23 inhibitor: Ustekinumab; IL-17A inhibitor: Secukinumab, Ixekizumab, Brodalumab; IL-4/13 inhibitor: Dupilumab; IL-6 inhibitor: Tocilizumab, Siltuximab; IL-23 inhibitor: Risankizumab, Guselkumab)",
+              "status": "source_verified",
+              "pmid": "37731549",
+              "pmcid": "PMC10507642"
+            }
+          ]
+        },
+        {
+          "id": "119-pp-03",
+          "question": "Which sites does the review say are usual in paradoxical psoriasis?",
+          "options": {
+            "A": "Palms and soles, or the scalp",
+            "B": "Only the nails",
+            "C": "Only the mucosa",
+            "D": "Only extensor plaques identical to untreated plaque psoriasis, with palms spared"
+          },
+          "correctAnswer": "A",
+          "explanation": "The review says palmoplantar or scalp involvement is usual, and that severe scalp involvement can develop into alopecia. Nail involvement is less often.",
+          "difficulty": "medium",
+          "sourceRefs": [
+            {
+              "sourceBody": "Journal of Translational Autoimmunity",
+              "sourceYear": 2023,
+              "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC10507642/",
+              "excerpt": "Palmoplantar or scalp involvement is usual as well and scalp involvement can develop into alopecia in severe cases.",
+              "status": "source_verified",
+              "pmid": "37731549",
+              "pmcid": "PMC10507642"
+            }
+          ]
+        },
+        {
+          "id": "119-pp-04",
+          "question": "What do the review's highlights say about stopping the biologic?",
+          "options": {
+            "A": "Discontinuation is not necessary, and withdrawal of the culprit drug is recommended when the underlying disease is uncontrolled",
+            "B": "Every biologic must be stopped on the day the first scale appears",
+            "C": "The culprit drug is never withdrawn",
+            "D": "The highlights do not discuss drug continuation"
+          },
+          "correctAnswer": "A",
+          "explanation": "The highlights say discontinuation of biologics is not necessary, and that withdrawal of the culprit drug is recommended when the underlying disease is uncontrolled.",
+          "difficulty": "hard",
+          "sourceRefs": [
+            {
+              "sourceBody": "Journal of Translational Autoimmunity",
+              "sourceYear": 2023,
+              "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC10507642/",
+              "excerpt": "Discontinuation of biologics is not necessary. • Withdrawal of culprit drug is recommended in case of uncontrolled underlying diseases.",
+              "status": "source_verified",
+              "pmid": "37731549",
+              "pmcid": "PMC10507642"
+            }
+          ]
+        },
+        {
+          "id": "119-pp-05",
+          "question": "How does the review characterise the immune driver it highlights for paradoxical psoriasis?",
+          "options": {
+            "A": "An interferon-mediated inflammatory disease induced by TNF inhibitors or other biologics",
+            "B": "A pure autoantibody disease with no interferon mention",
+            "C": "A bacterial infection of the plaque",
+            "D": "A deficiency of type I interferon"
+          },
+          "correctAnswer": "A",
+          "explanation": "The review's highlights say paradoxical psoriasis is an interferon-mediated inflammatory disease induced by TNF inhibitors or other biologics.",
+          "difficulty": "medium",
+          "sourceRefs": [
+            {
+              "sourceBody": "Journal of Translational Autoimmunity",
+              "sourceYear": 2023,
+              "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC10507642/",
+              "excerpt": "PP is an IFN-mediated inflammatory disease induced by TNF inhibitors or other biologics. •",
+              "status": "source_verified",
+              "pmid": "37731549",
+              "pmcid": "PMC10507642"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "topicKey": "de-quervains-tenosynovitis",
+      "topicDisplayName": "De Quervain's Tenosynovitis",
+      "aliases": [
+        "1060",
+        "Rheumatology"
+      ],
+      "storedRowCount": 1,
+      "coverageNote": "Open systematic review whose introduction defines de Quervain tenosynovitis of the first extensor compartment and whose synthesis compares corticosteroid injection, thumb-spica immobilisation, and ultrasound guidance. Thyroiditis papers that share the name were not used.",
+      "mcqs": [
+        {
+          "id": "1060-dq-01",
+          "question": "Which tendons and compartment does this review assign to de Quervain tenosynovitis?",
+          "options": {
+            "A": "Extensor pollicis brevis and abductor pollicis longus in the first extensor compartment",
+            "B": "Flexor pollicis longus in the carpal tunnel",
+            "C": "Extensor carpi ulnaris only",
+            "D": "The flexor tendons of the little finger"
+          },
+          "correctAnswer": "A",
+          "explanation": "The review defines it as a stenosing overuse condition of the synovial sheath of the first extensor compartment, affecting extensor pollicis brevis and abductor pollicis longus.",
+          "difficulty": "easy",
+          "sourceRefs": [
+            {
+              "sourceBody": "JAMA Network Open",
+              "sourceYear": 2023,
+              "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC10611995/",
+              "excerpt": "De Quervain tenosynovitis (DQT) is a stenosing overuse condition of the synovial sheath of the first extensor compartment of the wrist affecting the extensor pollicis brevis (EPB) and abductor pollicis longus tendons.",
+              "status": "source_verified",
+              "pmid": "37889490",
+              "pmcid": "PMC10611995"
+            }
+          ]
+        },
+        {
+          "id": "1060-dq-02",
+          "question": "Where is the pain, and how is the diagnosis usually made?",
+          "options": {
+            "A": "Pain and tenderness over and proximal to the radial styloid, with a predominantly clinical diagnosis",
+            "B": "Ulnar-sided pain that requires surgical exploration before any clinical diagnosis",
+            "C": "Pain only at the elbow",
+            "D": "A diagnosis that the review says cannot be made without MRI"
+          },
+          "correctAnswer": "A",
+          "explanation": "The review says de Quervain tenosynovitis manifests with pain and tenderness over and proximal to the radial styloid, and that diagnosis is predominantly clinical. Ultrasound or MRI can help when the diagnosis is uncertain.",
+          "difficulty": "medium",
+          "sourceRefs": [
+            {
+              "sourceBody": "JAMA Network Open",
+              "sourceYear": 2023,
+              "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC10611995/",
+              "excerpt": "DQT manifests with pain and tenderness over and proximal to the radial styloid, and while its diagnosis is predominantly clinical, imaging modalities, such as ultrasonography and magnetic resonance imaging, can be useful where there is diagnostic uncertainty.",
+              "status": "source_verified",
+              "pmid": "37889490",
+              "pmcid": "PMC10611995"
+            }
+          ]
+        },
+        {
+          "id": "1060-dq-03",
+          "question": "What structural change does the review relate to the condition, and what does it say about inflammation?",
+          "options": {
+            "A": "Thickening of the tendon sheath and extensor retinaculum with tendon degeneration; inflammation remains controversial",
+            "B": "Proven septic tenosynovitis in every case",
+            "C": "Only a separate septated subcompartment, which the review says is required for the diagnosis",
+            "D": "Rupture of the flexor retinaculum"
+          },
+          "correctAnswer": "A",
+          "explanation": "The review says the condition appears related to thickening of the tendon sheath and overlying extensor retinaculum and to thinning and degeneration of the tendons. Involvement of inflammation remains controversial, and intrinsic degeneration from overuse is the more likely mechanism.",
+          "difficulty": "medium",
+          "sourceRefs": [
+            {
+              "sourceBody": "JAMA Network Open",
+              "sourceYear": 2023,
+              "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC10611995/",
+              "excerpt": "it appears to be related to thickening of the tendon sheath and the overlying extensor retinaculum, as well as thinning and degeneration of the affected tendons.",
+              "status": "source_verified",
+              "pmid": "37889490",
+              "pmcid": "PMC10611995"
+            }
+          ]
+        },
+        {
+          "id": "1060-dq-04",
+          "question": "What did the network meta-analysis associate with significant pain and functional benefit?",
+          "options": {
+            "A": "Adding thumb-spica immobilisation to a local corticosteroid injection",
+            "B": "Antibiotics alone",
+            "C": "Immediate tendon transfer",
+            "D": "No immobilisation and no injection"
+          },
+          "correctAnswer": "A",
+          "explanation": "The review found that adding thumb-spica immobilisation to a local corticosteroid injection was associated with significant pain-relieving and functional benefits.",
+          "difficulty": "easy",
+          "sourceRefs": [
+            {
+              "sourceBody": "JAMA Network Open",
+              "sourceYear": 2023,
+              "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC10611995/",
+              "excerpt": "adding thumb spica immobilization to a local corticosteroid injection was associated with significant pain-relieving and functional benefits.",
+              "status": "source_verified",
+              "pmid": "37889490",
+              "pmcid": "PMC10611995"
+            }
+          ]
+        },
+        {
+          "id": "1060-dq-05",
+          "question": "How did ultrasound-guided corticosteroid injection compare with conventional injection for pain?",
+          "options": {
+            "A": "Ultrasound guidance was associated with greater pain reduction",
+            "B": "Ultrasound guidance increased pain compared with a landmark injection",
+            "C": "The two methods were identical in every analysis",
+            "D": "Ultrasound was associated only with more tendon rupture and no pain difference"
+          },
+          "correctAnswer": "A",
+          "explanation": "The review says administering the corticosteroid injection with ultrasonographic guidance was associated with greater pain reduction than conventional injections.",
+          "difficulty": "hard",
+          "sourceRefs": [
+            {
+              "sourceBody": "JAMA Network Open",
+              "sourceYear": 2023,
+              "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC10611995/",
+              "excerpt": "Administering the corticosteroid injection using ultrasonographic guidance was associated with greater pain reduction than conventional injections.",
+              "status": "source_verified",
+              "pmid": "37889490",
+              "pmcid": "PMC10611995"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "topicKey": "diffuse-idiopathic-skeletal-hyperostosis",
+      "topicDisplayName": "Diffuse Idiopathic Skeletal Hyperostosis",
+      "aliases": [
+        "1762",
+        "Rheumatology"
+      ],
+      "storedRowCount": 1,
+      "coverageNote": "Open clinical review of DISH. It gives the non-inflammatory entheseal definition, the anterior-longitudinal-ligament mechanism, the Resnick criteria for the thoracic spine, the contrast with ankylosing spondylitis, and the associated metabolic conditions.",
+      "mcqs": [
+        {
+          "id": "1762-dish-01",
+          "question": "How does this review define diffuse idiopathic skeletal hyperostosis?",
+          "options": {
+            "A": "A systemic non-inflammatory disease characterised by ossification of the entheses",
+            "B": "An inflammatory sacroiliitis",
+            "C": "An infection of the disc",
+            "D": "A disease limited to the hands"
+          },
+          "correctAnswer": "A",
+          "explanation": "The review defines DISH as a systemic non-inflammatory disease characterised by ossification of the entheses.",
+          "difficulty": "easy",
+          "sourceRefs": [
+            {
+              "sourceBody": "Surgical Neurology International",
+              "sourceYear": 2014,
+              "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4023007/",
+              "excerpt": "DISH) is a systemic noninflammatory disease characterized by ossification of the entheses.",
+              "status": "source_verified",
+              "pmid": "24843807",
+              "pmcid": "PMC4023007"
+            }
+          ]
+        },
+        {
+          "id": "1762-dish-02",
+          "question": "Which structure do current theories in this review put at the centre of the spinal disease?",
+          "options": {
+            "A": "The anterior longitudinal ligament",
+            "B": "The spinal cord itself",
+            "C": "Only the ligamentum flavum",
+            "D": "The hip synovium"
+          },
+          "correctAnswer": "A",
+          "explanation": "The review says current theories focus on pathologic calcification of the anterior longitudinal ligament as the main mechanism.",
+          "difficulty": "medium",
+          "sourceRefs": [
+            {
+              "sourceBody": "Surgical Neurology International",
+              "sourceYear": 2014,
+              "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4023007/",
+              "excerpt": "pathologic calcification of the anterior longitudinal ligament of the spine as the main physiopathological mechanism of disease.",
+              "status": "source_verified",
+              "pmid": "24843807",
+              "pmcid": "PMC4023007"
+            }
+          ]
+        },
+        {
+          "id": "1762-dish-03",
+          "question": "Which spinal findings does the review quote as the Resnick criteria?",
+          "options": {
+            "A": "Anterolateral ossification of at least four contiguous thoracic segments, preserved disc spaces, and no apophyseal degeneration or sacroiliac inflammatory changes",
+            "B": "Ossification of one lumbar segment with sacroiliac erosions",
+            "C": "Bilateral sacroiliitis and slender vertical syndesmophytes",
+            "D": "Disc destruction at every level"
+          },
+          "correctAnswer": "A",
+          "explanation": "The review states anterolateral ossification of at least four contiguous thoracic vertebral segments, preservation of the intervertebral disc spaces, and absence of apophyseal joint degeneration or sacroiliac inflammatory changes.",
+          "difficulty": "hard",
+          "sourceRefs": [
+            {
+              "sourceBody": "Surgical Neurology International",
+              "sourceYear": 2014,
+              "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4023007/",
+              "excerpt": "anterolateral ossifications of at least four contiguous thoracic vertebral segments, preservation of the intervertebral disk spaces, and absence of apophyseal joint degeneration or sacroiliac inflammatory changes [ ].[ ]",
+              "status": "source_verified",
+              "pmid": "24843807",
+              "pmcid": "PMC4023007"
+            }
+          ]
+        },
+        {
+          "id": "1762-dish-04",
+          "question": "How does the review contrast the bony bridges of ankylosing spondylitis with DISH?",
+          "options": {
+            "A": "They are slender and vertical, involve the outer annulus, and do not involve the anterior longitudinal ligament",
+            "B": "They are identical to DISH bridges",
+            "C": "They always spare the annulus and involve only the anterior longitudinal ligament",
+            "D": "The review says ankylosing spondylitis cannot be distinguished"
+          },
+          "correctAnswer": "A",
+          "explanation": "The review says ankylosing-spondylitis bridges are slender and vertical, involve the outer margin of the annulus, and do not involve the anterior longitudinal ligament. Sacroiliac and apophyseal erosions and ankylosis are not seen in DISH.",
+          "difficulty": "medium",
+          "sourceRefs": [
+            {
+              "sourceBody": "Surgical Neurology International",
+              "sourceYear": 2014,
+              "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4023007/",
+              "excerpt": "in Ankylosing Spondylitis, the bony bridges are slender, vertical, and involve the outer margin of the annulus fibrosus and do not involve the anterior longitudinal ligament.",
+              "status": "source_verified",
+              "pmid": "24843807",
+              "pmcid": "PMC4023007"
+            }
+          ]
+        },
+        {
+          "id": "1762-dish-05",
+          "question": "Which comorbidities does the review list with DISH?",
+          "options": {
+            "A": "Obesity, hypertension, diabetes mellitus, hyperinsulinaemia, dyslipidaemia, and hyperuricaemia",
+            "B": "Only asthma",
+            "C": "Only inflammatory bowel disease",
+            "D": "No metabolic association is mentioned"
+          },
+          "correctAnswer": "A",
+          "explanation": "The review says comorbidities include obesity, hypertension, diabetes mellitus, hyperinsulinaemia, dyslipidaemia, and hyperuricaemia.",
+          "difficulty": "easy",
+          "sourceRefs": [
+            {
+              "sourceBody": "Surgical Neurology International",
+              "sourceYear": 2014,
+              "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4023007/",
+              "excerpt": "comorbidities include obesity, hypertension, diabetes mellitus, hyperinsulinemia, dyslipidemia, and hyperuricemia,",
+              "status": "source_verified",
+              "pmid": "24843807",
+              "pmcid": "PMC4023007"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "topicKey": "erythema-nodosum-differential-diagnosis",
+      "topicDisplayName": "Erythema Nodosum differential diagnosis",
+      "aliases": [
+        "339",
+        "Rheumatology"
+      ],
+      "storedRowCount": 1,
+      "coverageNote": "Open practical review of erythema nodosum. It gives the septal-panniculitis histology, the pretibial course, the common identifiable causes, Löfgren syndrome, and the main clinical differentials.",
+      "mcqs": [
+        {
+          "id": "339-en-01",
+          "question": "What histologic pattern does this review call characteristic of erythema nodosum?",
+          "options": {
+            "A": "Predominantly septal panniculitis without vasculitis",
+            "B": "Lobular panniculitis with vasculitis in every case",
+            "C": "Caseating granulomas as the defining pattern",
+            "D": "A normal subcutis"
+          },
+          "correctAnswer": "A",
+          "explanation": "The review says erythema nodosum shows a predominantly septal panniculitis without vasculitis.",
+          "difficulty": "easy",
+          "sourceRefs": [
+            {
+              "sourceBody": "American Journal of Clinical Dermatology",
+              "sourceYear": 2021,
+              "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7938036/",
+              "excerpt": "predominantly septal panniculitis without vasculitis (Fig. a).",
+              "status": "source_verified",
+              "pmid": "33683567",
+              "pmcid": "PMC7938036"
+            }
+          ]
+        },
+        {
+          "id": "339-en-02",
+          "question": "What course does the review describe for typical erythema nodosum?",
+          "options": {
+            "A": "Generally self-limited, resolving within 1 to 6 weeks through a bruise-like colour change",
+            "B": "Permanent ulceration in most patients",
+            "C": "Resolution within a few hours",
+            "D": "A chronic plaque that never changes colour"
+          },
+          "correctAnswer": "A",
+          "explanation": "The review says erythema nodosum is generally self-limited and resolves within 1 to 6 weeks, turning from bright red to a yellow-brown or green-bluish colour that resembles a bruise.",
+          "difficulty": "medium",
+          "sourceRefs": [
+            {
+              "sourceBody": "American Journal of Clinical Dermatology",
+              "sourceYear": 2021,
+              "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7938036/",
+              "excerpt": "Erythema nodosum is generally self-limited and resolves within 1–6 weeks by turning from a bright red to a yellow–brown or green-bluish discoloration, resembling bruises (Fig. b).",
+              "status": "source_verified",
+              "pmid": "33683567",
+              "pmcid": "PMC7938036"
+            }
+          ]
+        },
+        {
+          "id": "339-en-03",
+          "question": "Which identifiable causes does the review list as the most common?",
+          "options": {
+            "A": "Streptococcal infection, primary tuberculosis, sarcoidosis, Behçet disease, drugs, pregnancy, and inflammatory bowel disease",
+            "B": "Only gout",
+            "C": "Only a drug reaction, with infections excluded",
+            "D": "Only malignancy"
+          },
+          "correctAnswer": "A",
+          "explanation": "The review says the most common identifiable causes are streptococcal infections, primary tuberculosis, sarcoidosis, Behçet disease, drugs, pregnancy, and inflammatory bowel disease.",
+          "difficulty": "medium",
+          "sourceRefs": [
+            {
+              "sourceBody": "American Journal of Clinical Dermatology",
+              "sourceYear": 2021,
+              "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7938036/",
+              "excerpt": "The most common identifiable causes are streptococcal infections, primary TB, sarcoidosis, Behçet disease, drugs, pregnancy, and inflammatory bowel disease [ ].",
+              "status": "source_verified",
+              "pmid": "33683567",
+              "pmcid": "PMC7938036"
+            }
+          ]
+        },
+        {
+          "id": "339-en-04",
+          "question": "What three features define Löfgren syndrome in this review?",
+          "options": {
+            "A": "Erythema nodosum, bilateral hilar lymphadenopathy, and fever",
+            "B": "Erythema nodosum, oral ulcers, and uveitis",
+            "C": "Hilar lymphadenopathy without skin disease",
+            "D": "Fever and a migratory arthritis without a rash"
+          },
+          "correctAnswer": "A",
+          "explanation": "The review says Löfgren syndrome, an acute presentation of sarcoidosis, is characterised by erythema nodosum, bilateral hilar lymphadenopathy, and fever.",
+          "difficulty": "easy",
+          "sourceRefs": [
+            {
+              "sourceBody": "American Journal of Clinical Dermatology",
+              "sourceYear": 2021,
+              "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7938036/",
+              "excerpt": "Löfgren syndrome, an acute presentation of sarcoidosis, is characterized by EN, bilateral hilar lymphadenopathy, and fever. In conjunction with the EN lesions, patients can have periarticular ankle inflammation and papular lesions on the knees and elbows [ ].",
+              "status": "source_verified",
+              "pmid": "33683567",
+              "pmcid": "PMC7938036"
+            }
+          ]
+        },
+        {
+          "id": "339-en-05",
+          "question": "Which conditions does the review name as the main differential diagnoses?",
+          "options": {
+            "A": "Erythema induratum of Bazin, superficial thrombophlebitis, and other forms of panniculitis",
+            "B": "Only cellulitis",
+            "C": "Only melanoma",
+            "D": "No differential is discussed"
+          },
+          "correctAnswer": "A",
+          "explanation": "The review says the main differential diagnoses are erythema induratum of Bazin, superficial thrombophlebitis, and other forms of panniculitis, and that histopathology is essential.",
+          "difficulty": "hard",
+          "sourceRefs": [
+            {
+              "sourceBody": "American Journal of Clinical Dermatology",
+              "sourceYear": 2021,
+              "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7938036/",
+              "excerpt": "The main differential diagnoses are erythema induratum of Bazin, superficial thrombophlebitis, and other forms of panniculitis.",
+              "status": "source_verified",
+              "pmid": "33683567",
+              "pmcid": "PMC7938036"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "topicKey": "hand-and-erosive-oa-heberden-nodes-bouchard-nodes-trapeziometacarpal-o",
+      "topicDisplayName": "Hand and erosive OA: Heberden nodes, Bouchard nodes, trapeziometacarpal OA",
+      "aliases": [
+        "1784",
+        "Rheumatology"
+      ],
+      "storedRowCount": 1,
+      "coverageNote": "Open multicentre description of hand osteoarthritis. It names Heberden and Bouchard nodes and bony enlargement as the clinical hallmarks, lists the target joints including the thumb base, and defines thumb-base deformity as subluxation and adduction. The 2018 EULAR hand-OA recommendations were not available as an open PDF from this environment.",
+      "mcqs": [
+        {
+          "id": "1784-hand-01",
+          "question": "Which joints and clinical hallmarks does this cohort paper assign to hand osteoarthritis?",
+          "options": {
+            "A": "Distal and proximal interphalangeal joints, index and middle metacarpophalangeal joints, and the thumb base, with Heberden nodes, Bouchard nodes, and bony enlargement",
+            "B": "Only the wrist",
+            "C": "Only the elbow",
+            "D": "Heberden nodes at the metacarpophalangeal joints as the sole hallmark"
+          },
+          "correctAnswer": "A",
+          "explanation": "The paper says symptoms often affect the distal and proximal interphalangeal joints, the index and middle metacarpophalangeal joints, and the thumb base, and that Heberden nodes, Bouchard nodes, and bony enlargement are the clinical hallmarks.",
+          "difficulty": "easy",
+          "sourceRefs": [
+            {
+              "sourceBody": "Archives of Rheumatology",
+              "sourceYear": 2022,
+              "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9791555/",
+              "excerpt": "The symptoms are often intermittent and affect target joints (distal and proximal interphalangeal joints, index and middle metacarpophalangeal joints, and thumb base), and the Heberden's nodes, Bouchard's nodes and bony enlargement are the clinical hallmarks of hand OA.[ ]",
+              "status": "source_verified",
+              "pmid": "36589604",
+              "pmcid": "PMC9791555"
+            }
+          ]
+        },
+        {
+          "id": "1784-hand-02",
+          "question": "How did the examiners define hand deformity in this study?",
+          "options": {
+            "A": "Subluxation and adduction of the thumb base, and lateral deviation of the distal interphalangeal joints",
+            "B": "Ulnar deviation at every metacarpophalangeal joint only",
+            "C": "Swan-neck deformity as the only definition",
+            "D": "No deformity was defined"
+          },
+          "correctAnswer": "A",
+          "explanation": "Deformities were defined as subluxation and adduction of the thumb base and lateral deviation of the distal interphalangeal joints. Squaring of the first carpometacarpal joint was among the deformities examined.",
+          "difficulty": "medium",
+          "sourceRefs": [
+            {
+              "sourceBody": "Archives of Rheumatology",
+              "sourceYear": 2022,
+              "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9791555/",
+              "excerpt": "Deformities were defined as subluxation and adduction of the thumb base and lateral deviation of DIP joints.",
+              "status": "source_verified",
+              "pmid": "36589604",
+              "pmcid": "PMC9791555"
+            }
+          ]
+        },
+        {
+          "id": "1784-hand-03",
+          "question": "What does the paper say about thumb-base osteoarthritis when the hand disease is non-erosive?",
+          "options": {
+            "A": "It is an important factor for hand pain and disability",
+            "B": "It excludes hand osteoarthritis",
+            "C": "It has no relationship to pain",
+            "D": "It occurs only in erosive disease"
+          },
+          "correctAnswer": "A",
+          "explanation": "The paper says the presence of thumb-base osteoarthritis in non-erosive hand osteoarthritis is an important factor for hand pain and disability.",
+          "difficulty": "medium",
+          "sourceRefs": [
+            {
+              "sourceBody": "Archives of Rheumatology",
+              "sourceYear": 2022,
+              "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9791555/",
+              "excerpt": "The presence of thumb base OA in non-erosive hand OA is an important factor for hand pain and disability.[ ]",
+              "status": "source_verified",
+              "pmid": "36589604",
+              "pmcid": "PMC9791555"
+            }
+          ]
+        },
+        {
+          "id": "1784-hand-04",
+          "question": "In this cohort, which nodes were associated with a higher Duruöz hand-index score?",
+          "options": {
+            "A": "Bouchard nodes, while the score was similar whether or not Heberden nodes were present",
+            "B": "Heberden nodes only",
+            "C": "Neither type of node",
+            "D": "Nodes at the elbow"
+          },
+          "correctAnswer": "A",
+          "explanation": "Duruöz hand-index scores were similar with or without Heberden nodes, and the mean score was significantly higher in patients with Bouchard nodes.",
+          "difficulty": "hard",
+          "sourceRefs": [
+            {
+              "sourceBody": "Archives of Rheumatology",
+              "sourceYear": 2022,
+              "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9791555/",
+              "excerpt": "the mean DHI scores were significantly higher in patients with Bouchard's nodes (p=0.015).",
+              "status": "source_verified",
+              "pmid": "36589604",
+              "pmcid": "PMC9791555"
+            }
+          ]
+        },
+        {
+          "id": "1784-hand-05",
+          "question": "Which first-carpometacarpal finding was included in the physical examination of hand deformity?",
+          "options": {
+            "A": "Squaring of the first carpometacarpal joint",
+            "B": "Only soft-tissue swelling of the elbow",
+            "C": "Ankylosis of the shoulder",
+            "D": "The examination omitted the thumb base"
+          },
+          "correctAnswer": "A",
+          "explanation": "The examination included squaring of the first carpometacarpal joint together with proximal and distal interphalangeal deformities and Heberden and Bouchard nodes.",
+          "difficulty": "easy",
+          "sourceRefs": [
+            {
+              "sourceBody": "Archives of Rheumatology",
+              "sourceYear": 2022,
+              "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9791555/",
+              "excerpt": "squaring of first carpometacarpal [CMC] joint, proximal and distal interphalangeal [DIP] joint deformities), Heberden's nodes, and Bouchard's nodes were evaluated during physical examination.",
+              "status": "source_verified",
+              "pmid": "36589604",
+              "pmcid": "PMC9791555"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "topicKey": "leflunomide-in-ra-mechanism-dosing-washout-procedure-hepatotoxicity-mo",
+      "topicDisplayName": "Leflunomide in RA: mechanism, dosing, washout procedure, hepatotoxicity monitoring",
+      "aliases": [
+        "199",
+        "Rheumatology"
+      ],
+      "storedRowCount": 1,
+      "coverageNote": "The open FDA label states the dihydroorotate-dehydrogenase mechanism, the 20 mg daily dose and optional 100 mg loading dose, the cholestyramine or charcoal washout, and the ALT monitoring schedule. The BSR DMARD monitoring PDF was not retrievable from this environment.",
+      "mcqs": [
+        {
+          "id": "199-lef-01",
+          "question": "Which enzyme does the label say leflunomide inhibits?",
+          "options": {
+            "A": "Dihydroorotate dehydrogenase, a mitochondrial enzyme in de novo pyrimidine synthesis",
+            "B": "Cyclo-oxygenase",
+            "C": "Xanthine oxidase",
+            "D": "Thiopurine methyltransferase"
+          },
+          "correctAnswer": "A",
+          "explanation": "The label says leflunomide is an isoxazole immunomodulatory agent that inhibits dihydroorotate dehydrogenase, a mitochondrial enzyme involved in de novo pyrimidine synthesis, and has antiproliferative activity.",
+          "difficulty": "easy",
+          "sourceRefs": [
+            {
+              "sourceBody": "DailyMed FDA label",
+              "sourceYear": 2026,
+              "sourceUrl": "https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=c66cacd1-93f7-483a-a2fc-aad53d5342b0",
+              "excerpt": "Leflunomide is an isoxazole immunomodulatory agent that inhibits dihydroorotate dehydrogenase (a mitochondrial enzyme involved in de novo pyrimidine synthesis) and has antiproliferative activity.",
+              "status": "source_verified"
+            }
+          ]
+        },
+        {
+          "id": "199-lef-02",
+          "question": "What loading dose does the label recommend for a patient at low risk of leflunomide hepatotoxicity and myelosuppression?",
+          "options": {
+            "A": "100 mg once daily for 3 days, then 20 mg once daily",
+            "B": "20 mg once daily with no option of a loading dose in any patient",
+            "C": "100 mg weekly for a year",
+            "D": "10 mg three times daily indefinitely"
+          },
+          "correctAnswer": "A",
+          "explanation": "The recommended dose is 20 mg once daily. For low-risk patients the loading dose is 100 mg once daily for 3 days, then 20 mg once daily.",
+          "difficulty": "medium",
+          "sourceRefs": [
+            {
+              "sourceBody": "DailyMed FDA label",
+              "sourceYear": 2026,
+              "sourceUrl": "https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=c66cacd1-93f7-483a-a2fc-aad53d5342b0",
+              "excerpt": "For patients who are at low risk for leflunomide-associated hepatotoxicity and leflunomide-associated myelosuppression the recommended leflunomide loading dose is 100 mg once daily for 3 days. Subsequently administer 20 mg once daily.",
+              "status": "source_verified"
+            }
+          ]
+        },
+        {
+          "id": "199-lef-03",
+          "question": "How should a patient at high risk, such as someone also taking methotrexate, start leflunomide?",
+          "options": {
+            "A": "20 mg once daily without a loading dose",
+            "B": "100 mg daily for 3 days, because high-risk patients need a larger load",
+            "C": "The label forbids any use with methotrexate and gives no dose",
+            "D": "50 mg twice daily"
+          },
+          "correctAnswer": "A",
+          "explanation": "For patients at high risk of hepatotoxicity, for example those taking concomitant methotrexate, or of myelosuppression, the recommended dose is 20 mg once daily without a loading dose.",
+          "difficulty": "medium",
+          "sourceRefs": [
+            {
+              "sourceBody": "DailyMed FDA label",
+              "sourceYear": 2026,
+              "sourceUrl": "https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=c66cacd1-93f7-483a-a2fc-aad53d5342b0",
+              "excerpt": "For patients at high risk for leflunomide-associated hepatotoxicity (e.g., those taking concomitant methotrexate) or leflunomide-associated myelosuppression (e.g., patients taking concomitant immunosuppressants), the recommended leflunomide dosage is 20 mg once daily without a loading dose [see Warnings and Precautions ( 5.2 , 5.4 )].",
+              "status": "source_verified"
+            }
+          ]
+        },
+        {
+          "id": "199-lef-04",
+          "question": "Which accelerated-elimination regimens does the label give?",
+          "options": {
+            "A": "Cholestyramine 8 g orally three times daily for 11 days, or activated charcoal 50 g every 12 hours for 11 days",
+            "B": "A single dose of vitamin K",
+            "C": "Haemodialysis as the only method",
+            "D": "Stopping the drug, with no elimination procedure described"
+          },
+          "correctAnswer": "A",
+          "explanation": "The label says elimination can be accelerated with cholestyramine 8 g orally three times daily for 11 days, or alternatively 50 g of activated charcoal orally every 12 hours for 11 days.",
+          "difficulty": "hard",
+          "sourceRefs": [
+            {
+              "sourceBody": "DailyMed FDA label",
+              "sourceYear": 2026,
+              "sourceUrl": "https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=c66cacd1-93f7-483a-a2fc-aad53d5342b0",
+              "excerpt": "Administer cholestyramine 8 grams orally 3 times daily for 11 days. 2. Alternatively, administer 50 grams of activated charcoal powder (made into a suspension) orally every 12 hours for 11 days.",
+              "status": "source_verified"
+            }
+          ]
+        },
+        {
+          "id": "199-lef-05",
+          "question": "Who should not start leflunomide, and how often is ALT monitored after it is started?",
+          "options": {
+            "A": "Do not treat pre-existing liver disease or a baseline ALT greater than twice the upper limit of normal. Then check ALT at least monthly for six months and every 6 to 8 weeks thereafter",
+            "B": "Start regardless of the baseline ALT and never repeat it",
+            "C": "Check ALT once a year only",
+            "D": "The label contains no liver warning"
+          },
+          "correctAnswer": "A",
+          "explanation": "Patients with pre-existing liver disease, or an ALT greater than twice the upper limit of normal, should not be treated. ALT is monitored at least monthly for six months after starting, then every 6 to 8 weeks.",
+          "difficulty": "medium",
+          "sourceRefs": [
+            {
+              "sourceBody": "DailyMed FDA label",
+              "sourceYear": 2026,
+              "sourceUrl": "https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=c66cacd1-93f7-483a-a2fc-aad53d5342b0",
+              "excerpt": "Patients with pre-existing acute or chronic liver disease, or those with serum alanine aminotransferase (ALT) >2 x ULN before initiating treatment, are at increased risk and should not be treated with leflunomide. Monitor ALT levels at least monthly for six months after starting leflunomide, and thereafter every 6 to 8 weeks.",
+              "status": "source_verified"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "topicKey": "mri-in-inflammatory-arthritis-bone-marrow-oedema-erosions-tenosynoviti",
+      "topicDisplayName": "MRI in inflammatory arthritis: bone marrow oedema, erosions, tenosynovitis scoring",
+      "aliases": [
+        "1925",
+        "Rheumatology"
+      ],
+      "storedRowCount": 1,
+      "coverageNote": "Open review that states what the original RAMRIS scores, what the update added, and the 0–3 and 0–10 scales for synovitis, bone-marrow oedema, erosions, and tenosynovitis. The short OMERACT atlas record was not used.",
+      "mcqs": [
+        {
+          "id": "1925-mri-01",
+          "question": "What did the 2002 RAMRIS assess, according to this review?",
+          "options": {
+            "A": "Synovitis, bone erosion, and oedema or osteitis",
+            "B": "Only cartilage thickness",
+            "C": "Only serum CRP",
+            "D": "Only tenosynovitis, which the review says was in the original score"
+          },
+          "correctAnswer": "A",
+          "explanation": "The review says RAMRIS, introduced in 2002, assesses inflammation and damage on MRI, encompassing synovitis, bone erosion, and oedema or osteitis.",
+          "difficulty": "easy",
+          "sourceRefs": [
+            {
+              "sourceBody": "Journal of Clinical Medicine",
+              "sourceYear": 2024,
+              "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC11277801/",
+              "excerpt": "RAMRIS, introduced in 2002, offers an objective means to assess inflammation and damage via MRI in RA trials, encompassing findings such as synovitis, bone erosion, and edema/osteitis.",
+              "status": "source_verified",
+              "pmid": "39064179",
+              "pmcid": "PMC11277801"
+            }
+          ]
+        },
+        {
+          "id": "1925-mri-02",
+          "question": "What did the updated RAMRIS add?",
+          "options": {
+            "A": "Joint-space narrowing and tenosynovitis",
+            "B": "Only a patient pain score",
+            "C": "A chest-radiograph grade",
+            "D": "Nothing beyond the 2002 items"
+          },
+          "correctAnswer": "A",
+          "explanation": "The review says an updated RAMRIS was developed which also includes joint-space narrowing and tenosynovitis.",
+          "difficulty": "medium",
+          "sourceRefs": [
+            {
+              "sourceBody": "Journal of Clinical Medicine",
+              "sourceYear": 2024,
+              "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC11277801/",
+              "excerpt": "an updated RAMRIS version was developed, which also includes the evaluation of joint space narrowing and tenosynovitis.",
+              "status": "source_verified",
+              "pmid": "39064179",
+              "pmcid": "PMC11277801"
+            }
+          ]
+        },
+        {
+          "id": "1925-mri-03",
+          "question": "What numeric scales does the review give for synovitis, bone-marrow oedema, and erosions?",
+          "options": {
+            "A": "Synovitis and bone-marrow oedema 0 to 3, erosions 0 to 10",
+            "B": "All three scored 0 to 1",
+            "C": "Erosions 0 to 3 and synovitis 0 to 10",
+            "D": "No numeric scale is stated"
+          },
+          "correctAnswer": "A",
+          "explanation": "The review says synovitis and bone-marrow oedema are scored from 0 to 3 and erosions from 0 to 10.",
+          "difficulty": "medium",
+          "sourceRefs": [
+            {
+              "sourceBody": "Journal of Clinical Medicine",
+              "sourceYear": 2024,
+              "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC11277801/",
+              "excerpt": "synovitis and BME scored from 0 to 3 and erosions from 0 to 10 [ ].",
+              "status": "source_verified",
+              "pmid": "39064179",
+              "pmcid": "PMC11277801"
+            }
+          ]
+        },
+        {
+          "id": "1925-mri-04",
+          "question": "How is tenosynovitis scored on the 0 to 3 scale in this review?",
+          "options": {
+            "A": "By the maximum width of peritendinous effusion or post-contrast enhancement: under 1.5 mm, 1.5 to under 3 mm, or 3 mm or more",
+            "B": "By the number of tender joints only",
+            "C": "A single grade for any visible tendon",
+            "D": "Tenosynovitis is not given millimetre thresholds"
+          },
+          "correctAnswer": "A",
+          "explanation": "Grade 1 is effusion or enhancement under 1.5 mm, grade 2 is 1.5 mm up to but not including 3 mm, and grade 3 is 3 mm or greater. Grade 0 is no effusion or enhancement.",
+          "difficulty": "hard",
+          "sourceRefs": [
+            {
+              "sourceBody": "Journal of Clinical Medicine",
+              "sourceYear": 2024,
+              "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC11277801/",
+              "excerpt": "The scoring of tenosynovitis is determined by measuring the maximum width of the effusion and/or tenosynovial enhancement, with measurements taken perpendicular to the tendon’s orientation. 0–3 scale: 0 indicating no presence; 1 representing a peritendinous effusion and/or postcontrast tenosynovial enhancement of less than 1.5 mm; 2 for effusion or enhancement that is equal to or greater than 1.5 mm but less than 3 mm; and 3 for effusion or enhancement that is 3 mm or greater",
+              "status": "source_verified",
+              "pmid": "39064179",
+              "pmcid": "PMC11277801"
+            }
+          ]
+        },
+        {
+          "id": "1925-mri-05",
+          "question": "What practical limitation of RAMRIS does the review state?",
+          "options": {
+            "A": "It is time-consuming and demands experience for reproducibility",
+            "B": "It can be applied without any training and takes a minute",
+            "C": "It has been withdrawn",
+            "D": "It scores only the feet and never the hand"
+          },
+          "correctAnswer": "A",
+          "explanation": "The review says that despite its comprehensiveness, RAMRIS is time-consuming and demands experience for reproducibility.",
+          "difficulty": "easy",
+          "sourceRefs": [
+            {
+              "sourceBody": "Journal of Clinical Medicine",
+              "sourceYear": 2024,
+              "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC11277801/",
+              "excerpt": "RAMRIS is time-consuming and demands experience for reproducibility.",
+              "status": "source_verified",
+              "pmid": "39064179",
+              "pmcid": "PMC11277801"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "topicKey": "microscopic-polyangiitis",
+      "topicDisplayName": "Microscopic Polyangiitis",
+      "aliases": [
+        "826",
+        "Rheumatology"
+      ],
+      "storedRowCount": 1,
+      "coverageNote": "Open clinician review of severe ANCA-associated vasculitis that separates microscopic polyangiitis from granulomatosis with polyangiitis and eosinophilic granulomatosis with polyangiitis, and states the pauci-immune small-vessel pathology, the MPO and PR3 antibodies, the kidney and lung patterns, and the worse kidney prognosis of MPO-ANCA MPA. A Watts epidemiology algorithm was not used as a clinical text.",
+      "mcqs": [
+        {
+          "id": "826-mpa-01",
+          "question": "Into which diseases does this review subdivide ANCA-associated vasculitis?",
+          "options": {
+            "A": "Granulomatosis with polyangiitis, microscopic polyangiitis, and eosinophilic granulomatosis with polyangiitis",
+            "B": "Giant-cell arteritis, Takayasu arteritis, and polyarteritis nodosa only",
+            "C": "Only eosinophilic granulomatosis with polyangiitis",
+            "D": "Rheumatoid vasculitis and lupus only"
+          },
+          "correctAnswer": "A",
+          "explanation": "The review says AAV is subdivided into granulomatosis with polyangiitis, microscopic polyangiitis, and eosinophilic granulomatosis with polyangiitis.",
+          "difficulty": "easy",
+          "sourceRefs": [
+            {
+              "sourceBody": "Glomerular Diseases",
+              "sourceYear": 2025,
+              "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC11845170/",
+              "excerpt": "AAV is subdivided into granulomatosis with polyangiitis (GPA), microscopic polyangiitis (MPA), and eosinophilic granulomatosis with polyangiitis (EGPA) [ ].",
+              "status": "source_verified",
+              "pmid": "39991192",
+              "pmcid": "PMC11845170"
+            }
+          ]
+        },
+        {
+          "id": "826-mpa-02",
+          "question": "What pathologic and serologic pattern does the review give for these vasculitides?",
+          "options": {
+            "A": "Pauci-immune neutrophilic inflammation of small vessels, with antibodies to PR3 or MPO",
+            "B": "Immune-complex deposits in large arteries and anti-GBM antibodies",
+            "C": "Granulomas in every vessel and no ANCA",
+            "D": "Eosinophilic inflammation of the aorta only"
+          },
+          "correctAnswer": "A",
+          "explanation": "The review describes pauci-immune perivascular neutrophilic inflammation with necrosis, associated with antibodies to proteinase 3 or myeloperoxidase, affecting small intraparenchymal arteries, arterioles, capillaries, and venules.",
+          "difficulty": "medium",
+          "sourceRefs": [
+            {
+              "sourceBody": "Glomerular Diseases",
+              "sourceYear": 2025,
+              "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC11845170/",
+              "excerpt": "characterized by pauci-immune perivascular neutrophilic inflammation with necrosis and thrombosis. They are associated with autoantibodies that target the neutrophil cytoplasmic proteases: proteinase 3 (PR3) or myeloperoxidase (MPO) [ ].",
+              "status": "source_verified",
+              "pmid": "39991192",
+              "pmcid": "PMC11845170"
+            }
+          ]
+        },
+        {
+          "id": "826-mpa-03",
+          "question": "Which respiratory pattern does the review call characteristic of granulomatosis with polyangiitis rather than a shared feature?",
+          "options": {
+            "A": "Extravascular granulomatous inflammation of the upper and lower respiratory tract",
+            "B": "Adult-onset asthma, which it assigns to granulomatosis with polyangiitis",
+            "C": "No respiratory finding is contrasted",
+            "D": "Diffuse alveolar haemorrhage as a feature exclusive to granulomatosis with polyangiitis"
+          },
+          "correctAnswer": "A",
+          "explanation": "Extravascular granulomatous inflammation of the upper and lower respiratory tract is a characteristic of granulomatosis with polyangiitis. Kidney disease is frequent in both that disease and microscopic polyangiitis, in 70 to 80 percent.",
+          "difficulty": "hard",
+          "sourceRefs": [
+            {
+              "sourceBody": "Glomerular Diseases",
+              "sourceYear": 2025,
+              "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC11845170/",
+              "excerpt": "Extravascular granulomatous inflammation of the upper and lower respiratory tract is a characteristic of GPA. Kidney disease is frequent in both GPA and MPA (70–80%), but less common in EGPA.",
+              "status": "source_verified",
+              "pmid": "39991192",
+              "pmcid": "PMC11845170"
+            }
+          ]
+        },
+        {
+          "id": "826-mpa-04",
+          "question": "Who does the review say typically has the worst kidney prognosis?",
+          "options": {
+            "A": "Patients with MPO-ANCA and microscopic polyangiitis",
+            "B": "Patients with eosinophilic granulomatosis and no kidney disease",
+            "C": "Patients with PR3-ANCA and no renal involvement",
+            "D": "The review says all ANCA subsets have the same kidney outlook"
+          },
+          "correctAnswer": "A",
+          "explanation": "The review says patients with MPO-ANCA and microscopic polyangiitis typically have the worst kidney prognosis because of chronic damage.",
+          "difficulty": "medium",
+          "sourceRefs": [
+            {
+              "sourceBody": "Glomerular Diseases",
+              "sourceYear": 2025,
+              "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC11845170/",
+              "excerpt": "Patients with MPO-ANCA and MPA typically have the worst kidney prognosis due to chronic damage [ ].",
+              "status": "source_verified",
+              "pmid": "39991192",
+              "pmcid": "PMC11845170"
+            }
+          ]
+        },
+        {
+          "id": "826-mpa-05",
+          "question": "How widely does the review say pulmonary capillaritis with diffuse alveolar haemorrhage occurs?",
+          "options": {
+            "A": "Across the spectrum of ANCA-associated vasculitis",
+            "B": "Only in eosinophilic granulomatosis with polyangiitis",
+            "C": "Only in infection, never in vasculitis",
+            "D": "The review says the lung is never involved"
+          },
+          "correctAnswer": "A",
+          "explanation": "The review says pulmonary capillaritis manifesting as diffuse alveolar haemorrhage can occur across the spectrum of ANCA-associated vasculitis.",
+          "difficulty": "easy",
+          "sourceRefs": [
+            {
+              "sourceBody": "Glomerular Diseases",
+              "sourceYear": 2025,
+              "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC11845170/",
+              "excerpt": "Pulmonary capillaritis manifesting as diffuse alveolar haemorrhage can occur across the spectrum of AAV.",
+              "status": "source_verified",
+              "pmid": "39991192",
+              "pmcid": "PMC11845170"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "topicKey": "musculoskeletal-ultrasound-in-rheumatology-synovitis-power-doppler-gui",
+      "topicDisplayName": "Musculoskeletal ultrasound in rheumatology: synovitis, power Doppler, guided injection",
+      "aliases": [
+        "828",
+        "Rheumatology"
+      ],
+      "storedRowCount": 1,
+      "coverageNote": "The 2017 EULAR ultrasound-procedure paper was not available as full text. These two open papers cover the missing pieces: the OMERACT/EULAR ultrasound definitions of effusion, synovial hypertrophy, and Doppler signal, and the practical conduct of an ultrasound-guided musculoskeletal injection.",
+      "mcqs": [
+        {
+          "id": "828-us-01",
+          "question": "How does the synovitis review define an effusion?",
+          "options": {
+            "A": "Displaceable, compressible, hypoechoic or anechoic intra-articular material that does not show a Doppler signal",
+            "B": "Non-displaceable hyperechoic tissue with Doppler flow",
+            "C": "Any bright line on the bone surface",
+            "D": "A compressible mass outside the joint"
+          },
+          "correctAnswer": "A",
+          "explanation": "The review, citing the OMERACT/EULAR ultrasound task force, defines effusion as abnormal hypoechoic or anechoic intra-articular material that is displaceable and compressible and does not exhibit a Doppler signal.",
+          "difficulty": "medium",
+          "sourceRefs": [
+            {
+              "sourceBody": "Acta Biomedica",
+              "sourceYear": 2018,
+              "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6179068/",
+              "excerpt": "effusion is defined as the abnormal presence of hypoechoic or anechoic intra-articular material that is displaceable and compressible, but does not exhibit a Doppler signal,",
+              "status": "source_verified",
+              "pmid": "29350637",
+              "pmcid": "PMC6179068"
+            }
+          ]
+        },
+        {
+          "id": "828-us-02",
+          "question": "How is synovial hypertrophy distinguished in that definition?",
+          "options": {
+            "A": "Abnormal hyperechoic intra-articular tissue that is not displaceable, is poorly compressible, and may show Doppler signal",
+            "B": "Fluid that compresses away and has no Doppler signal",
+            "C": "A normal cartilage line",
+            "D": "Subcutaneous fat"
+          },
+          "correctAnswer": "A",
+          "explanation": "Synovial hypertrophy is abnormal hyperechoic intra-articular tissue that is non-displaceable and poorly compressible and might exhibit a Doppler signal.",
+          "difficulty": "medium",
+          "sourceRefs": [
+            {
+              "sourceBody": "Acta Biomedica",
+              "sourceYear": 2018,
+              "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6179068/",
+              "excerpt": "synovial hypertrophy or proliferation is represented by the abnormal presence of hyperechoic intra-articular tissue that is nondisplaceable and poorly compressible, and might also exhibit a Doppler signal.",
+              "status": "source_verified",
+              "pmid": "29350637",
+              "pmcid": "PMC6179068"
+            }
+          ]
+        },
+        {
+          "id": "828-us-03",
+          "question": "What does the review call the main ultrasound marker of inflammatory activity?",
+          "options": {
+            "A": "Colour or power Doppler signal within synovial hypertrophy",
+            "B": "Anechoic fluid without Doppler signal",
+            "C": "Cortical irregularity alone",
+            "D": "Shadowing from bone"
+          },
+          "correctAnswer": "A",
+          "explanation": "The review says colour or power Doppler signal within synovial hypertrophy is the main pathologic marker of inflammatory activity.",
+          "difficulty": "easy",
+          "sourceRefs": [
+            {
+              "sourceBody": "Acta Biomedica",
+              "sourceYear": 2018,
+              "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6179068/",
+              "excerpt": "color or power Doppler signals within synovial hypertrophy is the main pathologic marker of inflammatory activity ( , ).",
+              "status": "source_verified",
+              "pmid": "29350637",
+              "pmcid": "PMC6179068"
+            }
+          ]
+        },
+        {
+          "id": "828-us-04",
+          "question": "What combination does the procedure review say is used for the most common injections?",
+          "options": {
+            "A": "Local anaesthetic plus a particulate or water-soluble steroid",
+            "B": "Antibiotic alone",
+            "C": "Contrast without a drug",
+            "D": "Saline only"
+          },
+          "correctAnswer": "A",
+          "explanation": "The most common injections use a combination of local anaesthetic and either a particulate or water-soluble steroid for pain or swelling in a joint, bursa, tendon sheath, or nerve.",
+          "difficulty": "easy",
+          "sourceRefs": [
+            {
+              "sourceBody": "Journal of Ultrasonography",
+              "sourceYear": 2023,
+              "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC10668939/",
+              "excerpt": "The most common injections are performed using a combination of local anesthetic and either a particulate or water-soluble steroid preparation to address symptoms of pain or swelling, usually localized to a joint (arthritis), bursa (bursitis), tendon sheath (tenosynovitis or tendinosis), or nerve (neuritis/neuroma).",
+              "status": "source_verified",
+              "pmid": "38020507",
+              "pmcid": "PMC10668939"
+            }
+          ]
+        },
+        {
+          "id": "828-us-05",
+          "question": "What does the in-plane, or long-axis, approach keep in view?",
+          "options": {
+            "A": "The length and tip of the needle",
+            "B": "Only the transducer cable",
+            "C": "The needle hub, with the tip deliberately out of the image",
+            "D": "No part of the needle"
+          },
+          "correctAnswer": "A",
+          "explanation": "In the long-axis or in-plane approach the needle is seen along its length, and the length and tip are kept in view.",
+          "difficulty": "medium",
+          "sourceRefs": [
+            {
+              "sourceBody": "Journal of Ultrasonography",
+              "sourceYear": 2023,
+              "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC10668939/",
+              "excerpt": "long axis” or “in-plane” injection approach, the transducer is orientated such that the needle will be visualized along its length, with the length and tip of the needle kept in view at all times ( ).",
+              "status": "source_verified",
+              "pmid": "38020507",
+              "pmcid": "PMC10668939"
+            }
+          ]
+        }
+      ]
     }
   ]
 }

@@ -1,8 +1,24 @@
 {
-  "scope": "No accepted source.",
-  "keyRecommendations": [],
-  "clinicalBottomLine": "No open full text covering Heberden nodes, Bouchard nodes, and trapeziometacarpal osteoarthritis was accepted.",
+  "scope": "Clinical pattern of hand osteoarthritis, including nodes and the thumb base.",
+  "keyRecommendations": [
+    {
+      "text": "Symptoms are often intermittent and affect the distal and proximal interphalangeal joints, the index and middle metacarpophalangeal joints, and the thumb base.",
+      "strength": "not_graded",
+      "population": "Hand osteoarthritis"
+    },
+    {
+      "text": "Heberden nodes, Bouchard nodes, and bony enlargement are the clinical hallmarks.",
+      "strength": "not_graded",
+      "population": "Hand osteoarthritis"
+    },
+    {
+      "text": "Thumb-base deformity in this examination was subluxation and adduction. Thumb-base OA in non-erosive hand OA is described as an important factor for pain and disability.",
+      "strength": "not_graded",
+      "population": "Thumb-base osteoarthritis"
+    }
+  ],
+  "clinicalBottomLine": "Hand osteoarthritis declares itself in the finger joints and the thumb base, with Heberden and Bouchard nodes and bony enlargement. Thumb-base disease, including subluxation and adduction, matters for pain and function even when the finger disease is non-erosive.",
   "notableCaveats": [
-    "PMC hits were epidemiology papers or a 964-character historical note, not a management or clinical-description source. The 2018 EULAR hand OA recommendations are not in PMC."
+    "In this cohort, Bouchard nodes were associated with a higher Duruöz hand-index score and Heberden nodes were not. That is a study association, not a rule that Heberden nodes are painless. The paper uses thumb base and first carpometacarpal joint rather than the word trapeziometacarpal."
   ]
 }
