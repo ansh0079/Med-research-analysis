@@ -1,36 +1,36 @@
 {
   "catalogueId": "206",
   "topic": "Pancoast Tumors",
-  "scope": "Open review abstract of superior sulcus (Pancoast) tumours: local invasion, historical survival, and trimodality treatment.",
+  "scope": "Open review of superior sulcus (Pancoast) tumors: local invasion, the Pancoast-Tobias syndrome, and induction chemoradiotherapy before resection.",
   "keyRecommendations": [
     {
-      "text": "These tumours invade the apical chest wall and can involve the lower brachial plexus, ribs, vertebrae, subclavian vessels, or stellate ganglion, producing arm or shoulder pain or Horner syndrome.",
+      "text": "Induction chemoradiotherapy is the standard of care for a potentially resectable Pancoast tumor, followed by an attempt at complete resection.",
       "strength": "not_graded",
-      "population": "Superior sulcus tumours"
+      "population": "Resectable superior sulcus tumor"
     },
     {
-      "text": "They were originally considered universally fatal. Shaw and Paulson in 1956 combined radiotherapy and surgery, with 5-year survival of about 30%.",
+      "text": "The Pancoast-Tobias syndrome includes Horner syndrome, shoulder pain, hand and arm muscle atrophy, and subclavian vein obstruction.",
       "strength": "not_graded",
-      "population": "Historical treatment"
+      "population": "Presentation"
     },
     {
-      "text": "Trimodality treatment, induction concurrent chemoradiotherapy followed by resection, became standard in the 1990s, with 5-year survival up to 44% in the text.",
+      "text": "Five-year survival after R0 resection is described as quite good (54 to 77 percent). Distant metastasis, especially brain, is the main recurrence pattern.",
       "strength": "not_graded",
-      "population": "Superior sulcus tumours"
+      "population": "Outcomes"
     }
   ],
-  "clinicalBottomLine": "A Pancoast tumour is an apical lung cancer that can cause arm or shoulder pain or Horner syndrome. Modern treatment in this review is induction chemoradiotherapy followed by resection.",
+  "clinicalBottomLine": "A Pancoast tumor invades the thoracic inlet and can cause the Pancoast-Tobias syndrome. For a potentially resectable tumor, give induction chemoradiotherapy and then try for a complete resection.",
   "notableCaveats": [
-    "The PMC XML is essentially the abstract. Operative details and trial doses are not in the open text."
+    "Replaces the abstract-only PMC record with this open full review."
   ],
   "source": {
-    "title": "Superior sulcus tumors (Pancoast tumors).",
-    "year": 2016,
-    "pmid": "27429965",
-    "pmcid": "PMC4930518",
-    "doi": "",
-    "url": "https://europepmc.org/articles/PMC4930518",
-    "sourceBody": "Open review",
+    "title": "Superior sulcus (Pancoast) tumors: current evidence on diagnosis and radical treatment.",
+    "year": 2013,
+    "pmid": "24102007",
+    "pmcid": "PMC3791502",
+    "doi": "10.3978/j.issn.2072-1439.2013.04.08",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3791502/",
+    "sourceBody": "J Thorac Dis",
     "storedAs": ""
   }
 }

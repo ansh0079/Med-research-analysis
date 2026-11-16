@@ -4,131 +4,131 @@
   "mcqs": [
     {
       "id": "353-01",
-      "question": "What is the status of FEV1 if the patient coughs during the first second?",
+      "question": "Which four volumes does the review list as the standard static lung volumes?",
       "options": {
-        "A": "Neither acceptable nor usable",
-        "B": "Acceptable if the FVC is large",
-        "C": "The preferred value",
-        "D": "Usable but not reportable only if the cough is silent",
-        "E": "The standard does not mention cough"
+        "A": "Tidal, inspiratory reserve, expiratory reserve, and residual volume",
+        "B": "FEV1, peak flow, DLCO, and FVC only",
+        "C": "Only vital capacity",
+        "D": "Inspiratory capacity is a volume rather than a capacity in this sentence",
+        "E": "The review does not name them"
       },
       "correctAnswer": "A",
-      "correctAnswerText": "Neither acceptable nor usable",
-      "explanation": "A cough in the first second can affect FEV1, and that FEV1 is neither acceptable nor usable.",
+      "correctAnswerText": "Tidal, inspiratory reserve, expiratory reserve, and residual volume",
+      "explanation": "The static volumes named are tidal, inspiratory reserve, expiratory reserve, and residual volume. The capacities are listed separately.",
       "difficulty": "medium",
       "sourceRefs": [
         {
-          "sourceBody": "ATS/ERS",
-          "sourceYear": 2019,
-          "sourceUrl": "https://europepmc.org/articles/PMC6794117",
-          "pmid": "31613151",
-          "pmcid": "PMC6794117",
-          "doi": "",
-          "excerpt": "A cough during the first second of the maneuver can affect the measured FEV 1 value, and the FEV 1 from such a maneuver is neither acceptable nor usable."
+          "sourceBody": "Multidiscip Respir Med",
+          "sourceYear": 2017,
+          "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5299792/",
+          "pmid": "28194273",
+          "pmcid": "PMC5299792",
+          "doi": "10.1186/s40248-017-0084-5",
+          "excerpt": "The static lung volumes/capacities are further subdivided into four standard volumes (tidal, inspiratory reserve, expiratory reserve, and residual volumes) and four standard capacities (inspiratory, functional residual, vital and total lung capacities)."
         }
       ]
     },
     {
       "id": "353-02",
-      "question": "Which forced-expiratory-time criterion does the standard describe as an end-of-test signal, with a double beep?",
+      "question": "Why can residual volume, FRC, and total lung capacity not be measured with a simple spirometer?",
       "options": {
-        "A": "An FET of 15 seconds",
-        "B": "An FET of 1 second",
-        "C": "An FET of 60 seconds",
-        "D": "No time criterion exists",
-        "E": "Only a slow vital capacity"
+        "A": "Residual volume is part of both FRC and TLC, so those capacities include gas that a spirometer does not measure",
+        "B": "Spirometers measure TLC directly",
+        "C": "Residual volume is the same as vital capacity",
+        "D": "The review says a spirometer is sufficient for all static volumes",
+        "E": "FRC is an exhaled volume only"
       },
       "correctAnswer": "A",
-      "correctAnswerText": "An FET of 15 seconds",
-      "explanation": "Achieving an FET of 15 seconds is an end-of-forced-expiration criterion, signalled on the display and by a double beep.",
+      "correctAnswerText": "Residual volume is part of both FRC and TLC, so those capacities include gas that a spirometer does not measure",
+      "explanation": "RV is part of FRC and of TLC, so those capacities are impossible to measure through simple spirometers.",
       "difficulty": "medium",
       "sourceRefs": [
         {
-          "sourceBody": "ATS/ERS",
-          "sourceYear": 2019,
-          "sourceUrl": "https://europepmc.org/articles/PMC6794117",
-          "pmid": "31613151",
-          "pmcid": "PMC6794117",
-          "doi": "",
-          "excerpt": "The patient has achieved an FET of 15 seconds."
+          "sourceBody": "Multidiscip Respir Med",
+          "sourceYear": 2017,
+          "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5299792/",
+          "pmid": "28194273",
+          "pmcid": "PMC5299792",
+          "doi": "10.1186/s40248-017-0084-5",
+          "excerpt": "RV constitutes part of FRC as well as TLC and, therefore, these capacities are impossible to measure through simple spirometers."
         }
       ]
     },
     {
       "id": "353-03",
-      "question": "When are FEV1 and FVC not acceptable because of the inspiratory comparison?",
+      "question": "Which methods does the review name for measuring RV, FRC, and TLC?",
       "options": {
-        "A": "When FIVC minus FVC is greater than 0.100 L or 5% of FVC, whichever is greater",
-        "B": "When they are equal",
-        "C": "When FIVC is smaller than FVC",
-        "D": "The comparison is not used",
-        "E": "Only if the patient is a child"
+        "A": "Radiology, body plethysmography, or dilution methods such as helium dilution and nitrogen washout",
+        "B": "Peak-flow meter only",
+        "C": "Pulse oximetry",
+        "D": "A single forced blow",
+        "E": "No method is named"
       },
       "correctAnswer": "A",
-      "correctAnswerText": "When FIVC minus FVC is greater than 0.100 L or 5% of FVC, whichever is greater",
-      "explanation": "If FIVC−FVC exceeds 0.100 L or 5% of FVC, whichever is greater, FEV1 and FVC are not acceptable.",
+      "correctAnswerText": "Radiology, body plethysmography, or dilution methods such as helium dilution and nitrogen washout",
+      "explanation": "Measurement is based on radiological, plethysmographic, or dilutional techniques, including helium dilution and nitrogen washout.",
       "difficulty": "medium",
       "sourceRefs": [
         {
-          "sourceBody": "ATS/ERS",
-          "sourceYear": 2019,
-          "sourceUrl": "https://europepmc.org/articles/PMC6794117",
-          "pmid": "31613151",
-          "pmcid": "PMC6794117",
-          "doi": "",
-          "excerpt": "FIVC − FVC > 0.100 L or 5% of FVC, whichever is greater"
+          "sourceBody": "Multidiscip Respir Med",
+          "sourceYear": 2017,
+          "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5299792/",
+          "pmid": "28194273",
+          "pmcid": "PMC5299792",
+          "doi": "10.1186/s40248-017-0084-5",
+          "excerpt": "The procedures used for measurement of RV, FRC and TLC are based on radiological, plethysmographic or dilutional techniques (helium dilution and nitrogen washout methods) [4]."
         }
       ]
     },
     {
       "id": "353-04",
-      "question": "When spirometry is done for diagnosis, what does the standard say about bronchodilator timing?",
+      "question": "For which ventilatory defects does the review say static lung volumes are important?",
       "options": {
-        "A": "It should be done before and after a bronchodilator",
-        "B": "Only after a bronchodilator",
-        "C": "Bronchodilator testing is forbidden",
-        "D": "Only peak flow is required",
-        "E": "The sentence is not in the standard"
+        "A": "Both obstructive and restrictive defects",
+        "B": "Restrictive defects only",
+        "C": "Neither; only the flow-volume loop matters",
+        "D": "Only asthma in children",
+        "E": "Only neuromuscular disease"
       },
       "correctAnswer": "A",
-      "correctAnswerText": "It should be done before and after a bronchodilator",
-      "explanation": "All initial spirometry done for diagnostic reasons should be performed before and after bronchodilator administration.",
+      "correctAnswerText": "Both obstructive and restrictive defects",
+      "explanation": "Static lung volumes are equally important for evaluation of obstructive as well as restrictive ventilatory defects. Dynamic volumes are described as essential for obstructive disease.",
       "difficulty": "medium",
       "sourceRefs": [
         {
-          "sourceBody": "ATS/ERS",
-          "sourceYear": 2019,
-          "sourceUrl": "https://europepmc.org/articles/PMC6794117",
-          "pmid": "31613151",
-          "pmcid": "PMC6794117",
-          "doi": "",
-          "excerpt": "all initial spirometry done for diagnostic reasons should be performed before and after bronchodilator administration"
+          "sourceBody": "Multidiscip Respir Med",
+          "sourceYear": 2017,
+          "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5299792/",
+          "pmid": "28194273",
+          "pmcid": "PMC5299792",
+          "doi": "10.1186/s40248-017-0084-5",
+          "excerpt": "static lung volumes are equally important for evaluation of obstructive as well as restrictive ventilatory defects."
         }
       ]
     },
     {
       "id": "353-05",
-      "question": "What does the standard say is needed to note a complete set of acceptable measurements?",
+      "question": "In obstruction, air trapping correlates positively with which volumes?",
       "options": {
-        "A": "Three acceptable FEV1 and three acceptable FVC measurements, not necessarily from the same manoeuvres",
-        "B": "One manoeuvre only",
-        "C": "A single peak-flow blow",
-        "D": "No acceptability rules",
-        "E": "Ten slow breaths without forced expiration"
+        "A": "RV, FRC, TLC, and the RV/TLC ratio",
+        "B": "Only vital capacity",
+        "C": "Only inspiratory capacity",
+        "D": "DLCO alone",
+        "E": "The review says air trapping lowers RV"
       },
       "correctAnswer": "A",
-      "correctAnswerText": "Three acceptable FEV1 and three acceptable FVC measurements, not necessarily from the same manoeuvres",
-      "explanation": "The note refers to three acceptable FEV1 and three acceptable FVC measurements, not necessarily from the same manoeuvre.",
+      "correctAnswerText": "RV, FRC, TLC, and the RV/TLC ratio",
+      "explanation": "Air trapping correlates positively with RV, FRC, TLC, and RV/TLC, and negatively with VC, IC, and IC/TLC.",
       "difficulty": "medium",
       "sourceRefs": [
         {
-          "sourceBody": "ATS/ERS",
-          "sourceYear": 2019,
-          "sourceUrl": "https://europepmc.org/articles/PMC6794117",
-          "pmid": "31613151",
-          "pmcid": "PMC6794117",
-          "doi": "",
-          "excerpt": "three acceptable FEV 1 and three acceptable FVC measurements"
+          "sourceBody": "Multidiscip Respir Med",
+          "sourceYear": 2017,
+          "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5299792/",
+          "pmid": "28194273",
+          "pmcid": "PMC5299792",
+          "doi": "10.1186/s40248-017-0084-5",
+          "excerpt": "air trapping in obstructive ventilatory defects correlates positively with RV, FRC, TLC and RV/TLC, but negatively with VC, IC and IC/TLC."
         }
       ]
     }

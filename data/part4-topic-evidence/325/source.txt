@@ -1,0 +1,5059 @@
+Benign Tumors and Tumorlike Conditions of the Lung | Archives of Pathology & Laboratory Medicine Skip to Main Content
+
+Search Dropdown Menu
+
+User Tools Dropdown
+
+Register
+
+Sign In
+
+Toggle MenuMenu
+
+Skip Nav Destination
+
+Close navigation menu
+
+Article navigation
+
+Volume 132, Issue 7
+
+July 2008
+
+- Next Article
+- Previous Article
+- Jobs
+
+Abstract
+
+HISTORICAL PERSPECTIVE AND OVERVIEW
+
+BENIGN EPITHELIAL TUMORS
+
+References
+
+Author notes
+
+Article Navigation
+
+SPECIAL ISSUE—PULMONARY NEOPLASIA| July 01 2008
+
+# Benign Tumors and Tumorlike Conditions of the Lung
+
+Alain C. Borczuk, MD
+
+Alain C. Borczuk, MD
+
+From the Department of Surgical Pathology, Columbia University Medical Center, New York, NY
+
+Search for other works by this author on:
+
+This Site
+
+PubMed
+
+Google Scholar
+
+Arch Pathol Lab Med (2008) 132 (7): 1133–1148.
+
+https://doi.org/10.5858/2008-132-1133-BTATCO
+
+## Abstract
+
+Context.—Benign tumors and tumorlike conditions of the lung are encountered in the pathologic evaluation of asymptomatic and symptomatic lung nodules. Since many of these lesions are uncommon, they can be diagnostically challenging.
+
+Objective.—To review the current classification of benign lung tumors, with emphasis on histopathology and useful ancillary studies.
+
+Data Sources.—The current World Health Organization classification system for lung neoplasms and review of relevant publications.
+
+Conclusions.—Despite improved imaging techniques, benign lung nodules are encountered in wedge biopsy and resection specimens. Histopathology, immunohistochemistry, and molecular techniques ensure accurate pathologic diagnosis and have shed light on the histogenesis of these unusual lesions.
+
+Benign neoplasms of the lung represent a relatively uncommon group of tumors of epithelial and mesenchymal origin. These tumors are generally small (less than 3 cm) and, depending on their typical site of origin (endobronchial vs lung parenchymal), can be associated with symptoms of endobronchial involvement such as cough, postobstructive pneumonia, and hemoptysis or can be asymptomatic solitary pulmonary nodules. In addition to true neoplasms, inflammatory, fibrotic, and reactive tumoral lesions can form lung nodules.
+
+## HISTORICAL PERSPECTIVE AND OVERVIEW
+
+Since the advent of diagnostic imaging, lung nodules have been detected. In the era prior to computed tomographic (CT) scanning, lesions detected on chest x-ray films were diagnostic dilemmas often requiring resection. In a series published in 1963, Steele 1 described the outcome of 882 male patients with asymptomatic solitary pulmonary nodules (less than 3 cm). Benign lesions constituted 64% of these lesions, most were granulomatous. Of the neoplastic proliferations, 10% were benign, many of which were hamartomas. A similar review published in 1964, summarizing the experience from 1948 to 1963, reported 62% of nodules detected on chest x-ray films as benign. 2 These benign lesions were also frequently granulomatous. More than a decade later, in 1975, Higgins et al 3 published a series demonstrating 68% of the lesions discovered as benign.
+
+In a review of the 10-year surgical experience at the Mayo Clinic (Rochester, Minn), Arrigoni et al 4 described 130 patients with benign lung tumors. The following is the distribution of tumors from that series: hamartomas (76%), benign fibrous mesothelioma/solitary fibrous tumor (SFT; 12.3%), inflammatory pseudotumor (IPT; 5.4%), lipoma (1.5%), leiomyoma (1.5%), and single cases of hemangioma, adenoma of the mucous glands, and mixed tumor. It was noted that the majority of the neoplasms were asymptomatic, and endobronchial location was observed in only 6% of these tumors.
+
+Advances in imaging techniques (CT scanning and positron emission tomography scanning) as well as development of less invasive diagnostic techniques (transbronchial biopsy, percutaneous needle biopsies, and video-assisted thoracoscopic surgery) have had impacts on the detection and management of both asymptomatic solitary pulmonary nodules and endobronchial lesions. Overall, benign lesions represent a smaller percentage of resected nodules, as interval change between studies can be used as a parameter to assess growth, stability, or disappearance. In a radiologic series of CT-detected solitary pulmonary nodules, analysis of the 103 lesions considered to be benign included 35% that did not require biopsy because of interval resolution between scans, granulomas (23%), hamartomas (14%), specific infection (7%), infarct (4%), organizing pneumonia (2%), and single cases of nodular amyloid, SFT, intraparenchymal lymph node, leiomyoma, and IPT. In that series, lesions smaller than 2 cm were likely to be benign, while of lesions larger than 2 cm, only 14% were benign. 5 In a similar series published in 1999, an examination of 254 resected nodules showed 45% were benign, with hamartomas (8%), intraparenchymal lymph node (6%), and granulomas, scars, organizing pneumonia, and tumorlets reported. The proportion of nodules that were malignant also increased with size stratification. 6
+
+A 2003 study of 429 patients with indeterminate solitary pulmonary nodules requiring video-assisted thoracoscopic surgery identified 370 benign lesions, which included hamartomas, granulomas, scars, and a case of nodular amyloid. In that series, age older than 55 years, size greater than 2 cm, and a history of cancer were all features associated with malignancy. 7
+
+In 2006, Yi et al 8 studied solitary pulmonary nodules by high-resolution CT scan as well as integrated CT scan/ positron emission tomography. Of the 119 nodules, 40 were benign (34%). Of the benign lesions, 50% were determined to be benign by serial follow-up scans. Of the remaining lesions, organizing pneumonia, hamartomas, and granulomas (5 cases each), aspergilloma (2), and 1 each of alveolar adenoma, IPT, and sclerosing hemangioma (SCH; pneumocytoma) were reported.
+
+Finally, in a series of CT screen–detected nodules from the Mayo Clinic, 40 resected nodules were reported, 8 (21%) of which were benign and included granulomas, hamartoma, intraparenchymal lymph node, infarct, and scar. 9
+
+What these studies collectively demonstrate is that improvements in imaging techniques have reduced the proportion of benign lesions among resected asymptomatic nodules. However, if we compare the tissue diagnoses of these resected nodules, granulomatous disease and hamartomas are consistently the most frequent among the benign diagnoses. Although the scope of this review cannot encompass pulmonary infections, it is noteworthy that specific infections identified in these studies include tuberculosis, histoplasmosis, coccidioidomycosis, and cryptococcosis among granulomatous lesions as well as aspergilloma and more rarely dirofilaria. In addition, intraparenchymal lymph nodes and infarcts are also among the benign nodules in several series and are usually readily identifiable lesions histologically.
+
+If we then focus on the remaining benign tumors and tumorlike conditions, it is of interest to compare the classification of these lesions from the Armed Forces Institute of Pathology by Averill Liebow in 1952, 10 in a surgical review by Don Miller in 1969, 11 and in the current World Health Organization classification from 1999/2004, 12, 13 as summarized in the Table, which shows the evolution of the current classification.
+
+Benign Tumors of the Lower Respiratory Tract*
+
+View large
+
+View Large
+
+## BENIGN EPITHELIAL TUMORS
+
+### Papillomas (Squamous, Glandular, Mixed)
+
+It has long been recognized that papillomas occur in the lower respiratory tract, albeit more rarely than in the upper tract. These are generally exophytic tumors in the more proximal airways, but cases have been described of distal papillomas as well as cases with a more inverted growth pattern. They can be solitary or multiple, with multifocality associated with multiple papillomas of the upper respiratory/aerodigestive tract. When these completely obstruct the airway, postobstructive pneumonia can result.
+
+In a review of 11 cases of lower respiratory papillomas, al-Saleem et al 14 described multiple papillomas as rare in isolation of upper tract involvement. Tracheobronchial predominance was reported rather than lung parenchymal disease. Men were more frequently affected than women, and 7 of 11 cases were in children. Their review of existing literature indicated that 2% to 8% of cases with upper aerodigestive papillomatosis had lower airway involvement. This observation was confirmed more recently in a review of 448 children with upper airway papillomatosis, in which 9% had lower airway involvement and 2% had pulmonary involvement. 15
+
+In a review of solitary papillomas of adults, Flieder et al 16 described a central location and male predominance for squamous papillomas, the majority of which were exophytic. In that review, cases were separated into squamous papillomas, glandular papillomas, and mixed type. The squamous and mixed papillomas had a male predominance, and the squamous type was associated with human papillomavirus (HPV) infection, while the glandular type was not. Glandular papillomas were the rarest. Inverted growth patterns were described but were also considered to be rare.
+
+Given the association of squamous carcinoma with squamous papillomas, markers associated with transformation have been investigated both as predictive and confirmatory markers. Human papillomavirus typing has been investigated, and it has been proposed that HPV types 16, 18, 31, 33, and 35 may represent high-risk HPV types in these lesions, 17 as they are in other sites. Additionally, it has been suggested that HPV-11 may be associated with malignant transformation in squamous papillomas of the lung and upper airway. 18–20 While nuclear accumulation of p53 by immunohistochemistry, loss of Rb immunoreactivity, and decrease in p21 have all been described in lesions that have transformed to malignancy, it is unclear whether these markers are helpful as a predictor of malignant transformation prior to morphologic changes of dysplasia. 18, 21, 22 As these markers are imperfect predictors of malignant transformation, difficult cases in which papillomas are not easily distinguished from carcinomas remain. As a result of uncertain malignant potential as well as their potential for recurrence, conservative complete excision of papillomas is recommended.
+
+#### Histopathology
+
+Exophytic papillomas have in common an epithelial layer covering a central fibrovascular core that forms a frondlike architecture that protrudes into the lumen of the airway (Figure 1, A). Squamous papillomas are lined by stratified squamous epithelium, sometimes keratinized, and in some lesions, viral cytopathic changes can be identified (Figure 1, B). Human papillomavirus in situ hybridization can be a useful adjunct test in this setting (Figure 1, C).
+
+Figure 1.
+
+View large Download slide
+
+Papillomas and fibroepithelial polyp. A, Large airway squamous papilloma at low power, showing multiple fibrovascular cores lined by stratified squamous epithelium. B, Stratified squamous epithelium of a squamous papilloma without dysplasia, but exhibiting cells with irregular nuclei and perinuclear clearing consistent with human papilloma virus cytopathic change. C, In situ hybridization for human papilloma virus of squamous papilloma seen in B showing staining for low-risk human papilloma virus in cytopathically altered cells. D, Small airway papilloma, distinct from adjacent lung alveolar parenchyma. E, Peripheral squamous papilloma showing stratified epithelium composed of round to polygonal cells without surface keratinization. F, Peripheral squamous papilloma with stratified epithelium showing distinct, flatter surface layer. G, Exophytic fibroepithelial polyp with expanded paucicellular core and blunt papillary surface projections. H, Fibroepithelial polyp is lined by pseudostratified ciliated respiratory-type epithelium. I, Focal areas of a fibroepithelial polyp can show squamous metaplasia, raising the possibility of a squamous papilloma (hematoxylin-eosin, original magnifications ×2 [A, D, and G], ×150 [B], ×100 [E, F, H, and I]; alkaline phosphatase, original magnification ×150 [C])
+
+Figure 1.
+
+View large Download slide
+
+Papillomas and fibroepithelial polyp. A, Large airway squamous papilloma at low power, showing multiple fibrovascular cores lined by stratified squamous epithelium. B, Stratified squamous epithelium of a squamous papilloma without dysplasia, but exhibiting cells with irregular nuclei and perinuclear clearing consistent with human papilloma virus cytopathic change. C, In situ hybridization for human papilloma virus of squamous papilloma seen in B showing staining for low-risk human papilloma virus in cytopathically altered cells. D, Small airway papilloma, distinct from adjacent lung alveolar parenchyma. E, Peripheral squamous papilloma showing stratified epithelium composed of round to polygonal cells without surface keratinization. F, Peripheral squamous papilloma with stratified epithelium showing distinct, flatter surface layer. G, Exophytic fibroepithelial polyp with expanded paucicellular core and blunt papillary surface projections. H, Fibroepithelial polyp is lined by pseudostratified ciliated respiratory-type epithelium. I, Focal areas of a fibroepithelial polyp can show squamous metaplasia, raising the possibility of a squamous papilloma (hematoxylin-eosin, original magnifications ×2 [A, D, and G], ×150 [B], ×100 [E, F, H, and I]; alkaline phosphatase, original magnification ×150 [C])
+
+Close modal
+
+While dyskeratotic cells and mitoses can be seen in papillomas, this needs to be distinguished from high-grade squamous dysplasia and invasive squamous carcinoma. It is acknowledged that this can be difficult in some exophytic cases and with downward/endophytic/inverted growth, atypical cytology can complicate the decision.
+
+Peripheral lesions arise in bronchioles (Figure 1, D). While stratified and nonkeratinizing squamous, the lining is more uniform with less defined strata (Figure 1, E). In some lesions, the nonkeratinizing surface may flatten into a horizontally oriented single cell layer, and this in the past has been called transitional cell papilloma. As this lesion is squamous ultrastructurally, these have been included in the squamous group (Figure 1, F). When the epithelial lining is composed of a single layer of columnar nonciliated epithelial cells, the lesions have been classified as glandular papillomas. When combinations of squamous and glandular lining are seen, these lesions are designated mixed squamous and glandular papilloma.
+
+In the differential diagnosis of papillomas is an exophytic endobronchial lesion made up of fronds lined by respiratory-type mucosa with fibrovascular and fibroblastic cores (Figure 1, G). These fibroblastic polyps of the large airways may represent reactive tumorlike conditions and are distinguished from papillomas by their pseudostratified ciliated respiratory lining (Figure 1, H). Areas of squamous metaplasia may be seen in fibroepithelial polyps (Figure 1, I), but the additional presence of ciliated respiratory lining is evidence of a fibroepithelial polyp rather than a papilloma.
+
+### Sclerosing Hemangioma (Pneumocytoma)
+
+Since its first description in 1956, 23 the histogenesis of this benign lung neoplasm has been debated. Although potential cells of origin have included endothelial, mesothelial, mesenchymal, epithelial, and neuroendocrine, the data support an epithelial, type II pneumocyte origin of this tumor. 24–28 This neoplasm has a female predominance with an average age at presentation in the fifth decade, ranging from the second to the eighth decade. 25, 29 It is typically an asymptomatic solitary nodule, although multiple lesions have been described in less than 5% of cases. 29, 30 Sclerosing hemangiomas have an average size of 3 cm, are rarely larger than 5 cm, and are occasionally predominantly cystic. 31 They are gray to tan-yellow and can contain punctuate hemorrhage. These tumors are thought to be benign, although rare cases with lymph node metastasis have been described. 25, 31
+
+#### Histopathology
+
+Sclerosing hemangiomas are well circumscribed but not encapsulated (Figure 2, A), with adjacent lung containing blood and hemosiderin-laden macrophages. The hallmark of these tumors is the presence of 2 morphologic populations, one that is cuboidal epithelium, resembling type II pneumocytes, and the other uniform round to oval stromal cells that are bland with pale eosinophilic cytoplasm. Four patterns have been described: solid, hemorrhagic, papillary, and sclerotic. In the papillary areas, the cuboidal epithelium lines a core composed of the pale round stromal cells. The solid areas are often composed of sheets of these round stromal cells (Figure 2, D). The hemorrhagic areas have hemosiderin accumulation and dilated spaces filled with blood. While in such areas the cuboidal cells can become attenuated resembling endothelium (thus leading to the characterization as a hemangioma), the cells are in fact epithelial (Figure 2, C). Sclerotic areas contain dense collagen (Figure 2, B). What is interesting about these patterns is that virtually all tumors have a combination of several of these patterns. For example, while the sclerotic pattern is virtually never the predominant pattern, it is almost always at least focally present. In this sense it is the variety of patterns within a single tumor combined with the 2 distinct bland cell populations that lead to the consideration of this lesion in the differential diagnosis of a neoplasm.
+
+Figure 2.
+
+View large Download slide
+
+Sclerosing hemangioma. A, At low power, sclerosing hemangioma is well demarcated and shows cystic and solid areas. Adjacent lung tissue is compressed and hemorrhagic. B, Sclerosing hemangioma showing interface between a papillary architecture and a sclerotic area. C, A hemorrhagic area shows hemosiderin, hemorrhage, and a space lined by flat to cuboidal cells. The walls of these spaces contain pale, round cells. D, A papillary/solid area shows sheets of pale eosinophilic round cells with a surface lining of cuboidal cells. The inset shows nuclear immunoreactivity for thyroid transcription factor 1 in both the surface cells and the sheetlike core of pale cells (hematoxylin-eosin, original magnifications ×2 [A], ×50 [B], and ×150 [C and D]; thyroid transcription factor 1 immunohistochemistry with 3,3;pr-diaminobenzidine chromogen, original magnification ×150 [D, inset])
+
+Figure 2.
+
+View large Download slide
+
+Sclerosing hemangioma. A, At low power, sclerosing hemangioma is well demarcated and shows cystic and solid areas. Adjacent lung tissue is compressed and hemorrhagic. B, Sclerosing hemangioma showing interface between a papillary architecture and a sclerotic area. C, A hemorrhagic area shows hemosiderin, hemorrhage, and a space lined by flat to cuboidal cells. The walls of these spaces contain pale, round cells. D, A papillary/solid area shows sheets of pale eosinophilic round cells with a surface lining of cuboidal cells. The inset shows nuclear immunoreactivity for thyroid transcription factor 1 in both the surface cells and the sheetlike core of pale cells (hematoxylin-eosin, original magnifications ×2 [A], ×50 [B], and ×150 [C and D]; thyroid transcription factor 1 immunohistochemistry with 3,3;pr-diaminobenzidine chromogen, original magnification ×150 [D, inset])
+
+Close modal
+
+Immunohistochemistry and electron microscopy have provided insights into the origin of these tumors. While the cuboidal epithelial cells are cytokeratin, epithelial membrane antigen, and thyroid transcription factor 1 (TTF-1) positive, the round stromal cells are typically cytokeratin negative, epithelial membrane antigen positive, and TTF-1 positive (Figure 2, D, inset). Although the epithelial cells are also positive for Clara cell 10-kd protein (CC10) and surfactant proteins, the round cells are negative for these markers. 25, 28, 31 This has led to the suggestion that these tumors are derived from type II pneumocytes, with the round cell component representing a primitive/ less differentiated type II cell/Clara cell precursor. 25, 28, 32 What has been demonstrated is that both components represent a clonal proliferation derived from the same clone, indicating that these lesions are neoplasms, and that both cellular components are neoplastic rather than reactive. 33
+
+Another feature of these round cells is immunoreactivity for progesterone receptor and less frequently for estrogen receptor. This has led to speculation that SCHs may be hormonally responsive and provides an explanation for the female predominance of this entity. 34
+
+A subset of cases has been seen in association with carcinoid tumorlets. In some cases adipose tissue can be seen. 25
+
+The variety of patterns within these lesions and relatively bland histology raise differential diagnoses that include hamartoma, carcinoid, and alveolar adenoma. Although hamartomas can also have entrapped fat and epithelial cells, the epithelium in hamartomas is more often bronchial/bronchiolar cells than type II cells, and hamartomas frequently contain cartilage. Hamartomas usually do not have the combination of patterns described in SCH. The recognition that the uniform round cell population is cytokeratin negative, neuroendocrine marker negative, and TTF-1 positive alongside a cuboidal epithelial proliferation that has a more typical type II pneumocyte profile makes this neoplasm sufficiently distinctive to exclude the other tumors in its differential diagnosis.
+
+### Alveolar Adenoma
+
+Alveolar adenomas are unusual neoplasms that are typically identified in the periphery of the lung. Originally described in 1986 by Yousem and Hochholzer 35 and then subsequently characterized by immunohistochemistry by Burke et al, 36 these tumors have been identified in adults ranging in age from 39 to 74 years, usually as an asymptomatic solitary pulmonary nodule. Alveolar adenomas are soft, multicystic, and lobulated. No definite gender predilection has been identified.
+
+The histogenesis of alveolar adenoma remains controversial. Although classified among epithelial neoplasms, it has also been suggested that it in fact represents a mesenchymal neoplasm with epithelial ingrowth or entrapment. Data suggesting that alveolar adenoma is a true neoplasm has been shown in 1 case 37 with an unbalanced (10:16) translocation. A microdissection study 38 suggested different cells of origin for the epithelium and stroma but did not reveal which population was more likely neoplastic.
+
+#### Histopathology
+
+At low power, these tumors appear circumscribed and are not encapsulated. The first impression is of a multicystic structure, with variably sized cysts largest at the center of the lesion (Figure 3, A). At higher magnification, the cystic spaces are lined by a cuboidal and sometimes hobnailed epithelial cell population. Papillary formations are absent (Figure 3, B and C). The spaces themselves can be empty or can contain eosinophilic material. In between the cysts is a bland, spindled cell stroma that has rare to absent mitotic activity. Variable numbers of inflammatory cells can be seen amid the stromal areas. Marked hypercellularity of the stroma is absent, and the stromal areas are usually spindled rather than epithelioid (Figure 3, C). Blood-filled lakes are absent, and hemosiderin accumulation is not a component. Occasionally, scarring can be seen, but not as prominently as in SCH.
+
+Figure 3.
+
+View large Download slide
+
+Alveolar adenoma. A, The interface between an alveolar adenoma and adjacent lung is distinct but without a fibrous capsule. The tumor shows a multicystic appearance with variably cellular cyst walls. B, The spaces are lined by a high cuboidal epithelium and are irregular, without papillations. C, The cyst walls show bland fibroblast-like stromal cells, and the epithelium is a single layer, without atypia. The stromal areas show moderate but bland cellularity and have interspersed chronic inflammatory cells and general absence of mitotic activity (hematoxylin-eosin, original magnifications ×4 [A], ×25 [B], and ×100 [C])
+
+Figure 3.
+
+View large Download slide
+
+Alveolar adenoma. A, The interface between an alveolar adenoma and adjacent lung is distinct but without a fibrous capsule. The tumor shows a multicystic appearance with variably cellular cyst walls. B, The spaces are lined by a high cuboidal epithelium and are irregular, without papillations. C, The cyst walls show bland fibroblast-like stromal cells, and the epithelium is a single layer, without atypia. The stromal areas show moderate but bland cellularity and have interspersed chronic inflammatory cells and general absence of mitotic activity (hematoxylin-eosin, original magnifications ×4 [A], ×25 [B], and ×100 [C])
+
+Close modal
+
+It was noted in the original description that these lesions were most often interpreted as lymphangiomas until it was recognized that the lining cells were epithelial rather than endothelial. Immunohistochemistry has confirmed that the lining cells are cytokeratin positive, TTF-1 positive, surfactant protein B and C positive, and CC10 negative. The stromal areas are negative for the above markers.
+
+The differential diagnosis of alveolar adenoma includes SCH (pneumocytoma), and mesenchymal tumors including hamartomas and, as previously mentioned, lymphangiomas. In SCH, the epithelial patterns are more varied, including papillary formations and the blood-filled spaces that led to their mischaracterization as hemangiomas. In addition, while cytokeratin immunoreactivity is exclusively seen in the lining cells in both lesions, TTF-1 immunoreactivity can be demonstrated in both epithelial and stromal components, while in alveolar adenoma, only epithelial cells are immunoreactive. In hamartomas, the epithelium is often bronchiolar, and the stromal areas contain adipose tissue and cartilage. Lymphangiomas are endothelial lined and therefore cytokeratin negative and positive for endothelial markers.
+
+### Type II Pneumocyte Papilloma
+
+This is a rare benign neoplasm composed of type II pneumocyte–lined papillae. 39 The tumor is solitary, peripheral, circumscribed, and generally small (1.5 cm). It is composed of uniform cuboidal cells with foamy cytoplasm consistent with type II cells, and TTF-1 immunohistochemistry is positive in these cells. Intranuclear cytoplasmic inclusions can be seen, but no atypia. In contrast to SCH, TTF-1–positive stromal cells are not seen.
+
+### Salivary Gland–Type Tumors
+
+While mucoepidermoid carcinomas and adenoid cystic carcinoma are uncommon malignant salivary gland–type central lung tumors, benign salivary gland–type tumors are very rare. The mucous gland adenoma and pleomorphic adenoma are included in the current World Health Organization classification. The mucous gland adenoma is described as a central tumor composed of uniform mucin-filled glands lined by mucous secreting cells. An important criterion is the absence of squamous or intermediate cells, in contrast with the more common mucoepidermoid carcinoma. Pleomorphic adenomas are very rare central benign tumors with a biphasic growth pattern. Although similar to their more common salivary gland counterparts, the tumors described in the lung are less likely to have well-formed cartilaginous components, and the epithelial component more likely forms cords and islands rather than well-defined ducts. 40 Circumscription, smaller size (<3.0 cm), and low mitotic activity are features associated with a more benign course.
+
+### Mucinous Cystadenoma
+
+This rare epithelial neoplasm of the lung most often presents as a peripheral asymptomatic cystic nodule, as illustrated in Figure 4, A. In a review of 76 cases of mucinous cystic tumors of the lung (>90% extracellular mucin), most were malignant or harbored significant atypia. 41 Although 10 cases were considered benign, the frequency of malignancy in this setting warrants extensive or complete sampling of cystic mucinous neoplasms. Of the lesions considered benign, an absence of atypia, paucicellularity, absence of solid areas, absence of stratification, absence of invasion, and a low proliferation index (Ki-67 < 5%) were considered criteria associated with benign tumors. An example of a bland mucinous lining is seen in Figure 4, B.
+
+Figure 4.
+
+View large Download slide
+
+Mucinous cystadenoma. A, Mucinous cystadenoma with unilocular cyst, demarcated and encapsulated. The tumor is predominantly mucin and the lining indistinct. B, Cyst lining of cells with intracytoplasmic mucin and bland nuclei, and lacking stratification, atypia, or invasion (hematoxylin-eosin, original magnifications ×2 [A] and ×150 [B])
+
+Figure 4.
+
+View large Download slide
+
+Mucinous cystadenoma. A, Mucinous cystadenoma with unilocular cyst, demarcated and encapsulated. The tumor is predominantly mucin and the lining indistinct. B, Cyst lining of cells with intracytoplasmic mucin and bland nuclei, and lacking stratification, atypia, or invasion (hematoxylin-eosin, original magnifications ×2 [A] and ×150 [B])
+
+Close modal
+
+Thyroid transcription factor 1 immunohistochemistry and cytokeratin 7 are frequently positive in these tumors. It was noted in one series that caudal type homeobox 2 was also positive in some cases and, therefore, caudal type homeobox 2 immunoreactivity does not rule out a primary lung origin. 42
+
+### Hamartoma
+
+The term hamartoma refers to a nonneoplastic disordered collection of benign tissue normally present in a particular organ, forming a nodule. It appears, however, that pulmonary hamartomas are benign mesenchymal neoplasms. As noted in the section on historical perspective, hamartomas are frequently encountered among benign nodules removed from the lung. These tumors are more often peripheral than central, with an endobronchial location in fewer than 10% of cases. The most common presentation is a solitary nodule, and most cases are smaller than 4 cm with an average of 1.5 cm. They are often easily removed from surrounding parenchyma and vary in color depending on their cellular composition. Hamartoma is seen more commonly in men (M/F, 2:1), and is not usually encountered in pediatric patients. 43, 44 The pattern of calcification on radiographic examination (“popcorn” calcification) is characteristic in about 30% of cases. Endobronchial hamartomas may be on average smaller, perhaps due to the higher likelihood of clinical symptoms, allowing for earlier detection.
+
+#### Histopathology
+
+Hamartomas contain a mixture of cartilage, fat, myxoid connective tissue, smooth muscle, and epithelium. They are often lobulated and the epithelium, which is usually bronchial/bronchiolar, may represent entrapped epithelium lining the clefts of these lobules. Cartilage is the most common mesenchymal tissue in these lesions but is not required for the diagnosis. The diagnosis relies on finding at least 2 benign mesenchymal tissues in the lesion and the characteristic growth pattern (Figure 5, A through C). Endobronchial lesions more commonly contain adipose tissue than cartilage.
+
+Figure 5.
+
+View large Download slide
+
+Hamartoma. A, Hamartomas are sharply demarcated but not encapsulated and show lobulated cleftlike spaces. B, An admixture of myxoid fibrous tissue (left), adipose tissue, and clefts lined with respiratory epithelium is seen. C, The combination of cartilage and adipose tissue supports a hamartoma rather than either a chondroma or a lipoma (hematoxylin-eosin, original magnifications ×2 [A], ×50 [B], and ×150 [C]).Figure 6. Intrapulmonary solitary fibrous tumor. A, This well-demarcated tumor at lower power shows cellular and sclerotic areas and some impression of lobulation. B, The interface shows moderately dense cellularity and hyalinized, collagen-rich areas. Entrapped epithelium can grow along cleftlike spaces. C, Bland spindled cells with low to moderate amounts of cytoplasm are seen with variable amounts of intervening collagen. Inset, Immunoreactivity for CD34 characterizes these spindled cells (hematoxylin-eosin, original magnifications ×2 [A], ×50 [B], and ×150 [C]; immunohistochemistry with 3,3;pr-diaminobenzidine chromogen, original magnification ×150 [C, inset])
+
+Figure 5.
+
+View large Download slide
+
+Hamartoma. A, Hamartomas are sharply demarcated but not encapsulated and show lobulated cleftlike spaces. B, An admixture of myxoid fibrous tissue (left), adipose tissue, and clefts lined with respiratory epithelium is seen. C, The combination of cartilage and adipose tissue supports a hamartoma rather than either a chondroma or a lipoma (hematoxylin-eosin, original magnifications ×2 [A], ×50 [B], and ×150 [C]).Figure 6. Intrapulmonary solitary fibrous tumor. A, This well-demarcated tumor at lower power shows cellular and sclerotic areas and some impression of lobulation. B, The interface shows moderately dense cellularity and hyalinized, collagen-rich areas. Entrapped epithelium can grow along cleftlike spaces. C, Bland spindled cells with low to moderate amounts of cytoplasm are seen with variable amounts of intervening collagen. Inset, Immunoreactivity for CD34 characterizes these spindled cells (hematoxylin-eosin, original magnifications ×2 [A], ×50 [B], and ×150 [C]; immunohistochemistry with 3,3;pr-diaminobenzidine chromogen, original magnification ×150 [C, inset])
+
+Close modal
+
+The presence of only one mesenchymal tissue type raises the possibility of lipoma, leiomyoma, or chondroma. Mesenchymal tumors of the lung can have entrapped epithelial elements; therefore, that finding alone is not sufficient to determine that a lesion is a hamartoma. Chondromas may be part of the Carney triad when seen in young women, and therefore this needs to be considered in pure chondroid lesions. Although smooth muscle nodules have been named leiomyomatous hamartomas, in women the diagnosis of “benign metastasizing leiomyoma” in association with uterine leiomyomas needs to be strongly considered.
+
+Cytogenetic abnormalities that have been identified in pulmonary hamartomas include rearrangements at 12q15 45 and 6p21. 46, 47 These rearrangements appear to involve HMGI-C at 12p15 and HMGI-Y at 6p21. 48, 49 These proteins are nonhistone nuclear proteins that participate in the regulation of gene expression via alteration of chromatin structure. These data support the contention that hamartomas are neoplastic, and similar abnormalities found in other mesenchymal tumors point to the mesenchymal component as neoplastic.
+
+### Solitary Fibrous Tumor of the Lung
+
+Solitary fibrous tumors are typically pleural-based tumors, but intrapulmonary examples have been described. 50, 51 Pulmonary SFTs are generally peripheral; they are sometimes on the pulmonary parenchymal side of the pleura but in some instances are completely separate from the pleura. They are firm and white with a whorled appearance. Solitary fibrous tumors may derive from submesothelial fibroblasts.
+
+#### Histopathology
+
+The tumors are typically well circumscribed (Figure 6, A) and at low power may appear variably cellular with dense cellular areas alongside hyalinized fibrosis (Figure 6, B). The neoplastic cells are bland spindled cells with moderate amounts of cytoplasm. The ingrowth of epithelial cells in tumor clefts in intrapulmonary cases has led to the observation that these tumors resemble fibroadenomas or phyllodes tumor of the breast. The characteristic immunoreactivity of the neoplastic cells for CD34 confirms the diagnosis of SFT (Figure 6, C).
+
+The differential diagnosis of SFT can include nerve sheath tumors, IPT, and pulmonary hyalinizing granuloma. Immunohistochemistry can resolve the differential diagnosis with nerve sheath tumors. Solitary fibrous tumors do not have the inflammatory infiltrate of IPT and are generally more cellular and less sclerotic than pulmonary hyalinizing granuloma. Distinguishing benign from malignant SFTs can be difficult, but this topic is beyond the scope of this review.
+
+### Clear Cell (Sugar Tumor)
+
+These rare tumors of the lung are typically asymptomatic peripheral nodules (<2 cm) with equal gender distribution. 52, 53 Histologically, these tumors are uniform proliferations of clear and granular cells with prominent cytoplasmic borders. These are not mitotically active tumors. The clearing is due to glycogen, and this can be demonstrated with periodic acid–Schiff stains (with and without diastase). The differential diagnosis is with metastatic renal cell carcinoma. While morphologically similar, the cytokeratin-negative, vimentin-negative, HMB-45–positive immunohistochemistry profile proves useful in distinguishing a sugar tumor from metastatic renal cell carcinoma. The demonstration of HMB-45 immunoreactivity in these lesions lends support to the contention that these tumors are perivascular epithelioid cells (PECOMAs). 54
+
+### Other Mesenchymal Tumors
+
+#### Nerve Sheath Tumors
+
+These are rare intrapulmonary tumors (<0.2%) and are histologically similar to schwannomas of other sites. 55
+
+#### Leiomyomas
+
+Primary solitary pulmonary leiomyomas can be endobronchial or parenchymal. The mitotic rate of benign neoplasms should be fewer than 5 in 50 high-power fields. 56 Multiple smooth muscle tumors of the lung in women with history of uterine leiomyomas are more likely part of the entity of benign metastasizing leiomyoma.
+
+#### Chondromas
+
+Chondromas are tumors composed of hyaline or myxohyaline cartilage without epithelial elements or other mesenchymal elements. Although these can represent isolated, sporadic tumors, such tumors with myxoid stroma in young women require examination for the Carney triad (gastric smooth muscle tumors, paraganglioma, chondromas). 57
+
+#### Lipomas
+
+These can be intraparenchymal or endobronchial, the latter being more common. 58 These tumors must be composed solely of adipose tissue; any component of lobulated cartilage or epithelial ingrowth on cleftlike spaces raises the possibility of an adipose tissue–rich hamartoma.
+
+#### Granular Cell Tumors
+
+In the Table, both the 1952 and 1969 benign tumor classifications included granular cell myoblastoma (granular cell tumor), although these do not appear to be common benign lung tumors. In limited series of cases, these tumors occur in adults (average age, 40 years) with a male predominance. 59 They are usually central tumors and therefore more likely to be symptomatic with cough, obstruction, or hemoptysis. They are often irregular and locally invasive and therefore can recur after conservative resection, but they do not metastasize.
+
+#### Histopathology
+
+Granular cell tumors are composed of large cells with abundant granular eosinophilic cytoplasm and bland nuclei (Figure 7). They are periodic acid– Schiff positive and by immunohistochemistry, S100 (Figure 7, inset) and vimentin positive and cytokeratin negative. The ultrastructure and immunohistochemistry of granular cell tumor supports a schwannian rather than muscle derivation.
+
+Figure 7.
+
+View large Download slide
+
+Granular cell tumor. Granular cell tumor cells have indistinct borders, abundant granular cytoplasm, and relatively small to medium-sized nuclei without atypia or mitotic activity (hematoxylin-eosin, original magnification ×150). Inset, Immunohistochemistry for S100 shows nuclear and cytoplasmic staining in the lesional cells (3,3;pr-diaminobenzidine chromogen, original magnification ×4).Figure 8. Minute meningothelial nodule. A, Minute meningothelial nodules are solid with irregular borders caused by widening of adjacent alveolar walls. B, Whorls of cells are typical of minute meningothelial nodule (hematoxylin-eosin, original magnifications ×2 [A] and ×150 [B])
+
+Figure 7.
+
+View large Download slide
+
+Granular cell tumor. Granular cell tumor cells have indistinct borders, abundant granular cytoplasm, and relatively small to medium-sized nuclei without atypia or mitotic activity (hematoxylin-eosin, original magnification ×150). Inset, Immunohistochemistry for S100 shows nuclear and cytoplasmic staining in the lesional cells (3,3;pr-diaminobenzidine chromogen, original magnification ×4).Figure 8. Minute meningothelial nodule. A, Minute meningothelial nodules are solid with irregular borders caused by widening of adjacent alveolar walls. B, Whorls of cells are typical of minute meningothelial nodule (hematoxylin-eosin, original magnifications ×2 [A] and ×150 [B])
+
+Close modal
+
+### Minute Meningothelial Nodules and Meningioma
+
+The entity of minute meningothelial nodule (previously chemodectoma) has gained greater recognition with improved lung imaging. These small proliferations are generally smaller than 0.3 cm, are perivenular and are frequently multiple. While usually discovered incidentally, in some instances they do represent the target lesion detected by high-resolution CT scan. They are more commonly found in women than in men. 60
+
+#### Histopathology
+
+These are ill-defined lesions that expand alveolar walls, rendering a stellate appearance (Figure 8, A). The cells have poorly demarcated cell borders and often are grouped in nests and fascicles with intervening collagen. The cells are bland, and no mitotic activity is identified. Cells can be arranged in whorled patterns (Figure 8, B).
+
+These proliferations are epithelial membrane antigen positive and vimentin positive while negative for cytokeratin, actin, and neuroendocrine markers. The immunohistochemistry combined with ultrastructural appearance has led to the designation as meningothelial proliferations rather than paragangliomas.
+
+Molecular studies have demonstrated that some of these lesions are clonal while others are not, raising the possibility that these are reactive lesions, not neoplastic. 61 Loss of heterozygosity study has suggested minute meningothelial nodule is reactive with possible transition to neoplasia with increased loss of heterozygosity events in multifocal disease. 62 The relationship of minute meningothelial nodule to the rarer primary pulmonary meningioma is not certain; by loss of heterozygosity data, meningiomas have more loss of heterozygosity events at different loci than minute meningothelial nodules or multifocal minute meningothelial nodules do. 62 Primary pulmonary meningiomas are circumscribed, peripheral nodules, more common in women, and composed of whorls and fascicles of cells. Psammoma bodies are seen in pulmonary meningiomas. 63
+
+### Nodular Lymphoid Hyperplasia
+
+Review of this entity requires the initial disclaimer that most dense lymphoid proliferations of the lung previously designated as pseudolymphoma are actually low grade lymphomas, usually of the MALT type. However, after such lesions are characterized using molecular gene rearrangement study for immunoglobulin (Ig) H, flow cytometry, and immunohistochemistry for κ and λ, there remain a small number of lesions where clonality cannot be demonstrated. 64
+
+#### Histopathology
+
+In nodular lymphoid hyperplasia, the nodules are usually smaller than 3.0 cm and solitary, although satellite foci can be identified in some cases. They are densely cellular and at low-power view, reactive germinal centers are identifiable (Figure 9, A through C). Higher magnification reveals a substantial plasmacytosis in between these follicles, and some degree of fibrosis. Russell bodies are seen (Figure 9, D), but not Dutcher bodies (nuclear inclusions). No lymphoepithelial lesions are identified in these lymphoid nodules.
+
+Figure 9.
+
+View large Download slide
+
+Nodular lymphoid hyperplasia. A, Nodular lymphoid hyperplasias are not well encapsulated and can have irregular borders, but can show a sharp transition to uninvolved lung. Secondary lymphoid follicles are numerous. B, In addition to numerous secondary lymphoid follicles, fibrosis can be present. In this case, a central nidus of fibrosis and calcification was seen. C, Secondary lymphoid follicles are present surrounded by lymphocytes and plasma cells. D, Numerous plasma cells are seen, associated with Russell bodies (hematoxylin-eosin, original magnifications ×2 [A], ×4 [B], ×50 [C], and ×150 [D])
+
+Figure 9.
+
+View large Download slide
+
+Nodular lymphoid hyperplasia. A, Nodular lymphoid hyperplasias are not well encapsulated and can have irregular borders, but can show a sharp transition to uninvolved lung. Secondary lymphoid follicles are numerous. B, In addition to numerous secondary lymphoid follicles, fibrosis can be present. In this case, a central nidus of fibrosis and calcification was seen. C, Secondary lymphoid follicles are present surrounded by lymphocytes and plasma cells. D, Numerous plasma cells are seen, associated with Russell bodies (hematoxylin-eosin, original magnifications ×2 [A], ×4 [B], ×50 [C], and ×150 [D])
+
+Close modal
+
+The possibility that some cases of nodular lymphoid hyperplasia represent an exuberant response to a foreign antigen (eg, aspiration) has been raised. The case illustrated in Figure 9, B, shows an area of fibrosis with calcification that appeared to be the nidus/epicenter for the nodular lymphoid hyperplasia lesion.
+
+### Inflammatory Pseudotumor
+
+These tumors represent a complex entity that likely includes reactive and neoplastic conditions. In 1988, Matsubara et al 65 described 3 types of IPT: organizing pneumonia, lymphoplasmacytic, and fibrohistiocytic. The organizing pneumonia type may be currently classified as focal organizing pneumonia (see next section). More than one third of patients with IPT had symptoms (pain, pneumonia, cough), and one quarter had previous respiratory infection. These tumors are usually smaller than 5.0 cm, are deceptively circumscribed grossly, and vary in color from yellow to white. Hemorrhage and necrosis can be seen.
+
+Conclusions of one series are a frequent occurrence in children, more frequently parenchymal than endobronchial (but both occur), and will enlarge if left unresected. In addition, local invasion is frequently seen, and recurrence can occur. 66
+
+#### Histopathology
+
+Low-power view of these tumors often demonstrates infiltrative growth (Figure 10, A). Inflammatory pseudotumors often have mixtures of patterns and are classified by the predominance of a storiform pattern versus inflammatory infiltrate. Cases with a dense plasma cell infiltrate can overshadow the presence of a spindle cell population (Figure 10, B). One study reported IgG4-positive plasma cells in pulmonary IPT, 67 lymphoplasmacytic/plasma cell granuloma type. In the fibrohistiocytic/storiform type, IPTs are composed of bland fascicles of cells in a storiform pattern (Figure 10, C). Giant cells can be seen. In benign lesions, the mitotic rate is low (<3 in 50 high-power fields) without atypical mitoses. No necrosis is seen, and bizarre giant cells are absent. 68 Inflammatory pseudotumors with benign biologic behavior are circumscribed and less cellular than their malignant counterparts. The spindled cells are vimentin and SMA positive but desmin negative.
+
+Figure 10.
+
+View large Download slide
+
+Inflammatory pseudotumor. A, Low-power view of airway wall shows infiltrative cellular process. B, While spindled cells are identifiable, most cells are plasma cells in the lymphoplasmacytic/plasma cell granuloma subtype. C, Inflammatory pseudotumor, fibrohistiocytic/storiform type, is composed of a mixture of spindled and inflammatory cells, with a predominance of spindled cells in a storiform pattern. The spindled cells are bland and arranged in small interlacing fascicles. A consistent inflammatory infiltrate is present (hematoxylin-eosin, original magnifications ×2 [A] and ×150 [B and C])
+
+Figure 10.
+
+View large Download slide
+
+Inflammatory pseudotumor. A, Low-power view of airway wall shows infiltrative cellular process. B, While spindled cells are identifiable, most cells are plasma cells in the lymphoplasmacytic/plasma cell granuloma subtype. C, Inflammatory pseudotumor, fibrohistiocytic/storiform type, is composed of a mixture of spindled and inflammatory cells, with a predominance of spindled cells in a storiform pattern. The spindled cells are bland and arranged in small interlacing fascicles. A consistent inflammatory infiltrate is present (hematoxylin-eosin, original magnifications ×2 [A] and ×150 [B and C])
+
+Close modal
+
+Evidence of the neoplastic nature of IPT includes cytogenetic abnormalities, 69, 70,2p23/ALK1 rearrangements, and ALK1 overexpression. 71, 72 Cases with ALK1 rearrangements correspond well to those with cytoplasmic immunoreactivity for ALK1. Examination of published IPT cases of the lung with either cytogenetic abnormality or positive ALK1 immunohistochemistry reveals about 13 (36%) of 36 pediatric and 5 (36%) of 14 adult pulmonary IPTs showed either cytogenetic/fluorescent in situ hybridization abnormality and/or immunoreactivity for ALK1 (although precise age data specifically for the lung cases is not available in all series). 69, 71–79 A recent study of 59 IPTs (including 13 pulmonary cases) indicated that ALK1-positive tumors were more common in younger patients and that ALK1-negative cases had a higher metastatic rate 74 overall.
+
+Although IPTs are a potentially heterogeneous category of tumors, a significant subset of pulmonary IPT cases are true myofibroblastic neoplasms and when associated with inflammation can be designated as inflammatory myofibroblastic tumors. This is certainly most strongly suggested by cytogenetic studies, recurrences, and reports of metastatic disease. It is apparent that a spectrum from benign to malignant is also possible in these tumors. The above criteria may be helpful in predicting biologic behavior; however, the propensity for recurrence and local invasion warrant complete resection of these tumors.
+
+### Focal Organizing Pneumonia
+
+Organizing pneumonia is a subacute pattern of lung injury that can be associated with multiple etiologies including atypical and resolving infection, collagen vascular disease, and eosinophilic pneumonia. Idiopathic cases are also seen. While typically multifocal, organizing pneumonia can be localized in some patients (14% of 74 patients from a Mayo Clinic series). 80 In that setting, focal organizing pneumonia/localized organizing pneumonia can be in the differential diagnosis of a solitary pulmonary nodule.
+
+Histologically, focal organizing pneumonia forms a nodule that is defined, irregular, and nonencapsulated (Figure 11, A). It consists of fibroblastic intraalveolar proliferations that fill alveolar spaces, alveolar ducts, and respiratory bronchioles. In some areas, involvement of terminal bronchioles can also be identified (Figure 11, B). Lymphocytic inflammation can be seen, as well as macrophage accumulation.
+
+Figure 11.
+
+View large Download slide
+
+Focal organizing pneumonia. A, The edge of the organizing pneumonia shows a sharp interface with normal lung but is not encapsulated. B, This airway contains an accumulation of fibroblastic cells and inflammatory cells that extends into the adjacent respiratory bronchiole, typical of organizing pneumonia (hematoxylin-eosin, original magnifications ×2 [A] and ×100 [B]).Figure 12. Apical cap. A, Pleural based fibrous tissue with angulated edges is typical of apical cap. B, At the interface with normal lung, the elastic tissue and fibrosis give the impression of “ghosts” of prior alveoli. Apical caps are relatively devoid of cells except for occasional fibroblasts, but have abundant interlacing elastic tissue and collagen (hematoxylin-eosin, original magnifications ×2 [A] and ×50 [B])
+
+Figure 11.
+
+View large Download slide
+
+Focal organizing pneumonia. A, The edge of the organizing pneumonia shows a sharp interface with normal lung but is not encapsulated. B, This airway contains an accumulation of fibroblastic cells and inflammatory cells that extends into the adjacent respiratory bronchiole, typical of organizing pneumonia (hematoxylin-eosin, original magnifications ×2 [A] and ×100 [B]).Figure 12. Apical cap. A, Pleural based fibrous tissue with angulated edges is typical of apical cap. B, At the interface with normal lung, the elastic tissue and fibrosis give the impression of “ghosts” of prior alveoli. Apical caps are relatively devoid of cells except for occasional fibroblasts, but have abundant interlacing elastic tissue and collagen (hematoxylin-eosin, original magnifications ×2 [A] and ×50 [B])
+
+Close modal
+
+Organizing pneumonia is a steroid-responsive reactive process. Although some authors have placed focal organizing pneumonia among the types of IPT, attempts to refine the IPT category to include inflammatory myofibroblastic tumors as neoplasms would warrant separating focal organizing pneumonia into a separate reactive category.
+
+### Apical Cap
+
+Examination of wedge biopsy specimens from upper lobes as well as autopsy and lobectomy specimens often reveals areas of apical fibroelastosis. Although variable in size and often incidentally discovered, on occasion apical fibroelastosis is detected as an irregular apical, usually upper lobe, nodule or more rarely in the apices of lower lobes. Although the prevalence of apical caps is difficult to determine as they are likely underreported when present in a lobe otherwise removed for carcinoma, they are occasionally resected as part of a workup to exclude neoplasia. In a retrospective review of pulmonary pathology specimens at the University of Pittsburgh, 81 19 cases of apical fibrosis were identified, and in 13 cases it represented the lesion targeted by the excision. These patients were cigarette smokers with an average age of 65 years with equal gender distribution. Eleven of 13 cases were upper lobe, with 2 cases from superior segments of the lower lobe.
+
+#### Histopathology
+
+These lesions are subpleural (Figure 12, A) and frequently have triangular contours, with a broad pleural base (Figure 12, A). They have irregular borders and radiologically appear spiculated. At the interface with adjacent lung tissue the alveolar spaces show focal emphysema. The apical fibrosis is distinctive as it contains abundant elastic tissue, haphazardly arranged (Figure 12, B). These lesions may become calcified and ossified and overlying pleura can be thickened, resembling hyalinized pleural plaque.
+
+While the cause of apical caps is not certain, the configuration of the lesions, the association with vessels with old thrombosis, and the suggestion of an underlying elastic tissue pattern of preexisting alveoli raise the possibility of old infarcts/chronic ischemia as a cause of these lesions.
+
+### Nodular Amyloidosis
+
+Amyloidosis is an abnormal accumulation of protein in tissues. In the lung, patterns of accumulation include parenchymal, tracheobronchial, and vascular. Pulmonary amyloidosis may reflect a manifestation of systemic amyloidosis but can also represent organ-isolated disease. Nodular amyloidosis can be organ isolated and idiopathic, a result of chronic inflammation, or part of systemic disease (such as Sjögren syndrome, multiple myeloma, lymphoma, or light chain disease). 82 Nodular amyloidosis can be detected as a solitary lung nodule. 83, 84 Grossly, nodular amyloid is described as waxy and variably gray-white or tan. Of note, these nodules have been positive by positron emission tomography scanning. 85 Nodular amyloidosis is usually of primary amyloidosis type. However, serum and urine testing in these patients does not show a monoclonal protein in many cases.
+
+#### Histopathology
+
+Amyloidosis is characterized by accumulation of amorphous eosinophilic material that is devoid of cellularity (Figure 13, A). The material is not fibrillar by light microscopy. Amyloid nodules can be associated with a lymphoplasmacytic infiltrate (Figure 13, B), giant cells (Figure 13, C), and ossification (Figure 13, D).
+
+Figure 13.
+
+View large Download slide
+
+Nodular amyloid. A, Nodular amyloid is densely eosinophilic, with scant cellularity. B, Amorphous eosinophilic material is seen, without the fibrillar appearance of collagen. A lymphoplasmacytic infiltrate is often sparsely present. C, Multinucleated giant cells can be present amid the amorphous material. D, Ossification is often present in pulmonary amyloid (hematoxylin-eosin, original magnifications ×2 [A], ×100 [B], and ×150 [C and D]).Figure 14. Pulmonary hyalinizing granuloma. A, A circumscribed nodule, centrally acellular with a rim of inflammatory cells, is typical of pulmonary hyalinizing granuloma. B, The central eosinophilic zone is composed of dense ropy collagen with scant spindled cells and no histocytic inflammation or necrosis (hematoxylin-eosin, original magnifications ×2 [A] and ×150 [B])
+
+Figure 13.
+
+View large Download slide
+
+Nodular amyloid. A, Nodular amyloid is densely eosinophilic, with scant cellularity. B, Amorphous eosinophilic material is seen, without the fibrillar appearance of collagen. A lymphoplasmacytic infiltrate is often sparsely present. C, Multinucleated giant cells can be present amid the amorphous material. D, Ossification is often present in pulmonary amyloid (hematoxylin-eosin, original magnifications ×2 [A], ×100 [B], and ×150 [C and D]).Figure 14. Pulmonary hyalinizing granuloma. A, A circumscribed nodule, centrally acellular with a rim of inflammatory cells, is typical of pulmonary hyalinizing granuloma. B, The central eosinophilic zone is composed of dense ropy collagen with scant spindled cells and no histocytic inflammation or necrosis (hematoxylin-eosin, original magnifications ×2 [A] and ×150 [B])
+
+Close modal
+
+### Pulmonary Hyalinizing Granuloma
+
+This entity is characterized by single or multiple nodules of circumscribed dense collagen surrounded by variable amounts of chronic inflammation. These nodules are detected in adults, average age 45 years. Patients are often symptomatic with chest pain or dyspnea. An association with sclerosing mediastinitis has been reported. However, pulmonary hyalinizing granuloma is an idiopathic condition, and no microorganisms are detected on special stains. 86, 87 Grossly, the nodules are solid, firm, and white to gray.
+
+#### Histopathology
+
+The nodules are circumscribed (Figure 14, A) and frequently associated with a rim of lymphocytes at their periphery. The nodules are composed of dense ropy collagen without palisaded histiocytes or necrosis (Figure 14, B).
+
+Although SFTs can have areas of dense collagen, pulmonary hyalinizing granuloma is less cellular. Also, cells of SFT are CD34 positive.
+
+### Rounded Atelectasis
+
+Rounded atelectasis is a peripheral subpleural area of lung tissue that becomes folded into an area of visceral pleura fibrosis. These lesions are usually incidentally detected and are seen in men more frequently than women. Asbestos exposure causing parietal pleural plaques followed by visceral pleural adhesion is the typical scenario, although not all patients have documented asbestos exposure. Most cases are from the lower lobes, although lingula and right middle lobe involvement can occur. Although awareness of this entity has made it possible to recognize rounded atelectasis by the chest CT scan characteristics of airways drawn into the lesion, some cases come to surgical resection. 88 As these lesions are caused by entrapped lung that becomes folded into pleural adhesions, at the time of surgery the lysis of adhesions and reexpansion of the folded lung causes the nodule to disappear.
+
+#### Histopathology
+
+The histology of the lesion is nonspecific (Figure 15, A and B). If wedge biopsy/resection or lobectomy is performed, the histopathology may reveal pleural fibrosis with folding or wrinkling and underlying atelectatic lung. Pleura away from the lesion may be normal. 89 The combination of pleural fibrosis, possibly parietal pleural plaque, lower lobe location, and the description of a disappearing nodule are part of the clinicopathologic correlation needed to render this diagnosis.
+
+Figure 15.
+
+View large Download slide
+
+Rounded atelectasis. A, A wedge biopsy specimen from a lesion of rounded atelectasis shows markedly thickened and fibrotic pleura, with parietal pleural adhesion and encircled lung tissue. B, Underlying lung tissue is collapsed, adjacent to pleural fibrosis, but otherwise the findings are nonspecific (hematoxylin-eosin, original magnifications ×2 [A] and ×25 [B])
+
+Figure 15.
+
+View large Download slide
+
+Rounded atelectasis. A, A wedge biopsy specimen from a lesion of rounded atelectasis shows markedly thickened and fibrotic pleura, with parietal pleural adhesion and encircled lung tissue. B, Underlying lung tissue is collapsed, adjacent to pleural fibrosis, but otherwise the findings are nonspecific (hematoxylin-eosin, original magnifications ×2 [A] and ×25 [B])
+
+Close modal
+
+## References
+
+Steele
+
+,
+
+J. D.
+
+The solitary pulmonary nodule: report of a cooperative study of resected asymptomatic solitary pulmonary nodules in males.
+
+J Thorac Cardiovasc Surg
+
+1963
+
+.
+
+46
+
+:
+
+21
+
+–
+
+39
+
+.
+
+Google Scholar
+
+Crossref
+
+Search ADS
+
+PubMed
+
+Seybold
+
+,
+
+W. D.
+
+Solitary or “coin” lesions of the lung: analysis of 2258 recorded cases.
+
+Postgrad Med
+
+1964
+
+.
+
+36
+
+:
+
+424
+
+–
+
+430
+
+.
+
+Google Scholar
+
+Crossref
+
+Search ADS
+
+PubMed
+
+Higgins
+
+,
+
+G. A.
+
+,
+
+T. W.
+
+Shields
+
+, and
+
+R. J.
+
+Keehn
+
+.
+
+The solitary pulmonary nodule: 10-year follow-up of veterans administration–armed forces cooperative study.
+
+Arch Surg
+
+1975
+
+.
+
+110
+
+:
+
+570
+
+–
+
+575
+
+.
+
+Google Scholar
+
+Crossref
+
+Search ADS
+
+PubMed
+
+Arrigoni
+
+,
+
+M. G.
+
+,
+
+L. B.
+
+Woolner
+
+,
+
+P. E.
+
+Bernatz
+
+,
+
+W. E.
+
+Miller
+
+, and
+
+R. S.
+
+Fontana
+
+.
+
+Benign tumors of the lung: a 10-year surgical experience.
+
+J Thorac Cardiovasc Surg
+
+1970
+
+.
+
+60
+
+:
+
+589
+
+–
+
+599
+
+.
+
+Google Scholar
+
+Crossref
+
+Search ADS
+
+PubMed
+
+Siegelman
+
+,
+
+S. S.
+
+,
+
+N. F.
+
+Khouri
+
+,
+
+F. P.
+
+Leo
+
+,
+
+E. K.
+
+Fishman
+
+,
+
+R. M.
+
+Braverman
+
+, and
+
+E. A.
+
+Zerhouni
+
+.
+
+Solitary pulmonary nodules: CT assessment.
+
+Radiology
+
+1986
+
+.
+
+160
+
+:
+
+307
+
+–
+
+312
+
+.
+
+Google Scholar
+
+Crossref
+
+Search ADS
+
+PubMed
+
+Ginsberg
+
+,
+
+M. S.
+
+,
+
+S. K.
+
+Griff
+
+,
+
+B. D.
+
+Go
+
+,
+
+H. H.
+
+Yoo
+
+,
+
+L. H.
+
+Schwartz
+
+, and
+
+D. M.
+
+Panicek
+
+.
+
+Pulmonary nodules resected at video-assisted thoracoscopic surgery: etiology in 426 patients.
+
+Radiology
+
+1999
+
+.
+
+213
+
+:
+
+277
+
+–
+
+282
+
+.
+
+Google Scholar
+
+Crossref
+
+Search ADS
+
+PubMed
+
+Cardillo
+
+,
+
+G.
+
+,
+
+M.
+
+Regal
+
+, and
+
+F.
+
+Sera
+
+.
+
+et al
+
+.
+
+Videothoracoscopic management of the solitary pulmonary nodule: a single-institution study on 429 cases.
+
+Ann Thorac Surg
+
+2003
+
+.
+
+75
+
+:
+
+1607
+
+–
+
+1611
+
+.
+
+discussion 1611–1612
+
+.
+
+Google Scholar
+
+Crossref
+
+Search ADS
+
+PubMed
+
+Yi
+
+,
+
+C. A.
+
+,
+
+K. S.
+
+Lee
+
+, and
+
+B. T.
+
+Kim
+
+.
+
+et al
+
+.
+
+Tissue characterization of solitary pulmonary nodule: comparative study between helical dynamic CT and integrated PET/CT.
+
+J Nucl Med
+
+2006
+
+.
+
+47
+
+:
+
+443
+
+–
+
+450
+
+.
+
+Google Scholar
+
+PubMed
+
+Swensen
+
+,
+
+S. J.
+
+,
+
+J. R.
+
+Jett
+
+, and
+
+T. E.
+
+Hartman
+
+.
+
+et al
+
+.
+
+Lung cancer screening with CT: Mayo Clinic experience.
+
+Radiology
+
+2003
+
+.
+
+226
+
+:
+
+756
+
+–
+
+761
+
+.
+
+Google Scholar
+
+Crossref
+
+Search ADS
+
+PubMed
+
+Liebow
+
+,
+
+A.
+
+Tumors of the Lower Respiratory Tract. Vol 5.
+
+Washington, DC: Armed Forces Institute of Pathology; 1952:189
+
+.
+
+Miller
+
+,
+
+D. R.
+
+Benign tumors of lung and tracheobronchial tree.
+
+Ann Thorac Surg
+
+1969
+
+.
+
+8
+
+:
+
+542
+
+–
+
+560
+
+.
+
+Google Scholar
+
+Crossref
+
+Search ADS
+
+PubMed
+
+Brambilla
+
+,
+
+E.
+
+,
+
+W. D.
+
+Travis
+
+,
+
+T. V.
+
+Colby
+
+,
+
+B.
+
+Corrin
+
+, and
+
+Y.
+
+Shimosato
+
+.
+
+The new World Health Organization classification of lung tumours.
+
+Eur Respir J
+
+2001
+
+.
+
+18
+
+:
+
+1059
+
+–
+
+1068
+
+.
+
+Google Scholar
+
+Crossref
+
+Search ADS
+
+PubMed
+
+Beasley
+
+,
+
+M. B.
+
+,
+
+E.
+
+Brambilla
+
+, and
+
+W. D.
+
+Travis
+
+.
+
+The 2004 World Health Organization classification of lung tumors.
+
+Semin Roentgenol
+
+2005
+
+.
+
+40
+
+:
+
+90
+
+–
+
+97
+
+.
+
+Google Scholar
+
+Crossref
+
+Search ADS
+
+PubMed
+
+al-Saleem
+
+,
+
+T.
+
+,
+
+A. R.
+
+Peale
+
+, and
+
+C. M.
+
+Norris
+
+.
+
+Multiple papillomatosis of the lower respiratory tract: clinical and pathologic study of 11 cases.
+
+Cancer
+
+1968
+
+.
+
+22
+
+:
+
+1173
+
+–
+
+1184
+
+.
+
+Google Scholar
+
+Crossref
+
+Search ADS
+
+PubMed
+
+Soldatski
+
+,
+
+I. L.
+
+,
+
+E. K.
+
+Onufrieva
+
+,
+
+A. M.
+
+Steklov
+
+, and
+
+N. V.
+
+Schepin
+
+.
+
+Tracheal, bronchial, and pulmonary papillomatosis in children.
+
+Laryngoscope
+
+2005
+
+.
+
+115
+
+:
+
+1848
+
+–
+
+1854
+
+.
+
+Google Scholar
+
+Crossref
+
+Search ADS
+
+PubMed
+
+Flieder
+
+,
+
+D. B.
+
+,
+
+M. N.
+
+Koss
+
+,
+
+A.
+
+Nicholson
+
+,
+
+I. A.
+
+Sesterhenn
+
+,
+
+R. E.
+
+Petras
+
+, and
+
+W. D.
+
+Travis
+
+.
+
+Solitary pulmonary papillomas in adults: a clinicopathologic and in situ hybridization study of 14 cases combined with 27 cases in the literature.
+
+Am J Surg Pathol
+
+1998
+
+.
+
+22
+
+:
+
+1328
+
+–
+
+1342
+
+.
+
+Google Scholar
+
+Crossref
+
+Search ADS
+
+PubMed
+
+Popper
+
+,
+
+H. H.
+
+,
+
+G.
+
+Wirnsberger
+
+,
+
+F. M.
+
+Juttner-Smolle
+
+,
+
+M. G.
+
+Pongratz
+
+, and
+
+M.
+
+Sommersgutter
+
+.
+
+The predictive value of human papilloma virus (HPV) typing in the prognosis of bronchial squamous cell papillomas.
+
+Histopathology
+
+1992
+
+.
+
+21
+
+:
+
+323
+
+–
+
+330
+
+.
+
+Google Scholar
+
+Crossref
+
+Search ADS
+
+PubMed
+
+Lele
+
+,
+
+S. M.
+
+,
+
+A. M.
+
+Pou
+
+,
+
+K.
+
+Ventura
+
+,
+
+Z.
+
+Gatalica
+
+, and
+
+D.
+
+Payne
+
+.
+
+Molecular events in the progression of recurrent respiratory papillomatosis to carcinoma.
+
+Arch Pathol Lab Med
+
+2002
+
+.
+
+126
+
+:
+
+1184
+
+–
+
+1188
+
+.
+
+Google Scholar
+
+Crossref
+
+Search ADS
+
+PubMed
+
+Byrne
+
+,
+
+J. C.
+
+,
+
+M. S.
+
+Tsao
+
+,
+
+R. S.
+
+Fraser
+
+, and
+
+P. M.
+
+Howley
+
+.
+
+Human papillomavirus-11 DNA in a patient with chronic laryngotracheobronchial papillomatosis and metastatic squamous-cell carcinoma of the lung.
+
+N Engl J Med
+
+1987
+
+.
+
+317
+
+:
+
+873
+
+–
+
+878
+
+.
+
+Google Scholar
+
+Crossref
+
+Search ADS
+
+PubMed
+
+Cook
+
+,
+
+J. R.
+
+,
+
+D. A.
+
+Hill
+
+,
+
+P. A.
+
+Humphrey
+
+,
+
+J. D.
+
+Pfeifer
+
+, and
+
+S. K.
+
+El-Mofty
+
+.
+
+Squamous cell carcinoma arising in recurrent respiratory papillomatosis with pulmonary involvement: emerging common pattern of clinical features and human papillomavirus serotype association.
+
+Mod Pathol
+
+2000
+
+.
+
+13
+
+:
+
+914
+
+–
+
+918
+
+.
+
+Google Scholar
+
+Crossref
+
+Search ADS
+
+PubMed
+
+Go
+
+,
+
+C.
+
+,
+
+M. R.
+
+Schwartz
+
+, and
+
+D. T.
+
+Donovan
+
+.
+
+Molecular transformation of recurrent respiratory papillomatosis: viral typing and p53 overexpression.
+
+Ann Otol Rhinol Laryngol
+
+2003
+
+.
+
+112
+
+:
+
+298
+
+–
+
+302
+
+.
+
+Google Scholar
+
+Crossref
+
+Search ADS
+
+PubMed
+
+Gupta
+
+,
+
+D.
+
+,
+
+J.
+
+Holden
+
+, and
+
+L.
+
+Layfield
+
+.
+
+Topoisomerase alpha II, retinoblastoma gene product, and p53: potential relationships with aggressive behavior and malignant transformation in recurrent respiratory papillomatosis.
+
+Appl Immunohistochem Mol Morphol
+
+2001
+
+.
+
+9
+
+:
+
+86
+
+–
+
+91
+
+.
+
+Google Scholar
+
+PubMed
+
+Liebow
+
+,
+
+A. A.
+
+and
+
+D. S.
+
+Hubbell
+
+.
+
+Sclerosing hemangioma (histiocytoma, xanthoma) of the lung.
+
+Cancer
+
+1956
+
+.
+
+9
+
+:
+
+53
+
+–
+
+75
+
+.
+
+Google Scholar
+
+Crossref
+
+Search ADS
+
+PubMed
+
+Palacios
+
+,
+
+J. J.
+
+,
+
+P. M.
+
+Escribano
+
+,
+
+J.
+
+Toledo
+
+,
+
+A.
+
+Garzon
+
+,
+
+E.
+
+Larru
+
+, and
+
+J.
+
+Palomera
+
+.
+
+Sclerosing hemangioma of the lung: an ultrastructural study.
+
+Cancer
+
+1979
+
+.
+
+44
+
+:
+
+949
+
+–
+
+955
+
+.
+
+Google Scholar
+
+Crossref
+
+Search ADS
+
+PubMed
+
+Devouassoux-Shisheboran
+
+,
+
+M.
+
+,
+
+T.
+
+Hayashi
+
+,
+
+R. I.
+
+Linnoila
+
+,
+
+M. N.
+
+Koss
+
+, and
+
+W. D.
+
+Travis
+
+.
+
+A clinicopathologic study of 100 cases of pulmonary sclerosing hemangioma with immunohistochemical studies: TTF-1 is expressed in both round and surface cells, suggesting an origin from primitive respiratory epithelium.
+
+Am J Surg Pathol
+
+2000
+
+.
+
+24
+
+:
+
+906
+
+–
+
+916
+
+.
+
+Google Scholar
+
+Crossref
+
+Search ADS
+
+PubMed
+
+Yousem
+
+,
+
+S. A.
+
+,
+
+M. R.
+
+Wick
+
+, and
+
+G.
+
+Singh
+
+.
+
+et al
+
+.
+
+So-called sclerosing hemangiomas of lung: an immunohistochemical study supporting a respiratory epithelial origin.
+
+Am J Surg Pathol
+
+1988
+
+.
+
+12
+
+:
+
+582
+
+–
+
+590
+
+.
+
+Google Scholar
+
+PubMed
+
+Satoh
+
+,
+
+Y.
+
+,
+
+E.
+
+Tsuchiya
+
+, and
+
+S. Y.
+
+Weng
+
+.
+
+et al
+
+.
+
+Pulmonary sclerosing hemangioma of the lung: a type II pneumocytoma by immunohistochemical and immunoelectron microscopic studies.
+
+Cancer
+
+1989
+
+.
+
+64
+
+:
+
+1310
+
+–
+
+1317
+
+.
+
+Google Scholar
+
+Crossref
+
+Search ADS
+
+PubMed
+
+Chan
+
+,
+
+A. C.
+
+and
+
+J. K.
+
+Chan
+
+.
+
+Pulmonary sclerosing hemangioma consistently expresses thyroid transcription factor-1 (TTF-1): a new clue to its histogenesis.
+
+Am J Surg Pathol
+
+2000
+
+.
+
+24
+
+:
+
+1531
+
+–
+
+1536
+
+.
+
+Google Scholar
+
+Crossref
+
+Search ADS
+
+PubMed
+
+Katzenstein
+
+,
+
+A. L.
+
+,
+
+J. T.
+
+Gmelich
+
+, and
+
+C. B.
+
+Carrington
+
+.
+
+Sclerosing hemangioma of the lung: a clinicopathologic study of 51 cases.
+
+Am J Surg Pathol
+
+1980
+
+.
+
+4
+
+:
+
+343
+
+–
+
+356
+
+.
+
+Google Scholar
+
+Crossref
+
+Search ADS
+
+PubMed
+
+Noguchi
+
+,
+
+M.
+
+,
+
+T.
+
+Kodama
+
+,
+
+S.
+
+Morinaga
+
+,
+
+Y.
+
+Shimosato
+
+,
+
+T.
+
+Saito
+
+, and
+
+E.
+
+Tsuboi
+
+.
+
+Multiple sclerosing hemangiomas of the lung.
+
+Am J Surg Pathol
+
+1986
+
+.
+
+10
+
+:
+
+429
+
+–
+
+435
+
+.
+
+Google Scholar
+
+Crossref
+
+Search ADS
+
+PubMed
+
+Nicholson
+
+,
+
+A. G.
+
+,
+
+C.
+
+Magkou
+
+, and
+
+D.
+
+Snead
+
+.
+
+et al
+
+.
+
+Unusual sclerosing haemangiomas and sclerosing haemangioma-like lesions, and the value of TTF-1 in making the diagnosis.
+
+Histopathology
+
+2002
+
+.
+
+41
+
+:
+
+404
+
+–
+
+413
+
+.
+
+Google Scholar
+
+Crossref
+
+Search ADS
+
+PubMed
+
+Yoo
+
+,
+
+S. H.
+
+,
+
+K. C.
+
+Jung
+
+, and
+
+J. H.
+
+Kim
+
+.
+
+et al
+
+.
+
+Expression patterns of markers for type II pneumocytes in pulmonary sclerosing hemangiomas and fetal lung tissues.
+
+Arch Pathol Lab Med
+
+2005
+
+.
+
+129
+
+:
+
+915
+
+–
+
+919
+
+.
+
+Google Scholar
+
+PubMed
+
+Niho
+
+,
+
+S.
+
+,
+
+K.
+
+Suzuki
+
+,
+
+T.
+
+Yokose
+
+,
+
+T.
+
+Kodama
+
+,
+
+Y.
+
+Nishiwaki
+
+, and
+
+H.
+
+Esumi
+
+.
+
+Monoclonality of both pale cells and cuboidal cells of sclerosing hemangioma of the lung.
+
+Am J Pathol
+
+1998
+
+.
+
+152
+
+:
+
+1065
+
+–
+
+1069
+
+.
+
+Google Scholar
+
+PubMed
+
+Leong
+
+,
+
+A. S.
+
+,
+
+K. W.
+
+Chan
+
+, and
+
+H. S.
+
+Seneviratne
+
+.
+
+A morphological and immunohistochemical study of 25 cases of so-called sclerosing haemangioma of the lung.
+
+Histopathology
+
+1995
+
+.
+
+27
+
+:
+
+121
+
+–
+
+128
+
+.
+
+Google Scholar
+
+Crossref
+
+Search ADS
+
+PubMed
+
+Yousem
+
+,
+
+S. A.
+
+and
+
+L.
+
+Hochholzer
+
+.
+
+Alveolar adenoma.
+
+Hum Pathol
+
+1986
+
+.
+
+17
+
+:
+
+1066
+
+–
+
+1071
+
+.
+
+Google Scholar
+
+Crossref
+
+Search ADS
+
+PubMed
+
+Burke
+
+,
+
+L. M.
+
+,
+
+W. I.
+
+Rush
+
+, and
+
+A.
+
+Khoor
+
+.
+
+et al
+
+.
+
+Alveolar adenoma: a histochemical, immunohistochemical, and ultrastructural analysis of 17 cases.
+
+Hum Pathol
+
+1999
+
+.
+
+30
+
+:
+
+158
+
+–
+
+167
+
+.
+
+Google Scholar
+
+Crossref
+
+Search ADS
+
+PubMed
+
+Roque
+
+,
+
+L.
+
+,
+
+P.
+
+Oliveira
+
+,
+
+C.
+
+Martins
+
+,
+
+C.
+
+Carvalho
+
+,
+
+A.
+
+Serpa
+
+, and
+
+J.
+
+Soares
+
+.
+
+A nonbalanced translocation (10;16) demonstrated by FISH analysis in a case of alveolar adenoma of the lung.
+
+Cancer Genet Cytogenet
+
+1996
+
+.
+
+89
+
+:
+
+34
+
+–
+
+37
+
+.
+
+Google Scholar
+
+Crossref
+
+Search ADS
+
+PubMed
+
+Cavazza
+
+,
+
+A.
+
+,
+
+M.
+
+Paci
+
+, and
+
+L.
+
+De Marco
+
+.
+
+et al
+
+.
+
+Alveolar adenoma of the lung: a clinicopathologic, immunohistochemical, and molecular study of an unusual case.
+
+Int J Surg Pathol
+
+2004
+
+.
+
+12
+
+:
+
+155
+
+–
+
+159
+
+.
+
+Google Scholar
+
+Crossref
+
+Search ADS
+
+PubMed
+
+Noguchi
+
+,
+
+M.
+
+,
+
+T.
+
+Kodama
+
+, and
+
+Y.
+
+Shimosato
+
+.
+
+et al
+
+.
+
+Papillary adenoma of type 2 pneumocytes.
+
+Am J Surg Pathol
+
+1986
+
+.
+
+10
+
+:
+
+134
+
+–
+
+139
+
+.
+
+Google Scholar
+
+Crossref
+
+Search ADS
+
+PubMed
+
+Moran
+
+,
+
+C. A.
+
+,
+
+S.
+
+Suster
+
+,
+
+F. B.
+
+Askin
+
+, and
+
+M. N.
+
+Koss
+
+.
+
+Benign and malignant salivary gland-type mixed tumors of the lung: clinicopathologic and immunohistochemical study of 8 cases.
+
+Cancer
+
+1994
+
+.
+
+73
+
+:
+
+2481
+
+–
+
+2490
+
+.
+
+Google Scholar
+
+Crossref
+
+Search ADS
+
+PubMed
+
+Gao
+
+,
+
+Z. H.
+
+and
+
+S. J.
+
+Urbanski
+
+.
+
+The spectrum of pulmonary mucinous cystic neoplasia: a clinicopathologic and immunohistochemical study of 10 cases and review of literature.
+
+Am J Clin Pathol
+
+2005
+
+.
+
+124
+
+:
+
+62
+
+–
+
+70
+
+.
+
+Google Scholar
+
+Crossref
+
+Search ADS
+
+PubMed
+
+Rossi
+
+,
+
+G.
+
+,
+
+B.
+
+Murer
+
+, and
+
+A.
+
+Cavazza
+
+.
+
+et al
+
+.
+
+Primary mucinous (so-called colloid) carcinomas of the lung: a clinicopathologic and immunohistochemical study with special reference to CDX2 homeobox gene and MUC2 expression.
+
+Am J Surg Pathol
+
+2004
+
+.
+
+28
+
+:
+
+442
+
+–
+
+452
+
+.
+
+Google Scholar
+
+Crossref
+
+Search ADS
+
+PubMed
+
+Gjevre
+
+,
+
+J. A.
+
+,
+
+J. L.
+
+Myers
+
+, and
+
+U. B.
+
+Prakash
+
+.
+
+Pulmonary hamartomas.
+
+Mayo Clin Proc
+
+1996
+
+.
+
+71
+
+:
+
+14
+
+–
+
+20
+
+.
+
+Google Scholar
+
+Crossref
+
+Search ADS
+
+PubMed
+
+van den Bosch
+
+,
+
+J. M.
+
+,
+
+S. S.
+
+Wagenaar
+
+,
+
+B.
+
+Corrin
+
+,
+
+J. R.
+
+Elbers
+
+,
+
+P. J.
+
+Knaepen
+
+, and
+
+C. J.
+
+Westermann
+
+.
+
+Mesenchymoma of the lung (so-called hamartoma): a review of 154 parenchymal and endobronchial cases.
+
+Thorax
+
+1987
+
+.
+
+42
+
+:
+
+790
+
+–
+
+793
+
+.
+
+Google Scholar
+
+Crossref
+
+Search ADS
+
+PubMed
+
+Fletcher
+
+,
+
+J. A.
+
+,
+
+J.
+
+Longtine
+
+,
+
+K.
+
+Wallace
+
+,
+
+S. J.
+
+Mentzer
+
+, and
+
+D. J.
+
+Sugarbaker
+
+.
+
+Cytogenetic and histologic findings in 17 pulmonary chondroid hamartomas: evidence for a pathogenetic relationship with lipomas and leiomyomas.
+
+Genes Chromosomes Cancer
+
+1995
+
+.
+
+12
+
+:
+
+220
+
+–
+
+223
+
+.
+
+Google Scholar
+
+Crossref
+
+Search ADS
+
+PubMed
+
+Kazmierczak
+
+,
+
+B.
+
+,
+
+S.
+
+Bol
+
+,
+
+S.
+
+Wanschura
+
+,
+
+S.
+
+Bartnitzke
+
+, and
+
+J.
+
+Bullerdiek
+
+.
+
+PAC clone containing the HMGI(Y) gene spans the breakpoint of a 6p21 translocation in a uterine leiomyoma cell line.
+
+Genes Chromosomes Cancer
+
+1996
+
+.
+
+17
+
+:
+
+191
+
+–
+
+193
+
+.
+
+Google Scholar
+
+Crossref
+
+Search ADS
+
+PubMed
+
+Fletcher
+
+,
+
+J. A.
+
+,
+
+G. S.
+
+Pinkus
+
+, and
+
+K.
+
+Donovan
+
+.
+
+et al
+
+.
+
+Clonal rearrangement of chromosome band 6p21 in the mesenchymal component of pulmonary chondroid hamartoma.
+
+Cancer Res
+
+1992
+
+.
+
+52
+
+:
+
+6224
+
+–
+
+6228
+
+.
+
+Google Scholar
+
+PubMed
+
+Kazmierczak
+
+,
+
+B.
+
+,
+
+J.
+
+Rosigkeit
+
+, and
+
+S.
+
+Wanschura
+
+.
+
+et al
+
+.
+
+HMGI-C rearrangements as the molecular basis for the majority of pulmonary chondroid hamartomas: a survey of 30 tumors.
+
+Oncogene
+
+1996
+
+.
+
+12
+
+:
+
+515
+
+–
+
+521
+
+.
+
+Google Scholar
+
+PubMed
+
+Kazmierczak
+
+,
+
+B.
+
+,
+
+S.
+
+Wanschura
+
+,
+
+B.
+
+Rommel
+
+,
+
+S.
+
+Bartnitzke
+
+, and
+
+J.
+
+Bullerdiek
+
+.
+
+Ten pulmonary chondroid hamartomas with chromosome 6p21 breakpoints within the HMG-I(Y) gene or its immediate surroundings.
+
+J Natl Cancer Inst
+
+1996
+
+.
+
+88
+
+:
+
+1234
+
+–
+
+1236
+
+.
+
+Google Scholar
+
+Crossref
+
+Search ADS
+
+PubMed
+
+Goodlad
+
+,
+
+J. R.
+
+and
+
+C. D.
+
+Fletcher
+
+.
+
+Solitary fibrous tumour arising at unusual sites: analysis of a series.
+
+Histopathology
+
+1991
+
+.
+
+19
+
+:
+
+515
+
+–
+
+522
+
+.
+
+Google Scholar
+
+Crossref
+
+Search ADS
+
+PubMed
+
+van de Rijn
+
+,
+
+M.
+
+,
+
+C. M.
+
+Lombard
+
+, and
+
+R. V.
+
+Rouse
+
+.
+
+Expression of CD34 by solitary fibrous tumors of the pleura, mediastinum, and lung.
+
+Am J Surg Pathol
+
+1994
+
+.
+
+18
+
+:
+
+814
+
+–
+
+820
+
+.
+
+Google Scholar
+
+Crossref
+
+Search ADS
+
+PubMed
+
+Gaffey
+
+,
+
+M. J.
+
+,
+
+S. E.
+
+Mills
+
+, and
+
+F. B.
+
+Askin
+
+.
+
+et al
+
+.
+
+Clear cell tumor of the lung: a clinicopathologic, immunohistochemical, and ultrastructural study of 8 cases.
+
+Am J Surg Pathol
+
+1990
+
+.
+
+14
+
+:
+
+248
+
+–
+
+259
+
+.
+
+Google Scholar
+
+Crossref
+
+Search ADS
+
+PubMed
+
+Gaffey
+
+,
+
+M. J.
+
+,
+
+S. E.
+
+Mills
+
+,
+
+R. J.
+
+Zarbo
+
+,
+
+L. M.
+
+Weiss
+
+, and
+
+A. M.
+
+Gown
+
+.
+
+Clear cell tumor of the lung: immunohistochemical and ultrastructural evidence of melanogenesis.
+
+Am J Surg Pathol
+
+1991
+
+.
+
+15
+
+:
+
+644
+
+–
+
+653
+
+.
+
+Google Scholar
+
+Crossref
+
+Search ADS
+
+PubMed
+
+Bonetti
+
+,
+
+F.
+
+,
+
+M.
+
+Pea
+
+, and
+
+G.
+
+Martignoni
+
+.
+
+et al
+
+.
+
+Clear cell (“sugar”) tumor of the lung is a lesion strictly related to angiomyolipoma—the concept of a family of lesions characterized by the presence of the perivascular epithelioid cells (PEC).
+
+Pathology
+
+1994
+
+.
+
+26
+
+:
+
+230
+
+–
+
+236
+
+.
+
+Google Scholar
+
+Crossref
+
+Search ADS
+
+PubMed
+
+Roviaro
+
+,
+
+G.
+
+,
+
+M.
+
+Montorsi
+
+,
+
+F.
+
+Varoli
+
+,
+
+R.
+
+Binda
+
+, and
+
+A.
+
+Cecchetto
+
+.
+
+Primary pulmonary tumours of neurogenic origin.
+
+Thorax
+
+1983
+
+.
+
+38
+
+:
+
+942
+
+–
+
+945
+
+.
+
+Google Scholar
+
+Crossref
+
+Search ADS
+
+PubMed
+
+Gal
+
+,
+
+A. A.
+
+,
+
+J. S.
+
+Brooks
+
+, and
+
+G. G.
+
+Pietra
+
+.
+
+Leiomyomatous neoplasms of the lung: a clinical, histologic, and immunohistochemical study.
+
+Mod Pathol
+
+1989
+
+.
+
+2
+
+:
+
+209
+
+–
+
+216
+
+.
+
+Google Scholar
+
+PubMed
+
+Carney
+
+,
+
+J. A.
+
+The triad of gastric epithelioid leiomyosarcoma, functioning extra-adrenal paraganglioma, and pulmonary chondroma.
+
+Cancer
+
+1979
+
+.
+
+43
+
+:
+
+374
+
+–
+
+382
+
+.
+
+Google Scholar
+
+Crossref
+
+Search ADS
+
+PubMed
+
+Kim
+
+,
+
+N. R.
+
+,
+
+H. J.
+
+Kim
+
+,
+
+J. K.
+
+Kim
+
+, and
+
+J.
+
+Han
+
+.
+
+Intrapulmonary lipomas: report of 4 cases.
+
+Histopathology
+
+2003
+
+.
+
+42
+
+:
+
+305
+
+–
+
+306
+
+.
+
+Google Scholar
+
+Crossref
+
+Search ADS
+
+PubMed
+
+Thomas de Montpreville
+
+,
+
+V.
+
+and
+
+E. M.
+
+Dulmet
+
+.
+
+Granular cell tumours of the lower respiratory tract.
+
+Histopathology
+
+1995
+
+.
+
+27
+
+:
+
+257
+
+–
+
+262
+
+.
+
+Google Scholar
+
+Crossref
+
+Search ADS
+
+PubMed
+
+Gaffey
+
+,
+
+M. J.
+
+,
+
+S. E.
+
+Mills
+
+, and
+
+F. B.
+
+Askin
+
+.
+
+Minute pulmonary meningothelial-like nodules: a clinicopathologic study of so-called minute pulmonary chemodectoma.
+
+Am J Surg Pathol
+
+1988
+
+.
+
+12
+
+:
+
+167
+
+–
+
+175
+
+.
+
+Google Scholar
+
+Crossref
+
+Search ADS
+
+PubMed
+
+Niho
+
+,
+
+S.
+
+,
+
+T.
+
+Yokose
+
+,
+
+Y.
+
+Nishiwaki
+
+, and
+
+K.
+
+Mukai
+
+.
+
+Immunohistochemical and clonal analysis of minute pulmonary meningothelial-like nodules.
+
+Hum Pathol
+
+1999
+
+.
+
+30
+
+:
+
+425
+
+–
+
+429
+
+.
+
+Google Scholar
+
+Crossref
+
+Search ADS
+
+PubMed
+
+Ionescu
+
+,
+
+D. N.
+
+,
+
+E.
+
+Sasatomi
+
+, and
+
+D.
+
+Aldeeb
+
+.
+
+et al
+
+.
+
+Pulmonary meningothelial-like nodules: a genotypic comparison with meningiomas.
+
+Am J Surg Pathol
+
+2004
+
+.
+
+28
+
+:
+
+207
+
+–
+
+214
+
+.
+
+Google Scholar
+
+Crossref
+
+Search ADS
+
+PubMed
+
+Lockett
+
+,
+
+L.
+
+,
+
+V.
+
+Chiang
+
+, and
+
+N.
+
+Scully
+
+.
+
+Primary pulmonary meningioma: report of a case and review of the literature.
+
+Am J Surg Pathol
+
+1997
+
+.
+
+21
+
+:
+
+453
+
+–
+
+460
+
+.
+
+Google Scholar
+
+Crossref
+
+Search ADS
+
+PubMed
+
+Abbondanzo
+
+,
+
+S. L.
+
+,
+
+W.
+
+Rush
+
+,
+
+K. E.
+
+Bijwaard
+
+, and
+
+M. N.
+
+Koss
+
+.
+
+Nodular lymphoid hyperplasia of the lung: a clinicopathologic study of 14 cases.
+
+Am J Surg Pathol
+
+2000
+
+.
+
+24
+
+:
+
+587
+
+–
+
+597
+
+.
+
+Google Scholar
+
+Crossref
+
+Search ADS
+
+PubMed
+
+Matsubara
+
+,
+
+O.
+
+,
+
+N. S.
+
+Tan-Liu
+
+,
+
+R. M.
+
+Kenney
+
+, and
+
+E. J.
+
+Mark
+
+.
+
+Inflammatory pseudotumors of the lung: progression from organizing pneumonia to fibrous histiocytoma or to plasma cell granuloma in 32 cases.
+
+Hum Pathol
+
+1988
+
+.
+
+19
+
+:
+
+807
+
+–
+
+814
+
+.
+
+Google Scholar
+
+Crossref
+
+Search ADS
+
+PubMed
+
+Cerfolio
+
+,
+
+R. J.
+
+,
+
+M. S.
+
+Allen
+
+, and
+
+A. G.
+
+Nascimento
+
+.
+
+et al
+
+.
+
+Inflammatory pseudotumors of the lung.
+
+Ann Thorac Surg
+
+1999
+
+.
+
+67
+
+:
+
+933
+
+–
+
+936
+
+.
+
+Google Scholar
+
+Crossref
+
+Search ADS
+
+PubMed
+
+Zen
+
+,
+
+Y.
+
+,
+
+S.
+
+Kitagawa
+
+, and
+
+H.
+
+Minato
+
+.
+
+et al
+
+.
+
+IgG4-positive plasma cells in inflammatory pseudotumor (plasma cell granuloma) of the lung.
+
+Hum Pathol
+
+2005
+
+.
+
+36
+
+:
+
+710
+
+–
+
+717
+
+.
+
+Google Scholar
+
+Crossref
+
+Search ADS
+
+PubMed
+
+Gal
+
+,
+
+A. A.
+
+,
+
+M. N.
+
+Koss
+
+,
+
+W. F.
+
+McCarthy
+
+, and
+
+L.
+
+Hochholzer
+
+.
+
+Prognostic factors in pulmonary fibrohistiocytic lesions.
+
+Cancer
+
+1994
+
+.
+
+73
+
+:
+
+1817
+
+–
+
+1824
+
+.
+
+Google Scholar
+
+Crossref
+
+Search ADS
+
+PubMed
+
+Snyder
+
+,
+
+C. S.
+
+,
+
+M.
+
+Dell'Aquila
+
+,
+
+P.
+
+Haghighi
+
+,
+
+R. N.
+
+Baergen
+
+,
+
+Y. K.
+
+Suh
+
+, and
+
+E. S.
+
+Yi
+
+.
+
+Clonal changes in inflammatory pseudotumor of the lung: a case report.
+
+Cancer
+
+1995
+
+.
+
+76
+
+:
+
+1545
+
+–
+
+1549
+
+.
+
+Google Scholar
+
+Crossref
+
+Search ADS
+
+PubMed
+
+Su
+
+,
+
+L. D.
+
+,
+
+A.
+
+Atayde-Perez
+
+,
+
+S.
+
+Sheldon
+
+,
+
+J. A.
+
+Fletcher
+
+, and
+
+S. W.
+
+Weiss
+
+.
+
+Inflammatory myofibroblastic tumor: cytogenetic evidence supporting clonal origin.
+
+Mod Pathol
+
+1998
+
+.
+
+11
+
+:
+
+364
+
+–
+
+368
+
+.
+
+Google Scholar
+
+PubMed
+
+Coffin
+
+,
+
+C. M.
+
+,
+
+A.
+
+Patel
+
+,
+
+S.
+
+Perkins
+
+,
+
+K. S.
+
+Elenitoba-Johnson
+
+,
+
+E.
+
+Perlman
+
+, and
+
+C. A.
+
+Griffin
+
+.
+
+ALK1 and p80 expression and chromosomal rearrangements involving 2p23 in inflammatory myofibroblastic tumor.
+
+Mod Pathol
+
+2001
+
+.
+
+14
+
+:
+
+569
+
+–
+
+576
+
+.
+
+Google Scholar
+
+Crossref
+
+Search ADS
+
+PubMed
+
+Yousem
+
+,
+
+S. A.
+
+,
+
+H.
+
+Shaw
+
+, and
+
+K.
+
+Cieply
+
+.
+
+Involvement of 2p23 in pulmonary inflammatory pseudotumors.
+
+Hum Pathol
+
+2001
+
+.
+
+32
+
+:
+
+428
+
+–
+
+433
+
+.
+
+Google Scholar
+
+Crossref
+
+Search ADS
+
+PubMed
+
+Kinoshita
+
+,
+
+Y.
+
+,
+
+T.
+
+Tajiri
+
+, and
+
+S.
+
+Ieiri
+
+.
+
+et al
+
+.
+
+A case of an inflammatory myofibroblastic tumor in the lung which expressed TPM3-ALK gene fusion.
+
+Pediatr Surg Int
+
+2007
+
+.
+
+23
+
+:
+
+595
+
+–
+
+599
+
+.
+
+Google Scholar
+
+Crossref
+
+Search ADS
+
+PubMed
+
+Coffin
+
+,
+
+C. M.
+
+,
+
+J. L.
+
+Hornick
+
+, and
+
+C. D.
+
+Fletcher
+
+.
+
+Inflammatory myofibroblastic tumor: comparison of clinicopathologic, histologic, and immunohistochemical features including ALK expression in atypical and aggressive cases.
+
+Am J Surg Pathol
+
+2007
+
+.
+
+31
+
+:
+
+509
+
+–
+
+520
+
+.
+
+Google Scholar
+
+Crossref
+
+Search ADS
+
+PubMed
+
+Chun
+
+,
+
+Y. S.
+
+,
+
+L.
+
+Wang
+
+,
+
+A. G.
+
+Nascimento
+
+,
+
+C. R.
+
+Moir
+
+, and
+
+D. A.
+
+Rodeberg
+
+.
+
+Pediatric inflammatory myofibroblastic tumor: anaplastic lymphoma kinase (ALK) expression and prognosis.
+
+Pediatr Blood Cancer
+
+2005
+
+.
+
+45
+
+:
+
+796
+
+–
+
+801
+
+.
+
+Google Scholar
+
+Crossref
+
+Search ADS
+
+PubMed
+
+Kato
+
+,
+
+S.
+
+,
+
+K.
+
+Kondo
+
+, and
+
+T.
+
+Teramoto
+
+.
+
+et al
+
+.
+
+A case report of inflammatory pseudotumor of the lung: rapid recurrence appearing as multiple lung nodules.
+
+Ann Thorac Cardiovasc Surg
+
+2002
+
+.
+
+8
+
+:
+
+224
+
+–
+
+227
+
+.
+
+Google Scholar
+
+PubMed
+
+Chan
+
+,
+
+J. K.
+
+,
+
+W.
+
+Cheuk
+
+, and
+
+M.
+
+Shimizu
+
+.
+
+Anaplastic lymphoma kinase expression in inflammatory pseudotumors.
+
+Am J Surg Pathol
+
+2001
+
+.
+
+25
+
+:
+
+761
+
+–
+
+768
+
+.
+
+Google Scholar
+
+Crossref
+
+Search ADS
+
+PubMed
+
+Cook
+
+,
+
+J. R.
+
+,
+
+L. P.
+
+Dehner
+
+, and
+
+M. H.
+
+Collins
+
+.
+
+et al
+
+.
+
+Anaplastic lymphoma kinase (ALK) expression in the inflammatory myofibroblastic tumor: a comparative immunohistochemical study.
+
+Am J Surg Pathol
+
+2001
+
+.
+
+25
+
+:
+
+1364
+
+–
+
+1371
+
+.
+
+Google Scholar
+
+Crossref
+
+Search ADS
+
+PubMed
+
+Lawrence
+
+,
+
+B.
+
+,
+
+A.
+
+Perez-Atayde
+
+, and
+
+M. K.
+
+Hibbard
+
+.
+
+et al
+
+.
+
+TPM3-ALK and TPM4-ALK oncogenes in inflammatory myofibroblastic tumors.
+
+Am J Pathol
+
+2000
+
+.
+
+157
+
+:
+
+377
+
+–
+
+384
+
+.
+
+Google Scholar
+
+Crossref
+
+Search ADS
+
+PubMed
+
+Lohr
+
+,
+
+R. H.
+
+,
+
+B. J.
+
+Boland
+
+, and
+
+W. W.
+
+Douglas
+
+.
+
+et al
+
+.
+
+Organizing pneumonia: features and prognosis of cryptogenic, secondary, and focal variants.
+
+Arch Intern Med
+
+1997
+
+.
+
+157
+
+:
+
+1323
+
+–
+
+1329
+
+.
+
+Google Scholar
+
+Crossref
+
+Search ADS
+
+PubMed
+
+Yousem
+
+,
+
+S. A.
+
+Pulmonary apical cap: a distinctive but poorly recognized lesion in pulmonary surgical pathology.
+
+Am J Surg Pathol
+
+2001
+
+.
+
+25
+
+:
+
+679
+
+–
+
+683
+
+.
+
+Google Scholar
+
+Crossref
+
+Search ADS
+
+PubMed
+
+Dacic
+
+,
+
+S.
+
+,
+
+T. V.
+
+Colby
+
+, and
+
+S. A.
+
+Yousem
+
+.
+
+Nodular amyloidoma and primary pulmonary lymphoma with amyloid production: a differential diagnostic problem.
+
+Mod Pathol
+
+2000
+
+.
+
+13
+
+:
+
+934
+
+–
+
+940
+
+.
+
+Google Scholar
+
+Crossref
+
+Search ADS
+
+PubMed
+
+Cordier
+
+,
+
+J. F.
+
+,
+
+R.
+
+Loire
+
+, and
+
+J.
+
+Brune
+
+.
+
+Amyloidosis of the lower respiratory tract: clinical and pathologic features in a series of 21 patients.
+
+Chest
+
+1986
+
+.
+
+90
+
+:
+
+827
+
+–
+
+831
+
+.
+
+Google Scholar
+
+Crossref
+
+Search ADS
+
+PubMed
+
+Podbielski
+
+,
+
+F. J.
+
+,
+
+D. G.
+
+Nelson
+
+,
+
+G. F. Jr
+
+Pearsall
+
+,
+
+G. D.
+
+Marquez
+
+, and
+
+M. M.
+
+Connolly
+
+.
+
+Nodular pulmonary amyloidosis.
+
+J Thorac Cardiovasc Surg
+
+1997
+
+.
+
+114
+
+:
+
+289
+
+–
+
+291
+
+.
+
+Google Scholar
+
+Crossref
+
+Search ADS
+
+PubMed
+
+Asad
+
+,
+
+S.
+
+,
+
+S. L.
+
+Aquino
+
+,
+
+N.
+
+Piyavisetpat
+
+, and
+
+A. J.
+
+Fischman
+
+.
+
+False-positive FDG positron emission tomography uptake in nonmalignant chest abnormalities.
+
+AJR Am J Roentgenol
+
+2004
+
+.
+
+182
+
+:
+
+983
+
+–
+
+989
+
+.
+
+Google Scholar
+
+Crossref
+
+Search ADS
+
+PubMed
+
+Yousem
+
+,
+
+S. A.
+
+and
+
+L.
+
+Hochholzer
+
+.
+
+Pulmonary hyalinizing granuloma.
+
+Am J Clin Pathol
+
+1987
+
+.
+
+87
+
+:
+
+1
+
+–
+
+6
+
+.
+
+Google Scholar
+
+Crossref
+
+Search ADS
+
+PubMed
+
+Ikard
+
+,
+
+R. W.
+
+Pulmonary hyalinizing granuloma.
+
+Chest
+
+1988
+
+.
+
+93
+
+:
+
+871
+
+–
+
+872
+
+.
+
+Google Scholar
+
+Crossref
+
+Search ADS
+
+PubMed
+
+Hillerdal
+
+,
+
+G.
+
+Rounded atelectasis: clinical experience with 74 patients.
+
+Chest
+
+1989
+
+.
+
+95
+
+:
+
+836
+
+–
+
+841
+
+.
+
+Google Scholar
+
+Crossref
+
+Search ADS
+
+PubMed
+
+Menzies
+
+,
+
+R.
+
+and
+
+R.
+
+Fraser
+
+.
+
+Round atelectasis: pathologic and pathogenetic features.
+
+Am J Surg Pathol
+
+1987
+
+.
+
+11
+
+:
+
+674
+
+–
+
+681
+
+.
+
+Google Scholar
+
+Crossref
+
+Search ADS
+
+PubMed
+
+The author has no relevant financial interest in the products or companies described in this article.
+
+## Author notes
+
+Reprints: Alain C. Borczuk, MD, Columbia University Medical Center, 630 W 168th St, New York, NY 10032 (ab748@columbia.edu)
+
+## Send Email
+
+Recipient(s) will receive an email with a link to 'Benign Tumors and Tumorlike Conditions of the Lung' and will not need an account to access the content.
+
+*Your Name:
+
+*Your Email Address:
+
+CC:
+
+*Recipient 1:
+
+Recipient 2:
+
+Recipient 3:
+
+Recipient 4:
+
+Recipient 5:
+
+Subject: Benign Tumors and Tumorlike Conditions of the Lung
+
+Optional Message:
+
+(Optional message may have a maximum of 1000 characters.)
+
+Submit
+
+×
+
+- ISSN 0003-9985
+- eISSN 1543-2165
+
+- --
+- Support
+- Get Adobe Acrobat Reader
+- Privacy Policy
+
+Close Modal
+
+Close Modal
+
+##### This Feature Is Available To Subscribers Only
+
+Sign In or Create an Account
+
+Close Modal
+
+Close Modal
+
+This site uses cookies. By continuing to use our website, you are agreeing to our privacy policy.
+
+Accept
+
+PDF Help

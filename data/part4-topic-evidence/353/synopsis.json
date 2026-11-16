@@ -1,36 +1,36 @@
 {
   "catalogueId": "353",
   "topic": "Lung Volumes and Spirometry interpretation",
-  "scope": "2019 ATS/ERS spirometry technical statement on acceptability of the forced manoeuvre. Static lung-volume interpretation is not in this document.",
+  "scope": "Open review of static lung volumes and how they are interpreted, including why spirometry cannot measure residual volume, FRC, or total lung capacity.",
   "keyRecommendations": [
     {
-      "text": "A cough in the first second makes the FEV1 neither acceptable nor usable.",
+      "text": "Static volumes are tidal, inspiratory reserve, expiratory reserve, and residual volume. Capacities include inspiratory capacity, FRC, vital capacity, and TLC.",
       "strength": "not_graded",
-      "population": "Forced spirometry"
+      "population": "Lung volume definitions"
     },
     {
-      "text": "An FET of 15 seconds is an end-of-forced-expiration criterion, with an indicator and a double beep.",
+      "text": "RV, FRC, and TLC cannot be measured with a simple spirometer. They are measured by radiology, plethysmography, or gas dilution (helium dilution or nitrogen washout).",
       "strength": "not_graded",
-      "population": "Forced expiration"
+      "population": "Measurement"
     },
     {
-      "text": "If FIVC minus FVC exceeds 0.100 L or 5% of FVC, FEV1 and FVC are not acceptable.",
+      "text": "Static volumes matter for both obstructive and restrictive defects. Air trapping correlates positively with RV, FRC, TLC, and RV/TLC.",
       "strength": "not_graded",
-      "population": "Manoeuvre quality"
+      "population": "Interpretation"
     }
   ],
-  "clinicalBottomLine": "Do not report an FEV1 from a manoeuvre with a cough in the first second. Use the end-of-test and the FIVC–FVC checks before calling FEV1 and FVC acceptable.",
+  "clinicalBottomLine": "Do not try to read residual volume or total lung capacity off a spirometer. Use plethysmography or gas dilution, and interpret a high RV/TLC as air trapping in obstruction.",
   "notableCaveats": [
-    "The 2022 ATS/ERS interpretive strategies document and a static lung-volume standard were not openly available. These questions cover spirometry performance only."
+    "The 2019 spirometry performance standard is kept as source-spirometry.txt. These questions use the open review of static lung volumes, which is what the catalogue title asks for beyond manoeuvre quality."
   ],
   "source": {
-    "title": "Standardization of Spirometry 2019 Update. An Official American Thoracic Society and European Respiratory Society Technical Statement.",
-    "year": 2019,
-    "pmid": "31613151",
-    "pmcid": "PMC6794117",
-    "doi": "",
-    "url": "https://europepmc.org/articles/PMC6794117",
-    "sourceBody": "ATS/ERS",
+    "title": "The physiological basis and clinical significance of lung volume measurements.",
+    "year": 2017,
+    "pmid": "28194273",
+    "pmcid": "PMC5299792",
+    "doi": "10.1186/s40248-017-0084-5",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5299792/",
+    "sourceBody": "Multidiscip Respir Med",
     "storedAs": ""
   }
 }

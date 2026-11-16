@@ -4,27 +4,27 @@
   "mcqs": [
     {
       "id": "2015-01",
-      "question": "In this review, addiction refers to which severity of SUD?",
+      "question": "In this review, addiction refers to which SUD severity?",
       "options": {
         "A": "Moderate or severe",
         "B": "Mild only",
         "C": "Any single use",
-        "D": "Tobacco only",
-        "E": "A legal finding rather than a clinical one"
+        "D": "A legal status rather than a clinical one",
+        "E": "Tobacco only"
       },
       "correctAnswer": "A",
       "correctAnswerText": "Moderate or severe",
-      "explanation": "The text uses addiction for moderate or severe SUD.",
+      "explanation": "The review uses addiction for moderate or severe SUD.",
       "difficulty": "medium",
       "sourceRefs": [
         {
           "sourceBody": "World Psychiatry",
           "sourceYear": 2023,
-          "sourceUrl": "https://europepmc.org/articles/PMC10168177",
+          "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10168177/",
           "pmid": "37159360",
           "pmcid": "PMC10168177",
           "doi": "10.1002/wps.21073",
-          "excerpt": "addiction (moderate or severe SUD)"
+          "excerpt": "addiction (moderate or severe SUD)."
         }
       ]
     },
@@ -34,101 +34,101 @@
       "options": {
         "A": "Opioid, nicotine, and alcohol use disorders",
         "B": "Caffeine only",
-        "C": "No SUD",
-        "D": "Cannabis only",
-        "E": "Inhalant use only"
+        "C": "Every SUD, including stimulants, has an approved medication in this sentence",
+        "D": "No SUD",
+        "E": "Cannabis only"
       },
       "correctAnswer": "A",
       "correctAnswerText": "Opioid, nicotine, and alcohol use disorders",
-      "explanation": "Medications are cited for opioid, nicotine, and alcohol use disorders; behavioural therapies for all SUDs; neuromodulation for nicotine use disorder.",
+      "explanation": "Medications are cited for opioid, nicotine, and alcohol use disorders. Behavioral therapies are cited for all SUDs, and neuromodulation for nicotine use disorder.",
       "difficulty": "medium",
       "sourceRefs": [
         {
           "sourceBody": "World Psychiatry",
           "sourceYear": 2023,
-          "sourceUrl": "https://europepmc.org/articles/PMC10168177",
+          "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10168177/",
           "pmid": "37159360",
           "pmcid": "PMC10168177",
           "doi": "10.1002/wps.21073",
-          "excerpt": "medications (in opioid, nicotine and alcohol use disorders), behavioral therapies (in all SUDs), and neuromodulation (in nicotine use disorder)"
+          "excerpt": "evidence of clinically significant benefit exists for medications (in opioid, nicotine and alcohol use disorders), behavioral therapies (in all SUDs), and neuromodulation (in nicotine use disorder)."
         }
       ]
     },
     {
       "id": "2015-03",
-      "question": "Which care model does the review recommend for SUD treatment?",
+      "question": "Which care model does the review recommend?",
       "options": {
-        "A": "A chronic care model",
-        "B": "A single unplanned detoxification with no follow-up",
+        "A": "A chronic care model, with intensity adjusted to severity and treatment of comorbidity",
+        "B": "A single detoxification with no follow-up",
         "C": "Incarceration as treatment",
         "D": "Watchful waiting for severe disorder",
         "E": "Emergency surgery"
       },
       "correctAnswer": "A",
-      "correctAnswerText": "A chronic care model",
-      "explanation": "SUD treatment should be considered within a chronic care model, with intensity adjusted to severity.",
+      "correctAnswerText": "A chronic care model, with intensity adjusted to severity and treatment of comorbidity",
+      "explanation": "SUD treatment should be considered within a chronic care model, with intensity adjusted to severity and treatment of psychiatric and physical comorbidity.",
       "difficulty": "medium",
       "sourceRefs": [
         {
           "sourceBody": "World Psychiatry",
           "sourceYear": 2023,
-          "sourceUrl": "https://europepmc.org/articles/PMC10168177",
+          "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10168177/",
           "pmid": "37159360",
           "pmcid": "PMC10168177",
           "doi": "10.1002/wps.21073",
-          "excerpt": "Treatment of SUDs should be considered within the context of a Chronic Care Model"
+          "excerpt": "Treatment of SUDs should be considered within the context of a Chronic Care Model, with the intensity of intervention adjusted to the severity of the disorder and with the concomitant treatment of comorbid psychiatric and physical conditions."
         }
       ]
     },
     {
       "id": "2015-04",
-      "question": "Prevention aimed at social risk factors can decrease risk when it is deployed at which stage?",
+      "question": "Which medications does the review name as FDA-approved for alcohol use disorder?",
       "options": {
-        "A": "Childhood and adolescence",
-        "B": "Only after retirement",
-        "C": "Only during withdrawal seizures",
-        "D": "The review says prevention cannot work",
-        "E": "Only in intensive care"
+        "A": "Disulfiram, acamprosate, and naltrexone",
+        "B": "Methadone only",
+        "C": "Varenicline only",
+        "D": "No medication is approved",
+        "E": "Bupropion only"
       },
       "correctAnswer": "A",
-      "correctAnswerText": "Childhood and adolescence",
-      "explanation": "The summary says that when deployed in childhood and adolescence, such prevention can decrease risk.",
+      "correctAnswerText": "Disulfiram, acamprosate, and naltrexone",
+      "explanation": "The three FDA-approved medications named for alcohol use disorder are disulfiram, acamprosate, and naltrexone.",
       "difficulty": "medium",
       "sourceRefs": [
         {
           "sourceBody": "World Psychiatry",
           "sourceYear": 2023,
-          "sourceUrl": "https://europepmc.org/articles/PMC10168177",
+          "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10168177/",
           "pmid": "37159360",
           "pmcid": "PMC10168177",
           "doi": "10.1002/wps.21073",
-          "excerpt": "when deployed in childhood and adolescence, can decrease the risk"
+          "excerpt": "There are three medications approved by the FDA for alcohol use disorder: disulfiram, acamprosate, and naltrexone (oral and extended‐release)."
         }
       ]
     },
     {
       "id": "2015-05",
-      "question": "What does the review include for severe cases?",
+      "question": "Which smoking-cessation medications does the review say the FDA has approved?",
       "options": {
-        "A": "Referral to specialized care",
-        "B": "Mandatory discharge",
-        "C": "Withholding of all behavioural therapy",
-        "D": "Treatment only in prison",
-        "E": "No role for health services"
+        "A": "Bupropion, varenicline, and nicotine replacement",
+        "B": "Disulfiram only",
+        "C": "Methadone",
+        "D": "Naltrexone only",
+        "E": "No medication is approved for smoking"
       },
       "correctAnswer": "A",
-      "correctAnswerText": "Referral to specialized care",
-      "explanation": "Detection and management include referral of severe cases to specialized care.",
+      "correctAnswerText": "Bupropion, varenicline, and nicotine replacement",
+      "explanation": "The review names bupropion, varenicline, and nicotine replacement treatments as the three FDA-approved medications for smoking cessation.",
       "difficulty": "medium",
       "sourceRefs": [
         {
           "sourceBody": "World Psychiatry",
           "sourceYear": 2023,
-          "sourceUrl": "https://europepmc.org/articles/PMC10168177",
+          "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10168177/",
           "pmid": "37159360",
           "pmcid": "PMC10168177",
           "doi": "10.1002/wps.21073",
-          "excerpt": "referral of severe cases to specialized care"
+          "excerpt": "Three medications for smoking cessation are approved by the FDA: bupropion, varenicline, and nicotine replacement treatments (patch, gum, lozenge, oral inhaler, and nasal spray)."
         }
       ]
     }

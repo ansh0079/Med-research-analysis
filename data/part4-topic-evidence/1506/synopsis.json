@@ -1,36 +1,36 @@
 {
   "catalogueId": "1506",
   "topic": "Retinal detachment: presentation and emergency management",
-  "scope": "Open summary of a CME review of rhegmatogenous retinal detachment as an ophthalmic emergency.",
+  "scope": "Open full-text review of rhegmatogenous retinal detachment: macula-on versus macula-off, urgent surgery, and the three repair operations.",
   "keyRecommendations": [
     {
-      "text": "Typical symptoms are light flashes, floaters, or a dark curtain. Myopia and prior cataract surgery are the main epidemiologic risk factors.",
-      "strength": "not_graded",
-      "population": "Suspected rhegmatogenous detachment"
-    },
-    {
-      "text": "All patients should be seen by an ophthalmologist on the same day symptoms arise.",
-      "strength": "not_graded",
-      "population": "New symptoms of rhegmatogenous detachment"
-    },
-    {
-      "text": "Treatment is scleral buckle, vitrectomy, or both. Anatomical success is about 85–90%. Vitrectomy is followed by lens opacification in more than 70%.",
+      "text": "Primary surgical success is over 80 to 90 percent. The three current options are pneumatic retinopexy, scleral buckle, and pars plana vitrectomy.",
       "strength": "not_graded",
       "population": "Rhegmatogenous retinal detachment"
+    },
+    {
+      "text": "Symptomatic detachment is a clear indication for surgery. Macula-on detachment has better initial acuity and a better visual prognosis.",
+      "strength": "not_graded",
+      "population": "Presentation"
+    },
+    {
+      "text": "Proliferative vitreoretinopathy is the most predictive factor for primary failure, with success falling from 90 to 68 percent if it is present.",
+      "strength": "not_graded",
+      "population": "Surgical failure"
     }
   ],
-  "clinicalBottomLine": "Treat flashes, floaters, or a curtain as a same-day ophthalmology emergency; earlier review keeps a better chance that the macula is still attached.",
+  "clinicalBottomLine": "Treat symptomatic rhegmatogenous detachment as an indication for urgent repair. Record whether the macula is on. Choose among pneumatic retinopexy, buckle, and vitrectomy, and expect worse primary success if proliferative vitreoretinopathy is already present.",
   "notableCaveats": [
-    "PMC XML contains the article summary rather than the full CME body. MCQs use only statements in that open text."
+    "Replaces the 2014 CME summary. This 2020 review is an open full text."
   ],
   "source": {
-    "title": "Rhegmatogenous Retinal Detachment—an Ophthalmologic Emergency.",
-    "year": 2014,
-    "pmid": "24565273",
-    "pmcid": "PMC3948016",
-    "doi": "10.3238/arztebl.2014.0012",
-    "url": "https://europepmc.org/articles/PMC3948016",
-    "sourceBody": "Dtsch Arztebl Int",
+    "title": "Rhegmatogenous retinal detachment: a review of current practice in diagnosis and management.",
+    "year": 2020,
+    "pmid": "33083551",
+    "pmcid": "PMC7549457",
+    "doi": "10.1136/bmjophth-2020-000474",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7549457/",
+    "sourceBody": "BMJ Open Ophthalmology",
     "storedAs": ""
   }
 }

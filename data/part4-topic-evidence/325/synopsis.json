@@ -1,0 +1,36 @@
+{
+  "catalogueId": "325",
+  "topic": "Benign lung tumors",
+  "scope": "Open review of benign lung tumors as a class, covering epithelial and mesenchymal lesions including papilloma and hamartoma.",
+  "keyRecommendations": [
+    {
+      "text": "Benign lung neoplasms are an uncommon group of epithelial and mesenchymal tumors, generally smaller than 3 cm.",
+      "strength": "not_graded",
+      "population": "Benign lung tumors"
+    },
+    {
+      "text": "Endobronchial lesions can cause cough, post-obstructive pneumonia, or hemoptysis; parenchymal lesions can be asymptomatic nodules.",
+      "strength": "not_graded",
+      "population": "Benign lung tumors"
+    },
+    {
+      "text": "Pulmonary hamartomas are benign mesenchymal neoplasms. Complete excision is recommended for papillomas because of recurrence and uncertain malignant potential.",
+      "strength": "not_graded",
+      "population": "Hamartoma and papilloma"
+    }
+  ],
+  "clinicalBottomLine": "Treat a benign lung tumor as a small epithelial or mesenchymal lesion whose symptoms depend on whether it is endobronchial or parenchymal. Hamartoma is a benign mesenchymal neoplasm, and papillomas are excised completely.",
+  "notableCaveats": [
+    "The 2025 comprehensive review is not open. This 2008 class review was openly readable and covers more than a single hamartoma case."
+  ],
+  "source": {
+    "title": "Benign tumors and tumorlike conditions of the lung.",
+    "year": 2008,
+    "pmid": "18605764",
+    "pmcid": "",
+    "doi": "10.5858/2008-132-1133-BTATCO",
+    "url": "https://meridian.allenpress.com/aplm/article/132/7/1133/460534/Benign-Tumors-and-Tumorlike-Conditions-of-the-Lung",
+    "sourceBody": "Arch Pathol Lab Med",
+    "storedAs": ""
+  }
+}

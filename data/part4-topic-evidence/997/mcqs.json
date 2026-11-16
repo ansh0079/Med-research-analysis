@@ -4,131 +4,131 @@
   "mcqs": [
     {
       "id": "997-01",
-      "question": "What is the AASM recommendation on PAP for adults with OSA and excessive sleepiness?",
+      "question": "Compared with no treatment, what does the review say PAP does?",
       "options": {
-        "A": "Use PAP rather than no therapy (strong)",
-        "B": "Do not use PAP",
-        "C": "PAP is conditional in sleepy patients",
-        "D": "Surgery first",
-        "E": "No recommendation is made"
+        "A": "It clinically significantly reduces severity, sleepiness, blood pressure, and motor vehicle accidents, and improves sleep-related quality of life",
+        "B": "It has no effect on sleepiness",
+        "C": "It increases motor vehicle accidents",
+        "D": "It is inferior to no treatment",
+        "E": "The comparison was not made"
       },
       "correctAnswer": "A",
-      "correctAnswerText": "Use PAP rather than no therapy (strong)",
-      "explanation": "The guideline says we recommend PAP compared with no therapy for excessive sleepiness, and marks it STRONG.",
+      "correctAnswerText": "It clinically significantly reduces severity, sleepiness, blood pressure, and motor vehicle accidents, and improves sleep-related quality of life",
+      "explanation": "PAP compared with no treatment produced a clinically significant reduction in disease severity, sleepiness, blood pressure, and motor vehicle accidents, and an improvement in sleep-related quality of life.",
       "difficulty": "medium",
       "sourceRefs": [
         {
-          "sourceBody": "AASM",
+          "sourceBody": "AASM / J Clin Sleep Med",
           "sourceYear": 2019,
-          "sourceUrl": "https://europepmc.org/articles/PMC6374094",
-          "pmid": "30736887",
-          "pmcid": "PMC6374094",
-          "doi": "10.5664/jcsm.7640",
-          "excerpt": "We recommend that clinicians use PAP, compared to no therapy, to treat OSA in adults with excessive sleepiness. (STRONG)"
+          "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6374080/",
+          "pmid": "",
+          "pmcid": "PMC6374080",
+          "doi": "",
+          "excerpt": "The data demonstrated that PAP compared to no treatment results in a clinically significant reduction in disease severity, sleepiness, blood pressure, and motor vehicle accidents, and improvement in sleep-related quality of life in adults with OSA."
         }
       ]
     },
     {
       "id": "997-02",
-      "question": "How does the guideline say to initiate PAP in adults with OSA and no significant comorbidities?",
+      "question": "How did home initiation of PAP compare with in-laboratory titration?",
       "options": {
-        "A": "Either home APAP or in-laboratory titration (strong)",
-        "B": "BPAP only",
-        "C": "No titration of any kind",
-        "D": "Oxygen alone",
-        "E": "The recommendation is against PAP"
+        "A": "Equivalent effects on patient outcomes",
+        "B": "Home initiation was inferior on every outcome",
+        "C": "Laboratory titration is required and home start is ineffective",
+        "D": "Home initiation was not studied",
+        "E": "Home initiation increased blood pressure only"
       },
       "correctAnswer": "A",
-      "correctAnswerText": "Either home APAP or in-laboratory titration (strong)",
-      "explanation": "Initiate with either APAP at home or in-laboratory PAP titration. The recommendation is strong.",
+      "correctAnswerText": "Equivalent effects on patient outcomes",
+      "explanation": "Initiation of PAP in the home demonstrated equivalent effects on patient outcomes compared with an in-laboratory titration approach.",
       "difficulty": "medium",
       "sourceRefs": [
         {
-          "sourceBody": "AASM",
+          "sourceBody": "AASM / J Clin Sleep Med",
           "sourceYear": 2019,
-          "sourceUrl": "https://europepmc.org/articles/PMC6374094",
-          "pmid": "30736887",
-          "pmcid": "PMC6374094",
-          "doi": "10.5664/jcsm.7640",
-          "excerpt": "PAP therapy be initiated using either APAP at home or in-laboratory PAP titration in adults with OSA and no significant comorbidities. (STRONG)"
+          "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6374080/",
+          "pmid": "",
+          "pmcid": "PMC6374080",
+          "doi": "",
+          "excerpt": "the initiation of PAP in the home demonstrated equivalent effects on patient outcomes when compared to an in-laboratory titration approach."
         }
       ]
     },
     {
       "id": "997-03",
-      "question": "What does the strong recommendation say about ongoing treatment?",
+      "question": "What did the review find for auto-adjusting or bilevel PAP compared with CPAP?",
       "options": {
-        "A": "Use either CPAP or APAP",
-        "B": "Use BPAP for every patient",
-        "C": "Stop PAP after one week",
-        "D": "Use only an oral appliance",
-        "E": "Ongoing treatment is not addressed"
+        "A": "No clinically significant difference in patient outcomes",
+        "B": "Bilevel PAP was clearly superior",
+        "C": "Auto-adjusting PAP was harmful",
+        "D": "CPAP was abandoned",
+        "E": "The modalities were not compared"
       },
       "correctAnswer": "A",
-      "correctAnswerText": "Use either CPAP or APAP",
-      "explanation": "Clinicians should use either CPAP or APAP for ongoing treatment. That recommendation is strong.",
+      "correctAnswerText": "No clinically significant difference in patient outcomes",
+      "explanation": "Auto-adjusting or bilevel PAP did not result in clinically significant differences in patient outcomes compared with standard continuous PAP.",
       "difficulty": "medium",
       "sourceRefs": [
         {
-          "sourceBody": "AASM",
+          "sourceBody": "AASM / J Clin Sleep Med",
           "sourceYear": 2019,
-          "sourceUrl": "https://europepmc.org/articles/PMC6374094",
-          "pmid": "30736887",
-          "pmcid": "PMC6374094",
-          "doi": "10.5664/jcsm.7640",
-          "excerpt": "We recommend that clinicians use either CPAP or APAP for ongoing treatment of OSA in adults. (STRONG)"
+          "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6374080/",
+          "pmid": "",
+          "pmcid": "PMC6374080",
+          "doi": "",
+          "excerpt": "the use of auto-adjusting or bilevel PAP did not result in clinically significant differences in patient outcomes compared with standard continuous PAP."
         }
       ]
     },
     {
       "id": "997-04",
-      "question": "What strong recommendation accompanies the start of PAP?",
+      "question": "Which added interventions improved PAP adherence?",
       "options": {
-        "A": "Give educational interventions",
-        "B": "Avoid all education",
-        "C": "Education is conditional only",
-        "D": "Education replaces the need for a machine",
-        "E": "No statement on education"
+        "A": "Educational, behavioral, troubleshooting, and telemonitoring interventions",
+        "B": "No intervention improved adherence",
+        "C": "Only a change of machine brand",
+        "D": "Sedatives alone",
+        "E": "Stopping follow-up"
       },
       "correctAnswer": "A",
-      "correctAnswerText": "Give educational interventions",
-      "explanation": "Educational interventions should be given with initiation of PAP. The recommendation is strong.",
+      "correctAnswerText": "Educational, behavioral, troubleshooting, and telemonitoring interventions",
+      "explanation": "The review reports a clinically significant improvement in adherence with educational, behavioral, troubleshooting, and telemonitoring interventions.",
       "difficulty": "medium",
       "sourceRefs": [
         {
-          "sourceBody": "AASM",
+          "sourceBody": "AASM / J Clin Sleep Med",
           "sourceYear": 2019,
-          "sourceUrl": "https://europepmc.org/articles/PMC6374094",
-          "pmid": "30736887",
-          "pmcid": "PMC6374094",
-          "doi": "10.5664/jcsm.7640",
-          "excerpt": "We recommend that educational interventions be given with initiation of PAP therapy in adults with OSA. (STRONG)"
+          "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6374080/",
+          "pmid": "",
+          "pmcid": "PMC6374080",
+          "doi": "",
+          "excerpt": "data demonstrated a clinically significant improvement in PAP adherence with the use of educational, behavioral, troubleshooting, and telemonitoring interventions."
         }
       ]
     },
     {
       "id": "997-05",
-      "question": "How is PAP labelled for adults with OSA and comorbid hypertension?",
+      "question": "How did nasal interfaces compare with oronasal interfaces?",
       "options": {
-        "A": "A conditional suggestion to use PAP rather than no therapy",
-        "B": "A strong recommendation against PAP",
-        "C": "Hypertension is an absolute contraindication",
-        "D": "PAP is mandatory surgery",
-        "E": "Hypertension is not mentioned"
+        "A": "Nasal interfaces had improved adherence and slightly greater reductions in OSA severity",
+        "B": "Oronasal interfaces were better on both adherence and severity",
+        "C": "The interfaces were identical and not compared",
+        "D": "Nasal masks were contraindicated",
+        "E": "Only full-face masks reduced the apnea-hypopnea index"
       },
       "correctAnswer": "A",
-      "correctAnswerText": "A conditional suggestion to use PAP rather than no therapy",
-      "explanation": "The guideline suggests PAP compared with no therapy for comorbid hypertension and marks it CONDITIONAL.",
+      "correctAnswerText": "Nasal interfaces had improved adherence and slightly greater reductions in OSA severity",
+      "explanation": "Nasal interfaces compared with oronasal interfaces had improved adherence and slightly greater reductions in OSA severity.",
       "difficulty": "medium",
       "sourceRefs": [
         {
-          "sourceBody": "AASM",
+          "sourceBody": "AASM / J Clin Sleep Med",
           "sourceYear": 2019,
-          "sourceUrl": "https://europepmc.org/articles/PMC6374094",
-          "pmid": "30736887",
-          "pmcid": "PMC6374094",
-          "doi": "10.5664/jcsm.7640",
-          "excerpt": "We suggest that clinicians use PAP, compared to no therapy, to treat OSA in adults with comorbid hypertension. (CONDITIONAL)"
+          "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6374080/",
+          "pmid": "",
+          "pmcid": "PMC6374080",
+          "doi": "",
+          "excerpt": "nasal interfaces compared to oronasal interfaces have improved adherence and slightly greater reductions in OSA severity, heated humidification compared to no humidification reduces some continuous PAP-related side effects, and pressure profile PAP did not result in clinically significant differences in patient outcomes compared with standard continuous PAP."
         }
       ]
     }

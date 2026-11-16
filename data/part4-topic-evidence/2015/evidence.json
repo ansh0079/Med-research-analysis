@@ -10,12 +10,12 @@
     "pmid": "37159360",
     "pmcid": "PMC10168177",
     "doi": "10.1002/wps.21073",
-    "url": "https://europepmc.org/articles/PMC10168177",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10168177/",
     "sourceBody": "World Psychiatry",
     "storedAs": ""
   },
-  "whyItFits": "Opening summary of the 2023 Volkow and Blanco review of substance use disorders.",
-  "limitations": "",
+  "whyItFits": "Full text of the 2023 Volkow and Blanco review of substance use disorders, replacing the opening summary.",
+  "limitations": "Full PMC text of the same Volkow and Blanco review. Replaces the abstract-only extract.",
   "synopsisWritten": true,
   "mcqsWritten": true,
   "mcqCount": 5

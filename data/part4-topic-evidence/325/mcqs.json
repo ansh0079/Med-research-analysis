@@ -1,0 +1,136 @@
+{
+  "catalogueId": "325",
+  "topic": "Benign lung tumors",
+  "mcqs": [
+    {
+      "id": "325-01",
+      "question": "How does this review describe benign neoplasms of the lung?",
+      "options": {
+        "A": "An uncommon group of epithelial and mesenchymal tumors, generally smaller than 3 cm",
+        "B": "The most common lung cancers",
+        "C": "Only metastatic nodules",
+        "D": "Always larger than 5 cm",
+        "E": "Infectious granulomas by definition"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "An uncommon group of epithelial and mesenchymal tumors, generally smaller than 3 cm",
+      "explanation": "The review says benign neoplasms are a relatively uncommon group of epithelial and mesenchymal origin and are generally small, less than 3 cm.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "Arch Pathol Lab Med",
+          "sourceYear": 2008,
+          "sourceUrl": "https://meridian.allenpress.com/aplm/article/132/7/1133/460534/Benign-Tumors-and-Tumorlike-Conditions-of-the-Lung",
+          "pmid": "18605764",
+          "pmcid": "",
+          "doi": "10.5858/2008-132-1133-BTATCO",
+          "excerpt": "Benign neoplasms of the lung represent a relatively uncommon group of tumors of epithelial and mesenchymal origin. These tumors are generally small (less than 3 cm) and, depending on their typical site of origin (endobronchial vs lung parenchymal), can be associated with symptoms of endobronchial involvement such as cough, postobstructive pneumonia, and hemoptysis or can be asymptomatic solitary pulmonary nodules. "
+        }
+      ]
+    },
+    {
+      "id": "325-02",
+      "question": "Symptoms of endobronchial involvement in this review include which of the following?",
+      "options": {
+        "A": "Cough, post-obstructive pneumonia, and hemoptysis",
+        "B": "Only jaundice",
+        "C": "Only seizures",
+        "D": "They are always silent",
+        "E": "Only digital clubbing from a benign nodule"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Cough, post-obstructive pneumonia, and hemoptysis",
+      "explanation": "Endobronchial origin can cause cough, post-obstructive pneumonia, and hemoptysis. Parenchymal lesions can be asymptomatic nodules.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "Arch Pathol Lab Med",
+          "sourceYear": 2008,
+          "sourceUrl": "https://meridian.allenpress.com/aplm/article/132/7/1133/460534/Benign-Tumors-and-Tumorlike-Conditions-of-the-Lung",
+          "pmid": "18605764",
+          "pmcid": "",
+          "doi": "10.5858/2008-132-1133-BTATCO",
+          "excerpt": "depending on their typical site of origin (endobronchial vs lung parenchymal), can be associated with symptoms of endobronchial involvement such as cough, postobstructive pneumonia, and hemoptysis or can be asymptomatic solitary pulmonary nodules. "
+        }
+      ]
+    },
+    {
+      "id": "325-03",
+      "question": "What does the review say pulmonary hamartomas are?",
+      "options": {
+        "A": "Benign mesenchymal neoplasms",
+        "B": "Malignant epithelial carcinomas",
+        "C": "Infections",
+        "D": "Always endobronchial squamous cancers",
+        "E": "Metastases"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Benign mesenchymal neoplasms",
+      "explanation": "The review states that pulmonary hamartomas are benign mesenchymal neoplasms.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "Arch Pathol Lab Med",
+          "sourceYear": 2008,
+          "sourceUrl": "https://meridian.allenpress.com/aplm/article/132/7/1133/460534/Benign-Tumors-and-Tumorlike-Conditions-of-the-Lung",
+          "pmid": "18605764",
+          "pmcid": "",
+          "doi": "10.5858/2008-132-1133-BTATCO",
+          "excerpt": "pulmonary hamartomas are benign mesenchymal neoplasms. "
+        }
+      ]
+    },
+    {
+      "id": "325-04",
+      "question": "What management does the review recommend for papillomas?",
+      "options": {
+        "A": "Conservative complete excision",
+        "B": "Observation of every obstructing papilloma",
+        "C": "Chemotherapy as the only treatment",
+        "D": "Lung transplant",
+        "E": "No excision because they cannot recur"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Conservative complete excision",
+      "explanation": "Because of uncertain malignant potential and recurrence, conservative complete excision of papillomas is recommended.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "Arch Pathol Lab Med",
+          "sourceYear": 2008,
+          "sourceUrl": "https://meridian.allenpress.com/aplm/article/132/7/1133/460534/Benign-Tumors-and-Tumorlike-Conditions-of-the-Lung",
+          "pmid": "18605764",
+          "pmcid": "",
+          "doi": "10.5858/2008-132-1133-BTATCO",
+          "excerpt": "conservative complete excision of papillomas is recommended.\n\n"
+        }
+      ]
+    },
+    {
+      "id": "325-05",
+      "question": "What size does the review give as typical for these benign tumors?",
+      "options": {
+        "A": "Generally less than 3 cm",
+        "B": "Generally more than 10 cm",
+        "C": "Size is not discussed",
+        "D": "Always microscopic only",
+        "E": "Greater than 8 cm by definition"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Generally less than 3 cm",
+      "explanation": "The review says these tumors are generally small, less than 3 cm.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "Arch Pathol Lab Med",
+          "sourceYear": 2008,
+          "sourceUrl": "https://meridian.allenpress.com/aplm/article/132/7/1133/460534/Benign-Tumors-and-Tumorlike-Conditions-of-the-Lung",
+          "pmid": "18605764",
+          "pmcid": "",
+          "doi": "10.5858/2008-132-1133-BTATCO",
+          "excerpt": "These tumors are generally small (less than 3 cm) and, "
+        }
+      ]
+    }
+  ]
+}

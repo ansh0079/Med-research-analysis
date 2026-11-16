@@ -1,36 +1,36 @@
 {
   "catalogueId": "2072",
   "topic": "Vulvar and Vaginal Cancers",
-  "scope": "2023 ESGO guideline for patients with vulvar cancer: staging, groin assessment, sentinel nodes, and treatment of primary and recurrent disease.",
+  "scope": "Vulvar cancer is grounded in the 2023 ESGO guideline. Vaginal cancer is grounded in the open 2025 FIGO update.",
   "keyRecommendations": [
     {
-      "text": "FIGO and TNM are both used to stage vulvar cancer and are closely aligned; FIGO staging was last reviewed in 2021.",
+      "text": "FIGO staging of vulvar cancer was last reviewed in 2021. Ultrasound alone is the method of choice for preoperative assessment of clinically suspicious groin nodes.",
       "strength": "not_graded",
       "population": "Vulvar cancer"
     },
     {
-      "text": "Ultrasound alone is the method of choice for preoperative assessment when inguinofemoral nodes are clinically palpable (suspicious or bulky), to confirm the suspicion and to judge distance from skin and vessels.",
+      "text": "Primary vaginal cancer is cancer in the vagina without clinical or histologic cervical or vulvar cancer, or a prior history of those cancers within 5 years.",
       "strength": "not_graded",
-      "population": "Clinically palpable groin nodes"
+      "population": "Vaginal cancer"
     },
     {
-      "text": "The guideline addresses surgical treatment, groin treatment, the sentinel lymph node procedure, reconstructive surgery, (chemo)radiotherapy, systemic treatment, and recurrence.",
+      "text": "Surgery has a limited role in primary vaginal cancer because of the close proximity of the tumor to adjacent structures.",
       "strength": "not_graded",
-      "population": "Vulvar cancer"
+      "population": "Vaginal cancer"
     }
   ],
-  "clinicalBottomLine": "Stage vulvar cancer with the aligned FIGO/TNM systems, assess suspicious groin nodes with ultrasound, and plan groin and primary treatment within the 2023 ESGO pathways, including sentinel-node surgery where indicated.",
+  "clinicalBottomLine": "Stage and assess vulvar cancer with the ESGO pathway, including ultrasound for suspicious groins. Call a vaginal lesion primary only after excluding cervix and vulva, and do not expect surgery to be the main treatment.",
   "notableCaveats": [
-    "Vaginal-cancer treatment is not specified in the extracted vulvar guideline text, so it is not covered by these MCQs."
+    "The ESGO vaginal pocket PDF is not stored because it is not licensed for redistribution. The FIGO 2025 update is the open vaginal-cancer source."
   ],
   "source": {
-    "title": "European Society of Gynaecological Oncology Guidelines for the Management of Patients with Vulvar Cancer - Update 2023.",
+    "title": "European Society of Gynaecological Oncology guidelines for the management of patients with vulvar cancer - update 2023.",
     "year": 2023,
     "pmid": "37369376",
     "pmcid": "PMC10359596",
     "doi": "10.1136/ijgc-2023-004486",
     "url": "https://europepmc.org/articles/PMC10359596",
-    "sourceBody": "ESGO / Int J Gynecol Cancer",
+    "sourceBody": "ESGO",
     "storedAs": ""
   }
 }

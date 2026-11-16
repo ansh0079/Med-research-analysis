@@ -1,0 +1,136 @@
+{
+  "catalogueId": "110",
+  "topic": "Lymphangitic Carcinomatosis",
+  "mcqs": [
+    {
+      "id": "110-01",
+      "question": "How does the chapter separate lymphangitic carcinomatosis from pulmonary tumor embolism?",
+      "options": {
+        "A": "Lymphangitic disease is mainly interstitial, without tumor cells in pulmonary arteries or capillaries; tumor embolism has tumor cells inside the vessels",
+        "B": "They are different names for left-heart failure",
+        "C": "Lymphangitic disease is an infection",
+        "D": "Tumor embolism is always interstitial and never intravascular",
+        "E": "The chapter says they cannot be distinguished pathologically at all"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Lymphangitic disease is mainly interstitial, without tumor cells in pulmonary arteries or capillaries; tumor embolism has tumor cells inside the vessels",
+      "explanation": "The chapter says lymphangitic carcinomatosis is predominantly interstitial with absent tumor cells in pulmonary arteries or capillaries, whereas tumor embolism has tumor cells inside the vessels.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "StatPearls / NCBI Bookshelf",
+          "sourceYear": 2023,
+          "sourceUrl": "https://www.ncbi.nlm.nih.gov/books/NBK560921/",
+          "pmid": "",
+          "pmcid": "",
+          "doi": "",
+          "excerpt": "The terms pulmonary lymphangitic carcinomatosis & pulmonary tumor embolism represent end-stage manifestations of malignancies and have been used synonymously in the literature given highly similar clinical & radiological features though the former represents a pathology predominantly restricted to the interstitium with absent tumor cells in pulmonary arteries and or capillaries, whereas the latter demonstrates the presence of tumor cells inside the pulmonary vessels.\n\n"
+        }
+      ]
+    },
+    {
+      "id": "110-02",
+      "question": "What share of pulmonary metastases, and what histology, does the chapter give?",
+      "options": {
+        "A": "About 6 to 8 percent of pulmonary metastases are lymphangitic, and about 80 percent of those are adenocarcinomas",
+        "B": "Half of all metastases are squamous",
+        "C": "Lymphangitic spread causes most pulmonary metastases",
+        "D": "Sarcoma is the usual histology",
+        "E": "The proportions are not stated"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "About 6 to 8 percent of pulmonary metastases are lymphangitic, and about 80 percent of those are adenocarcinomas",
+      "explanation": "Only about 6 to 8 percent of pulmonary metastasis is lymphangitic carcinomatosis, and 80 percent of that is adenocarcinoma.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "StatPearls / NCBI Bookshelf",
+          "sourceYear": 2023,
+          "sourceUrl": "https://www.ncbi.nlm.nih.gov/books/NBK560921/",
+          "pmid": "",
+          "pmcid": "",
+          "doi": "",
+          "excerpt": "Only about 6 -8 % of pulmonary metastasis is caused by lymphangitic carcinomatosis. 80 % of pulmonary lymphangitic carcinomatosis is caused by adenocarcinomas. "
+        }
+      ]
+    },
+    {
+      "id": "110-03",
+      "question": "What is described as the commonest presentation?",
+      "options": {
+        "A": "Dyspnea evolving over days to weeks",
+        "B": "Sudden painless hematuria",
+        "C": "A single episode of syncope as the only symptom",
+        "D": "Chronic sinusitis",
+        "E": "No respiratory symptoms occur"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Dyspnea evolving over days to weeks",
+      "explanation": "Dyspnea evolving over days to weeks is the commonest presentation, in almost 60 percent of patients.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "StatPearls / NCBI Bookshelf",
+          "sourceYear": 2023,
+          "sourceUrl": "https://www.ncbi.nlm.nih.gov/books/NBK560921/",
+          "pmid": "",
+          "pmcid": "",
+          "doi": "",
+          "excerpt": "dyspnea, which evolves over days to weeks, is the commonest presentation in almost 60 % of patients. "
+        }
+      ]
+    },
+    {
+      "id": "110-04",
+      "question": "What CT pattern does the chapter describe?",
+      "options": {
+        "A": "Smooth thickening of interlobular septa and peribronchovascular interstitium early, and nodular thickening later",
+        "B": "Only a peripheral cavity",
+        "C": "A normal scan in every case",
+        "D": "Isolated pleural plaques",
+        "E": "A solitary round nodule without septal thickening"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Smooth thickening of interlobular septa and peribronchovascular interstitium early, and nodular thickening later",
+      "explanation": "CT shows smooth septal and peribronchovascular thickening early, and nodular thickening later.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "StatPearls / NCBI Bookshelf",
+          "sourceYear": 2023,
+          "sourceUrl": "https://www.ncbi.nlm.nih.gov/books/NBK560921/",
+          "pmid": "",
+          "pmcid": "",
+          "doi": "",
+          "excerpt": "CT thorax: Interlobular septa & peribronchovascular interstitium exhibits smooth (early stage), or nodular thickening(late development)."
+        }
+      ]
+    },
+    {
+      "id": "110-05",
+      "question": "What life expectancy does the chapter attach to the diagnosis, before noting longer survivors?",
+      "options": {
+        "A": "About six months",
+        "B": "About six days in every case",
+        "C": "Normal life expectancy",
+        "D": "More than 10 years as the usual course",
+        "E": "The prognosis is not discussed"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "About six months",
+      "explanation": "The chapter says life expectancy is about six months, and also notes reports of survival up to 3 years.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "StatPearls / NCBI Bookshelf",
+          "sourceYear": 2023,
+          "sourceUrl": "https://www.ncbi.nlm.nih.gov/books/NBK560921/",
+          "pmid": "",
+          "pmcid": "",
+          "doi": "",
+          "excerpt": "life expectancy being about six months. "
+        }
+      ]
+    }
+  ]
+}

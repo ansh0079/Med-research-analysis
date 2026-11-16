@@ -3,24 +3,20 @@
   "spreadsheetRow": 77,
   "topic": "Lymphangitic Carcinomatosis",
   "specialty": "Pulmonology",
-  "decision": "unresolved",
+  "decision": "downloaded open source",
   "source": {
-    "title": "",
-    "year": "",
+    "title": "Lymphangitic carcinomatosis.",
+    "year": 2023,
     "pmid": "",
     "pmcid": "",
     "doi": "",
-    "url": "",
-    "sourceBody": "",
+    "url": "https://www.ncbi.nlm.nih.gov/books/NBK560921/",
+    "sourceBody": "StatPearls / NCBI Bookshelf",
     "storedAs": ""
   },
-  "whyItFits": "Case reports do not support a synopsis of the entity. Synopsis and MCQs were not written.",
-  "limitations": "Case reports do not support a synopsis of the entity. Synopsis and MCQs were not written.",
-  "search": [
-    "In-app search for lymphangitic carcinomatosis.",
-    "Open PMC hits are case reports (ALK-positive lung cancer; occult gastric cancer).",
-    "The classic radiology review is not in PMC. StatPearls NBK560921 full text was blocked."
-  ],
-  "synopsisWritten": false,
-  "mcqsWritten": false
+  "whyItFits": "NCBI Bookshelf review of pulmonary lymphangitic carcinomatosis: interstitial spread, adenocarcinoma primaries, subacute dyspnea, and CT septal thickening.",
+  "limitations": "Open NCBI Bookshelf review of the entity. Case reports were not used as the teaching source.",
+  "synopsisWritten": true,
+  "mcqsWritten": true,
+  "mcqCount": 5
 }

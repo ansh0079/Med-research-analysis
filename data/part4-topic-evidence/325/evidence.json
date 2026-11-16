@@ -3,24 +3,20 @@
   "spreadsheetRow": 59,
   "topic": "Benign lung tumors",
   "specialty": "Pulmonology",
-  "decision": "unresolved",
+  "decision": "downloaded open source",
   "source": {
-    "title": "",
-    "year": "",
-    "pmid": "",
+    "title": "Benign tumors and tumorlike conditions of the lung.",
+    "year": 2008,
+    "pmid": "18605764",
     "pmcid": "",
-    "doi": "",
-    "url": "",
-    "sourceBody": "",
+    "doi": "10.5858/2008-132-1133-BTATCO",
+    "url": "https://meridian.allenpress.com/aplm/article/132/7/1133/460534/Benign-Tumors-and-Tumorlike-Conditions-of-the-Lung",
+    "sourceBody": "Arch Pathol Lab Med",
     "storedAs": ""
   },
-  "whyItFits": "No stored document reviews the class of benign lung neoplasms. Carcinoid-syndrome papers, Fleischner nodule guidance, and single hamartoma reports do not cover the topic. A 2025 comprehensive review is not open. Synopsis and MCQs were not written.",
-  "limitations": "No stored document reviews the class of benign lung neoplasms. Carcinoid-syndrome papers, Fleischner nodule guidance, and single hamartoma reports do not cover the topic. A 2025 comprehensive review is not open. Synopsis and MCQs were not written.",
-  "search": [
-    "In-app corpus and question-repair texts for benign lung tumour, hamartoma, and carcinoid.",
-    "Europe PMC title search for an open review of benign lung neoplasms.",
-    "StatPearls NBK539806 could not be downloaded (site challenge; PubMed returns the abstract only)."
-  ],
-  "synopsisWritten": false,
-  "mcqsWritten": false
+  "whyItFits": "Open review of benign lung tumors as a class, covering epithelial and mesenchymal lesions including papilloma and hamartoma.",
+  "limitations": "Open class review (Archives of Pathology & Laboratory Medicine, 2008). The 2025 Current Opinion review was not open and was not stored. Fleischner nodule guidance and single hamartoma case reports were not used.",
+  "synopsisWritten": true,
+  "mcqsWritten": true,
+  "mcqCount": 5
 }

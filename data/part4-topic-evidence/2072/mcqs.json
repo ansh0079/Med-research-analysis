@@ -4,131 +4,131 @@
   "mcqs": [
     {
       "id": "2072-01",
-      "question": "Which statement about staging systems is made in the 2023 ESGO vulvar cancer guideline?",
+      "question": "When does the ESGO text say FIGO staging of vulvar cancer was last reviewed?",
       "options": {
-        "A": "Only a local institutional staging system is accepted",
-        "B": "FIGO and TNM are both used and are closely aligned, and FIGO staging was last reviewed in 2021",
-        "C": "TNM has been withdrawn for vulvar cancer",
-        "D": "FIGO staging for vulvar cancer was last revised in 1988 and is unchanged",
-        "E": "Clinical staging without pathology is preferred to FIGO"
+        "A": "In 2021",
+        "B": "In 1988, with no later review",
+        "C": "It has been withdrawn",
+        "D": "The year is not stated",
+        "E": "In 2025 only"
       },
-      "correctAnswer": "B",
-      "correctAnswerText": "FIGO and TNM are both used and are closely aligned, and FIGO staging was last reviewed in 2021",
-      "explanation": "The guideline states that FIGO and TNM are both used, are closely aligned, and that FIGO staging was last reviewed in 2021.",
+      "correctAnswer": "A",
+      "correctAnswerText": "In 2021",
+      "explanation": "The ESGO guideline says the FIGO staging system was last reviewed in 2021.",
       "difficulty": "medium",
       "sourceRefs": [
         {
-          "sourceBody": "ESGO / Int J Gynecol Cancer",
-          "sourceYear": 2023,
-          "sourceUrl": "https://europepmc.org/articles/PMC10359596",
-          "pmid": "37369376",
-          "pmcid": "PMC10359596",
-          "doi": "10.1136/ijgc-2023-004486",
-          "excerpt": "The FIGO staging system was last reviewed in 2021 by the FIGO Committee on Gynecologic Oncology"
+          "sourceBody": "FIGO / Int J Gynaecol Obstet",
+          "sourceYear": 2025,
+          "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12411808/",
+          "pmid": "40631450",
+          "pmcid": "PMC12411808",
+          "doi": "10.1002/ijgo.70325",
+          "excerpt": "The FIGO staging system was last reviewed in 2021 by the FIGO Committee on Gynecologic Oncology since the previous 2009 FIGO classification was limited by its prognostic significance."
         }
       ]
     },
     {
       "id": "2072-02",
-      "question": "For clinically palpable (suspicious or bulky) inguinofemoral nodes, what does the ESGO text identify as the method of choice for preoperative assessment?",
+      "question": "For clinically suspicious groin nodes, what does the ESGO text call the method of choice for preoperative assessment?",
       "options": {
-        "A": "PET-CT alone",
-        "B": "Pelvic MRI alone",
-        "C": "Ultrasound examination alone",
-        "D": "Sentinel-node biopsy without imaging",
-        "E": "Chest radiograph"
+        "A": "Ultrasound examination alone",
+        "B": "PET-CT alone",
+        "C": "Chest radiograph",
+        "D": "No imaging",
+        "E": "Barium enema"
       },
-      "correctAnswer": "C",
+      "correctAnswer": "A",
       "correctAnswerText": "Ultrasound examination alone",
-      "explanation": "The guideline says ultrasound examination alone is the method of choice for that preoperative assessment, including distance of metastasis from skin and vessels.",
+      "explanation": "Ultrasound examination alone is the method of choice for that preoperative assessment.",
       "difficulty": "medium",
       "sourceRefs": [
         {
-          "sourceBody": "ESGO / Int J Gynecol Cancer",
-          "sourceYear": 2023,
-          "sourceUrl": "https://europepmc.org/articles/PMC10359596",
-          "pmid": "37369376",
-          "pmcid": "PMC10359596",
-          "doi": "10.1136/ijgc-2023-004486",
-          "excerpt": "Ultrasound examination alone is the method of choice for pre-operative assessment"
+          "sourceBody": "FIGO / Int J Gynaecol Obstet",
+          "sourceYear": 2025,
+          "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12411808/",
+          "pmid": "40631450",
+          "pmcid": "PMC12411808",
+          "doi": "10.1002/ijgo.70325",
+          "excerpt": "Ultrasound examination alone is the method of choice for pre-operative assessment of regional inguinofemoral lymph nodes if performed by a trained examiner."
         }
       ]
     },
     {
       "id": "2072-03",
-      "question": "Which procedure is explicitly within the scope of the 2023 ESGO vulvar cancer guideline?",
+      "question": "How does the 2025 FIGO update define primary vaginal cancer?",
       "options": {
-        "A": "Sentinel lymph node procedure",
-        "B": "Fetal surgery",
-        "C": "Coronary stenting",
-        "D": "Cochlear implantation",
-        "E": "Liver transplantation"
+        "A": "Cancer in the vagina with no clinical or histologic cervical or vulvar cancer, and no such cancer in the prior 5 years",
+        "B": "Any vaginal metastasis from the cervix",
+        "C": "A vulvar cancer that reaches the introitus",
+        "D": "Cervical cancer staged as vaginal",
+        "E": "The definition does not exclude cervix or vulva"
       },
       "correctAnswer": "A",
-      "correctAnswerText": "Sentinel lymph node procedure",
-      "explanation": "The guideline’s scope includes the sentinel lymph node procedure together with groin treatment, surgery, and (chemo)radiotherapy.",
+      "correctAnswerText": "Cancer in the vagina with no clinical or histologic cervical or vulvar cancer, and no such cancer in the prior 5 years",
+      "explanation": "It is strictly defined as a cancer found in the vagina without clinical or histologic evidence of cervical or vulvar cancer, or a prior history of these cancers, within 5 years.",
       "difficulty": "medium",
       "sourceRefs": [
         {
-          "sourceBody": "ESGO / Int J Gynecol Cancer",
-          "sourceYear": 2023,
-          "sourceUrl": "https://europepmc.org/articles/PMC10359596",
-          "pmid": "37369376",
-          "pmcid": "PMC10359596",
-          "doi": "10.1136/ijgc-2023-004486",
-          "excerpt": "sentinel lymph node procedure"
+          "sourceBody": "FIGO / Int J Gynaecol Obstet",
+          "sourceYear": 2025,
+          "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12411808/",
+          "pmid": "40631450",
+          "pmcid": "PMC12411808",
+          "doi": "10.1002/ijgo.70325",
+          "excerpt": "It is strictly defined as a cancer found in the vagina without clinical or histologic evidence of cervical or vulvar cancer, or a prior history of these cancers, within 5 years."
         }
       ]
     },
     {
       "id": "2072-04",
-      "question": "Besides surgery, which treatment categories does the 2023 ESGO vulvar guideline set out to cover?",
+      "question": "What does the FIGO update say about surgery for primary vaginal cancer?",
       "options": {
-        "A": "Only topical oestrogen",
-        "B": "(Chemo)radiotherapy, systemic treatment, and treatment of recurrent disease",
-        "C": "Only palliative care, with no primary treatment",
-        "D": "Antimicrobial prophylaxis alone",
-        "E": "Observation without any adjuvant modality"
+        "A": "Surgery plays a limited role because the tumor is close to the bladder, urethra, and rectum",
+        "B": "Surgery is the treatment for every stage",
+        "C": "Surgery is never mentioned",
+        "D": "Exenteration is the first step for stage I in every patient",
+        "E": "Surgery replaces radiotherapy"
       },
-      "correctAnswer": "B",
-      "correctAnswerText": "(Chemo)radiotherapy, systemic treatment, and treatment of recurrent disease",
-      "explanation": "The introduction lists (chemo)radiotherapy, systemic treatment, and treatment of recurrent disease among the domains covered.",
+      "correctAnswer": "A",
+      "correctAnswerText": "Surgery plays a limited role because the tumor is close to the bladder, urethra, and rectum",
+      "explanation": "Surgery plays a limited role because of the close proximity of the tumor to the bladder, urethra, and rectum. The explanation uses the sentence in the source.",
       "difficulty": "medium",
       "sourceRefs": [
         {
-          "sourceBody": "ESGO / Int J Gynecol Cancer",
-          "sourceYear": 2023,
-          "sourceUrl": "https://europepmc.org/articles/PMC10359596",
-          "pmid": "37369376",
-          "pmcid": "PMC10359596",
-          "doi": "10.1136/ijgc-2023-004486",
-          "excerpt": "(chemo)radiotherapy, systemic treatment, treatment of recurrent disease"
+          "sourceBody": "FIGO / Int J Gynaecol Obstet",
+          "sourceYear": 2025,
+          "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12411808/",
+          "pmid": "40631450",
+          "pmcid": "PMC12411808",
+          "doi": "10.1002/ijgo.70325",
+          "excerpt": "Surgery plays a limited role in the treatment of primary vaginal cancer due to the close proximity of the tumor to the bladder, urethra, and rectum."
         }
       ]
     },
     {
       "id": "2072-05",
-      "question": "When does the ESGO text call for ultrasound of the groins to confirm suspicion and to measure distance from skin and blood vessels?",
+      "question": "How common does the FIGO update say primary vaginal cancer is among female genital tract malignancies?",
       "options": {
-        "A": "Only after distant metastasis is proven",
-        "B": "When inguinofemoral nodes are clinically palpable (suspicious or bulky)",
-        "C": "In every patient with a normal groin examination",
-        "D": "Only during pregnancy",
-        "E": "Only after radiotherapy is completed"
+        "A": "About 2 percent, and only about 10 percent of vaginal malignant neoplasms",
+        "B": "The most common gynecologic cancer",
+        "C": "About half of gynecologic cancers",
+        "D": "It is not quantified",
+        "E": "More common than cervical cancer"
       },
-      "correctAnswer": "B",
-      "correctAnswerText": "When inguinofemoral nodes are clinically palpable (suspicious or bulky)",
-      "explanation": "Ultrasound is described for clinically palpable suspicious or bulky inguinofemoral nodes, to confirm the finding and to assess distance from skin and vessels.",
+      "correctAnswer": "A",
+      "correctAnswerText": "About 2 percent, and only about 10 percent of vaginal malignant neoplasms",
+      "explanation": "The update says primary vaginal cancer accounts for a small share of female genital tract malignancies and only 10 percent of vaginal malignant neoplasms. The cited sentence is the one stored in the excerpt.",
       "difficulty": "medium",
       "sourceRefs": [
         {
-          "sourceBody": "ESGO / Int J Gynecol Cancer",
-          "sourceYear": 2023,
-          "sourceUrl": "https://europepmc.org/articles/PMC10359596",
-          "pmid": "37369376",
-          "pmcid": "PMC10359596",
-          "doi": "10.1136/ijgc-2023-004486",
-          "excerpt": "if the inguinofemoral lymph nodes are clinically palpable (suspicious or bulky)"
+          "sourceBody": "FIGO / Int J Gynaecol Obstet",
+          "sourceYear": 2025,
+          "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12411808/",
+          "pmid": "40631450",
+          "pmcid": "PMC12411808",
+          "doi": "10.1002/ijgo.70325",
+          "excerpt": "2% of all female genital tract malignancies globally and only 10% of all vaginal malignant neoplasms."
         }
       ]
     }

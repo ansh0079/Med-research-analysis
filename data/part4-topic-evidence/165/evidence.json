@@ -5,17 +5,17 @@
   "specialty": "Pulmonology",
   "decision": "downloaded open source",
   "source": {
-    "title": "Official American Thoracic Society/Japanese Respiratory Society Clinical Practice Guidelines: Lymphangioleiomyomatosis Diagnosis and Management.",
+    "title": "Official American Thoracic Society/Japanese Respiratory Society clinical practice guidelines: lymphangioleiomyomatosis diagnosis and management.",
     "year": 2016,
     "pmid": "27628078",
     "pmcid": "PMC5803656",
     "doi": "10.1164/rccm.201607-1384ST",
-    "url": "https://europepmc.org/articles/PMC5803656",
+    "url": "https://www.thoracic.org/statements/resources/interstitial-lung-disease/lam-guideline.pdf",
     "sourceBody": "ATS/JRS",
     "storedAs": ""
   },
-  "whyItFits": "Open abstract of the ATS/JRS LAM guideline. The PMC XML has no recommendation body, so only statements in the abstract are used.",
-  "limitations": "Abstract only. The PMC XML has no body, so doses and VEGF-D thresholds were not written.",
+  "whyItFits": "Full ATS/JRS LAM guideline text posted by the American Thoracic Society, including the sirolimus, VEGF-D, doxycycline, and hormonal-therapy recommendations.",
+  "limitations": "Full guideline text from the ATS PDF. Replaces the PMC abstract. Doses that are not in the recommendation sentences used here are not taught.",
   "synopsisWritten": true,
   "mcqsWritten": true,
   "mcqCount": 5

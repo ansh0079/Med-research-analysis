@@ -1,27 +1,27 @@
 {
   "catalogueId": "2015",
   "topic": "substance use disorder",
-  "scope": "Opening summary of the 2023 Volkow and Blanco review of substance use disorders.",
+  "scope": "Full text of the 2023 Volkow and Blanco review of substance use disorders, replacing the opening summary.",
   "keyRecommendations": [
     {
-      "text": "Medications have clinically significant benefit in opioid, nicotine, and alcohol use disorders; behavioural therapies in all SUDs; neuromodulation in nicotine use disorder.",
+      "text": "Addiction is used for moderate or severe SUD.",
       "strength": "not_graded",
-      "population": "SUD"
+      "population": "Classification"
     },
     {
-      "text": "Use a chronic care model and match intensity to severity, treating psychiatric and physical comorbidity.",
+      "text": "Medications have benefit in opioid, nicotine, and alcohol use disorders; behavioral therapies in all SUDs; neuromodulation in nicotine use disorder.",
       "strength": "not_graded",
-      "population": "SUD"
+      "population": "Treatment"
     },
     {
-      "text": "Prevention aimed at social risks in childhood and adolescence can decrease risk.",
+      "text": "Use a chronic care model. FDA-approved alcohol medications named are disulfiram, acamprosate, and naltrexone. Smoking-cessation medications named are bupropion, varenicline, and nicotine replacement.",
       "strength": "not_graded",
-      "population": "Children and adolescents"
+      "population": "Treatment"
     }
   ],
-  "clinicalBottomLine": "Treat SUD as a chronic illness: medication for opioid, nicotine, and alcohol use disorders, behavioural therapy for all SUDs, and referral of severe cases to specialised care.",
+  "clinicalBottomLine": "Treat moderate or severe SUD as a chronic illness. Medication is established for opioid, nicotine, and alcohol use disorders, and behavioral therapy for all SUDs.",
   "notableCaveats": [
-    "Only the open summary in the PMC record was available, not the full article body."
+    "The PMC HTML now contains the article body. The earlier file was only the opening summary."
   ],
   "source": {
     "title": "Substance use disorders: a comprehensive update of classification, epidemiology, neurobiology, clinical aspects, treatment and prevention.",
@@ -29,7 +29,7 @@
     "pmid": "37159360",
     "pmcid": "PMC10168177",
     "doi": "10.1002/wps.21073",
-    "url": "https://europepmc.org/articles/PMC10168177",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10168177/",
     "sourceBody": "World Psychiatry",
     "storedAs": ""
   }
