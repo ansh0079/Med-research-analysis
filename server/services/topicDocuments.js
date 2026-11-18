@@ -8,7 +8,7 @@
  * only ever see CONFIRMED links; the admin listing shows every state so a reviewer can decide.
  */
 
-const FULL_TEXT = new Set(['jats', 'pdf', 'manual', 'nice_html']);
+const FULL_TEXT = new Set(['jats', 'jats_recovered', 'pdf', 'pdf_recovered', 'group3-candidates', 'gap-audit', 'manual', 'nice_html']);
 
 async function topicKeysForName(db, topic) {
     const name = String(topic || '').trim();
@@ -43,7 +43,9 @@ function mapRow(row) {
 }
 
 const SELECT = `SELECT d.*, g.title, g.source_year, g.full_text_source
-                FROM topic_documents d LEFT JOIN guideline_documents g ON g.pmid = d.pmid`;
+                FROM topic_documents d
+                LEFT JOIN guideline_documents g ON (d.guideline_document_id IS NOT NULL AND g.id = d.guideline_document_id)
+                                                OR (d.pmid IS NOT NULL AND g.pmid IS NOT NULL AND g.pmid = d.pmid)`;
 
 /** Confirmed documents for a topic, by display name. This is what learners are shown. */
 async function getConfirmedDocumentsForTopic(db, topic) {

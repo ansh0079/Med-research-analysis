@@ -32,7 +32,9 @@ module.exports = (Sup) => class extends Sup {
     async getTopicDocuments(topicId, { reviewState = null } = {}) {
         const params = [String(topicId)];
         let sql = `SELECT d.*, g.title, g.source_year, g.evidence_tier, g.full_text_source
-                   FROM topic_documents d LEFT JOIN guideline_documents g ON g.pmid = d.pmid
+                   FROM topic_documents d
+                   LEFT JOIN guideline_documents g ON (d.guideline_document_id IS NOT NULL AND g.id = d.guideline_document_id)
+                                                   OR (d.pmid IS NOT NULL AND g.pmid IS NOT NULL AND g.pmid = d.pmid)
                    WHERE d.topic_id = ?`;
         if (reviewState) { sql += ' AND d.review_state = ?'; params.push(reviewState); }
         return this.all(`${sql} ORDER BY d.pmid`, params);

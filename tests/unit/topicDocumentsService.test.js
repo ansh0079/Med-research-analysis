@@ -10,6 +10,7 @@ function makeDb() {
     const sqlite = new Sqlite(':memory:');
     sqlite.exec(fs.readFileSync(path.join(__dirname, '../../database/migrations/119_topic_documents.sql'), 'utf8')
         .replace('id SERIAL PRIMARY KEY', 'id INTEGER PRIMARY KEY AUTOINCREMENT'));
+    sqlite.exec(fs.readFileSync(path.join(__dirname, '../../database/migrations/124_topic_documents_guideline_document_id.sql'), 'utf8'));
     sqlite.exec('CREATE TABLE guideline_documents (id INTEGER PRIMARY KEY, pmid TEXT, title TEXT, source_year INTEGER, evidence_tier TEXT, full_text_source TEXT)');
     sqlite.exec('CREATE TABLE curriculum_topics (id TEXT PRIMARY KEY, display_name TEXT)');
     class Base {
