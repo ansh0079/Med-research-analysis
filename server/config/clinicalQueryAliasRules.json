@@ -516,6 +516,17 @@
       "pmids": [
         "34599691"
       ]
+    },
+    {
+      "all": [
+        "\\bacute kidney injury\\b|\\baki\\b|\\bacute renal failure\\b"
+      ],
+      "aliases": [
+        "KDIGO"
+      ],
+      "pmids": [
+        "22890468"
+      ]
     }
   ]
 }

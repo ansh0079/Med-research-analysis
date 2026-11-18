@@ -97,6 +97,17 @@ function meshTitleCorroboration(article, queryMeshTerms = []) {
     });
 }
 
+// Words that name an organ, a timescale or a generic disease class. They are shared across many
+// conditions, so on their own they do not show that a pinned landmark is about the queried condition.
+const NON_DISTINCTIVE_CONDITION_TERMS = new Set([
+    'acute', 'chronic', 'severe', 'mild', 'moderate', 'early', 'late', 'primary', 'secondary', 'recurrent',
+    'adult', 'adults', 'pediatric', 'paediatric', 'neonatal', 'elderly', 'management', 'treatment', 'therapy',
+    'prevention', 'diagnosis', 'disease', 'disorder', 'syndrome', 'failure', 'injury', 'infection', 'infections',
+    'cancer', 'tumor', 'tumour', 'pain', 'kidney', 'renal', 'heart', 'cardiac', 'lung', 'lungs', 'pulmonary',
+    'liver', 'hepatic', 'blood', 'coronary', 'artery', 'arterial', 'vascular', 'brain', 'cerebral', 'bone',
+    'skin', 'gastrointestinal', 'respiratory', 'type',
+]);
+
 function evaluateEligibility(article, { query, queryMeshTerms = [], queryAliases = [] } = {}) {
     if (article?._retraction?.isRetracted) {
         return { eligible: false, route: null, rejectionReason: 'retracted' };
@@ -113,11 +124,15 @@ function evaluateEligibility(article, { query, queryMeshTerms = [], queryAliases
         if (aliasHit || !off) {
             return { eligible: true, route: 'curated_landmark', rejectionReason: null };
         }
-        // Weaker fallback for historic-title landmarks: accept if ANY expanded
-        // condition term from the query appears in title/abstract.
+        // Weaker fallback for historic-title landmarks: accept if a DISTINCTIVE condition term
+        // from the query appears in title/abstract. Organ and modifier words ("acute", "kidney",
+        // "heart", "failure") are shared by many conditions, so they cannot rescue a pin on their
+        // own: an "acute kidney injury" query must not pull in EMPA-KIDNEY (chronic kidney disease)
+        // or IMPROVE-IT (acute coronary syndrome) from other flagship topics.
         const terms = originalConditionTerms(query);
+        const distinctive = terms.filter((t) => !NON_DISTINCTIVE_CONDITION_TERMS.has(String(t).toLowerCase()));
         const text = `${String(article.title || '')} ${String(article.abstract || '')}`.toLowerCase();
-        const anyExpandedHit = terms.some((t) => articleMatchesConditionTerm(text, t, { companionTerms: terms }));
+        const anyExpandedHit = distinctive.some((t) => articleMatchesConditionTerm(text, t, { companionTerms: terms }));
         if (anyExpandedHit) {
             return { eligible: true, route: 'curated_landmark', rejectionReason: null };
         }

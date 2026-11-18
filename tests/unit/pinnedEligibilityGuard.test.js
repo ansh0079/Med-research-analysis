@@ -138,5 +138,32 @@ describe('Pinned landmark topicality guard', () => {
     });
     expect(filtered).toHaveLength(0);
   });
+  test('kidney and coronary pins from other flagships are rejected for acute kidney injury', () => {
+    const empaKidney = pinnedArticle({
+      uid: 'pubmed-36331190',
+      title: 'Empagliflozin in Patients with Chronic Kidney Disease.',
+      abstract: 'The effects of empagliflozin in patients with chronic kidney disease who are at risk for progression are not well understood.',
+      _fromTopicEvidenceMemory: true,
+    });
+    const improveIt = pinnedArticle({
+      uid: 'pubmed-26039521',
+      title: 'Ezetimibe Added to Statin Therapy after Acute Coronary Syndromes',
+      abstract: 'Statin therapy reduces LDL cholesterol levels in patients hospitalized for an acute coronary syndrome.',
+    });
+    const contrastAki = pinnedArticle({
+      uid: 'pubmed-29130810',
+      title: 'Outcomes after Angiography with Sodium Bicarbonate and Acetylcysteine',
+      abstract: 'Contrast-associated acute kidney injury after angiography in patients at high risk.',
+    });
+    const filtered = filterRelevantArticles([empaKidney, improveIt, contrastAki], {
+      query: 'acute kidney injury',
+      specificity: 'moderate',
+      queryMeshTerms: ['Acute Kidney Injury'],
+      parsedYearFilters: [],
+      pico: null,
+      queryAliases: [],
+    });
+    expect(filtered.map((a) => a.uid)).toEqual(['pubmed-29130810']);
+  });
 });
 
