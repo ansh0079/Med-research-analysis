@@ -182,4 +182,5 @@ test('two invited accounts verify, log in, reset one password and reject reset r
             else process.env[key] = value;
         }
     }
-});
+    // Real SQLite plus password hashing: under a full parallel jest run this has hit the 30 s default.
+}, 90000);
