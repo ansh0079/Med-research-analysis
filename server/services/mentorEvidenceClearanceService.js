@@ -7,7 +7,15 @@ const ACCEPTED_TYPES = new Set([
 ]);
 
 const compact = (value) => String(value || '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
-const compactText = (value) => String(value || '').toLowerCase().replace(/\s+/g, ' ').trim();
+const compactText = (value) => String(value || '')
+    .toLowerCase()
+    .replace(/[‘’`]/g, "'")
+    .replace(/[“”]/g, '"')
+    .replace(/ﬁ/g, 'fi')
+    .replace(/ﬂ/g, 'fl')
+    .replace(/[–—]/g, '-')
+    .replace(/\s+/g, ' ')
+    .trim();
 
 function acceptedEvidenceType(source = {}, document = {}) {
     const text = compact([
@@ -48,6 +56,7 @@ async function findDocument(db, source = {}) {
     if (source.pmid) { clauses.push('pmid = ?'); params.push(String(source.pmid)); }
     if (source.pmcid) { clauses.push('pmcid = ?'); params.push(String(source.pmcid)); }
     if (source.doi) { clauses.push('LOWER(doi) = LOWER(?)'); params.push(String(source.doi)); }
+    if (source.title) { clauses.push('LOWER(title) = LOWER(?)'); params.push(String(source.title).trim()); }
     if (!clauses.length) return null;
     return db.get(
         `SELECT id, pmid, pmcid, doi, title, document_label, evidence_tier,

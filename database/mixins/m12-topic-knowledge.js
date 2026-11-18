@@ -248,20 +248,24 @@ module.exports = (Sup) => class extends Sup {
 
         const now = new Date().toISOString();
 
-        const existingCanon = canon
-            ? await this.kysely.selectFrom('topic_knowledge').selectAll().where('canonical_normalized', '=', canon).executeTakeFirst()
-            : null;
-        const existingNorm = existingCanon
+        const existingExact = await this.kysely.selectFrom('topic_knowledge').selectAll().where('topic', '=', trimmed).executeTakeFirst();
+        const existingCanon = existingExact
+            ? null
+            : (canon
+                ? await this.kysely.selectFrom('topic_knowledge').selectAll().where('canonical_normalized', '=', canon).executeTakeFirst()
+                : null);
+        const existingNorm = existingExact || existingCanon
             ? null
             : await this.kysely.selectFrom('topic_knowledge').selectAll().where('normalized_topic', '=', normalized).executeTakeFirst();
-        const target = existingCanon || existingNorm;
+        const target = existingExact || existingCanon || existingNorm;
 
         const existingKnowledgeObj = target ? safeJsonParse(target.knowledge, {}) : {};
         const mergedKnowledge = this.mergeVerifiedAnchorsIntoKnowledge(knowledge || {}, existingKnowledgeObj);
         const aliasesJson = this.buildTopicKnowledgeAliasesJson(trimmed, mergedKnowledge);
 
-        const mergedTopic =
-            target && trimmed.length > String(target.topic || '').length ? trimmed : (target?.topic || trimmed);
+        const mergedTopic = existingExact
+            ? target.topic
+            : (target && trimmed.length > String(target.topic || '').length ? trimmed : (target?.topic || trimmed));
 
         if (target) {
             await this.kysely

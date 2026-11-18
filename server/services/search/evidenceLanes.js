@@ -221,25 +221,27 @@ function scoreArticleInLane(article, lane) {
     const rank = Number(article?._evidenceRank) || 9999;
     const inverted = 10000 - rank;
     const year = Number(article?.year || article?.pubdate) || 0;
+    const boost = Number(article?._learningBoost || 0);
+    const learningBonus = Number.isFinite(boost) && boost !== 0 ? Math.max(-100, Math.min(60, boost * 20)) : 0;
     if (lane === 'guidelines') {
-        let score = inverted;
+        let score = inverted + learningBonus;
         if (article?._guidelineRegistryMatch) score += 80;
         if (year >= 2020) score += 12;
         else if (year >= 2015) score += 4;
         return score;
     }
     if (lane === 'landmark_trials') {
-        let score = inverted;
+        let score = inverted + learningBonus;
         if (article?._pinnedLandmark) score += 60;
         if (isRCT(article)) score += 8;
         return score;
     }
     if (lane === 'reviews') {
-        let score = inverted;
+        let score = inverted + learningBonus;
         if (year >= 2020) score += 10;
         return score;
     }
-    return inverted;
+    return inverted + learningBonus;
 }
 
 function orderArticlesByEvidenceRank(articles) {

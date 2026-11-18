@@ -482,6 +482,20 @@ function buildCompositeScoreMap(bouquetRanking) {
 }
 
 function applySearchLearningBoost(articles, context, bouquetRanking = []) {
+    if (!context?._banditMeta && context?.banditSelection) {
+        context._banditMeta = {
+            armId: context.banditSelection?.armId || 'heuristic_default',
+            scopeKey: context.banditSelection?.scopeKey || 'global',
+            memoryTier: context.memoryTier || 'none',
+            sampled: context.banditSelection?.sampled ?? null,
+            propensity: context.banditSelection?.propensity ?? null,
+            propensityByArm: context.banditSelection?.propensityByArm || null,
+            selectionSource: context.banditSelection?.selectionSource || null,
+            misconceptionBoostCount: context.misconceptionBoost?.correctiveArticleUids?.size || 0,
+            contextFeatures: context.banditSelection?.contextFeatures || null,
+            guardrailMeta: null,
+        };
+    }
     if (!Array.isArray(articles) || articles.length < 2 || !context?.shouldPersonalize) {
         return articles;
     }

@@ -61,6 +61,12 @@ function buildFullTextExcerpt(article) {
         const text = safeString(sections[key], sectionLimits[key] || 4000);
         if (text) parts.push(`${key.toUpperCase()}: ${text}`);
     }
+    if (parts.length === 0 && Object.keys(sections).length > 0) {
+        for (const [k, v] of Object.entries(sections)) {
+            const text = safeString(v, 6000);
+            if (text) parts.push(`${k.toUpperCase()}: ${text}`);
+        }
+    }
     return parts.join('\n');
 }
 

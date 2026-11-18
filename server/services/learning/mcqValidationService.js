@@ -315,7 +315,9 @@ ${JSON.stringify(compact)}`;
 
         // Orphaned citations are a hard reject: they are indistinguishable from real
         // citations downstream, so they must not reach a learner.
-        const citationCheck = validateSourceReferences(compact, sourceContext.length, guidelineContext.length);
+        const citationCheck = validateSourceReferences(
+            compact, sourceContext.length, guidelineContext.length, { requireCitation: true }
+        );
         if (!citationCheck.ok) {
             logger?.warn?.({ topic, issues: citationCheck.issues }, 'MCQ batch contains orphaned source citations');
         }
@@ -371,7 +373,19 @@ ${JSON.stringify(compact)}`;
             }
         }
 
-        return mergeValidationResults(primary, secondary, safety, questions.length);
+        const merged = mergeValidationResults(primary, secondary, safety, questions.length);
+        for (const issue of citationCheck.issues) {
+            merged.validIndices.delete(issue.mcqIndex);
+            if (!merged.rejections.some((item) => item.mcqIndex === issue.mcqIndex)) {
+                merged.rejections.push({
+                    mcqIndex: issue.mcqIndex,
+                    issues: [issue.reason],
+                    reason: `citation: ${issue.reason}`,
+                    rejectedBy: { citation: true, primary: false, crossCheck: false, safety: false },
+                });
+            }
+        }
+        return merged;
     }
 
     async function recordValidationResult({

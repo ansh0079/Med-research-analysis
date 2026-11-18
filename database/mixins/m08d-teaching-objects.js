@@ -224,8 +224,9 @@ async getTeachingObjectsForTopicString(topic, types = []) {
         const norm = this.normalizeTopic(topic);
         if (norm) {
             const list = Array.isArray(types) ? types.filter(Boolean) : [];
-            let sql = `SELECT * FROM teaching_objects WHERE (normalized_topic = ? OR object_key LIKE ? OR normalized_topic LIKE ?) AND review_state != 'withdrawn'`;
-            const params = [norm, `%:${norm.replace(/\s+/g, '-')}`, `${norm}%`];
+            let sql = `SELECT * FROM teaching_objects WHERE (normalized_topic = ? OR object_key LIKE ? OR object_key LIKE ? OR normalized_topic LIKE ?) AND review_state != 'withdrawn'`;
+            const slugNorm = norm.replace(/\s+/g, '-');
+            const params = [norm, `%:${slugNorm}`, `%-${slugNorm}`, `${norm}%`];
             if (list.length) {
                 sql += ` AND object_type IN (${list.map(() => '?').join(',')})`;
                 params.push(...list);

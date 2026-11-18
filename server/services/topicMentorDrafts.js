@@ -4,6 +4,7 @@ const { evaluateMentorEvidenceClearance } = require('./mentorEvidenceClearanceSe
 
 const DRAFT = 'draft_pending_clinician_review';
 const NEEDS_EVIDENCE = 'needs_evidence';
+const NEEDS_REVIEW = 'needs_review';
 const DECISIONS = ['approved', 'needs_changes', 'rejected'];
 const DECISION_STATUS = { approved: 'approved', needs_changes: 'needs_changes', rejected: 'rejected' };
 
@@ -20,7 +21,7 @@ async function upsertDrafts(db, drafts, { sourceBatch = null, now = new Date().t
     for (const d of drafts) {
         const topicId = String(d.topicId || '').trim();
         if (!topicId || !d.page) continue;
-        const status = d.status === NEEDS_EVIDENCE ? NEEDS_EVIDENCE : DRAFT;
+        const status = d.status === NEEDS_EVIDENCE ? NEEDS_EVIDENCE : (d.status === NEEDS_REVIEW ? NEEDS_REVIEW : DRAFT);
         const row = await db.get('SELECT topic_id, review_decision FROM topic_mentor_drafts WHERE topic_id = ?', [topicId]);
         if (row && row.review_decision) { out.skippedReviewed++; continue; }
         const page = JSON.stringify(d.page);
@@ -172,4 +173,4 @@ async function publishDraft(db, { topicId, userId = null, now = new Date().toISO
     return getDraft(db, topicId);
 }
 
-module.exports = { upsertDrafts, listDrafts, getDraft, reviewDraft, publishDraft, draftToKnowledge, DRAFT, NEEDS_EVIDENCE, DECISIONS };
+module.exports = { upsertDrafts, listDrafts, getDraft, reviewDraft, publishDraft, draftToKnowledge, DRAFT, NEEDS_EVIDENCE, NEEDS_REVIEW, DECISIONS };

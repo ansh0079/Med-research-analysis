@@ -402,6 +402,18 @@ async getLocalTopicDocuments(topic, { limit = 12 } = {}) {
         clauses.push(`${field} IN (${ids.map(() => '?').join(',')})`);
         params.push(...ids);
     }
+    const normalizedTopic = this.normalizeTopic ? this.normalizeTopic(topic) : String(topic || '').trim().toLowerCase();
+    if (normalizedTopic) {
+        const linked = await this.all(
+            `SELECT document_id FROM topic_guidelines WHERE normalized_topic = ? AND document_id IS NOT NULL`,
+            [normalizedTopic]
+        ).catch(() => []);
+        const docIds = [...new Set(linked.map((r) => r.document_id).filter(Boolean))];
+        if (docIds.length) {
+            clauses.push(`id IN (${docIds.map(() => '?').join(',')})`);
+            params.push(...docIds);
+        }
+    }
     if (!clauses.length) return [];
     return this.all(
         `SELECT id, pmid, pmcid, doi, title, source_body, source_year, source_url,

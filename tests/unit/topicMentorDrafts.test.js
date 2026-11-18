@@ -41,6 +41,11 @@ describe('topic mentor drafts', () => {
         expect(one.teachingPoints).toBe(1);
     });
 
+    test('preserves an explicit needs-review queue status', async () => {
+        await upsertDrafts(db, [draft({ topicId: 'topic-review', topic: 'evidence pending', status: 'needs_review' })]);
+        expect((await getDraft(db, 'topic-review')).status).toBe('needs_review');
+    });
+
     test('a reviewed draft is never overwritten by a reload', async () => {
         const out = await reviewDraft(db, { topicId: 'topic-1', decision: 'needs_changes', notes: 'Add doses.', userId: 7 });
         expect(out.status).toBe('needs_changes');
