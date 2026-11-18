@@ -9,6 +9,10 @@ const { canonicalQuestionType } = require('../utils/questionType');
 const { expandNormalizedTopicKeys } = require('../utils/topicSynonyms');
 const { normalizeTopic } = require('../utils/topicKey');
 const { loadWithdrawnOverrides } = require('../services/mcqReviewOverrideService');
+const { loadStoredFullTextEvidenceIndex, mcqMatchesStoredFullText } = require('../services/mcqEvidenceGate');
+const { computeMcqClaimKey } = require('../utils/mcqClaimKey');
+
+const PUBLISHABLE_REVIEW_STATES = "'approved', 'verified', 'human_reviewed'";
 
 /**
  * Curated MCQs API:
@@ -27,16 +31,18 @@ function registerCuratedMcqRoutes(app, deps) {
         `SELECT object_key, topic, object_payload
          FROM teaching_objects
          WHERE object_type IN ('curated_topic_mcq', 'verified_topic_mcq')
-           AND review_state != 'withdrawn'
+           AND review_state IN (${PUBLISHABLE_REVIEW_STATES})
          ORDER BY topic ASC`
       );
+      const evidenceIndex = await loadStoredFullTextEvidenceIndex(db);
       const topics = [];
       for (const row of rows) {
         let payload;
         try { payload = JSON.parse(row.object_payload || '{}'); } catch { payload = {}; }
-        const mcqCount = Array.isArray(payload.mcqs) ? payload.mcqs.length : 0;
+        const mcqCount = Array.isArray(payload.mcqs)
+          ? payload.mcqs.filter((q) => mcqMatchesStoredFullText(q, evidenceIndex)).length : 0;
         if (mcqCount <= 0) continue; // hide empty topics from listing
-        const topicKey = String(payload.topicKey || row.object_key.replace(/^curated-mcq:/, '') || '').trim();
+        const topicKey = String(payload.topicKey || row.object_key.replace(/^curated-mcq[:-]/, '') || '').trim();
         topics.push({
           topicKey,
           displayName: payload.topicDisplayName || row.topic || topicKey,
@@ -60,11 +66,12 @@ function registerCuratedMcqRoutes(app, deps) {
       const withdrawn = await loadWithdrawnOverrides(db);
 
       // Try exact curated or verified key first
-      const slug = raw.toLowerCase().replace(/^(curated|verified)-mcq:/, '');
+      const slug = raw.toLowerCase().replace(/^(curated|verified)-mcq[:-]/, '');
       let row = await db.get(
         `SELECT * FROM teaching_objects
-         WHERE object_key IN (?, ?) AND object_type IN ('curated_topic_mcq', 'verified_topic_mcq')`,
-        [`curated-mcq:${slug}`, `verified-mcq:${slug}`]
+         WHERE object_key IN (?, ?, ?, ?) AND object_type IN ('curated_topic_mcq', 'verified_topic_mcq')
+           AND review_state IN (${PUBLISHABLE_REVIEW_STATES})`,
+        [`curated-mcq:${slug}`, `curated-mcq-${slug}`, `verified-mcq:${slug}`, `verified-mcq-${slug}`]
       );
 
       // Fall back to resolving topic string via alias -> curriculum topic id
@@ -72,7 +79,8 @@ function registerCuratedMcqRoutes(app, deps) {
         const id = await db.resolveCurriculumTopicId(raw);
         if (id) {
           row = await db.get(
-            `SELECT * FROM teaching_objects WHERE object_type IN ('curated_topic_mcq', 'verified_topic_mcq') AND curriculum_topic_id = ? ORDER BY updated_at DESC LIMIT 1`,
+            `SELECT * FROM teaching_objects WHERE object_type IN ('curated_topic_mcq', 'verified_topic_mcq')
+             AND review_state IN (${PUBLISHABLE_REVIEW_STATES}) AND curriculum_topic_id = ? ORDER BY updated_at DESC LIMIT 1`,
             [id]
           );
         }
@@ -85,7 +93,8 @@ function registerCuratedMcqRoutes(app, deps) {
         const candidates = await db.all(
           `SELECT object_key, topic, object_payload
            FROM teaching_objects
-           WHERE object_type IN ('curated_topic_mcq', 'verified_topic_mcq') AND review_state != 'withdrawn'`
+           WHERE object_type IN ('curated_topic_mcq', 'verified_topic_mcq')
+             AND review_state IN (${PUBLISHABLE_REVIEW_STATES})`
         );
         for (const cand of candidates) {
           let p = {};
@@ -101,7 +110,7 @@ function registerCuratedMcqRoutes(app, deps) {
 
       if (!row) return res.status(404).json({ error: 'No curated MCQs for this topic' });
       const payload = (() => { try { return JSON.parse(row.object_payload || '{}'); } catch { return {}; } })();
-      const topicKeyOut = String(payload.topicKey || row.object_key.replace(/^curated-mcq:/, '') || '').trim();
+      const topicKeyOut = String(payload.topicKey || row.object_key.replace(/^curated-mcq[:-]/, '') || '').trim();
       const displayName = payload.topicDisplayName || row.topic || topicKeyOut;
       const coverageNote = payload.coverageNote || null;
 
@@ -109,6 +118,7 @@ function registerCuratedMcqRoutes(app, deps) {
       const letters = ['A', 'B', 'C', 'D', 'E'];
       // Clinical audit: hold out questions both AI reviewers flagged as serious, or a clinician retired.
       const stored = (Array.isArray(payload.mcqs) ? payload.mcqs : []);
+      const evidenceIndex = await loadStoredFullTextEvidenceIndex(db);
       const held = await loadAuditHolds(db, stored.map((q) => questionHash(q || {})));
       // Combine: per-question withdrawal overrides (by object index and by hash) AND clinical audit holds.
       const questions = stored
@@ -116,32 +126,42 @@ function registerCuratedMcqRoutes(app, deps) {
           const hasOptions = Array.isArray(q?.options) || (q?.options && typeof q.options === 'object');
           const hasAnswer = Boolean(q?.correctAnswer || q?.correct);
           if (!q || !q.question || !hasAnswer || !hasOptions) return false;
+          if (!mcqMatchesStoredFullText(q, evidenceIndex)) return false;
           // Withdrawn via explicit override for this object slot
           if (withdrawn.byObjectIndex.has(`${row.object_key}#${i}`)) return false;
           try {
             const h = questionHash(q);
             if (withdrawn.byHash.has(h)) return false;
             if (held.has(h)) return false;
-          } catch {
-            // If hashing fails, fall through — only objectIndex-based withdrawal applies
-          }
+          } catch { return false; }
           return true;
         })
-        .map((q, i) => ({
-          id: q.id || `curated_${row.object_key}_${i}`,
-          type: 'multiple_choice',
-          questionType: canonicalQuestionType(q.questionType || 'guideline'),
-          question: q.question,
-          options: Array.isArray(q.options)
-            ? q.options
-            : letters.filter((L) => q.options && q.options[L] !== undefined).map((L) => `${L}: ${q.options[L]}`),
-          correctAnswer: q.correctAnswer || q.correct,
-          explanation: q.explanation || '',
-          difficulty: q.difficulty || 'medium',
-          outdatedSources: Boolean(q.outdatedSources),
-          // Surface citations for UI — array with body/year/url/excerpt
-          sourceRefs: Array.isArray(q.sourceRefs) ? q.sourceRefs : [],
-        }));
+        .map((q, i) => {
+          const claimKey = q.claimKey || q.claim_key
+            || computeMcqClaimKey(q, row.object_type, row.topic || displayName);
+          const outlineNodeId = q.outlineNodeId || `curated:${row.object_key}:${i}`;
+          const outlineLabel = q.outlineLabel || q.question.slice(0, 120);
+          return {
+            id: q.id || `curated_${row.object_key}_${i}`,
+            topic: displayName || row.topic || topicKeyOut,
+            type: 'multiple_choice',
+            questionType: canonicalQuestionType(q.questionType || 'guideline'),
+            question: q.question,
+            options: Array.isArray(q.options)
+              ? q.options
+              : letters.filter((L) => q.options && q.options[L] !== undefined).map((L) => `${L}: ${q.options[L]}`),
+            correctAnswer: q.correctAnswer || q.correct,
+            explanation: q.explanation || '',
+            difficulty: q.difficulty || 'medium',
+            outdatedSources: Boolean(q.outdatedSources),
+            sourceRefs: Array.isArray(q.sourceRefs) ? q.sourceRefs : [],
+            claimKey,
+            outlineNodeId,
+            outlineLabel,
+            sourceArticleUid: q.sourceArticleUid || q.articleUid || null,
+            sourceArticleTitle: q.sourceArticleTitle || q.sourceArticle || null,
+          };
+        });
 
       // If no questions, do not expose an empty quiz
       if (questions.length === 0) {

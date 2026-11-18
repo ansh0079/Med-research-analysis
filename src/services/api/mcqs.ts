@@ -19,6 +19,7 @@ export interface CuratedSourceRef {
 
 export interface CuratedQuestion {
   id: string;
+  topic?: string;
   type: 'multiple_choice';
   questionType?: 'guideline' | 'recall' | 'clinical_application' | 'trial_interpretation' | 'pitfall';
   question: string;
@@ -30,6 +31,11 @@ export interface CuratedQuestion {
   difficulty: 'easy' | 'medium' | 'hard';
   outdatedSources?: boolean;
   sourceRefs?: CuratedSourceRef[];
+  outlineNodeId?: string | null;
+  outlineLabel?: string | null;
+  claimKey?: string | null;
+  sourceArticleUid?: string | null;
+  sourceArticleTitle?: string | null;
 }
 
 export class McqsApi extends BaseApiClient {

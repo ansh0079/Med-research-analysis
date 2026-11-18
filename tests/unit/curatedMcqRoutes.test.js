@@ -31,6 +31,11 @@ describe('curatedMcqRoutes', () => {
     registerCuratedMcqRoutes(app, deps);
   });
 
+  const storedEvidenceRows = [{
+    document_id: 7, guideline_id: 11, pmid: '39210723',
+    doi: '10.1000/ards', source_url: 'https://example.com',
+  }];
+
   test('GET /api/mcqs/topics returns empty list', async () => {
     const res = await request(app)
       .get('/api/mcqs/topics')
@@ -48,7 +53,7 @@ describe('curatedMcqRoutes', () => {
           topicKey: 'ards-management',
           topicDisplayName: 'ARDS management',
           aliases: ['acute respiratory distress syndrome', 'ards'],
-          mcqs: [{ id: 'q1', question: 'q', options: ['A: a','B: b','C: c','D: d','E: e'], correctAnswer: 'A', explanation: 'x', difficulty: 'easy' }],
+          mcqs: [{ id: 'q1', question: 'q', options: ['A: a','B: b','C: c','D: d','E: e'], correctAnswer: 'A', explanation: 'x', difficulty: 'easy', sourceRefs: [{ guidelineId: 11 }] }],
         }),
       },
       {
@@ -61,7 +66,7 @@ describe('curatedMcqRoutes', () => {
           mcqs: [],
         }),
       },
-    ]);
+    ]).mockResolvedValueOnce(storedEvidenceRows);
     const res = await request(app)
       .get('/api/mcqs/topics')
       .set('Authorization', `Bearer ${authToken()}`);
@@ -95,10 +100,11 @@ describe('curatedMcqRoutes', () => {
           aliases: ['tb', 'latent tb'],
           mcqs: [{
             id: 'q1', question: 'LTBI treatment?', options: ['A: a','B: b','C: c','D: d','E: e'],
-            correctAnswer: 'A', explanation: 'x', difficulty: 'easy'
+            correctAnswer: 'A', explanation: 'x', difficulty: 'easy', sourceRefs: [{ guidelineId: 11 }]
           }],
         }),
-      }]);
+      }])
+      .mockResolvedValueOnce(storedEvidenceRows);
     const res = await request(app)
       .get('/api/topics/tb/mcqs')
       .set('Authorization', `Bearer ${authToken()}`);
@@ -108,6 +114,9 @@ describe('curatedMcqRoutes', () => {
   });
 
   test('GET /api/topics/:topic/mcqs returns signed questions with source refs', async () => {
+    mockDb.all
+      .mockResolvedValueOnce([])
+      .mockResolvedValueOnce(storedEvidenceRows);
     mockDb.get.mockResolvedValueOnce({
       object_key: 'curated-mcq:ards-management',
       topic: 'ARDS management',
@@ -123,7 +132,7 @@ describe('curatedMcqRoutes', () => {
           explanation: 'Low VT improves outcomes.',
           difficulty: 'easy',
           outdatedSources: true,
-          sourceRefs: [{ sourceBody: 'NICE', sourceUrl: 'https://example.com', excerpt: 'Use 4–6 ml/kg.' }],
+          sourceRefs: [{ guidelineId: 11, sourceBody: 'NICE', sourceUrl: 'https://example.com', excerpt: 'Use 4–6 ml/kg.' }],
         }],
       }),
     });

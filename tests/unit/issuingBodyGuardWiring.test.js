@@ -103,15 +103,23 @@ describe('GET /api/quiz/pool only badges a question "guideline" when the guard w
                     options: ['A', 'B', 'C', 'D'],
                     correctAnswer: 'A',
                     guidelineRef,
+                    // The pool only serves questions whose source is stored as full text.
+                    sourceRefs: [{ guidelineId: 11 }],
                 }],
             }),
         };
     }
 
+    // The route reads the pool rows and, separately, the stored full-text evidence index.
+    const storedEvidenceRows = [{ document_id: 7, guideline_id: 11, pmid: '39210723', doi: null, source_url: null }];
+    const poolDb = (rows) => ({
+        all: async (sql) => (/guideline_documents/.test(sql) ? storedEvidenceRows : rows),
+    });
+
     async function fetchPoolSource(guidelineRef) {
         const app = fakeApp();
         registerQuizRoutes(app, {
-            db: { all: async () => [poolTeachingObjectRow(guidelineRef)] },
+            db: poolDb([poolTeachingObjectRow(guidelineRef)]),
             serverConfig: {},
             ai: {},
             mcqValidator: {},
@@ -149,7 +157,7 @@ describe('GET /api/quiz/pool only badges a question "guideline" when the guard w
     test('a non-guideline_mcq row is never labelled "guideline", whatever guidelineRef says', async () => {
         const app = fakeApp();
         registerQuizRoutes(app, {
-            db: { all: async () => [{ ...poolTeachingObjectRow('AGA Institute'), object_type: 'paper_mcq' }] },
+            db: poolDb([{ ...poolTeachingObjectRow('AGA Institute'), object_type: 'paper_mcq' }]),
             serverConfig: {}, ai: {}, mcqValidator: {}, helpers: {}, logger: { error() {}, warn() {} },
             requireJson: passthrough, requireAiAuth: passthrough, requireAuthJwt: passthrough, rateLimit, aiUserLimit: () => passthrough, validateBody: () => passthrough, schemas: { quiz: {} },
         });

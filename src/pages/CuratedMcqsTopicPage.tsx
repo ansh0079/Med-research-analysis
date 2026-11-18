@@ -58,6 +58,25 @@ export const CuratedMcqsTopicPage: React.FC = () => {
       });
       setRevealed((prev) => ({ ...prev, [q.id]: graded.correctAnswer }));
       setAnswers((prev) => ({ ...prev, [q.id]: letter }));
+      await api.learning.submitQuizAttempt({
+        topic: q.topic || displayName || topicKey,
+        attempts: [{
+          questionId: q.id,
+          questionType: q.questionType || 'guideline',
+          questionText: q.question,
+          userAnswer: letter,
+          correctAnswer: graded.correctAnswer,
+          gradingToken: q.gradingToken || '',
+          isCorrect: graded.isCorrect,
+          sourceArticleUid: q.sourceArticleUid || undefined,
+          sourceArticleTitle: q.sourceArticleTitle || undefined,
+          outlineNodeId: q.outlineNodeId || undefined,
+          outlineLabel: q.outlineLabel || q.question.slice(0, 120),
+          claimKey: q.claimKey || undefined,
+        }],
+      }).catch((err) => {
+        console.warn('Failed to record curated quiz attempt', err);
+      });
     } catch {
       setSyncError('Could not check that answer. Please try again.');
     } finally {
