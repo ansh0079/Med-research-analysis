@@ -110,3 +110,28 @@ data/review-articles/
 topics-without-mcqs.txt
 
 archive/
+
+# Content-review work products (evidence batches, accuracy reviews, spreadsheets).
+# Kept on disk for the reviewers; never shipped with the app.
+/outputs/
+/output/
+/scratch/
+/review-output/
+/overview-check-*/
+/overview-check-*.xlsx
+/Signal_MD_*.xlsx
+/Pending_*.xlsx
+/topic-evidence-catalogue-current.xlsx
+/guideline-access-work/
+/labeler-handoff/
+/deferred-topics-evidence/
+/evidence_cache/
+/data/evidence_cache*/
+/mentor_drafts_topics_*.json
+/tests/tmp-db-*.db
+# One-off analysis scripts and their JSON/text results under scripts/.
+/scripts/**/*.py
+/scripts/**/*.json
+/scripts/**/*.txt
+/scripts/**/*.csv
+/scripts/**/*.ndjson
