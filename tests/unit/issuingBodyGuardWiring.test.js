@@ -1,5 +1,8 @@
 'use strict';
 
+// These routes are tested with the stored-full-text evidence gate switched on.
+process.env.MCQ_EVIDENCE_GATE = 'on';
+
 /**
  * Two call sites answered "is this source_body a real issuing organisation"
  * with GUIDELINE_BODY.test() directly, bypassing the capitalisation guard

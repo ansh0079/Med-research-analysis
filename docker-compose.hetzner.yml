@@ -111,6 +111,9 @@ services:
       DEV_DISABLE_AUTH: "false"
       BETA_MODE: ${BETA_MODE:-true}
       BETA_OPEN_ACCESS: ${BETA_OPEN_ACCESS:-false}
+      # Serve only reviewed MCQs whose source is stored as full text. Off until reviewed
+      # evidence-locked MCQs are loaded (scripts/load_aligned_batch.js), or quizzes go empty.
+      MCQ_EVIDENCE_GATE: ${MCQ_EVIDENCE_GATE:-off}
       # Global daily ceiling on LLM spend, and the operator kill switch.
       # Without these passed through, the guard silently falls back to its
       # built-in default and the kill switch cannot be engaged at all.
@@ -219,6 +222,9 @@ services:
       DEV_DISABLE_AUTH: "false"
       BETA_MODE: ${BETA_MODE:-true}
       BETA_OPEN_ACCESS: ${BETA_OPEN_ACCESS:-false}
+      # Serve only reviewed MCQs whose source is stored as full text. Off until reviewed
+      # evidence-locked MCQs are loaded (scripts/load_aligned_batch.js), or quizzes go empty.
+      MCQ_EVIDENCE_GATE: ${MCQ_EVIDENCE_GATE:-off}
       # Global daily ceiling on LLM spend, and the operator kill switch.
       # Without these passed through, the guard silently falls back to its
       # built-in default and the kill switch cannot be engaged at all.

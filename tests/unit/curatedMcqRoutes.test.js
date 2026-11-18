@@ -1,5 +1,8 @@
 'use strict';
 
+// These routes are tested with the stored-full-text evidence gate switched on.
+process.env.MCQ_EVIDENCE_GATE = 'on';
+
 const express = require('express');
 const request = require('supertest');
 const jwt = require('jsonwebtoken');

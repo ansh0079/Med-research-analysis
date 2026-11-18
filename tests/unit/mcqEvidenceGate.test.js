@@ -69,3 +69,26 @@ describe('mcqEvidenceGate', () => {
         }, index)).toBe(false);
     });
 });
+
+describe('MCQ_EVIDENCE_GATE switch', () => {
+    const gate = require('../../server/services/mcqEvidenceGate');
+
+    test('is off unless set to on', () => {
+        expect(gate.evidenceGateEnabled({})).toBe(false);
+        expect(gate.evidenceGateEnabled({ MCQ_EVIDENCE_GATE: 'off' })).toBe(false);
+        expect(gate.evidenceGateEnabled({ MCQ_EVIDENCE_GATE: 'ON' })).toBe(true);
+    });
+
+    test('when off, every non-withdrawn question is servable and no index is loaded', async () => {
+        const db = { all: jest.fn() };
+        expect(gate.servableReviewStateSql({})).toBe("review_state != 'withdrawn'");
+        expect(await gate.loadEvidenceIndexIfEnabled(db, {})).toBeNull();
+        expect(db.all).not.toHaveBeenCalled();
+        expect(gate.passesEvidenceGate({ question: 'q' }, null)).toBe(true);
+    });
+
+    test('when on, only reviewed states are servable', () => {
+        expect(gate.servableReviewStateSql({ MCQ_EVIDENCE_GATE: 'on' }))
+            .toBe("review_state IN ('approved', 'verified', 'human_reviewed')");
+    });
+});

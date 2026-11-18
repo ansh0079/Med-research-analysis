@@ -120,7 +120,36 @@ function mcqMatchesStoredFullText(question, index) {
     return recovered.some((document) => recoveryStatus === 'verified' || recoveredDocumentHasExactAnchor(question, document));
 }
 
+/**
+ * The gate is switched on with MCQ_EVIDENCE_GATE=on. Until reviewed, evidence-locked MCQs are
+ * loaded, production holds only 'unreviewed' questions and the gate would serve none of them.
+ */
+function evidenceGateEnabled(env = process.env) {
+    return String(env.MCQ_EVIDENCE_GATE || '').trim().toLowerCase() === 'on';
+}
+
+/** SQL fragment restricting teaching_objects.review_state for served MCQs. */
+function servableReviewStateSql(env = process.env) {
+    return evidenceGateEnabled(env)
+        ? "review_state IN ('approved', 'verified', 'human_reviewed')"
+        : "review_state != 'withdrawn'";
+}
+
+/** Loads the full-text index only when the gate is on; null means "do not filter". */
+async function loadEvidenceIndexIfEnabled(db, env = process.env) {
+    return evidenceGateEnabled(env) ? loadStoredFullTextEvidenceIndex(db) : null;
+}
+
+/** True when the question may be served: always when the gate is off. */
+function passesEvidenceGate(question, index) {
+    return index == null ? true : mcqMatchesStoredFullText(question, index);
+}
+
 module.exports = {
+    evidenceGateEnabled,
+    servableReviewStateSql,
+    loadEvidenceIndexIfEnabled,
+    passesEvidenceGate,
     cleanDoi,
     cleanPmid,
     loadStoredFullTextEvidenceIndex,

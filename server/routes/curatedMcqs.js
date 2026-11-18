@@ -9,10 +9,9 @@ const { canonicalQuestionType } = require('../utils/questionType');
 const { expandNormalizedTopicKeys } = require('../utils/topicSynonyms');
 const { normalizeTopic } = require('../utils/topicKey');
 const { loadWithdrawnOverrides } = require('../services/mcqReviewOverrideService');
-const { loadStoredFullTextEvidenceIndex, mcqMatchesStoredFullText } = require('../services/mcqEvidenceGate');
+const { loadEvidenceIndexIfEnabled, passesEvidenceGate, servableReviewStateSql } = require('../services/mcqEvidenceGate');
 const { computeMcqClaimKey } = require('../utils/mcqClaimKey');
 
-const PUBLISHABLE_REVIEW_STATES = "'approved', 'verified', 'human_reviewed'";
 
 /**
  * Curated MCQs API:
@@ -31,16 +30,16 @@ function registerCuratedMcqRoutes(app, deps) {
         `SELECT object_key, topic, object_payload
          FROM teaching_objects
          WHERE object_type IN ('curated_topic_mcq', 'verified_topic_mcq')
-           AND review_state IN (${PUBLISHABLE_REVIEW_STATES})
+           AND ${servableReviewStateSql()}
          ORDER BY topic ASC`
       );
-      const evidenceIndex = await loadStoredFullTextEvidenceIndex(db);
+      const evidenceIndex = await loadEvidenceIndexIfEnabled(db);
       const topics = [];
       for (const row of rows) {
         let payload;
         try { payload = JSON.parse(row.object_payload || '{}'); } catch { payload = {}; }
         const mcqCount = Array.isArray(payload.mcqs)
-          ? payload.mcqs.filter((q) => mcqMatchesStoredFullText(q, evidenceIndex)).length : 0;
+          ? payload.mcqs.filter((q) => passesEvidenceGate(q, evidenceIndex)).length : 0;
         if (mcqCount <= 0) continue; // hide empty topics from listing
         const topicKey = String(payload.topicKey || row.object_key.replace(/^curated-mcq[:-]/, '') || '').trim();
         topics.push({
@@ -70,7 +69,7 @@ function registerCuratedMcqRoutes(app, deps) {
       let row = await db.get(
         `SELECT * FROM teaching_objects
          WHERE object_key IN (?, ?, ?, ?) AND object_type IN ('curated_topic_mcq', 'verified_topic_mcq')
-           AND review_state IN (${PUBLISHABLE_REVIEW_STATES})`,
+           AND ${servableReviewStateSql()}`,
         [`curated-mcq:${slug}`, `curated-mcq-${slug}`, `verified-mcq:${slug}`, `verified-mcq-${slug}`]
       );
 
@@ -80,7 +79,7 @@ function registerCuratedMcqRoutes(app, deps) {
         if (id) {
           row = await db.get(
             `SELECT * FROM teaching_objects WHERE object_type IN ('curated_topic_mcq', 'verified_topic_mcq')
-             AND review_state IN (${PUBLISHABLE_REVIEW_STATES}) AND curriculum_topic_id = ? ORDER BY updated_at DESC LIMIT 1`,
+             AND ${servableReviewStateSql()} AND curriculum_topic_id = ? ORDER BY updated_at DESC LIMIT 1`,
             [id]
           );
         }
@@ -94,7 +93,7 @@ function registerCuratedMcqRoutes(app, deps) {
           `SELECT object_key, topic, object_payload
            FROM teaching_objects
            WHERE object_type IN ('curated_topic_mcq', 'verified_topic_mcq')
-             AND review_state IN (${PUBLISHABLE_REVIEW_STATES})`
+             AND ${servableReviewStateSql()}`
         );
         for (const cand of candidates) {
           let p = {};
@@ -118,7 +117,7 @@ function registerCuratedMcqRoutes(app, deps) {
       const letters = ['A', 'B', 'C', 'D', 'E'];
       // Clinical audit: hold out questions both AI reviewers flagged as serious, or a clinician retired.
       const stored = (Array.isArray(payload.mcqs) ? payload.mcqs : []);
-      const evidenceIndex = await loadStoredFullTextEvidenceIndex(db);
+      const evidenceIndex = await loadEvidenceIndexIfEnabled(db);
       const held = await loadAuditHolds(db, stored.map((q) => questionHash(q || {})));
       // Combine: per-question withdrawal overrides (by object index and by hash) AND clinical audit holds.
       const questions = stored
@@ -126,7 +125,7 @@ function registerCuratedMcqRoutes(app, deps) {
           const hasOptions = Array.isArray(q?.options) || (q?.options && typeof q.options === 'object');
           const hasAnswer = Boolean(q?.correctAnswer || q?.correct);
           if (!q || !q.question || !hasAnswer || !hasOptions) return false;
-          if (!mcqMatchesStoredFullText(q, evidenceIndex)) return false;
+          if (!passesEvidenceGate(q, evidenceIndex)) return false;
           // Withdrawn via explicit override for this object slot
           if (withdrawn.byObjectIndex.has(`${row.object_key}#${i}`)) return false;
           try {

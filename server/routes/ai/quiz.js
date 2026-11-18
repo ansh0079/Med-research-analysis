@@ -5,7 +5,7 @@ const { createBudgetForAction, runWithLlmBudget } = require('../../services/llmR
 const { createQuizGenerationService } = require('../../services/quizGenerationService');
 const { canonicalQuestionType } = require('../../utils/questionType');
 const { computeMcqClaimKey, hasSuspectFutureCitation } = require('../../utils/mcqClaimKey');
-const { loadStoredFullTextEvidenceIndex, mcqMatchesStoredFullText } = require('../../services/mcqEvidenceGate');
+const { loadEvidenceIndexIfEnabled, passesEvidenceGate, servableReviewStateSql } = require('../../services/mcqEvidenceGate');
 const { isIssuingBodyValue } = require('../../utils/guidelineAttribution');
 const questionIndex = require('../../services/questionIndex/questionIndexReader');
 const { loadWithdrawnOverrides } = require('../../services/mcqReviewOverrideService');
@@ -153,10 +153,10 @@ function registerQuizRoutes(app, {
             const rows = await db.all(
                 `SELECT object_key, topic, object_type, object_payload FROM teaching_objects
                  WHERE object_type IN ('verified_topic_mcq', 'curated_topic_mcq', 'cold_start_mcq', 'guideline_mcq', 'paper_mcq')
-                   AND review_state IN ('approved', 'verified', 'human_reviewed')
+                   AND ${servableReviewStateSql()}
                  ORDER BY RANDOM()`
             );
-            const evidenceIndex = await loadStoredFullTextEvidenceIndex(db);
+            const evidenceIndex = await loadEvidenceIndexIfEnabled(db);
 
             // Question-to-topic index (QUESTION_INDEX_SERVING=on): a pool question is labelled with the topic it
             // belongs to rather than the one it was filed under, and one that is not about any topic is held out.
@@ -175,7 +175,7 @@ function registerQuizRoutes(app, {
                     const hasOptions = Array.isArray(q?.options) || (q?.options && typeof q.options === 'object');
                     const hasAnswer = Boolean(q?.correctAnswer || q?.correct);
                     if (!q?.question || !hasOptions || !hasAnswer) continue;
-                    if (!mcqMatchesStoredFullText(q, evidenceIndex)) continue;
+                    if (!passesEvidenceGate(q, evidenceIndex)) continue;
                     // Object-index based block list
                     if (withdrawn.byObjectIndex.has(`${row.object_key}#${i}`)) continue;
                     // Per-question withdrawals applied by the review workflow: filter even when the index is off.
