@@ -86,6 +86,23 @@ function createDocumentResolver(db, batchDir, catalogue) {
         const m = meta.get(pmcid) || meta.get(pmid) || {};
         const now = new Date().toISOString();
         const words = normalizeText(text).split(' ').length;
+        // pmcid is unique. A row already holding this PMCID is filled in only when it has no usable full
+        // text, is not quarantined, and does not belong to a different PMID; otherwise the anchor stays
+        // unresolved rather than overwriting text other anchors may rely on.
+        const existing = await db.get('SELECT id, pmid, full_text_source FROM guideline_documents WHERE pmcid = ? ORDER BY id LIMIT 1', [pmcid]);
+        if (existing) {
+            const otherPaper = existing.pmid && pmid && String(existing.pmid) !== String(pmid);
+            if ((await textOf(existing.id)) || otherPaper || String(existing.full_text_source || '').startsWith('quarantined')) {
+                ingested.set(pmcid, null);
+                return null;
+            }
+            await db.run('UPDATE guideline_documents SET full_text = ?, full_text_source = ?, word_count = ?, fetched_at = ?, updated_at = ? WHERE id = ?',
+                [text, 'jats', words, now, now, existing.id]);
+            ingested.set(pmcid, existing.id);
+            textCache.set(existing.id, normalizeText(text));
+            stats.ingested++;
+            return existing.id;
+        }
         await db.run(
             `INSERT INTO guideline_documents (pmcid, pmid, doi, title, source_body, source_year, source_url,
                  evidence_tier, full_text, full_text_source, word_count, fetched_at, created_at, updated_at)

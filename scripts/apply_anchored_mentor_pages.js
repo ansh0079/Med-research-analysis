@@ -3,7 +3,7 @@
 /**
  * Replace published mentor pages with versions whose teaching points carry exact-quote evidence anchors.
  *
- *   node scripts/apply_anchored_mentor_pages.js --file pages.jsonl [--min-points 3] [--backup out.jsonl] [--apply]
+ *   node scripts/apply_anchored_mentor_pages.js --file pages.jsonl [--status published] [--min-points 3] [--backup out.jsonl] [--apply]
  *
  * Input: JSON lines { topic_id, topic, page }, where every teaching point has evidence_anchors
  * [{ pmid, quote, documentId }]. Each point is re-checked with the app's own clearance service
@@ -26,6 +26,7 @@ const FILE = arg('--file');
 const BACKUP = arg('--backup');
 const MIN_POINTS = Number(arg('--min-points', 3));
 const APPLY = args.includes('--apply');
+const STATUS = arg('--status', 'published'); // draft status to republish from, e.g. needs_review after load_aligned_batch.js
 
 async function main() {
     if (!FILE) throw new Error('--file <pages.jsonl> is required');
@@ -38,8 +39,8 @@ async function main() {
     const now = new Date().toISOString();
     for (const item of items) {
         const row = await db.get(
-            "SELECT id, page_json, published_at FROM topic_mentor_drafts WHERE topic_id = ? AND status = 'published' ORDER BY id LIMIT 1",
-            [String(item.topic_id)],
+            'SELECT id, page_json, published_at FROM topic_mentor_drafts WHERE topic_id = ? AND status = ? ORDER BY id LIMIT 1',
+            [String(item.topic_id), STATUS],
         );
         if (!row) { counts.missingPage++; continue; }
         const page = item.page || {};
@@ -74,8 +75,8 @@ async function main() {
             try {
                 await publishDraft(db, { topicId: String(item.topic_id), now });
             } catch (err) {
-                await db.run('UPDATE topic_mentor_drafts SET page_json = ?, published_at = ?, updated_at = ? WHERE id = ?',
-                    [row.page_json, row.published_at, now, row.id]);
+                await db.run('UPDATE topic_mentor_drafts SET page_json = ?, status = ?, published_at = ?, updated_at = ? WHERE id = ?',
+                    [row.page_json, STATUS, row.published_at, now, row.id]);
                 counts.written--;
                 counts.publishFailed = (counts.publishFailed || 0) + 1;
                 console.error(`publish failed for ${item.topic_id}: ${err.message}`);
