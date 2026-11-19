@@ -46,7 +46,8 @@ async function verifyExactAnchors(db, draft) {
             errors.push(`document ${key} does not exist`);
             continue;
         }
-        if (['abstract', 'bibliographic_abstract'].includes(String(document.full_text_source || '').toLowerCase())
+        if (['abstract', 'bibliographic_abstract', 'pubmed_abstract'].includes(String(document.full_text_source || '').toLowerCase())
+            || String(document.full_text_source || '').toLowerCase().startsWith('quarantined')
             || normalizeText(document.full_text).length < 500) {
             errors.push(`document ${key} is not stored full text`);
             continue;
