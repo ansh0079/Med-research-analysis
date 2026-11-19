@@ -4,7 +4,7 @@
  * Add full-text documents to guideline_documents from a JSONL file (one document per line):
  *   { pmid, pmcid, doi, title, year, journal, full_text, full_text_source, word_count, origin }
  *
- *   node scripts/ingest_full_text_documents.js --file docs.jsonl [--apply]
+ *   node scripts/ingest_full_text_documents.js --file docs.jsonl [--apply] [--replace]
  *
  * A document is matched to an existing row by PMID, then PMCID, then DOI, then exact title.
  *  - existing row already holds full text  -> left alone
@@ -21,6 +21,7 @@ const args = process.argv.slice(2);
 const arg = (name, fallback = null) => (args.includes(name) ? args[args.indexOf(name) + 1] : fallback);
 const FILE = arg('--file');
 const APPLY = args.includes('--apply');
+const REPLACE = args.includes('--replace');
 const ABSTRACT_SOURCES = new Set(['abstract', 'bibliographic_abstract', 'pubmed_abstract', '']);
 const MIN_FULL_TEXT_CHARS = 500;
 
@@ -62,14 +63,17 @@ async function main() {
         const text = String(d.full_text || '').split(String.fromCharCode(0)).join('');
         if (text.length < MIN_FULL_TEXT_CHARS) { counts.skippedShort++; continue; }
         const existing = await findExisting(db, d);
-        if (existing && isFullText(existing)) { counts.alreadyFullText++; continue; }
+        // --replace overwrites stored full text, for rows whose stored text was found to be a different paper.
+        if (existing && isFullText(existing) && !REPLACE) { counts.alreadyFullText++; continue; }
         const words = Number(d.word_count) || text.split(/\s+/).length;
         if (existing) {
-            counts.filledAbstractRow++;
+            counts[REPLACE ? 'replaced' : 'filledAbstractRow'] = (counts[REPLACE ? 'replaced' : 'filledAbstractRow'] || 0) + 1;
             if (APPLY) {
+                const pmcidSql = REPLACE ? 'COALESCE(?, pmcid)' : 'COALESCE(pmcid, ?)';
+                const sourceUrl = REPLACE && cleanPmcid(d.pmcid) ? `, source_url = 'https://pmc.ncbi.nlm.nih.gov/articles/${cleanPmcid(d.pmcid)}/'` : '';
                 await db.run(
                     `UPDATE guideline_documents SET full_text = ?, full_text_source = ?, word_count = ?,
-                        pmcid = COALESCE(pmcid, ?), doi = COALESCE(doi, ?), fetched_at = ?, updated_at = ? WHERE id = ?`,
+                        pmcid = ${pmcidSql}, doi = COALESCE(doi, ?), fetched_at = ?, updated_at = ?${sourceUrl} WHERE id = ?`,
                     [text, d.full_text_source || 'pdf', words, cleanPmcid(d.pmcid), cleanDoi(d.doi), now, now, existing.id],
                 );
             }
