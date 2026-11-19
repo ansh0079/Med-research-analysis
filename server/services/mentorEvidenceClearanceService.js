@@ -50,20 +50,28 @@ function anchorsForPoint(point = {}) {
     return Array.isArray(value) ? value.filter((entry) => entry && typeof entry === 'object') : [];
 }
 
+/**
+ * Resolve a cited source to one stored document. Identifiers are tried strongest first (PMID, PMCID,
+ * DOI, then exact title) so a different row that merely shares a title — e.g. a second, unlabelled
+ * copy of the same guideline with different text extraction — can never stand in for the cited one.
+ */
 async function findDocument(db, source = {}) {
-    const clauses = [];
-    const params = [];
-    if (source.pmid) { clauses.push('pmid = ?'); params.push(String(source.pmid)); }
-    if (source.pmcid) { clauses.push('pmcid = ?'); params.push(String(source.pmcid)); }
-    if (source.doi) { clauses.push('LOWER(doi) = LOWER(?)'); params.push(String(source.doi)); }
-    if (source.title) { clauses.push('LOWER(title) = LOWER(?)'); params.push(String(source.title).trim()); }
-    if (!clauses.length) return null;
-    return db.get(
-        `SELECT id, pmid, pmcid, doi, title, document_label, evidence_tier,
-                full_text, full_text_source, word_count, source_year, source_url
-         FROM guideline_documents WHERE ${clauses.join(' OR ')} LIMIT 1`,
-        params,
-    );
+    const lookups = [];
+    if (source.pmid) lookups.push(['pmid = ?', String(source.pmid)]);
+    if (source.pmcid) lookups.push(['pmcid = ?', String(source.pmcid)]);
+    if (source.doi) lookups.push(['LOWER(doi) = LOWER(?)', String(source.doi)]);
+    if (source.title) lookups.push(['LOWER(title) = LOWER(?)', String(source.title).trim()]);
+    for (const [clause, value] of lookups) {
+        const row = await db.get(
+            `SELECT id, pmid, pmcid, doi, title, document_label, evidence_tier,
+                    full_text, full_text_source, word_count, source_year, source_url
+             FROM guideline_documents WHERE ${clause}
+             ORDER BY CASE WHEN full_text IS NULL THEN 1 ELSE 0 END, id LIMIT 1`,
+            [value],
+        );
+        if (row) return row;
+    }
+    return null;
 }
 
 /**
