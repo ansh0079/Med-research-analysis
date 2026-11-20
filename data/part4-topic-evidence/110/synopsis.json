@@ -1,0 +1,36 @@
+{
+  "catalogueId": "110",
+  "topic": "Lymphangitic Carcinomatosis",
+  "scope": "NCBI Bookshelf review of pulmonary lymphangitic carcinomatosis: interstitial spread, adenocarcinoma primaries, subacute dyspnea, and CT septal thickening.",
+  "keyRecommendations": [
+    {
+      "text": "Pulmonary lymphangitic carcinomatosis is interstitial lymphatic spread. Tumor embolism is tumor inside pulmonary vessels.",
+      "strength": "not_graded",
+      "population": "Suspected lymphangitic carcinomatosis"
+    },
+    {
+      "text": "About 6 to 8 percent of pulmonary metastases are lymphangitic, and about 80 percent of those are adenocarcinomas.",
+      "strength": "not_graded",
+      "population": "Pulmonary metastases"
+    },
+    {
+      "text": "Dyspnea over days to weeks is the common presentation. CT shows septal and peribronchovascular thickening. The chapter calls the outlook about six months, with longer survivors reported.",
+      "strength": "not_graded",
+      "population": "Pulmonary lymphangitic carcinomatosis"
+    }
+  ],
+  "clinicalBottomLine": "Think of lymphangitic carcinomatosis when dyspnea progresses over days to weeks and CT shows interstitial thickening, especially with an adenocarcinoma. It is interstitial disease, distinct from tumor cells inside pulmonary arteries.",
+  "notableCaveats": [
+    "Single case reports were not used. This is the open Bookshelf review of the entity."
+  ],
+  "source": {
+    "title": "Lymphangitic carcinomatosis.",
+    "year": 2023,
+    "pmid": "",
+    "pmcid": "",
+    "doi": "",
+    "url": "https://www.ncbi.nlm.nih.gov/books/NBK560921/",
+    "sourceBody": "StatPearls / NCBI Bookshelf",
+    "storedAs": ""
+  }
+}

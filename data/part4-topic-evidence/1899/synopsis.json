@@ -1,0 +1,31 @@
+{
+  "catalogueId": "1899",
+  "topic": "Massive Hemoptysis management",
+  "scope": "Open meta-analysis of randomised trials of bronchial artery embolization for haemoptysis, including studies of massive haemoptysis.",
+  "keyRecommendations": [
+    {
+      "text": "Compared with pharmacotherapy, BAE had higher clinical efficacy (RR 1.24), lower recurrence (RR 0.26), lower mortality (RR 0.20), and fewer overall complications (RR 0.41), each with moderate-certainty evidence.",
+      "strength": "not_graded",
+      "population": "Haemoptysis in the included RCTs"
+    },
+    {
+      "text": "Sixteen of the included studies involved massive haemoptysis.",
+      "strength": "not_graded",
+      "population": "Massive haemoptysis subsets"
+    }
+  ],
+  "clinicalBottomLine": "In this meta-analysis of trials, bronchial artery embolization beat pharmacotherapy on efficacy, recurrence, mortality, and complications. It is outcome evidence, not a full airway-bleeding algorithm.",
+  "notableCaveats": [
+    "A narrative review of the ABC approach to massive haemoptysis was not available as open full text. These questions stay inside the meta-analysis."
+  ],
+  "source": {
+    "title": "Efficacy and safety of bronchial artery embolization in the treatment of hemoptysis: a systematic review and meta-analysis of RCTs.",
+    "year": 2026,
+    "pmid": "",
+    "pmcid": "PMC13733285",
+    "doi": "10.3389/fmed.2026.1959450",
+    "url": "https://europepmc.org/articles/PMC13733285",
+    "sourceBody": "Front Med",
+    "storedAs": ""
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "catalogueId": "999",
+  "spreadsheetRow": 50,
+  "topic": "paediatric dehydration",
+  "specialty": "Paediatrics",
+  "decision": "downloaded open source",
+  "source": {
+    "title": "Diarrhoea and vomiting caused by gastroenteritis in under 5s: diagnosis and management. NICE guideline CG84.",
+    "year": 2009,
+    "pmid": "",
+    "pmcid": "",
+    "doi": "",
+    "url": "https://www.nice.org.uk/guidance/cg84",
+    "sourceBody": "NICE",
+    "storedAs": ""
+  },
+  "whyItFits": "NICE CG84 assessment of dehydration and shock, and oral rehydration, in children under 5 with gastroenteritis.",
+  "limitations": "",
+  "synopsisWritten": true,
+  "mcqsWritten": true,
+  "mcqCount": 5
+}

@@ -1,0 +1,136 @@
+{
+  "catalogueId": "819",
+  "topic": "Lung Cancer screening guidelines",
+  "mcqs": [
+    {
+      "id": "819-01",
+      "question": "Whom does the USPSTF recommend for annual LDCT lung-cancer screening?",
+      "options": {
+        "A": "Adults 50 to 80 years with 20 pack-years who smoke or quit within 15 years",
+        "B": "Everyone over 40 regardless of smoking",
+        "C": "Never-smokers with a family history only",
+        "D": "Adults under 40 with any cough",
+        "E": "Only people who quit more than 20 years ago"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Adults 50 to 80 years with 20 pack-years who smoke or quit within 15 years",
+      "explanation": "Annual LDCT is recommended for adults aged 50 to 80 with a 20 pack-year history who smoke or quit within the past 15 years.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "USPSTF",
+          "sourceYear": 2021,
+          "sourceUrl": "https://www.uspreventiveservicestaskforce.org/uspstf/recommendation/lung-cancer-screening",
+          "pmid": "",
+          "pmcid": "",
+          "doi": "",
+          "excerpt": "The USPSTF recommends annual screening for lung cancer with low-dose computed tomography (LDCT) in adults aged 50 to 80 years who have a 20 pack-year smoking history and currently smoke or have quit within the past 15 years."
+        }
+      ]
+    },
+    {
+      "id": "819-02",
+      "question": "When does the USPSTF say screening should stop?",
+      "options": {
+        "A": "After 15 years without smoking, or when a health problem substantially limits life expectancy or curative lung surgery",
+        "B": "At the first normal scan",
+        "C": "Never",
+        "D": "After one pack-year",
+        "E": "Only if the person asks to continue"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "After 15 years without smoking, or when a health problem substantially limits life expectancy or curative lung surgery",
+      "explanation": "Stop once the person has not smoked for 15 years or develops a health problem that substantially limits life expectancy or curative surgery.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "USPSTF",
+          "sourceYear": 2021,
+          "sourceUrl": "https://www.uspreventiveservicestaskforce.org/uspstf/recommendation/lung-cancer-screening",
+          "pmid": "",
+          "pmcid": "",
+          "doi": "",
+          "excerpt": "Screening should be discontinued once a person has not smoked for 15 years or develops a health problem that substantially limits life expectancy or the ability or willingness to have curative lung surgery."
+        }
+      ]
+    },
+    {
+      "id": "819-03",
+      "question": "Which test does the USPSTF name for this screening?",
+      "options": {
+        "A": "Low-dose computed tomography",
+        "B": "Chest radiography as the preferred screen",
+        "C": "Sputum cytology alone",
+        "D": "PET for every adult",
+        "E": "Bronchoscopy as the first screen"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Low-dose computed tomography",
+      "explanation": "The recommendation is annual screening with low-dose CT.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "USPSTF",
+          "sourceYear": 2021,
+          "sourceUrl": "https://www.uspreventiveservicestaskforce.org/uspstf/recommendation/lung-cancer-screening",
+          "pmid": "",
+          "pmcid": "",
+          "doi": "",
+          "excerpt": "low-dose computed tomography (LDCT)"
+        }
+      ]
+    },
+    {
+      "id": "819-04",
+      "question": "What smoking exposure does the recommendation require?",
+      "options": {
+        "A": "A 20 pack-year history",
+        "B": "Any cigarette ever",
+        "C": "100 pack-years as the minimum",
+        "D": "Only pipe smoking",
+        "E": "No smoking history is required"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "A 20 pack-year history",
+      "explanation": "Eligibility includes a 20 pack-year smoking history.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "USPSTF",
+          "sourceYear": 2021,
+          "sourceUrl": "https://www.uspreventiveservicestaskforce.org/uspstf/recommendation/lung-cancer-screening",
+          "pmid": "",
+          "pmcid": "",
+          "doi": "",
+          "excerpt": "20 pack-year smoking history"
+        }
+      ]
+    },
+    {
+      "id": "819-05",
+      "question": "A former smoker is included if they quit within how long?",
+      "options": {
+        "A": "The past 15 years",
+        "B": "The past 6 months only",
+        "C": "More than 30 years ago",
+        "D": "Former smokers are excluded",
+        "E": "The past 2 years only"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "The past 15 years",
+      "explanation": "The recommendation includes people who currently smoke or have quit within the past 15 years.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "USPSTF",
+          "sourceYear": 2021,
+          "sourceUrl": "https://www.uspreventiveservicestaskforce.org/uspstf/recommendation/lung-cancer-screening",
+          "pmid": "",
+          "pmcid": "",
+          "doi": "",
+          "excerpt": "quit within the past 15 years"
+        }
+      ]
+    }
+  ]
+}

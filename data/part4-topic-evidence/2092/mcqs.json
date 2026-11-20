@@ -1,0 +1,136 @@
+{
+  "catalogueId": "2092",
+  "topic": "Goodpasture Syndrome",
+  "mcqs": [
+    {
+      "id": "2092-01",
+      "question": "What proportion of patients does the abstract say have concomitant alveolar haemorrhage?",
+      "options": {
+        "A": "40% to 60%",
+        "B": "Under 1%",
+        "C": "Every patient",
+        "D": "None",
+        "E": "Only children"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "40% to 60%",
+      "explanation": "Most patients develop rapidly progressive crescentic glomerulonephritis, and 40–60% have alveolar haemorrhage.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "Clin Exp Rheumatol",
+          "sourceYear": 2023,
+          "sourceUrl": "https://pubmed.ncbi.nlm.nih.gov/36995324/",
+          "pmid": "36995324",
+          "pmcid": "",
+          "doi": "10.55563/clinexprheumatol/tep3k5",
+          "excerpt": "40%-60% concomitant alveolar haemorrhage"
+        }
+      ]
+    },
+    {
+      "id": "2092-02",
+      "question": "What initial therapy does the abstract describe?",
+      "options": {
+        "A": "Corticosteroids and cyclophosphamide, plus plasmapheresis",
+        "B": "Antibiotics alone",
+        "C": "Observation",
+        "D": "Inhaled salbutamol only",
+        "E": "Anticoagulation as the disease-modifying treatment"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Corticosteroids and cyclophosphamide, plus plasmapheresis",
+      "explanation": "Steroids and cyclophosphamide limit new antibody; plasmapheresis removes circulating antibody.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "Clin Exp Rheumatol",
+          "sourceYear": 2023,
+          "sourceUrl": "https://pubmed.ncbi.nlm.nih.gov/36995324/",
+          "pmid": "36995324",
+          "pmcid": "",
+          "doi": "10.55563/clinexprheumatol/tep3k5",
+          "excerpt": "Initial therapy includes corticosteroids and cyclophosphamide to prevent autoantibodies production, and plasmapheresis to remove the circulating autoantibodies."
+        }
+      ]
+    },
+    {
+      "id": "2092-03",
+      "question": "Which presentation does the abstract link to bad renal outcomes?",
+      "options": {
+        "A": "Dialysis-dependent renal failure or a high proportion of crescents",
+        "B": "Isolated haemoptysis with normal creatinine",
+        "C": "A normal biopsy",
+        "D": "Antibody-negative disease only",
+        "E": "The abstract gives no renal prognostic statement"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Dialysis-dependent renal failure or a high proportion of crescents",
+      "explanation": "Dialysis or a high proportion of glomerular crescents is associated with bad renal outcomes.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "Clin Exp Rheumatol",
+          "sourceYear": 2023,
+          "sourceUrl": "https://pubmed.ncbi.nlm.nih.gov/36995324/",
+          "pmid": "36995324",
+          "pmcid": "",
+          "doi": "10.55563/clinexprheumatol/tep3k5",
+          "excerpt": "when patients present with severe renal failure requiring dialysis or with a high proportion of glomerular crescents at biopsy, renal outcomes are bad"
+        }
+      ]
+    },
+    {
+      "id": "2092-04",
+      "question": "What does the abstract say about relapses?",
+      "options": {
+        "A": "They are rare",
+        "B": "They occur in most patients within a month",
+        "C": "They are universal",
+        "D": "They are not mentioned",
+        "E": "They are more common than the initial illness"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "They are rare",
+      "explanation": "Relapses are rare. If the kidneys are involved, think of concomitant disease such as ANCA-associated disease.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "Clin Exp Rheumatol",
+          "sourceYear": 2023,
+          "sourceUrl": "https://pubmed.ncbi.nlm.nih.gov/36995324/",
+          "pmid": "36995324",
+          "pmcid": "",
+          "doi": "10.55563/clinexprheumatol/tep3k5",
+          "excerpt": "Relapses are rare"
+        }
+      ]
+    },
+    {
+      "id": "2092-05",
+      "question": "What does the abstract say causes the tissue injury?",
+      "options": {
+        "A": "Circulating autoantibodies against antigens intrinsic to the basement membrane",
+        "B": "Bacterial invasion of the alveoli",
+        "C": "Immune-complex disease from hepatitis B only",
+        "D": "Silica particles",
+        "E": "Anti-acetylcholine-receptor antibodies"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Circulating autoantibodies against antigens intrinsic to the basement membrane",
+      "explanation": "Injury is from deposition of circulating autoantibodies directed against basement-membrane antigens.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "Clin Exp Rheumatol",
+          "sourceYear": 2023,
+          "sourceUrl": "https://pubmed.ncbi.nlm.nih.gov/36995324/",
+          "pmid": "36995324",
+          "pmcid": "",
+          "doi": "10.55563/clinexprheumatol/tep3k5",
+          "excerpt": "circulating autoantibodies directed against antigens intrinsic to the basement membrane"
+        }
+      ]
+    }
+  ]
+}

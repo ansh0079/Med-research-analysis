@@ -1,0 +1,534 @@
+Superior sulcus (Pancoast) tumors: current evidence on diagnosis and radical treatment - PMC
+
+J Thorac Dis
+
+. 2013 Sep;5(Suppl 4):S342–S358. doi: 10.3978/j.issn.2072-1439.2013.04.08
+
+# Superior sulcus (Pancoast) tumors: current evidence on diagnosis and radical treatment
+
+Christophoros N Foroulis
+
+1, Paul Zarogoulidis
+
+2,✉, Kaid Darwiche
+
+3, Nikolaos Katsikogiannis
+
+4, Nikolaos Machairiotis
+
+4, Ilias Karapantzos
+
+5, Kosmas Tsakiridis
+
+6, Haidong Huang
+
+7, Konstantinos Zarogoulidis
+
+2
+
+- Copyright and License information
+- Article notes
+- Author information
+
+1Department of Cardiothoracic Surgery, AHEPA University Hospital, Aristotle University Medical School, Thessaloniki, Greece;
+
+2Pulmonary Department-Oncology unit, “G. Papanikolaou” general Hospital, Aristotle University of Thessaloniki, Thessaloniki, Greece;
+
+3Department of Interventional Pneumology, Ruhrlandklinik, West German Lung Center, University Hospital, University Duisburg-Essen, Essen;
+
+4Surgery Department (NHS), University General Hospital of Alexandroupolis, Alexandroupolis, Greece;
+
+5Ear, Nose and Throat Department, “Saint Luke” Private Hospital, Thessaloniki, Greece;
+
+6Cardiothoracic Surgery Department, “Saint Luke” Private Hospital, Thessaloniki, Greece;
+
+7Department of Respiratory Diseases, Changhai Hospital/First Affiliated Hospital of the Second Military Medical University, Shanghai 200433, China
+
+✉
+
+Corresponding to: Paul Zarogoulidis, M.D, Ph.D. Pulmonary Department-Oncology unit, “G. Papanikolaou” General Hospital, Aristotle University of Thessaloniki, Thessaloniki, Greece. Email: pzarog@hotmail.com.
+
+✉
+
+Corresponding author.
+
+Received 2013 Apr 9; Accepted 2013 Apr 9; Issue date 2013 Sep.
+
+2013 Pioneer Bioscience Publishing Company. All rights reserved.
+
+PMC Copyright notice
+
+PMCID: PMC3791502 PMID: 24102007
+
+## Abstract
+
+Pancoast tumors account for less than 5% of all bronchogenic carcinomas. These tumors are located in the apex of the lung and involve through tissue contiguity the apical chest wall and/or the structures of the thoracic inlet. The tumors become clinically evident with the characteristic symptoms of the “Pancoast-Tobias syndrome” which includes Claude-Bernard-Horner syndrome, severe pain in the shoulder radiating toward the axilla and/or scapula and along the ulnar distribution of the upper arm, atrophy of hand and arm muscles and obstruction of the subclavian vein resulting in edema of the upper arm.
+
+The diagnosis will be made by the combination of the characteristic clinical symptoms with the radiographic findings of a mass or opacity in the apex of the lung infiltrating the 1st and/or 2nd ribs. A tissue diagnosis of the tumor via CT-guided FNA/B should always be available before the initiation of treatment. Bronchoscopy, thoracoscopy and biopsy of palpable supraclavicular nodes are alternative ways to obtain a tissue diagnosis. Adenocarcinomas account for 2/3 of all Pancoast tumors, while the rest of the tumors are squamous cell and large cell carcinomas. Magnetic resonance imaging of the thoracic inlet is always recommended to define the exact extent of tumor invasion within the thoracic inlet before surgical intervention.
+
+Pancoast tumors are by definition T3 or T4 tumors. Induction chemo-radiotherapy is the standard of care for any potentially resectable Pancoast tumor followed by an attempt to achieve a complete tumor resection. Resection can be made through a variety of anterior and posterior approaches to the thoracic inlet. The choice of the approach depends on the location of the tumor (posterior - middle - anterior compartment of the thoracic inlet) and the depth/extent of invasion.
+
+Prognosis depends mainly on T stage of tumor, response to preoperative chemo-radiotherapy and completeness of resection. Resection of the invaded strictures of the thoracic inlet should me made en bloc with pulmonary parenchyma resection, preferably an upper lobectomy. Invasion of the vertebral column is not a contraindication for surgery which, however, should be performed in oncologic centers with experience in spinal surgery. Surgery for Pancoast tumors is associated with 5% mortality rate and the complication rate varies from 7-38%. The overall 2-year survival rate after induction chemo-radiotherapy and resection varies from 55% to 70%, while the 5-year survival for R0 resections is quite good (54-77%). The main pattern of recurrence is that of distant metastases, especially in the brain.
+
+KEY WORDS : Pancoast, lung cancer, treatment
+
+## Definition and general considerations
+
+Superior sulcus or Pancoast tumors are a special and unique subset of lung carcinomas which are located in the apex of the lung and invade through tissue contiguity the apical chest wall and the structures of the thoracic inlet (parietal pleura, 1st and 2nd ribs or periosteum and adjacent 1st and 2nd vertebral bodies, the lower nerve roots of the brachial plexus, the upper sympathetic chain and stellate ganglion, the subclavian vein and artery), producing that way a special clinical picture that is well known in the medical literature as the Pancoast-Tobias or Pancoast syndrome (1-6). The Pancoast-Tobias syndrome is characterized by a variety of symptoms depending on the invasion of the tumor within one or more of the 3 compartments of the thoracic inlet, which are separated each other by the insertion of the anterior and middle scalene muscles in the 1st rib (Figure 1) (3). According to their definition, a tumor of the apex of the lung that invades the chest wall at the level only of the 2nd rib or lower cannot be considered to be a Pancoast tumor (4). Furthermore according to the American College of Chest Physicians (ACCP) clinical guidelines published in 2007, the presence of the Pancoast syndrome is not a prerequisite for a tumor to be designated as a Pancoast tumor (5). In addition, the almost complete absence of symptoms from the lung and the special initial clinical manifestation of superior sulcus carcinomas with shoulder pain are responsible for the observed delay in diagnosis in most cases, because patients are initially evaluated for cervical arthritis, shoulder bursitis and rotator cuff injury from orthopaedic surgeons, neurologists and rheumatologists (1-3,6).
+
+### Figure 1.
+
+Open in a new tab
+
+The three compartments of the thoracic inlet: the anterior compartment (from sternum to anterior scalene muscle) contains subclavian and internal jugular veins, the middle compartment (from anterior to posterior scalene muscle) contains subclavian artery and branches of the brachial plexus and the posterior compartment (beyond middle scalene muscle) contains branches of the brachial plexus, the sympathetic chain and stellate ganglion.
+
+Superior sulcus carcinomas are rare and account for less than 3-5% of all lung carcinomas however they pose special diagnostic and therapeutic challenges to thoracic oncologists, thoracic surgeons and radiotherapists (1-4,6,7). Some steps forward concerning the management of these rare lung tumors has been made during the last 20 years which led to the development of the currently existing published guidelines from various medical and surgical societies.
+
+### The Pancoast-Tobias syndrome
+
+The first description of the syndrome was made from the American radiologist Henry Pancoast in his article “Apical chest tumor” [1924] that was followed by a later publication of his own entitled “Superior pulmonary sulcus tumor” [1932]. He did however the wrong suggestion that apical chest tumors arise in embryonal epithelial rests of the last branchial cleft (8-10). In the same year [1932], Tobias from Buenos Aires described with precision the syndrome and he in addition recognized well the cause to be a bronchogenic carcinoma of the lung apex (11). Typically the syndrome is characterized from one or more of the following symptoms:
+
+The characteristic severe pain located in the ipsilateral with the tumor shoulder which aggravates by time. The pain radiates to the neck, to axilla, to anterior chest wall, to the medial aspect of the scapula and to the ipsilateral medial aspect of the arm and forearm as far as the wrist, along the distribution of the ulnar nerve (C8-T1 nerve roots). The pain is attributed to the invasion of the parietal pleura, endothoracic fascia, bony skeleton of the apex and of the brachial plexus (1-3,12).
+
+The Claude-Bernard-Horner syndrome that is characterized by mild blepharoptosis, constricted pupil (miosis), anhidrosis of the affected side of the face and enophthalmos. The syndrome is observed in 14-50% of patients with superior sulcus carcinomas and it is related to the invasion of the sympathetic chain and of the stellate ganglion (1-3).
+
+Weakness and myatrophy of the intrising muscles of the hand which are nerved from the ulnar nerve and are indicative of tumoral infiltration of the nerve. A simple sensory dysfunction in the axilla and medial aspect of the upper arm may be attributed only to extruding compression of the brachial plexus and not to frank infiltration of the nerve roots (1,12).
+
+Upper arm edema which is related to the invasion and partial or complete occlusion of the subclavian vein (12).
+
+The majority - more than two thirds - of superior sulcus carcinomas invade the posterior and middle compartment of the thoracic inlet (2) and consequently the frequently observed symptoms of Pancoast-Tobias syndrome are the characteristic pain in association or not with the Claude-Bernard-Horner syndrome.
+
+## Diagnosis and staging
+
+### Radiographic findings
+
+The presence of one or more symptoms of the Pancoast-Tobias syndrome in association with the detection in plain chest radiography of a radiographic shadow in the apex of the lung (apical cap/thickening of more than 5 mm or mass), associated or not with invasion/destruction of the ribs and/or adjacent vertebrae, will make the suspicion of a superior sulcus carcinoma (Figure 2) (1,2). The tumor can be missed in plain chest radiography, especially when it has the form of the small apical cap or apical pleural thickening (2). Computed tomography (CT) scan of the chest will give more information on the nature of the apical radiographic lesion, will confirm the invasion of the first two ribs and/or vertebral column and will detect possible invasion of the thoracic inlet structures (Figure 3) (1,3,5,6). Magnetic Resonance Imaging (MRI) and Magnetic Resonance Angiography (MRA) of the thoracic inlet are important diagnostic tools through which are demonstrated with accuracy the invasion of brachial plexus, vertebral column and vascular structures (1,3,5,6,12).
+
+#### Figure 2.
+
+Open in a new tab
+
+Plain chest radiography displaying a left sided Pancoast tumor having the appearance of an apical cup (From the department of Cardiothoracic Surgery, AHEPA University Hospital).
+
+#### Figure 3.
+
+Open in a new tab
+
+Chest CT scan displaying an apical chest wall tumor that was associated with Horner’s syndrome (From the department of Cardiothoracic Surgery, AHEPA University Hospital).
+
+Differential diagnosis from other rare conditions that can be located in the apex of the chest and can produce similar clinical and radiologic manifestations with superior sulcus carcinomas should be made (1-3). These conditions include other tumors (primary chest wall and metastatic tumors, pleural mesothelioma, hematologic malignancies), infectious and inflammatory lung diseases (tuberculosis, aspergillosis, echinococcus, actinomyces and lung abscesses from common bacteria, inflammatory pseudotumor, amyloid nodules) and vascular lesions (carotid pseudoaneurysm, hemangioma) that can invade and destruct the apical bony skeleton of the thorax, producing that way a similar clinical and radiographic picture (1-3,7,13-23). According to the clinical guidelines of ACCP for the diagnosis and treatment of superior sulcus carcinomas, a tissue diagnosis of the mass is always warranted for the establishment of the final diagnosis, to exclude other than superior sulcus carcinomas causes that could give rise to the Pancoast-Tobias syndrome or small cell carcinoma and finally, to plan the therapeutic strategy (5).
+
+### Tissue diagnosis
+
+Tissue diagnosis of the mass is usually made through a percutaneous CT-guided fine needle biopsy (FNB) which is successful in more than 90% of cases and therefore it is the diagnostic modality of first choice (1,2,5,6,24). Percutaneous ultrasound-guided FNB of the mass is another option (2,7). Fiberoptic bronchoscopy is able to establish the diagnosis through bronchial brushings and washings in less than 30% of cases, because of the peripheral location of the tumor (1-4,6,7). A tissue or cytologic diagnosis through fiberoptic bronchoscopy is more possible to be made in the presence of a larger apical mass. Video-Assisted Thoracic Surgery (VATS) is a useful diagnostic tool in cases where a tissue diagnosis cannot be obtained through CT-guided biopsies and/or bronchoscopy, especially in the presence of smaller Pancoast tumors with limited chest wall invasion (Figure 4). VATS is also a useful diagnostic tool for the evaluation of the tumor’s extent (1,25,26). Axillary minithoracotomy is in our experience an alternative to VATS to obtain a tissue diagnosis of the mass in those small apical chest tumors, indeed one’s should always keep in mind that the integrity of the mass is largely violated with both, VATS and axillary minithoracotomy. Occasionally, open or needle biopsy of possibly enlarged supraclavicular nodes can also establish the tissue diagnosis of the tumor.
+
+#### Figure 4.
+
+Open in a new tab
+
+VATS exploration and biopsy of a superior sulcus tumor invading the apical chest wall (From the department of Cardiothoracic Surgery, AHEPA University Hospital).
+
+### Histology and biologic behavior
+
+Lung carcinomas located in the apex of the lung are in their majority adenocarcinomas which account for at least 50% of the cases, while the rest of them are squamous cell and large-cell carcinomas (1-3). The possibility of a small cell carcinoma in this location is very rare (1-4,6,7,27).
+
+Superior sulcus carcinomas, in contrary to older considerations, have the same biologic behavior with lung carcinomas located anywhere in the lung parenchyma and consequently their diagnosis, staging and treatment follow the same principles as for any other lung carcinoma (1,4). The unique characteristics of Pancoast tumors are related with the anatomy of the region where these tumors do occur (thoracic inlet) and not to their biologic behavior (4).
+
+### Staging
+
+Superior sulcus carcinomas are by their definition locally advanced T3 or T4 tumors. Most of the lesions are classified as T3 tumors because they invade only the chest wall and/or the sympathetic chain. The rest invade brachial plexus, vertebral bodies and vascular structures and are classified as T4 tumors. According to the new staging system for lung cancer (International Association for the Study of Lung Cancer, 2009), their final stage - in the absence of distal metastases—depends on the N status of the tumor and are classified as IIB tumors if T3N0, IIIA tumors if T3N1-2 or T4N0-1 and IIIB tumors if T3N3 or T4N2-3 (28).
+
+Staging of the mediastinum is of great importance when planning the treatment of superior sulcus carcinomas. The detection of metastases to the mediastinal nodes is a major negative prognostic factor and the 5-year survival rate in the presence of N2 disease is reported to be from 0% to maximum 10% (4,7,29). According to the clinical guidelines published by the ACCP [2007] and by the Scottish Intercollegiate Guidelines Network [2005], a cervical mediastinoscopy is always warranted before surgery for Pancoast tumors to exclude N2/N3 disease, even in the absence of involved nodes in CT or PET/CT scans (5,30). Mediastinal staging can also be made according to the algorithms of the European Society of Thoracic Surgeons [2007] or of the British Thoracic Society [2010] for preoperative mediastinal staging, where, in addition to cervical mediastinoscopy, EBUS and EUS are included in the invasive diagnostic procedures (31,32).
+
+Invasion of the ipsilateral supraclavicular nodes in the setting of lung cancer is classified as N3 disease (Stage IIIB). In superior sulcus carcinomas the importance of supraclavicular nodes involvement is quite different because it is considered to represent a locoregional lymph node extension. There is some evidence from older studies that survival of patients with supraclavicular lymph node involvement is better than that of patients with N2 disease, however the available data are very limited until today (3,4,6).
+
+MRI is superior to CT scan for the evaluation of thoracic inlet structures. MRI findings are found to be more consisted with the surgical findings when compared with the CT findings in superior sulcus tumors. MRI examination of the thoracic inlet is always necessary in patients who are planned to undergo surgery with curative intent in order to exclude invasion of the vascular structures, brachial plexus above the level of T1 and of the epidural space (1,2,6,29,33). According to the National Institute for Clinical Excellence (NICE), to the National Comprehensive Cancer Network (NCNN) and to the ACCP clinical guidelines it is recommended to perform MRI to assess the respectability of the disease in patients with Pancoast tumors (5,34,35). Despite the improvements in imaging techniques it is very difficult to precisely evaluate the resectability of the tumor. Imaging interpretation should always be made in correlation with the clinical symptoms that are detected during physical examination in order to avoid overestimation of tumor’s invasion within the thoracic inlet (12).
+
+Patients with Pancoast tumors are candidates to undergo an aggressive multimodal therapeutic management and the exact stage of the disease should be well known before the initiation of any treatment. A careful search should be made for clinically silent distant metastases, especially in the brain (3,33). CT scan or MRI of the brain is an important staging examination in all locally advanced lung tumors, in Pancoast tumors as well. CT scan of the upper abdomen has to be made to exclude hepatic or adrenal metastases and a bone scanning to exclude bone metastases (1-3,33). In the era of modern thoracic oncology and thoracic surgery, PET/CT scan is an important diagnostic tool which should be offered in all patients who are potentially suitable for treatment with curative intent before the initiation of any treatment (34). According to the ACCP clinical guidelines, all patients with Pancoast tumors who are being considered for curative resection should undergo imaging for extrathoracic metastatic disease with brain CT or MRI and whole body PET/CT scan or alternatively abdominal CT and bone scan (5).
+
+## Treatment
+
+Pancoast tumors are one of the most challenging thoracic malignancies to treat because they invade the apical chest wall and the adjacent vital structures such as the vertebral column, brachial plexus and subclavian vessels (6). In addition, Pancoast tumors are distressingly painful neoplasms (10) and the treatment of the devastating symptoms of Pancoast-Tobias syndrome has an extreme priority and importance for the patient.
+
+### Historical notes on the treatment of Pancoast tumors
+
+Since the recognition of superior sulcus tumors in 1932, they were generally considered inoperable, uncured and uniformly fatal for at least 3 decades (10,36). Palliative radiotherapy became the standard of care until the mid 1950s, because external irradiation was proven to cause shrinkage of the neoplasm and temporary relief of the symptoms (10). In the late 1950s Shaw and Paulson introduced the bimodal treatment for Pancoast tumors. Preoperative irradiation with 3,000-6,000 rads given in over 2 weeks followed by extensive en bloc resection of lung parenchyma with the involved structures of the thoracic inlet 3-4 weeks later became the standard of care for selected patients with Pancoast tumors for more than 25 years (Figure 5). Distant metastases, invasion of the vertebral bodies and subclavian artery, involvement of the brachial plexus of more than the ulnar component, of the esophagus, recurrent or phrenic nerve paralysis and superior vena cava obstruction were the criteria of unresectability in those older times (10,37,38). The 5-year survival of resected tumors varied from 26% to 35% and the 3-year survival reached up to 40% (10,37,38). The results of some retrospective surgical series of patients who underwent treatment for Pancoast tumors with various treatment protocols—including the concept of treatment proposed by Shaw and Paulson (induction radiotherapy and extensive resection)—are presented in Table 1 (37-48).
+
+#### Figure 5.
+
+Open in a new tab
+
+Primary resection of Pancoast tumor (left upper lobe en bloc with the first tree ribs and the T1 nerve root) through a Shaw-Paulson approach. The 71-year old patient received postoperative radiotherapy and he survived 6½ years without recurrence or severe disability [from the personal archive of the first author (CNF)].
+
+#### Table 1. Older series of patients with Pancoast tumors who underwent treatment with a variety of protocols - cumulative results.
+
+| Series/years | No. of patients | pT stage | pN stage | Induction and/or adjuvant therapy | Postop. mortality | Completeness of resection and associated 5-year survival (%) | 5-year survival |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| Paulson et al. [1956-1978] | 64 | N/A | N/A | Preop radiotherapy =64 | N/A | N/A | 30% |
+| (44% 5-year survival without nodal involvement and 0% with hilar or mediastinal nodal involvement) |
+| Miller et al. [1971-1977] | 26 | N/A | N0 =20 | Preop radiotherapy =26 | 3.8% | Complete resection: 22 (NA) | 32% |
+| N1 =1 | Incomplete resection: 4 (NA) |
+| N2/hilar =5 |
+| √Ginsberg et al. [1974-1991] | 124 | T3 =101 | N0 =94 | None (primary surgery) =7 | 4% | Complete resection: 69 (41%) | 30% |
+| T4 =23 | N1 =3 | Preop radiotherapy =79 | Incomplete or no resection: 55 (9%) |
+| N2 =20 | Preop and postop radiotherapy =10 |
+| N3 =7 | Postop radiotherapy =28 |
+| Brachytherapy =102 |
+| Hagan et al. [1975-1992] | 34 | T3 =28 | N0 =28 | Preop radiotherapy =16 | 0% | Complete resection: 27 (N/A) | 33% |
+| T4 =6 | N1 =2 | Preop + postop radiotherapy =11 | Incomplete resection (R1): 7 (N/A) |
+| N2 =3 | Postop radiotherapy only =7 |
+| N3 =1 |
+| †Komaki et al. [1975-1994] | 62 | N/A | N/A | None (primary surgery) =5 | N/A | Complete resection =33 (55%) | N/A |
+| Preop chemotherapy ± radiotherapy =12 | Incomplete resection (R2) =29 (18%) |
+| Postop radiotherapy ± chemotherapy =28 |
+| Preop and postop radiotherapy ± chemotherapy =17 |
+| Muscolino et al. [1984-1988] | 15 | T3 =11 | N0 =10 | Preop radiotherapy =11 | 6.6% | Complete without N2 disease =7 (57%) | 26.6% |
+| T4 =4 | N1 =1 | (Postop radiotherapy in patients with primary surgery or incomplete resection) | Incomplete or N2 disease =8 (0%) |
+| N2 =4 |
+| Martinod- et al. [1983-1999] | 139 | T3 =94 | N0 =108 | Preop radiotherapy =41 | 7.2% | Complete resection =113 (NA) | 35% |
+| T4 =45 | N1 =12 | Preop chemotherapy =5 | Incomplete resection =26 (NA) |
+| N2 =18 | Preop radiotherapy + chemotherapy =12 |
+| N3 =1 | None (primary surgery) =98 |
+| Postop radiotherapy =58 Postop chemotherapy =3 |
+| Postop radiotherapy + chemotherapy =32 |
+| None =36 |
+| Alifano et al. [1988-2002] | 67 | T3 =61 | N0 =49 | Preop chemotherapy + radiotherapy =4 | 8.9% | Complete resection=55 (44.9%) | 36.2% |
+| T4 =6 | N1 =6 | Preop chemotherapy =3 | Incomplete resection =12 (0%) |
+| N2 =6 (available only in patients with T3 tumors) | None =60 |
+| Postop radiotherapy =42 |
+| Postop radiotherapy + chemotherapy =9 |
+| Postop chemotherapy =2 |
+| None =7 |
+| Koizumi et al. [1988-2003] | 16 | T4=7 | N0=7 | Preop radiotherapy =9 | 0% | Complete resection =11 (59.3%) | 31% |
+| T3=9 | N1=1 | Preop radiotherapy + chemotherapy =3 | Incomplete resection =5 (0%) |
+| N2=7 | None =4 |
+| N3=1 | Postop radiotherapy =1 |
+| Postop radiotherapy + chemotherapy =9 |
+| Postop chemotherapy =2 |
+| None =4 |
+| †Gandhi et al. [1990-1998] | 17 | T4* | N0 =12 | Preop radiotherapy =4 | 0% | Complete resection =11 (80% 2-year) | N/A |
+| N1 =3 (hilar) | Preop chemotherapy =3 | Incomplete resection =6 (0% 2-year) |
+| Isolated N3 =2 | Postop radiotherapy =13 |
+| Postop chemotherapy =4 |
+| √Rusch et al. [1992-1998] | 101 | T3 =63 | N/A | Various types of preop treatment | Complete resection for T3 tumors =46 (73%) | N/A |
+| T4 =32 | Complete resection for T4 tumors =5 (15%) |
+| Attar et al. [1995-1997] | 67 surgical patients | N/A | N/A | None (primary surgery) =28 | N/A | Complete resection=55 (42% median) | 26% |
+| Preop radiotherapy =28 | Incomplete resection =12 (37.5% median) |
+| Preop radiotherapy + chemotherapy =11 |
+| Postop radiotherapy =16 |
+
+Open in a new tab
+
+pT, pathologic T stage; pN, pathologic N stage; Preop, preoperative; postop, postoperative; radio, radiotherapy; chemo, chemotherapy; N/A, non applicable; R2, incomplete resection with gross residual disease left behind; T4*, with vertebral invasion; √, †, Series reported from the same Institute.
+
+During these early years of surgical resection for Pancoast tumors, complete resection and the absence of N2 disease were detected as the most important factors influencing 5-year survival. Survival after incomplete resection, either with the form of microscopic positive margins (R1) or macroscopic residual disease (R2) or in the presence of N2 disease, was found to be very low and almost equal to no resection (3,4,33). The knowledge of the importance of complete resection to achieve a satisfactory long term survival for patients with Pancoast tumors led to the development of multimodal management protocols focusing in the attempt to shrink (downstage) the tumor in order to achieve a complete resection whenever possible (49).
+
+### The current concept of treatment for Pancoast tumors
+
+The success of multimodal treatment for stage IIIa (N2 disease) lung cancer led to the development of the Southwest Oncology Group 9416 (Intergroup trial 0160) prospective, multi-institutional, phase II trial for superior sulcus carcinomas (SWOG 9416). Patient recruitment has been made between 1995 and 1999 and the results were published in 2007 (50). The Japan Clinical Oncology group launched another phase II trial for Pancoast tumors (JCO 9806) recruiting patients between 1999 and 2002, the results of which were published in 2008 (51). The high rates of pathologic response to chemo-radiotherapy were associated with increased rates of complete resection, while the overall 5-year survival reached at 46% (SWOG 9416) and 61% (JCO 9806). A synopsis of the results of both trials is presented in Table 2. Other groups from North America and Europe reported in retrospective studies similar encouraging results by using multimodal treatment protocols for the management of Pancoast tumors (Table 3) (52-56). In the study by Wright et al. [2001], where induction radiotherapy followed by resection (old concept) was compared with induction chemo-radiotherapy followed by resection for N2-negative Pancoast tumors, a clear superiority of induction chemo-radiotherapy over induction radiation concerning pathologic response and survival rates was detected (Table 4) (57). According to the results of SWOG 9416 and JCO 9806 trials and to the retrospective studies of Table 3 which report similar encouraging results by using induction chemo-radiation and resection, the standard of care for Pancoast tumors is currently induction chemo-radiotherapy followed by surgical resection. Induction chemo-radiotherapy followed by resection is adopted as the standard of care for Pancoast tumors in the clinical guidelines published by the ACCP [2007] and the NCCN [2012] (5,35). However, a remarkable variability can be observed in the induction chemo-radiotherapy protocols in use between different institutions, concerning chemotherapy agents, chemotherapy cycles, mode and intensity of radiotherapy (6,7).
+
+#### Table 2. The cumulative results of SWOG-9416 and JCO-9806 phase-II trials.
+
+| SWOG-9416 | JCO-9806 |
+| --- | --- |
+| Years of patients recruitment | 1995-1999 | 1999-2002 |
+| Recruited patients | 110 | 76 |
+| T-stage | T3 =78 | T3 =56 |
+| T4 =32 | T4 =20 |
+| Induction chemoradiation | Cisplatin, etoposide | Two courses of mitomycin, vindesine, cisplatin |
+| 45 Gy/27 fractions during 5 weeks | 45 Gy/27 fractions over 6 weeks |
+| Completed protocol | 104 patients (95%) | 71 patients (95%) |
+| Treatment related deaths | 3 (2.7%) | 1 (1.3%) |
+| Radiologic response to induction therapy | CR: 0% | CR: 0% |
+| PR: 46 (42%) | PR: 46 (61%) |
+| SD: 40 (36%) | SD: 22 (29%) |
+| PD: 9 (8%) | PD: 5 (6.6%) |
+| Total =95 eligible for thoracotomy patients | N/A: 2 (2.6%) |
+| Total =75 |
+| Registered for surgery | 88 patients | 57 patients |
+| Completeness of resection | R0 resection =83/95 (87.3%) | R0 resection =51/57 (89.4%) |
+| (61/65 patients with T3 tumors and 22/23 with T4 tumors) | R1 resection =3 |
+| R2 resection =3 |
+| Adjuvant chemotherapy | Cisplatin, etoposide | No |
+| Pathologic response | CR or minimal microscopic residual disease =59 (67%) | CR =12 (21%) |
+| Downstaging =23 (40%) |
+| Surgical mortality | 3 (2.6%) | 2 (3.5%) |
+| Survival | Overall 5-year survival: 44% | Overall 3-year survival: 61% |
+| Median survival (all eligible patients): 33 months | Overall 5-year survival: 56% |
+| Median survival (complete resection): 94 months |
+| Relapse rate | Overall: 57:104 (54.8%) | Overall: 39:75 (52%) |
+| Complete resection: 20:61 (32.8%) |
+| Incomplete resection: 19:24 (79.1%) |
+| Pattern of relapse after resection by prestudy T-group | T3 tumors | T4 tumors | Patients with complete resection (51) | Patients with incomplete resection (24) |
+| Brain only | 19 | 16 | Locoregional only | 2 | 8 |
+| Distant | 19 | 14 | Distant only | 14 | 6 |
+| Local + distant | 7 | 3 | Brain only | 4 | 1 |
+| Local | 10 | 6 | Both | 4 | 5 |
+| Site not specified | 2 | 0 | Total | 20 | 19 |
+
+Open in a new tab
+
+CR, complete response, PR, partial response, SD, stable disease, PD, progressive disease; R0, complete resection, R1, microscopic invasion to the specimen margins, R2, gross residual disease.
+
+#### Table 3. The cumulative results of retrospective series of patients treated with multimodal protocols for Pancoast tumors since the early ‘90s.
+
+| Study | Kwong et al., 2005 (USA) | Goldberg et al., 2005 (USA) | Mara et al., 2007 (Germany) | Fischer et al., 2008 (Canada) | Kappers et al., 2009 (Netherlands) |
+| --- | --- | --- | --- | --- | --- |
+| Years | 1993-2003 | 1993-2000 | 1993-2001 | 1996-2007 | 1994-2006 |
+| Patients | 37 | 39 | 31 | 44 | Eligible for combined modality =39 |
+| T-stage | T3 =32* | T3 =36** | T3 =25 | T3 =30 | T3 =21 |
+| T4 =5 | T4 =3 | T4 =6 | T4 =14 | T4 =18 |
+| N-stage | N0 =27 | N0 | N0 =21 | N0 =39 | N0 =32 |
+| N1 =0 | N1 | N1 =1 | N1 =4 | N1 =2 |
+| N2 =9 | N2 | N2 =8 | N2 =1 | N2 =4 |
+| N3 =1 | N3 | N3 =1 | N3 =1 |
+| Preop. treatment | Chemo-radiotherapy | Chemo-radiotherapy =27† | Chemo-radiotherapy | Chemo-radiotherapy | Chemo-radiotherapy =27 |
+| Radiotherapy =4 | Radiotherapy =6 |
+| None (primary surgery) =8 | Chemotherapy =5 |
+| None =1 |
+| Eligible for surgery | 37 | 39 | 29 | 44 | 22 |
+| Resection | R0 =36 (97.2%) | R0 =26 (76%) | R0 =29 (100%) | R0 =39 (88.6%) | R0 =22 (100%) |
+| R1 =1 | R1 =8 (24%) | R2 =5 |
+| Surgical mortality | 2.7% (1:37) | 5% (2:39) | 6.9% (2:29) | 5% (2:44) | 0% |
+| Pathologic response | CR =15 (40.5%) | CR =9 out of 31 patients who received induction chemo-radiotherapy (29%) | CR =13 | CR =13 (30%) | CR =13 |
+| PR =7 | PR =4 |
+| Downstaging =4 | Minimal microscopic residual disease =15 (34%) | SD =3 |
+| Non response =5 | Non responders =16 | PD =1 |
+| Survival | Overall median survival time =31.6 months | Overall 5-year survival =47.9% (median 40 months) | Overall 2-year =74% | Overall 5-year survival =59% | Overall 2-year =77% |
+| Overall 5-year =46% | Overall 5-year =37% |
+| Median survival time for patients with CR =93.1 months | 5-year survival for patients responding to induction therapy =60.6% | 5-year for CR =63% | 5-year for CR =90% |
+| 5-year for PR =35% | 5-year survival for minimal residual microscopic disease =69% |
+| 5-year for non responders =12% |
+| Recurrence | 50% (18:36) | 32.4% (12:37) | 29% (9:29) | 33% after R0 resection (13:39) | N/A |
+| Site of recurrence/% | Distant =13 (brain =9)/72.2% | Distant =8/66.5% | Distant =7 (brain =4)/77.7% | Distant =9 (brain =3)/69.2% | N/A |
+| Local =5/28% | Local =4/33,5% | Local =1/11.1% | Local =4/30.8% (in patients with CR) |
+| Local + distant =1/11.1% |
+
+Open in a new tab
+
+*Five patients with a single brain metastasis are included (T3N0M1); **Two patients with a single brain metastasis are included (T3N0M1); †13 out of the 27 patients were part of the SWOG 9416 intergroup study.
+
+#### Table 4. Comparison of resection following induction radiation and induction chemo-radiotherapy (Wright et al., Ann Thorac Surg 2001) (57).
+
+| Induction radiotherapy | Induction chemo-radiotherapy |
+| --- | --- |
+| Patients | 20 | 15 |
+| T-stage | T3 =17 | T3 =8 |
+| T4 =3 | T4 =7 |
+| Amount of radiation (Gy) | 39 [30-63] | 51 [40-66] |
+| Radiologic response | >50% tumor reduction: 33% | Major response: 70% |
+| >25% tumor reduction: 33% | Minor response: 30% |
+| No response: 33% |
+| Complete resection | 16 (80%) | 14 (93.3%) |
+| Pathologic response | CR: 2 (10%) | CR: 10 (66.7%) |
+| Microscopic: 5 (25%) | Microscopic: 3 (20%) |
+| Tumor: 13 (65%) | Tumor: 2 (13.3%) |
+| Survival estimates | 2-year: 49% | 2-year: 93% |
+| 4-year: 49% | 4-year: 84% |
+| Recurrence | Distal: 7 | Distant: 3 |
+| Locoregional: 6 | Locoregional: 0 |
+
+Open in a new tab
+
+In contrary to the published guidelines, in a recent prospective phase-II study by Gomez DR et al. [2012], the authors support that primary surgery followed by chemo-radiotherapy has at least equal good results with that reported by the SWOG 9416 and JCO 9806 trials in patients with resectable or marginally resectable Pancoast tumors (58). Indeed, the results of the above mentioned study could be partially affected by the appropriate selection of patients for primary surgery and by the large experience of their institution with surgical resection of Pancoast tumors and therefore it is questionable if these results could be easily reproduced in other centers.
+
+### Restaging after induction chemoradiotherapy
+
+Studies evaluating the multimodal management of Pancoast tumors have detected interesting findings concerning the way of restaging the tumor after induction chemo-radiation. A large discrepancy was observed between the radiologic and the pathologic response to induction treatment (50,56). Interestingly, in SWOG trial many patients with a large residual mass on CT scan had only a few scattered foci of viable tumor within the residual fibrotic or necrotic mass (50). In the study by Kappers et al., 62% of their surgical patients had imaging findings compatible with partial response or stable disease, while a pathologic complete response was found at histologic examination of surgical specimens (56). Radiologic response to induction treatment, assessed either with CT scan or MRI, usually underestimates the results of treatment and therefore imaging findings cannot be used as criteria to determine the respectability of Pancoast tumors after induction chemo-radiation (2,3,59). The main conclusion of the above findings is that definite resectability of superior sulcus tumors can be assessed only during surgery, while response to induction treatment and the completeness of resection will be definitely assessed within the laboratory of pathology.
+
+### Mortality and toxicity of induction treatment
+
+Mortality rates of induction chemo-radiation were reported to be 2.7% and 1.3% respectively in the SWOG-9416 and JCO-9806 prospective phase-II trials. In addition, 5% of the recruited patients in both trials did not complete the induction therapy protocol due mainly to the toxicity of the treatment. Myelosuppression and radiation esophagitis were the most common grade 3 or higher toxicities reported in the above mentioned trials and some large retrospective studies of patients who underwent trimodality treatment for Pancoast tumors (2,50,51,54,56).
+
+### Time of operation after induction chemo-radiotherapy
+
+Recovery of the patient is essential to proceed with surgery after induction treatment. In uncomplicated cases, four to six weeks usually represent an adequate time period. Delay in surgery—in case of induction treatment related toxicity—can seriously and adversely affect the operation, because of the formation of radiation fibrosis in the thoracic inlet that makes difficult the dissection of tissue planes (29). Radiation fibrosis occurs in a time-related fashion and becomes significant after 2-3 months. As a general rule, the earliest the operation takes place the easier is the dissection to perform (29).
+
+## Surgery for Pancoast tumors
+
+The goal of surgery for Pancoast tumors is to completely resect the disease through a combined resection of lung parenchyma en bloc with the adjacent invaded structures of the thoracic inlet, such as the apical chest wall, the vertebrae, the ulnar component of the brachial plexus, the sympathetic chain/stellate ganglion and the subclavian vessels. Stabilization of the vertebral column, reconstruction of the subclavian artery and possibly chest wall reconstruction are the final steps of the complex operations which are mandatory to completely resect a Pancoast tumor. In the clinical guidelines published by the ACCP it is recommended (grade of recommendation 1A) to make any effort to achieve a complete resection in every patient who undergoes resection of a Pancoast tumor (5).
+
+The thoracic inlet is a narrow, rigid and bony encased area that is difficult to approach (3). Advances in the surgical techniques and the introduction of various new approaches to the thoracic inlet since the early 1980s, made possible the resection and reconstruction of structures that were considered as unresectable in the past. Currently, the absolute criteria of unresectability of a Pancoast tumor are the following (1,2,4,6,33,60):
+
+The presence of distant metastases, including a single brain metastasis also;
+
+The involvement of ipsilateral or contralateral mediastinal or supraclavicular nodes (N2/N3 disease);
+
+The involvement of the brachial plexus above the T1 nerve root, as detected by the neurologic examination and electromyography in combination with MRI examination of the thoracic inlet. An affordable weakness of the intrising muscles of the hand is expected by sacrificing only the T1 nerve root, while sacrificing the C1 nerve root produces a permanent paralysis and severe disability of the dependent upper extremity;
+
+Involvement of more than 50% of the vertebral bodies;
+
+Invasion of the esophagus and/or trachea.
+
+Involvement of the subclavian vessels to a large extent and of the vertebral bodies of less than 50% or interforaminal extension of the tumor are no longer considered as contraindications to resection, indeed complete clearance of the tumor in the above situations cannot be assessed even intraoperatively with certainty, and, the completeness of resection is questionable in most cases (2,6,60). Any involved part of subclavian vein can be resected with ligation of the vessel, while the resection of the involved part of subclavian artery has to be reconstructed (33,60,61). Involvement of the ipsilateral supraclavicular and scalene lymph nodes are not a contraindication to resection, because they can be resected end bloc with the primary tumor (4,59). Invasion of the common carotid and vertebral artery are no longer considered as absolute contraindications to resection, indeed resectability of these structures is highly dependent to the atherosclerotic changes and patency of the contralateral vessels (59). A preoperative Doppler examination of both internal carotid arteries is an essential preoperative examination in such cases.
+
+### Surgical approaches
+
+The classic posterior approach introduced during the 1960s by Shaw and Paulson (Shaw-Paulson approach) was the standard approach for Pancoast tumors located in the posterior compartment of the thoracic inlet invading the 1st-2nd-3rd rib and sympathetic chain and the adjacent transverse processes of the thoracic vertebrae (3,4,60-63). The incision starts as a generous posterolateral thoracotomy which extends around the tip of the scapula and then parascapular, between the scapula and spinous processes until the base of the neck. By dividing the latissimus dorsi, trapezius, serratus anterior and rhomboid muscles, the scapula is freed and can be retracted, exposing the subscapular area and the whole posterior chest wall. The attachments of middle and anterior scalene muscles to the 2nd and 1st rib respectively are divided exposing the structures of the thoracic inlet crossing above the 1st rib (brachial plexus, subclavian vein and artery). Access to the 1st-3rd ribs, to adjacent thoracic vertebrae and their transverse processes and to inferior cord of the brachial plexus is excellent indeed exposure of the subclavian vessels is limited with this approach. After the assessment of resectability, resection of the tumor starts with chest wall resection. The involved ribs are palpated through the thoracotomy. Following chest wall resection and the release of resected chest wall within the pleural cavity, an upper lobectomy is easily accomplished through the posterior approach (63) (Figure 6A). Chest wall reconstruction with synthetic materials in not usually necessary because the chest wall defect is covered by the scapula, however, if more than 3 ribs have to be resected, including the anterior portion of the 3rd and 4th ribs, reconstruction of chest wall should be made to avoid postoperative flail chest (63). Partial resection of the involved vertebrae can be possible through the Shaw-Paulson approach, as up to one quarter of the vertebrae can be resected without the need for stabilization of the vertebral column (61,62).
+
+#### Figure 6.
+
+Open in a new tab
+
+The variety of approaches used for the surgical treatment of superior sulcus tumors: A. the Shaw-Paulson approach; B. the Tatsamura approach; C. the trans-clavicular (Dartevelle) approach; D. the trans-manubrial (Grunenwald) approach; E. the trapdoor (hemi-Clamshell) approach; F. the Masaoka approach.
+
+A modification of the Shaw-Paulson approach is the approach described by Tatsamura et al. (Tatsamura approach) (64). The skin incision starts posteriorly at the level of spinous process of the 2nd or 3rd thoracic vertebrae and extends downwards around the scapula, then further extending anteriorly and upwards to the nipple. The rhomboid, trapezius, latissimus dorsi, serratus anterior are divided allowing that way the scapula to be retracted, providing an excellent view of the apico-posterior chest wall. The incision can extend more in T4 Pancoast tumors to reach the sternoclavicular joint. By extending the incision to the sternoclavicular joint, the pectoralis major and minor muscles should also be divided (64) (Figure 6B). The Tatsamura approach, despite it provides a wide exposure of the thoracic inlet, is a very traumatic incision, where all the musculature of the ipsilateral chest wall is divided and consequently the postoperative chest wall motion is expected to be seriously affected. Reconstruction of the chest wall is necessary to avoid postoperative flail chest if the anterior parts of the superior ribs which are not covered by the scapula have to be included in the surgical specimen.
+
+The limited exposure of the subclavian vessels with the posterior approach led to the development of various anterior approaches (60,61,63,65-67). The first one is the anterior trans-clavicular approach that was described and popularized by Dartevelle (65). The anterior trans-clavicular or Dartevelle approach is performed with the patient supine, while his head is turned away from the involved side. The L-shaped skin incision runs along the anterior border of the sternocleidomastoid muscle. (Figure 6C) Then the incision extends laterally and directly over clavicle. The attachment of the sternocleidomastoid muscle in the clavicle is divided and the medial half of the clavicle is resected. The anterior scalene muscle is divided, taking special care to avoid injury of the phrenic nerve (if uninvolved by the tumor). Then, removal of the scalene fat pad provides excellent exposure of the subclavian vessels and of the brachial plexus. The necessary chest wall resection can be easily made. In the other hand, lobectomy is not possible through this approach, necessitating a thoracotomy to accomplish lobectomy. In case of vertebral body invasion, a hemi-vertebrectomy can be performed through an additional median vertical incision with the patient on the ventral position (60,61,66).
+
+In the initial description of his approach, Dartevelle suggested to perform a wide, non-anatomic wedge resection of the lung apex instead of a formal lobectomy, which has proven later to be oncologically inappropriate (4,65). Lobectomy is associated with better prognosis than a non-anatomic wedge resection of the lung apex including the tumor (60% vs. 33% 5-year survival) (4). Lobectomy is adopted by the ACCP clinical guidelines as the optimal lung parenchyma resection for Pancoast tumors (grade of recommendation 1C) (5).
+
+A modification of the anterior trans-clavicular approach is the trans-manubrial or Grunenwald approach (68). The L-shaped incision is almost similar with the exception of the horizontal portion which courses two fingerbreadths below the clavicle. The manubrium is divided in the midline and then laterally into the 2nd intercostal space, while the pectoralis major is spared (Figure 6D). By dividing the 1st costal cartilage and internal thoracic artery, the clavicle and the ipsilateral half of manubrium can be retracted as an osteomuscular flap, providing excellent exposure to the thoracic inlet and to subclavian vessels/brachial plexus. At the end of the procedure the manubrium is reconstructed with two wire sutures. The advantage of the trans-manubrial over the trans-clavicular approach is the preservation of the function of the sternocleidomastoid muscle and of the clavicle, maintaining full shoulder girdle movement (4,60,66,68).
+
+For anterior Pancoast tumors involving the brachiocephalic veins or the jugulo-subclavian-brachiocephalic venous joint, the hemi-Clamshell or trapdoor incision provides excellent exposure to the antero-superior mediastinum and to the apex of the thoracic cavity (60,61,66,67). The incision is made with the patient lying in the supine position. The incision starts at the lower third of the anterior border of the sternocleidomastoid muscle extending down to the midline of the sternal notch until the 3rd or 4th intercostal space and then laterally to the mid-axillary line. An upper midline sternotomy extends laterally to an anterior thoracotomy in the 3rd or 4th intercostal space (Figure 6E). The additional resection of the medial aspect of clavicle (if mandated by the local extension of tumor) allows better exposure to the structures of the thoracic inlet (60,61,66,67).
+
+A similar approach is described by Masaoka (Masaoka approach) which includes an upper midline sternotomy extending into the 4th intercostal space as an anterior thoracotomy and to the base of the neck as a transverse cervical incision (69) (Figure 6F). The Masaoka approach allows excellent exposure of the antero-superior mediastinum, to the structures of the thoracic inlet, to the anterior apical chest wall and to the hilum of the lung, allowing the easy accomplishment of an upper lobectomy (60,61,66,67,69).
+
+The combination of surgical accesses in complex cases of superior sulcus tumors (i.e. anterior approach and thoracotomy, anterior approach and median vertical incision) allows the radical resection of the tumor with the additional cost of the increased rate of complications concerning mainly wound healing and respiratory problems. All these wide exposures of the thoracic inlet, especially if they are combined with chest wall, vascular and vertebral column reconstructions, are associated with the specific for each procedure complications and possibly with neurological or functional deficits for the patient. In the published by the ACCP clinical guidelines [2007] it is recommended that the resection and reconstruction of the subclavian vessels and/or vertebral column to be undertaken only in a specialized center (5).
+
+Recently, VATS has been used to minimize the surgical trauma during resection of Pancoast tumors through a trans-manubrial approach by avoiding the need to proceed with a second incision (thoracotomy) to accomplish lobectomy and mediastinal lymph node dissection (70). Videoscopic assistance facilitates the performance of a formal lobectomy through the initial manubriotomy incision which serves as the utility thoracotomy (71,72). Videoscopic assistance can also be useful during the initial steps of the procedure to determine the appropriate level of chest wall resection avoiding that way the resection of extra (non-involved) ribs (72).
+
+### Mortality and complications of surgery for Pancoast tumors
+
+The mortality of surgical procedures performed for the eradication of superior sulcus tumors ranges between 0% and 9.8% in older series (Table 1) and between 0% and 6.9% in modern series (Tables 2,3). As we can also see in Tables 2,3, the mortality rate falls at the level of 5% or less in most of the modern series. The mortality is mainly related to respiratory complications (retention of secretions, atelectasis, pneumonia) secondary to impaired chest wall motion due to the extensive incisions that affect the chest wall musculature (2,3,7). The toxicity and the overall impairment of the performance status of many patients by induction chemo-radiotherapy may be further responsible for the non-technical complications of surgery.
+
+The complication rate ranges from 8% to 38% and it is constituted by the sum of complications of pulmonary parenchyma resection, of chest wall resection and of vascular and/or vertebral column resection/reconstruction, when applied. The commonly observed complications after resection of Pancoast tumors are (2,3,7,50,51,54,61,73):
+
+Atelectasis, which is the commonest complication of surgery for Pancoast tumors with either, anterior or posterior approaches;
+
+Pneumonia;
+
+Prolonged mechanical ventilation because of impairment of chest wall motion or instability/flail chest ;
+
+Supraventricular tachyarrhythmias, occurring in about half of the patients;
+
+Bleeding or clotted hemothorax;
+
+Prolonged air leak, especially if a large wedge resection of the upper lobe is performed instead of a formal lobectomy;
+
+Wound infections and dehiscence;
+
+Bronchopleural fistula;
+
+Chylothorax, especially in left-sided procedures;
+
+Thrombosis of the subclavian artery and ischemia of the upper extremity (once observed in my practice);
+
+Edema of the upper extremity if the subclavian vein has to be ligated;
+
+Persistent post-thoracotomy intercostal neuralgia;
+
+Myatrophies and muscular weakness of the upper extremity if the ulnar nerve has to be sacrificed;
+
+Damage of the dura resulting in cerebrospinal fluid leak and possible entrance (embolism) of air in the subarachnoid space (ventricles and spinal canal) resulting in pneumocephalus and possibly in meningitis. These complications are mainly observed in the presence of a prolonged large air leak from lung parenchyma.
+
+## Relapse of the disease and prophylactic brain
+
+Relapse of the disease is a common problem after bimodality or trimodality treatment for Pancoast tumors. Tumor recurrence may have the pattern of local recurrence or distant metastases. The high incidence of local recurrence (up to 70%) in the spine, chest wall, mediastinum and the lung was a major problem in the past (3,4). With appropriate mediastinal staging, the improvement of surgical techniques and especially the introduction of induction chemo-radiotherapy, the rate of local recurrence decreased below 35% and distant metastases are the main pattern of the disease’s relapse (Tables 2,3) (6). Trimodality treatment seems to modify the pattern of relapse from local to distant and the observed shift in the pattern of relapse is the sequence of the increased rates of complete resection achieved after induction chemo-radiotherapy (>80%, Tables 2,3) vs. 40-60% complete resection rates that were possible in older series (Table 2) (3).
+
+Distant metastases and especially in the brain are a common problem after resection of Pancoast tumors with a cumulative incidence of about 50% in 3 years (2). One-third of all recurrences after induction chemo-radiotherapy followed by radical surgery have the form of brain metastases only (Tables 2,3). Patients at higher risk to develop brain metastases are those with poorly-differentiated large-cell carcinomas (1). The observations that (I) brain metastases are the commonest site of first recurrence and (II) one third of all recurrences involve only the brain rise the question if prophylactic cranial irradiation (PCI) should be offered in patients with Pancoast tumors who underwent complete surgical resection (2,4,6,52). Pancoast tumors are quite rare lung tumors and therefore it is not feasible to perform a trial evaluating the efficacy of PCI focusing only in patients with Pancoast tumors (52). The RTOG 0214 trial [2011] evaluating the impact of PCI on survival of patients with locally advanced lung cancers (IIIA or IIIB) has detected that despite PCI decreases the rate of brain metastases in locally advanced lung cancer, it has not a significant impact on survival. On the basis of the RTOG 0214 and the other available data, PCI cannot be recommended as standard treatment in locally advanced lung cancer, such as Pancoast tumors also (74,75).
+
+## Prognostic factors
+
+The main factors which affect prognosis in patient with Pancoast tumors who undergo treatment with curative intent (trimodality treatment) are the T-status of tumor and particularly the invasion of spine (worse for T4 tumors), the response to induction treatment (better for complete responders) and, the most important, the completeness of resection. (1-4,46,48) Completeness of resection is highly dependent to the T-status of tumor and to the response of tumor to induction treatment. The unsuspected preoperatively involvement of mediastinal nodes and the resection of tumor by a wide wedge resection are well known from the past adverse prognostic factors (1-4). The role of tumor histology in prognosis still remains controversial (1,3).
+
+## Acknowledgements
+
+The authors of the manuscript would like to thank Dr. Athanassios Kleontas - trainee thoracic surgeon at AHEPA University Hospital - for his assistance in drawing Figures 1 and 6.
+
+Disclosure: The authors declare no conflict of interest.
+
+## References
+
+- 75.Gore EM, Bae K, Wong SJ, et al. Phase III comparison of prophylactic cranial irradiation versus observation in patients with locally advanced non-small-cell lung cancer: primary analysis of radiation therapy oncology group study RTOG 0214. J Clin Oncol 2011;29:272-8 [DOI] [PMC free article] [PubMed] [Google Scholar]
+- 74.Barbetakis N, Samanidis G, Paliouras D, et al. Tension pneumocephalus complicating Pancoast tumor resection. Interact Cardiovasc Thorac Surg 2009;8:680-1 [DOI] [PubMed] [Google Scholar]
+- 73.Boyev P, Krasna MJ, White CS, et al. Subarachnoid-pleural fistula after resection of a pancoast tumor with hyponatremia. Ann Thorac Surg 1995;60:683-5 [DOI] [PubMed] [Google Scholar]
+- 72.Nakajima T, Watanabe A, Nakazawa J, et al. Transmanubrial approach with video-assisted thoracoscopic surgery for left superior sulcus tumour with dense adhesion after replacement of descending thoracic aorta. Interact Cardiovasc Thorac Surg 2012;14:906-8 [DOI] [PMC free article] [PubMed] [Google Scholar]
+- 71.Linden PA. Video-assisted anterior approach to Pancoast tumors. J Thorac Cardiovasc Surg 2010;140:e38-9 [DOI] [PubMed] [Google Scholar]
+- 70.Truin W, Siebenga J, Belgers E, et al. The role of video-assisted thoracic surgery in the surgical treatment of superior sulcus tumors. Interact Cardiovasc Thorac Surg 2010;11:512-4 [DOI] [PubMed] [Google Scholar]
+- 69.Masaoka A, Ito Y, Yasumitsu T.Anterior approach for tumor of the superior sulcus. J Thorac Cardiovasc Surg 1979;78:413-5 [PubMed] [Google Scholar]
+- 68.Grunenwald D, Spaggiari L.Transmanubrial osteomuscular sparing approach for apical chest tumors. Ann Thorac Surg 1997;63:563-6 [DOI] [PubMed] [Google Scholar]
+- 67.Vanakesa T, Goldstraw P.Antero-superior approaches in the practice of thoracic surgery. Eur J Cardiothorac Surg 1999;15:774-80 [DOI] [PubMed] [Google Scholar]
+- 66.Spaggiari L, D’Aiuto M, Veronesi G, et al. Anterior approach for Pancoast tumor resection. MMCTS 2007. 10.1510/mmcts.2005.001776 [DOI] [PubMed] [Google Scholar]
+- 65.Dartevelle PG, Chapelier AR, Macchiarini P, et al. Anterior transcervical-thoracic approach for radical resection of lung tumors invading the thoracic inlet. J Thorac Cardiovasc Surg 1993;105:1025-34 [PubMed] [Google Scholar]
+- 64.Tatsumura T, Sato H, Mori A, et al. A new surgical approach to apical segment lung diseases, including carcinomas and inflammatory diseases. J Thorac Cardiovasc Surg 1994;107:32-6 [PubMed] [Google Scholar]
+- 63.Ginsberg RJ. Resection of a superior sulcus tumor. Chest Surg Clin N Am 1995;5:315-31 [PubMed] [Google Scholar]
+- 62.Rea F, Marulli G, Santori F. Postero-lateral (Shaw-Paulson) approach to Pancoast tumors. Available online: http://www.ctsnet.org/sections/clinicalresources/thoracic/expert_tech-38.html
+- 61.Dartevelle P, Macchiarini P.Surgical management of superior sulcus tumors. Oncologist 1999;4:398-407 [PubMed] [Google Scholar]
+- 60.Dartevelle P, Macchiarini P.Operative strategy and results of operation for Pancoast tumors. Acta Chir Austriaca 1999;31:270-4 [Google Scholar]
+- 59.Bruzzi JF, Komaki R, Walsh GL, et al. Imaging of non-small cell lung cancer of the superior sulcus: part 2: initial staging and assessment of resectability and therapeutic response. Radiographics 2008;28:561-72 [DOI] [PubMed] [Google Scholar]
+- 58.Gomez DR, Cox JD, Roth JA, et al. A prospective phase 2 study of surgery followed by chemotherapy and radiation for superior sulcus tumors. Cancer 2012;118:444-51 [DOI] [PMC free article] [PubMed] [Google Scholar]
+- 57.Wright CD, Menard MT, Wain JC, et al. Induction chemoradiation compared with induction radiation for lung cancer involving the superior sulcus. Ann Thorac Surg 2002;73:1541-4 [DOI] [PubMed] [Google Scholar]
+- 56.Kappers I, van Sandick JW, Burgers JA, et al. Results of combined modality treatment in patients with non-small-cell lung cancer of the superior sulcus and the rationale for surgical resection. Eur J Cardiothorac Surg 2009;36:741-6 [DOI] [PubMed] [Google Scholar]
+- 55.Fischer S, Darling G, Pierre AF, et al. Induction chemoradiation therapy followed by surgical resection for non-small cell lung cancer (NSCLC) invading the thoracic inlet. Eur J Cardiothorac Surg 2008;33:1129-34 [DOI] [PubMed] [Google Scholar]
+- 54.Marra A, Eberhardt W, Pöttgen C, et al. Induction chemotherapy, concurrent chemoradiation and surgery for Pancoast tumour. Eur Respir J 2007;29:117-26 [DOI] [PubMed] [Google Scholar]
+- 53.Goldberg M, Gupta D, Sasson AR, et al. The surgical management of superior sulcus tumors: a retrospective review with long-term follow-up. Ann Thorac Surg 2005;79:1174-9 [DOI] [PubMed] [Google Scholar]
+- 52.Kwong KF, Edelman MJ, Suntharalingam M, et al. High-dose radiotherapy in trimodality treatment of Pancoast tumors results in high pathologic complete response rates and excellent long-term survival. J Thorac Cardiovasc Surg 2005;129:1250-7 [DOI] [PubMed] [Google Scholar]
+- 51.Kunitoh H, Kato H, Tsuboi M, et al. Phase II trial of preoperative chemoradiotherapy followed by surgical resection in patients with superior sulcus non-small-cell lung cancers: report of Japan Clinical Oncology Group trial 9806. J Clin Oncol 2008;26:644-9 [DOI] [PubMed] [Google Scholar]
+- 50.Rusch VW, Giroux DJ, Kraut MJ, et al. Induction chemoradiation and surgical resection for superior sulcus non-small-cell lung carcinomas: long-term results of Southwest Oncology Group Trial 9416 (Intergroup Trial 0160). J Clin Oncol 2007;25:313-8 [DOI] [PubMed] [Google Scholar]
+- 49.Barnes JB, Johnson SB, Dahiya RS, et al. Concomitant weekly cisplatin and thoracic radiotherapy for Pancoast tumors of the lung: pilot experience of the San Antonio Cancer Institute. Am J Clin Oncol 2002;25:90-2 [DOI] [PubMed] [Google Scholar]
+- 48.Attar S, Krasna MJ, Sonett JR, et al. Superior sulcus (Pancoast) tumor: experience with 105 patients. Ann Thorac Surg 1998;66:193-8 [DOI] [PubMed] [Google Scholar]
+- 47.Rusch VW, Parekh KR, Leon L, et al. Factors determining outcome after surgical resection of T3 and T4 lung cancers of the superior sulcus. J Thorac Cardiovasc Surg 2000;119:1147-53 [DOI] [PubMed] [Google Scholar]
+- 46.Gandhi S, Walsh GL, Komaki R, et al. A multidisciplinary surgical approach to superior sulcus tumors with vertebral invasion. Ann Thorac Surg 1999;68:1778-84; discussion 1784-5. [DOI] [PubMed]
+- 45.Koizumi K, Haraguchi S, Hirata T, et al. Surgical treatment of superior sulcus tumors. Surg Today 2005;35:357-63 [DOI] [PubMed] [Google Scholar]
+- 44.Alifano M, D’Aiuto M, Magdeleinat P, et al. Surgical treatment of superior sulcus tumors: results and prognostic factors. Chest 2003;124:996-1003 [DOI] [PubMed] [Google Scholar]
+- 43.Martinod E, D'Audiffret A, Thomas P, et al. Management of superior sulcus tumors: experience with 139 cases treated by surgical resection. Ann Thorac Surg 2002;73:1534-9; discussion 1539-40 [DOI] [PubMed] [Google Scholar]
+- 42.Muscolino G, Valente M, Andreani S.Pancoast tumours: clinical assessment and long-term results of combined radiosurgical treatment. Thorax 1997;52:284-6 [DOI] [PMC free article] [PubMed] [Google Scholar]
+- 41.Komaki R, Roth JA, Walsh GL, et al. Outcome predictors for 143 patients with superior sulcus tumors treated by multidisciplinary approach at the University of Texas M. D. Anderson Cancer Center. Int J Radiat Oncol Biol Phys 2000;48:347-54 [DOI] [PubMed] [Google Scholar]
+- 40.Hagan MP, Choi NC, Mathisen DJ, et al. Superior sulcus lung tumors: impact of local control on survival. J Thorac Cardiovasc Surg 1999;117:1086-94 [DOI] [PubMed] [Google Scholar]
+- 39.Ginsberg RJ, Martini N, Zaman M, et al. Influence of surgical resection and brachytherapy in the management of superior sulcus tumor. Ann Thorac Surg 1994;57:1440-5 [DOI] [PubMed] [Google Scholar]
+- 38.Paulson DL. Carcinoma in the superior pulmonary sulcus. Ann Thorac Surg 1979;28:3-4 [DOI] [PubMed] [Google Scholar]
+- 37.Miller JI, Mansour KA, Hatcher CR., Jr Carcinoma of the superior pulmonary sulcus. Ann Thorac Surg 1979;28:44-7 [DOI] [PubMed] [Google Scholar]
+- 36.Kirsh MM, Dickerman R, Fayos J, et al. The value of chest wall resection in the treatment of superior sulcus tumors of the lung. Ann Thorac Surg 1973;15:339-46 [DOI] [PubMed] [Google Scholar]
+- 35.NCCN clinical practice guidelines in oncology. Non-Small Cell Lung Cancer 2012, Version 2.
+- 34.The diagnosis and treatment of lung cancer. NICE clinical guideline 121. guidance.nice.org.uk/cg121
+- 33.Rusch VW. Management of Pancoast tumors. Lancet Oncol 2006;7:997-1005 [DOI] [PubMed] [Google Scholar]
+- 32.Lim E, Baldwin D, Beckles M, et al. Guidelines on the radical management of patients with lung cancer. Thorax 2010;65:iii1-iii27 [DOI] [PubMed] [Google Scholar]
+- 31.De Leyn P, Lardinois D, Van Schil PE, et al. ESTS guidelines for preoperative lymph node staging for non-small cell lung cancer. Eur J Cardiothorac Surg 2007;32:1-8 [DOI] [PubMed] [Google Scholar]
+- 30.Scottish intercollegiate guidelines network. Management of patients with lung cancer. A national clinical guideline. Available online: http://www.sign.ac.uk/pdf/sign80.pdf
+- 29.Wright CD, Mathisen DJ. Superior sulcus tumors. Curr Treat Options Oncol 2001;2:43-9 [DOI] [PubMed] [Google Scholar]
+- 28.Detterbeck FC, Boffa DJ, Tanoue LT. The new lung cancer staging system. Chest 2009;136:260-71 [DOI] [PubMed] [Google Scholar]
+- 27.Fontinele e Silva J, Barbosa Mde P, Viegas CL. Small cell carcinoma in Pancoast syndrome. J Bras Pneumol 2009;35:190-3 [DOI] [PubMed] [Google Scholar]
+- 26.Caronia FP, Ruffini E, Lo Monte AI. The use of video-assisted thoracic surgery in the management of Pancoast tumors. Interact Cardiovasc Thorac Surg 2010;11:721-6 [DOI] [PubMed] [Google Scholar]
+- 25.Hubbard MO, Schroeder C, Linden PA. Routine use of staging thoracoscopy for pancoast tumors without overt radiographic chest wall invasion. Surg Laparosc Endosc Percutan Tech 2011;21:111-5 [DOI] [PubMed] [Google Scholar]
+- 24.Paulson DL, Weed TE, Rian RL. Cervical approach for percutaneous needle biopsy of Pancoast tumors. Ann Thorac Surg 1985;39:586-7 [DOI] [PubMed] [Google Scholar]
+- 23.Younga J, Mott M, Hammoud ZT. Venous hemangioma presenting as a superior sulcus tumor. Ann Thorac Surg 2010;90:2033-5 [DOI] [PubMed] [Google Scholar]
+- 22.Rong SH. Carotid pseudoaneurysm simulating Pancoast tumor. AJR Am J Roentgenol 1984;142:495-6 [DOI] [PubMed] [Google Scholar]
+- 21.Beshay M, Roth T, Stein RM, et al. Tuberculosis presenting as Pancoast tumor. Ann Thorac Surg 2003;76:1733-5 [DOI] [PubMed] [Google Scholar]
+- 20.Comet R, Monteagudo M, Herranz S, et al. Pancoast’s syndrome secondary to lung infection with cutaneous fistulisation caused by Staphylococcus aureus. J Clin Pathol 2006;59:997-8 [DOI] [PMC free article] [PubMed] [Google Scholar]
+- 19.Ribas J, Lores L, Ruiz J, et al. Pancoast’s syndrome due to chronic pneumonia by Pasteurella multocida. Eur Respir J 1997;10:2904-6 [DOI] [PubMed] [Google Scholar]
+- 18.Aletras H, Papaconstantinou C.Pancoast’s syndrome following an intrapleural rupture of a hepatic echinococcus cyst. Scand J Thorac Cardiovasc Surg 1982;16:283-7 [DOI] [PubMed] [Google Scholar]
+- 17.Tsao JW, Garlin AB, Marder SR. Pancoast’s syndrome. N Engl J Med 1998;338:765-6 [PubMed] [Google Scholar]
+- 16.White HD, White BA, Boethel C, et al. Pancoast’s syndrome secondary to infectious etiologies: a not so uncommon occurrence. Am J Med Sci 2011;341:333-6 [DOI] [PubMed] [Google Scholar]
+- 15.Chang CF, Su WJ, Chou TY, et al. Hepatocellular carcinoma with Pancoast's syndrome as an initial symptom: a case report. Jpn J Clin Oncol 2001;31:119-21 [DOI] [PubMed] [Google Scholar]
+- 14.Kovacic S, Lovrencic-Huzjan A, Drpa G, et al. Horner’s syndrome as an initial sign of metastatic breast cancer: case report. Cancer Detect Prev 2007;31:450-2 [DOI] [PubMed] [Google Scholar]
+- 13.Vanfleteren L, van Stiphout R, Riedl RG, et al. Primary Ewing’s sarcoma presenting as a Pancoast tumour. Thorax 2011;66:89-90 [DOI] [PubMed] [Google Scholar]
+- 12.Bruzzi JF, Komaki R, Walsh GL, et al. Imaging of non-small cell lung cancer of the superior sulcus: part 1: anatomy, clinical manifestations, and management. Radiographics 2008;28:551-60; quiz 620 [DOI] [PubMed] [Google Scholar]
+- 11.Tobias J.Sindrome apico-costo-vertebral doloroso por tumor apexiano: su valor diagnostico en le cancer primitive pulmonary (Spanish). Rev Med Lat Am 1932;19:1552-6 [Google Scholar]
+- 10.Shaw RR. Pancoast’s tumor. Ann Thorac Surg 1984;37:343-5 [DOI] [PubMed] [Google Scholar]
+- 9.Pancoast HK. Superior pulmonary sulcus tumor: tumor characterized by pain Horner’s syndrome, destruction of bone and atrophy of hand muscles. JAMA 1932;19:1391-6 [Google Scholar]
+- 8.Pancoast H.Importance of careful roentgen-ray investigation of apical chest tumors. JAMA 1924;83:1407 [Google Scholar]
+- 7.Archie VC, Thomas CR., Jr Superior sulcus tumors: a mini-review. Oncologist 2004;9:550-5 [DOI] [PubMed] [Google Scholar]
+- 6.Tamura M, Hoda MA, Klepetko W. Current treatment paradigms of superior sulcus tumours. Eur J Cardiothorac Surg 2009;36:747-53 [DOI] [PubMed] [Google Scholar]
+- 5.Shen KR, Meyers BF, Larner JM, et al. Special treatment issues in lung cancer: ACCP evidence-based clinical practice guidelines (2nd edition). Chest 2007;132:290S-305S. [DOI] [PubMed] [Google Scholar]
+- 4.Detterbeck FC. Changes in the treatment of Pancoast tumors. Ann Thorac Surg 2003;75:1990-7 [DOI] [PubMed] [Google Scholar]
+- 3.Pitz CC, de la Rivière AB, van Swieten HA, et al. Surgical treatment of Pancoast tumours. Eur J Cardiothorac Surg 2004;26:202-8 [DOI] [PubMed] [Google Scholar]
+- 2.Peedell C, Dunning J, Bapusamy A.Is there a standard of care for the radical management of non-small cell lung cancer involving the apical chest wall (Pancoast tumours)? Clin Oncol (R Coll Radiol) 2010;22:334-46 [DOI] [PubMed] [Google Scholar]
+- 1.Arcasoy SM, Jett JR. Superior pulmonary sulcus tumors and Pancoast’s syndrome. N Engl J Med 1997;337:1370-6 [DOI] [PubMed] [Google Scholar]
+
+## ACTIONS
+
+Permalink
+
+- Collections
+- Cite
+- PDF (1.8 MB)
+- View on publisher site
+
+## RESOURCES
+
+### Similar articles
+
+### Cited by other articles
+
+### Links to NCBI Databases

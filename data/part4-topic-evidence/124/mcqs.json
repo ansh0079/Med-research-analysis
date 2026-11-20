@@ -1,0 +1,136 @@
+{
+  "catalogueId": "124",
+  "topic": "Hard Metal Lung Disease",
+  "mcqs": [
+    {
+      "id": "124-01",
+      "question": "What exposure does the review say causes hard-metal pneumoconiosis?",
+      "options": {
+        "A": "Hard-metal alloys, which the text distinguishes from heavy metals",
+        "B": "Only silica",
+        "C": "Only asbestos",
+        "D": "Wood dust",
+        "E": "Carbon monoxide"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Hard-metal alloys, which the text distinguishes from heavy metals",
+      "explanation": "The section says hard-metal pneumoconiosis is caused by exposure to hard-metal alloys and should not be confused with heavy metal.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "Semin Respir Crit Care Med",
+          "sourceYear": 2023,
+          "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11617341/",
+          "pmid": "36972614",
+          "pmcid": "PMC11617341",
+          "doi": "10.1055/s-0043-1764406",
+          "excerpt": "Hard metal pneumoconiosis is caused by exposure to hard metal alloys, a term that should not be confused with “heavy metal,” which refers to a more generic classification of metallic elements with a high atomic weight and density. "
+        }
+      ]
+    },
+    {
+      "id": "124-02",
+      "question": "What is the stated composition of hard-metal alloy?",
+      "options": {
+        "A": "Largely tungsten 90% and cobalt 10%",
+        "B": "Mostly iron",
+        "C": "Only beryllium",
+        "D": "Only tin",
+        "E": "Silica and coal"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Largely tungsten 90% and cobalt 10%",
+      "explanation": "Hard-metal alloys consist largely of tungsten (90%) and cobalt (10%), with lesser nickel and titanium.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "Semin Respir Crit Care Med",
+          "sourceYear": 2023,
+          "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11617341/",
+          "pmid": "36972614",
+          "pmcid": "PMC11617341",
+          "doi": "10.1055/s-0043-1764406",
+          "excerpt": "Hard metal alloys consist largely of tungsten (90%), cobalt (10%), and lesser amounts of other compounds such as nickel and titanium and are 10 times harder than steel. 42 "
+        }
+      ]
+    },
+    {
+      "id": "124-03",
+      "question": "How does the review characterize who develops the disease?",
+      "options": {
+        "A": "A hypersensitivity reaction in susceptible workers, less dependent on cumulative dust burden",
+        "B": "Everyone exposed, in proportion to dose only",
+        "C": "Only smokers with COPD",
+        "D": "An infection",
+        "E": "A malignant transformation"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "A hypersensitivity reaction in susceptible workers, less dependent on cumulative dust burden",
+      "explanation": "It is an exuberant hypersensitivity reaction in susceptible workers. Onset and severity depend more on host factors than on cumulative dust burden.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "Semin Respir Crit Care Med",
+          "sourceYear": 2023,
+          "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11617341/",
+          "pmid": "36972614",
+          "pmcid": "PMC11617341",
+          "doi": "10.1055/s-0043-1764406",
+          "excerpt": "hard metal pneumoconiosis is caused by an exuberant hypersensitivity reaction in susceptible workers. Disease onset, timing, and severity are less dependent on the cumulative dust burden and more on host factors and immunogenicity. "
+        }
+      ]
+    },
+    {
+      "id": "124-04",
+      "question": "What imaging pattern is described, and what confirms the diagnosis?",
+      "options": {
+        "A": "Nonspecific diffuse ground-glass opacities, with tissue biopsy required even when the history fits",
+        "B": "A normal chest film excludes the disease",
+        "C": "Cavities are required",
+        "D": "Biopsy is unnecessary if the job history fits",
+        "E": "Pleural plaques are the typical finding"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Nonspecific diffuse ground-glass opacities, with tissue biopsy required even when the history fits",
+      "explanation": "Imaging often shows nonspecific diffuse ground-glass opacities. Tissue biopsy is required even with a compatible occupational history.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "Semin Respir Crit Care Med",
+          "sourceYear": 2023,
+          "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11617341/",
+          "pmid": "36972614",
+          "pmcid": "PMC11617341",
+          "doi": "10.1055/s-0043-1764406",
+          "excerpt": "Chest imaging in patients with hard metal pneumoconiosis often shows nonspecific diffuse ground-glass opacities. Tissue biopsy is required to confirm the diagnosis even in cases with a compatible occupational history.\n\n"
+        }
+      ]
+    },
+    {
+      "id": "124-05",
+      "question": "What is the classic histologic appearance?",
+      "options": {
+        "A": "Giant-cell interstitial pneumonia",
+        "B": "Usual interstitial pneumonia only",
+        "C": "Squamous carcinoma",
+        "D": "Normal alveoli",
+        "E": "Necrotizing granulomas of tuberculosis"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Giant-cell interstitial pneumonia",
+      "explanation": "The classic histologic appearance of hard-metal pneumoconiosis is giant-cell interstitial pneumonia.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "Semin Respir Crit Care Med",
+          "sourceYear": 2023,
+          "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11617341/",
+          "pmid": "36972614",
+          "pmcid": "PMC11617341",
+          "doi": "10.1055/s-0043-1764406",
+          "excerpt": "The classic histologic appearance of hard metal pneumoconiosis is GIP. 43 "
+        }
+      ]
+    }
+  ]
+}

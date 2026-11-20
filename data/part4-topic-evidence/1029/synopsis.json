@@ -1,0 +1,36 @@
+{
+  "catalogueId": "1029",
+  "topic": "Sleep-related hypoxemia in COPD",
+  "scope": "Meta-analysis of oxygen for simple nocturnal hypoxemia (NOD) in COPD, reporting survival, progression to long-term oxygen, and daytime PaO2.",
+  "keyRecommendations": [
+    {
+      "text": "Oxygen did not significantly change total mortality (RR 1.04, 95% CI 0.81–1.33) or the separately reported mortality estimate (RR 0.87, 95% CI 0.58–1.31).",
+      "strength": "not_graded",
+      "population": "COPD with simple nocturnal hypoxemia"
+    },
+    {
+      "text": "Progression to long-term oxygen therapy was not reduced (RR 1.07, 95% CI 0.76–1.51).",
+      "strength": "not_graded",
+      "population": "COPD with simple nocturnal hypoxemia"
+    },
+    {
+      "text": "The conclusion states that oxygen can improve PaO2 but has no significant effect on survival or on progression to long-term oxygen.",
+      "strength": "not_graded",
+      "population": "COPD with simple nocturnal hypoxemia"
+    }
+  ],
+  "clinicalBottomLine": "For COPD with simple nocturnal hypoxemia, this meta-analysis does not show a survival benefit or less progression to long-term oxygen from oxygen therapy. Daytime PaO2 was higher in the oxygen groups.",
+  "notableCaveats": [
+    "The LOTT trial of resting or exertional desaturation is a different question and is not the source for these items."
+  ],
+  "source": {
+    "title": "Prognostic value of oxygen inhalation therapy for simple nocturnal hypoxemia in COPD: a meta-analysis.",
+    "year": 2023,
+    "pmid": "37663258",
+    "pmcid": "PMC10469590",
+    "doi": "10.3389/fphar.2023.1123945",
+    "url": "https://europepmc.org/articles/PMC10469590",
+    "sourceBody": "Front Pharmacol",
+    "storedAs": ""
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "catalogueId": "124",
+  "topic": "Hard Metal Lung Disease",
+  "scope": "Open review section on hard-metal pneumoconiosis: cobalt-containing alloy exposure, hypersensitivity, ground-glass imaging, and giant-cell interstitial pneumonia.",
+  "keyRecommendations": [
+    {
+      "text": "Hard-metal pneumoconiosis is exposure to hard-metal alloy, largely tungsten and cobalt, not the generic term heavy metal.",
+      "strength": "not_graded",
+      "population": "Hard-metal workers"
+    },
+    {
+      "text": "It is a hypersensitivity reaction in susceptible workers. Imaging often shows diffuse ground-glass opacities, and biopsy is required.",
+      "strength": "not_graded",
+      "population": "Suspected hard-metal lung disease"
+    },
+    {
+      "text": "The classic histology is giant-cell interstitial pneumonia.",
+      "strength": "not_graded",
+      "population": "Hard-metal pneumoconiosis"
+    }
+  ],
+  "clinicalBottomLine": "Hard-metal lung disease is a hypersensitivity pneumoconiosis from tungsten-cobalt alloy dust. Expect ground-glass change, confirm with biopsy, and look for giant-cell interstitial pneumonia.",
+  "notableCaveats": [
+    "An atypical letter without giant-cell interstitial pneumonia was not used. This is the hard-metal section of an open pneumoconiosis review."
+  ],
+  "source": {
+    "title": "Pathology and mineralogy of the pneumoconioses.",
+    "year": 2023,
+    "pmid": "36972614",
+    "pmcid": "PMC11617341",
+    "doi": "10.1055/s-0043-1764406",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11617341/",
+    "sourceBody": "Semin Respir Crit Care Med",
+    "storedAs": ""
+  }
+}

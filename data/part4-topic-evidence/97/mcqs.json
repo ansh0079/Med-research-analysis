@@ -1,0 +1,136 @@
+{
+  "catalogueId": "97",
+  "topic": "Hepatopulmonary Syndrome",
+  "mcqs": [
+    {
+      "id": "97-01",
+      "question": "What does the review say characterises hepatopulmonary syndrome?",
+      "options": {
+        "A": "Intrapulmonary vascular dilatations and shunts that impair gas exchange",
+        "B": "Pulmonary venous occlusion without liver disease",
+        "C": "A normal A-a gradient by definition",
+        "D": "Left-heart failure as the required cause",
+        "E": "Only pleural effusion"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Intrapulmonary vascular dilatations and shunts that impair gas exchange",
+      "explanation": "HPS is characterised by intrapulmonary vascular dilatations and shunts, resulting in impaired gas exchange.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "Open review",
+          "sourceYear": 2022,
+          "sourceUrl": "https://europepmc.org/articles/PMC9403489",
+          "pmid": "36035361",
+          "pmcid": "PMC9403489",
+          "doi": "",
+          "excerpt": "The disease is characterised by intrapulmonary vascular dilatations and shunts, resulting in impaired gas exchange."
+        }
+      ]
+    },
+    {
+      "id": "97-02",
+      "question": "What does the review call the only therapeutic option that generally reverses HPS?",
+      "options": {
+        "A": "Liver transplantation",
+        "B": "Lung transplantation without treating the liver",
+        "C": "Long-term oxygen as a cure",
+        "D": "Somatostatin as first-line disease-modifying therapy",
+        "E": "There is no treatment that reverses HPS"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Liver transplantation",
+      "explanation": "Liver transplantation is the only therapeutic option and generally reverses HPS.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "Open review",
+          "sourceYear": 2022,
+          "sourceUrl": "https://europepmc.org/articles/PMC9403489",
+          "pmid": "36035361",
+          "pmcid": "PMC9403489",
+          "doi": "",
+          "excerpt": "Liver transplantation is the only therapeutic option and generally reverses HPS."
+        }
+      ]
+    },
+    {
+      "id": "97-03",
+      "question": "After the MELD standard-exception policy, how does the review describe outcomes in HPS?",
+      "options": {
+        "A": "Significantly better than before that policy",
+        "B": "Unchanged",
+        "C": "Worse in every cohort",
+        "D": "The policy is not mentioned",
+        "E": "Outcomes are not discussed"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Significantly better than before that policy",
+      "explanation": "Since implementation of the MELD standard-exception policy, outcomes have been significantly better than previously.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "Open review",
+          "sourceYear": 2022,
+          "sourceUrl": "https://europepmc.org/articles/PMC9403489",
+          "pmid": "36035361",
+          "pmcid": "PMC9403489",
+          "doi": "",
+          "excerpt": "outcomes in patients with HPS have been significantly better than the"
+        }
+      ]
+    },
+    {
+      "id": "97-04",
+      "question": "How does the review place HPS in relation to liver disease?",
+      "options": {
+        "A": "A pulmonary complication that adversely affects prognosis",
+        "B": "A renal disease unrelated to the liver",
+        "C": "A benign finding with no prognostic effect",
+        "D": "An infection",
+        "E": "A drug side effect of inhalers"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "A pulmonary complication that adversely affects prognosis",
+      "explanation": "It is a pulmonary complication of liver disease that adversely affects prognosis.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "Open review",
+          "sourceYear": 2022,
+          "sourceUrl": "https://europepmc.org/articles/PMC9403489",
+          "pmid": "36035361",
+          "pmcid": "PMC9403489",
+          "doi": "",
+          "excerpt": "pulmonary vascular complication of liver disease, which adversely affects prognosis"
+        }
+      ]
+    },
+    {
+      "id": "97-05",
+      "question": "The accepted review is about which syndrome?",
+      "options": {
+        "A": "Hepatopulmonary syndrome",
+        "B": "Hepatorenal syndrome as the only topic",
+        "C": "Portopulmonary hypertension as the title disease",
+        "D": "Goodpasture syndrome",
+        "E": "Hepatitis B vaccination"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Hepatopulmonary syndrome",
+      "explanation": "The source is a review of hepatopulmonary syndrome.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "Open review",
+          "sourceYear": 2022,
+          "sourceUrl": "https://europepmc.org/articles/PMC9403489",
+          "pmid": "36035361",
+          "pmcid": "PMC9403489",
+          "doi": "",
+          "excerpt": "hepatopulmonary syndrome"
+        }
+      ]
+    }
+  ]
+}

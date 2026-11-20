@@ -1,0 +1,136 @@
+{
+  "catalogueId": "1356",
+  "topic": "Pulmonary Langerhans Cell Histiocytosis",
+  "mcqs": [
+    {
+      "id": "1356-01",
+      "question": "What does the review say about smoking and the cause of pulmonary LCH?",
+      "options": {
+        "A": "Patients are smokers, but how smoking induces the disease is not known",
+        "B": "Smoking is unrelated",
+        "C": "The mechanism is fully known and is infection",
+        "D": "Only never-smokers are affected",
+        "E": "Smoking is protective"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Patients are smokers, but how smoking induces the disease is not known",
+      "explanation": "Patients are smokers, and the mechanisms by which smoking induces the disease are not known.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "Open review",
+          "sourceYear": 2012,
+          "sourceUrl": "https://europepmc.org/articles/PMC3342091",
+          "pmid": "22429393",
+          "pmcid": "PMC3342091",
+          "doi": "",
+          "excerpt": "mechanisms by which smoking induces this disease are not known"
+        }
+      ]
+    },
+    {
+      "id": "1356-02",
+      "question": "Where does the review place the early inflammatory lesion?",
+      "options": {
+        "A": "Bronchiolar inflammation, with variable interstitial and vascular involvement",
+        "B": "Only the pleura",
+        "C": "Only the pulmonary veins as in PVOD",
+        "D": "No airway involvement",
+        "E": "The review describes only normal histology"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Bronchiolar inflammation, with variable interstitial and vascular involvement",
+      "explanation": "Bronchiolar inflammation may be accompanied by interstitial and vascular involvement. Advanced disease has cystic destruction.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "Open review",
+          "sourceYear": 2012,
+          "sourceUrl": "https://europepmc.org/articles/PMC3342091",
+          "pmid": "22429393",
+          "pmcid": "PMC3342091",
+          "doi": "",
+          "excerpt": "Bronchiolar inflammation may be accompanied by variable lung interstitial and vascular involvement."
+        }
+      ]
+    },
+    {
+      "id": "1356-03",
+      "question": "What characterises more advanced pulmonary LCH in this review?",
+      "options": {
+        "A": "Cystic lung destruction",
+        "B": "Complete resolution on every scan",
+        "C": "Only a solitary solid cancer",
+        "D": "Normal lung architecture",
+        "E": "The stages are not described"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Cystic lung destruction",
+      "explanation": "More advanced stages are characterised by cystic lung destruction.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "Open review",
+          "sourceYear": 2012,
+          "sourceUrl": "https://europepmc.org/articles/PMC3342091",
+          "pmid": "22429393",
+          "pmcid": "PMC3342091",
+          "doi": "",
+          "excerpt": "more advanced stages are characterized by cystic lung destruction"
+        }
+      ]
+    },
+    {
+      "id": "1356-04",
+      "question": "What imaging does the review say should be obtained in every patient?",
+      "options": {
+        "A": "High-resolution chest CT",
+        "B": "Abdominal ultrasound only",
+        "C": "No imaging",
+        "D": "Skull X-ray as the only study",
+        "E": "PET as the first and only test"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "High-resolution chest CT",
+      "explanation": "HRCT should be obtained in every patient and can distinguish PLCH from other cystic lung diseases.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "Open review",
+          "sourceYear": 2012,
+          "sourceUrl": "https://europepmc.org/articles/PMC3342091",
+          "pmid": "22429393",
+          "pmcid": "PMC3342091",
+          "doi": "",
+          "excerpt": "High resolution chest CT (HRCT) should be obtained in every patient"
+        }
+      ]
+    },
+    {
+      "id": "1356-05",
+      "question": "What does the review say influences management?",
+      "options": {
+        "A": "Whether disease is isolated to the lung or multisystem",
+        "B": "Age alone, with one regimen for everyone",
+        "C": "The review says management is identical in all patients",
+        "D": "Only the smoking pack-year number, with no staging",
+        "E": "Extent is irrelevant"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Whether disease is isolated to the lung or multisystem",
+      "explanation": "Management is highly influenced by isolated pulmonary versus multisystem disease.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "Open review",
+          "sourceYear": 2012,
+          "sourceUrl": "https://europepmc.org/articles/PMC3342091",
+          "pmid": "22429393",
+          "pmcid": "PMC3342091",
+          "doi": "",
+          "excerpt": "highly influenced by disease extent (isolated pulmonary vs multi-systemic disease)"
+        }
+      ]
+    }
+  ]
+}

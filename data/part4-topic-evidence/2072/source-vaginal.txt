@@ -1,0 +1,343 @@
+# Cancer of the vagina: 2025 update
+
+PMC12411808. International Journal of Gynaecology and Obstetrics, 171(Suppl 1):48–59. Published 2025-07-09.
+
+## Authors
+
+Tracey S. Adams, Jackie Choekoe Maluleke, Mauricio A. Cuello
+
+## Details
+
+- DOI: https://doi.org/10.1002/ijgo.70325
+- PMID: 40631450 (https://pubmed.ncbi.nlm.nih.gov/40631450/)
+- PMCID: PMC12411808
+- License: https://creativecommons.org/licenses/by-nc-nd/4.0/
+
+---
+
+## Abstract
+
+Primary vaginal cancer is a rare gynecologic malignancy, with most vaginal cancers representing metastases from other primary sites. Staging and treatment protocols are often extrapolated from those used in cervical cancer. In contemporary medicine, the roles of the pathologist and radiologist are increasingly vital in supporting diagnosis and staging. Given the rarity of this malignancy, referral to centers of excellence is recommended for further assessment and treatment.
+
+## INTRODUCTION
+
+Primary vaginal cancer is rare, constituting only 1%–2% of all female genital tract malignancies globally and only 10% of all vaginal malignant neoplasms. 1 , 2 It is strictly defined as a cancer found in the vagina without clinical or histologic evidence of cervical or vulvar cancer, or a prior history of these cancers, within 5 years. 2 To support this, most suspicious lesions of malignancy in the vagina will correspond to metastatic lesions of cervical or vulvar cancer, or others metastasizing to the vagina (e.g., breast, endometrium, trophoblast, ovary, lymphoma).
+
+Historically these cancers are more common in elderly and postmenopausal women. If vaginal malignancy is found in younger women, it is usually etiologically linked to cervical cancer, specifically regarding the persistence of high‐risk HPV infections. 3 Although vaginal cancers are rare, they are increasingly being diagnosed in younger women owing to the rising incidence of persistent high‐risk HPV infections, especially in settings with high HIV prevalence.
+
+## ANATOMY
+
+The vagina is an elastic, muscular tube with numerous mucosal folds, extending from the uterine cervix to the hymenal ring. It is positioned posterior to the bladder and anterior to the rectum. Its elasticity and dimensions can vary based on a woman's age, parity, history of surgeries, and hormonal status. These characteristics can pose challenges during clinical examination, particularly when pain or a narrow introitus limits access, potentially making the detection of small malignant lesions difficult.
+
+## PATHOLOGY
+
+Limited research has been conducted on the natural history of vaginal carcinomas, and much of the current understanding is extrapolated from studies on vulval and cervical carcinomas. The pathogenesis of vaginal carcinoma—especially squamous cell carcinoma (SCC) and adenocarcinoma—is divided into HPV‐dependent and HPV‐independent pathways. The HPV‐dependent pathway is initiated by infection with high‐risk HPV (hrHPV), progressing from a low‐grade squamous intraepithelial lesion (LSIL) to a high‐grade squamous intraepithelial lesion (HSIL), and finally to HPV‐dependent SCC. This pathway also shows an increased risk of vaginal carcinoma due to cigarette smoking and immunosuppression. 4 
+
+The terminology for precancerous HPV‐associated vaginal lesions has changed over time. In 2014, WHO replaced the previously used three‐tier classification (VAIN 1–3) with squamous intraepithelial lesion (SIL). This is divided into two categories: LSIL and HSIL. LSIL (VAIN 1) may be associated with either low‐risk or high‐risk HPV and represents productive or transient infections that may regress. In contrast, HSIL represents transforming high‐risk infections (previously VAIN 2–3). 5 
+
+The histologic classification of vaginal carcinomas has been revised in the WHO Classification of Tumors Online‐Female Genital Tumors (5th edition). Squamous lesions now include HPV‐associated SCC, HPV‐independent SCC, not otherwise specified (NOS). Glandular tumors include HPV‐associated adenocarcinoma of the vagina, endometrioid carcinoma, mucinous carcinoma (gastric‐type and intestinal‐type), mesonephric adenocarcinoma, and carcinosarcoma. Clear cell carcinoma, previously reported in women who have taken diethylstilbestestrol (DES), often arises against a background of vaginal adenosis. Other epithelial tumors include adenoid basal carcinoma, mixed tumors, adenosquamous carcinoma, and adenocarcinoma of Skene gland origin. Neuroendocrine tumors are now categorized as either well‐differentiated neuroendocrine tumors (formerly carcinoid) or poorly differentiated neuroendocrine carcinomas. 6 
+
+Ancillary testing, including immunohistochemistry for p16 and/ or HPV genotyping, is strongly recommended as part of the diagnostic workup to accurately classify vaginal tumors. HPV‐associated SCCs typically show basaloid, non‐keratinizing features, whereas HPV‐independent SCCs are usually keratinizing.
+
+The International Collaboration on Cancer Reporting (ICCR) has developed standardized dataset‐reporting proformas for several malignancies, including cervical, colorectal, ovarian/fallopian tube, and vaginal carcinomas. These datasets, developed by clinicians and pathologists, outline both core and non‐core elements to be included in pathology reports. The vaginal carcinoma dataset encompasses all carcinomas and carcinosarcomas but excludes melanomas, hematopoietic neoplasms, metastatic tumors, and mesenchymal tumors.
+
+For vaginal carcinoma, core data elements include clinical history, particularly any prior treatment for either cervical or vulval carcinoma, allowing for the exclusion of a primary vaginal carcinoma. A history of in utero exposure to DES, commonly prescribed between 1940 and 1971 to reduce the risk of miscarriages and preterm labor, should also be documented. However, this condition has become rare since the drug's withdrawal in the 1970s.
+
+Other datasets include operative procedure performed, tumor dimensions (horizontal extent and depth of invasion), histologic tumor type, presence or absence of squamous intraepithelial lesions, margin status, lymphovascular invasion, and lymph node status (including the number of positive nodes, size of the largest tumor deposit, and presence of extracapsular spread). Tumor grading—particularly of SCC—is not included as either a core or non‐core item in the dataset, as it has not been shown to correlate with clinical outcomes. 2 
+
+To ensure consistency in reporting primary vaginal carcinomas, we recommend the integration of the standardized core and non‐core data elements recently proposed by the ICCR. These elements include clinical information such as prior malignancy history, precise tumor measurements, lymphovascular invasion, and ancillary studies such as HPV and p16 testing. The use of these standardized elements in clinical practice not only facilitates accurate diagnosis and prognostication but also improves data quality for international research and enhances the comparability of outcomes across different institutions.
+
+Figure 1 depicts microscopic images of an invasive keratinizing moderately differentiated SCC in a 34‐year‐old patient who is RVD negative, and presented with a vaginal mass which was biopsied.
+
+*FIGURE 1 Specimens from a 34‐year‐old patient with vaginal carcinoma: (a) Surface denudation with overlying high grade squamous intraepithelial lesion (thin arrow), 100× magnification. (b) Keratinizing squamous cell carcinoma with nests and cords of malignant squamous cells with presence of keratin pearls (thin arrow), 200× magnification. (c) Nests and cords of malignant squamous cells with well‐defined intercellular junctions and hyperchromatic nuclei (thin arrow). (d) Keratin pearl seen in the center of the field (thin arrow) with inflammatory cells on the left, 400× magnification.*
+
+## SYMPTOMS AND DIAGNOSIS
+
+### Precancerous lesions of the vagina
+
+Women presenting with HSILs are typically asymptomatic and most are aged over 60 years. HSILs can also be seen in younger women, especially those who are immunocompromised, such as individuals living with HIV or transplant recipients on immunosuppressive medication. Colposcopy with acetic acid and/or Lugol's iodine is indicated when there is an abnormal vaginal cytologic result and/or positive HPV DNA test, even without gross abnormality. Biopsies of colposcopically abnormal areas—especially acetowhite areas exhibiting punctation and/or mosaicism—are essential for a diagnosis.
+
+### Cancer of the vagina
+
+Women with vaginal cancer typically present with bleeding or a malodorous discharge. Locally advanced disease may also result in pain and symptoms of disseminated disease, depending on the site of metastases (Figures 2 and 3).
+
+*FIGURE 2 Staging of vaginal cancer pathway.*
+
+*FIGURE 3 Treatment of vaginal cancer pathway. BGND, bilateral groin node dissection; BPLND, bilateral pelvic lymph node dissection.*
+
+The diagnosis of vaginal cancer is made with a targeted biopsy of the lesion, accompanied by a clinical to rule out primary tumors on the cervix or vulva. Although the biopsy is typically performed in an outpatient setting, examination under anesthesia may be necessary in certain cases, particularly in young girls or elderly women, where pain or a narrow introitus can limit adequate evaluation. It is important to ensure full visualization of the entire vaginal canal, as lesions can be obscured by speculum blades.
+
+## PREVENTION
+
+### Primary prevention (vaccination)
+
+Persistent HPV infection—particularly the HPV 16 subtype—has been associated with the long‐term development of HSILs and carcinoma of the vagina. 3 , 7 , 8 The introduction of the HPV vaccination as a primary prevention strategy for cervical cancer has also been shown to reduce the prevalence of non‐cervical premalignant lesions among vaccinated women. 9 Long‐term trend analyses from the Norwegian Cancer Registry also show a promising decline in the incidence of HPV‐associated vaginal cancer in the coming years with HPV‐vaccinated populations. 10 This is supported by a recent Danish study that reported a reduction in the rates of vaginal HSIL among vaccinated women aged 17–26 years, compared to their unvaccinated counterparts (hazard ratio [HR] 0.3, 95% confidence interval [CI]: 0.13–0.68). 11 
+
+### Secondary prevention (screening)
+
+There is no evidence to support routine screening for vaginal cancer after a hysterectomy performed for benign disease. 12 However, if the hysterectomy was carried out for persistent HSIL after multiple cervical excisional procedures, long‐term follow‐up with vault smears and colposcopy is recommended. 13 
+
+In cases where screening for vaginal cancer is indicated, HPV testing has shown good correlation with cytologic findings. 14 In addition, co‐testing appears to offer better diagnostic accuracy, particularly of recurrent disease during follow‐up after treatment for premalignant cervical lesions. 15 
+
+## TREATMENT OF PRECANCEROUS LESIONS
+
+The risk of progression from HSIL to invasive cancer has been estimated to be in the range of 2%–12%. 16 , 17 
+
+Treatment of precancerous lesions of the vagina must be tailored to the individual. Biopsy‐proven LSILs can be followed up with observation only (repeat cytology and/or HPV DNA genotyping and colposcopy), especially if women have non‐oncogenic strains of HPV.
+
+Various treatment modalities for HSILs include laser ablation, surgical excision, and topical treatments such as imiquimod. The choice of treatment depends on the number and location of lesions, the level of suspicion for invasive cancer, the availability and cost of treatment options, and the skill of the treating doctor.
+
+### Surgical excision
+
+The advantage of excising HSILs of the vagina is that it provides a pathologic assessment of the removed tissue, which is valuable when microinvasion is suspected on colposcopic evaluation. Most HSILs are in the vault or upper third of the vagina and excision is ideal in this situation. 18 Morbidity may arise due to the proximity of structures, such as the bladder and rectum, as well as from complications like dyspareunia resulting from vaginal shortening and stenosis. Women should be thoroughly counseled preoperatively. Excisional techniques vary depending on resources, instrument availability, cost, and the surgeon's expertise. These methods include cold knife excision (combining sharp and blunt dissection), laser excision, and cavitational ultrasonic surgical aspiration (CUSA).
+
+### CO 2 laser vaporization
+
+Laser vaporization is an alternative to excision, particularly suitable for multifocal lesions. As this procedure does not yield a histologic specimen, it is essential to ensure there is no suspicion of cancer beforehand. 18 Ideally, this treatment should be preceded by an examination under anesthesia, during which multiple biopsies are taken to exclude malignancy. If no cancer is detected, a definitive laser procedure can be performed.
+
+### Topical 5‐fluorouracil (5FU)
+
+Topical application of 5FU has been used to avoid the mutilating adverse effects of excision and laser ablation. Older studies have shown comparable efficacy to laser and excision. 19 , 20 However, these are retrospective in nature with small numbers of patients. A 2018 retrospective study reviewed the recurrence rate in 576 women treated with either topical 5FU, excision, or laser ablation. The statistically significant factors that contributed to recurrence and progression were the presence of hrHPV positivity and treatment modality. Laser and excision were found to be superior to topical management with 5FU in reducing recurrence. It was also found that laser was more effective than excision in reducing the recurrence of multifocal lesions, whereas surgical excision was preferable with unifocal HSILs. 21 The most recent consensus statement on the management of vaginal intraepithelial neoplasia, issued by the European Society for Gynecological Oncology (ESGO), the International Society for the Study of Vulvovaginal Disease (ISSVD), the European College for the Study of Vulval Disease (ECSVD), and the European Federation for Colposcopy (EFC), advises against the use of 5FU. 18 
+
+### Topical 5% imiquimod
+
+Imiquimod, applied topically as a cream or drug‐embedded tampon, is an immune response modulator that activates the innate immune system and induces proinflammatory factors such as interferons. It provides an alternative safe and non‐invasive method for treating women with vaginal HSIL, particularly young women with multifocal lesions or older women who wish to avoid surgery. Although there are few studies on imiquimod, a 2016 randomized controlled trial (RCT) and 2017 systematic review and meta‐analysis (including this RCT) determined that this is a safe and effective treatment with regression rates similar to laser. HPV clearance rates exceeded 50%, which was superior to those achieved with laser treatment. 22 , 23 A recent systematic review of 28 patients in five studies and nine women treated for vaginal HSILs revealed a response rate of 89%. 24 
+
+The recurrence rate for premalignant disease is high, regardless of the primary treatment modality used. Women should be counseled on the importance of long‐term follow‐up, and HPV DNA testing is recommended after treatment.
+
+## INVASIVE CANCER OF THE VAGINA
+
+As primary vaginal cancer is rare, its treatment is complex and often individualized. Much of the management is extrapolated from cervical cancer owing to its similar etiology and anatomical proximity. Therefore, it is recommended that women diagnosed with primary vaginal cancer are referred to a tertiary or specialized unit whenever possible. Accordingly, outcomes are influenced by the experience of the medical team in treating this type of rare tumor. 25 
+
+### Patterns of spread
+
+#### Direct extension
+
+A vaginal tumor may extend to the surrounding pelvic soft tissue structures, including paravaginal tissue, parametria, urethra, bladder, and rectum. Most tumors occur in the upper third of the vagina, particularly the posterior wall.
+
+#### Lymphatic spread
+
+Lymphatic drainage of the vagina is complex. The upper third drains primarily to the pelvic lymph nodes, including the obturator, internal iliac (hypogastric), and external iliac nodes. Spread to the para‐aortic lymph nodes is rare. The lower third drains to the inguinal and femoral nodes (groin nodes). Tumors in the mid‐vagina may drain to both pelvic and groin lymph nodes. 26 
+
+#### Hematogenous spread
+
+Hematogenous dissemination to the lungs, liver, and bones are usually late manifestations.
+
+### Histologic subtypes
+
+The predominant histologic subtype in primary vaginal cancer is squamous carcinoma, which comprises 90% of cases. Adenocarcinoma accounts for approximately 8%–10% of cases. Lymphomas, sarcomas, and melanomas of the vagina are extremely rare.
+
+All malignancies must be confirmed histologically. As 80% of cases are metastatic or secondary tumors, it is important to ensure that there is no other primary site by careful examination and appropriate investigations. Although a biopsy can be obtained under local anesthesia, an examination under sedation or general anesthesia is required to allow for a thorough assessment and to obtain an adequate biopsy.
+
+By definition, tumors in the vagina that touch or extend to the external os of the cervix should be classified as cervical cancer.
+
+### Staging
+
+Vaginal carcinoma is primarily clinically staged, based on findings from a physical examination, biopsy, and imaging studies performed before initiating treatment (Figure 2). The International Federation of Gynecology and Obstetrics (FIGO) staging system for primary vaginal cancer is outlined and compared with other classification systems in Table 1.
+
+*TABLE 1 Comparison of staging systems for vaginal cancer.*
+
+| FIGO stage | Stage description | AJCC stage | Stage grouping TNM |
+| --- | --- | --- | --- |
+| I | The cancer is only in the vagina and is no larger than 2.0 cm (4/5 inch) (T1a) It has not spread to nearby lymph nodes (N0) or to distant sites (M0) | IA | T1a N0 M0 |
+| I | The cancer is only in the vagina and is larger than 2.0 cm (4/5 inch) (T1b) It has not spread to nearby lymph nodes (N0) or to distant sites (M0) | IB | T1b N0 M0 |
+| II | The cancer has grown through the vaginal wall, but not as far as the pelvic wall and is no larger than 2.0 cm (4/5 inch) (T2a) It has not spread to nearby lymph nodes (N0) or to distant sites (M0) | IIA | T2a N0 M0 |
+| II | The cancer has grown through the vaginal wall, but not as far as the pelvic wall and is larger than 2.0 cm (4/5 inch) (T2b) It has not spread to nearby lymph nodes (N0) or to distant sites (M0) | IIB | T2b N0 M0 |
+| III | The cancer can be any size and might be growing into the pelvic wall, and/or growing into the lower third of the vagina and/or has blocked the flow of urine (hydronephrosis), which is causing kidney problems (T1 to T3) It has also spread to nearby lymph nodes in the pelvis or groin (inguinal) area (N1) but not distant sites (M0) OR | III | T1 to T3 N1 M0 |
+| III | The cancer is growing into the pelvic wall, and/or growing into the lower third of the vagina and/or has blocked the flow of urine (hydronephrosis), which is causing kidney problems (T3) It has not spread to nearby lymph nodes (N0) or to distant sites (M0) | III | T3 N0 M0 |
+| IVA | The cancer is growing into the bladder or rectum or is growing out of the pelvis (T4) It might or might not have spread to lymph nodes in the pelvis or groin (inguinal area) (Any N). It has not spread to distant sites (M0) | IVA | T4 Any N M0 |
+| IVB | The cancer has spread to distant organs such as the lungs or bones (M1). It can be any size and might or might not have grown into nearby structures or organs (Any T) It might or might not have spread to nearby lymph nodes (Any N) | IVB | Any T Any N M1 |
+| Abbreviations: AJCC, American Joint Committee on Cancer; FIGO, The International Federation of Gynecology and Obstetrics. | | | |
+
+#### Role of imaging techniques in diagnosis, staging, and treatment
+
+Vaginal cancer is currently staged clinically, as is cervical cancer. Modern imaging techniques, such as computed tomography (CT), magnetic resonance imaging (MRI), and positron emission tomography (PET), are encouraged to guide management; however, these tests should not be used to change the initial clinical staging. 27 In this regard, the FIGO Gynecologic Oncology Committee recommends the use of imaging, where available, to better assess tumor volume and the extent of disease. The Committee also encourages documentation of imaging findings and their impact on treatment decisions as a complement to the assigned clinical FIGO stage. This will support further analyses that could change the current staging system.
+
+#### Magnetic resonance imaging
+
+As extrapolated from cervical cancer management, MRI has shown greater sensitivity in detecting tumor size and paravaginal or parametrial involvement. 28 , 29 In cases of primary vaginal tumors, clinical assessment may be challenging, and MRI may serve as a useful tool in individual cases owing to its superior soft tissue resolution. 30 
+
+#### PET‐CT
+
+As in cervical cancer, the use of PET‐CT in primary vaginal cancer has been found to be superior compared with other imaging modalities for detecting nodal and disseminated disease. 31 It is also useful in detecting recurrent disease.
+
+### Treatment
+
+The treatment of vaginal carcinoma depends primarily on histology, tumor volume, anatomical location, disease stage, and patient's age. Due to the tumor's location, treatment can impact reproductive potential in younger women and sexual function at any age. Management options include surgery, radiotherapy, chemotherapy, or a combination of some or all of the above (Figure 3).
+
+#### Surgery
+
+Surgery plays a limited role in the treatment of primary vaginal cancer due to the close proximity of the tumor to the bladder, urethra, and rectum. Typically, surgical intervention is reserved for early‐stage, small lesions confined to the vaginal mucosa (less than 2 cm). There are no RCTs supporting its use, and most of the literature consists of retrospective studies. However, surgery may have a role in select cases beyond early‐stage diseases, as outlined below.
+
+Surgical management of Stage I disease (early disease).
+
+Upper vaginal disease
+
+The tumor is limited to the mucosa in Stage I disease.
+
+If the uterus is in situ, radical hysterectomy, vaginectomy aiming for 1 cm disease‐free margins, and pelvic lymphadenopathy should be offered. If the uterus has been removed, radical vaginectomy as above with pelvic lymphadenopathy can be performed. 32 
+
+b Lower vaginal disease
+
+Radical wide local excision with 1‐cm margins can be offered, in addition to bilateral groin node dissection.
+
+The role of sentinel nodes in vaginal cancer has not been established and cannot be recommended. 33 
+
+2 Ovarian transposition during surgery and before radiation. In young women with vaginal cancer requiring radiation as the primary treatment, ovarian transposition can be offered before definitive radiation treatment in an effort to prevent the adverse effects of radiation‐induced menopause. In certain cases, laparoscopic or extraperitoneal removal of bulky lymph nodes can be offered as part of staging and treatment planning.
+
+3 Central recurrence after radiation treatment. Pelvic exenteration is a possibility if the recurrence is central and isolated. These patients require extensive counseling regarding the risks and morbidity of surgery, as well as the impact on quality of life and body image.
+
+4 Palliative management of recurrent or advanced disease. In women with advanced (Stage IV disease) or recurrent disease who present with vesicovaginal or rectovaginal fistula, a palliative urinary diversion or colostomy can be offered to improve quality of life before definitive management with radiation treatment.
+
+#### Radiation
+
+In the majority of cases, particularly in advanced stages, radiation constitutes the cornerstone of treatment for this disease. This is a combination of external beam radiation (EBRT) and intracavitary radiotherapy or brachytherapy (ICRT). The principal advantage of radiation is organ preservation.
+
+As in other pelvic malignancies, MRI has become an essential component for properly defining tumor volume and the spatial relationship of the tumor with neighboring organs during treatment planning.
+
+EBRT to the pelvis includes the external iliac and obturator nodes as per the standard of care. In addition, the inguinal nodes may be included if the tumor is in the distal vagina. Brachytherapy is used to deliver a boost of high‐dose radiation to the residual tumor, and the use of brachytherapy is associated with longer overall survival. 34 , 35 Image‐guided or adaptive brachytherapy using CT or MRI allows for the delivery of higher radiation doses to the residual tumor while minimizing exposure to surrounding healthy organs. 36 
+
+The optimal or lower threshold dose is 70 Gy, which has been shown to improve outcomes. 32 , 36 Doses higher than 70 Gy result in significant grade 3 and 4 toxicities. 37 
+
+Intensity‐modulated radiation therapy (IMRT) is an advanced form of radiation that enables the delivery of higher radiation dosages to the tumor. Although studies in vaginal cancer are limited, IMRT may allow improved dosages to the cancer and reduce adverse effects by sparing adjacent organs from radiation. 38 
+
+#### Concurrent chemotherapy with radiation
+
+Modern management of vaginal cancer often combines concurrent chemotherapy such as cisplatin or 5FU. This has been extrapolated from the successful outcomes of this treatment with cervical cancer. 39 However, most studies using chemoradiation in vaginal cancer are limited owing to the small numbers of cases and lack of comparison to radiation on its own. 40 , 41 , 42 , 43 Chemoradiation may be considered in the treatment of vaginal cancer following a 2013 retrospective review suggesting a potential improvement in overall and disease‐free survival. 42 Although this was a small review (71 patients), it showed a significant difference between both overall survival and disease‐free survival when comparing women who received radiation alone versus chemoradiation as primary treatment (3‐year overall survival: 56% vs. 79%; 3‐year disease‐free survival: 43% vs. 73%). 43 In addition, a large American‐based National Cancer Database study supported this as it was found that concomitant chemoradiation (CCRT) was an independent prognostic factor for improved survival (CCRT group: 56 months; radiation alone group: 41 months). 43 
+
+The combination of EBRT and brachytherapy to a total dose of 70–80 Gy with concomitant weekly cisplatin‐based chemotherapy is the current standard of care for locally advanced vaginal cancer. 33 
+
+## SPECIAL SITUATIONS
+
+### Adenocarcinoma of the vagina
+
+Primary adenocarcinoma of the vagina accounts for 8%–10% of cases. In 1971, Herbst et al. 44 described the association between DES and clear cell adenocarcinoma (cervix/vagina) in daughters who had intrauterine exposure during the first 16 weeks of pregnancy. Most of these cases were diagnosed between the ages of 14 and 22 years. A 2017 retrospective review of 420 cases found that most cases were in younger women, but there was a small second peak at 42 years. 45 Intrauterine DES has been banned since the 1970s and it is expected, therefore, that clear cell adenocarcinomas attributable to intrauterine DES exposure will disappear in the coming decades. For women with known or suspected in utero exposure to DES, closer follow‐up is recommended. This includes annual cytologic screening—the so‐called four‐quadrant cervical smear test with extensive sampling of both the cervix and vagina—as well as careful visualization of these areas. Colposcopy and Lugol's staining should be used whenever there is clinical suspicion. 46 , 47 In addition, “DES daughters” should undergo mammographic screening due to a slightly increased risk of developing breast cancer. 48 
+
+Non‐DES adenocarcinoma is exceptionally rare and behaves as a different entity with a different natural history. This may include endometrioid (arising from endometriosis) or mucinous subtypes, which are typically diagnosed in postmenopausal women.
+
+#### Treatment
+
+Most adenocarcinomas are treated in the same manner as squamous carcinomas.
+
+### Vaginal melanoma
+
+Vaginal melanoma is exceptionally rare and is typically diagnosed in elderly women. The incidence is approximately 3 per 10 million women per year. 49 
+
+#### Treatment
+
+There is no established standard of treatment for vaginal melanoma due to its rarity. However, surgical excision—via wide local excision or colpectomy, with or without pelvic exenteration—has been described in the literature. 50 Adjuvant therapies, such as radiation or immunotherapy (e.g., interferon‐alpha) may be considered, although there is limited evidence to support this. In advanced cases, palliative chemotherapy or radiation can be used. 51 
+
+### Sarcoma botryoides
+
+Rhabdomyosarcomas are the most common soft tissue cancers in children and adolescents, accounting for 4%–6% of all malignancies in this age group. Of them, 20% occur in the lower genital tract and more than 50% are of the embryonal histologic subtype. 52 
+
+The 2013 WHO classification of tumors of soft tissue and bone stratified rhabdomyosarcomas into four main histologic subtypes 53 :
+
+Typical embryonal variant (most common accounting for 58% of cases): this comprises the classic botryoides.
+
+Spindle cell/sclerosing variant.
+
+Alveolar variant.
+
+Pleomorphic variant.
+
+Most rhabdomyosarcomas in children are in the vagina, whereas adolescents have predominantly cervical lesions. Sarcoma botryoides typically presents in the first few years of life, characterized by bleeding and nodular, grape‐like lesions that fill and may protrude from the vagina. In more advanced stages, patients may experience abdominal pain, an abdominal mass, or symptoms related to distant metastases.
+
+#### Treatment
+
+These tumors are rare and, as a result, treatment is based on the case reports and series that have been collected over time. There is no level 1 evidence to support best treatment options. It is recommended that a multidisciplinary team be involved in decisions regarding treatment, especially when children and adolescents are involved. Ideally, these patients should be referred to centers of excellence where there has been appropriate experience in dealing with these cases. The current view is that each woman should be treated with a personalized treatment plan by an expert multidisciplinary team. 54 
+
+Treatment previously involved extensive surgery, but a series of case reports has suggested less radical surgery. These reports have shown good outcomes in terms of survival as well as quality of life if the patients are selected carefully. Unfavorable factors, such as the cervix being the primary site, large lesion size, and extent of the disease, may require radical surgical intervention or chemotherapy. In the absence of these factors, wide local excision and chemotherapy have been used with good success rates. Neoadjuvant chemotherapy is another primary choice that can be used, followed by surgical resection. Radiotherapy should be avoided, if possible, as it has long‐term adverse effects.
+
+## PROGNOSES AND OUTCOMES OF VAGINAL CANCER
+
+The main determinant of prognosis in vaginal carcinoma is the stage of disease at diagnosis, regardless of the underlying histology. For the squamous cell subtype, additional prognostic factors include tumor volume (>4 cm), tumor location outside the upper third of the vagina, HPV status, and MIB‐1 index. 32 , 55 As with other malignancies, age, reproductive and sexual functions, and performance status can influence the selection of specific therapies and potentially affect survival outcomes. However, the non‐negotiable premise is to offer the best option in terms of survival. When comparing histologies, the better outcome is obtained in squamous carcinoma of the vagina when diagnosed earlier (at Stages I or II). Over the past three decades, the incorporation of imaging techniques into diagnosis and treatment planning has influenced clinical decision‐making, particularly in cases with similar clinical staging but differing tumor volumes. As with cervical cancer, the addition of concurrent chemotherapy to radiotherapy has improved survival outcomes in patients with vaginal SCC.
+
+Since vaginal carcinoma is a rare entity, most of the available data in terms of therapeutic outcomes come from single institutions and include cohorts of patients from different epochs when different treatment modalities were used. For example, one of the largest studies published by the MD Anderson Cancer Center includes 193 patients treated over two decades. This study reported 5‐year disease‐specific survival rates of 85% for 50 patients with Stage I disease, 78% for 97 patients with Stage II disease, and 58% for 46 patients with Stage III–IVA disease. 56 A 2013 retrospective analysis from the Department of Radiation Oncology at Stanford University—drawing on five decades of experience—highlighted the positive impact of incorporating advanced imaging technologies such as MRI and PET‐CT. These tools have enhanced the characterization of primary lesions, uncovered hidden metastatic disease, and influenced treatment planning. Adding imaging techniques no doubt influences decision making, favoring the use of chemoradiation and IMRT, and results in the improvement of locoregional control rate and distant metastasis‐free and overall survival. This is particularly useful in the management of large‐volume tumors (especially ≥4 cm) minimizing grade 3–4 toxicities. 57 Confirming this improvement, a 2015 review from Gadducci et al. 55 summarized the data available and obtained a 5‐year overall survival in the range of 35%–78%, with a severe late complication rate of 9.4%–23.1% among cases of vaginal squamous carcinoma when treated with different standards of radiotherapy.
+
+In terms of prognoses for other histologies, young women with early‐stage DES‐related adenocarcinomas treated with either radiation, surgery, or a multimodal approach have good outcomes, with reported 5‐year survival in the range of 80%–87%. 58 , 59 This is in contrast to non‐DES‐related adenocarcinomas, which have a worse prognosis owing to an increased risk of both local and distant metastases. A review of 26 women with non‐DES‐related vaginal cancer at the MD Anderson Cancer Center found an overall 5‐year survival of 34%. 60 
+
+Vaginal melanoma has a very poor prognosis, with a 5‐year overall survival of 15%. 50 In a 2017 systematic review of 805 cases reported over the last 20 years (mostly case reports), the mean recurrence‐free survival was short, at 16 months, with a mean overall survival of only 22 months. 51 
+
+Most of the available literature on sarcoma botryoides comes from small case series reported by single institutions, often combining various subtypes—such as the embryonal (botryoides) variant—and tumors originating from different sites within the genital tract. A 2017 study from Peking Union Medical College Hospital reported on eight cases of female genital tract rhabdomyosarcoma over a 20‐year period and found that combined treatment with local excision and chemotherapy led to favorable outcomes. The prognosis was highly correlated with tumor site and histologic type. 61 Similarly, a 2017 SEER database analysis of 144 rhabdomyosarcomas cases of the lower female genital tract (1973–2013)—with 75.7% classified as embryonal—showed an estimated 5‐year overall survival rate of 68.4%. Factors associated with improved survival included younger age, absence of distant metastasis, embryonal histology, negative lymph node status, and surgical treatment. The study concluded that in prepubescent girls and adolescents, radical surgery did not offer a survival advantage over local excision. 62 
+
+## AUTHOR CONTRIBUTIONS
+
+TA and MC shared the concept design, literature review, and writing of the 2018 manuscript, which was updated by LR and TA in 2021. JCM contributed to the recent update in terms of pathology, and MC and TA updated most recent changes in the literature.
+
+## CONFLICT OF INTEREST STATEMENT
+
+The authors have no conflicts of interest.
+
+## ACKNOWLEDGMENTS
+
+This chapter updates the information published in the FIGO Cancer Report 2018 (Adams TS, Cuello MA. Cancer of the vagina. Int J Gynecol Obstet. 2018;143 [suppl. 2]:14‐21).
+
+## DATA AVAILABILITY STATEMENT
+
+Data sharing is not applicable to this article as no new data were created or analyzed in this study.
+
+## References
+
+- 1 Adhikari P, Vietje P, Mount S. Premalignant and malignant lesions of the vagina. Diagn Histopathol. 2016; 23: 28 ‐ 34.
+- 2 Wong RW, Webster F, Bosse T, et al. Data set for the reporting of carcinomas of the vagina: recommendations from the international collaboration on cancer reporting (ICCR). Int J Gynecol Pathol. 2022; 41 ( Suppl 1): S23 ‐ S33. pmid: 35703457 doi: 10.1097/PGP.0000000000000883
+- 3 Serrano B, de Sanjose S, Tous S, et al. Human Papillpmavirus genotype attribution for HPVs 6, 11, 16, 18, 31,33, 45,52 and 58 in female anogenital lesions. Eur J Cancer. 2015; 51: 1732 ‐ 1741. pmid: 26121913 doi: 10.1016/j.ejca.2015.06.001
+- 4 Sherman J, Mount S, Evans M, et al. Smoking increases the risk of high‐grade vaginal intraepithelial neoplasia in women with oncogenic human papillomavirus. Gynecol Oncol. 2008; 110: 396 ‐ 401. pmid: 18586314 doi: 10.1016/j.ygyno.2008.05.015
+- 5 Reich O, Regauer S, Marth C, et al. Precancerous lesions of the cervix, vulva and vagina according to the 2014 WHO classification of tumors of the female genital tract. Geburtshilfe Frauenheilkd. 2015; 75: 1018 ‐ 1020. pmid: 26556904 doi: 10.1055/s-0035-1558052 pmcid: PMC4629991
+- 6 WHO Classification of Tumours Editorial Board. Female genital tumours (WHO classification of tumours series). Vol 4. 5th ed. International Agency for Research on Cancer; 2020.
+- 7 Hampl M, Sarajuuri H, Wentzensen N, Bender HG, Kueppers V. Effect of human papillomavirus vaccines on vulvar, vaginal, and anal intraepithelial lesions and vulvar cancer. Obstet Gynecol. 2006; 108: 1361 ‐ 1368. pmid: 17138767 doi: 10.1097/01.AOG.0000245786.86267.80
+- 8 Lamos C, Mihaljevic C, Aulmann S, et al. Detection of human papillomavirus infection in patients with vaginal intraepithelial neoplasia. PLoS One. 2016; 11: e0167386. pmid: 27907089 doi: 10.1371/journal.pone.0167386 pmcid: PMC5132291
+- 9 Garland SM, Paavonen J, Jaisamrarn U, et al. Prior human papillomavirus‐16/18 AS04‐adjuvanted vaccination prevents recurrent high grade cervical intraepithelial neoplasia after definitive surgical therapy: post‐hoc analysis from a randomized controlled trial. Int J Cancer. 2016; 139: 2812 ‐ 2826. pmid: 27541373 doi: 10.1002/ijc.30391 pmcid: PMC5412942
+- 10 Hansen BT, Campbell S, Nygard M. Long‐term incidence trends of HPV‐related cancers, and cases preventable by HPV vaccination: a registry‐based study in Norway. BMJ Open. 2018; 8: e019005. doi: 10.1136/bmjopen-2017-019005 pmcid: PMC5855252 pmid: 29476028
+- 11 Dehlendorff C, Baandrup L, Kjaer SK. Real‐world effectiveness of human papillomavirus vaccination against vulvovaginal high‐grade precancerous lesions and cancers. J Natl Cancer Inst. 2021; 113: 869 ‐ 874. pmid: 33377930 doi: 10.1093/jnci/djaa209 pmcid: PMC8246827
+- 12 Farghaly H, Bourgeois D, Houser PM, Padmanabhan V, Lage JM, Hoda RS. Routine vaginal pap test is not useful in women status‐post hysterectomy for benign disease. Diagn Cytopathol. 2006; 34: 640 ‐ 643. pmid: 16900480 doi: 10.1002/dc.20527
+- 13 Vale D, Branganca J, Xavier Junior J, et al. Usefulness of vaginal cytology tests in women with previous hysterectomy for benign disease: assessment of 53 891 tests. Gynecol Oncol. 2015; 137: 270 ‐ 273. pmid: 25703672 doi: 10.1016/j.ygyno.2015.02.011
+- 14 Bansal M, Austin RM, Zhao C. Correlation of histopathologic follow‐up findings with vaginal human papillomavirus and low‐grade squamous intraepithelial lesion Papanicolaou test results. Arch Pathol Lab Med. 2011; 135: 1545 ‐ 1549. pmid: 22129181 doi: 10.5858/arpa.2010-0658-OA
+- 15 Zhang L, Wang Q, Zhang H, Xie Y, Sui L, Cong Q. Screening history in vaginal precancer and cancer: a retrospective study of 2131 cases in China. Cancer Manag Res. 2021; 13: 8855 ‐ 8863. pmid: 34858059 doi: 10.2147/CMAR.S335701 pmcid: PMC8631831
+- 16 Hodeib M, Cohen JG, Mehta S, et al. Recurrence and risk of progression to lower genital tract malignancy in women with high grade VAIN. Gynecol Oncol. 2016; 141: 507 ‐ 510. pmid: 27032375 doi: 10.1016/j.ygyno.2016.03.033
+- 17 Ao M, Zheng D, Wang J, et al. Risk factor analysis of persistence, progression and recurrence in vaginal intraepithelai neoplasia. Gynecol Oncol. 2021; 162: 584 ‐ 589. pmid: 34226020 doi: 10.1016/j.ygyno.2021.06.027
+- 18 Kesic V, Carcopino X, Preti M, et al. The European Society of Gynaecological Oncology (ESGO), the International Society for the Study of vulvovaginal disease (ISSVD), the European Federation for Colposcopy(EFC) consensus statement on the Management of Vaginal Intraepithelial Neoplasia. L Low Genit Tract Dis. 2023; 27 ( 2): 131 ‐ 145. doi: 10.1097/LGT.0000000000000732 pmcid: PMC10026974 pmid: 36951985
+- 19 Ballon SC, Roberts JA, Lagasse LD. Topical 5‐fluorouracil in the treatment of intraepithelial neoplasia of the vagina. Obstet Gynecol. 1979; 54: 163 ‐ 166. pmid: 460749
+- 20 Krebs HB. Treatment of vaginal intraepithelial neoplasia with laser and topical 5‐fluorouracil. Obstet Gynecol. 1989; 73: 657 ‐ 660. pmid: 2927862
+- 21 Kim MK, Lee IH, Lee KH. Clinical outcomes and risk of recurrence among patients with vaginal intraepithelial neoplasia: a comprehensive analysis of 576 cases. J Gynecol Oncol. 2018; 29: e6. pmid: 29185264 doi: 10.3802/jgo.2018.29.e6 pmcid: PMC5709532
+- 22 Tainio K, Jakobsson M, Louvanto K, et al. Randomised trial on treatment of vaginal intraepithelial neoplasia‐Imiquimod, laser vaporisation and expectant management. Int J Cancer. 2016; 139: 2353 ‐ 2358. pmid: 27428506 doi: 10.1002/ijc.30275
+- 23 Tranoulis A, Laios A, Mitsopoulos V, Lutchman‐Singh K, Thomakos N. Efficacy of 5% imiquimod for the treatment of vaginal intraepithelial neoplasia‐a systematic review of the literature and a meta‐analysis. Eur J Obstet Gynecol Reprod Biol. 2017; 218: 129 ‐ 136. pmid: 28985547 doi: 10.1016/j.ejogrb.2017.09.020
+- 24 Nayama Y, Yamanishi Y, Nakatani E, et al. Imiquimod for vaginal intraepithelial neoplasia 2–3: a systematic review and meta‐ analysis. Gynecol Oncol. 2021; 160: 140 ‐ 147. pmid: 33010966 doi: 10.1016/j.ygyno.2020.09.031
+- 25 Ray‐Coquard I, Lauraine E, Le Cesne A, et al. Improving treatment results with reference centres for rare cancers: where do we stand? Eur J Cancer. 2017; 77: 90 ‐ 98. pmid: 28384534 doi: 10.1016/j.ejca.2017.02.006
+- 26 Cardenes HR, Schilder JM, Roth LM. Vagina. In: Barakat RR, Markman M, Randall ME, eds. Principles and Practice of Gynecologic Oncology. Lippincott Williams & Wilkins; 2009: 591 ‐ 622.
+- 27 Rajaram S, Maheshwari A, Srivastava A. Staging for vaginal cancer. Best Pract Res Clin Obstet Gynaecol. 2015; 29: 822 ‐ 832. pmid: 25847318 doi: 10.1016/j.bpobgyn.2015.01.006
+- 28 Balcacer P, Shergill A, Litkouhi B. MRI of cervical cancer with a surgical perspective: staging, prognostic implications and pitfalls. Abdom Radiol. 2019; 44: 2557 ‐ 2571. doi: 10.1007/s00261-019-01984-7 pmid: 30903231
+- 29 Lo Re G, Cucinella G, Zaccaria G, et al. Role of MRI in the assessment of cervical cancer. Semin Ultrasound CT MRI. 2023; 44 ( 3): 228 ‐ 237. doi: 10.1053/j.sult.2023.03.010 pmid: 37245887
+- 30 Gardner C, Sunil J, Klopp A, et al. Primary vaginal cancer: role of MRI in diagnosis, staging and treatment. Br J Radiol. 2015; 88: 20150033. pmid: 25966291 doi: 10.1259/bjr.20150033 pmcid: PMC4651370
+- 31 Albuquerque K, Zoghbi K, Borges Nunes Gomes N, et al. Vaginal cancer: why should we care? Anatomy, staging and in depth imaging‐based review of vaginal malignancies focusing on MRI and PET/CT. Clin Imaging. 2022; 84: 65 ‐ 78. pmid: 35151129 doi: 10.1016/j.clinimag.2022.01.009
+- 32 Jhingran A. Updates in the treatment of vaginal cancer. Int J Gynecol Cancer. 2022; 32: 344 ‐ 351. pmid: 35256422 doi: 10.1136/ijgc-2021-002517 pmcid: PMC8921584
+- 33 Nout R, Calaminus G, Planchamp F, et al. ESTRO/ESGO/SIOPe guidelines for the management of patients with vaginal cancer. Int J Gynecol Cancer. 2023; 33 ( 8): 1185 ‐ 1202. pmid: 37336757 doi: 10.1136/ijgc-2023-004695
+- 34 Orton A, Boothe D, Williams N, et al. Brachytherapy improves survival in primary vaginal cancer. Gynecol Oncol. 2016; 141: 501 ‐ 506. pmid: 27036631 doi: 10.1016/j.ygyno.2016.03.011
+- 35 Reshko L, Gaskins J, Metzinger D, et al. The impact of brachytherapy boost and radiotherapy treatment duration on survival in patients with vaginal cancer treated with definitive chemoradiation. Brachytherapy. 2021; 20: 75 ‐ 84. pmid: 33008762 doi: 10.1016/j.brachy.2020.08.020
+- 36 Westerveld H, Nesvacil N, Fokdal L, et al. Definitive radiotherapy with image‐guided adaptive brachytherapy for primary vaginal cancer. Lancet Oncol. 2020; 21: e157 ‐ e167. pmid: 32135119 doi: 10.1016/S1470-2045(19)30855-1
+- 37 Lian J, Dundas G, Carlone M, Ghosh S, Pearcey R. Twenty‐year review of radiotherapy for vaginal cancer: an institutional experience. Gynecol Oncol. 2008; 111: 298 ‐ 306. pmid: 18722657 doi: 10.1016/j.ygyno.2008.07.007
+- 38 Yeung A, Pugh S, Klopp A, et al. Improvement in patient‐reported outcomes with intensity‐modulated radiotherapy (RT) compared with standard RT: a report from the NRG oncology RTOG 1203 study. J Clin Oncol. 2020; 38: 1685 ‐ 1692. pmid: 32073955 doi: 10.1200/JCO.19.02381 pmcid: PMC7238486
+- 39 Green JA, Kirwan JM, Tierney JF, et al. Survival and recurrence after concomitant chemotherapy and radiotherapy for cancer of the uterine cervix: a systematic review and meta‐analysis. Lancet. 2001; 358: 781 ‐ 786. pmid: 11564482 doi: 10.1016/S0140-6736(01)05965-7
+- 40 Nashiro T, Yagi C, Hirakawa M, et al. Concurrent chemoradiation for locally advanced squamous cell carcinoma of the vagina: case series and literature review. Int J Clin Oncol. 2008; 13: 335 ‐ 339. pmid: 18704634 doi: 10.1007/s10147-007-0758-7
+- 41 Samant R, Lau B, C E, Le T, Tam T. Primary vaginal cancer treated with concurrent chemoradiation using cis‐platinum. Int J Radiat Oncol Biol Phys. 2007; 69: 746 ‐ 750. pmid: 17512130 doi: 10.1016/j.ijrobp.2007.04.015
+- 42 Miyamoto DT, Viswanathan AN. Concurrent chemoradiation for vaginal cancer. PLoS One. 2013; 8: e65048. pmid: 23762284 doi: 10.1371/journal.pone.0065048 pmcid: PMC3676389
+- 43 Rajagopalan M, Xu K, lin J, et al. Adoption and impact of concurrent chemoradiation therapy for vaginal cancer: a national cancer database (NCDB) study. Gynecol Oncol. 2014; 135: 495 ‐ 502. pmid: 25281493 doi: 10.1016/j.ygyno.2014.09.018
+- 44 Herbst AL, Ulfelder H, Poskanzer DC. Adenocarcinoma of the vagina. Association if maternal stilbestrol therapy with tumor appearance in young women. N Engl J Med. 1971; 284: 878 ‐ 881. pmid: 5549830 doi: 10.1056/NEJM197104222841604
+- 45 Huo D, Anderson D, Palmer JR, Herbst AL. Incidence rates and risks of diethylstilbestrol‐related clear‐cell adenocarcinoma of the vagina and cervix: update after 40‐year follow‐up. Gynecol Oncol. 2017; 146: 566 ‐ 571. pmid: 28689666 doi: 10.1016/j.ygyno.2017.06.028
+- 46 Hanselaar AG, Boss EA, Massuger LF, Bernheim JL. Cytologic examination to detect clear cell adenocarcinoma of the vagina or cervix. Gynecol Oncol. 1999; 75: 338 ‐ 344. pmid: 10600286 doi: 10.1006/gyno.1999.5637
+- 47 Saslow D, Solomon D, Lawson HW, et al. American Cancer Society, American Society for Colposcopy and Cervical Pathology, and American Society for Clinical Pathology screening guidelines for the prevention and early detection of cervical cancer. Am J Clin Pathol. 2012; 137: 516 ‐ 542. pmid: 22431528 doi: 10.1309/AJCPTGD94EVRSJCG
+- 48 Palmer JR, Hatch EE, Rosenberg CL, et al. Risk of breast cancer in women exposed to diethylstilbestrol in utero: preliminary results (United States). Cancer Causes Control. 2002; 13: 753 ‐ 758. pmid: 12420954 doi: 10.1023/a:1020254711222
+- 49 Leitao MM Jr, Cheng X, Hamilton AL, et al. Gynecologic cancer InterGroup (GCIG) consensus review for vulvovaginal melanomas. Int J Gynecol Cancer. 2014; 24: S117 ‐ S122. pmid: 24987924 doi: 10.1097/IGC.0000000000000198
+- 50 Kirschner AN, Kidd EA, Dewees T, Perkins SM. Treatment approach and outcomes of vaginal melanoma. Int J Gynecol Cancer. 2013; 23: 1484 ‐ 1489. pmid: 23945202 doi: 10.1097/IGC.0b013e3182a1ced8
+- 51 Rapi V, Dogan A, Schultheis B, Hartmann F, Rezniczek GA, Tempfer CB. Melanoma of the vagina: case report and systematic review of the literature. Anticancer Res. 2017; 37: 6911 ‐ 6920. pmid: 29187473 doi: 10.21873/anticanres.12155
+- 52 Villella JA, Bogner PN, Jani‐Sait SN, Block AM, Lele S. Rhabdomyosarcoma of the cervix in sisters with review of the literature. Gynecol Oncol. 2005; 99: 742 ‐ 748. pmid: 16214206 doi: 10.1016/j.ygyno.2005.08.048
+- 53 Rudzinski ER, Anderson JR, Hawkins DS, Skapek SX, Parham DM, Teot LA. The World Health Organization classification of skeletal muscle tumors in pediatric rhabdomyosarcoma: a report from the Children's oncology group. Arch Pathol Lab Med. 2015; 139: 1281 ‐ 1287. pmid: 25989287 doi: 10.5858/arpa.2014-0475-OA pmcid: PMC4651658
+- 54 Margioula‐Siarkou C, Petousis S, Almperis A, et al. Sarcoma Botryoides: optimal therapeutic management and prognosis of an unfavourable malignant neoplasm of female children. Diagnostics. 2023; 13 ( 5): 924. doi: doi: 10.3390/diagnostics13050924 pmid: 36900067 pmcid: PMC10000398
+- 55 Gadducci A, Fabrini MG, Lanfredini N, Sergiampietri C. Squamous cell carcinoma of the vagina: natural history, treatment modalities and prognostic factors. Crit Rev Oncol Hematol. 2015; 93: 211 ‐ 224. pmid: 25476235 doi: 10.1016/j.critrevonc.2014.09.002
+- 56 Frank SJ, Jhingran A, Levenback C, Eifel PJ. Definitive radiation therapy for squamous cell carcinoma of the vagina. Int J Radiat Oncol Biol Phys. 2005; 62: 138 ‐ 147. pmid: 15850914 doi: 10.1016/j.ijrobp.2004.09.032
+- 57 Hinicker S, Roux A, Murphy J, et al. Primary squamous cell carcinoma of the vagina: prognostic factors, treatment patterns and outcomes. Gynecol Oncol. 2013; 131: 380 ‐ 385. pmid: 23954572 doi: 10.1016/j.ygyno.2013.08.012
+- 58 Senekjian EK, Frey KW, Stone C, Herbst AL. An evaluation of stage II vaginal clear cell adenocarcinoma according to substages. Gynecol Oncol. 1988; 31: 56 ‐ 64. pmid: 3410356 doi: 10.1016/0090-8258(88)90269-7
+- 59 Senekjian EK, Frey KW, Anderson D, Herbst AL. Local therapy in stage I clear cell adenocarcinoma of the vagina. Cancer. 1987; 60: 1319 ‐ 1324. pmid: 3621114 doi: 10.1002/1097-0142(19870915)60:6<1319::aid-cncr2820600626>3.0.co;2-h
+- 60 Frank SJ, Deavers MT, Jhingran A, Bodurka DC, Eifel PJ. Primary adenocarcinoma of the vagina not associated with diethylstilbestrol (DES) exposure. Gynecol Oncol. 2007; 105: 470 ‐ 474. pmid: 17292459 doi: 10.1016/j.ygyno.2007.01.005
+- 61 Yang J, Yang J, Yu M, Yuan Z, Cao D, Keng S. Clinical study on female genital tract rhabdomyosarcoma in childhood: changes during 20 years in one center. Int J Gynecol Cancer. 2017; 27: 311 ‐ 314. pmid: 27870705 doi: 10.1097/IGC.0000000000000872
+- 62 Nasioudis D, Alevizakos M, Chapman‐Davis E, Witkin SS, Holcomb K. Rhabdomyosarcoma of the lower female genital tract: an analysis of 144 cases. Arch Gynecol Obstet. 2017; 296: 327 ‐ 334. pmid: 28634755 doi: 10.1007/s00404-017-4438-1

@@ -1,0 +1,22 @@
+{
+  "catalogueId": "1375",
+  "spreadsheetRow": 63,
+  "topic": "Diffuse Alveolar Hemorrhage",
+  "specialty": "Pulmonology",
+  "decision": "downloaded open source",
+  "source": {
+    "title": "Systemic lupus erythematosus and diffuse alveolar hemorrhage, etiology and novel treatment strategies.",
+    "year": 2020,
+    "pmid": "32036761",
+    "pmcid": "PMC7436451",
+    "doi": "",
+    "url": "https://europepmc.org/articles/PMC7436451",
+    "sourceBody": "Lupus",
+    "storedAs": ""
+  },
+  "whyItFits": "Open review of diffuse alveolar haemorrhage with emphasis on SLE, including the capillaritis versus bland histologic split and the rapid onset of haemoptysis.",
+  "limitations": "",
+  "synopsisWritten": true,
+  "mcqsWritten": true,
+  "mcqCount": 5
+}

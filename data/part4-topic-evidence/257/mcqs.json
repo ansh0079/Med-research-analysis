@@ -1,0 +1,136 @@
+{
+  "catalogueId": "257",
+  "topic": "Bronchial Provocation Testing",
+  "mcqs": [
+    {
+      "id": "257-01",
+      "question": "What does the review call the methacholine challenge?",
+      "options": {
+        "A": "The most common direct bronchoprovocation test",
+        "B": "An indirect test only",
+        "C": "A test of DLCO",
+        "D": "A test that cannot be standardised",
+        "E": "Obsolete"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "The most common direct bronchoprovocation test",
+      "explanation": "Methacholine challenge is described as the most common direct bronchoprovocation test.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "J Asthma Allergy",
+          "sourceYear": 2018,
+          "sourceUrl": "https://europepmc.org/articles/PMC5957064",
+          "pmid": "29785128",
+          "pmcid": "PMC5957064",
+          "doi": "10.2147/JAA.S160607",
+          "excerpt": "the most common direct bronchoprovocation test"
+        }
+      ]
+    },
+    {
+      "id": "257-02",
+      "question": "How long can long-acting anti-muscarinic bronchoprotection last, according to the review?",
+      "options": {
+        "A": "Up to 7 days",
+        "B": "Less than 10 minutes",
+        "C": "It does not occur",
+        "D": "Only during the infusion",
+        "E": "30 days is the minimum"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Up to 7 days",
+      "explanation": "Specific antimuscarinic agents show marked bronchoprotection, up to 7 days for the long-acting drugs, lasting longer than bronchodilation.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "J Asthma Allergy",
+          "sourceYear": 2018,
+          "sourceUrl": "https://europepmc.org/articles/PMC5957064",
+          "pmid": "29785128",
+          "pmcid": "PMC5957064",
+          "doi": "10.2147/JAA.S160607",
+          "excerpt": "up to 7 days for the long-acting drugs"
+        }
+      ]
+    },
+    {
+      "id": "257-03",
+      "question": "What does a single dose of ICS or a leukotriene-receptor antagonist do to the methacholine test?",
+      "options": {
+        "A": "It has no effect",
+        "B": "It abolishes the test for a week",
+        "C": "It is required before every test",
+        "D": "It doubles PC20 in every patient",
+        "E": "It is dangerous and forbidden on the test day only because of anaphylaxis"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "It has no effect",
+      "explanation": "Single doses of those controllers have no effect, whereas regular ICS use does.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "J Asthma Allergy",
+          "sourceYear": 2018,
+          "sourceUrl": "https://europepmc.org/articles/PMC5957064",
+          "pmid": "29785128",
+          "pmcid": "PMC5957064",
+          "doi": "10.2147/JAA.S160607",
+          "excerpt": "Single doses of controller medications, such as inhaled corticosteroids (ICS) and leukotriene receptor antagonists, have no effect on the methacholine test"
+        }
+      ]
+    },
+    {
+      "id": "257-04",
+      "question": "What does the review say about tolerance to beta-2 agonist bronchoprotection?",
+      "options": {
+        "A": "Tolerance develops quickly, especially to long-acting agents",
+        "B": "Tolerance never occurs",
+        "C": "Tolerance takes years",
+        "D": "Only short-acting agents cause tolerance",
+        "E": "Tolerance increases the methacholine response"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Tolerance develops quickly, especially to long-acting agents",
+      "explanation": "Tolerance develops quickly, especially to the long-acting agents.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "J Asthma Allergy",
+          "sourceYear": 2018,
+          "sourceUrl": "https://europepmc.org/articles/PMC5957064",
+          "pmid": "29785128",
+          "pmcid": "PMC5957064",
+          "doi": "10.2147/JAA.S160607",
+          "excerpt": "Tolerance develops quickly, especially to the long-acting agents."
+        }
+      ]
+    },
+    {
+      "id": "257-05",
+      "question": "Why does the review discuss washout before methacholine challenge?",
+      "options": {
+        "A": "Because drugs that affect the response must be withheld for an appropriate period as part of standardisation",
+        "B": "Washout is unnecessary",
+        "C": "Only food affects the test",
+        "D": "Patients should take all inhalers immediately before the test",
+        "E": "Washout applies only to antibiotics"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Because drugs that affect the response must be withheld for an appropriate period as part of standardisation",
+      "explanation": "One aspect of standardisation is the appropriate washout of drugs that affect the response.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "J Asthma Allergy",
+          "sourceYear": 2018,
+          "sourceUrl": "https://europepmc.org/articles/PMC5957064",
+          "pmid": "29785128",
+          "pmcid": "PMC5957064",
+          "doi": "10.2147/JAA.S160607",
+          "excerpt": "appropriate washout period for pharmacologic agents which affect the response"
+        }
+      ]
+    }
+  ]
+}

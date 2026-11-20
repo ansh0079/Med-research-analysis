@@ -1,0 +1,34 @@
+{
+  "catalogueId": "353",
+  "spreadsheetRow": 74,
+  "topic": "Lung Volumes and Spirometry interpretation",
+  "specialty": "Pulmonology",
+  "decision": "downloaded open source",
+  "source": {
+    "title": "The physiological basis and clinical significance of lung volume measurements.",
+    "year": 2017,
+    "pmid": "28194273",
+    "pmcid": "PMC5299792",
+    "doi": "10.1186/s40248-017-0084-5",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5299792/",
+    "sourceBody": "Multidiscip Respir Med",
+    "storedAs": ""
+  },
+  "whyItFits": "Open review of static lung volumes and how they are interpreted, including why spirometry cannot measure residual volume, FRC, or total lung capacity.",
+  "limitations": "Primary text is the open 2017 review of static lung volumes (CC BY). The 2019 ATS/ERS spirometry standard remains at source-spirometry.txt and covers manoeuvre quality, not static volumes. The 2023 lung-volume technical standard was not required once this interpretive review was available.",
+  "synopsisWritten": true,
+  "mcqsWritten": true,
+  "mcqCount": 5,
+  "additionalSources": [
+    {
+      "title": "Standardization of Spirometry 2019 Update.",
+      "year": 2019,
+      "pmid": "31613151",
+      "pmcid": "PMC6794117",
+      "doi": "",
+      "url": "https://europepmc.org/articles/PMC6794117",
+      "sourceBody": "ATS/ERS",
+      "file": "data/part4-topic-evidence/353/source-spirometry.txt"
+    }
+  ]
+}

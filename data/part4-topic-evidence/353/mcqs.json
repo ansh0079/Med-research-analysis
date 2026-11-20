@@ -1,0 +1,136 @@
+{
+  "catalogueId": "353",
+  "topic": "Lung Volumes and Spirometry interpretation",
+  "mcqs": [
+    {
+      "id": "353-01",
+      "question": "Which four volumes does the review list as the standard static lung volumes?",
+      "options": {
+        "A": "Tidal, inspiratory reserve, expiratory reserve, and residual volume",
+        "B": "FEV1, peak flow, DLCO, and FVC only",
+        "C": "Only vital capacity",
+        "D": "Inspiratory capacity is a volume rather than a capacity in this sentence",
+        "E": "The review does not name them"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Tidal, inspiratory reserve, expiratory reserve, and residual volume",
+      "explanation": "The static volumes named are tidal, inspiratory reserve, expiratory reserve, and residual volume. The capacities are listed separately.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "Multidiscip Respir Med",
+          "sourceYear": 2017,
+          "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5299792/",
+          "pmid": "28194273",
+          "pmcid": "PMC5299792",
+          "doi": "10.1186/s40248-017-0084-5",
+          "excerpt": "The static lung volumes/capacities are further subdivided into four standard volumes (tidal, inspiratory reserve, expiratory reserve, and residual volumes) and four standard capacities (inspiratory, functional residual, vital and total lung capacities)."
+        }
+      ]
+    },
+    {
+      "id": "353-02",
+      "question": "Why can residual volume, FRC, and total lung capacity not be measured with a simple spirometer?",
+      "options": {
+        "A": "Residual volume is part of both FRC and TLC, so those capacities include gas that a spirometer does not measure",
+        "B": "Spirometers measure TLC directly",
+        "C": "Residual volume is the same as vital capacity",
+        "D": "The review says a spirometer is sufficient for all static volumes",
+        "E": "FRC is an exhaled volume only"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Residual volume is part of both FRC and TLC, so those capacities include gas that a spirometer does not measure",
+      "explanation": "RV is part of FRC and of TLC, so those capacities are impossible to measure through simple spirometers.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "Multidiscip Respir Med",
+          "sourceYear": 2017,
+          "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5299792/",
+          "pmid": "28194273",
+          "pmcid": "PMC5299792",
+          "doi": "10.1186/s40248-017-0084-5",
+          "excerpt": "RV constitutes part of FRC as well as TLC and, therefore, these capacities are impossible to measure through simple spirometers."
+        }
+      ]
+    },
+    {
+      "id": "353-03",
+      "question": "Which methods does the review name for measuring RV, FRC, and TLC?",
+      "options": {
+        "A": "Radiology, body plethysmography, or dilution methods such as helium dilution and nitrogen washout",
+        "B": "Peak-flow meter only",
+        "C": "Pulse oximetry",
+        "D": "A single forced blow",
+        "E": "No method is named"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Radiology, body plethysmography, or dilution methods such as helium dilution and nitrogen washout",
+      "explanation": "Measurement is based on radiological, plethysmographic, or dilutional techniques, including helium dilution and nitrogen washout.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "Multidiscip Respir Med",
+          "sourceYear": 2017,
+          "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5299792/",
+          "pmid": "28194273",
+          "pmcid": "PMC5299792",
+          "doi": "10.1186/s40248-017-0084-5",
+          "excerpt": "The procedures used for measurement of RV, FRC and TLC are based on radiological, plethysmographic or dilutional techniques (helium dilution and nitrogen washout methods) [4]."
+        }
+      ]
+    },
+    {
+      "id": "353-04",
+      "question": "For which ventilatory defects does the review say static lung volumes are important?",
+      "options": {
+        "A": "Both obstructive and restrictive defects",
+        "B": "Restrictive defects only",
+        "C": "Neither; only the flow-volume loop matters",
+        "D": "Only asthma in children",
+        "E": "Only neuromuscular disease"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Both obstructive and restrictive defects",
+      "explanation": "Static lung volumes are equally important for evaluation of obstructive as well as restrictive ventilatory defects. Dynamic volumes are described as essential for obstructive disease.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "Multidiscip Respir Med",
+          "sourceYear": 2017,
+          "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5299792/",
+          "pmid": "28194273",
+          "pmcid": "PMC5299792",
+          "doi": "10.1186/s40248-017-0084-5",
+          "excerpt": "static lung volumes are equally important for evaluation of obstructive as well as restrictive ventilatory defects."
+        }
+      ]
+    },
+    {
+      "id": "353-05",
+      "question": "In obstruction, air trapping correlates positively with which volumes?",
+      "options": {
+        "A": "RV, FRC, TLC, and the RV/TLC ratio",
+        "B": "Only vital capacity",
+        "C": "Only inspiratory capacity",
+        "D": "DLCO alone",
+        "E": "The review says air trapping lowers RV"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "RV, FRC, TLC, and the RV/TLC ratio",
+      "explanation": "Air trapping correlates positively with RV, FRC, TLC, and RV/TLC, and negatively with VC, IC, and IC/TLC.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "Multidiscip Respir Med",
+          "sourceYear": 2017,
+          "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5299792/",
+          "pmid": "28194273",
+          "pmcid": "PMC5299792",
+          "doi": "10.1186/s40248-017-0084-5",
+          "excerpt": "air trapping in obstructive ventilatory defects correlates positively with RV, FRC, TLC and RV/TLC, but negatively with VC, IC and IC/TLC."
+        }
+      ]
+    }
+  ]
+}

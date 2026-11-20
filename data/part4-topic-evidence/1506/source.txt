@@ -1,0 +1,235 @@
+# Rhegmatogenous retinal detachment: a review of current practice in diagnosis and management
+
+PMC7549457. BMJ Open Ophthalmology, 5(1):e000474. Published 2020-10-09.
+
+## Authors
+
+Ziyaad Nabil Sultan, Eleftherios I Agorogiannis, Danilo Iannetta, David Steel, Teresa Sandinha
+
+## Details
+
+- DOI: https://doi.org/10.1136/bmjophth-2020-000474
+- PMID: 33083551 (https://pubmed.ncbi.nlm.nih.gov/33083551/)
+- PMCID: PMC7549457
+- License: http://creativecommons.org/licenses/by-nc/4.0/
+
+---
+
+## Abstract
+
+Rhegmatogenous retinal detachment (RRD) is a common condition with an increasing incidence, related to the ageing demographics of many populations and the rising global prevalence of myopia, both well known risk factors. Previously untreatable, RRD now achieves primary surgical success rates of over 80%–90% with complex cases also amenable to treatment. The optimal management for RRD attracts much debate with the main options of pneumatic retinopexy, scleral buckling and vitrectomy all having their proponents based on surgeon experience and preference, case mix and equipment availability. The aim of this review is to provide an overview for the non-retina specialist that will aid and inform their understanding and discussions with patients. We review the incidence and pathogenesis of RRD, present a systematic approach to diagnosis and treatment with special consideration to managing the fellow eye and summarise surgical success and visual recovery following different surgical options.
+
+## Introduction
+
+Rhegmatogenous retinal detachment (RRD) (figure 1) is the most common form of RD occurring in approximately 1 in 10 000 of the population per annum.1 It develops when there is a retinal ‘break’ or full-thickness defect in the neurosensory retina (NSR) that allows the ingress of fluid from the vitreous cavity into the subretinal space, resulting in separation of the NSR from the underlying retinal pigment epithelium (RPE).2 In this review, we mainly discuss acute progressive RRD with onset less than 2 weeks, whereas chronic RRD is defined as being present for longer than 2 weeks.3
+
+*Figure 1 Retinal detachment. Left eye, superior bullous retinal detachment. Reproduced with permission of Wills Eye Hospital, WillsEye.org*
+
+Until the early 1900s, RD was a blinding disorder with unclear pathogenesis; RD was initially thought to represent an exudative process, occurring from choroidal leakage and not caused by retinal breaks.4 Specifically, it was thought that stretching of the retina, effectively ‘inflating’ of the retina, caused breaks and early treatment involved instrumentation to produce tears in order to allow for subretinal fluid egress into the vitreous cavity. The field was revolutionised by Jules Gonin who recognised the role of retinal breaks in causing detachments through the study of cadaveric eyes.5
+
+The past 80 years of RRD treatment have, therefore, focused on surgical techniques to close or appose the retinal break(s) to the RPE. Once the break is closed, the RPE then actively removes fluid from the subretinal space to the choroid where it is absorbed via the choroidal vasculature. In 1951, Schepens et al introduced extraocular scleral buckling (SB) for RD,6 raising the rate of successful reattachment to close to 90%. For the next two decades, SB was the principal surgical intervention for patients with RRDs. In 1970s pars plana vitrectomy (PPV) was developed as an alternative surgical approach for patients with RD by Charles and Machemer,7 8 and in 1973 Norton introduced the use of intraocular tamponade with sulphur hexafluoride (SF6) gas, expanding the role of intraocular surgery in the management of RRDs.9 Intraocular gases (such as SF6 or perfluoropropane, C3F8) are an important element of managing RRD with PPV as they allow closure of retinal break(s) until a permanent, retinopexy-induced, choroidoretinal adhesion develops.10 Their use can be substituted by silicone oil (SO) which provides permanent or long-term non-expansile tamponade and may be preferable in eyes with complicated RRD—for example due to proliferative vitreoretinopathy (PVR), trauma or giant retinal tears—or in patients who have to fly following surgery.10 11 In recent years, improvements in vitrectomy instrumentation, the development of wide-angle microscopic viewing systems, the use of perfluorocarbon liquids, and the development of microincisional techniques have reduced the morbidity, and expanded the role of vitrectomy, resulting in it becoming the most popular treatment modality for primary, as well as complex and/or recurrent RRD for many surgeons. An excellent and comprehensive historical review of the evolution of RRD theory and management has been provided by Gloor and Marmor.4 12
+
+## Pathogenesis
+
+There are no anatomic junctions between the NSR and RPE, but weak mechanical forces are responsible for their adhesion.2 These include the active and passive forces of choroidal oncotic pressure and the RPE pump, creating a pressure gradient between the two.2 The interphotoreceptor matrix, consisting of a variety of molecules including the glycosaminoglycans chondroitin sulphate and hyaluronic acid, and the RPE microvilli, enveloping the photoreceptor outer segments also contribute to these adhesive mechanisms.2 The metabolic state and oxygenation of the RPE affects this overall adhesion.2 Any RD is by definition an accumulation of subretinal fluid between NSR and RPE. The two prerequisites for the development of RRD are (1) liquefaction of the vitreous; an RRD will not occur without first some degree of liquefaction of the formed vitreous gel that precedes posterior vitreous detachment (PVD), and supplies the low viscosity fluid that is able to flow through retinal breaks, and (2) a retinal break through which ﬂuid gains access into the subretinal space. These can take a variety of forms including retinal tears, as well as round retinal holes, usually forming in the context of pre-existing lattice degeneration. Operculated holes form when a retinal tear flap is avulsed from the retinal surface.2
+
+## Risk factors
+
+Most RRDs are associated with retinal tear formation at the time of PVD.13 The risk of tear formation is increased in people with areas of pre-existing retinal thinning such as lattice degeneration, which is also associated with abnormal vitreoretinal adhesion. RRDs can also occur without PVD in people with pre-existing retinal lesions, such as atrophic retinal holes, lattice degeneration and retinal dialyses which can be due to previous blunt trauma or idiopathic.14 15 Approximately 7%–8% of the normal population have areas of lattice degeneration, but only a small proportion will progress to RRD, although higher than the non-lattice degeneration population.16 17 Asymptomatic retinal dialysis is thought to have a high risk of progression to RD, especially after trauma.18
+
+There is an increased risk of RRD in myopic patients, with an up to 10-fold increase in myopia over three dioptres (D).15 This is an important consideration amid the increasing incidence of high myopia (greater than −6D) worldwide, with the prevalence in school-aged children in Asia as high as 80%.19 20 RRD risk also varies by gender and ethnicity with men, and Caucasian and Asian populations are at relatively higher risk.21 22
+
+People who previously had cataract surgery also have a higher incidence of RRD, with approximately one in five RRDs in the UK being pseudophakic.1 About 0.5%–0.6% of people experience RRD after phacoemulsification, with the risk increasing year on year to at least 10 years. Posterior capsule rupture increases the risk substantially by up to 15–20 times.22–24 Several other factors are associated with pseudophakic RRD, including (in order of decreasing effect) increasing axial length, younger age and male sex.22
+
+### Risk to fellow eye
+
+The fellow eye in patients with RRD is at a higher risk. The Scottish Retinal Detachment Study found a prevalence of bilateral RRD of 7%.25 Interestingly, in the same cohort, retinal tears were found in 8% of fellow eyes in patients with primary RRD, which underscores the need for a thorough dilated fundal examination of the fellow eye. A UK study by Fajgenbaum et al found that the risk of fellow-eye RRD was highest during the early postoperative period and declined over the years.26 Specifically, the probability (hazard rate) of RRD in the fellow eye was 3% in the first year, and declined to 0.3% over 10 years; the cumulative risk of RRD in the fellow eye was 8% over 15 years.26
+
+### Prevention: prophylactic treatment to fellow eye following RRD
+
+Although RRD may develop in a fellow eye from pre-existing retinal lesions, most subsequent RRDs (at least 50% and possibly as high as 80%–90%) in the fellow eye will occur from ophthalmoscopically normal areas of retina,27 therefore, prophylactic treatment with either laser or cryotherapy to funduscopically abnormal areas does not completely reduce the incidence of fellow-eye RRD. However, in one large UK study only 6% of eyes treated prophylactically developed RRD.25 It should also be noted that 30% of patients with symptomatic retinal tears or holes, will develop RRD if untreated.28
+
+### Diagnosis: rules for detecting retinal breaks
+
+The cornerstone of RRD examination is the search for retinal break(s). For over 40 years, the seminal paper by Lincoff and Giese,29 gave rise to the ubiquitously cited ‘Lincoff rules’ for identifying the location of the primary or causative retinal break in RRD (figure 2). There are RRDs that do not obey these rules that present clinical challenges. Although not yet validated, but based on long experience, David Wong cited six new rules that illustrate the locations of retinal breaks in RRDs that do not obey Lincoff’s rule, during the 2018 British and Eire Association of Vitreoretinal Surgeons meeting (figure 3) (D. Wong, personal communication). He described that a retinal break in the upper temporal quadrant would recruit SRF and gradually result in a subtotal RD, higher on the temporal side and bullous inferiorly (rule 1). Similarly, a retinal break in the same location could result in an acute bullous superior RD overhanging the posterior pole and macula (rule 2). This last configuration is thought to be due to vitreous separation and collapse, which in turn is responsible for rapid onset and the bullous overhanging nature of the RD. Areas of thin retina in the detached retina point to where the break is (rule 3). In fundus-obscuring vitreous haemorrhage the ophthalmologist should suspect multiple retinal breaks (rule 4). In case of RRD involving the posterior retina but limited in extent inferiorly and peripherally, the primary break is likely located at the posterior pole (rule 5). Finally, in inferior bullous RRD, the retinal breaks should be on the concave as opposed to the convex side, and this can be appreciated by alternately rolling the patient on each side (rule 6). Further work needs to be undertaken to determine if these rules hold.
+
+*Figure 2 Lincoff Rules. Summary of ‘Lincoff Rules’ to aid the identification and position of a retinal break in RRD. RRD, rhegmatogenous retinal detachment.*
+
+*Figure 3 Six new rules presented at BEAVRS 2018 by David Wong. Not validated. BEAVRS, British and Eire Association of Vitreoretinal Surgeons.*
+
+### Aim of intervention
+
+The main target of RRD management is to achieve retinal reattachment. Although the beneﬁt for treatment of asymptomatic (chronic) RRD remains unclear, symptomatic RRD is a clear indication for surgery. On presentation, RRD is usually divided into ‘macula-on’ where the foveal centre is not involved, and ‘macula-off’ where the fovea is detached.30 People with macula-on RRD typically have good initial best-corrected visual acuity (BCVA) and a better visual prognosis with successful surgery. Macula-off RRDs have lower initial BCVA and worse visual prognosis even with successful reattachment of the retina. However, in macula-off RRDs postoperative BCVA is better in patients with 1–3 days of visual loss compared with 4–6 days, and hence these patients also need to be treated as a matter of urgency.31 Indeed it is likely that prognosis reduces linearly for every day that the macula remains detached.
+
+Optical coherence tomography (OCT) is not routinely required to assess macular status, as this can be established by BCVA and clinical examination, with preoperative BCVA determining potential postoperative BCVA. However, OCT and ultrasound imaging may be useful in assessing the presence of PVD, as this can influence the surgical approach.
+
+## Surgical approaches
+
+There are three main current options for the management of RRD, namely pneumoretinopexy (PnR), SB and PPV. The choice of surgery will depend on various factors, including number, location and size of retinal breaks present and the presence of any PVR; the ability of the patient to posture in order to allow optimum positioning of intraocular tamponade agents; lens status and surgeon’s experience and preference. PVR remains the most predictive variable for failure of primary surgery with success rates dropping from 90% to 68% if PVR is present preoperatively.31 It is characterised by cellular proliferation affecting both surfaces of the detached retina and the vitreous base, resulting in the formation of contractile periretinal membranes. PVR can also occur following surgery and is one of the chief causes of failure, along with new break formation as well as missed retinal breaks. Although several studies have identified a number of clinical risk factors for PVR developing and causing primary failure, including vitreous haemorrhage, PVR at presentation, aphakia, uveitis, RRD associated with trauma, duration of detachment and presence of choroidal detachment preoperatively,32 to date there is no effective treatment for PVR.
+
+## Scleral buckle surgery
+
+Between 2002 and 2010, 12% of primary RRDs in the UK were treated with SB alone.33 In clinical practice in the UK, Europe, and North America, many phakic eyes with localised RRD associated with small anterior holes or retinal dialysis, are usually treated with SB, especially if there is no associated PVD. The SB technique involves break localisation, cryotherapy and a local or circumferential buckle element. The buckle indents the sclera to appose NSR and RPE, and hence ‘close’ the retinal break (figure 4). Some surgeons routinely include an encircling element to the buckle regardless of other breaks, while other surgeons only add encirclements if there are multiple breaks or evidence of PVR. Due to fewer SB procedures currently being performed, experience for younger vitreoretinal surgeons is limited and this may affect potential success rates.
+
+*Figure 4 Scleral buckle technique. (A) Identify retinal break. (B) Expose sclera, sling rectus muscles (white arrowheads), mark break position (on sclera) then apply cryotherapy. (C) Various available buckles, including segments and encircling bands. (D) Scleral indentation apposing the break.*
+
+### SB: anatomical success
+
+Primary anatomical success of SB ranges between 53% and 83%34–36; SB can be particularly successful for retinal dialysis and round roles.37 38 In a retrospective study of 436 eyes, Goezinne et al reported primary anatomical success of 76%, with secondary anatomical success of 97% following PPV for failed SB.39 In addition, they also reported that retinal tears greater than three disc diameters were associated with more primary surgical failures, and advocated primary PPV for these patients.39 Lens status can further influence SB surgical success; Heimann et al reported a failure rate of 40% and 26% in pseudophakic and phakic patients with buckling surgery, respectively, although after successful reattachment, recurrent late re-detachment is relatively rare.34
+
+### SB: visual outcomes
+
+After successful reattachment of the retina, pockets of shallow subretinal fluid may occur, and persist for many months before spontaneously resolving.40 The presence and persistence of this subretinal fluid does not negatively affect final visual acuity but can delay visual recovery.40 Final visual acuity following SB is at least comparable to other surgical modalities.36 A large randomised controlled trial (RCT) comparing SB and PPV found that phakic patients undergoing SB achieved better BCVA, while there was no significant difference in BCVA between pseudophakic patients receiving SB or PPV intervention.34 Myopia can occur secondary to increase in axial length, typically by approximately 1 mm (usually translated to a refractive error of 2–3 dioptres) after SB surgery with the use of an encircling band.36 41 Corneal topographical (astigmatic) changes with segmental buckles vary postoperatively, depending on the buckle required, but typically return to preoperative levels within 1 month.42 Cataract secondary to the procedure itself is uncommon but has been reported at up to 46% at 1-year follow-up.34
+
+### SB: limitations and complications
+
+Some of the limitations of SB pertain to the challenges of case selection, and the potential to miss additional retinal breaks compared with PPV. Intraoperative complications include scleral perforation, subretinal haemorrhage, retinal incarceration and choroidal detachment, and are reported to occur in 5% of SB procedures.39 Scleral explant complications including pain, explant-related infection, exposure or simply cosmetically noticeable prominence, can require scleral buckle removal in 1%–6%.43 44 Diplopia occurs in approximately 4%–14% of cases in the immediate postoperative period, and usually resolves spontaneously but can persist, requiring prisms or surgery, and is not always improved by scleral buckle removal.45 46
+
+## Pars plana vitrectomy
+
+PPV is currently preformed for the majority of RRDs in the UK (figure 5). However, more absolute indications include eyes in which a scleral buckle cannot be placed (eg, thin sclera), RRD associated with vitreous opacities obstructing the retinal view, giant retinal breaks, posterior retinal breaks that cannot be easily reached by buckling, and RRD associated with vitreoretinal traction that cannot be relieved by SB, including significant levels of PVR. Contrary to PnR which utilises non-diluted expansile intraocular gases, tamponade in PPV is usually performed by complete filling of the vitreous cavity with gas diluted in air at iso-volumetric concentrations which do not expand (eg, 20% SF6 or 14% C3F8).10
+
+*Figure 5 Pars plana vitretomy. Three ports—an infusion line, a light source and a vitrector. Reproduced with permission of PentaVision LLC, http://www.retinalphysician.com/issues/2008/jan-feb/why-(and-when)-i-prefer-25-g-vitrectomy*
+
+### PPV: anatomical success
+
+PPV has been generally very successful in treating RRD. The two large comparative randomised studies of Heimann et al (against SB) and Hillier et al (against PnR) reported primary anatomical success of 72% and 93%, respectively, for vitrectomy.34 47 Brazitikos et al randomised 150 eyes with pseudophakic RRD (with PVR less severe than grade B) to receive SB or PPV.36 Re-detachment rates in the PPV and SB arms were 6% and 17%, respectively, lower than those reported by Heimann et al at 20% and 40%, respectively, but with the same direction of effect suggesting that vitrectomy is more effective than SB in pseudophakic eyes.34 The surgical management of inferior RRD can present further challenges in terms of lower success rates. Some surgeons advocate primary combined SB-PPV for RRD with inferior breaks in detached retina,48 while other surgeons advocate primary PPV alone. Recent series have reported high success rates with air tamponade alone in RRD with inferior breaks, suggesting that tamponade in vitrectomy may not act purely by break closure, but also by a reduction in intraocular fluid currents.49–51
+
+### PPV: visual outcomes
+
+Typically, visual recovery is closely linked with macular status pre-operatively, but macula-sparing cases can have worse vison postoperatively from macular involvement by displaced SRF intraoperatively, as well as some degree of epiretinal membrane (ERM) formation (35%) and CMO (15%) which can also effect visual recovery and require revision surgery for ERM in up to 15% of cases.52 The Pneumatic Retinopexy versus Vitrectomy for the Management of Primary RRD Outcomes Randomized Trial (PIVOT) compared outcomes following PnR and PPV for primary RRD, and reported that BCVA had improved by 3 and 61 Early Treatment Diabetic Retinopathy Study (ETDRS) letters at 1 year following PPV for macula-on and macula-off RRD, respectively.47 In this study, phakic and pseudophakic eyes achieved similar postoperative BCVA with PPV.47 A large RCT comparing SB and PPV found similar improvement in BCVA among pseudophakic patients at 1 year, but better BCVA in phakic patients undergoing SB.34 Both these RCTs reported greater cataract progression following PPV, than after SB or PnR.
+
+### PPV: limitations and complications
+
+Regardless of indication, PPV is associated with specific complications, such as iatrogenic retinal tears, lens touch and cataract formation. In a prospective study, Saleh et al found that the rate of iatrogenic retinal tears was 3% (11/394).53 A large retrospective UK study (n=628) comparing 20 G and 23 G PPV, reported the incidence of iatrogenic breaks at 17% and 8%, respectively, possibly largely relating to the use of cannulated sclerotomies with narrow gauge vitrectomy systems.54
+
+Following PPV in phakic eyes with air or gas tamponade, there is often early transient posterior lens change, that usually resolves with gas absorption. However, nuclear sclerotic cataract typically develops several months postoperatively in 50%–70% of patients depending on tamponade use and age primarily.55 The median duration for visually significant cataract formation after PPV is reported as 8 months.56
+
+Lens touch during PPV is a well-documented complication and consequent iatrogenic cause of cataract. A UK retrospective study of 1399 patients undergoing PPV reported an incidence of 4%.56 Lens touch is associated with age (as lens size increases), increased complexity as indicated by PVR, use of SO and need for retinectomy.56 Posterior capsule rupture is nearly eight times more likely after lens touch.56
+
+Increased intraocular pressure (IOP) following PPV is an important postoperative complication. PPV with gas tamponade can induce significant acute and usually short-term IOP rises (≥30 mm Hg), especially when combined with SB, concurrent lensectomy, laser photocoagulation and postoperative formation of fibrinous membranes.57 The silicone study compared IOP abnormalities following PPV with either C3F8 gas or SO for PVR.58 Frequency of chronically raised IOP was higher among eyes randomised to SO (8%) compared with C3F8 (2%), while C3F8 was associated with higher possibility of hypotony from severe anterior PVR.58 All eyes with raised IOP were aphakic, and there was little correlation between the presence of SO in the anterior chamber and glaucoma.58
+
+## Pneumoretinopexy
+
+Combined transconjunctival cryotherapy and PnR for the treatment of superior RRD, was first introduced by Hilton and Grizzard.59 In their 20-patient case series, treatment indication was RRD involving the superior eight clock hours associated with a single break or multiple breaks within 1 hour of each other,59 and this still broadly holds true today. PnR is rarely performed in the UK, where more than 99% of all RRDs are managed with PPV, SB or combined PPV-SB.33 PnR is more frequently performed in North America (in certain places even more frequently than either SB or PPV).60
+
+### PnR: anatomical success
+
+The procedure relies on injecting a small volume of expansile gas which then expands to tamponade a specific arc of retina. The choice of endoretinal tamponade agent is an important consideration as different gases have distinct properties relating to the amount of expansion, the time required to reach maximal volume, and the total duration of tamponade. For example, air does not expand at all and disappears after 3 days on average, while SF6 gas doubles its volume in approximately 36 hours and can remain within the vitreous cavity for 12 days.61 A bubble of C3F8 gas can quadruple its size in 3 days and may persist within the eye for almost 40 days.61 For an average eye, 0.3 mL of expanded gas can cover 60° of the retinal surface, whereas it takes 1.2 mL of gas to cover 90° of the retinal surface and hence typically 0.5 mL of SF6 or 0.3 mL of C3F8 is injected.61 In myopic (larger) eyes, these assumptions are not fixed and the amount of gas can also be ‘titrated’ to the break position and ease of effective tamponade.
+
+Primary anatomical success with PnR varies with lens status. Primary anatomical success with PnR in phakic eyes ranges between 73% and 81%,35 47 and is lower in pseudophakic and aphakic eyes (41%–67%).61 In patients with primary failure after PnR that require subsequent surgery (PPV or SB), high anatomical success rates (98%–99%) can still be achieved.35 62 Thus, primary PnR failure does not appear to negatively influence the success of further RD surgery.
+
+### PnR: visual outcomes
+
+Visual rehabilitation following PnR is considerably faster than either SB or PPV. The PIVOT study in primary RRD found that at 12 months following PnR, patients read approximately 5 ETDRS letters more than their PPV counterparts.47 In addition, patients treated with PnR had superior composite 25-item National Eye Institute Visual Function Questionnaire scores at 3 and 6 months, although these did not persist at 12 months.47 Vertical metamorphopsia was more prevalent at 12 months in patients treated with PPV, whereas there was no difference in horizontal metamorphopsia between the two treatment groups.47 Accordingly, given that any RD intervention may fail, it is important to emphasise that primary PnR does not seem to negatively impact post-operative vision when further surgery is performed, namely PPV or SB.
+
+Hillier et al reported the incidence of cataract at 12 months following PnR and PPV at 16% and 65%, respectively.47 Tornambe et al reported similar post-PnR cataract formation; 19% at 2 years.62
+
+### PnR: limitations and complications
+
+A fundamental difference of PnR to both SB and PPV is that the procedure does not relieve vitreoretinal traction. In addition, the injection of intravitreal air or gas can induce additional retinal breaks, especially in eyes with initial incomplete PVD.47 Although not strictly a contraindication, aphakia and pseudophakia are associated with reduced anatomical success.61 In addition, PnR is not an option for inferior breaks. Randomised trials comparing primary PnR vs SB, and PnR versus PPV, have shed some light on RRD management. However, authors also acknowledge that real-life results may differ. Notably, all patients in the PIVOT study received intervention within 24 hours from symptom onset, and median time in the PnR group was 2 hours.47 It is also widely accepted that the success of PnR relies on a thorough preoperative retinal assessment with scleral indentation to identify all retinal breaks, which is not always possible.
+
+### Optimising outcomes in macula-off RRD
+
+#### Timing
+
+Acute progressive macula-on RRD continues to be managed as a VR emergency, requiring urgent referral and intervention. Macula-off RRD, presenting acutely (1 day) is also increasingly considered a VR emergency, given the potential for good post-operative vision and the risk of permanent visual loss.
+
+Early wisdom regarding the optimal timing of surgical intervention in macula-off RRD suggested that undergoing surgery at any time between day 1 and day seven following symptom onset had no effect on final BCVA.63 64 However, a retrospective study by Williamson et al evaluated 325 patients with macula-off RRD and found that median final BCVA was 6/9 independently of symptom duration (recorded from day 1 to ≥21 days).65 Notably, they showed that surgery at any time between days 1 and 3 after symptom onset produced equivalent visual outcomes, nevertheless surgery on day 4–6 conferred worse vision.65 Hence, it seems that outcomes in macula-off RRD could be improved with more urgent intervention.
+
+#### Postoperative posturing
+
+By using fundus autofluorescence, retinal displacement has been demonstrated to occur following PPV for RRD.66–68 It has been suggested that some of the metamorphopsia after otherwise successful reattachment surgery may be secondary to retinal displacement.68 69 Research continues to better elucidate variables surrounding the aetiology of the displacement, with studies of immediate postoperative positioning regimens and types of tamponade agents used.69–71 Current evidence proposes that early postoperative face-down positioning may help minimise retinal displacememt.69 72 In a study of 86 patients, Shiragami et al showed that retinal displacement was greater in patients that adopted a face-down position 10 min after PPV, as opposed to immediately following surgery; 64% (28/44) and 24% (10/42), respectively.69 Casswell et al compared retinal displacement in patients positioned either face-down or ‘supporting-the-break’ (positioned such that the retinal break is uppermost in order to allow the floating gas to remain in contact with the break), and reported retinal displacement in 42% and 58%, respectively.72 Although there was no statistical difference in subjective distortion, there was a significant and clinically relevant improvement in binocular diplopia, suggesting that immediate face down positioning for at least a few hours could improve results.72
+
+## Conclusion
+
+Although RRD is now routinely treated, the success rate remains stubbornly less than 100%, and typically around 85% with most large modern series. Potentially, optimising retinal break detection and effective, rapid onset retinopexy, obviating the need for tamponade could help improve primary success rates. PVR remains a common cause of failure and new strategies to prevent and treat PVR are required. The optimum method to repair detached retinas to allow maximal visual recovery, especially in macula-involving cases, is gradually becoming more defined, but surgeon experience and preference will still remain major factors affecting technique choice.
+
+## Footnotes
+
+Contributors: Original concept: TS. Literature search: ZNS and TS. Drafting: ZNS, DI and TS. Figures: TS, ZNS and DS. Reviewing draft: ZNS, EIA, DS and TS.
+
+Funding: The authors have not declared a specific grant for this research from any funding agency in the public, commercial or not-for-profit sectors.
+
+Competing interests: None declared.
+
+Patient consent for publication: Not required.
+
+Ethics approval: The study is approved by the University of Wollongong Human Research Ethics Committee.
+
+Provenance and peer review: Commissioned; externally peer reviewed.
+
+## References
+
+- 1 Mitry D, Charteris DG, Yorston D, et al. The epidemiology and socioeconomic associations of retinal detachment in Scotland: a two-year prospective population-based study. Invest Ophthalmol Vis Sci 2010; 51: 4963 – 8. doi: 10.1167/iovs.10-5400 pmid: 20554615
+- 2 Ghazi NG, Green WR. Pathology and pathogenesis of retinal detachment. Eye 2002; 16: 411 – 21. doi: 10.1038/sj.eye.6700197 pmid: 12101448
+- 3 Strauss DS, Choudhury T, Baker C, et al. Visual outcomes after primary repair of chronic versus Super-Chronic Macula-Off rhegmatogenous retinal detachments in an underserved population. Invest Ophthalmol Vis Sci 2011; 52: 6139.
+- 4 Gloor BP, Marmor MF. Controversy over the etiology and therapy of retinal detachment: the struggles of Jules Gonin. Surv Ophthalmol 2013; 58: 184 – 95. doi: 10.1016/j.survophthal.2012.09.002 pmid: 23257154
+- 5 Fine SL, Goldberg MF, Tasman W. Historical perspectives on the management of macular degeneration, diabetic retinopathy, and retinal detachment: personal reminiscences. Ophthalmology 2016; 123: S64 – 77. doi: 10.1016/j.ophtha.2016.04.058 pmid: 27664288
+- 6 Schepens CL, Okamura ID, Brockhurst RJ. The scleral buckling procedures. I. surgical techniques and management. AMA Arch Ophthalmol 1957; 58: 797 – 811. doi: 10.1001/archopht.1957.00940010819003 pmid: 13478226
+- 7 Machemer R, Parel JM, Buettner H. A new concept for vitreous surgery. I. instrumentation. Am J Ophthalmol 1972; 73: 1 – 7. doi: 10.1016/0002-9394(72)90295-4 pmid: 5007347
+- 8 Charles SCJ, Wood B. Vitreous microsurgery. 5th edn. Philadelphia, Lippincott: Williams & Wilkins, 2010.
+- 9 Sabates WI, Abrams GW, Swanson DE, et al. The use of intraocular gases. The results of sulfur hexafluoride gas in retinal detachment surgery. Ophthalmology 1981; 88: 447 – 54. pmid: 7267019
+- 10 Vaziri K, Schwartz SG, Kishor KS, et al. Tamponade in the surgical management of retinal detachment. Clin Ophthalmol 2016; 10: 471 – 6. doi: 10.2147/OPTH.S98529 pmid: 27041988 pmcid: PMC4801126
+- 11 Barca F, Caporossi T, Rizzo S. Silicone oil: different physical proprieties and clinical applications. Biomed Res Int 2014; 2014: 502143. doi: 10.1155/2014/502143 pmid: 25013785 pmcid: PMC4071776
+- 12 Leaver P, Keeler R. Good news from Switzerland: a history of retinal reattachment surgery. The Royal Society of Medicine Press, 2013.
+- 13 Uhr JH, Obeid A, Wibbelsman TD, et al. Delayed retinal breaks and detachments after acute posterior vitreous detachment. Ophthalmology 2020; 127: 516 – 22. doi: 10.1016/j.ophtha.2019.10.020 pmid: 31767432
+- 14 Lewis H. Peripheral retinal degenerations and the risk of retinal detachment. Am J Ophthalmol 2003; 136: 155 – 60. doi: 10.1016/s0002-9394(03)00144-2 pmid: 12834683
+- 15 Risk factors for idiopathic rhegmatogenous retinal detachment. the eye disease case-control study Group. Am J Epidemiol 1993; 137: 749 – 57. pmid: 8484366
+- 16 Burton TC. The influence of refractive error and lattice degeneration on the incidence of retinal detachment. Trans Am Ophthalmol Soc 1989; 87: 143 – 55. discussion 155-147. pmid: 2562517 pmcid: PMC1298542
+- 17 Byer NE. Lattice degeneration of the retina. Surv Ophthalmol 1979; 23: 213 – 48. doi: 10.1016/0039-6257(79)90048-1 pmid: 424991
+- 18 Vote BJ, Casswell AG. Retinal dialysis: are we missing diagnostic opportunities? Eye 2004; 18: 709 – 13. doi: 10.1038/sj.eye.6701310 pmid: 14976542
+- 19 Lin LL, Shih YF, Hsiao CK, et al. Epidemiologic study of the prevalence and severity of myopia among schoolchildren in Taiwan in 2000. J Formos Med Assoc 2001; 100: 684 – 91. pmid: 11760374
+- 20 Wong TY, Ferreira A, Hughes R, et al. Epidemiology and disease burden of pathologic myopia and myopic choroidal neovascularization: an evidence-based systematic review. Am J Ophthalmol 2014; 157: 9 – 25. doi: 10.1016/j.ajo.2013.08.010 pmid: 24099276
+- 21 Chandra A, Banerjee P, Davis D, et al. Ethnic variation in rhegmatogenous retinal detachments. Eye 2015; 29: 803 – 7. doi: 10.1038/eye.2015.43 pmid: 25853394 pmcid: PMC4469671
+- 22 Qureshi MH, Steel DHW. Retinal detachment following cataract phacoemulsification-a review of the literature. Eye 2020; 34: 616 – 31. doi: 10.1038/s41433-019-0575-z pmid: 31576027 pmcid: PMC7093479
+- 23 Bhagwandien ACE, Cheng YYY, Wolfs RCW, et al. Relationship between retinal detachment and biometry in 4262 cataractous eyes. Ophthalmology 2006; 113: 643 – 9. doi: 10.1016/j.ophtha.2005.10.056 pmid: 16527355
+- 24 Tuft SJ, Minassian D, Sullivan P. Risk factors for retinal detachment after cataract surgery: a case-control study. Ophthalmology 2006; 113: 650 – 6. doi: 10.1016/j.ophtha.2006.01.001 pmid: 16581424
+- 25 Mitry D, Singh J, Yorston D, et al. The fellow eye in retinal detachment: findings from the Scottish retinal detachment study. Br J Ophthalmol 2012; 96: 110 – 3. doi: 10.1136/bjo.2010.194852 pmid: 21378003
+- 26 Fajgenbaum MAP, Wong RS, Laidlaw DAH, et al. Vitreoretinal surgery on the fellow eye: a retrospective analysis of 18 years of surgical data from a tertiary center in England. Indian J Ophthalmol 2018; 66: 681 – 6. doi: 10.4103/ijo.IJO_1176_17 pmid: 29676315 pmcid: PMC5939163
+- 27 Wilkinson CP. Evidence-Based analysis of prophylactic treatment of asymptomatic retinal breaks and lattice degeneration. Ophthalmology 2000; 107: 12 – 15. discussion 15-18. doi: 10.1016/s0161-6420(99)00049-4 pmid: 10647712
+- 28 Davis MD. The natural history of retinal breaks without detachment. Trans Am Ophthalmol Soc 1973; 71: 343 – 72. pmid: 10949610 pmcid: PMC1310502
+- 29 Lincoff H, Gieser R. Finding the retinal hole. Arch Ophthalmol 1971; 85: 565 – 9. doi: 10.1001/archopht.1971.00990050567007 pmid: 5087597
+- 30 Wilkinson CP RT. Michel's retinal detachment. 2nd edn. St Louis, MO: Mosby, 1997: 935 – 77.
+- 31 Williamson TH, Lee EJK, Shunmugam M. Characteristics of rhegmatogenous retinal detachment and their relationship to success rates of surgery. Retina 2014; 34: 1421 – 7. doi: 10.1097/IAE.0000000000000094 pmid: 24480842
+- 32 Wickham L, Ho-Yen GO, Bunce C, et al. Surgical failure following primary retinal detachment surgery by vitrectomy: risk factors and functional outcomes. Br J Ophthalmol 2011; 95: 1234 – 8. doi: 10.1136/bjo.2010.190306 pmid: 21156702
+- 33 Jackson TL, Donachie PHJ, Sallam A, et al. United Kingdom national ophthalmology database study of vitreoretinal surgery: report 3, retinal detachment. Ophthalmology 2014; 121: 643 – 8. doi: 10.1016/j.ophtha.2013.07.015 pmid: 23978624
+- 34 Heimann H, Bartz-Schmidt KU, Bornfeld N, et al. Scleral buckling versus primary vitrectomy in rhegmatogenous retinal detachment: a prospective randomized multicenter clinical study. Ophthalmology 2007; 114: 2142 – 54. doi: 10.1016/j.ophtha.2007.09.013 pmid: 18054633
+- 35 Tornambe PE, Hilton GF. Pneumatic retinopexy. A multicenter randomized controlled clinical trial comparing pneumatic retinopexy with scleral buckling. the retinal detachment Study Group. Ophthalmology 1989; 96: 772 – 83. discussion 784. doi: 10.1016/s0161-6420(89)32820-x pmid: 2662100
+- 36 Brazitikos PD, Androudi S, Christen WG, et al. Primary pars plana vitrectomy versus scleral buckle surgery for the treatment of pseudophakic retinal detachment: a randomized clinical trial. Retina 2005; 25: 957 – 64. doi: 10.1097/00006982-200512000-00001 pmid: 16340523
+- 37 Ung T, Comer MB, Ang AJS, et al. Clinical features and surgical management of retinal detachment secondary to round retinal holes. Eye 2005; 19: 665 – 9. doi: 10.1038/sj.eye.6701618 pmid: 15359254
+- 38 Jan S, Hussain Z, Khan U, et al. Retinal detachment due to retinal dialysis: surgical outcome after scleral buckling. Asia Pac J Ophthalmol 2015; 4: 259 – 62. doi: 10.1097/APO.0000000000000084 pmid: 26431208
+- 39 Goezinne F, La Heij EC, Berendschot TTJM, et al. Incidence of redetachment 6 months after scleral buckling surgery. Acta Ophthalmol 2010; 88: 199 – 206. doi: 10.1111/j.1755-3768.2008.01425.x pmid: 19432848
+- 40 Seo JH, Woo SJ, Park KH, et al. Influence of persistent submacular fluid on visual outcome after successful scleral buckle surgery for macula-off retinal detachment. Am J Ophthalmol 2008; 145: 915 – 22. doi: 10.1016/j.ajo.2008.01.005 pmid: 18329625
+- 41 Smiddy WE, Loupe DN, Michels RG, et al. Refractive changes after scleral buckling surgery. Arch Ophthalmol 1989; 107: 1469 – 71. doi: 10.1001/archopht.1989.01070020543036 pmid: 2803094
+- 42 Domniz YY, Cahana M, Avni I. Corneal surface changes after pars plana vitrectomy and scleral buckling surgery. J Cataract Refract Surg 2001; 27: 868 – 72. doi: 10.1016/s0886-3350(00)00755-0 pmid: 11408133
+- 43 Roldán-Pallarés M, del Castillo Sanz JL, Awad-El Susi S, et al. Long-Term complications of silicone and hydrogel explants in retinal reattachment surgery. Arch Ophthalmol 1999; 117: 197 – 201. doi: 10.1001/archopht.117.2.197 pmid: 10037564
+- 44 Moisseiev E, Fogel M, Fabian ID, et al. Outcomes of scleral buckle removal: experience from the last decade. Curr Eye Res 2017; 42: 766 – 70. doi: 10.1080/02713683.2016.1245423 pmid: 27911111
+- 45 Ganekal S, Nagarajappa A. Strabismus following scleral buckling surgery. Strabismus 2016; 24: 16 – 20. doi: 10.3109/09273972.2015.1130066 pmid: 26953560
+- 46 Goezinne F, Berendschot TTJM, van Daal EWM, et al. Diplopia was not predictable and not associated with buckle position after scleral buckling surgery for retinal detachment. Retina 2012; 32: 1514 – 24. doi: 10.1097/IAE.0b013e318240a4fe pmid: 22466475
+- 47 Hillier RJ, Felfeli T, Berger AR, et al. The pneumatic retinopexy versus vitrectomy for the management of primary rhegmatogenous retinal detachment outcomes randomized trial (pivot). Ophthalmology 2019; 126: 531 – 9. doi: 10.1016/j.ophtha.2018.11.014 pmid: 30468761
+- 48 Alexander P, Ang A, Poulson A, et al. Scleral buckling combined with vitrectomy for the management of rhegmatogenous retinal detachment associated with inferior retinal breaks. Eye 2008; 22: 200 – 3. doi: 10.1038/sj.eye.6702555 pmid: 16946755
+- 49 Wickham L, Connor M, Aylward GW. Vitrectomy and gas for inferior break retinal detachments: are the results comparable to vitrectomy, gas, and scleral buckle? Br J Ophthalmol 2004; 88: 1376 – 9. doi: 10.1136/bjo.2004.043687 pmid: 15489476 pmcid: PMC1772385
+- 50 Sharma A, Grigoropoulos V, Williamson TH. Management of primary rhegmatogenous retinal detachment with inferior breaks. Br J Ophthalmol 2004; 88: 1372 – 5. doi: 10.1136/bjo.2003.041350 pmid: 15489475 pmcid: PMC1772407
+- 51 Tetsumoto A, Imai H, Hayashida M, et al. The comparison of the surgical outcome of 27-gauge pars plana vitrectomy for primary rhegmatogenous retinal detachment between air and SF6 gas tamponade. Eye 2020; 34: 299 – 306. doi: 10.1038/s41433-019-0726-2 pmid: 31857712 pmcid: PMC7002672
+- 52 Banker TP, Reilly GS, Jalaj S, et al. Epiretinal membrane and cystoid macular edema after retinal detachment repair with small-gauge pars plana vitrectomy. Eur J Ophthalmol 2015; 25: 565 – 70. doi: 10.5301/ejo.5000609 pmid: 25907288
+- 53 Saleh OA, Al-Dwairi RA, Mohidat H, et al. International multi-center study of iatrogenic retinal tears in pars plana vitrectomy. Int J Ophthalmol 2019; 12: 996 – 1000. doi: 10.18240/ijo.2019.06.19 pmid: 31236359 pmcid: PMC6580211
+- 54 Jalil A, Ho WO, Charles S, et al. Iatrogenic retinal breaks in 20-G versus 23-G pars plana vitrectomy. Graefes Arch Clin Exp Ophthalmol 2013; 251: 1463 – 7. doi: 10.1007/s00417-013-2299-2 pmid: 23504085
+- 55 Hsuan JD, Brown NA, Bron AJ, et al. Posterior subcapsular and nuclear cataract after vitrectomy. J Cataract Refract Surg 2001; 27: 437 – 44. doi: 10.1016/s0886-3350(00)00585-x pmid: 11255058
+- 56 Elhousseini Z, Lee E, Williamson TH. Incidence of lens touch during pars plana vitrectomy and outcomes from subsequent cataract surgery. Retina 2016; 36: 825 – 9. doi: 10.1097/IAE.0000000000000779 pmid: 27018809
+- 57 Han DP, Lewis H, Lambrou FH, et al. Mechanisms of intraocular pressure elevation after pars plana vitrectomy. Ophthalmology 1989; 96: 1357 – 62. doi: 10.1016/s0161-6420(89)32715-1 pmid: 2780005
+- 58 Barr CC, Lai MY, Lean JS, et al. Postoperative intraocular pressure abnormalities in the silicone study. silicone study report 4. Ophthalmology 1993; 100: 1629 – 35. doi: 10.1016/s0161-6420(93)31425-9 pmid: 8233387
+- 59 Hilton GF, Grizzard WS. Pneumatic retinopexy. A two-step outpatient operation without conjunctival incision. Ophthalmology 1986; 93: 626 – 41. doi: 10.1016/s0161-6420(86)33696-0 pmid: 3523357
+- 60 Hwang JC. Regional practice patterns for retinal detachment repair in the United States. Am J Ophthalmol 2012; 153: 1125 – 8. doi: 10.1016/j.ajo.2011.11.034 pmid: 22321800
+- 61 Chan CK, Lin SG, Nuthi ASD, et al. Pneumatic retinopexy for the repair of retinal detachments: a comprehensive review (1986-2007). Surv Ophthalmol 2008; 53: 443 – 78. doi: 10.1016/j.survophthal.2008.06.008 pmid: 18929759
+- 62 Tornambe PE, Hilton GF, Brinton DA, et al. Pneumatic retinopexy. A two-year follow-up study of the multicenter clinical trial comparing pneumatic retinopexy with scleral buckling. Ophthalmology 1991; 98: 1115 – 23. pmid: 1891222
+- 63 Ross WH, Kozy DW. Visual recovery in macula-off rhegmatogenous retinal detachments. Ophthalmology 1998; 105: 2149 – 53. doi: 10.1016/S0161-6420(98)91142-3 pmid: 9818620
+- 64 Burton TC. Recovery of visual acuity after retinal detachment involving the macula. Trans Am Ophthalmol Soc 1982; 80: 475 – 97. pmid: 6763802 pmcid: PMC1312277
+- 65 Williamson TH, Shunmugam M, Rodrigues I, et al. Characteristics of rhegmatogenous retinal detachment and their relationship to visual outcome. Eye 2013; 27: 1063 – 9. doi: 10.1038/eye.2013.136 pmid: 23788207 pmcid: PMC3772369
+- 66 Rodrigues IA, Lee EJ, Williamson TH. Measurement of retinal displacement and metamorphopsia after epiretinal membrane or macular hole surgery. Retina 2016; 36: 695 – 702. doi: 10.1097/IAE.0000000000000768 pmid: 26398687
+- 67 Lee E, Williamson TH, Hysi P, et al. Macular displacement following rhegmatogenous retinal detachment repair. Br J Ophthalmol 2013; 97: 1297 – 302. doi: 10.1136/bjophthalmol-2013-303637 pmid: 23868959
+- 68 Shiragami C, Shiraga F, Yamaji H, et al. Unintentional displacement of the retina after standard vitrectomy for rhegmatogenous retinal detachment. Ophthalmology 2010; 117: 86 – 92. doi: 10.1016/j.ophtha.2009.06.025 pmid: 19896189
+- 69 Shiragami C, Fukuda K, Yamaji H, et al. A method to decrease the frequency of unintentional slippage after vitrectomy for rhegmatogenous retinal detachment. Retina 2015; 35: 758 – 63. doi: 10.1097/IAE.0000000000000383 pmid: 25341884
+- 70 Codenotti M, Fogliato G, Iuliano L, et al. Influence of intraocular tamponade on unintentional retinal displacement after vitrectomy for rhegmatogenous retinal detachment. Retina 2013; 33: 349 – 55. doi: 10.1097/IAE.0b013e318263d180 pmid: 22990316
+- 71 dell'Omo R, Scupola A, Viggiano D, et al. Incidence and factors influencing retinal displacement in eyes treated for rhegmatogenous retinal detachment with vitrectomy and gas or silicone oil. Invest Ophthalmol Vis Sci 2017; 58: BIO191 – 9. doi: 10.1167/iovs.17-21466 pmid: 28715581
+- 72 Casswell E, Yorston D, Lee E, et al. The posturing after retinal detachment (PostRD) trial. Invest Ophthalmol Vis Sci 2019; 60: 6421.

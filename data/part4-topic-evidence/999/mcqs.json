@@ -1,0 +1,136 @@
+{
+  "catalogueId": "999",
+  "topic": "paediatric dehydration",
+  "mcqs": [
+    {
+      "id": "999-01",
+      "question": "Which features does CG84 tell you to ask about when assessing dehydration and shock?",
+      "options": {
+        "A": "Unwell appearance, altered responsiveness, low urine output, pale or mottled skin, and cold extremities",
+        "B": "Only the number of loose stools",
+        "C": "Blood pressure in every infant before any history",
+        "D": "Serum amylase alone",
+        "E": "Skin turgor is the only permitted sign"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Unwell appearance, altered responsiveness, low urine output, pale or mottled skin, and cold extremities",
+      "explanation": "CG84 lists those clinical features for remote or face-to-face assessment.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "NICE",
+          "sourceYear": 2009,
+          "sourceUrl": "https://www.nice.org.uk/guidance/cg84",
+          "pmid": "",
+          "pmcid": "",
+          "doi": "",
+          "excerpt": "appears unwell has altered responsiveness, for example is irritable or lethargic has decreased urine output has pale or mottled skin has cold extremities"
+        }
+      ]
+    },
+    {
+      "id": "999-02",
+      "question": "How does CG84 describe deficit replacement with low-osmolarity ORS?",
+      "options": {
+        "A": "50 ml/kg over 4 hours plus maintenance",
+        "B": "5 ml/kg as a single sip",
+        "C": "200 ml/kg in 30 minutes by mouth",
+        "D": "No oral fluid if the child is dehydrated",
+        "E": "Juice only, never ORS"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "50 ml/kg over 4 hours plus maintenance",
+      "explanation": "CG84 says give 50 ml/kg for fluid deficit replacement over 4 hours as well as maintenance fluid.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "NICE",
+          "sourceYear": 2009,
+          "sourceUrl": "https://www.nice.org.uk/guidance/cg84",
+          "pmid": "",
+          "pmcid": "",
+          "doi": "",
+          "excerpt": "give 50 ml/kg for fluid deficit replacement over 4 hours as well as maintenance fluid"
+        }
+      ]
+    },
+    {
+      "id": "999-03",
+      "question": "What osmolarity does CG84 specify for the oral rehydration solution?",
+      "options": {
+        "A": "240–250 mOsm/L",
+        "B": "600 mOsm/L",
+        "C": "Isotonic saline 0.9% by mouth only",
+        "D": "Distilled water",
+        "E": "1000 mOsm/L"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "240–250 mOsm/L",
+      "explanation": "CG84 specifies a low-osmolarity solution of 240–250 mOsm/L.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "NICE",
+          "sourceYear": 2009,
+          "sourceUrl": "https://www.nice.org.uk/guidance/cg84",
+          "pmid": "",
+          "pmcid": "",
+          "doi": "",
+          "excerpt": "solution (240–250 mOsm/l) for oral rehydration therapy"
+        }
+      ]
+    },
+    {
+      "id": "999-04",
+      "question": "When does CG84 say to measure venous acid–base status and chloride?",
+      "options": {
+        "A": "If shock is suspected or confirmed",
+        "B": "In every child with one vomit",
+        "C": "Only after discharge",
+        "D": "Never in gastroenteritis",
+        "E": "Only if the child is over 12 years"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "If shock is suspected or confirmed",
+      "explanation": "CG84 recommends that blood test if shock is suspected or confirmed.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "NICE",
+          "sourceYear": 2009,
+          "sourceUrl": "https://www.nice.org.uk/guidance/cg84",
+          "pmid": "",
+          "pmcid": "",
+          "doi": "",
+          "excerpt": "Measure venous blood acid–base status and chloride concentration if shock is suspected or confirmed."
+        }
+      ]
+    },
+    {
+      "id": "999-05",
+      "question": "Which two states does CG84 section 1.2 tell clinicians to assess together?",
+      "options": {
+        "A": "Dehydration and shock",
+        "B": "Asthma and eczema",
+        "C": "Jaundice and kernicterus",
+        "D": "Constipation and encopresis",
+        "E": "Otitis and mastoiditis"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Dehydration and shock",
+      "explanation": "The section is titled assessing dehydration and shock.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "NICE",
+          "sourceYear": 2009,
+          "sourceUrl": "https://www.nice.org.uk/guidance/cg84",
+          "pmid": "",
+          "pmcid": "",
+          "doi": "",
+          "excerpt": "1.2 Assessing dehydration and shock"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "catalogueId": "35",
+  "topic": "COPD diagnosis and staging",
+  "scope": "Stored NICE NG115 recommendations on suspecting COPD, post-bronchodilator spirometry, the 0.7 ratio, and grading obstruction by FEV1.",
+  "keyRecommendations": [
+    {
+      "text": "Suspect COPD in people over 35 with a risk factor, generally smoking, and symptoms such as exertional breathlessness, chronic cough, regular sputum, frequent winter bronchitis, or wheeze.",
+      "strength": "not_graded",
+      "population": "Adults over 35"
+    },
+    {
+      "text": "Confirm the diagnosis with post-bronchodilator spirometry.",
+      "strength": "not_graded",
+      "population": "Suspected COPD"
+    },
+    {
+      "text": "Think about other diagnoses in older people with FEV1/FVC below 0.7 but without typical symptoms. Grade severity of airflow obstruction by the reduction in FEV1.",
+      "strength": "not_graded",
+      "population": "Spirometric diagnosis"
+    }
+  ],
+  "clinicalBottomLine": "Suspect COPD from age, smoking, and symptoms; confirm with post-bronchodilator spirometry; do not label older people with a ratio below 0.7 but no typical symptoms without thinking of alternatives; grade obstruction by FEV1.",
+  "notableCaveats": [
+    "NG115 cites older GOLD stage labels in its table. The 2023 GOLD ABE tool is a different document and is not used for these questions."
+  ],
+  "source": {
+    "title": "Chronic obstructive pulmonary disease in over 16s: diagnosis and management. NICE guideline NG115.",
+    "year": 2018,
+    "pmid": "",
+    "pmcid": "",
+    "doi": "",
+    "url": "https://www.nice.org.uk/guidance/ng115",
+    "sourceBody": "NICE",
+    "storedAs": "data/question-repair-source-import.json guideline_documents ng115"
+  }
+}

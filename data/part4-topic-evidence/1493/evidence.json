@@ -1,0 +1,22 @@
+{
+  "catalogueId": "1493",
+  "spreadsheetRow": 85,
+  "topic": "Pulmonary Veno-Occlusive Disease",
+  "specialty": "Pulmonology",
+  "decision": "downloaded open source",
+  "source": {
+    "title": "Pulmonary veno-occlusive disease: illustrative cases and literature review.",
+    "year": 2024,
+    "pmid": "38232988",
+    "pmcid": "PMC10792437",
+    "doi": "",
+    "url": "https://europepmc.org/articles/PMC10792437",
+    "sourceBody": "Open review",
+    "storedAs": ""
+  },
+  "whyItFits": "Review of pulmonary veno-occlusive disease, including its current PAH classification name, transplant referral, and histology.",
+  "limitations": "",
+  "synopsisWritten": true,
+  "mcqsWritten": true,
+  "mcqCount": 5
+}

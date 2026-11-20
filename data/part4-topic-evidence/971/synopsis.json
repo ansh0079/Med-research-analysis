@@ -1,0 +1,36 @@
+{
+  "catalogueId": "971",
+  "topic": "Lung Transplantation",
+  "scope": "ISHLT consensus update on selecting lung-transplant candidates, including fewer absolute contraindications, timely referral, obesity, and prior malignancy.",
+  "keyRecommendations": [
+    {
+      "text": "Far fewer absolute contraindications to candidacy exist now than in earlier eras.",
+      "strength": "not_graded",
+      "population": "Lung transplant referral"
+    },
+    {
+      "text": "The goal is timely referral, assessment, optimization, and listing.",
+      "strength": "not_graded",
+      "population": "Advanced lung disease"
+    },
+    {
+      "text": "Obese recipients have more primary graft dysfunction and higher post-transplant mortality than normal or overweight recipients.",
+      "strength": "not_graded",
+      "population": "Obesity"
+    }
+  ],
+  "clinicalBottomLine": "Refer earlier. Absolute contraindications are fewer, but obesity is associated with more primary graft dysfunction and death after transplant, and prior cancer needs confirmation that it is not residual or metastatic.",
+  "notableCaveats": [
+    "The PMC record is the publicly archived text. Numeric BMI cutoffs and mandatory cancer-free intervals are not copied unless the sentence states them, and these questions do not use a number the extract does not state."
+  ],
+  "source": {
+    "title": "Consensus document for the selection of lung transplant candidates: An update from the International Society for Heart and Lung Transplantation.",
+    "year": 2021,
+    "pmid": "34419372",
+    "pmcid": "PMC8979471",
+    "doi": "",
+    "url": "https://europepmc.org/articles/PMC8979471",
+    "sourceBody": "ISHLT / J Heart Lung Transplant",
+    "storedAs": ""
+  }
+}

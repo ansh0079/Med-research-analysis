@@ -1,0 +1,136 @@
+{
+  "catalogueId": "1032",
+  "topic": "Diffusing Capacity of the Lung for Carbon Monoxide",
+  "mcqs": [
+    {
+      "id": "1032-01",
+      "question": "What does this chapter say a DLCO below 75% to 140% of predicted indicates?",
+      "options": {
+        "A": "Pathology that reduces capillary blood volume or fibroses the alveolar-capillary interface",
+        "B": "Normal gas transfer",
+        "C": "Isolated upper-airway obstruction",
+        "D": "Carbon monoxide poisoning as the only meaning",
+        "E": "A high hemoglobin only"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Pathology that reduces capillary blood volume or fibroses the alveolar-capillary interface",
+      "explanation": "A value below that predicted range indicates reduced capillary blood volume or fibrosis of the interface between alveolar air and capillary blood.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "StatPearls / NCBI Bookshelf",
+          "sourceYear": 2024,
+          "sourceUrl": "https://www.ncbi.nlm.nih.gov/books/NBK556149/",
+          "pmid": "",
+          "pmcid": "",
+          "doi": "",
+          "excerpt": "A DLCO below the range of 75% to 140% of the predicted value indicates underlying pathology that either reduces capillary blood volume or causes fibrosis of the interface between alveolar air and capillary blood. "
+        }
+      ]
+    },
+    {
+      "id": "1032-02",
+      "question": "Which condition is listed among those that increase DLCO?",
+      "options": {
+        "A": "Pulmonary hemorrhage",
+        "B": "Anemia",
+        "C": "Emphysema",
+        "D": "Early interstitial lung disease",
+        "E": "Pulmonary vascular disease"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Pulmonary hemorrhage",
+      "explanation": "The increase list includes pulmonary hemorrhage, along with asthma, polycythemia, and others. Anemia and vascular disease are on the decrease list.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "StatPearls / NCBI Bookshelf",
+          "sourceYear": 2024,
+          "sourceUrl": "https://www.ncbi.nlm.nih.gov/books/NBK556149/",
+          "pmid": "",
+          "pmcid": "",
+          "doi": "",
+          "excerpt": "Conditions that increase the DLCO include:\n\n- Altitude\n- Asthma\n- Polycythemia\n- Exercise\n- Severe obesity\n- Left-to-right cardiac shunt\n- Mueller maneuver\n- Supine position\n- Bronchodilator use\n- Mild left heart failure due to increased pulmonary capillary blood volume\n- Pulmonary hemorrhage\n\n"
+        }
+      ]
+    },
+    {
+      "id": "1032-03",
+      "question": "With normal lung volumes, which states does the chapter say decrease DLCO?",
+      "options": {
+        "A": "Anemia, pulmonary vascular disease, and early ILD",
+        "B": "Only asthma",
+        "C": "Only obesity",
+        "D": "Only left-to-right shunt",
+        "E": "None of these lower DLCO"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Anemia, pulmonary vascular disease, and early ILD",
+      "explanation": "Under states with normal lung volumes, the decrease list names anemia, pulmonary vascular disease, and early ILD.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "StatPearls / NCBI Bookshelf",
+          "sourceYear": 2024,
+          "sourceUrl": "https://www.ncbi.nlm.nih.gov/books/NBK556149/",
+          "pmid": "",
+          "pmcid": "",
+          "doi": "",
+          "excerpt": "States with normal lung volumes: Anemia, pulmonary vascular disease, early ILD, and the Valsalva maneuver\n"
+        }
+      ]
+    },
+    {
+      "id": "1032-04",
+      "question": "Restriction with a normal DLCO is described as likely due to what?",
+      "options": {
+        "A": "An extrapulmonary cause, such as pleural disease, neuromuscular weakness, or kyphoscoliosis",
+        "B": "Emphysema",
+        "C": "Pulmonary hemorrhage",
+        "D": "A technical error that always raises DLCO",
+        "E": "Primary pulmonary vascular disease only"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "An extrapulmonary cause, such as pleural disease, neuromuscular weakness, or kyphoscoliosis",
+      "explanation": "The chapter says restriction with a normal DLCO is likely an extrapulmonary cause, and names pleural effusion, pleural thickening, neuromuscular weakness, or kyphoscoliosis.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "StatPearls / NCBI Bookshelf",
+          "sourceYear": 2024,
+          "sourceUrl": "https://www.ncbi.nlm.nih.gov/books/NBK556149/",
+          "pmid": "",
+          "pmcid": "",
+          "doi": "",
+          "excerpt": "Conditions with restriction and a normal DLCO: Likely an extrapulmonary cause like pleural effusion, pleural thickening, neuromuscular weakness, or kyphoscoliosis\n"
+        }
+      ]
+    },
+    {
+      "id": "1032-05",
+      "question": "Which two measured components does the chapter use to describe DLCO?",
+      "options": {
+        "A": "Alveolar volume during the breath-hold (Va) and the rate of CO uptake (Kco)",
+        "B": "FEV1 and FVC only",
+        "C": "Peak flow and residual volume only",
+        "D": "pH and PaCO2",
+        "E": "Hemoglobin and creatinine only"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Alveolar volume during the breath-hold (Va) and the rate of CO uptake (Kco)",
+      "explanation": "DLCO is described using the alveolar volume accessible during a 10-second breath-hold (Va) and the rate of alveolar-capillary CO uptake (Kco).",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "StatPearls / NCBI Bookshelf",
+          "sourceYear": 2024,
+          "sourceUrl": "https://www.ncbi.nlm.nih.gov/books/NBK556149/",
+          "pmid": "",
+          "pmcid": "",
+          "doi": "",
+          "excerpt": "alveolar volume accessible during a 10-second breath hold (Va) and the rate of alveolar capillary blood CO uptake (Kco).\n\n"
+        }
+      ]
+    }
+  ]
+}

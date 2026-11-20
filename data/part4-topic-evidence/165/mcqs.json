@@ -1,0 +1,136 @@
+{
+  "catalogueId": "165",
+  "topic": "Lymphangioleiomyomatosis",
+  "mcqs": [
+    {
+      "id": "165-01",
+      "question": "What does the guideline recommend for LAM with abnormal or declining lung function?",
+      "options": {
+        "A": "Sirolimus rather than observation, a strong recommendation",
+        "B": "Observation only",
+        "C": "Doxycycline as first-line treatment",
+        "D": "Hormonal therapy",
+        "E": "Immediate lung transplant for every patient"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Sirolimus rather than observation, a strong recommendation",
+      "explanation": "The guideline recommends sirolimus rather than observation, a strong recommendation based on moderate-quality evidence.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "ATS/JRS",
+          "sourceYear": 2016,
+          "sourceUrl": "https://www.thoracic.org/statements/resources/interstitial-lung-disease/lam-guideline.pdf",
+          "pmid": "27628078",
+          "pmcid": "PMC5803656",
+          "doi": "10.1164/rccm.201607-1384ST",
+          "excerpt": "For patients with LAM with abnormal/declining lung function, we recommend treatment with sirolimus rather than observation (strong recommendation based on moderate quality evidence)."
+        }
+      ]
+    },
+    {
+      "id": "165-02",
+      "question": "What does the guideline suggest before invasive management of problematic chylous effusions?",
+      "options": {
+        "A": "Sirolimus",
+        "B": "Doxycycline",
+        "C": "Tamoxifen",
+        "D": "No medical treatment is mentioned",
+        "E": "Immediate pleurodesis as the only option"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Sirolimus",
+      "explanation": "For selected patients with problematic chylous effusions, the guideline suggests sirolimus before invasive management.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "ATS/JRS",
+          "sourceYear": 2016,
+          "sourceUrl": "https://www.thoracic.org/statements/resources/interstitial-lung-disease/lam-guideline.pdf",
+          "pmid": "27628078",
+          "pmcid": "PMC5803656",
+          "doi": "10.1164/rccm.201607-1384ST",
+          "excerpt": "For selected patients with LAM with problematic chylous effusions, we suggest treatment with sirolimus before invasive management (conditional\n\nrecommendation based on very low-quality evidence)."
+        }
+      ]
+    },
+    {
+      "id": "165-03",
+      "question": "What is the recommendation on doxycycline?",
+      "options": {
+        "A": "Suggest not using it",
+        "B": "Strong recommendation to use it",
+        "C": "Use it only with sirolimus",
+        "D": "It is the diagnostic test",
+        "E": "The guideline does not mention it"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Suggest not using it",
+      "explanation": "The guideline suggests not using doxycycline, a conditional recommendation based on low-quality evidence.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "ATS/JRS",
+          "sourceYear": 2016,
+          "sourceUrl": "https://www.thoracic.org/statements/resources/interstitial-lung-disease/lam-guideline.pdf",
+          "pmid": "27628078",
+          "pmcid": "PMC5803656",
+          "doi": "10.1164/rccm.201607-1384ST",
+          "excerpt": "We suggest NOT using doxycycline as treatment for LAM (conditional recommendation based on low-quality evidence)."
+        }
+      ]
+    },
+    {
+      "id": "165-04",
+      "question": "What is the recommendation on hormonal therapy?",
+      "options": {
+        "A": "Suggest not using it, including progestins, GnRH agonists, tamoxifen, and oophorectomy",
+        "B": "Recommend oophorectomy for every patient",
+        "C": "Tamoxifen is first-line",
+        "D": "Hormonal therapy is required before sirolimus",
+        "E": "The guideline has no statement"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Suggest not using it, including progestins, GnRH agonists, tamoxifen, and oophorectomy",
+      "explanation": "The guideline suggests not using hormonal therapy and names progestins, GnRH agonists, selective estrogen receptor modulators such as tamoxifen, and oophorectomy.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "ATS/JRS",
+          "sourceYear": 2016,
+          "sourceUrl": "https://www.thoracic.org/statements/resources/interstitial-lung-disease/lam-guideline.pdf",
+          "pmid": "27628078",
+          "pmcid": "PMC5803656",
+          "doi": "10.1164/rccm.201607-1384ST",
+          "excerpt": "We suggest NOT using hormonal therapy as treatment for LAM (conditional recommendation based on very low quality evidence)."
+        }
+      ]
+    },
+    {
+      "id": "165-05",
+      "question": "When CT shows cysts characteristic of LAM but there is no other confirmatory feature, what does the guideline recommend before biopsy?",
+      "options": {
+        "A": "VEGF-D testing to establish the diagnosis",
+        "B": "Proceed straight to surgical biopsy",
+        "C": "Doxycycline for six months",
+        "D": "No further test",
+        "E": "Hormonal therapy as a diagnostic trial"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "VEGF-D testing to establish the diagnosis",
+      "explanation": "The guideline recommends VEGF-D testing to establish the diagnosis before diagnostic lung biopsy. That recommendation is strong.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "ATS/JRS",
+          "sourceYear": 2016,
+          "sourceUrl": "https://www.thoracic.org/statements/resources/interstitial-lung-disease/lam-guideline.pdf",
+          "pmid": "27628078",
+          "pmcid": "PMC5803656",
+          "doi": "10.1164/rccm.201607-1384ST",
+          "excerpt": "For patients whose computed tomography scan shows cystic abnormalities characteristic of LAM, but who have no other confirmatory clinical or extrapulmonary radiologic features of LAM, we recommend vascular endothelial growth factor D testing to establish the diagnosis of LAM before consideration of proceeding to diagnostic lung biopsy (strong recommendation based on moderate-quality evidence). The\n\npurpose of vascular endothelial growth factor D testing is noninvasive diagnostic confirmation of LAM."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "catalogueId": "347",
+  "topic": "Hyperventilation Syndrome",
+  "scope": "Boulding review that classifies dysfunctional breathing, with hyperventilation syndrome as the first subtype.",
+  "keyRecommendations": [
+    {
+      "text": "Hyperventilation syndrome is associated with symptoms related to respiratory alkalosis and symptoms independent of hypocapnia.",
+      "strength": "not_graded",
+      "population": "Dysfunctional breathing"
+    },
+    {
+      "text": "Other proposed subtypes are periodic deep sighing, thoracic-dominant breathing, forced abdominal expiration, and thoraco-abdominal asynchrony.",
+      "strength": "not_graded",
+      "population": "Dysfunctional breathing"
+    }
+  ],
+  "clinicalBottomLine": "Hyperventilation syndrome is one pattern of dysfunctional breathing, with symptoms both from alkalosis and independent of a low carbon dioxide. It is not the only pattern.",
+  "notableCaveats": [
+    "The Nijmegen questionnaire is named in the search strategy, not validated as a cutoff in the sentences used."
+  ],
+  "source": {
+    "title": "Dysfunctional breathing: a review of the literature and proposal for classification.",
+    "year": 2016,
+    "pmid": "27581828",
+    "pmcid": "PMC9487208",
+    "doi": "",
+    "url": "https://europepmc.org/articles/PMC9487208",
+    "sourceBody": "Eur Respir Rev",
+    "storedAs": ""
+  }
+}

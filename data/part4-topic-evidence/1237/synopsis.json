@@ -1,0 +1,36 @@
+{
+  "catalogueId": "1237",
+  "topic": "Neuromuscular Respiratory Failure",
+  "scope": "Narrative review of acute-on-chronic neuromuscular respiratory failure, written around ALS patients without a tracheostomy.",
+  "keyRecommendations": [
+    {
+      "text": "Acute respiratory failure requiring intubation commonly leads to tracheostomy or palliative-focused care.",
+      "strength": "not_graded",
+      "population": "ALS without tracheostomy"
+    },
+    {
+      "text": "New hypoxia and hypercapnia are not initially presumed to be end-stage neuromuscular failure.",
+      "strength": "not_graded",
+      "population": "Acute decompensation"
+    },
+    {
+      "text": "Selected patients may need intubation or advanced NIV adjustments.",
+      "strength": "not_graded",
+      "population": "Acute neuromuscular respiratory failure"
+    }
+  ],
+  "clinicalBottomLine": "Look for a new cause of hypoxia or hypercapnia before calling the episode end-stage disease. Some patients need intubation or a change in NIV; many who are intubated proceed to tracheostomy or a palliative plan.",
+  "notableCaveats": [
+    "No numeric vital-capacity threshold is stated in the sentences used, so none is taught."
+  ],
+  "source": {
+    "title": "Acute on Chronic Neuromuscular Respiratory Failure in the Intensive Care Unit: A Narrative Review.",
+    "year": 2021,
+    "pmid": "34381654",
+    "pmcid": "PMC8351614",
+    "doi": "",
+    "url": "https://europepmc.org/articles/PMC8351614",
+    "sourceBody": "Open narrative review",
+    "storedAs": ""
+  }
+}

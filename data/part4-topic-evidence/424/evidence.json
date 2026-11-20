@@ -1,0 +1,22 @@
+{
+  "catalogueId": "424",
+  "spreadsheetRow": 51,
+  "topic": "Alcohol withdrawal syndrome and delirium tremens management in ICU",
+  "specialty": "Psychiatry",
+  "decision": "in-app document",
+  "source": {
+    "title": "Alcohol-use disorders: diagnosis and management of physical complications. NICE guideline CG100.",
+    "year": 2010,
+    "pmid": "",
+    "pmcid": "",
+    "doi": "",
+    "url": "https://www.nice.org.uk/guidance/cg100",
+    "sourceBody": "NICE",
+    "storedAs": "data/question-repair-source-import.json guideline_documents source_url cg100"
+  },
+  "whyItFits": "Stored full NICE CG100 text on acute alcohol withdrawal, delirium tremens, and withdrawal seizures in hospital.",
+  "limitations": "",
+  "synopsisWritten": true,
+  "mcqsWritten": true,
+  "mcqCount": 5
+}

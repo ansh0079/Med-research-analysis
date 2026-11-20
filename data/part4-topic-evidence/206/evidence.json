@@ -1,0 +1,22 @@
+{
+  "catalogueId": "206",
+  "spreadsheetRow": 82,
+  "topic": "Pancoast Tumors",
+  "specialty": "Pulmonology",
+  "decision": "downloaded open source",
+  "source": {
+    "title": "Superior sulcus (Pancoast) tumors: current evidence on diagnosis and radical treatment.",
+    "year": 2013,
+    "pmid": "24102007",
+    "pmcid": "PMC3791502",
+    "doi": "10.3978/j.issn.2072-1439.2013.04.08",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3791502/",
+    "sourceBody": "J Thorac Dis",
+    "storedAs": ""
+  },
+  "whyItFits": "Open review of superior sulcus (Pancoast) tumors: local invasion, the Pancoast-Tobias syndrome, and induction chemoradiotherapy before resection.",
+  "limitations": "Open full review. Replaces the abstract-only record of a different short paper.",
+  "synopsisWritten": true,
+  "mcqsWritten": true,
+  "mcqCount": 5
+}

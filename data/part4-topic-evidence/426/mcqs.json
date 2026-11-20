@@ -1,0 +1,136 @@
+{
+  "catalogueId": "426",
+  "topic": "Occupational Asthma",
+  "mcqs": [
+    {
+      "id": "426-01",
+      "question": "What does the review call the most effective interventions for work-related asthma?",
+      "options": {
+        "A": "Early diagnosis and complete removal of the causative exposure",
+        "B": "Continued exposure with a reliever inhaler only",
+        "C": "Antibiotics",
+        "D": "Delaying diagnosis until disability is fixed",
+        "E": "No intervention works"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Early diagnosis and complete removal of the causative exposure",
+      "explanation": "Early diagnosis and complete removal of exposure are the most effective interventions for prevention and treatment.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "Open review",
+          "sourceYear": 2021,
+          "sourceUrl": "https://europepmc.org/articles/PMC8352763",
+          "pmid": "34406224",
+          "pmcid": "PMC8352763",
+          "doi": "",
+          "excerpt": "Early diagnosis and complete removal of exposure to the causative agent are the most effective interventions"
+        }
+      ]
+    },
+    {
+      "id": "426-02",
+      "question": "What latency does the review describe for sensitizer-induced disease?",
+      "options": {
+        "A": "Symptoms months or years after exposure",
+        "B": "Symptoms within one breath only",
+        "C": "No latency concept",
+        "D": "Symptoms only after retirement in every case",
+        "E": "A latency of minutes is the definition given"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Symptoms months or years after exposure",
+      "explanation": "The latency period is symptoms occurring months or years after exposure. Earlier onset is associated with higher exposure.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "Open review",
+          "sourceYear": 2021,
+          "sourceUrl": "https://europepmc.org/articles/PMC8352763",
+          "pmid": "34406224",
+          "pmcid": "PMC8352763",
+          "doi": "",
+          "excerpt": "symptoms occurring months or years after exposure"
+        }
+      ]
+    },
+    {
+      "id": "426-03",
+      "question": "What are high-molecular-weight occupational agents in this review?",
+      "options": {
+        "A": "Proteins of animal or vegetable origin",
+        "B": "Inert dusts with no protein",
+        "C": "Only metals",
+        "D": "Only isocyanates, which the same sentence places with low-molecular-weight haptens",
+        "E": "Radiation"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Proteins of animal or vegetable origin",
+      "explanation": "High-molecular-weight agents consist of proteins of animal or vegetable origin.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "Open review",
+          "sourceYear": 2021,
+          "sourceUrl": "https://europepmc.org/articles/PMC8352763",
+          "pmid": "34406224",
+          "pmcid": "PMC8352763",
+          "doi": "",
+          "excerpt": "High-molecular-weight agents consist of proteins of animal or vegetable origin."
+        }
+      ]
+    },
+    {
+      "id": "426-04",
+      "question": "How does the review describe serial peak-flow measurements?",
+      "options": {
+        "A": "The simplest and least expensive method to assess response to inhaled agents or the workplace",
+        "B": "Obsolete",
+        "C": "Useful only in hospital ventilation",
+        "D": "A replacement for removal from exposure",
+        "E": "Not mentioned"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "The simplest and least expensive method to assess response to inhaled agents or the workplace",
+      "explanation": "Serial PEF is the simplest and least expensive method to assess response to inhaled agents or work conditions.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "Open review",
+          "sourceYear": 2021,
+          "sourceUrl": "https://europepmc.org/articles/PMC8352763",
+          "pmid": "34406224",
+          "pmcid": "PMC8352763",
+          "doi": "",
+          "excerpt": "serial PEF measurements provide the simplest and least expensive method"
+        }
+      ]
+    },
+    {
+      "id": "426-05",
+      "question": "Which category, other than sensitizer-induced occupational asthma, is named in the review?",
+      "options": {
+        "A": "Work-exacerbated asthma",
+        "B": "Cardiac asthma only",
+        "C": "Exercise asthma in athletes with no workplace",
+        "D": "The review discusses only COPD",
+        "E": "No subtype is named"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Work-exacerbated asthma",
+      "explanation": "Work-exacerbated asthma is named alongside occupational asthma.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "Open review",
+          "sourceYear": 2021,
+          "sourceUrl": "https://europepmc.org/articles/PMC8352763",
+          "pmid": "34406224",
+          "pmcid": "PMC8352763",
+          "doi": "",
+          "excerpt": "work-exacerbated asthma"
+        }
+      ]
+    }
+  ]
+}

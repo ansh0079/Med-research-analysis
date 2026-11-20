@@ -1,0 +1,36 @@
+{
+  "catalogueId": "1506",
+  "topic": "Retinal detachment: presentation and emergency management",
+  "scope": "Open full-text review of rhegmatogenous retinal detachment: macula-on versus macula-off, urgent surgery, and the three repair operations.",
+  "keyRecommendations": [
+    {
+      "text": "Primary surgical success is over 80 to 90 percent. The three current options are pneumatic retinopexy, scleral buckle, and pars plana vitrectomy.",
+      "strength": "not_graded",
+      "population": "Rhegmatogenous retinal detachment"
+    },
+    {
+      "text": "Symptomatic detachment is a clear indication for surgery. Macula-on detachment has better initial acuity and a better visual prognosis.",
+      "strength": "not_graded",
+      "population": "Presentation"
+    },
+    {
+      "text": "Proliferative vitreoretinopathy is the most predictive factor for primary failure, with success falling from 90 to 68 percent if it is present.",
+      "strength": "not_graded",
+      "population": "Surgical failure"
+    }
+  ],
+  "clinicalBottomLine": "Treat symptomatic rhegmatogenous detachment as an indication for urgent repair. Record whether the macula is on. Choose among pneumatic retinopexy, buckle, and vitrectomy, and expect worse primary success if proliferative vitreoretinopathy is already present.",
+  "notableCaveats": [
+    "Replaces the 2014 CME summary. This 2020 review is an open full text."
+  ],
+  "source": {
+    "title": "Rhegmatogenous retinal detachment: a review of current practice in diagnosis and management.",
+    "year": 2020,
+    "pmid": "33083551",
+    "pmcid": "PMC7549457",
+    "doi": "10.1136/bmjophth-2020-000474",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7549457/",
+    "sourceBody": "BMJ Open Ophthalmology",
+    "storedAs": ""
+  }
+}

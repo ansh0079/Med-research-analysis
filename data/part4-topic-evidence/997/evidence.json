@@ -1,0 +1,22 @@
+{
+  "catalogueId": "997",
+  "spreadsheetRow": 80,
+  "topic": "Obstructive Sleep Apnea",
+  "specialty": "Pulmonology",
+  "decision": "downloaded open source",
+  "source": {
+    "title": "Treatment of adult obstructive sleep apnea with positive airway pressure: an American Academy of Sleep Medicine systematic review, meta-analysis, and GRADE assessment.",
+    "year": 2019,
+    "pmid": "",
+    "pmcid": "PMC6374080",
+    "doi": "",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6374080/",
+    "sourceBody": "AASM / J Clin Sleep Med",
+    "storedAs": ""
+  },
+  "whyItFits": "Full AASM systematic review that supports the PAP guideline, replacing the abstract-only recommendation list.",
+  "limitations": "Open full AASM systematic review. Replaces the abstract-only guideline XML. PMID is the review, not the companion guideline abstract. The downloaded PMC page is PMC6374080. A PMID was not printed in that page, so none is recorded.",
+  "synopsisWritten": true,
+  "mcqsWritten": true,
+  "mcqCount": 5
+}

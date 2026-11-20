@@ -1,0 +1,136 @@
+{
+  "catalogueId": "206",
+  "topic": "Pancoast Tumors",
+  "mcqs": [
+    {
+      "id": "206-01",
+      "question": "What does this review call the standard of care for a potentially resectable Pancoast tumor?",
+      "options": {
+        "A": "Induction chemoradiotherapy followed by an attempt at complete resection",
+        "B": "Surgery alone with no preoperative treatment",
+        "C": "Chemotherapy without any plan for resection",
+        "D": "Observation",
+        "E": "Radiotherapy only after recurrence"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Induction chemoradiotherapy followed by an attempt at complete resection",
+      "explanation": "Induction chemoradiotherapy is the standard of care for any potentially resectable Pancoast tumor, followed by an attempt at complete resection.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "J Thorac Dis",
+          "sourceYear": 2013,
+          "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3791502/",
+          "pmid": "24102007",
+          "pmcid": "PMC3791502",
+          "doi": "10.3978/j.issn.2072-1439.2013.04.08",
+          "excerpt": "Induction chemo-radiotherapy is the standard of care for any potentially resectable Pancoast tumor followed by an attempt to achieve a complete tumor resection."
+        }
+      ]
+    },
+    {
+      "id": "206-02",
+      "question": "Which features does the review include in the Pancoast-Tobias syndrome?",
+      "options": {
+        "A": "Horner syndrome, severe shoulder pain, muscle atrophy, and subclavian vein obstruction",
+        "B": "Only a cough with a normal shoulder exam",
+        "C": "Jaundice and ascites",
+        "D": "Isolated digital clubbing",
+        "E": "The syndrome is not described"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Horner syndrome, severe shoulder pain, muscle atrophy, and subclavian vein obstruction",
+      "explanation": "The syndrome includes Claude-Bernard-Horner syndrome, severe shoulder pain, atrophy of hand and arm muscles, and obstruction of the subclavian vein.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "J Thorac Dis",
+          "sourceYear": 2013,
+          "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3791502/",
+          "pmid": "24102007",
+          "pmcid": "PMC3791502",
+          "doi": "10.3978/j.issn.2072-1439.2013.04.08",
+          "excerpt": "clinically evident with the characteristic symptoms of the “Pancoast-Tobias syndrome” which includes Claude-Bernard-Horner syndrome, severe pain in the shoulder radiating toward the axilla and/or scapula and along the ulnar distribution of the upper arm, atrophy of hand and arm muscles and obstruction of the subclavian vein resulting in edema of the upper arm."
+        }
+      ]
+    },
+    {
+      "id": "206-03",
+      "question": "What 5-year survival does the review give for R0 resection?",
+      "options": {
+        "A": "54 to 77 percent",
+        "B": "Under 10 percent",
+        "C": "Survival is not stated",
+        "D": "100 percent",
+        "E": "The same as unresectable disease in this sentence"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "54 to 77 percent",
+      "explanation": "The review says 5-year survival for R0 resections is quite good, 54 to 77 percent. Complete resection rates in the same passage vary from 55 to 70 percent.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "J Thorac Dis",
+          "sourceYear": 2013,
+          "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3791502/",
+          "pmid": "24102007",
+          "pmcid": "PMC3791502",
+          "doi": "10.3978/j.issn.2072-1439.2013.04.08",
+          "excerpt": "the 5-year survival for R0 resections is quite good (54-77%)."
+        }
+      ]
+    },
+    {
+      "id": "206-04",
+      "question": "Which inlet structures does the review say these tumors can involve?",
+      "options": {
+        "A": "The lower brachial plexus, the stellate ganglion, and the subclavian vessels, among others",
+        "B": "Only the diaphragm",
+        "C": "Only the heart valves",
+        "D": "No local structures",
+        "E": "Only abdominal nodes"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "The lower brachial plexus, the stellate ganglion, and the subclavian vessels, among others",
+      "explanation": "The review lists the lower nerve roots of the brachial plexus, the upper sympathetic chain and stellate ganglion, and the subclavian vein and artery.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "J Thorac Dis",
+          "sourceYear": 2013,
+          "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3791502/",
+          "pmid": "24102007",
+          "pmcid": "PMC3791502",
+          "doi": "10.3978/j.issn.2072-1439.2013.04.08",
+          "excerpt": "lower nerve roots of the brachial plexus, the upper sympathetic chain and stellate ganglion, the subclavian vein and artery), producing that way a special clinical picture that is well known in the medical literature as the Pancoast-Tobias or Pancoast syndrome (1-6)."
+        }
+      ]
+    },
+    {
+      "id": "206-05",
+      "question": "What does the review call the main pattern of recurrence?",
+      "options": {
+        "A": "Distant metastases, especially in the brain",
+        "B": "Only local wound infection",
+        "C": "Recurrence does not occur after R0 resection",
+        "D": "Only contralateral pneumothorax",
+        "E": "The pattern is not stated"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Distant metastases, especially in the brain",
+      "explanation": "The main pattern of recurrence is distant metastases, especially in the brain.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "J Thorac Dis",
+          "sourceYear": 2013,
+          "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3791502/",
+          "pmid": "24102007",
+          "pmcid": "PMC3791502",
+          "doi": "10.3978/j.issn.2072-1439.2013.04.08",
+          "excerpt": "The main pattern of recurrence is that of distant metastases, especially in the brain."
+        }
+      ]
+    }
+  ]
+}

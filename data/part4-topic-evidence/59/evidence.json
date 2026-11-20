@@ -1,0 +1,22 @@
+{
+  "catalogueId": "59",
+  "spreadsheetRow": 83,
+  "topic": "Pulmonary Capillaritis",
+  "specialty": "Pulmonology",
+  "decision": "downloaded open source",
+  "source": {
+    "title": "Isolated pauci-immune pulmonary capillaritis.",
+    "year": 2015,
+    "pmid": "25624599",
+    "pmcid": "PMC4298921",
+    "doi": "",
+    "url": "https://europepmc.org/articles/PMC4298921",
+    "sourceBody": "Case report with classification",
+    "storedAs": ""
+  },
+  "whyItFits": "Case report that states a four-part classification of diffuse alveolar haemorrhage without systemic vasculitis.",
+  "limitations": "Case report. Classification paragraph used; the case itself is not generalised.",
+  "synopsisWritten": true,
+  "mcqsWritten": true,
+  "mcqCount": 5
+}

@@ -1,0 +1,36 @@
+{
+  "catalogueId": "1032",
+  "topic": "Diffusing Capacity of the Lung for Carbon Monoxide",
+  "scope": "NCBI Bookshelf chapter on how to interpret DLCO, including the percent-predicted range, conditions that raise or lower it, and the Va and Kco components.",
+  "keyRecommendations": [
+    {
+      "text": "A DLCO below the 75% to 140% predicted range indicates reduced capillary blood volume or fibrosis of the alveolar-capillary interface.",
+      "strength": "not_graded",
+      "population": "DLCO interpretation"
+    },
+    {
+      "text": "Pulmonary hemorrhage is among the conditions that increase DLCO. Anemia, pulmonary vascular disease, and early ILD lower DLCO when lung volumes are normal.",
+      "strength": "not_graded",
+      "population": "DLCO interpretation"
+    },
+    {
+      "text": "Restriction with a normal DLCO suggests an extrapulmonary cause. DLCO reflects alveolar volume (Va) and the rate of CO uptake (Kco).",
+      "strength": "not_graded",
+      "population": "DLCO interpretation"
+    }
+  ],
+  "clinicalBottomLine": "Interpret a low DLCO as a gas-transfer problem, then use volume and the clinical pattern. Hemorrhage can raise DLCO. Anemia and vascular disease can lower it. Restriction with a normal DLCO points outside the lung parenchyma.",
+  "notableCaveats": [
+    "The 2017 ERS/ATS single-breath technical standard is not in PMC. This Bookshelf chapter is the open interpretive text. Spirometry-only and carbon-monoxide poisoning papers were not used."
+  ],
+  "source": {
+    "title": "Diffusing capacity of the lungs for carbon monoxide.",
+    "year": 2024,
+    "pmid": "",
+    "pmcid": "",
+    "doi": "",
+    "url": "https://www.ncbi.nlm.nih.gov/books/NBK556149/",
+    "sourceBody": "StatPearls / NCBI Bookshelf",
+    "storedAs": ""
+  }
+}

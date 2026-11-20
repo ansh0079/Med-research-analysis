@@ -1,0 +1,136 @@
+{
+  "catalogueId": "971",
+  "topic": "Lung Transplantation",
+  "mcqs": [
+    {
+      "id": "971-01",
+      "question": "How does the consensus describe absolute contraindications compared with earlier practice?",
+      "options": {
+        "A": "Far fewer absolute contraindications exist now",
+        "B": "The list is longer than ever",
+        "C": "There are no relative considerations left",
+        "D": "Candidacy is unrestricted",
+        "E": "Contraindications were not discussed"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Far fewer absolute contraindications exist now",
+      "explanation": "The document says far fewer absolute contraindications for candidacy exist now.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "ISHLT / J Heart Lung Transplant",
+          "sourceYear": 2021,
+          "sourceUrl": "https://europepmc.org/articles/PMC8979471",
+          "pmid": "34419372",
+          "pmcid": "PMC8979471",
+          "doi": "",
+          "excerpt": "Far fewer absolute contraindications for lung transplant candidacy exist now"
+        }
+      ]
+    },
+    {
+      "id": "971-02",
+      "question": "What sequence does the consensus set as the goal?",
+      "options": {
+        "A": "Timely referral, assessment, optimization, and listing",
+        "B": "Listing before any assessment",
+        "C": "Referral only after mechanical ventilation in every disease",
+        "D": "Optimization after transplant only",
+        "E": "No referral pathway"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Timely referral, assessment, optimization, and listing",
+      "explanation": "The goal is timely referral, assessment, optimization, and listing.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "ISHLT / J Heart Lung Transplant",
+          "sourceYear": 2021,
+          "sourceUrl": "https://europepmc.org/articles/PMC8979471",
+          "pmid": "34419372",
+          "pmcid": "PMC8979471",
+          "doi": "",
+          "excerpt": "guidance for timely referral, assessment, optimization, and listing"
+        }
+      ]
+    },
+    {
+      "id": "971-03",
+      "question": "Compared with normal or overweight recipients, what extra risk does the document attribute to obese recipients?",
+      "options": {
+        "A": "Primary graft dysfunction and post-transplant mortality",
+        "B": "No difference",
+        "C": "Lower mortality",
+        "D": "Only wound infection, with better survival",
+        "E": "Obesity was not discussed"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Primary graft dysfunction and post-transplant mortality",
+      "explanation": "Obese recipients have increased primary graft dysfunction and post-transplant mortality compared with normal or overweight recipients.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "ISHLT / J Heart Lung Transplant",
+          "sourceYear": 2021,
+          "sourceUrl": "https://europepmc.org/articles/PMC8979471",
+          "pmid": "34419372",
+          "pmcid": "PMC8979471",
+          "doi": "",
+          "excerpt": "increased risk of primary graft dysfunction and post-transplant mortality for obese recipients compared with normal or overweight"
+        }
+      ]
+    },
+    {
+      "id": "971-04",
+      "question": "What cancer screening does the malignancy discussion expect?",
+      "options": {
+        "A": "Age-appropriate and disease-specific cancer screening",
+        "B": "No screening",
+        "C": "Only a chest X-ray in childhood",
+        "D": "Screening after transplant only",
+        "E": "Colonoscopy for every candidate regardless of age, which is not what the sentence says"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Age-appropriate and disease-specific cancer screening",
+      "explanation": "The text refers to Age-appropriate and disease-specific cancer screening must be a part of every pre-transplant evaluation.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "ISHLT / J Heart Lung Transplant",
+          "sourceYear": 2021,
+          "sourceUrl": "https://europepmc.org/articles/PMC8979471",
+          "pmid": "34419372",
+          "pmcid": "PMC8979471",
+          "doi": "",
+          "excerpt": "Age-appropriate and disease-specific cancer screening must be a part of every pre-transplant evaluation"
+        }
+      ]
+    },
+    {
+      "id": "971-05",
+      "question": "What does the document require before considering a candidate with prior malignancy?",
+      "options": {
+        "A": "Testing confirming no residual or metastatic disease",
+        "B": "A verbal history only",
+        "C": "Prior malignancy is an absolute contraindication in every case with no further testing",
+        "D": "Immediate listing without staging",
+        "E": "The topic is absent"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Testing confirming no residual or metastatic disease",
+      "explanation": "Prior malignancy needs testing to confirm no evidence of residual or metastatic disease.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "ISHLT / J Heart Lung Transplant",
+          "sourceYear": 2021,
+          "sourceUrl": "https://europepmc.org/articles/PMC8979471",
+          "pmid": "34419372",
+          "pmcid": "PMC8979471",
+          "doi": "",
+          "excerpt": "testing to confirm no evidence of residual or metastatic disease"
+        }
+      ]
+    }
+  ]
+}

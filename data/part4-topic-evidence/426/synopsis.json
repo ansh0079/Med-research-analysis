@@ -1,0 +1,36 @@
+{
+  "catalogueId": "426",
+  "topic": "Occupational Asthma",
+  "scope": "Open review of work-related asthma, including sensitizer-induced occupational asthma, latency, and removal from exposure.",
+  "keyRecommendations": [
+    {
+      "text": "Sensitizer-induced disease has a latency of months or years; earlier onset is associated with higher exposure.",
+      "strength": "not_graded",
+      "population": "Sensitizer-induced occupational asthma"
+    },
+    {
+      "text": "High-molecular-weight agents are proteins of animal or vegetable origin.",
+      "strength": "not_graded",
+      "population": "Sensitizer exposures"
+    },
+    {
+      "text": "Early diagnosis and complete removal of exposure are the most effective interventions for prevention and treatment.",
+      "strength": "not_graded",
+      "population": "Work-related asthma"
+    }
+  ],
+  "clinicalBottomLine": "Separate sensitizer-induced occupational asthma from other work-related asthma. The most effective step in this review is early diagnosis and complete removal of the causative exposure.",
+  "notableCaveats": [
+    "The 2008 ACCP consensus is not in PMC. Serial PEF is discussed as a simple monitoring method, not as a numeric diagnostic cutoff."
+  ],
+  "source": {
+    "title": "Work-related asthma.",
+    "year": 2021,
+    "pmid": "34406224",
+    "pmcid": "PMC8352763",
+    "doi": "",
+    "url": "https://europepmc.org/articles/PMC8352763",
+    "sourceBody": "Open review",
+    "storedAs": ""
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "catalogueId": "1192",
+  "topic": "High Altitude Pulmonary Edema",
+  "scope": "Short open review of high-altitude pulmonary oedema: ascent above 3000 m, noncardiogenic oedema, and treatment by descent, oxygen, and pulmonary vasodilators.",
+  "keyRecommendations": [
+    {
+      "text": "HAPE is a severe high-altitude illness with pulmonary oedema, uncommon, after ascent above 3000 m.",
+      "strength": "not_graded",
+      "population": "People ascending to high altitude"
+    },
+    {
+      "text": "It is caused by increased pulmonary pressure from widespread arterial vasoconstriction and by increased capillary permeability.",
+      "strength": "not_graded",
+      "population": "HAPE"
+    },
+    {
+      "text": "Untreated mortality approaches 50%. Treatment is descent, oxygen, and pulmonary vasodilators.",
+      "strength": "not_graded",
+      "population": "HAPE"
+    }
+  ],
+  "clinicalBottomLine": "Treat HAPE as an altitude emergency: descend, give oxygen, and use a pulmonary vasodilator. Untreated mortality approaches 50% in this source.",
+  "notableCaveats": [
+    "The 2024 Wilderness Medical Society guideline is not in PMC. This short open article is the source, not that guideline."
+  ],
+  "source": {
+    "title": "High-altitude pulmonary edema.",
+    "year": 2021,
+    "pmid": "33732460",
+    "pmcid": "PMC7947961",
+    "doi": "",
+    "url": "https://europepmc.org/articles/PMC7947961",
+    "sourceBody": "Open review",
+    "storedAs": ""
+  }
+}

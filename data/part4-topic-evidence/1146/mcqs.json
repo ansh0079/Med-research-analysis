@@ -1,0 +1,136 @@
+{
+  "catalogueId": "1146",
+  "topic": "Acute severe asthma",
+  "mcqs": [
+    {
+      "id": "1146-01",
+      "question": "Which initial treatments does the review list for status asthmaticus?",
+      "options": {
+        "A": "Inhaled beta-agonists, oral or IV steroids, and oxygen, with hospital admission",
+        "B": "Antibiotics alone",
+        "C": "Oral antihistamine only",
+        "D": "Immediate ECMO for every child",
+        "E": "No oxygen"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Inhaled beta-agonists, oral or IV steroids, and oxygen, with hospital admission",
+      "explanation": "The review describes inhaled beta-agonists, oral or IV steroids, and oxygen, requiring hospital admission.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "Pediatric status asthmaticus review",
+          "sourceYear": 2024,
+          "sourceUrl": "https://europepmc.org/articles/PMC11348376",
+          "pmid": "39189288",
+          "pmcid": "PMC11348376",
+          "doi": "",
+          "excerpt": "inhaled β-agonists, oral or IV steroids, and oxygen therapy, requiring hospital admission"
+        }
+      ]
+    },
+    {
+      "id": "1146-02",
+      "question": "What ipratropium dose range does the review give for the PICU?",
+      "options": {
+        "A": "125–500 mcg/dose every 4–6 hours",
+        "B": "5 mg once a week",
+        "C": "Ipratropium is contraindicated",
+        "D": "50 mg orally",
+        "E": "Only intravenous ipratropium"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "125–500 mcg/dose every 4–6 hours",
+      "explanation": "Nebulized ipratropium is given at 125–500 mcg/dose every 4–6 hours in the PICU.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "Pediatric status asthmaticus review",
+          "sourceYear": 2024,
+          "sourceUrl": "https://europepmc.org/articles/PMC11348376",
+          "pmid": "39189288",
+          "pmcid": "PMC11348376",
+          "doi": "",
+          "excerpt": "Nebulized ipratropium bromide is given at 125–500 mcg/dose every 4–6 h in the PICU."
+        }
+      ]
+    },
+    {
+      "id": "1146-03",
+      "question": "In the Virtual Pediatric Systems analysis cited, about what proportion of PICU status asthmaticus admissions required intubation?",
+      "options": {
+        "A": "About 5%, decreasing over 2009–2019",
+        "B": "About 50%",
+        "C": "Every patient",
+        "D": "None",
+        "E": "About 80%"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "About 5%, decreasing over 2009–2019",
+      "explanation": "About 5% required intubation and mechanical ventilation, and the percentage decreased over time.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "Pediatric status asthmaticus review",
+          "sourceYear": 2024,
+          "sourceUrl": "https://europepmc.org/articles/PMC11348376",
+          "pmid": "39189288",
+          "pmcid": "PMC11348376",
+          "doi": "",
+          "excerpt": "about 5% of patients admitted to the PICU with status asthmaticus required intubation and mechanical ventilation, with this percentage decreasing over time."
+        }
+      ]
+    },
+    {
+      "id": "1146-04",
+      "question": "How does the review explain magnesium’s bronchodilator effect in status asthmaticus?",
+      "options": {
+        "A": "It prevents calcium uptake",
+        "B": "It is an antibiotic",
+        "C": "It blocks steroids",
+        "D": "It increases calcium uptake",
+        "E": "It has no proposed mechanism"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "It prevents calcium uptake",
+      "explanation": "Magnesium prevents calcium uptake and therefore causes bronchodilation. It is available nebulized and IV.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "Pediatric status asthmaticus review",
+          "sourceYear": 2024,
+          "sourceUrl": "https://europepmc.org/articles/PMC11348376",
+          "pmid": "39189288",
+          "pmcid": "PMC11348376",
+          "doi": "",
+          "excerpt": "Magnesium is another medication that is used in status asthmaticus. It prevents calcium uptake and, therefore, results in bronchodilation."
+        }
+      ]
+    },
+    {
+      "id": "1146-05",
+      "question": "Which side effects of ipratropium does the review list?",
+      "options": {
+        "A": "Dry mouth, flushing, and tachycardia",
+        "B": "Hypoglycaemia only",
+        "C": "Agranulocytosis as the expected effect",
+        "D": "No side effects exist",
+        "E": "Renal failure as the only effect"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Dry mouth, flushing, and tachycardia",
+      "explanation": "Side effects can include dry mouth, flushing, and tachycardia.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "Pediatric status asthmaticus review",
+          "sourceYear": 2024,
+          "sourceUrl": "https://europepmc.org/articles/PMC11348376",
+          "pmid": "39189288",
+          "pmcid": "PMC11348376",
+          "doi": "",
+          "excerpt": "Side effects of ipratropium bromide can include dry mouth, flushing, tachycardia"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "catalogueId": "1356",
+  "spreadsheetRow": 84,
+  "topic": "Pulmonary Langerhans Cell Histiocytosis",
+  "specialty": "Pulmonology",
+  "decision": "downloaded open source",
+  "source": {
+    "title": "Pulmonary Langerhans cell histiocytosis.",
+    "year": 2012,
+    "pmid": "22429393",
+    "pmcid": "PMC3342091",
+    "doi": "",
+    "url": "https://europepmc.org/articles/PMC3342091",
+    "sourceBody": "Open review",
+    "storedAs": ""
+  },
+  "whyItFits": "Adult-disease review of pulmonary Langerhans cell histiocytosis: smoking, bronchiolar inflammation, cysts, and HRCT.",
+  "limitations": "",
+  "synopsisWritten": true,
+  "mcqsWritten": true,
+  "mcqCount": 5
+}

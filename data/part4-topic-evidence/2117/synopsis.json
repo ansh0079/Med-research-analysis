@@ -1,0 +1,36 @@
+{
+  "catalogueId": "2117",
+  "topic": "Asthma severity classification and step-care",
+  "scope": "GINA 2021 executive summary on treatment steps, ICS-formoterol, and the fact that symptom control does not exclude severe exacerbations.",
+  "keyRecommendations": [
+    {
+      "text": "ICS-formoterol reduces severe exacerbations by at least 60% in mild asthma compared with SABA alone.",
+      "strength": "not_graded",
+      "population": "Mild asthma"
+    },
+    {
+      "text": "Track 1 uses as-needed ICS-formoterol across steps, plus regular ICS at step 2 or ICS-LABA at steps 3–5.",
+      "strength": "not_graded",
+      "population": "Adults and adolescents in the summary"
+    },
+    {
+      "text": "Step 5 adds LAMA and azithromycin, and biologic therapy for severe asthma. Poor symptom control is not required for a life-threatening exacerbation.",
+      "strength": "not_graded",
+      "population": "Moderate to severe asthma"
+    }
+  ],
+  "clinicalBottomLine": "Do not use SABA alone in mild asthma when ICS-formoterol is the strategy that cuts severe exacerbations, and remember that a person with few symptoms can still have a life-threatening attack.",
+  "notableCaveats": [
+    "Figures in the PDF are not all reproduced as text. MCQs use the prose statements."
+  ],
+  "source": {
+    "title": "Global Initiative for Asthma Strategy 2021: executive summary and rationale for key changes.",
+    "year": 2022,
+    "pmid": "34667060",
+    "pmcid": "PMC8719459",
+    "doi": "10.1183/13993003.02730-2021",
+    "url": "https://europepmc.org/articles/PMC8719459",
+    "sourceBody": "GINA / Eur Respir J",
+    "storedAs": ""
+  }
+}

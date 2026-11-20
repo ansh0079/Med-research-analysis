@@ -1,0 +1,136 @@
+{
+  "catalogueId": "1035",
+  "topic": "Depression: diagnosis, pharmacotherapy and monitoring",
+  "mcqs": [
+    {
+      "id": "1035-01",
+      "question": "How does NG222 define less severe and more severe depression with the PHQ-9?",
+      "options": {
+        "A": "Less than 16 is less severe; 16 or more is more severe",
+        "B": "Any score above 5 is severe",
+        "C": "A score of 16 rules out depression",
+        "D": "PHQ-9 is not used",
+        "E": "Only scores above 25 count"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Less than 16 is less severe; 16 or more is more severe",
+      "explanation": "The guideline text uses a score of 16, with less than 16 as less severe and 16 or more as more severe.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "NICE",
+          "sourceYear": 2022,
+          "sourceUrl": "https://www.nice.org.uk/guidance/ng222",
+          "pmid": "",
+          "pmcid": "",
+          "doi": "",
+          "excerpt": "scores less than 16 defined as less severe depression, and scores of 16 or more defined as more severe depression."
+        }
+      ]
+    },
+    {
+      "id": "1035-02",
+      "question": "What does NG222 say to consider first for less severe depression?",
+      "options": {
+        "A": "Guided self-help, as the least intrusive and least resource-intensive option",
+        "B": "ECT",
+        "C": "An MAOI",
+        "D": "Clozapine",
+        "E": "Immediate hospital admission for every case"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Guided self-help, as the least intrusive and least resource-intensive option",
+      "explanation": "All treatments in the table can be first-line, but consider the least intrusive and least resource-intensive first (guided self-help).",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "NICE",
+          "sourceYear": 2022,
+          "sourceUrl": "https://www.nice.org.uk/guidance/ng222",
+          "pmid": "",
+          "pmcid": "",
+          "doi": "",
+          "excerpt": "consider the least intrusive and least resource intensive treatment first (guided self-help)"
+        }
+      ]
+    },
+    {
+      "id": "1035-03",
+      "question": "Which antidepressants does NG222 say need particular care because withdrawal symptoms are more likely?",
+      "options": {
+        "A": "Paroxetine and venlafaxine",
+        "B": "Lithium only",
+        "C": "Sertraline is named as the highest-risk drug",
+        "D": "No drug is named",
+        "E": "Only mirtazapine"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Paroxetine and venlafaxine",
+      "explanation": "Paroxetine and venlafaxine are more likely to be associated with withdrawal symptoms.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "NICE",
+          "sourceYear": 2022,
+          "sourceUrl": "https://www.nice.org.uk/guidance/ng222",
+          "pmid": "",
+          "pmcid": "",
+          "doi": "",
+          "excerpt": "paroxetine and venlafaxine, are more likely to be associated with withdrawal symptoms, so particular care is needed with them"
+        }
+      ]
+    },
+    {
+      "id": "1035-04",
+      "question": "What does NG222 ask clinicians to do for all people with depression who are having treatment?",
+      "options": {
+        "A": "Review how well the treatment is working",
+        "B": "Stop follow-up after one week",
+        "C": "Avoid asking about response",
+        "D": "Change drug every day",
+        "E": "Review only inpatients"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Review how well the treatment is working",
+      "explanation": "The recommendation starts by saying that for all people having treatment, review how well it is working.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "NICE",
+          "sourceYear": 2022,
+          "sourceUrl": "https://www.nice.org.uk/guidance/ng222",
+          "pmid": "",
+          "pmcid": "",
+          "doi": "",
+          "excerpt": "For all people with depression having treatment: review how we"
+        }
+      ]
+    },
+    {
+      "id": "1035-05",
+      "question": "Fluoxetine is named in NG222 in which discussion?",
+      "options": {
+        "A": "The discussion of antidepressant withdrawal",
+        "B": "A section on antibiotics",
+        "C": "A section on phototherapy",
+        "D": "A section on anticoagulants",
+        "E": "It is not in the text"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "The discussion of antidepressant withdrawal",
+      "explanation": "Fluoxetine appears in the same withdrawal passage as the warning about paroxetine and venlafaxine.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "NICE",
+          "sourceYear": 2022,
+          "sourceUrl": "https://www.nice.org.uk/guidance/ng222",
+          "pmid": "",
+          "pmcid": "",
+          "doi": "",
+          "excerpt": "fluoxetine"
+        }
+      ]
+    }
+  ]
+}

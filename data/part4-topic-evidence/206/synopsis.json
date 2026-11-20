@@ -1,0 +1,36 @@
+{
+  "catalogueId": "206",
+  "topic": "Pancoast Tumors",
+  "scope": "Open review of superior sulcus (Pancoast) tumors: local invasion, the Pancoast-Tobias syndrome, and induction chemoradiotherapy before resection.",
+  "keyRecommendations": [
+    {
+      "text": "Induction chemoradiotherapy is the standard of care for a potentially resectable Pancoast tumor, followed by an attempt at complete resection.",
+      "strength": "not_graded",
+      "population": "Resectable superior sulcus tumor"
+    },
+    {
+      "text": "The Pancoast-Tobias syndrome includes Horner syndrome, shoulder pain, hand and arm muscle atrophy, and subclavian vein obstruction.",
+      "strength": "not_graded",
+      "population": "Presentation"
+    },
+    {
+      "text": "Five-year survival after R0 resection is described as quite good (54 to 77 percent). Distant metastasis, especially brain, is the main recurrence pattern.",
+      "strength": "not_graded",
+      "population": "Outcomes"
+    }
+  ],
+  "clinicalBottomLine": "A Pancoast tumor invades the thoracic inlet and can cause the Pancoast-Tobias syndrome. For a potentially resectable tumor, give induction chemoradiotherapy and then try for a complete resection.",
+  "notableCaveats": [
+    "Replaces the abstract-only PMC record with this open full review."
+  ],
+  "source": {
+    "title": "Superior sulcus (Pancoast) tumors: current evidence on diagnosis and radical treatment.",
+    "year": 2013,
+    "pmid": "24102007",
+    "pmcid": "PMC3791502",
+    "doi": "10.3978/j.issn.2072-1439.2013.04.08",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3791502/",
+    "sourceBody": "J Thorac Dis",
+    "storedAs": ""
+  }
+}

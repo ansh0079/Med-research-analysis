@@ -1,0 +1,36 @@
+{
+  "catalogueId": "991",
+  "topic": "Neonatal jaundice: assessment, phototherapy and exchange transfusion",
+  "scope": "NICE CG98 recommendations on information, bilirubin thresholds, phototherapy, and exchange transfusion for babies under 28 days. Thresholds quoted here are the consensus table for babies of 38 weeks or more.",
+  "keyRecommendations": [
+    {
+      "text": "Use the consensus bilirubin thresholds. For babies 38 weeks or more, at 24 hours phototherapy starts above 200 micromol/L and exchange transfusion above 300 micromol/L.",
+      "strength": "not_graded",
+      "population": "Babies ≥38 weeks"
+    },
+    {
+      "text": "During exchange transfusion do not stop continuous intensified phototherapy, do not perform a single-volume exchange, do not use albumin priming routinely, and do not give intravenous calcium.",
+      "strength": "not_graded",
+      "population": "Babies undergoing exchange transfusion"
+    },
+    {
+      "text": "Do not use agar, albumin, barbiturates, charcoal, cholestyramine, clofibrate, D-penicillamine, glycerin, manna, metalloporphyrins, riboflavin, traditional Chinese medicine, acupuncture, or homeopathy to treat hyperbilirubinaemia.",
+      "strength": "not_graded",
+      "population": "Hyperbilirubinaemia"
+    }
+  ],
+  "clinicalBottomLine": "Interpret bilirubin against the gestational-age and hour-of-life threshold table, intensify phototherapy at the phototherapy threshold, and prepare exchange transfusion at the exchange threshold without stopping intensified phototherapy during the exchange.",
+  "notableCaveats": [
+    "The AAP 2022 guideline suggested in the spreadsheet is not openly available as full text. CG98 is the open guideline used here. Thresholds differ by age in hours; the MCQs use only hours stated in the questions."
+  ],
+  "source": {
+    "title": "Jaundice in newborn babies under 28 days. NICE guideline CG98.",
+    "year": 2010,
+    "pmid": "",
+    "pmcid": "",
+    "doi": "",
+    "url": "https://www.nice.org.uk/guidance/cg98",
+    "sourceBody": "NICE",
+    "storedAs": ""
+  }
+}
