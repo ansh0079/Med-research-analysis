@@ -6,7 +6,7 @@
 
 The 2012 Japanese guidelines diagnose moyamoya disease from stenosis or occlusion of the terminal intracranial internal carotid artery or the proximal anterior and/or middle cerebral arteries, abnormal vascular networks nearby, and bilateral findings. MRI and MRA can meet the criteria, but conventional angiography should still be done when surgery is planned. Cerebral blood-flow studies are graded for judging the severity of ischemia. Revascularisation is graded as effective for moyamoya disease with cerebral ischemic symptoms. For some other situations, including hemorrhagic disease, the same document says adequate scientific evidence is still lacking.
 
-## All recommendations of the lead guideline (7 statements + 0 body-text details)
+## All recommendations of the lead guideline (25 statements + 0 body-text details)
 
 ### Graded recommendations
 
@@ -27,6 +27,45 @@ The 2012 Japanese guidelines diagnose moyamoya disease from stenosis or occlusio
    *Anchor:* "the diagnosis of moyamoya disease is made based on the following: (1) stenosis or occlusion of the terminal portion of the intracranial internal carotid artery or the proximal portion of the anterior and/or middle cerebr"
 7. When assuming surgical treatment, conventional cerebral angiography should be performed as far as possible (evidence level III).  
    *Anchor:* "When assuming sur- gical treatment, conventional cerebral angiography should be performed as far as possible"
+
+### Added after a second read of the stored text
+
+8. When autopsy is performed in the absence of cerebral angiography, the condition should be diag- nosed based on the criteria in item (4).  
+   *Anchor:* "When autopsy is performed in the absence of cerebral angiography, the condition should be diag- nosed based on the criteria in item (4)."
+9. Definitive moyamoya disease: All criteria listed in (1) or (2) and in (3) should be met.  
+   *Anchor:* "Definitive moyamoya disease: All criteria listed in (1) or (2) and in (3) should be met."
+10. In children, unilateral moyamoya disease associated with stenosis of the terminal portion of the internal carotid arteries on the other side should be considered as definitive moyamoya disease and not as unilateral moyamoya disease.  
+   *Anchor:* "In children, unilateral moyamoya disease associated with stenosis of the terminal portion of the internal carotid arteries on the other side should be considered as definitive moyamoya disease and not as unilateral moyamoya disease."
+11. However, the diagnostic criteria (1)–(3) should be considered as the standard for designation as an intractable disease by the Ministry of Health, Labour and Welfare.  
+   *Anchor:* "However, the diagnostic criteria (1)–(3) should be considered as the standard for designation as an intractable disease by the Ministry of Health, Labour and Welfare."
+12. Acetazolamide-acti- vated SPECT should be performed carefully in pediatric patients with moyamoya disease assumed to have severe ischemia, because cerebral ischemia may deteriorate during the examination.  
+   *Anchor:* "Acetazolamide-acti- vated SPECT should be performed carefully in pediatric patients with moyamoya disease assumed to have severe ischemia, because cerebral ischemia may deteriorate during the examination."
+13. In atherothrombotic stroke, stage 2 hemody- namic cerebral ischemia, defined as Ã80% of the normal resting CBF and Ã10% of cerebrovascular reserve [(CBF under acetazolamide-activation/rest- ing CBF －1) × 100%] as measured by quantitative SPECT is considered to be equivalent to the misery perfusion demonstrated by PET.  
+   *Anchor:* "In atherothrombotic stroke, stage 2 hemody- namic cerebral ischemia, defined as Ã80% of the normal resting CBF and Ã10% of cerebrovascular reserve [(CBF under acetazolamide-activation/rest- ing CBF －1) × 100%] as measured by quantitative SPECT is considered to be equivalent to the misery perfusion demonstrated by PET."
+14. 6,7) As for the case of pediatric patients, cerebral revas- cularization should be considered.  
+   *Anchor:* "6,7) As for the case of pediatric patients, cerebral revas- cularization should be considered."
+15. Perioperative management During the perioperative period, the blood pres- sure should be maintained, normocapnia should be ensured, and adequate body fluid balance should be maintained, while paying attention to ischemic com- plications, including on the non-surgical side 8) (evi- dence level III).  
+   *Anchor:* "Perioperative management During the perioperative period, the blood pres- sure should be maintained, normocapnia should be ensured, and adequate body fluid balance should be maintained, while paying attention to ischemic com- plications, including on the non-surgical side 8) (evi- dence level III)."
+16. When neurological symptoms may appear during the acute phase after revasculariza- tion, clinical conditions such as cerebral hyperper- fusion syndrome should be considered in evaluating the cerebral hemodynamics 2) (evidence level III).  
+   *Anchor:* "When neurological symptoms may appear during the acute phase after revasculariza- tion, clinical conditions such as cerebral hyperper- fusion syndrome should be considered in evaluating the cerebral hemodynamics 2) (evidence level III)."
+17. Acute phase Intravenous tissue plasminogen activator (tPA) therapy is contraindicated for moyamoya disease manifesting as cerebral ischemia (``Guidelines for Proper Treatment with Intravenous tPA (Alteplase) Therapy'' by the Japan Stroke Society).  
+   *Anchor:* "Acute phase Intravenous tissue plasminogen activator (tPA) therapy is contraindicated for moyamoya disease manifesting as cerebral ischemia (``Guidelines for Proper Treatment with Intravenous tPA (Alteplase) Therapy'' by the Japan Stroke Society)."
+18. When mechanical ventilatory support is necessary, the partial pressure of carbon dioxide in the arterial blood should be kept above 40 mmHg.  
+   *Anchor:* "When mechanical ventilatory support is necessary, the partial pressure of carbon dioxide in the arterial blood should be kept above 40 mmHg."
+19. In regard to blood pressure control, as in the treatment of other cerebral infarction, the blood pressure should not be lowered during the acute phase, as a rule (evidence level III).  
+   *Anchor:* "In regard to blood pressure control, as in the treatment of other cerebral infarction, the blood pressure should not be lowered during the acute phase, as a rule (evidence level III)."
+20. Anticonvulsants should be used for the treatment of convulsions.  
+   *Anchor:* "Anticonvulsants should be used for the treatment of convulsions."
+21. Prevention of recurrence in the chronic phase The indications of surgical treatment for the prevention of recurrence should be examined first in patients with moyamoya disease manifesting with cerebral ischemic attack.  
+   *Anchor:* "Prevention of recurrence in the chronic phase The indications of surgical treatment for the prevention of recurrence should be examined first in patients with moyamoya disease manifesting with cerebral ischemic attack."
+22. When patients cannot tolerate aspirin, or aspirin does not appear to be beneficial for the ischemic attack, use of clopidogrel, a thienopyridine drug, is recommended.  
+   *Anchor:* "When patients cannot tolerate aspirin, or aspirin does not appear to be beneficial for the ischemic attack, use of clopidogrel, a thienopyridine drug, is recommended."
+23. In terms of lifestyle guidance, hyperventilation often induces the sym- ptoms of moyamoya disease; therefore, pediatric patients should avoid hot meals (noodles, soup, etc.), strenuous exercise, playing wind instruments such as a flute, and blowing balloons (evidence level III).  
+   *Anchor:* "In terms of lifestyle guidance, hyperventilation often induces the sym- ptoms of moyamoya disease; therefore, pediatric patients should avoid hot meals (noodles, soup, etc.), strenuous exercise, playing wind instruments such as a flute, and blowing balloons (evidence level III)."
+24. In adults, the use of antiplatelet agents should not be considered for asymptomatic patients, because nearly a half of the patients with moyamoya disease suffer bleeding.  
+   *Anchor:* "In adults, the use of antiplatelet agents should not be considered for asymptomatic patients, because nearly a half of the patients with moyamoya disease suffer bleeding."
+25. Rigorous management during pregnancy, delivery, and puer- perium in an environment of active collaboration between the obstetrician and neurosurgeon is recommended.24,44) 1.  
+   *Anchor:* "Rigorous management during pregnancy, delivery, and puer- perium in an environment of active collaboration between the obstetrician and neurosurgeon is recommended.24,44) 1."
 
 ## MCQs (answer and explanation quotes verified in stored text)
 

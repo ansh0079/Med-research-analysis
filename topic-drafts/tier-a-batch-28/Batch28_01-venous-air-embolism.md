@@ -6,7 +6,7 @@
 
 This 1997 review is about venous air embolism, mainly during surgery. For procedures on the head or neck it describes a partial left lateral decubitus position (the Durant maneuver) to relieve an air lock in the right heart, and it names the Trendelenburg (head-down) position to improve hemodynamics. For lower-body procedures it says the operative site should be lowered below the heart, which is reverse Trendelenburg (head up). Once venous air embolism is recognized, nitrous oxide should be stopped and the patient placed on 100% oxygen; the field should be flooded and bilateral jugular compression considered, and a right-atrial catheter is for aspiration when significant entrainment is likely. Hyperbaric oxygen is not discussed in the stored text.
 
-## All recommendations of the lead guideline (19 statements + 2 body-text details)
+## All recommendations of the lead guideline (23 statements + 0 body-text details)
 
 ### Venous air embolism review
 
@@ -55,6 +55,13 @@ This 1997 review is about venous air embolism, mainly during surgery. For proced
    *Anchor:* "place the patient in a partial left lateral decubitus position (Durant maneu- ver)"
 21. the Trendelenburg position (head down) to further improve hemodynamics  
    *Anchor:* "the Trendelenburg position (head down) to further improve hemodynamics"
+
+### Added after a second read of the stored text
+
+22. A multi-orifice catheter (Bunegin-Albin catheter) is generally more effective than a single orifice catheter.47,48 Bunegin-Albin multi- orifice catheters are available in both long (80 cm) and short (30 cm) lengths for placement via cephalic, internal jugular, or subclavian veins.  
+   *Anchor:* "A multi-orifice catheter (Bunegin-Albin catheter) is generally more effective than a single orifice catheter.47,48 Bunegin-Albin multi- orifice catheters are available in both long (80 cm) and short (30 cm) lengths for placement via cephalic, internal jugular, or subclavian veins."
+23. Optimal place- ment of the catheter tip for aspiration of air entrained from a head or neck source is 2 cm below the SVC-atria1 junction.49 Placement can be confirmed by chest radi- ography or placement using an ECG lead attached to the catheter.  
+   *Anchor:* "Optimal place- ment of the catheter tip for aspiration of air entrained from a head or neck source is 2 cm below the SVC-atria1 junction.49 Placement can be confirmed by chest radi- ography or placement using an ECG lead attached to the catheter."
 
 ## MCQs (answer and explanation quotes verified in stored text)
 

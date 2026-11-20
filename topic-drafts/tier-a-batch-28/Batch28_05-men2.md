@@ -6,7 +6,7 @@
 
 This 2012 review ties prophylactic thyroidectomy to ATA risk class. ATA D mutations (typical MEN2B, codons 883 and 918) are described as the highest risk, with thyroidectomy as early as possible and preferably in the first year. ATA C (classical MEN2A, codon 634) is recommended for thyroidectomy before 5 years of age. Pheochromocytoma must be excluded before any operation; biochemical screening is annual and, for the higher-risk genotypes named in the text, starts at 8 years, including before pregnancy in women with a RET mutation associated with MEN2. Calcium and parathyroid hormone screening also starts by age 8 for the carriers the review specifies. The operation should be done by a high-volume surgeon.
 
-## All recommendations of the lead guideline (13 statements + 0 body-text details)
+## All recommendations of the lead guideline (14 statements + 0 body-text details)
 
 ### MEN2 review
 
@@ -39,6 +39,11 @@ This 2012 review ties prophylactic thyroidectomy to ATA risk class. ATA D mutati
    *Anchor:* "thyroidectomy is recommended before 5 years of age for patients with ATA C mutations and as early as possible, preferably within the first year after birth, for patients with ATA D mutations"
 13. For ATA A mutations, published advice differs: some authors suggest thyroidectomy at 5 years of age, some at 10 years, and the authors of this review suggest surgery may be postponed until an abnormal C-cell stimulation test.  
    *Anchor:* "some authors suggest thyroidectomy at 5 years of age, some at 10 years"
+
+### Added after a second read of the stored text
+
+14. Genetic testing detects about 98% of mutation carriers and is considered to be standard care for all first-degree relatives of patients with newly diagnosed MTC.  
+   *Anchor:* "Genetic testing detects about 98% of mutation carriers and is considered to be standard care for all first-degree relatives of patients with newly diagnosed MTC."
 
 ## MCQs (answer and explanation quotes verified in stored text)
 

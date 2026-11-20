@@ -6,7 +6,7 @@
 
 The CHEST expert-panel report (Chest, March 2016) has 12 summary recommendations. Moderate or deep sedation is acceptable (grade 2C). Ultrasound features can suggest benign or malignant nodes but tissue is still required. Sampling may be with or without suction. A 21- or 22-gauge needle is acceptable (grade 1C). Without rapid on-site evaluation, at least 3 passes per site are suggested in suspected lung cancer. ROSE is optional (grade 1C). Extra samples should be taken for molecular analysis in non-small cell lung cancer (grade 1C). EBUS-TBNA is recommended for suspected sarcoidosis and for suspected tuberculosis when nodes need sampling (grade 1C), and is an acceptable first test when lymphoma is suspected. Training should include simulation. The body text adds that an endotracheal tube can hide high paratracheal stations and that a tube, if used, should be at least size 8.0.
 
-## All recommendations of the lead guideline (12 statements + 2 body-text details)
+## All recommendations of the lead guideline (16 statements + 2 body-text details)
 
 ### CHEST summary recommendations
 
@@ -41,6 +41,17 @@ The CHEST expert-panel report (Chest, March 2016) has 12 summary recommendations
    *Anchor:* "the placement of the endotracheal tube may block the ultrasonographic view of the higher paratracheal lymph nodes (lymph node stations 1, 2R, 2L, and 3P) and should be avoided if one of these lymph no"
 14. A minimum size of 8.0 should be used if placing an endotracheal tube for EBUS-TBNA to accommodate the scope diameter and leave room for gas exchange. In conclusion, there is insuf ficient quality of evidence to recommend  
    *Anchor:* "A minimum size of 8.0 should be used if placing an endotracheal tube for EBUS-TBNA to accommodate the scope diameter and leave room for gas exchange. In conclusion, there is insuf ﬁcient quality of ev"
+
+### Added after a second read of the stored text
+
+13. If using a transoral arti ﬁcial airway, a bite block should be considered to protect the bronchoscope from bite damage.  
+   *Anchor:* "If using a transoral arti ﬁcial airway, a bite block should be considered to protect the bronchoscope from bite damage."
+14. In cases in which EBUS-TBNA is being performed with suction and the samples obtained are bloody, operators should consider switching to the use of no suction at the same sampling site.  
+   *Anchor:* "In cases in which EBUS-TBNA is being performed with suction and the samples obtained are bloody, operators should consider switching to the use of no suction at the same sampling site."
+15. If intranodal blood vessels are visualized on EBUS imaging with or without Doppler imaging, operators should also consider obtaining samples without suction.  
+   *Anchor:* "If intranodal blood vessels are visualized on EBUS imaging with or without Doppler imaging, operators should also consider obtaining samples without suction."
+16. Various diagnostic techniques are available for the diagnosis of TB and should be incorporated during the diagnostic evaluation.  
+   *Anchor:* "Various diagnostic techniques are available for the diagnosis of TB and should be incorporated during the diagnostic evaluation."
 
 ## MCQs (answer and explanation quotes verified in stored text)
 

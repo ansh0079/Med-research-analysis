@@ -6,7 +6,7 @@
 
 The 2007 Tokyo definitions chapter does not give treatment recommendations for acalculous cholecystitis. The database file titled as Tokyo Guidelines 2018 diagnostic criteria for cholecystitis is actually the cholangitis paper, so it was not used. This 2010 review is the on-topic document. It says ultrasound findings are not specific and should not be used alone, a gallbladder that contracts normally makes acalculous cholecystitis unlikely, and cholecystectomy is generally the definitive therapy when it can be performed. Imaging order is reported as varying between authors.
 
-## All recommendations of the lead guideline (10 statements + 0 body-text details)
+## All recommendations of the lead guideline (12 statements + 0 body-text details)
 
 ### Review
 
@@ -30,6 +30,13 @@ The 2007 Tokyo definitions chapter does not give treatment recommendations for a
    *Anchor:* "This generally is believed to be inferior therapy and seldom is performed.3,63,64 Ideally, when AAC is suspected cholecystostomy should be performed immediately because the patient may improve with this alone."
 10. If there is no improvement, the diagnosis should be reconsidered and, if positive, urgent cholecystectomy should be strongly entertained because it can be life-saving when this is the source of abdominal sepsis.  
    *Anchor:* "If there is no improvement, the diagnosis should be reconsidered and, if positive, urgent cholecystectomy should be strongly entertained because it can be life-saving when this is the source of abdominal sepsis."
+
+### Added after a second read of the stored text
+
+11. 3.5- to 4-mm (or more) thick wall (if at least 5-cm distended longitudinally with no ascites or hypoalbuminemia)  
+   *Anchor:* "3.5- to 4-mm (or more) thick wall (if at least 5-cm distended longitudinally with no ascites or hypoalbuminemia)"
+12. 2 major or 1 major and 2 minor (most studies have favored the diagnostic triad—wall thickness, sludge, hydrops)  
+   *Anchor:* "2 major or 1 major and 2 minor (most studies have favored the diagnostic triad—wall thickness, sludge, hydrops)"
 
 ## MCQs (answer and explanation quotes verified in stored text)
 
@@ -96,3 +103,5 @@ Quote: "If there is no improvement, the diagnosis should be reconsidered and, if
 ## Notes
 
 Review, not a society guideline. Document 1692 was rejected because the opening text is the cholangitis guideline, not the cholecystitis one. No newer acalculous-cholecystitis guideline with a full text was found.
+
+The wall-thickness line is the stored imaging-criteria text. Table 3 is not stored as a table.

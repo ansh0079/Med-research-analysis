@@ -6,7 +6,7 @@
 
 The usable lead is a practical guideline on lung transplantation in cystic fibrosis, not a dedicated chronic-allograft-dysfunction guideline. Patients who are eligible should be referred early enough that expected survival still exceeds the likely wait. Listing is for when life expectancy is reduced but still longer than the expected wait. Contraindications are discussed case by case and eligibility is reconsidered while waiting. The patient should stay active and keep up nutrition, and vaccinations should be completed. After transplant, CF-specific complications have to be considered. What the stored text actually says about rejection and bronchiolitis obliterans is included only where those words appear in a directive sentence.
 
-## All recommendations of the lead guideline (36 statements + 0 body-text details)
+## All recommendations of the lead guideline (47 statements + 0 body-text details)
 
 ### CF lung transplantation
 
@@ -82,6 +82,31 @@ The usable lead is a practical guideline on lung transplantation in cystic fibro
    *Anchor:* "Detailed explanations should be provided as to the mechanism of action/absorption of immunosuppressive drugs and their anticipated side effects, the need for prophylactic anti-infectious therapy, and drug- druganddrug-foodinteractions.Patie"
 36. Other learning objectives should be addressed in the rehabilitation clinic and during the post-LTX outpatient visits,tailoredtothepatientsituationandneeds(e.g.,importanceofhydrationandquantityofdietarysalt,environmental risk factors, use of contraception, and prevention of sexually transmitted diseases, etc.) [192].  
    *Anchor:* "Other learning objectives should be addressed in the rehabilitation clinic and during the post-LTX outpatient visits,tailoredtothepatientsituationandneeds(e.g.,impor- tanceofhydrationandquantityofdietarysalt,environmental risk factors, use "
+
+### Added after a second read of the stored text
+
+37. Whenwaitingtimeisused,listingshouldbeearly.  
+   *Anchor:* "Whenwaitingtimeisused,listingshouldbeearly."
+38. Malignant diseases during the past 2 years are consid- ered an absolute contraindication to LTX [2, 8], with the exceptionofnonmelanomaskintumourssuchassquamous- cell and basal-cell carcinomas.  
+   *Anchor:* "Malignant diseases during the past 2 years are consid- ered an absolute contraindication to LTX [2, 8], with the exceptionofnonmelanomaskintumourssuchassquamous- cell and basal-cell carcinomas."
+39. However, scoliosis, a frequent findinginCF,isnotacontraindication[ 22].  
+   *Anchor:* "However, scoliosis, a frequent findinginCF,isnotacontraindication[ 22]."
+40. Detection of NTM is currently not rated as an absolute contraindication to LTX.  
+   *Anchor:* "Detection of NTM is currently not rated as an absolute contraindication to LTX."
+41. be especially recommended for CF patients  
+   *Anchor:* "be especially recommended for CF patients"
+42. FollowingLTX,routinemonitoringoffatsolublevitamin levels is recommended, as supplements may have to be reduced or discontinued.  
+   *Anchor:* "FollowingLTX,routinemonitoringoffatsolublevitamin levels is recommended, as supplements may have to be reduced or discontinued."
+43. The gold standard for the diagnosis of AR is lung histologybasedontransbronchialbiopsies(TBBs).TBBsare assessedforacutecellularvascularandbronchiolarrejection.  
+   *Anchor:* "The gold standard for the diagnosis of AR is lung histologybasedontransbronchialbiopsies(TBBs).TBBsare assessedforacutecellularvascularandbronchiolarrejection."
+44. Prophylactic or preemptive treatment of CMV is recommended between 3 and 12 months after LTXdependingondonor-recipientmatching,CMV-negative recipients of CMV-positive donor lungs being at the highest riskofdevelopingdisease.  
+   *Anchor:* "Prophylactic or preemptive treatment of CMV is recommended between 3 and 12 months after LTXdependingondonor-recipientmatching,CMV-negative recipients of CMV-positive donor lungs being at the highest riskofdevelopingdisease."
+45. It is recommended to follow at least the guidelines for the general population.  
+   *Anchor:* "It is recommended to follow at least the guidelines for the general population."
+46. Pulmonary rehabilitation must be oriented along the individual limitations and capacities of the LTX candidates, and this can only be done in specialised centres.  
+   *Anchor:* "Pulmonary rehabilitation must be oriented along the individual limitations and capacities of the LTX candidates, and this can only be done in specialised centres."
+47. Graft function should be stable and rejection-free.  
+   *Anchor:* "Graft function should be stable and rejection-free."
 
 ## MCQs (answer and explanation quotes verified in stored text)
 

@@ -6,7 +6,7 @@
 
 The spreadsheet lead is a cell-biology paper on an aquaporin-2 mutant and has no treatment recommendations. This 2024 review covers both central and nephrogenic diabetes insipidus. Suspect the diagnosis when polyuria is hypotonic, confirm with a 24-hour urine collection, and refer to a specialist once solute diuresis is excluded. Acquired nephrogenic diabetes insipidus should be treated by reversing the cause when that is possible. Desmopressin dosing in the text is discussed with the risk of hyponatremia and is not a treatment that replaces the cause of nephrogenic disease. Thirst failure, vomiting, or respiratory failure is a reason for admission.
 
-## All recommendations of the lead guideline (15 statements + 0 body-text details)
+## All recommendations of the lead guideline (23 statements + 0 body-text details)
 
 ### Diagnosis and management review
 
@@ -40,6 +40,25 @@ The spreadsheet lead is a cell-biology paper on an aquaporin-2 mutant and has no
    *Anchor:* "The intravenous fluid rate should be adjusted to slightly exceed the hourly urinary output to ensure the patient receives a positive fluid balance."
 15. When possible, the patient should begin taking fluids orally, such as water or, for infants, milk.  
    *Anchor:* "When possible, the patient should begin taking fluids orally, such as water or, for infants, milk."
+
+### Added after a second read of the stored text
+
+16. Clinical presentation Polyuria, polydipsia, and nocturia are the most common presenting symptoms of DI.  
+   *Anchor:* "Clinical presentation Polyuria, polydipsia, and nocturia are the most common presenting symptoms of DI."
+17. Hypotonic urine is defined as a urine osmolality less than 300 mOsm/kg.  
+   *Anchor:* "Hypotonic urine is defined as a urine osmolality less than 300 mOsm/kg."
+18. The gold standard diagnostic test for DI is an indirect water deprivation test.  
+   *Anchor:* "The gold standard diagnostic test for DI is an indirect water deprivation test."
+19. The general recommendation is that as the patient ages and transitions to primarily solid food, treatment is transitioned to desmopressin ( ).  
+   *Anchor:* "The general recommendation is that as the patient ages and transitions to primarily solid food, treatment is transitioned to desmopressin ( )."
+20. Diet Minimizing osmotic load is recommended in patients with NDI.  
+   *Anchor:* "Diet Minimizing osmotic load is recommended in patients with NDI."
+21. While DDAVP can be considered in a patient with partial NDI, there is no consensus when to trial high dose DDAVP.  
+   *Anchor:* "While DDAVP can be considered in a patient with partial NDI, there is no consensus when to trial high dose DDAVP."
+22. If hypernatremia develops acutely, defined as being present for 48 hours or less, the goal is to lower the sodium concentration by 1-2 mEq/L/hr and restore normal serum sodium in less than 24 hours.  
+   *Anchor:* "If hypernatremia develops acutely, defined as being present for 48 hours or less, the goal is to lower the sodium concentration by 1-2 mEq/L/hr and restore normal serum sodium in less than 24 hours."
+23. If hypernatremia develops chronically, defined as being present for longer than 48 hours, cells will have upregulated their intracellular osmolytes to maintain normal solute concentrations ( , ).  
+   *Anchor:* "If hypernatremia develops chronically, defined as being present for longer than 48 hours, cells will have upregulated their intracellular osmolytes to maintain normal solute concentrations ( , )."
 
 ## MCQs (answer and explanation quotes verified in stored text)
 

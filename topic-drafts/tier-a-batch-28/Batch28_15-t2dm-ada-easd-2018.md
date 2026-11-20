@@ -6,7 +6,7 @@
 
 The 2009 ADA/EASD algorithm on the spreadsheet is superseded in the database by this 2018 consensus report. Metformin remains the preferred drug to start, added to lifestyle measures, in newly diagnosed type 2 diabetes. Immediate-release metformin starts at 500 mg once or twice daily with meals and is increased as tolerated toward 1000 mg twice daily. It should not be used when eGFR is below 30 mL/min/1.73 m2, the dose should be reconsidered below 45, and it should be omitted in severe illness, vomiting, or dehydration. If clinical cardiovascular disease is present and the glycemic target is not met on metformin, an SGLT2 inhibitor or a GLP-1 receptor agonist is recommended. A UKPDS substudy is cited for benefits of initial metformin on diabetes-related clinical outcomes, with less hypoglycemia and weight gain than insulin. The word "legacy" does not appear.
 
-## All recommendations of the lead guideline (45 statements + 0 body-text details)
+## All recommendations of the lead guideline (51 statements + 0 body-text details)
 
 ### 2018 consensus
 
@@ -101,6 +101,21 @@ The 2009 ADA/EASD algorithm on the spreadsheet is superseded in the database by 
 45. Other areas of importance include better segmentation of “type 2 diabetes,” as well as appropriate diagnosis of secondary diabetes, which should allow more informed individualization of care.  
    *Anchor:* "Other areas of importance include better segmentation of “type 2 diabetes,” as well as appropriate diagnosis of secondary diabetes, which should allow more informed individualization of care."
 
+### Added after a second read of the stored text
+
+46. A reasonable HbA 1c target for most nonpregnant adults with sufficient life expectancy to see microvascular benefits (generally ∼10 years) is around 53 mmol/mol (7%) or less ( ).  
+   *Anchor:* "A reasonable HbA 1c target for most nonpregnant adults with sufficient life expectancy to see microvascular benefits (generally ∼10 years) is around 53 mmol/mol (7%) or less ( )."
+47. Consensus recommendation Among patients with type 2 diabetes who have established ASCVD, SGLT2 inhibitors or GLP-1 receptor agonists with proven cardiovascular benefit are recommended as part of glycemic management ( and ).  
+   *Anchor:* "Consensus recommendation Among patients with type 2 diabetes who have established ASCVD, SGLT2 inhibitors or GLP-1 receptor agonists with proven cardiovascular benefit are recommended as part of glycemic management ( and )."
+48. Consensus recommendation Among patients with ASCVD in whom HF coexists or is of special concern, SGLT2 inhibitors are recommended ( and ).  
+   *Anchor:* "Consensus recommendation Among patients with ASCVD in whom HF coexists or is of special concern, SGLT2 inhibitors are recommended ( and )."
+49. Consensus recommendation For patients with type 2 diabetes and CKD, with or without CVD, consider the use of an SGLT2 inhibitor shown to reduce CKD progression or, if contraindicated or not preferred, a GLP-1 receptor agonist shown to reduce CKD progression ( and ).  
+   *Anchor:* "Consensus recommendation For patients with type 2 diabetes and CKD, with or without CVD, consider the use of an SGLT2 inhibitor shown to reduce CKD progression or, if contraindicated or not preferred, a GLP-1 receptor agonist shown to reduce CKD progression ( and )."
+50. For these reasons, they are recommended as first-line therapies from the time of diagnosis and as cotherapy for patients who also require glucose-lowering medications or metabolic surgery.  
+   *Anchor:* "For these reasons, they are recommended as first-line therapies from the time of diagnosis and as cotherapy for patients who also require glucose-lowering medications or metabolic surgery."
+51. Metformin may result in lower serum vitamin B 12 concentration; therefore, periodic monitoring and supplementation is generally recommended if levels are deficient, particularly in those with anemia or neuropathy ( ).  
+   *Anchor:* "Metformin may result in lower serum vitamin B 12 concentration; therefore, periodic monitoring and supplementation is generally recommended if levels are deficient, particularly in those with anemia or neuropathy ( )."
+
 ## MCQs (answer and explanation quotes verified in stored text)
 
 **Q1. Which wording does the stored lead document use (2018 consensus)?**
@@ -166,3 +181,5 @@ Quote: "Other areas of importance include better segmentation of “type 2 diabe
 ## Notes
 
 Override from document 1579 (2009). The word legacy is absent. UKPDS is mentioned for the metformin substudy and as background to the question of early combination therapy. Glycemic targets are to be individualized. This is a consensus report.
+
+Citation placeholders such as "( and )" are in the stored text and are not filled in here. The first-line sentence refers to lifestyle measures in the preceding stored sentence.
