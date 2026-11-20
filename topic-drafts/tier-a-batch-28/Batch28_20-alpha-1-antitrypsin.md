@@ -6,7 +6,7 @@
 
 The 2003 ATS/ERS standards say who should be suspected (early emphysema, basilar disease, unexplained liver disease, necrotizing panniculitis, anti-proteinase 3-positive vasculitis, and a suggestive family history) and grade genetic testing from type A (recommended) to type D (discouraged). Symptomatic adults with emphysema, COPD, or asthma with airflow obstruction that is incompletely reversible after bronchodilators are a type A setting for diagnostic testing, with a type B recommendation in populations where deficiency is much less common than in North America and northern Europe. Population screening is type D. Isoelectric focusing in a reliable laboratory is the gold standard; liver biopsy is not used to make the diagnosis of the deficiency. Intravenous augmentation is recommended for established airflow obstruction, with clearer evidence when FEV1 is 35-60% predicted, and is not recommended for people without emphysema. It does not treat the liver disease. Liver care includes hepatitis A and B vaccination, examination, liver tests, and ultrasound, with CT in older patients with decompensated cirrhosis. Stable lung care follows usual COPD measures, and purulent exacerbations are treated with early antibiotics.
 
-## All recommendations of the lead guideline (21 statements + 0 body-text details)
+## All recommendations of the lead guideline (46 statements + 0 body-text details)
 
 ### Who to suspect
 
@@ -58,6 +58,59 @@ The 2003 ATS/ERS standards say who should be suspected (early emphysema, basilar
    *Anchor:* "the Task Force favors early antibiotic therapy for all purulent exacerbations The scant evidence regarding the efﬁcac"
 21. A type A recommendation for diagnostic testing was made in the following settings: Symptomatic adults with emphysema, chronic obstructive pulmonary disease (COPD), or asthma with airflow obstruction that is incompletely reversible after aggressive treatment with bronchodilators. (Notably, in populations where the prevalence of AAT deficiency is known to be much lower than the general North American and Northern European prevalence, a Type B recommendation for diagnostic testing in this setting is offered.) Individuals with unexplained liver disease, including neonates, children, and adults, particularly the elderly. Asymptomatic individuals with persistent obstruction on pulmonary function tests with identifiable risk factors (e.g., cigarette smoking, occupational exposure). Adults with necrotizing panniculitis.  
    *Anchor:* "A type A recommendation for diagnostic testing was made in the following settings: • Symptomatic adults with emphysema, chronic obstructive pulmonary disease (COPD), or asthma with airﬂow ob- struction that is incompletely reversible after aggres"
+
+### Added after a second read of the stored text
+
+22. Patients should provide informed consent before genetic testing for clinical or research purposes.  
+   *Anchor:* "Patients should provide informed consent before genetic testing for clinical or research purposes."
+23. Genetic testing of children should proceed only if: The adolescent is mature enough to understand the issues involved with testing The adolescent gives his or her assent for testing, and the parents give their permission for such testing  
+   *Anchor:* "Genetic testing of children should proceed only if: The adolescent is mature enough to understand the issues involved with testing The adolescent gives his or her assent for testing, and the parents give their permission for such testing"
+24. testing should be performed only after informed consent is obtained from the patient.  
+   *Anchor:* "testing should be performed only after informed consent is obtained from the patient."
+25. Health care providers must provide individuals with the necessary information so that an informed and voluntary decision can be made, and must receive the individual’s informed consent before any genetic testing.  
+   *Anchor:* "Health care providers must provide individuals with the necessary information so that an informed and voluntary decision can be made, and must receive the individual’s informed consent before any genetic testing."
+26. Before any genetic testing, health care providers should inform their patients that a genetic test can reveal medical information about relatives, as well as about the patient  
+   *Anchor:* "Before any genetic testing, health care providers should inform their patients that a genetic test can reveal medical information about relatives, as well as about the patient"
+27. the family should be informed about prenatal diagnosis as part of the genetic counseling endeavor.  
+   *Anchor:* "the family should be informed about prenatal diagnosis as part of the genetic counseling endeavor."
+28. plasma protein electrophoresis should arouse suspicion of AAT deﬁciency and should be conﬁrmed quantitatively and qualita- tively  
+   *Anchor:* "plasma protein electrophoresis should arouse suspicion of AAT deﬁciency and should be conﬁrmed quantitatively and qualita- tively"
+29. Determination of the level of total AAT protein present in a patient’s serum should not be used as the sole basis for establishing the diagnosis.  
+   *Anchor:* "Determination of the level of total AAT protein present in a patient’s serum should not be used as the sole basis for establishing the diagnosis."
+30. it is recommended that all subjects with COPD or asthma characterized by incompletely reversible airﬂow obstruction should be tested once for quantitative AAT determination  
+   *Anchor:* "it is recommended that all subjects with COPD or asthma characterized by incompletely reversible airﬂow obstruction should be tested once for quantitative AAT determination"
+31. Spirometry should initially be performed on an annual basis until it is clear that progression is not rapid  
+   *Anchor:* "Spirometry should initially be performed on an annual basis until it is clear that progression is not rapid"
+32. Pulmonary function testing should include spirometry (pre- and postbronchodilator), lung volume measurements by helium dilu- tion or by body plethysmography, and single-breath CO-diffus- ing capacity  
+   *Anchor:* "Pulmonary function testing should include spirometry (pre- and postbronchodilator), lung volume measurements by helium dilu- tion or by body plethysmography, and single-breath CO-diffus- ing capacity"
+33. a chest X-ray should be performed as an initial test for incidental lung lesions or possible identiﬁcation of local- ized bullous disease.  
+   *Anchor:* "a chest X-ray should be performed as an initial test for incidental lung lesions or possible identiﬁcation of local- ized bullous disease."
+34. we currently recommend that those with AAT deﬁ- ciency and asthma should be treated aggressively with agents that reduce airway hyperreactivity  
+   *Anchor:* "we currently recommend that those with AAT deﬁ- ciency and asthma should be treated aggressively with agents that reduce airway hyperreactivity"
+35. Patients should be encouraged to remain active yet not reach a stage of exercise leading to hyperventilation and air trapping.  
+   *Anchor:* "Patients should be encouraged to remain active yet not reach a stage of exercise leading to hyperventilation and air trapping."
+36. Oral corticosteroids are useful in those with a clear asthmatic component to their disease, but should be used with caution over the long term because of their effects on bone loss  
+   *Anchor:* "Oral corticosteroids are useful in those with a clear asthmatic component to their disease, but should be used with caution over the long term because of their effects on bone loss"
+37. alcohol consumption should be kept below 60 g/day. In patients with overt CLD, cessation of alcohol intake is neces- sary.  
+   *Anchor:* "alcohol consumption should be kept below 60 g/day. In patients with overt CLD, cessation of alcohol intake is neces- sary."
+38. Airline travel for patients with emphysema should prompt a speciﬁc preﬂight assessment.  
+   *Anchor:* "Airline travel for patients with emphysema should prompt a speciﬁc preﬂight assessment."
+39. Urologic, gynecologic, and colorectal procedures should be performed under local or epidural anesthesia whenever pos- sible.  
+   *Anchor:* "Urologic, gynecologic, and colorectal procedures should be performed under local or epidural anesthesia whenever pos- sible."
+40. should be considered in all infants with evidence of conjugated hyperbilirubinemia, elevated serum transaminases, “neonatal hepatitis syndrome,” or any other evi- dence of liver disease.  
+   *Anchor:* "should be considered in all infants with evidence of conjugated hyperbilirubinemia, elevated serum transaminases, “neonatal hepatitis syndrome,” or any other evi- dence of liver disease."
+41. Other causes of chronic liver disease (e.g., viral infection, hemochromatosis, Wilson’s disease, alcoholic and autoimmune liver disease) should be ruled out by laboratory examinations  
+   *Anchor:* "Other causes of chronic liver disease (e.g., viral infection, hemochromatosis, Wilson’s disease, alcoholic and autoimmune liver disease) should be ruled out by laboratory examinations"
+42. in children, a PI*MZ type should not be regarded as sufﬁcient explanation for unexplained liver disease  
+   *Anchor:* "in children, a PI*MZ type should not be regarded as sufﬁcient explanation for unexplained liver disease"
+43. Nephropathy should be borne in mind, particularly in children, when patients are evaluated for liver transplantation  
+   *Anchor:* "Nephropathy should be borne in mind, particularly in children, when patients are evaluated for liver transplantation"
+44. diagnostic testing for AAT deﬁciency is indicated for this group.  
+   *Anchor:* "diagnostic testing for AAT deﬁciency is indicated for this group."
+45. Subjects with abnormal blood levels should be investigated further to provide a qualitative evaluation of their AAT disorder.  
+   *Anchor:* "Subjects with abnormal blood levels should be investigated further to provide a qualitative evaluation of their AAT disorder."
+46. In heterozygotes with active liver or vasculitic disease, the plasma AAT level is frequently normal; performing isoelec- tric focusing is required  
+   *Anchor:* "In heterozygotes with active liver or vasculitic disease, the plasma AAT level is frequently normal; performing isoelec- tric focusing is required"
 
 ## MCQs (answer and explanation quotes verified in stored text)
 
@@ -124,3 +177,5 @@ Quote: "the Task Force favors early antibiotic therapy for all purulent exacerba
 ## Notes
 
 Newer documents exist and were not substituted: a 2018 Portuguese consensus (document 1739) and a 2024 EARCO Delphi on monitoring (document 2205). They do not replace this standards statement. Some PDF glyphs for alpha and for inequality signs are corrupted in the stored text and are quoted only where the surrounding words are readable. Appendices of evidence tables are not re-listed as separate recommendations.
+
+Inequality signs in the augmentation section remain the corrupted glyphs in the stored PDF and are not restated as numeric cutoffs. A serum-threshold dosing line that uses those glyphs was not added.
