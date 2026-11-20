@@ -11,6 +11,19 @@ if (!file) throw new Error('Pass the evidence package .json.gz path');
 
 const ABSTRACT_OR_QUARANTINED_SOURCES = new Set(['abstract', 'bibliographic_abstract', 'pubmed_abstract']);
 const normalizeQuoteText = (value) => String(value || '').replace(/\s+/g, ' ').trim().toLowerCase();
+const TITLE_STOP_WORDS = new Set([
+    'a', 'an', 'the', 'of', 'in', 'on', 'at', 'to', 'for', 'and', 'or', 'with', 'by', 'from', 'as', 'is', 'are',
+    'clinical', 'practice', 'guideline', 'guidelines', 'consensus', 'statement', 'recommendations', 'update',
+    'management', 'diagnosis', 'treatment', 'patients', 'patient', 'study', 'review', 'systematic', 'meta',
+    'analysis', 'trial', 'randomized', 'randomised', 'controlled', 'society', 'association', 'american',
+    'european', 'british', 'international', 'national', 'adult', 'adults', 'part', 'report', 'committee',
+]);
+
+function productionIsQuarantined(row) {
+    if (!row) return false;
+    const src = String(row.full_text_source || '').trim().toLowerCase();
+    return src.startsWith('quarantined');
+}
 
 function productionHasValidFullText(row) {
     if (!row) return false;
@@ -19,16 +32,47 @@ function productionHasValidFullText(row) {
     return len >= 500 && !ABSTRACT_OR_QUARANTINED_SOURCES.has(src) && !src.startsWith('quarantined');
 }
 
-function incomingTextIsSafe(source) {
+/**
+ * Verify that `fullText` actually belongs to `title` (blocks wrong-paper text).
+ * Requires either:
+ *   - normalized title substring match in the first 6,000 chars of fullText, OR
+ *   - >= 60% of the title's distinctive (non-stopword) tokens present in the first 8,000 chars.
+ */
+function incomingTextMatchesTitle(title, fullText) {
+    const cleanTitle = normalizeQuoteText(title).replace(/[^a-z0-9]+/g, ' ').trim();
+    if (!cleanTitle || cleanTitle.length < 8) return true; // no usable title to check against
+    const head = normalizeQuoteText(String(fullText || '').slice(0, 8000)).replace(/[^a-z0-9]+/g, ' ').trim();
+    if (!head) return false;
+    if (head.includes(cleanTitle)) return true;
+
+    const allTitleTokens = cleanTitle.split(/\s+/).filter((w) => w.length >= 4 && !/^\d+$/.test(w));
+    const distinctive = allTitleTokens.filter((w) => !TITLE_STOP_WORDS.has(w));
+    const checkTokens = distinctive.length >= 2 ? distinctive : allTitleTokens;
+    if (!checkTokens.length) return true;
+
+    const headSet = new Set(head.split(/\s+/));
+    let hits = 0;
+    for (const tok of checkTokens) {
+        if (headSet.has(tok) || head.includes(tok)) hits += 1;
+    }
+    return (hits / checkTokens.length) >= 0.6;
+}
+
+function incomingTextIsSafe(source, productionTitle = null) {
     const text = String(source.fullText || '').trim();
     const src = String(source.fullTextSource || '').trim().toLowerCase();
-    if (text.length < 500) return false;
-    if (ABSTRACT_OR_QUARANTINED_SOURCES.has(src) || src.startsWith('quarantined')) return false;
+    if (text.length < 500) return { ok: false, reason: 'too_short' };
+    if (ABSTRACT_OR_QUARANTINED_SOURCES.has(src) || src.startsWith('quarantined')) return { ok: false, reason: 'abstract_or_quarantined_source' };
     // Reject obvious templated / error / placeholder pages before they can touch production
     if (/(?:404 not found|access denied|cloudflare|enable javascript|captcha|placeholder|synopsis step failed)/i.test(text.slice(0, 1200))) {
-        return false;
+        return { ok: false, reason: 'error_or_templated_page' };
     }
-    return true;
+    // Reject wrong-paper text: incoming full text must match both the production title (if present) and incoming title
+    const targetTitle = productionTitle || source.title;
+    if (targetTitle && !incomingTextMatchesTitle(targetTitle, text)) {
+        return { ok: false, reason: 'wrong_paper_title_mismatch' };
+    }
+    return { ok: true };
 }
 
 /**
@@ -95,6 +139,7 @@ async function main() {
     await client.connect();
     const report = { apply: APPLY, allowOverwrite: ALLOW_OVERWRITE, documents: payload.documents.length,
         inserted: 0, updated: 0, unchanged: 0, ambiguous: 0, fullTextAddedOnly: 0,
+        quarantinedRowsProtected: 0, wrongPaperTitleMismatchesBlocked: 0,
         fullTextOverwritesBlocked: 0, fullTextOverwritesAllowed: 0, unsafeIncomingSkipped: 0,
         catalogueInserted: 0, catalogueUpdated: 0, topicSourcesMerged: 0, topicSourcesUnresolved: 0, failures: [] };
     report.topicSourcesCreated = 0;
@@ -111,11 +156,13 @@ async function main() {
             }
             const current = matches[0];
             const incomingLength = String(source.fullText || '').trim().length;
-            const incomingSafe = incomingTextIsSafe(source);
+            const safetyCheck = incomingTextIsSafe(source, current?.title || source.title);
+            const incomingSafe = safetyCheck.ok;
             if (!current) {
                 if (incomingLength >= 500 && !incomingSafe) {
-                    report.unsafeIncomingSkipped += 1;
-                    report.failures.push({ localId: source.localId, reason: 'unsafe_or_templated_incoming_text' });
+                    if (safetyCheck.reason === 'wrong_paper_title_mismatch') report.wrongPaperTitleMismatchesBlocked += 1;
+                    else report.unsafeIncomingSkipped += 1;
+                    report.failures.push({ localId: source.localId, reason: safetyCheck.reason });
                     continue;
                 }
                 report.inserted += 1;
@@ -134,11 +181,22 @@ async function main() {
                 continue;
             }
             localToProduction.set(String(source.localId), current.id);
+            const prodQuarantined = productionIsQuarantined(current);
             const prodHasValid = productionHasValidFullText(current);
             let shouldWriteText = false;
 
-            if (!prodHasValid && incomingSafe) {
-                // Production is missing valid full text (empty, abstract-only, or quarantined) -> safe to fill
+            if (prodQuarantined) {
+                // Production explicitly quarantined this row (e.g. wrong-paper text) -> NEVER resurrect from local SQLite
+                report.quarantinedRowsProtected += 1;
+            } else if (!incomingSafe && incomingLength >= 500) {
+                if (safetyCheck.reason === 'wrong_paper_title_mismatch') {
+                    report.wrongPaperTitleMismatchesBlocked += 1;
+                    report.failures.push({ localId: source.localId, productionId: current.id, reason: 'wrong_paper_title_mismatch' });
+                } else {
+                    report.unsafeIncomingSkipped += 1;
+                }
+            } else if (!prodHasValid && incomingSafe) {
+                // Production is missing valid full text (empty or abstract-only, NOT quarantined) -> safe to fill
                 shouldWriteText = true;
                 report.fullTextAddedOnly += 1;
             } else if (prodHasValid && incomingSafe && incomingLength > Number(current.full_length || 0)) {
