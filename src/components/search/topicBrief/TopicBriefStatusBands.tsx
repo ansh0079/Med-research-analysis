@@ -108,14 +108,28 @@ export const TopicBriefStatusBands: React.FC<Props> = ({
             {agentGuidance.teachingPoints.length} teaching point{agentGuidance.teachingPoints.length === 1 ? '' : 's'}
           </span>
         )}
+        {agentGuidance.status === 'evidence_verified' && (agentGuidance.teachingPoints?.length ?? 0) < 3 && (
+          <span
+            className="rounded-full px-2 py-0.5 font-bold uppercase tracking-wider bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300"
+            title="Only a small number of points on this topic could be verified against stored full-text sources."
+          >
+            Limited evidence
+          </span>
+        )}
         <span className={`ml-auto rounded-full px-2 py-0.5 font-bold uppercase tracking-wider ${
-          agentGuidance.status === 'human_reviewed'
+          agentGuidance.status === 'human_reviewed' || agentGuidance.status === 'evidence_verified'
             ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300'
             : agentGuidance.status === 'human_edited'
             ? 'bg-sky-100 text-sky-700 dark:bg-sky-900/40 dark:text-sky-300'
             : 'bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300'
         }`}>
-          {agentGuidance.status === 'human_reviewed' ? 'Clinician reviewed' : agentGuidance.status === 'human_edited' ? 'Clinician edited' : 'AI generated'}
+          {agentGuidance.status === 'human_reviewed'
+            ? 'Clinician reviewed'
+            : agentGuidance.status === 'human_edited'
+            ? 'Clinician edited'
+            : agentGuidance.status === 'evidence_verified'
+            ? 'Evidence verified'
+            : 'AI generated'}
         </span>
       </div>
     )}

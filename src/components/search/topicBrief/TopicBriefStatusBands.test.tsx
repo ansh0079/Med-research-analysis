@@ -1,0 +1,54 @@
+import React from 'react';
+import { render, screen } from '@testing-library/react';
+import type { AgentGuidance } from '@types';
+
+import { TopicBriefStatusBands } from './TopicBriefStatusBands';
+
+/**
+ * Pages rebuilt from stored full text are published with status `evidence_verified`. The band used to
+ * fall through to "AI generated" for that status, and pages with only one or two verified points gave
+ * no hint that the evidence behind them was thin.
+ */
+function guidance(status: string, points: number): AgentGuidance {
+  return {
+    topic: 'test topic',
+    status,
+    confidence: 0.9,
+    mentorMessage: '',
+    seminalPapers: [],
+    teachingPoints: Array.from({ length: points }, (_, i) => ({ claim: `point ${i}`, sourceIndices: [1] })),
+  };
+}
+
+function renderBands(agentGuidance: AgentGuidance) {
+  return render(
+    <TopicBriefStatusBands
+      retractedCount={0}
+      preprintCount={0}
+      driftForTopic={null}
+      agentGuidance={agentGuidance}
+      guidelineCount={0}
+      hasReviewedGuidelines={false}
+    />,
+  );
+}
+
+describe('TopicBriefStatusBands mentor status', () => {
+  it('labels evidence_verified pages as evidence verified, not AI generated', () => {
+    renderBands(guidance('evidence_verified', 4));
+    expect(screen.getByText('Evidence verified')).toBeInTheDocument();
+    expect(screen.queryByText('AI generated')).not.toBeInTheDocument();
+    expect(screen.queryByText('Limited evidence')).not.toBeInTheDocument();
+  });
+
+  it('flags evidence_verified pages with fewer than three points as limited evidence', () => {
+    renderBands(guidance('evidence_verified', 2));
+    expect(screen.getByText('Limited evidence')).toBeInTheDocument();
+  });
+
+  it('keeps the AI generated label for unverified machine pages', () => {
+    renderBands(guidance('ai_generated', 2));
+    expect(screen.getByText('AI generated')).toBeInTheDocument();
+    expect(screen.queryByText('Limited evidence')).not.toBeInTheDocument();
+  });
+});
