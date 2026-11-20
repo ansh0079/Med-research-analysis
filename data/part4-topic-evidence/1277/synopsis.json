@@ -1,0 +1,24 @@
+{
+  "scope": "Vocal cord dysfunction / inducible laryngeal obstruction.",
+  "keyRecommendations": [
+    {
+      "text": "Definitive diagnosis conventionally uses laryngoscopy showing inspiratory vocal-fold narrowing greater than 50%.",
+      "strength": "not_graded",
+      "population": "Suspected VCD/ILO"
+    },
+    {
+      "text": "Laryngeal CT is described as a new technology that still requires validation in clinical pathways.",
+      "strength": "not_graded",
+      "population": "Suspected VCD/ILO"
+    },
+    {
+      "text": "The roundtable emphasised case history before testing.",
+      "strength": "not_graded",
+      "population": "Suspected VCD/ILO"
+    }
+  ],
+  "clinicalBottomLine": "VCD/ILO is confirmed, in this report, by laryngoscopy demonstrating inspiratory vocal-fold narrowing of more than 50%, with history remaining central.",
+  "notableCaveats": [
+    "CT of the larynx is mentioned as promising but not yet validated for routine pathways."
+  ]
+}

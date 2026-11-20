@@ -1,0 +1,134 @@
+{
+  "topic": {
+    "topicKey": "de-quervains-tenosynovitis",
+    "topicDisplayName": "De Quervain's Tenosynovitis",
+    "aliases": [
+      "1060",
+      "Rheumatology"
+    ],
+    "storedRowCount": 1,
+    "coverageNote": "Open systematic review whose introduction defines de Quervain tenosynovitis of the first extensor compartment and whose synthesis compares corticosteroid injection, thumb-spica immobilisation, and ultrasound guidance. Thyroiditis papers that share the name were not used.",
+    "mcqs": [
+      {
+        "id": "1060-dq-01",
+        "question": "Which tendons and compartment does this review assign to de Quervain tenosynovitis?",
+        "options": {
+          "A": "Extensor pollicis brevis and abductor pollicis longus in the first extensor compartment",
+          "B": "Flexor pollicis longus in the carpal tunnel",
+          "C": "Extensor carpi ulnaris only",
+          "D": "The flexor tendons of the little finger"
+        },
+        "correctAnswer": "A",
+        "explanation": "The review defines it as a stenosing overuse condition of the synovial sheath of the first extensor compartment, affecting extensor pollicis brevis and abductor pollicis longus.",
+        "difficulty": "easy",
+        "sourceRefs": [
+          {
+            "sourceBody": "JAMA Network Open",
+            "sourceYear": 2023,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC10611995/",
+            "excerpt": "De Quervain tenosynovitis (DQT) is a stenosing overuse condition of the synovial sheath of the first extensor compartment of the wrist affecting the extensor pollicis brevis (EPB) and abductor pollicis longus tendons.",
+            "status": "source_verified",
+            "pmid": "37889490",
+            "pmcid": "PMC10611995"
+          }
+        ]
+      },
+      {
+        "id": "1060-dq-02",
+        "question": "Where is the pain, and how is the diagnosis usually made?",
+        "options": {
+          "A": "Pain and tenderness over and proximal to the radial styloid, with a predominantly clinical diagnosis",
+          "B": "Ulnar-sided pain that requires surgical exploration before any clinical diagnosis",
+          "C": "Pain only at the elbow",
+          "D": "A diagnosis that the review says cannot be made without MRI"
+        },
+        "correctAnswer": "A",
+        "explanation": "The review says de Quervain tenosynovitis manifests with pain and tenderness over and proximal to the radial styloid, and that diagnosis is predominantly clinical. Ultrasound or MRI can help when the diagnosis is uncertain.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "JAMA Network Open",
+            "sourceYear": 2023,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC10611995/",
+            "excerpt": "DQT manifests with pain and tenderness over and proximal to the radial styloid, and while its diagnosis is predominantly clinical, imaging modalities, such as ultrasonography and magnetic resonance imaging, can be useful where there is diagnostic uncertainty.",
+            "status": "source_verified",
+            "pmid": "37889490",
+            "pmcid": "PMC10611995"
+          }
+        ]
+      },
+      {
+        "id": "1060-dq-03",
+        "question": "What structural change does the review relate to the condition, and what does it say about inflammation?",
+        "options": {
+          "A": "Thickening of the tendon sheath and extensor retinaculum with tendon degeneration; inflammation remains controversial",
+          "B": "Proven septic tenosynovitis in every case",
+          "C": "Only a separate septated subcompartment, which the review says is required for the diagnosis",
+          "D": "Rupture of the flexor retinaculum"
+        },
+        "correctAnswer": "A",
+        "explanation": "The review says the condition appears related to thickening of the tendon sheath and overlying extensor retinaculum and to thinning and degeneration of the tendons. Involvement of inflammation remains controversial, and intrinsic degeneration from overuse is the more likely mechanism.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "JAMA Network Open",
+            "sourceYear": 2023,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC10611995/",
+            "excerpt": "it appears to be related to thickening of the tendon sheath and the overlying extensor retinaculum, as well as thinning and degeneration of the affected tendons.",
+            "status": "source_verified",
+            "pmid": "37889490",
+            "pmcid": "PMC10611995"
+          }
+        ]
+      },
+      {
+        "id": "1060-dq-04",
+        "question": "What did the network meta-analysis associate with significant pain and functional benefit?",
+        "options": {
+          "A": "Adding thumb-spica immobilisation to a local corticosteroid injection",
+          "B": "Antibiotics alone",
+          "C": "Immediate tendon transfer",
+          "D": "No immobilisation and no injection"
+        },
+        "correctAnswer": "A",
+        "explanation": "The review found that adding thumb-spica immobilisation to a local corticosteroid injection was associated with significant pain-relieving and functional benefits.",
+        "difficulty": "easy",
+        "sourceRefs": [
+          {
+            "sourceBody": "JAMA Network Open",
+            "sourceYear": 2023,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC10611995/",
+            "excerpt": "adding thumb spica immobilization to a local corticosteroid injection was associated with significant pain-relieving and functional benefits.",
+            "status": "source_verified",
+            "pmid": "37889490",
+            "pmcid": "PMC10611995"
+          }
+        ]
+      },
+      {
+        "id": "1060-dq-05",
+        "question": "How did ultrasound-guided corticosteroid injection compare with conventional injection for pain?",
+        "options": {
+          "A": "Ultrasound guidance was associated with greater pain reduction",
+          "B": "Ultrasound guidance increased pain compared with a landmark injection",
+          "C": "The two methods were identical in every analysis",
+          "D": "Ultrasound was associated only with more tendon rupture and no pain difference"
+        },
+        "correctAnswer": "A",
+        "explanation": "The review says administering the corticosteroid injection with ultrasonographic guidance was associated with greater pain reduction than conventional injections.",
+        "difficulty": "hard",
+        "sourceRefs": [
+          {
+            "sourceBody": "JAMA Network Open",
+            "sourceYear": 2023,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC10611995/",
+            "excerpt": "Administering the corticosteroid injection using ultrasonographic guidance was associated with greater pain reduction than conventional injections.",
+            "status": "source_verified",
+            "pmid": "37889490",
+            "pmcid": "PMC10611995"
+          }
+        ]
+      }
+    ]
+  }
+}

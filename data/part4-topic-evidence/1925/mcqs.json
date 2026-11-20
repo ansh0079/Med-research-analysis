@@ -1,0 +1,134 @@
+{
+  "topic": {
+    "topicKey": "mri-in-inflammatory-arthritis-bone-marrow-oedema-erosions-tenosynoviti",
+    "topicDisplayName": "MRI in inflammatory arthritis: bone marrow oedema, erosions, tenosynovitis scoring",
+    "aliases": [
+      "1925",
+      "Rheumatology"
+    ],
+    "storedRowCount": 1,
+    "coverageNote": "Open review that states what the original RAMRIS scores, what the update added, and the 0–3 and 0–10 scales for synovitis, bone-marrow oedema, erosions, and tenosynovitis. The short OMERACT atlas record was not used.",
+    "mcqs": [
+      {
+        "id": "1925-mri-01",
+        "question": "What did the 2002 RAMRIS assess, according to this review?",
+        "options": {
+          "A": "Synovitis, bone erosion, and oedema or osteitis",
+          "B": "Only cartilage thickness",
+          "C": "Only serum CRP",
+          "D": "Only tenosynovitis, which the review says was in the original score"
+        },
+        "correctAnswer": "A",
+        "explanation": "The review says RAMRIS, introduced in 2002, assesses inflammation and damage on MRI, encompassing synovitis, bone erosion, and oedema or osteitis.",
+        "difficulty": "easy",
+        "sourceRefs": [
+          {
+            "sourceBody": "Journal of Clinical Medicine",
+            "sourceYear": 2024,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC11277801/",
+            "excerpt": "RAMRIS, introduced in 2002, offers an objective means to assess inflammation and damage via MRI in RA trials, encompassing findings such as synovitis, bone erosion, and edema/osteitis.",
+            "status": "source_verified",
+            "pmid": "39064179",
+            "pmcid": "PMC11277801"
+          }
+        ]
+      },
+      {
+        "id": "1925-mri-02",
+        "question": "What did the updated RAMRIS add?",
+        "options": {
+          "A": "Joint-space narrowing and tenosynovitis",
+          "B": "Only a patient pain score",
+          "C": "A chest-radiograph grade",
+          "D": "Nothing beyond the 2002 items"
+        },
+        "correctAnswer": "A",
+        "explanation": "The review says an updated RAMRIS was developed which also includes joint-space narrowing and tenosynovitis.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Journal of Clinical Medicine",
+            "sourceYear": 2024,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC11277801/",
+            "excerpt": "an updated RAMRIS version was developed, which also includes the evaluation of joint space narrowing and tenosynovitis.",
+            "status": "source_verified",
+            "pmid": "39064179",
+            "pmcid": "PMC11277801"
+          }
+        ]
+      },
+      {
+        "id": "1925-mri-03",
+        "question": "What numeric scales does the review give for synovitis, bone-marrow oedema, and erosions?",
+        "options": {
+          "A": "Synovitis and bone-marrow oedema 0 to 3, erosions 0 to 10",
+          "B": "All three scored 0 to 1",
+          "C": "Erosions 0 to 3 and synovitis 0 to 10",
+          "D": "No numeric scale is stated"
+        },
+        "correctAnswer": "A",
+        "explanation": "The review says synovitis and bone-marrow oedema are scored from 0 to 3 and erosions from 0 to 10.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Journal of Clinical Medicine",
+            "sourceYear": 2024,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC11277801/",
+            "excerpt": "synovitis and BME scored from 0 to 3 and erosions from 0 to 10 [ ].",
+            "status": "source_verified",
+            "pmid": "39064179",
+            "pmcid": "PMC11277801"
+          }
+        ]
+      },
+      {
+        "id": "1925-mri-04",
+        "question": "How is tenosynovitis scored on the 0 to 3 scale in this review?",
+        "options": {
+          "A": "By the maximum width of peritendinous effusion or post-contrast enhancement: under 1.5 mm, 1.5 to under 3 mm, or 3 mm or more",
+          "B": "By the number of tender joints only",
+          "C": "A single grade for any visible tendon",
+          "D": "Tenosynovitis is not given millimetre thresholds"
+        },
+        "correctAnswer": "A",
+        "explanation": "Grade 1 is effusion or enhancement under 1.5 mm, grade 2 is 1.5 mm up to but not including 3 mm, and grade 3 is 3 mm or greater. Grade 0 is no effusion or enhancement.",
+        "difficulty": "hard",
+        "sourceRefs": [
+          {
+            "sourceBody": "Journal of Clinical Medicine",
+            "sourceYear": 2024,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC11277801/",
+            "excerpt": "The scoring of tenosynovitis is determined by measuring the maximum width of the effusion and/or tenosynovial enhancement, with measurements taken perpendicular to the tendon’s orientation. 0–3 scale: 0 indicating no presence; 1 representing a peritendinous effusion and/or postcontrast tenosynovial enhancement of less than 1.5 mm; 2 for effusion or enhancement that is equal to or greater than 1.5 mm but less than 3 mm; and 3 for effusion or enhancement that is 3 mm or greater",
+            "status": "source_verified",
+            "pmid": "39064179",
+            "pmcid": "PMC11277801"
+          }
+        ]
+      },
+      {
+        "id": "1925-mri-05",
+        "question": "What practical limitation of RAMRIS does the review state?",
+        "options": {
+          "A": "It is time-consuming and demands experience for reproducibility",
+          "B": "It can be applied without any training and takes a minute",
+          "C": "It has been withdrawn",
+          "D": "It scores only the feet and never the hand"
+        },
+        "correctAnswer": "A",
+        "explanation": "The review says that despite its comprehensiveness, RAMRIS is time-consuming and demands experience for reproducibility.",
+        "difficulty": "easy",
+        "sourceRefs": [
+          {
+            "sourceBody": "Journal of Clinical Medicine",
+            "sourceYear": 2024,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC11277801/",
+            "excerpt": "RAMRIS is time-consuming and demands experience for reproducibility.",
+            "status": "source_verified",
+            "pmid": "39064179",
+            "pmcid": "PMC11277801"
+          }
+        ]
+      }
+    ]
+  }
+}

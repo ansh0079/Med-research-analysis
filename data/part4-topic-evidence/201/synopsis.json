@@ -1,0 +1,24 @@
+{
+  "scope": "Suspected septic arthritis of a native joint, including the synovial-fluid steps that also look for crystals.",
+  "keyRecommendations": [
+    {
+      "text": "Aspirate synovial fluid as quickly as possible when septic arthritis of a native joint is suspected.",
+      "strength": "not_graded",
+      "population": "Suspected native-joint septic arthritis"
+    },
+    {
+      "text": "If fluid is limited, prioritise tests that include neutrophil percentage and crystals.",
+      "strength": "not_graded",
+      "population": "Limited synovial-fluid volume"
+    },
+    {
+      "text": "Except when the patient is septic, wait for the joint-fluid sample before empirical antibiotics so cultures are not falsely negative.",
+      "strength": "not_graded",
+      "population": "Suspected septic arthritis without sepsis"
+    }
+  ],
+  "clinicalBottomLine": "A hot native joint is aspirated immediately, the fluid is examined for cells, organisms, and crystals, and antibiotics wait for that sample unless the patient is septic.",
+  "notableCaveats": [
+    "Reactive arthritis, seronegative inflammatory arthritis, and trauma are outside this septic-arthritis guideline."
+  ]
+}

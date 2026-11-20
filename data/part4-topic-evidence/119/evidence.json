@@ -1,0 +1,23 @@
+{
+  "catalogueId": 119,
+  "topic": "Biologic-Induced Psoriasis and Paradoxical Reactions",
+  "specialty": "Rheumatology",
+  "decision": "downloaded_open_source",
+  "source": {
+    "title": "Paradoxical psoriasis: The flip side of idiopathic psoriasis or an autocephalous reversible drug reaction?",
+    "year": 2023,
+    "pmid": "37731549",
+    "pmcid": "PMC10507642",
+    "doi": "10.1016/j.jtauto.2023.100211",
+    "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC10507642/",
+    "sourceBody": "Journal of Translational Autoimmunity",
+    "tier": "review",
+    "whyItFits": "Open review of psoriasis that appears during biologic therapy. It defines the reaction, names TNF inhibitors and later cytokine inhibitors, describes the usual sites, and ties stopping or switching the drug to the underlying disease and the severity of the rash."
+  },
+  "notes": [],
+  "files": {
+    "source": "/workspace/data/part4-topic-evidence/119/source.txt",
+    "synopsis": "/workspace/data/part4-topic-evidence/119/synopsis.json",
+    "mcqs": "/workspace/data/part4-topic-evidence/119/mcqs.json"
+  }
+}

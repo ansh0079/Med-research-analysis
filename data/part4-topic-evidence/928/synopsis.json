@@ -1,0 +1,24 @@
+{
+  "scope": "Adults with osteonecrosis of the femoral head.",
+  "keyRecommendations": [
+    {
+      "text": "The guideline standardises diagnosis, pathological staging, and treatment selection.",
+      "strength": "not_graded",
+      "population": "Adults with ONFH"
+    },
+    {
+      "text": "Treatment should consider stage, hip function, age, and occupation, and is linked to changes in intraosseous blood supply.",
+      "strength": "not_graded",
+      "population": "Adults with ONFH"
+    },
+    {
+      "text": "When risk factors for ONFH are present, preventive measures to avoid osteonecrosis are recommended.",
+      "strength": "not_graded",
+      "population": "People at risk of ONFH"
+    }
+  ],
+  "clinicalBottomLine": "Adult femoral-head osteonecrosis is staged and then treated with non-surgical or surgical options, including core decompression, according to stage and patient factors.",
+  "notableCaveats": [
+    "This is a 2019 Chinese multi-regional guideline update of a 2016 version, not the ARCO classification paper."
+  ]
+}

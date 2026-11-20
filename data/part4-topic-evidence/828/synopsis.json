@@ -1,0 +1,24 @@
+{
+  "scope": "Ultrasound definitions of synovitis and the conduct of a guided injection.",
+  "keyRecommendations": [
+    {
+      "text": "Effusion is displaceable, compressible, hypoechoic or anechoic material without Doppler signal. Synovial hypertrophy is poorly compressible tissue that may show Doppler signal.",
+      "strength": "not_graded",
+      "population": "Joint ultrasound"
+    },
+    {
+      "text": "Colour or power Doppler signal inside synovial hypertrophy is the main marker of inflammatory activity.",
+      "strength": "not_graded",
+      "population": "Inflammatory arthritis"
+    },
+    {
+      "text": "The usual injectate is local anaesthetic plus steroid. An in-plane approach keeps the needle length and tip in view.",
+      "strength": "not_graded",
+      "population": "Ultrasound-guided musculoskeletal injection"
+    }
+  ],
+  "clinicalBottomLine": "Call effusion and synovial hypertrophy by the OMERACT ultrasound definitions, and use power Doppler inside the synovium as the sign of active inflammation. Guide the needle in plane so its tip stays visible, using anaesthetic plus steroid for the usual injection.",
+  "notableCaveats": [
+    "The injection paper is a general musculoskeletal procedure review, not a rheumatology-only guideline. Doppler grading numbers beyond the statement that signal marks inflammatory activity are not taken from it."
+  ]
+}

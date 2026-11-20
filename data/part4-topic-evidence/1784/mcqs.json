@@ -1,0 +1,134 @@
+{
+  "topic": {
+    "topicKey": "hand-and-erosive-oa-heberden-nodes-bouchard-nodes-trapeziometacarpal-o",
+    "topicDisplayName": "Hand and erosive OA: Heberden nodes, Bouchard nodes, trapeziometacarpal OA",
+    "aliases": [
+      "1784",
+      "Rheumatology"
+    ],
+    "storedRowCount": 1,
+    "coverageNote": "Open multicentre description of hand osteoarthritis. It names Heberden and Bouchard nodes and bony enlargement as the clinical hallmarks, lists the target joints including the thumb base, and defines thumb-base deformity as subluxation and adduction. The 2018 EULAR hand-OA recommendations were not available as an open PDF from this environment.",
+    "mcqs": [
+      {
+        "id": "1784-hand-01",
+        "question": "Which joints and clinical hallmarks does this cohort paper assign to hand osteoarthritis?",
+        "options": {
+          "A": "Distal and proximal interphalangeal joints, index and middle metacarpophalangeal joints, and the thumb base, with Heberden nodes, Bouchard nodes, and bony enlargement",
+          "B": "Only the wrist",
+          "C": "Only the elbow",
+          "D": "Heberden nodes at the metacarpophalangeal joints as the sole hallmark"
+        },
+        "correctAnswer": "A",
+        "explanation": "The paper says symptoms often affect the distal and proximal interphalangeal joints, the index and middle metacarpophalangeal joints, and the thumb base, and that Heberden nodes, Bouchard nodes, and bony enlargement are the clinical hallmarks.",
+        "difficulty": "easy",
+        "sourceRefs": [
+          {
+            "sourceBody": "Archives of Rheumatology",
+            "sourceYear": 2022,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9791555/",
+            "excerpt": "The symptoms are often intermittent and affect target joints (distal and proximal interphalangeal joints, index and middle metacarpophalangeal joints, and thumb base), and the Heberden's nodes, Bouchard's nodes and bony enlargement are the clinical hallmarks of hand OA.[ ]",
+            "status": "source_verified",
+            "pmid": "36589604",
+            "pmcid": "PMC9791555"
+          }
+        ]
+      },
+      {
+        "id": "1784-hand-02",
+        "question": "How did the examiners define hand deformity in this study?",
+        "options": {
+          "A": "Subluxation and adduction of the thumb base, and lateral deviation of the distal interphalangeal joints",
+          "B": "Ulnar deviation at every metacarpophalangeal joint only",
+          "C": "Swan-neck deformity as the only definition",
+          "D": "No deformity was defined"
+        },
+        "correctAnswer": "A",
+        "explanation": "Deformities were defined as subluxation and adduction of the thumb base and lateral deviation of the distal interphalangeal joints. Squaring of the first carpometacarpal joint was among the deformities examined.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Archives of Rheumatology",
+            "sourceYear": 2022,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9791555/",
+            "excerpt": "Deformities were defined as subluxation and adduction of the thumb base and lateral deviation of DIP joints.",
+            "status": "source_verified",
+            "pmid": "36589604",
+            "pmcid": "PMC9791555"
+          }
+        ]
+      },
+      {
+        "id": "1784-hand-03",
+        "question": "What does the paper say about thumb-base osteoarthritis when the hand disease is non-erosive?",
+        "options": {
+          "A": "It is an important factor for hand pain and disability",
+          "B": "It excludes hand osteoarthritis",
+          "C": "It has no relationship to pain",
+          "D": "It occurs only in erosive disease"
+        },
+        "correctAnswer": "A",
+        "explanation": "The paper says the presence of thumb-base osteoarthritis in non-erosive hand osteoarthritis is an important factor for hand pain and disability.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Archives of Rheumatology",
+            "sourceYear": 2022,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9791555/",
+            "excerpt": "The presence of thumb base OA in non-erosive hand OA is an important factor for hand pain and disability.[ ]",
+            "status": "source_verified",
+            "pmid": "36589604",
+            "pmcid": "PMC9791555"
+          }
+        ]
+      },
+      {
+        "id": "1784-hand-04",
+        "question": "In this cohort, which nodes were associated with a higher Duruöz hand-index score?",
+        "options": {
+          "A": "Bouchard nodes, while the score was similar whether or not Heberden nodes were present",
+          "B": "Heberden nodes only",
+          "C": "Neither type of node",
+          "D": "Nodes at the elbow"
+        },
+        "correctAnswer": "A",
+        "explanation": "Duruöz hand-index scores were similar with or without Heberden nodes, and the mean score was significantly higher in patients with Bouchard nodes.",
+        "difficulty": "hard",
+        "sourceRefs": [
+          {
+            "sourceBody": "Archives of Rheumatology",
+            "sourceYear": 2022,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9791555/",
+            "excerpt": "the mean DHI scores were significantly higher in patients with Bouchard's nodes (p=0.015).",
+            "status": "source_verified",
+            "pmid": "36589604",
+            "pmcid": "PMC9791555"
+          }
+        ]
+      },
+      {
+        "id": "1784-hand-05",
+        "question": "Which first-carpometacarpal finding was included in the physical examination of hand deformity?",
+        "options": {
+          "A": "Squaring of the first carpometacarpal joint",
+          "B": "Only soft-tissue swelling of the elbow",
+          "C": "Ankylosis of the shoulder",
+          "D": "The examination omitted the thumb base"
+        },
+        "correctAnswer": "A",
+        "explanation": "The examination included squaring of the first carpometacarpal joint together with proximal and distal interphalangeal deformities and Heberden and Bouchard nodes.",
+        "difficulty": "easy",
+        "sourceRefs": [
+          {
+            "sourceBody": "Archives of Rheumatology",
+            "sourceYear": 2022,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9791555/",
+            "excerpt": "squaring of first carpometacarpal [CMC] joint, proximal and distal interphalangeal [DIP] joint deformities), Heberden's nodes, and Bouchard's nodes were evaluated during physical examination.",
+            "status": "source_verified",
+            "pmid": "36589604",
+            "pmcid": "PMC9791555"
+          }
+        ]
+      }
+    ]
+  }
+}

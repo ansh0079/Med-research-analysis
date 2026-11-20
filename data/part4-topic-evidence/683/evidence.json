@@ -1,0 +1,23 @@
+{
+  "catalogueId": 683,
+  "topic": "Biologics and malignancy risk: lymphoma, solid tumours, non-melanoma skin cancer",
+  "specialty": "Rheumatology",
+  "decision": "downloaded_open_source",
+  "source": {
+    "title": "Use of Biologic or Targeted Synthetic Disease-Modifying Antirheumatic Drugs and Cancer Risk",
+    "year": 2024,
+    "pmid": "39565623",
+    "pmcid": "PMC11579790",
+    "doi": null,
+    "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC11579790/",
+    "sourceBody": "JAMA Network Open",
+    "tier": "review",
+    "whyItFits": "Open cohort study of cancer incidence after new biologic or targeted synthetic DMARD starts in rheumatoid arthritis, comparing rituximab, abatacept, and JAK inhibitors with TNF inhibitors and stating the confounding-by-indication limit."
+  },
+  "notes": [],
+  "files": {
+    "source": "/workspace/data/part4-topic-evidence/683/source.txt",
+    "synopsis": "/workspace/data/part4-topic-evidence/683/synopsis.json",
+    "mcqs": "/workspace/data/part4-topic-evidence/683/mcqs.json"
+  }
+}

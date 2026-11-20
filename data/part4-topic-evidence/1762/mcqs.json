@@ -1,0 +1,134 @@
+{
+  "topic": {
+    "topicKey": "diffuse-idiopathic-skeletal-hyperostosis",
+    "topicDisplayName": "Diffuse Idiopathic Skeletal Hyperostosis",
+    "aliases": [
+      "1762",
+      "Rheumatology"
+    ],
+    "storedRowCount": 1,
+    "coverageNote": "Open clinical review of DISH. It gives the non-inflammatory entheseal definition, the anterior-longitudinal-ligament mechanism, the Resnick criteria for the thoracic spine, the contrast with ankylosing spondylitis, and the associated metabolic conditions.",
+    "mcqs": [
+      {
+        "id": "1762-dish-01",
+        "question": "How does this review define diffuse idiopathic skeletal hyperostosis?",
+        "options": {
+          "A": "A systemic non-inflammatory disease characterised by ossification of the entheses",
+          "B": "An inflammatory sacroiliitis",
+          "C": "An infection of the disc",
+          "D": "A disease limited to the hands"
+        },
+        "correctAnswer": "A",
+        "explanation": "The review defines DISH as a systemic non-inflammatory disease characterised by ossification of the entheses.",
+        "difficulty": "easy",
+        "sourceRefs": [
+          {
+            "sourceBody": "Surgical Neurology International",
+            "sourceYear": 2014,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4023007/",
+            "excerpt": "DISH) is a systemic noninflammatory disease characterized by ossification of the entheses.",
+            "status": "source_verified",
+            "pmid": "24843807",
+            "pmcid": "PMC4023007"
+          }
+        ]
+      },
+      {
+        "id": "1762-dish-02",
+        "question": "Which structure do current theories in this review put at the centre of the spinal disease?",
+        "options": {
+          "A": "The anterior longitudinal ligament",
+          "B": "The spinal cord itself",
+          "C": "Only the ligamentum flavum",
+          "D": "The hip synovium"
+        },
+        "correctAnswer": "A",
+        "explanation": "The review says current theories focus on pathologic calcification of the anterior longitudinal ligament as the main mechanism.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Surgical Neurology International",
+            "sourceYear": 2014,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4023007/",
+            "excerpt": "pathologic calcification of the anterior longitudinal ligament of the spine as the main physiopathological mechanism of disease.",
+            "status": "source_verified",
+            "pmid": "24843807",
+            "pmcid": "PMC4023007"
+          }
+        ]
+      },
+      {
+        "id": "1762-dish-03",
+        "question": "Which spinal findings does the review quote as the Resnick criteria?",
+        "options": {
+          "A": "Anterolateral ossification of at least four contiguous thoracic segments, preserved disc spaces, and no apophyseal degeneration or sacroiliac inflammatory changes",
+          "B": "Ossification of one lumbar segment with sacroiliac erosions",
+          "C": "Bilateral sacroiliitis and slender vertical syndesmophytes",
+          "D": "Disc destruction at every level"
+        },
+        "correctAnswer": "A",
+        "explanation": "The review states anterolateral ossification of at least four contiguous thoracic vertebral segments, preservation of the intervertebral disc spaces, and absence of apophyseal joint degeneration or sacroiliac inflammatory changes.",
+        "difficulty": "hard",
+        "sourceRefs": [
+          {
+            "sourceBody": "Surgical Neurology International",
+            "sourceYear": 2014,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4023007/",
+            "excerpt": "anterolateral ossifications of at least four contiguous thoracic vertebral segments, preservation of the intervertebral disk spaces, and absence of apophyseal joint degeneration or sacroiliac inflammatory changes [ ].[ ]",
+            "status": "source_verified",
+            "pmid": "24843807",
+            "pmcid": "PMC4023007"
+          }
+        ]
+      },
+      {
+        "id": "1762-dish-04",
+        "question": "How does the review contrast the bony bridges of ankylosing spondylitis with DISH?",
+        "options": {
+          "A": "They are slender and vertical, involve the outer annulus, and do not involve the anterior longitudinal ligament",
+          "B": "They are identical to DISH bridges",
+          "C": "They always spare the annulus and involve only the anterior longitudinal ligament",
+          "D": "The review says ankylosing spondylitis cannot be distinguished"
+        },
+        "correctAnswer": "A",
+        "explanation": "The review says ankylosing-spondylitis bridges are slender and vertical, involve the outer margin of the annulus, and do not involve the anterior longitudinal ligament. Sacroiliac and apophyseal erosions and ankylosis are not seen in DISH.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Surgical Neurology International",
+            "sourceYear": 2014,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4023007/",
+            "excerpt": "in Ankylosing Spondylitis, the bony bridges are slender, vertical, and involve the outer margin of the annulus fibrosus and do not involve the anterior longitudinal ligament.",
+            "status": "source_verified",
+            "pmid": "24843807",
+            "pmcid": "PMC4023007"
+          }
+        ]
+      },
+      {
+        "id": "1762-dish-05",
+        "question": "Which comorbidities does the review list with DISH?",
+        "options": {
+          "A": "Obesity, hypertension, diabetes mellitus, hyperinsulinaemia, dyslipidaemia, and hyperuricaemia",
+          "B": "Only asthma",
+          "C": "Only inflammatory bowel disease",
+          "D": "No metabolic association is mentioned"
+        },
+        "correctAnswer": "A",
+        "explanation": "The review says comorbidities include obesity, hypertension, diabetes mellitus, hyperinsulinaemia, dyslipidaemia, and hyperuricaemia.",
+        "difficulty": "easy",
+        "sourceRefs": [
+          {
+            "sourceBody": "Surgical Neurology International",
+            "sourceYear": 2014,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4023007/",
+            "excerpt": "comorbidities include obesity, hypertension, diabetes mellitus, hyperinsulinemia, dyslipidemia, and hyperuricemia,",
+            "status": "source_verified",
+            "pmid": "24843807",
+            "pmcid": "PMC4023007"
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "catalogueId": 780,
+  "topic": "Adult-onset Stills disease AOSD: quotidian fever, salmon rash, ferritin, IL-1 inhibition",
+  "specialty": "Rheumatology",
+  "decision": "downloaded_open_source",
+  "source": {
+    "title": "Mechanisms, biomarkers and targets for adult-onset Still's disease",
+    "year": 2018,
+    "pmid": "30218025",
+    "pmcid": "PMC7097309",
+    "doi": "10.1038/s41584-018-0081-x",
+    "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7097309/",
+    "sourceBody": "Nature Reviews Rheumatology",
+    "tier": "review",
+    "whyItFits": "Open review of adult-onset Still's disease covering fever, the salmon-pink rash, Yamaguchi criteria, innate cytokines including IL-1, and anakinra. A stored file titled as an AOSD review contained no Still's-disease text and was rejected."
+  },
+  "notes": [
+    "The in-app file titled Adult-Onset Still's Disease contained inflammasome text and the words Still, AOSD, and adult-onset did not appear. It was rejected."
+  ],
+  "files": {
+    "source": "/workspace/data/part4-topic-evidence/780/source.txt",
+    "synopsis": "/workspace/data/part4-topic-evidence/780/synopsis.json",
+    "mcqs": "/workspace/data/part4-topic-evidence/780/mcqs.json"
+  }
+}

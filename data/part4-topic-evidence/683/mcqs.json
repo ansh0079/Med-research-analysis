@@ -1,0 +1,134 @@
+{
+  "topic": {
+    "topicKey": "biologics-and-malignancy-risk-lymphoma-solid-tumours-non-melanoma-skin",
+    "topicDisplayName": "Biologics and malignancy risk: lymphoma, solid tumours, non-melanoma skin cancer",
+    "aliases": [
+      "683",
+      "Rheumatology"
+    ],
+    "storedRowCount": 1,
+    "coverageNote": "Open cohort study of cancer incidence after new biologic or targeted synthetic DMARD starts in rheumatoid arthritis, comparing rituximab, abatacept, and JAK inhibitors with TNF inhibitors and stating the confounding-by-indication limit.",
+    "mcqs": [
+      {
+        "id": "683-malignancy-01",
+        "question": "Compared with TNF-inhibitor initiators, which new RA treatments showed higher incident-cancer risk in the first 2 years in this cohort?",
+        "options": {
+          "A": "Rituximab, abatacept, and JAK inhibitors",
+          "B": "Only methotrexate monotherapy",
+          "C": "Only hydroxychloroquine",
+          "D": "No drug differed from TNF inhibitors"
+        },
+        "correctAnswer": "A",
+        "explanation": "The conclusion says people starting rituximab, abatacept, and JAK inhibitors had higher incidence rates and statistically significantly increased risks of incident cancers than those starting TNF inhibitors in the first 2 years.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "JAMA Network Open",
+            "sourceYear": 2024,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC11579790/",
+            "excerpt": "individuals initiating rituximab, abatacept, and JAKis demonstrated higher incidence rates and statistically significantly increased risks of incident cancers compared with those initiating TNFis in the first 2 years",
+            "status": "source_verified",
+            "pmid": "39565623",
+            "pmcid": "PMC11579790"
+          }
+        ]
+      },
+      {
+        "id": "683-malignancy-02",
+        "question": "What limitation do the authors emphasise?",
+        "options": {
+          "A": "Claims data and confounding by indication, with likely channeling of patients who have a higher disease burden",
+          "B": "The study was a randomised trial without bias",
+          "C": "Cancer outcomes were not collected",
+          "D": "TNF inhibitors were not in the dataset"
+        },
+        "correctAnswer": "A",
+        "explanation": "The authors say that given administrative claims and confounding by indication, these patients may have a higher disease burden, resulting in channeling bias.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "JAMA Network Open",
+            "sourceYear": 2024,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC11579790/",
+            "excerpt": "Given the limitations of administrative claims data and confounding by indication, it is likely that these patients may have a higher disease burden, resulting in channeling bias.",
+            "status": "source_verified",
+            "pmid": "39565623",
+            "pmcid": "PMC11579790"
+          }
+        ]
+      },
+      {
+        "id": "683-malignancy-03",
+        "question": "What population was studied?",
+        "options": {
+          "A": "People with rheumatoid arthritis and new biologic or targeted synthetic DMARD exposures",
+          "B": "People with osteoarthritis starting paracetamol",
+          "C": "Children with juvenile idiopathic arthritis only",
+          "D": "People without rheumatic disease"
+        },
+        "correctAnswer": "A",
+        "explanation": "The conclusion describes a cohort of individuals with RA and new biologic or targeted synthetic DMARD exposures.",
+        "difficulty": "easy",
+        "sourceRefs": [
+          {
+            "sourceBody": "JAMA Network Open",
+            "sourceYear": 2024,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC11579790/",
+            "excerpt": "In this cohort study of individuals with RA and new biologic or targeted synthetic DMARD exposures",
+            "status": "source_verified",
+            "pmid": "39565623",
+            "pmcid": "PMC11579790"
+          }
+        ]
+      },
+      {
+        "id": "683-malignancy-04",
+        "question": "Over what period was the cancer comparison made?",
+        "options": {
+          "A": "The first 2 years after initiation",
+          "B": "The first week only",
+          "C": "Twenty years of follow-up in every patient",
+          "D": "Only the pre-treatment year"
+        },
+        "correctAnswer": "A",
+        "explanation": "The increased risk is reported in the first 2 years after initiation.",
+        "difficulty": "easy",
+        "sourceRefs": [
+          {
+            "sourceBody": "JAMA Network Open",
+            "sourceYear": 2024,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC11579790/",
+            "excerpt": "in the first 2 years after initiation of biologic or targeted synthetic DMARDs",
+            "status": "source_verified",
+            "pmid": "39565623",
+            "pmcid": "PMC11579790"
+          }
+        ]
+      },
+      {
+        "id": "683-malignancy-05",
+        "question": "How should the higher cancer risk versus TNF inhibitors be read, given the authors' own caveat?",
+        "options": {
+          "A": "As an association that may reflect channeling of sicker patients, not proof that TNF inhibitors prevent cancer",
+          "B": "As proof that TNF inhibitors cause more cancers than rituximab",
+          "C": "As a randomised result with no residual confounding",
+          "D": "As a finding limited to non-melanoma skin cancer counts, which the conclusion does not give"
+        },
+        "correctAnswer": "A",
+        "explanation": "The paper reports higher incident cancer with rituximab, abatacept, and JAK inhibitors than with TNF inhibitors, and immediately cautions that channeling bias from higher disease burden is likely.",
+        "difficulty": "hard",
+        "sourceRefs": [
+          {
+            "sourceBody": "JAMA Network Open",
+            "sourceYear": 2024,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC11579790/",
+            "excerpt": "resulting in channeling bias",
+            "status": "source_verified",
+            "pmid": "39565623",
+            "pmcid": "PMC11579790"
+          }
+        ]
+      }
+    ]
+  }
+}

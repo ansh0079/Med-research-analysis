@@ -1,0 +1,134 @@
+{
+  "topic": {
+    "topicKey": "erythema-nodosum-differential-diagnosis",
+    "topicDisplayName": "Erythema Nodosum differential diagnosis",
+    "aliases": [
+      "339",
+      "Rheumatology"
+    ],
+    "storedRowCount": 1,
+    "coverageNote": "Open practical review of erythema nodosum. It gives the septal-panniculitis histology, the pretibial course, the common identifiable causes, Löfgren syndrome, and the main clinical differentials.",
+    "mcqs": [
+      {
+        "id": "339-en-01",
+        "question": "What histologic pattern does this review call characteristic of erythema nodosum?",
+        "options": {
+          "A": "Predominantly septal panniculitis without vasculitis",
+          "B": "Lobular panniculitis with vasculitis in every case",
+          "C": "Caseating granulomas as the defining pattern",
+          "D": "A normal subcutis"
+        },
+        "correctAnswer": "A",
+        "explanation": "The review says erythema nodosum shows a predominantly septal panniculitis without vasculitis.",
+        "difficulty": "easy",
+        "sourceRefs": [
+          {
+            "sourceBody": "American Journal of Clinical Dermatology",
+            "sourceYear": 2021,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7938036/",
+            "excerpt": "predominantly septal panniculitis without vasculitis (Fig. a).",
+            "status": "source_verified",
+            "pmid": "33683567",
+            "pmcid": "PMC7938036"
+          }
+        ]
+      },
+      {
+        "id": "339-en-02",
+        "question": "What course does the review describe for typical erythema nodosum?",
+        "options": {
+          "A": "Generally self-limited, resolving within 1 to 6 weeks through a bruise-like colour change",
+          "B": "Permanent ulceration in most patients",
+          "C": "Resolution within a few hours",
+          "D": "A chronic plaque that never changes colour"
+        },
+        "correctAnswer": "A",
+        "explanation": "The review says erythema nodosum is generally self-limited and resolves within 1 to 6 weeks, turning from bright red to a yellow-brown or green-bluish colour that resembles a bruise.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "American Journal of Clinical Dermatology",
+            "sourceYear": 2021,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7938036/",
+            "excerpt": "Erythema nodosum is generally self-limited and resolves within 1–6 weeks by turning from a bright red to a yellow–brown or green-bluish discoloration, resembling bruises (Fig. b).",
+            "status": "source_verified",
+            "pmid": "33683567",
+            "pmcid": "PMC7938036"
+          }
+        ]
+      },
+      {
+        "id": "339-en-03",
+        "question": "Which identifiable causes does the review list as the most common?",
+        "options": {
+          "A": "Streptococcal infection, primary tuberculosis, sarcoidosis, Behçet disease, drugs, pregnancy, and inflammatory bowel disease",
+          "B": "Only gout",
+          "C": "Only a drug reaction, with infections excluded",
+          "D": "Only malignancy"
+        },
+        "correctAnswer": "A",
+        "explanation": "The review says the most common identifiable causes are streptococcal infections, primary tuberculosis, sarcoidosis, Behçet disease, drugs, pregnancy, and inflammatory bowel disease.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "American Journal of Clinical Dermatology",
+            "sourceYear": 2021,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7938036/",
+            "excerpt": "The most common identifiable causes are streptococcal infections, primary TB, sarcoidosis, Behçet disease, drugs, pregnancy, and inflammatory bowel disease [ ].",
+            "status": "source_verified",
+            "pmid": "33683567",
+            "pmcid": "PMC7938036"
+          }
+        ]
+      },
+      {
+        "id": "339-en-04",
+        "question": "What three features define Löfgren syndrome in this review?",
+        "options": {
+          "A": "Erythema nodosum, bilateral hilar lymphadenopathy, and fever",
+          "B": "Erythema nodosum, oral ulcers, and uveitis",
+          "C": "Hilar lymphadenopathy without skin disease",
+          "D": "Fever and a migratory arthritis without a rash"
+        },
+        "correctAnswer": "A",
+        "explanation": "The review says Löfgren syndrome, an acute presentation of sarcoidosis, is characterised by erythema nodosum, bilateral hilar lymphadenopathy, and fever.",
+        "difficulty": "easy",
+        "sourceRefs": [
+          {
+            "sourceBody": "American Journal of Clinical Dermatology",
+            "sourceYear": 2021,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7938036/",
+            "excerpt": "Löfgren syndrome, an acute presentation of sarcoidosis, is characterized by EN, bilateral hilar lymphadenopathy, and fever. In conjunction with the EN lesions, patients can have periarticular ankle inflammation and papular lesions on the knees and elbows [ ].",
+            "status": "source_verified",
+            "pmid": "33683567",
+            "pmcid": "PMC7938036"
+          }
+        ]
+      },
+      {
+        "id": "339-en-05",
+        "question": "Which conditions does the review name as the main differential diagnoses?",
+        "options": {
+          "A": "Erythema induratum of Bazin, superficial thrombophlebitis, and other forms of panniculitis",
+          "B": "Only cellulitis",
+          "C": "Only melanoma",
+          "D": "No differential is discussed"
+        },
+        "correctAnswer": "A",
+        "explanation": "The review says the main differential diagnoses are erythema induratum of Bazin, superficial thrombophlebitis, and other forms of panniculitis, and that histopathology is essential.",
+        "difficulty": "hard",
+        "sourceRefs": [
+          {
+            "sourceBody": "American Journal of Clinical Dermatology",
+            "sourceYear": 2021,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7938036/",
+            "excerpt": "The main differential diagnoses are erythema induratum of Bazin, superficial thrombophlebitis, and other forms of panniculitis.",
+            "status": "source_verified",
+            "pmid": "33683567",
+            "pmcid": "PMC7938036"
+          }
+        ]
+      }
+    ]
+  }
+}

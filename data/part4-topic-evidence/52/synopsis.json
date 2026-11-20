@@ -1,0 +1,24 @@
+{
+  "scope": "Thiopurine dosing by TPMT and NUDT15 genotype, including azathioprine used for non-malignant immunologic disease.",
+  "keyRecommendations": [
+    {
+      "text": "Normal TPMT metabolizers start at full doses; intermediate metabolizers use 30–80% of the target dose; poor metabolizers need substantially reduced doses or an alternative agent.",
+      "strength": "not_graded",
+      "population": "People starting a thiopurine"
+    },
+    {
+      "text": "Two loss-of-function TPMT alleles confer a very high risk of life-threatening myelosuppression at conventional doses.",
+      "strength": "not_graded",
+      "population": "TPMT poor metabolizers"
+    },
+    {
+      "text": "NUDT15 poor metabolizers also need substantially reduced doses or an alternative, because loss-of-function alleles reduce degradation of active thiopurine nucleotides and predispose to myelosuppression.",
+      "strength": "not_graded",
+      "population": "NUDT15 poor metabolizers"
+    }
+  ],
+  "clinicalBottomLine": "Test TPMT and NUDT15 and reduce or avoid standard-dose azathioprine in poor metabolizers because of life-threatening marrow suppression.",
+  "notableCaveats": [
+    "Most dose-finding studies were in a few diseases; CPIC extrapolates the pharmacokinetic recommendations more broadly. Mercaptopurine milligram examples are not copied onto azathioprine as if they were the same milligram schedule."
+  ]
+}

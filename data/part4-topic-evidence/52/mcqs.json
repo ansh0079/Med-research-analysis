@@ -1,0 +1,134 @@
+{
+  "topic": {
+    "topicKey": "azathioprine-in-rheumatic-disease-tpmt-testing-dosing-bone-marrow-supp",
+    "topicDisplayName": "Azathioprine in rheumatic disease: TPMT testing, dosing, bone marrow suppression",
+    "aliases": [
+      "52",
+      "Rheumatology"
+    ],
+    "storedRowCount": 1,
+    "coverageNote": "CPIC states azathioprine dosing from TPMT and NUDT15 genotypes and the myelosuppression risk in poor metabolizers. It explicitly extrapolates pharmacokinetic dosing to non-malignant immunologic disorders, which includes rheumatic use. NICE Crohn's guidance that mentions thiopurines was rejected as the wrong disease.",
+    "mcqs": [
+      {
+        "id": "52-azathioprine-01",
+        "question": "What starting dose does CPIC recommend for TPMT normal metabolizers if a thiopurine is used?",
+        "options": {
+          "A": "Full starting doses",
+          "B": "10% of the target dose",
+          "C": "No thiopurine is ever started",
+          "D": "A dose reserved for poor metabolizers"
+        },
+        "correctAnswer": "A",
+        "explanation": "CPIC says full starting doses are recommended for TPMT normal metabolizers.",
+        "difficulty": "easy",
+        "sourceRefs": [
+          {
+            "sourceBody": "Clinical Pharmacology and Therapeutics",
+            "sourceYear": 2019,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6576267/",
+            "excerpt": "full starting doses are recommended for TPMT normal metabolizers",
+            "status": "source_verified",
+            "pmid": "30447069",
+            "pmcid": "PMC6576267"
+          }
+        ]
+      },
+      {
+        "id": "52-azathioprine-02",
+        "question": "What dose range does CPIC give for TPMT intermediate metabolizers?",
+        "options": {
+          "A": "30–80% of the target dose",
+          "B": "Twice the usual dose",
+          "C": "The same marked reduction used for poor metabolizers in every case",
+          "D": "Thiopurines are contraindicated in all intermediate metabolizers"
+        },
+        "correctAnswer": "A",
+        "explanation": "CPIC recommends reduced doses, 30–80% of the target dose, in TPMT intermediate metabolizers.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Clinical Pharmacology and Therapeutics",
+            "sourceYear": 2019,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6576267/",
+            "excerpt": "reduced doses (30–80% of target dose) in TPMT intermediate metabolizers",
+            "status": "source_verified",
+            "pmid": "30447069",
+            "pmcid": "PMC6576267"
+          }
+        ]
+      },
+      {
+        "id": "52-azathioprine-03",
+        "question": "Why are conventional thiopurine doses dangerous in people with two loss-of-function TPMT alleles?",
+        "options": {
+          "A": "They are at very high risk of life-threatening myelosuppression",
+          "B": "They clear the drug so quickly that it never works",
+          "C": "The only risk named is hypertension",
+          "D": "Myelosuppression is less likely than in normal metabolizers"
+        },
+        "correctAnswer": "A",
+        "explanation": "CPIC states that homozygous or compound heterozygous TPMT-deficient individuals are at very high risk for life-threatening myelosuppression if given conventional doses.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Clinical Pharmacology and Therapeutics",
+            "sourceYear": 2019,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6576267/",
+            "excerpt": "Individuals who inherit two loss-of-function TPMT alleles (homozygous or compound heterozygous TPMT deficient individuals) are at very high risk for life-threatening myelosuppression",
+            "status": "source_verified",
+            "pmid": "30447069",
+            "pmcid": "PMC6576267"
+          }
+        ]
+      },
+      {
+        "id": "52-azathioprine-04",
+        "question": "What does CPIC add about NUDT15?",
+        "options": {
+          "A": "Loss-of-function alleles reduce degradation of active thiopurine nucleotides and also predispose to myelosuppression, so poor metabolizers need substantially reduced doses or another agent",
+          "B": "NUDT15 testing replaces the need to think about infection",
+          "C": "NUDT15 poor metabolizers should receive higher than usual doses",
+          "D": "NUDT15 affects only aspirin"
+        },
+        "correctAnswer": "A",
+        "explanation": "CPIC says NUDT15 loss-of-function alleles, common in Asians and Hispanics, reduce degradation of active thiopurine nucleotide metabolites and predispose to myelosuppression. Poor metabolizers need substantially reduced doses or an alternative agent.",
+        "difficulty": "hard",
+        "sourceRefs": [
+          {
+            "sourceBody": "Clinical Pharmacology and Therapeutics",
+            "sourceYear": 2019,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6576267/",
+            "excerpt": "Loss-of-function alleles in the NUDT15 gene are common in Asians and Hispanics and reduces the degradation of active thiopurine nucleotide metabolites, also predisposing to myelosuppression.",
+            "status": "source_verified",
+            "pmid": "30447069",
+            "pmcid": "PMC6576267"
+          }
+        ]
+      },
+      {
+        "id": "52-azathioprine-05",
+        "question": "Does CPIC limit these genotype recommendations to malignant disease?",
+        "options": {
+          "A": "No. Azathioprine and mercaptopurine are described for non-malignant immunologic disorders, and dosing is extrapolated across conditions because the association is pharmacokinetic",
+          "B": "Yes. The guideline forbids use in rheumatic disease",
+          "C": "Azathioprine is not a thiopurine in this text",
+          "D": "Only thioguanine is discussed"
+        },
+        "correctAnswer": "A",
+        "explanation": "CPIC says mercaptopurine and azathioprine are generally used for non-malignant immunologic disorders, that azathioprine is a prodrug for mercaptopurine, and that doses are extrapolated to all conditions because the genotype association is pharmacokinetic.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Clinical Pharmacology and Therapeutics",
+            "sourceYear": 2019,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6576267/",
+            "excerpt": "mercaptopurine and azathioprine are generally used for non-malignant immunologic disorders",
+            "status": "source_verified",
+            "pmid": "30447069",
+            "pmcid": "PMC6576267"
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "catalogueId": 1668,
+  "topic": "Behcet disease: oral and genital ulcers, uveitis, pathergy, colchicine, immunosuppression",
+  "specialty": "Rheumatology",
+  "decision": "in_app_document",
+  "source": {
+    "title": "EULAR recommendations for the management of Behçet's syndrome: 2025 update",
+    "year": 2026,
+    "pmid": "41876291",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/41876291/",
+    "sourceBody": "EULAR",
+    "tier": "guideline",
+    "inAppPath": "data/question-repair-source-import.json",
+    "whyItFits": "The stored abstract of the 2025 EULAR update states the overarching principles and the organ-grouped treatment recommendations, including colchicine first-line for mucocutaneous and joint disease and early monoclonal TNF inhibitors for organ-threatening disease. The 2018 full text is not in PMC. A 2026 organ-involvement systematic review was downloaded but does not state the colchicine recommendation."
+  },
+  "notes": [
+    "Pathergy and a specific uveitis drug ladder are not in the stored abstract."
+  ],
+  "files": {
+    "source": "/workspace/data/part4-topic-evidence/1668/source.txt",
+    "synopsis": "/workspace/data/part4-topic-evidence/1668/synopsis.json",
+    "mcqs": "/workspace/data/part4-topic-evidence/1668/mcqs.json"
+  }
+}

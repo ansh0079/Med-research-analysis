@@ -1,0 +1,24 @@
+{
+  "scope": "Mevalonate kinase deficiency, from hyper-IgD syndrome to mevalonic aciduria.",
+  "keyRecommendations": [
+    {
+      "text": "HIDS and mevalonic aciduria are the two ends of one spectrum caused by mevalonate kinase deficiency.",
+      "strength": "not_graded",
+      "population": "MVK deficiency"
+    },
+    {
+      "text": "In HIDS the picture is febrile attacks; a subgroup also has neurological abnormalities.",
+      "strength": "not_graded",
+      "population": "HIDS"
+    },
+    {
+      "text": "Raised IgD and, in most patients, IgA, plus increased urinary mevalonic acid, support the diagnosis, which is confirmed by low enzyme activity or a disease-causing mutation.",
+      "strength": "not_graded",
+      "population": "Suspected HIDS"
+    }
+  ],
+  "clinicalBottomLine": "Hyper-IgD syndrome is the milder end of mevalonate kinase deficiency: periodic fever, usually high IgD and IgA, mevalonic acid in urine, and confirmation by enzyme assay or genotype.",
+  "notableCaveats": [
+    "Anakinra is mentioned in the full text but dosing recommendations from later series are not used here."
+  ]
+}

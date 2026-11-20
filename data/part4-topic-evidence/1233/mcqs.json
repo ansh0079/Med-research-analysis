@@ -1,0 +1,134 @@
+{
+  "topic": {
+    "topicKey": "mycobacterial-and-fungal-arthritis",
+    "topicDisplayName": "Mycobacterial and Fungal Arthritis",
+    "aliases": [
+      "1233",
+      "Rheumatology"
+    ],
+    "storedRowCount": 1,
+    "coverageNote": "Two open reviews were required: one on bone and joint tuberculosis and one on fungal arthritis. The ICU invasive-fungal consensus named in the spreadsheet is the wrong setting.",
+    "mcqs": [
+      {
+        "id": "1233-myco-fungal-01",
+        "question": "In the bone-and-joint tuberculosis series, how long was the average time from symptom onset to diagnosis?",
+        "options": {
+          "A": "6.1 months",
+          "B": "2 days",
+          "C": "10 years",
+          "D": "The paper does not report a delay"
+        },
+        "correctAnswer": "A",
+        "explanation": "The tuberculosis review says that, on average, the time from symptom onset to diagnosis was 6.1 months.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Frontiers in Cellular and Infection Microbiology",
+            "sourceYear": 2025,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC12678313/",
+            "excerpt": "the time from symptom onset to diagnosis was 6.1 months",
+            "status": "source_verified",
+            "pmid": "41355983",
+            "pmcid": "PMC12678313"
+          }
+        ]
+      },
+      {
+        "id": "1233-myco-fungal-02",
+        "question": "Which site was most often affected in that tuberculosis series?",
+        "options": {
+          "A": "The spine, 77.6% of cases",
+          "B": "The hip in 90% of cases",
+          "C": "Only the small joints of the hands",
+          "D": "The paper found no dominant site"
+        },
+        "correctAnswer": "A",
+        "explanation": "Spinal tuberculosis was the most frequently affected site, accounting for 77.6% (700/902) of cases.",
+        "difficulty": "easy",
+        "sourceRefs": [
+          {
+            "sourceBody": "Frontiers in Cellular and Infection Microbiology",
+            "sourceYear": 2025,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC12678313/",
+            "excerpt": "Spinal tuberculosis was the most frequently affected site, accounting for 77.6% (700/902) of cases.",
+            "status": "source_verified",
+            "pmid": "41355983",
+            "pmcid": "PMC12678313"
+          }
+        ]
+      },
+      {
+        "id": "1233-myco-fungal-03",
+        "question": "What proportion of analysed M. tuberculosis strains were rifampicin-resistant in that paper?",
+        "options": {
+          "A": "20.4% (95% CI 15.1–27.0%)",
+          "B": "None",
+          "C": "80%",
+          "D": "Resistance was not assessed"
+        },
+        "correctAnswer": "A",
+        "explanation": "The paper reports rifampicin-resistant tuberculosis in 20.4% of analysed strains (95% CI 15.1–27.0%).",
+        "difficulty": "hard",
+        "sourceRefs": [
+          {
+            "sourceBody": "Frontiers in Cellular and Infection Microbiology",
+            "sourceYear": 2025,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC12678313/",
+            "excerpt": "Rifampicin-resistant tuberculosis (RR-TB) accounted for 20.4% (95% CI: 15.1%-27.0%)",
+            "status": "source_verified",
+            "pmid": "41355983",
+            "pmcid": "PMC12678313"
+          }
+        ]
+      },
+      {
+        "id": "1233-myco-fungal-04",
+        "question": "What does the fungal-arthritis review require for a definitive diagnosis?",
+        "options": {
+          "A": "Bone or synovial culture or biopsy",
+          "B": "A normal radiograph",
+          "C": "Serum beta-D-glucan alone",
+          "D": "Response to a single dose of fluconazole"
+        },
+        "correctAnswer": "A",
+        "explanation": "The fungal arthritis review says definitive diagnosis requires bone or synovial culture or biopsy.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "World Journal of Orthopedics",
+            "sourceYear": 2023,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9945246/",
+            "excerpt": "definitive diagnosis requires bone or synovial culture or biopsy.",
+            "status": "source_verified",
+            "pmid": "36844378",
+            "pmcid": "PMC9945246"
+          }
+        ]
+      },
+      {
+        "id": "1233-myco-fungal-05",
+        "question": "How does the fungal-arthritis review describe treatment, and which organisms are most often reported?",
+        "options": {
+          "A": "Surgery plus prolonged antifungal therapy; Candida is most often reported, with Aspergillus also seen",
+          "B": "A 5-day antibiotic course and no surgery",
+          "C": "Only amphotericin, with azoles described as ineffective",
+          "D": "Observation, because fungal arthritis is self-limited"
+        },
+        "correctAnswer": "A",
+        "explanation": "The review says Candida infections are mostly reported and Aspergillus also occurs. Diagnosis and management may involve multiple surgical interventions and prolonged antifungal therapy.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "World Journal of Orthopedics",
+            "sourceYear": 2023,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9945246/",
+            "excerpt": "Candida infections are mostly reported, but patients may also develop infections secondary to non- Candida fungi, especially Aspergillus . Diagnosis and management of these infections is challenging and may involve multiple surgical interventions and prolonged antifungal therapy.",
+            "status": "source_verified",
+            "pmid": "36844378",
+            "pmcid": "PMC9945246"
+          }
+        ]
+      }
+    ]
+  }
+}

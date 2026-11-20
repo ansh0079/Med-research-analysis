@@ -1,0 +1,129 @@
+{
+  "topic": {
+    "topicKey": "denosumab-romosozumab-teriparatide-anabolic-and-resorption-inhibiting-",
+    "topicDisplayName": "Denosumab, romosozumab, teriparatide: anabolic and resorption-inhibiting agents in osteoporosis",
+    "aliases": [
+      "862",
+      "Rheumatology"
+    ],
+    "storedRowCount": 1,
+    "coverageNote": "Stored abstract of the ACP evidence review reporting fracture effects of denosumab, teriparatide, and sequential romosozumab then alendronate. The library's year and journal fields on this row are inconsistent with the PMID; the PMID record is the 2023 Annals review. Mechanism labels such as RANKL or sclerostin are not in the abstract and are not asked.",
+    "mcqs": [
+      {
+        "id": "862-osteo-01",
+        "question": "What fracture effects does the ACP evidence review attribute to denosumab, together with bisphosphonates, in postmenopausal females with osteoporosis?",
+        "options": {
+          "A": "Fewer hip, clinical and radiographic vertebral, and other clinical fractures",
+          "B": "No effect on hip fracture",
+          "C": "An increase in all fracture types",
+          "D": "Benefit limited to wrist fracture in men"
+        },
+        "correctAnswer": "A",
+        "explanation": "The abstract says bisphosphonates and denosumab reduced hip, clinical and radiographic vertebral, and other clinical fractures in postmenopausal females with osteoporosis, at moderate to high certainty.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Annals of Internal Medicine",
+            "sourceYear": 2023,
+            "sourceUrl": "https://pubmed.ncbi.nlm.nih.gov/36592455/",
+            "excerpt": "Bisphosphonates and denosumab reduced hip, clinical and radiographic vertebral, and other clinical fractures in postmenopausal females with osteoporosis (moderate to high CoE).",
+            "status": "source_verified",
+            "pmid": "36592455"
+          }
+        ]
+      },
+      {
+        "id": "862-osteo-02",
+        "question": "What did abaloparatide and teriparatide reduce, and what harm did they increase?",
+        "options": {
+          "A": "Clinical and radiographic vertebral fractures, with more withdrawals due to adverse events",
+          "B": "Only hip fractures, with no adverse events",
+          "C": "They increased vertebral fractures",
+          "D": "They were not studied"
+        },
+        "correctAnswer": "A",
+        "explanation": "The abstract says abaloparatide and teriparatide reduced clinical and radiographic vertebral fractures but increased withdrawals due to adverse events.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Annals of Internal Medicine",
+            "sourceYear": 2023,
+            "sourceUrl": "https://pubmed.ncbi.nlm.nih.gov/36592455/",
+            "excerpt": "Abaloparatide and teriparatide reduced clinical and radiographic vertebral fractures but increased the risk for withdrawals due to adverse events (WAEs; moderate to high CoE).",
+            "status": "source_verified",
+            "pmid": "36592455"
+          }
+        ]
+      },
+      {
+        "id": "862-osteo-03",
+        "question": "How does the review describe sequential romosozumab then alendronate versus bisphosphonates?",
+        "options": {
+          "A": "It may be more effective for clinical fractures over 17 to 24 months in older postmenopausal females at very high risk, at low to moderate certainty",
+          "B": "It is less effective at high certainty",
+          "C": "It was not compared",
+          "D": "It increased hip fractures at high certainty"
+        },
+        "correctAnswer": "A",
+        "explanation": "The abstract says abaloparatide, teriparatide, and sequential romosozumab then alendronate may be more effective than bisphosphonates in reducing clinical fractures for 17 to 24 months in older postmenopausal females at very high fracture risk, at low to moderate certainty.",
+        "difficulty": "hard",
+        "sourceRefs": [
+          {
+            "sourceBody": "Annals of Internal Medicine",
+            "sourceYear": 2023,
+            "sourceUrl": "https://pubmed.ncbi.nlm.nih.gov/36592455/",
+            "excerpt": "sequential romosozumab, then alendronate, may be more effective than bisphosphonates in reducing clinical fractures for 17 to 24 months in older postmenopausal females at very high fracture risk (low to moderate CoE).",
+            "status": "source_verified",
+            "pmid": "36592455"
+          }
+        ]
+      },
+      {
+        "id": "862-osteo-04",
+        "question": "What rare harms of bisphosphonates for 36 months or more does the review mention?",
+        "options": {
+          "A": "Atypical femoral fractures and osteonecrosis of the jaw, with low absolute risks",
+          "B": "Universal osteonecrosis of the jaw within a year",
+          "C": "No skeletal harms",
+          "D": "Only gastrointestinal bleeding"
+        },
+        "correctAnswer": "A",
+        "explanation": "The abstract says bisphosphonates for 36 months or more may increase atypical femoral fractures and osteonecrosis of the jaw, but absolute risks were low.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Annals of Internal Medicine",
+            "sourceYear": 2023,
+            "sourceUrl": "https://pubmed.ncbi.nlm.nih.gov/36592455/",
+            "excerpt": "Bisphosphonates for 36 months or more may increase the risk for atypical femoral fractures (AFFs) and osteonecrosis of the jaw (ONJ), but the absolute risks were low.",
+            "status": "source_verified",
+            "pmid": "36592455"
+          }
+        ]
+      },
+      {
+        "id": "862-osteo-05",
+        "question": "Which agents does the closing summary say reduce clinical fractures in postmenopausal females with osteoporosis?",
+        "options": {
+          "A": "Bisphosphonates, denosumab, abaloparatide, teriparatide, and romosozumab followed by alendronate",
+          "B": "Calcium alone as the only effective agent",
+          "C": "Raloxifene for hip fracture at high certainty",
+          "D": "None of the named drugs"
+        },
+        "correctAnswer": "A",
+        "explanation": "The summary says bisphosphonates, denosumab, abaloparatide, teriparatide, and romosozumab followed by alendronate reduce clinical fractures in postmenopausal females with osteoporosis.",
+        "difficulty": "easy",
+        "sourceRefs": [
+          {
+            "sourceBody": "Annals of Internal Medicine",
+            "sourceYear": 2023,
+            "sourceUrl": "https://pubmed.ncbi.nlm.nih.gov/36592455/",
+            "excerpt": "Bisphosphonates, denosumab, abaloparatide, teriparatide, and romosozumab, followed by alendronate, reduce clinical fractures in postmenopausal females with osteoporosis.",
+            "status": "source_verified",
+            "pmid": "36592455"
+          }
+        ]
+      }
+    ]
+  }
+}

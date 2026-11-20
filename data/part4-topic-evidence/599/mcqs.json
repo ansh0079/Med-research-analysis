@@ -1,0 +1,134 @@
+{
+  "topic": {
+    "topicKey": "autoantibody-panel-interpretation-ana-ena-dsdna-anca-rf-anti-ccp-clini",
+    "topicDisplayName": "Autoantibody panel interpretation: ANA, ENA, dsDNA, ANCA, RF, anti-CCP clinical utility",
+    "aliases": [
+      "599",
+      "Rheumatology"
+    ],
+    "storedRowCount": 1,
+    "coverageNote": "Open ICAP paper on how HEp-2 IIFA titre and pattern should be interpreted and followed up. It does not cover ANCA, rheumatoid factor, or anti-CCP, so questions stay inside ANA pattern interpretation. A Brazilian HEp-2 consensus in the library was about nomenclature harmonisation and was thinner.",
+    "mcqs": [
+      {
+        "id": "599-ana-01",
+        "question": "Beyond a positive or negative result, what extra information does the ICAP paper say the HEp-2 IIFA test provides?",
+        "options": {
+          "A": "The antibody level and the fluorescence pattern",
+          "B": "A synovial crystal type",
+          "C": "An ANCA ELISA titre as part of the same slide",
+          "D": "A serum anti-CCP concentration"
+        },
+        "correctAnswer": "A",
+        "explanation": "The paper says the HEp-2 IIFA reveals the level of antibody as well as the pattern, not merely absence or presence of autoantibodies.",
+        "difficulty": "easy",
+        "sourceRefs": [
+          {
+            "sourceBody": "Annals of the Rheumatic Diseases",
+            "sourceYear": 2019,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6585284/",
+            "excerpt": "the HEp-2 IIFA test reveals much more information than the mere absence or presence of autoantibodies, that is, the level of antibody as well as the HEp-2 IIFA pattern.",
+            "status": "source_verified",
+            "pmid": "30862649",
+            "pmcid": "PMC6585284"
+          }
+        ]
+      },
+      {
+        "id": "599-ana-02",
+        "question": "How is clinical relevance of the patterns defined in this ICAP paper?",
+        "options": {
+          "A": "Primarily within the context of the suspected disease, and it includes recommendations for follow-up testing",
+          "B": "By a single pattern that diagnoses every rheumatic disease",
+          "C": "Only by the laboratory instrument brand",
+          "D": "Clinical relevance is declared unknowable"
+        },
+        "correctAnswer": "A",
+        "explanation": "ICAP says clinical relevance is primarily defined within the suspected disease and includes recommendations for follow-up testing.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Annals of the Rheumatic Diseases",
+            "sourceYear": 2019,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6585284/",
+            "excerpt": "This clinical relevance is primarily defined within the context of the suspected disease and includes recommendations for follow-up testing.",
+            "status": "source_verified",
+            "pmid": "30862649",
+            "pmcid": "PMC6585284"
+          }
+        ]
+      },
+      {
+        "id": "599-ana-03",
+        "question": "What compartments can show HEp-2 patterns, according to the paper?",
+        "options": {
+          "A": "The nucleus and cytoplasm of interphase cells, and patterns associated with mitotic cells",
+          "B": "Only the cell membrane of erythrocytes",
+          "C": "Only synovial fluid crystals",
+          "D": "Only neutrophil cytoplasm, as an ANCA test"
+        },
+        "correctAnswer": "A",
+        "explanation": "The paper says patterns include the nucleus and the cytoplasm of interphase cells as well as patterns associated with mitotic cells.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Annals of the Rheumatic Diseases",
+            "sourceYear": 2019,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6585284/",
+            "excerpt": "The latter include the nucleus and the cytoplasm of interphase cells as well as patterns associated with mitotic cells.",
+            "status": "source_verified",
+            "pmid": "30862649",
+            "pmcid": "PMC6585284"
+          }
+        ]
+      },
+      {
+        "id": "599-ana-04",
+        "question": "How many distinct HEp-2 IIFA patterns does this paper say the ICAP consensus on clinical relevance covers?",
+        "options": {
+          "A": "29",
+          "B": "2",
+          "C": "5",
+          "D": "100"
+        },
+        "correctAnswer": "A",
+        "explanation": "The paper presents the ICAP consensus on the clinical relevance of 29 distinct HEp-2 IIFA patterns.",
+        "difficulty": "easy",
+        "sourceRefs": [
+          {
+            "sourceBody": "Annals of the Rheumatic Diseases",
+            "sourceYear": 2019,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6585284/",
+            "excerpt": "the ICAP consensus is presented on the clinical relevance of the 29 distinct HEp-2 IIFA patterns.",
+            "status": "source_verified",
+            "pmid": "30862649",
+            "pmcid": "PMC6585284"
+          }
+        ]
+      },
+      {
+        "id": "599-ana-05",
+        "question": "What does the paper say about antibody level and clinical relevance?",
+        "options": {
+          "A": "Level, from titration or fluorescence intensity, has general concordance with clinical relevance",
+          "B": "Level is irrelevant once any fluorescence is seen",
+          "C": "Only IgM level matters",
+          "D": "Clinical relevance is determined by anti-CCP, which this paper scores"
+        },
+        "correctAnswer": "A",
+        "explanation": "The paper says that based on titration or fluorescence intensity, the antibody level can be determined and this information has general concordance with the clinical relevance of the result.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Annals of the Rheumatic Diseases",
+            "sourceYear": 2019,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6585284/",
+            "excerpt": "Based on titration or appropriate evaluation of the fluorescence intensity, the antibody level can be determined and this information has general concordance with the clinical relevance of the test result.",
+            "status": "source_verified",
+            "pmid": "30862649",
+            "pmcid": "PMC6585284"
+          }
+        ]
+      }
+    ]
+  }
+}

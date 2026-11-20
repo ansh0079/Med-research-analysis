@@ -1,0 +1,25 @@
+{
+  "catalogueId": 928,
+  "topic": "Avascular Necrosis of Bone",
+  "specialty": "Rheumatology",
+  "decision": "downloaded_open_source",
+  "source": {
+    "title": "Guidelines for clinical diagnosis and treatment of osteonecrosis of the femoral head in adults (2019 version)",
+    "year": 2020,
+    "pmid": "32309135",
+    "pmcid": "PMC7152793",
+    "doi": "10.1016/j.jot.2019.12.004",
+    "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7152793/",
+    "sourceBody": "Journal of Orthopaedic Translation",
+    "tier": "guideline",
+    "whyItFits": "Open adult ONFH guideline covering aetiology, staging, and stage-based surgical and non-surgical treatment, including core decompression. The suggested 5-year update was only an abstract on PMC."
+  },
+  "notes": [
+    "Question 5 uses a short excerpt that is present; the explanation does not add a core-decompression indication that was not checked. Core decompression occurs in the file (count 10) but the keyed point is stage-based choice."
+  ],
+  "files": {
+    "source": "/workspace/data/part4-topic-evidence/928/source.txt",
+    "synopsis": "/workspace/data/part4-topic-evidence/928/synopsis.json",
+    "mcqs": "/workspace/data/part4-topic-evidence/928/mcqs.json"
+  }
+}

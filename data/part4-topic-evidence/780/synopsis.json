@@ -1,0 +1,24 @@
+{
+  "scope": "Diagnosis and cytokine-targeted treatment of adult-onset Still's disease, as described in this 2018 review.",
+  "keyRecommendations": [
+    {
+      "text": "The Yamaguchi criteria are the most widely used, but they include exclusion of infection, malignancy, and other rheumatic disease and should follow a broad work-up.",
+      "strength": "not_graded",
+      "population": "Suspected AoSD"
+    },
+    {
+      "text": "The typical rash is salmon pink, macular or maculopapular, transient, and mainly visible during fever spikes on the proximal limbs or trunk.",
+      "strength": "not_graded",
+      "population": "Active AoSD"
+    },
+    {
+      "text": "Pathogenesis centres on innate-cell activation and overproduction of IL-1, IL-6, and IL-18. The review states that two IL-1 antagonists have been approved, and describes anakinra as a recombinant IL-1 receptor antagonist with benefit in case series and uncontrolled studies.",
+      "strength": "not_graded",
+      "population": "AoSD"
+    }
+  ],
+  "clinicalBottomLine": "Suspect AoSD from spiking high fever and a transient salmon-pink rash, apply Yamaguchi criteria only after exclusions, and treat the IL-1-centred inflammatory drive, with anakinra the first biologic described as beneficial in uncontrolled series.",
+  "notableCaveats": [
+    "A glycosylated-ferritin percentage threshold is not stated in the prose used here, so it is not asked. The review's abstract says two IL-1 antagonists are approved, while a later sentence discusses anakinra and canakinumab trial phases; questions use the approval sentence and the description of anakinra separately."
+  ]
+}

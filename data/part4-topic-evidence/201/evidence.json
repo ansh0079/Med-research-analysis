@@ -1,0 +1,23 @@
+{
+  "catalogueId": 201,
+  "topic": "Monoarthritis differential diagnosis: crystal, septic, reactive, seronegative, trauma",
+  "specialty": "Rheumatology",
+  "decision": "downloaded_open_source",
+  "source": {
+    "title": "Guideline for management of septic arthritis in native joints (SANJO)",
+    "year": 2023,
+    "pmid": "36756304",
+    "pmcid": "PMC9901514",
+    "doi": "10.5194/jbji-8-29-2023",
+    "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9901514/",
+    "sourceBody": "Journal of Bone and Joint Infection",
+    "tier": "guideline",
+    "whyItFits": "Open guideline for the septic arm of an acute hot joint. It requires prompt synovial-fluid aspiration, microscopy for crystals, and holding empirical antibiotics until the sample is taken unless the patient is septic. Reactive, seronegative, and traumatic causes are not specified, so they are not questioned."
+  },
+  "notes": [],
+  "files": {
+    "source": "/workspace/data/part4-topic-evidence/201/source.txt",
+    "synopsis": "/workspace/data/part4-topic-evidence/201/synopsis.json",
+    "mcqs": "/workspace/data/part4-topic-evidence/201/mcqs.json"
+  }
+}

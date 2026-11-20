@@ -1,0 +1,25 @@
+{
+  "catalogueId": 1269,
+  "topic": "V/Q Mismatch and pulmonary gas exchange",
+  "specialty": "Pulmonology",
+  "decision": "downloaded_open_source",
+  "source": {
+    "title": "Lung Structure and the Intrinsic Challenges of Gas Exchange",
+    "year": 2016,
+    "pmid": "27065169",
+    "pmcid": "PMC5026132",
+    "doi": null,
+    "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5026132/",
+    "sourceBody": "Comprehensive Physiology",
+    "tier": "review",
+    "whyItFits": "Open physiology review that explains ventilation-perfusion matching, the acinus as the gas-exchange unit, and how hypoxic pulmonary vasoconstriction preserves matching. The classic Petersson and Glenny ERJ review is not in PMC. West-zone numbers and a 0.8 ratio are not stated in the passages used."
+  },
+  "notes": [
+    "Stored pulmonary-embolism gas-exchange note was 659 characters and was not accepted."
+  ],
+  "files": {
+    "source": "/workspace/data/part4-topic-evidence/1269/source.txt",
+    "synopsis": "/workspace/data/part4-topic-evidence/1269/synopsis.json",
+    "mcqs": "/workspace/data/part4-topic-evidence/1269/mcqs.json"
+  }
+}

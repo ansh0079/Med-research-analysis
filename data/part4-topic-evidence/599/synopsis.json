@@ -1,0 +1,24 @@
+{
+  "scope": "Interpretation of HEp-2 indirect immunofluorescence (ANA) patterns. Not a full ENA, ANCA, RF, and anti-CCP manual.",
+  "keyRecommendations": [
+    {
+      "text": "The HEp-2 IIFA test provides titre or fluorescence intensity and a pattern, not only a positive or negative result.",
+      "strength": "not_graded",
+      "population": "People tested for ANA"
+    },
+    {
+      "text": "ICAP presents consensus on the clinical relevance of 29 patterns, defined in the context of the suspected disease, including recommendations for follow-up testing.",
+      "strength": "not_graded",
+      "population": "ANA-positive tests"
+    },
+    {
+      "text": "Antibody level, judged by titration or fluorescence intensity, has general concordance with clinical relevance.",
+      "strength": "not_graded",
+      "population": "ANA testing"
+    }
+  ],
+  "clinicalBottomLine": "Read an ANA as a level plus a pattern, and use the pattern to decide follow-up testing in the disease being suspected. This source does not grade ANCA, RF, or anti-CCP.",
+  "notableCaveats": [
+    "ANCA, rheumatoid factor, and anti-CCP utility are not in this paper and are not questioned."
+  ]
+}

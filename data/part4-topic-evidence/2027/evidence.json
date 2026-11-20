@@ -1,0 +1,25 @@
+{
+  "catalogueId": 2027,
+  "topic": "Thoracic Ultrasound",
+  "specialty": "Pulmonology",
+  "decision": "downloaded_open_source",
+  "source": {
+    "title": "Lung ultrasound in the critically ill",
+    "year": 2014,
+    "pmid": "24401163",
+    "pmcid": "PMC3895677",
+    "doi": "10.1186/2110-5820-4-1",
+    "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3895677/",
+    "sourceBody": "Annals of Intensive Care",
+    "tier": "review",
+    "whyItFits": "Open review of the core thoracic ultrasound signs used at the bedside: A-lines, lung sliding, B-lines, effusion signs, and consolidation signs. The often-cited Volpicelli international recommendations are not in PMC."
+  },
+  "notes": [
+    "The BLUE-protocol paper's PMC record returned only a short file and was not used. Volpicelli 2012 is not in PMC."
+  ],
+  "files": {
+    "source": "/workspace/data/part4-topic-evidence/2027/source.txt",
+    "synopsis": "/workspace/data/part4-topic-evidence/2027/synopsis.json",
+    "mcqs": "/workspace/data/part4-topic-evidence/2027/mcqs.json"
+  }
+}

@@ -1,0 +1,134 @@
+{
+  "topic": {
+    "topicKey": "drug-induced-lupus-erythematosus",
+    "topicDisplayName": "Drug-Induced Lupus Erythematosus",
+    "aliases": [
+      "1763",
+      "Rheumatology"
+    ],
+    "storedRowCount": 1,
+    "coverageNote": "Open update on recent drug-induced lupus cases, naming anti-TNF drugs among systemic cases, chemotherapy among subacute cutaneous cases, procainamide and hydralazine NET formation, and improvement after the drug is stopped. Classic anti-histone teaching is not in the text and is not asked.",
+    "mcqs": [
+      {
+        "id": "1763-dil-01",
+        "question": "In this review's recent case reports, which drugs were most often reported to introduce systemic drug-induced lupus?",
+        "options": {
+          "A": "Anti-TNF drugs (41.7%)",
+          "B": "Colchicine",
+          "C": "Allopurinol as the leading class",
+          "D": "No drug class was counted"
+        },
+        "correctAnswer": "A",
+        "explanation": "The review says anti-TNF drugs were the most frequently (41.7%) reported to introduce systemic DILE in these cases.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Current Opinion in Rheumatology",
+            "sourceYear": 2018,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7299070/",
+            "excerpt": "Antitumor necrosis factor (anti-TNF) drugs were the most frequently (41.7%) reported to introduce systemic DILE in these cases.",
+            "status": "source_verified",
+            "pmid": "29870500",
+            "pmcid": "PMC7299070"
+          }
+        ]
+      },
+      {
+        "id": "1763-dil-02",
+        "question": "Which drug class was most common in the subacute cutaneous lupus cases summarised here?",
+        "options": {
+          "A": "Chemotherapeutic drugs (54.5%), with a higher incidence in female patients",
+          "B": "Anti-TNF drugs at 54.5%",
+          "C": "Antibiotics at 90%",
+          "D": "No cutaneous cases were included"
+        },
+        "correctAnswer": "A",
+        "explanation": "The review says chemotherapeutic drugs were the most common class (54.5%) involved in subacute cutaneous lupus erythematosus in this set, with a higher incidence in females.",
+        "difficulty": "hard",
+        "sourceRefs": [
+          {
+            "sourceBody": "Current Opinion in Rheumatology",
+            "sourceYear": 2018,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7299070/",
+            "excerpt": "Chemotherapeutic drugs were the most common drug class (54.5%) involved in subacute cutaneous lupus erythematosus, with an observed higher incidence in female patients.",
+            "status": "source_verified",
+            "pmid": "29870500",
+            "pmcid": "PMC7299070"
+          }
+        ]
+      },
+      {
+        "id": "1763-dil-03",
+        "question": "What mechanism does the review propose for procainamide and hydralazine?",
+        "options": {
+          "A": "Enhanced neutrophil extracellular trap formation",
+          "B": "Direct complement consumption only",
+          "C": "Blockade of IL-1",
+          "D": "Inhibition of xanthine oxidase"
+        },
+        "correctAnswer": "A",
+        "explanation": "The review says enhanced NET formation induced by procainamide and hydralazine could be a new mechanism in DILE.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Current Opinion in Rheumatology",
+            "sourceYear": 2018,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7299070/",
+            "excerpt": "Enhanced neutrophil extracellular trap (NET) formation induced by procainamide and hydralazine could be a new mechanism contributing to the pathogenesis of DILE.",
+            "status": "source_verified",
+            "pmid": "29870500",
+            "pmcid": "PMC7299070"
+          }
+        ]
+      },
+      {
+        "id": "1763-dil-04",
+        "question": "What usually happens when the culprit drug is stopped?",
+        "options": {
+          "A": "Drug-induced manifestations improve",
+          "B": "The lupus always becomes permanent and independent of the drug",
+          "C": "The review says stopping the drug has no effect",
+          "D": "Steroids must be lifelong in every case, as a stated rule"
+        },
+        "correctAnswer": "A",
+        "explanation": "The review says discontinuation usually results in improvement of drug-induced manifestations.",
+        "difficulty": "easy",
+        "sourceRefs": [
+          {
+            "sourceBody": "Current Opinion in Rheumatology",
+            "sourceYear": 2018,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7299070/",
+            "excerpt": "discontinuation usually results in improvement of drug-induced manifestations.",
+            "status": "source_verified",
+            "pmid": "29870500",
+            "pmcid": "PMC7299070"
+          }
+        ]
+      },
+      {
+        "id": "1763-dil-05",
+        "question": "How large was the case set this update summarised?",
+        "options": {
+          "A": "22 articles and 29 case reports, 12 of them systemic (41.4%)",
+          "B": "A 10,000-patient randomised trial",
+          "C": "Only two cases",
+          "D": "No original cases"
+        },
+        "correctAnswer": "A",
+        "explanation": "The review summarised 22 articles comprising 29 DILE case reports, including 12 (41.4%) systemic DILE.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Current Opinion in Rheumatology",
+            "sourceYear": 2018,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7299070/",
+            "excerpt": "Twenty-two articles comprising 29 DILE case reports published within the last 2 years are summarized in this review, including 12 (41.4%) systemic DILE.",
+            "status": "source_verified",
+            "pmid": "29870500",
+            "pmcid": "PMC7299070"
+          }
+        ]
+      }
+    ]
+  }
+}

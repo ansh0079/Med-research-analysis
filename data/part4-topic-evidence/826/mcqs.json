@@ -1,0 +1,134 @@
+{
+  "topic": {
+    "topicKey": "microscopic-polyangiitis",
+    "topicDisplayName": "Microscopic Polyangiitis",
+    "aliases": [
+      "826",
+      "Rheumatology"
+    ],
+    "storedRowCount": 1,
+    "coverageNote": "Open clinician review of severe ANCA-associated vasculitis that separates microscopic polyangiitis from granulomatosis with polyangiitis and eosinophilic granulomatosis with polyangiitis, and states the pauci-immune small-vessel pathology, the MPO and PR3 antibodies, the kidney and lung patterns, and the worse kidney prognosis of MPO-ANCA MPA. A Watts epidemiology algorithm was not used as a clinical text.",
+    "mcqs": [
+      {
+        "id": "826-mpa-01",
+        "question": "Into which diseases does this review subdivide ANCA-associated vasculitis?",
+        "options": {
+          "A": "Granulomatosis with polyangiitis, microscopic polyangiitis, and eosinophilic granulomatosis with polyangiitis",
+          "B": "Giant-cell arteritis, Takayasu arteritis, and polyarteritis nodosa only",
+          "C": "Only eosinophilic granulomatosis with polyangiitis",
+          "D": "Rheumatoid vasculitis and lupus only"
+        },
+        "correctAnswer": "A",
+        "explanation": "The review says AAV is subdivided into granulomatosis with polyangiitis, microscopic polyangiitis, and eosinophilic granulomatosis with polyangiitis.",
+        "difficulty": "easy",
+        "sourceRefs": [
+          {
+            "sourceBody": "Glomerular Diseases",
+            "sourceYear": 2025,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC11845170/",
+            "excerpt": "AAV is subdivided into granulomatosis with polyangiitis (GPA), microscopic polyangiitis (MPA), and eosinophilic granulomatosis with polyangiitis (EGPA) [ ].",
+            "status": "source_verified",
+            "pmid": "39991192",
+            "pmcid": "PMC11845170"
+          }
+        ]
+      },
+      {
+        "id": "826-mpa-02",
+        "question": "What pathologic and serologic pattern does the review give for these vasculitides?",
+        "options": {
+          "A": "Pauci-immune neutrophilic inflammation of small vessels, with antibodies to PR3 or MPO",
+          "B": "Immune-complex deposits in large arteries and anti-GBM antibodies",
+          "C": "Granulomas in every vessel and no ANCA",
+          "D": "Eosinophilic inflammation of the aorta only"
+        },
+        "correctAnswer": "A",
+        "explanation": "The review describes pauci-immune perivascular neutrophilic inflammation with necrosis, associated with antibodies to proteinase 3 or myeloperoxidase, affecting small intraparenchymal arteries, arterioles, capillaries, and venules.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Glomerular Diseases",
+            "sourceYear": 2025,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC11845170/",
+            "excerpt": "characterized by pauci-immune perivascular neutrophilic inflammation with necrosis and thrombosis. They are associated with autoantibodies that target the neutrophil cytoplasmic proteases: proteinase 3 (PR3) or myeloperoxidase (MPO) [ ].",
+            "status": "source_verified",
+            "pmid": "39991192",
+            "pmcid": "PMC11845170"
+          }
+        ]
+      },
+      {
+        "id": "826-mpa-03",
+        "question": "Which respiratory pattern does the review call characteristic of granulomatosis with polyangiitis rather than a shared feature?",
+        "options": {
+          "A": "Extravascular granulomatous inflammation of the upper and lower respiratory tract",
+          "B": "Adult-onset asthma, which it assigns to granulomatosis with polyangiitis",
+          "C": "No respiratory finding is contrasted",
+          "D": "Diffuse alveolar haemorrhage as a feature exclusive to granulomatosis with polyangiitis"
+        },
+        "correctAnswer": "A",
+        "explanation": "Extravascular granulomatous inflammation of the upper and lower respiratory tract is a characteristic of granulomatosis with polyangiitis. Kidney disease is frequent in both that disease and microscopic polyangiitis, in 70 to 80 percent.",
+        "difficulty": "hard",
+        "sourceRefs": [
+          {
+            "sourceBody": "Glomerular Diseases",
+            "sourceYear": 2025,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC11845170/",
+            "excerpt": "Extravascular granulomatous inflammation of the upper and lower respiratory tract is a characteristic of GPA. Kidney disease is frequent in both GPA and MPA (70–80%), but less common in EGPA.",
+            "status": "source_verified",
+            "pmid": "39991192",
+            "pmcid": "PMC11845170"
+          }
+        ]
+      },
+      {
+        "id": "826-mpa-04",
+        "question": "Who does the review say typically has the worst kidney prognosis?",
+        "options": {
+          "A": "Patients with MPO-ANCA and microscopic polyangiitis",
+          "B": "Patients with eosinophilic granulomatosis and no kidney disease",
+          "C": "Patients with PR3-ANCA and no renal involvement",
+          "D": "The review says all ANCA subsets have the same kidney outlook"
+        },
+        "correctAnswer": "A",
+        "explanation": "The review says patients with MPO-ANCA and microscopic polyangiitis typically have the worst kidney prognosis because of chronic damage.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Glomerular Diseases",
+            "sourceYear": 2025,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC11845170/",
+            "excerpt": "Patients with MPO-ANCA and MPA typically have the worst kidney prognosis due to chronic damage [ ].",
+            "status": "source_verified",
+            "pmid": "39991192",
+            "pmcid": "PMC11845170"
+          }
+        ]
+      },
+      {
+        "id": "826-mpa-05",
+        "question": "How widely does the review say pulmonary capillaritis with diffuse alveolar haemorrhage occurs?",
+        "options": {
+          "A": "Across the spectrum of ANCA-associated vasculitis",
+          "B": "Only in eosinophilic granulomatosis with polyangiitis",
+          "C": "Only in infection, never in vasculitis",
+          "D": "The review says the lung is never involved"
+        },
+        "correctAnswer": "A",
+        "explanation": "The review says pulmonary capillaritis manifesting as diffuse alveolar haemorrhage can occur across the spectrum of ANCA-associated vasculitis.",
+        "difficulty": "easy",
+        "sourceRefs": [
+          {
+            "sourceBody": "Glomerular Diseases",
+            "sourceYear": 2025,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC11845170/",
+            "excerpt": "Pulmonary capillaritis manifesting as diffuse alveolar haemorrhage can occur across the spectrum of AAV.",
+            "status": "source_verified",
+            "pmid": "39991192",
+            "pmcid": "PMC11845170"
+          }
+        ]
+      }
+    ]
+  }
+}

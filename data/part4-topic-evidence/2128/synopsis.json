@@ -1,0 +1,19 @@
+{
+  "scope": "CANTOS and CIRT as summarised in a stored review abstract on residual cardiovascular risk.",
+  "keyRecommendations": [
+    {
+      "text": "CANTOS enrolled patients with prior myocardial infarction and hsCRP at least 2 mg/L and reported a 15% MACE reduction with canakinumab (HR 0.85, 95% CI 0.74–0.98).",
+      "strength": "not_graded",
+      "population": "Prior MI with hsCRP ≥ 2 mg/L"
+    },
+    {
+      "text": "CIRT was stopped early for lack of benefit of low-dose methotrexate on MACE in coronary disease with type 2 diabetes or the metabolic syndrome.",
+      "strength": "not_graded",
+      "population": "Stable coronary disease with diabetes or metabolic syndrome"
+    }
+  ],
+  "clinicalBottomLine": "Canakinumab reduced MACE in CANTOS; low-dose methotrexate did not show MACE benefit in CIRT and that trial stopped early.",
+  "notableCaveats": [
+    "Canakinumab dose and fatal-infection counts are not in this abstract and are not asked. COLCOT is in the same abstract but is not one of the named trials in the topic."
+  ]
+}

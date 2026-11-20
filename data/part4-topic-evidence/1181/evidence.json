@@ -1,0 +1,49 @@
+{
+  "catalogueId": 1181,
+  "topic": "CT head and CT pulmonary angiography: common acute findings",
+  "specialty": "Radiology",
+  "decision": "downloaded_open_source",
+  "source": {
+    "title": "Early signs of middle cerebral artery infarction on multidetector computed tomography: Review of 20 cases; and Comprehensive review of pulmonary embolism imaging",
+    "year": 2019,
+    "pmid": "31001598",
+    "pmcid": "PMC6458774",
+    "doi": "10.4103/bc.bc_28_18",
+    "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6458774/",
+    "sourceBody": "Brain Circulation; Japanese Journal of Radiology",
+    "tier": "review",
+    "secondary": {
+      "title": "Comprehensive review of pulmonary embolism imaging: past, present and future innovations in computed tomography (CT) and other diagnostic techniques",
+      "year": 2025,
+      "pmid": "40580273",
+      "pmcid": "PMC12479586",
+      "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC12479586/",
+      "tier": "review"
+    },
+    "ingestParts": [
+      {
+        "pmid": "31001598",
+        "doi": "10.4103/bc.bc_28_18",
+        "title": "Early signs of middle cerebral artery infarction on multidetector computed tomography: Review of 20 cases",
+        "year": 2019,
+        "tier": "review",
+        "file": "/tmp/oa2/1181_mca.txt"
+      },
+      {
+        "pmid": "40580273",
+        "doi": "10.1007/s11604-025-01811-8",
+        "title": "Comprehensive review of pulmonary embolism imaging",
+        "year": 2025,
+        "tier": "review",
+        "file": "/tmp/oa2/1181_pe.txt"
+      }
+    ],
+    "whyItFits": "No single open paper taught both examinations. The Brain Circulation review lists the early non-contrast CT signs of MCA infarction. The Japanese Journal of Radiology review states how acute PE looks on CT pulmonary angiography and which CTPA findings indicate right-ventricular dysfunction. Haemorrhage patterns are not in the CT-head paper, so they are not questioned."
+  },
+  "notes": [],
+  "files": {
+    "source": "/workspace/data/part4-topic-evidence/1181/source.txt",
+    "synopsis": "/workspace/data/part4-topic-evidence/1181/synopsis.json",
+    "mcqs": "/workspace/data/part4-topic-evidence/1181/mcqs.json"
+  }
+}

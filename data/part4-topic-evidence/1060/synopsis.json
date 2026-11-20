@@ -1,0 +1,24 @@
+{
+  "scope": "Diagnosis and first-line treatment of de Quervain tenosynovitis.",
+  "keyRecommendations": [
+    {
+      "text": "It is a stenosing overuse condition of the first extensor compartment, affecting extensor pollicis brevis and abductor pollicis longus.",
+      "strength": "not_graded",
+      "population": "De Quervain tenosynovitis"
+    },
+    {
+      "text": "Pain and tenderness over and proximal to the radial styloid are the clinical picture, and diagnosis is predominantly clinical.",
+      "strength": "not_graded",
+      "population": "Suspected de Quervain tenosynovitis"
+    },
+    {
+      "text": "The review found benefit from adding thumb-spica immobilisation to a local corticosteroid injection, and greater pain reduction when the injection was ultrasound-guided.",
+      "strength": "not_graded",
+      "population": "Patients treated for de Quervain tenosynovitis"
+    }
+  ],
+  "clinicalBottomLine": "Diagnose de Quervain tenosynovitis clinically from radial-styloid pain in the first extensor compartment. The review's synthesis supports a local corticosteroid injection plus thumb-spica immobilisation, with ultrasound guidance associated with greater pain reduction.",
+  "notableCaveats": [
+    "The review says inflammation remains controversial and that overuse degeneration is the more likely mechanism. It does not present the Finkelstein test as a stand-alone diagnostic criterion."
+  ]
+}

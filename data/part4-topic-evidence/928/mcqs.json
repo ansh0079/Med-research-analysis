@@ -1,0 +1,134 @@
+{
+  "topic": {
+    "topicKey": "avascular-necrosis-of-bone",
+    "topicDisplayName": "Avascular Necrosis of Bone",
+    "aliases": [
+      "928",
+      "Rheumatology"
+    ],
+    "storedRowCount": 1,
+    "coverageNote": "Open adult ONFH guideline covering aetiology, staging, and stage-based surgical and non-surgical treatment, including core decompression. The suggested 5-year update was only an abstract on PMC.",
+    "mcqs": [
+      {
+        "id": "928-avn-01",
+        "question": "What does the 2019 ONFH guideline say treatment selection should take into account?",
+        "options": {
+          "A": "Stage of osteonecrosis, hip function, age, and occupation",
+          "B": "Only the serum urate",
+          "C": "Only whether the patient has gout",
+          "D": "A single radiograph sign with no staging"
+        },
+        "correctAnswer": "A",
+        "explanation": "The guideline says specifying aetiology and a treatment plan based on stage, hip function, age, and occupation is important.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Journal of Orthopaedic Translation",
+            "sourceYear": 2020,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7152793/",
+            "excerpt": "treatment plan based on comprehensive consideration of the different stages of osteonecrosis, hip function, age, and occupation of the patients",
+            "status": "source_verified",
+            "pmid": "32309135",
+            "pmcid": "PMC7152793"
+          }
+        ]
+      },
+      {
+        "id": "928-avn-02",
+        "question": "On what pathophysiological change does the guideline base its nonsurgical and surgical recommendations?",
+        "options": {
+          "A": "Changes in the intraosseous blood supply at different stages",
+          "B": "Synovial urate crystals",
+          "C": "Serum amyloid A level",
+          "D": "Anti-CCP titre"
+        },
+        "correctAnswer": "A",
+        "explanation": "The guideline says that based on changes in intraosseous blood supply at different stages, corresponding nonsurgical and surgical treatments are recommended.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Journal of Orthopaedic Translation",
+            "sourceYear": 2020,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7152793/",
+            "excerpt": "Based on the changes in the intraosseous blood supply at different stages, the corresponding nonsurgical and surgical treatments are recommended",
+            "status": "source_verified",
+            "pmid": "32309135",
+            "pmcid": "PMC7152793"
+          }
+        ]
+      },
+      {
+        "id": "928-avn-03",
+        "question": "What does the guideline recommend when risk factors for possible ONFH are present?",
+        "options": {
+          "A": "Certain preventive measures to avoid osteonecrosis",
+          "B": "Immediate total hip replacement for every at-risk person",
+          "C": "No action until collapse is complete",
+          "D": "Long-term colchicine"
+        },
+        "correctAnswer": "A",
+        "explanation": "The guideline recommends certain preventive measures to avoid osteonecrosis when risk factors for possible ONFH are present.",
+        "difficulty": "easy",
+        "sourceRefs": [
+          {
+            "sourceBody": "Journal of Orthopaedic Translation",
+            "sourceYear": 2020,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7152793/",
+            "excerpt": "when there are risk factors for possible ONFH, certain preventive measures to avoid the occurrence of osteonecrosis are recommended",
+            "status": "source_verified",
+            "pmid": "32309135",
+            "pmcid": "PMC7152793"
+          }
+        ]
+      },
+      {
+        "id": "928-avn-04",
+        "question": "Which domains does the guideline say it covers besides a treatment regimen?",
+        "options": {
+          "A": "Epidemiology, aetiology, diagnostic criteria, and pathological staging",
+          "B": "Only postoperative rehabilitation codes",
+          "C": "Only dental extraction",
+          "D": "Only vitamin D dosing in children"
+        },
+        "correctAnswer": "A",
+        "explanation": "The guideline says it provides basic diagnosis, treatment, and evaluation systems and expert advice on epidemiology, aetiology, diagnostic criteria, pathological staging, prevention and treatment, and postoperative rehabilitation.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Journal of Orthopaedic Translation",
+            "sourceYear": 2020,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7152793/",
+            "excerpt": "these guidelines provide not only basic diagnosis, treatment, and evaluation systems for ONFH but also expert advice and standards in many aspects, including epidemiology, aetiology, diagnostic criteria, pathological staging",
+            "status": "source_verified",
+            "pmid": "32309135",
+            "pmcid": "PMC7152793"
+          }
+        ]
+      },
+      {
+        "id": "928-avn-05",
+        "question": "Core decompression is discussed repeatedly in this guideline. Which statement is supported by the text's treatment framing?",
+        "options": {
+          "A": "Both nonsurgical and surgical treatments are matched to stage rather than applied as a single operation for every patient",
+          "B": "Core decompression is the only sentence in the guideline and staging is absent",
+          "C": "Surgery is forbidden at every stage",
+          "D": "The guideline addresses only the knee"
+        },
+        "correctAnswer": "A",
+        "explanation": "The guideline links nonsurgical and surgical treatments to stage and states that treatment plans consider stage, function, age, and occupation. Core decompression is one of the procedures named in the full text.",
+        "difficulty": "hard",
+        "sourceRefs": [
+          {
+            "sourceBody": "Journal of Orthopaedic Translation",
+            "sourceYear": 2020,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7152793/",
+            "excerpt": "the corresponding nonsurgical and surgical treatments are recommended",
+            "status": "source_verified",
+            "pmid": "32309135",
+            "pmcid": "PMC7152793"
+          }
+        ]
+      }
+    ]
+  }
+}

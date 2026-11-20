@@ -1,0 +1,134 @@
+{
+  "topic": {
+    "topicKey": "monoarthritis-differential-diagnosis-crystal-septic-reactive-seronegat",
+    "topicDisplayName": "Monoarthritis differential diagnosis: crystal, septic, reactive, seronegative, trauma",
+    "aliases": [
+      "201",
+      "Rheumatology"
+    ],
+    "storedRowCount": 1,
+    "coverageNote": "Open guideline for the septic arm of an acute hot joint. It requires prompt synovial-fluid aspiration, microscopy for crystals, and holding empirical antibiotics until the sample is taken unless the patient is septic. Reactive, seronegative, and traumatic causes are not specified, so they are not questioned.",
+    "mcqs": [
+      {
+        "id": "201-mono-01",
+        "question": "When SANJO is suspected, what does the guideline recommend about synovial-fluid aspiration?",
+        "options": {
+          "A": "Aspirate as quickly as possible",
+          "B": "Defer aspiration for two weeks of observation",
+          "C": "Aspirate only after a week of antibiotics",
+          "D": "Aspiration is not recommended"
+        },
+        "correctAnswer": "A",
+        "explanation": "The guideline recommends that aspiration of synovial fluid be performed as quickly as possible when septic arthritis of a native joint is suspected.",
+        "difficulty": "easy",
+        "sourceRefs": [
+          {
+            "sourceBody": "Journal of Bone and Joint Infection",
+            "sourceYear": 2023,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9901514/",
+            "excerpt": "We recommend aspiration of synovial fluid should be performed as quickly as possible when SANJO is suspected",
+            "status": "source_verified",
+            "pmid": "36756304",
+            "pmcid": "PMC9901514"
+          }
+        ]
+      },
+      {
+        "id": "201-mono-02",
+        "question": "If only a little fluid is obtained, which findings does the guideline put in the priority list?",
+        "options": {
+          "A": "Neutrophil percentage and the presence of crystals",
+          "B": "Only a glucose strip, with crystals forbidden",
+          "C": "A serum anti-CCP level from the joint fluid",
+          "D": "No microscopy"
+        },
+        "correctAnswer": "A",
+        "explanation": "The guideline says that if quantity is limited, tests are prioritised and the list includes neutrophil percentage and presence of crystals.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Journal of Bone and Joint Infection",
+            "sourceYear": 2023,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9901514/",
+            "excerpt": "white blood cell count including polymorphonuclear (PMN) percentage, and presence of crystals (in that priority order if the quantity of liquid is not enough for all of them)",
+            "status": "source_verified",
+            "pmid": "36756304",
+            "pmcid": "PMC9901514"
+          }
+        ]
+      },
+      {
+        "id": "201-mono-03",
+        "question": "When should empirical antibiotics wait for joint-fluid sampling?",
+        "options": {
+          "A": "Except in patients with signs of sepsis, so that cultures are not falsely negative",
+          "B": "Always, even in septic shock",
+          "C": "Never; antibiotics always come first",
+          "D": "Only after surgical lavage"
+        },
+        "correctAnswer": "A",
+        "explanation": "The guideline says that except for patients with signs of sepsis, empirical antibiotics should await diagnostic sampling of joint fluid to avoid false-negative cultures.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Journal of Bone and Joint Infection",
+            "sourceYear": 2023,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9901514/",
+            "excerpt": "Except for patients with signs of sepsis, empirical antibiotic treatment should await diagnostic sampling of joint fluid to avoid false negative culture results.",
+            "status": "source_verified",
+            "pmid": "36756304",
+            "pmcid": "PMC9901514"
+          }
+        ]
+      },
+      {
+        "id": "201-mono-04",
+        "question": "What surgical step does the guideline recommend, particularly for larger joints?",
+        "options": {
+          "A": "Arthroscopic lavage",
+          "B": "Amputation as the default",
+          "C": "No lavage is ever recommended",
+          "D": "Only needle aspiration, with lavage contraindicated"
+        },
+        "correctAnswer": "A",
+        "explanation": "Arthroscopic lavage, with synovectomy depending on stage, is recommended particularly in larger joints. Open revision may be considered if the synovial membrane is adherent.",
+        "difficulty": "hard",
+        "sourceRefs": [
+          {
+            "sourceBody": "Journal of Bone and Joint Infection",
+            "sourceYear": 2023,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9901514/",
+            "excerpt": "Arthroscopic lavage (with synovectomy, depending on the clinical stage) is recommended for SANJO particularly in larger joints",
+            "status": "source_verified",
+            "pmid": "36756304",
+            "pmcid": "PMC9901514"
+          }
+        ]
+      },
+      {
+        "id": "201-mono-05",
+        "question": "What is the main diagnostic basis of native-joint septic arthritis in the opening of this guideline?",
+        "options": {
+          "A": "Aspiration of joint fluid for synovial leucocyte count and, most importantly, bacterial identification",
+          "B": "A normal radiograph",
+          "C": "Serum urate alone",
+          "D": "Response to colchicine"
+        },
+        "correctAnswer": "A",
+        "explanation": "The guideline says diagnosis is mainly based on aspiration of joint fluid, analysed first for synovial leucocyte count and, most importantly, for bacterial identification.",
+        "difficulty": "easy",
+        "sourceRefs": [
+          {
+            "sourceBody": "Journal of Bone and Joint Infection",
+            "sourceYear": 2023,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9901514/",
+            "excerpt": "aspiration of joint fluid, which initially is analysed for synovial leucocyte count, but most important, for bacterial identification.",
+            "status": "source_verified",
+            "pmid": "36756304",
+            "pmcid": "PMC9901514"
+          }
+        ]
+      }
+    ]
+  }
+}

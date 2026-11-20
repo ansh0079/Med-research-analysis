@@ -1,0 +1,23 @@
+{
+  "catalogueId": 125,
+  "topic": "Hyper-IgD Syndrome",
+  "specialty": "Rheumatology",
+  "decision": "downloaded_open_source",
+  "source": {
+    "title": "Mevalonate kinase deficiencies: from mevalonic aciduria to hyperimmunoglobulinemia D syndrome",
+    "year": 2006,
+    "pmid": "16722536",
+    "pmcid": "PMC1475558",
+    "doi": null,
+    "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1475558/",
+    "sourceBody": "Orphanet Journal of Rare Diseases",
+    "tier": "review",
+    "whyItFits": "Open review placing hyper-IgD syndrome and mevalonic aciduria on one mevalonate-kinase spectrum, with the laboratory clues and genetic confirmation. The Eurofever registry paper is not in PMC."
+  },
+  "notes": [],
+  "files": {
+    "source": "/workspace/data/part4-topic-evidence/125/source.txt",
+    "synopsis": "/workspace/data/part4-topic-evidence/125/synopsis.json",
+    "mcqs": "/workspace/data/part4-topic-evidence/125/mcqs.json"
+  }
+}

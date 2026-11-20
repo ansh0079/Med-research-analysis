@@ -1,0 +1,23 @@
+{
+  "catalogueId": 260,
+  "topic": "Calcium Hydroxyapatite Deposition Disease",
+  "specialty": "Rheumatology",
+  "decision": "downloaded_open_source",
+  "source": {
+    "title": "Pathogenic role of basic calcium phosphate crystals in destructive arthropathies",
+    "year": 2013,
+    "pmid": "23468973",
+    "pmcid": "PMC3585350",
+    "doi": null,
+    "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3585350/",
+    "sourceBody": "PLOS ONE",
+    "tier": "review",
+    "whyItFits": "Open paper that names hydroxyapatite among basic calcium phosphate crystals and links them to osteoarthritis, calcific tendinitis, acute arthritis, and Milwaukee shoulder. A rotator-cuff calcific-tendinopathy review did not use the word hydroxyapatite and was not the primary source."
+  },
+  "notes": [],
+  "files": {
+    "source": "/workspace/data/part4-topic-evidence/260/source.txt",
+    "synopsis": "/workspace/data/part4-topic-evidence/260/synopsis.json",
+    "mcqs": "/workspace/data/part4-topic-evidence/260/mcqs.json"
+  }
+}

@@ -1,0 +1,134 @@
+{
+  "topic": {
+    "topicKey": "fibromyalgia-syndrome",
+    "topicDisplayName": "Fibromyalgia Syndrome",
+    "aliases": [
+      "648",
+      "Rheumatology"
+    ],
+    "storedRowCount": 1,
+    "coverageNote": "Open review of fibromyalgia diagnosis, including the move from tender points to the Widespread Pain Index and Symptom Severity Scale and the 2016 generalised-pain revision, plus first-line non-drug care and FDA-approved drugs. The stored NG117 bronchiectasis text is the wrong disease.",
+    "mcqs": [
+      {
+        "id": "648-fm-01",
+        "question": "What does this review call first-line treatment for fibromyalgia?",
+        "options": {
+          "A": "Education, exercise such as aerobic and resistance training, and psychological therapies such as CBT",
+          "B": "Opioids other than tramadol",
+          "C": "Antibiotics",
+          "D": "Immediate high-dose corticosteroid"
+        },
+        "correctAnswer": "A",
+        "explanation": "The review says non-pharmacological interventions, including education, aerobic and resistance exercise, and CBT, are recommended as first-line treatments.",
+        "difficulty": "easy",
+        "sourceRefs": [
+          {
+            "sourceBody": "Journal of Pain Research",
+            "sourceYear": 2026,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC13589972/",
+            "excerpt": "Non-pharmacological interventions, including patient education, exercise (eg, aerobic and resistance training), and psychological therapies, such as cognitive behavioral therapy, are recommended as first-line treatments.",
+            "status": "source_verified",
+            "pmid": "42764960",
+            "pmcid": "PMC13589972"
+          }
+        ]
+      },
+      {
+        "id": "648-fm-02",
+        "question": "Which drugs does the review say are FDA-approved and clinically meaningful in fibromyalgia?",
+        "options": {
+          "A": "Pregabalin, duloxetine, milnacipran, and cyclobenzaprine",
+          "B": "Morphine and fentanyl",
+          "C": "Colchicine and allopurinol",
+          "D": "Rituximab"
+        },
+        "correctAnswer": "A",
+        "explanation": "The review lists pregabalin, duloxetine, milnacipran, and cyclobenzaprine as FDA-approved drugs that provide clinically meaningful benefit.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Journal of Pain Research",
+            "sourceYear": 2026,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC13589972/",
+            "excerpt": "Pharmacological therapies, including pregabalin, duloxetine, milnacipran, and cyclobenzaprine, are Food and Drug Administration-approved and provide clinically meaningful benefits",
+            "status": "source_verified",
+            "pmid": "42764960",
+            "pmcid": "PMC13589972"
+          }
+        ]
+      },
+      {
+        "id": "648-fm-03",
+        "question": "What does the review say about opioids?",
+        "options": {
+          "A": "Tramadol may be considered, but other opioids are generally not recommended because of limited efficacy and risks",
+          "B": "Strong opioids are first-line",
+          "C": "All opioids are contraindicated including tramadol",
+          "D": "Opioids replace exercise"
+        },
+        "correctAnswer": "A",
+        "explanation": "The review says tramadol may be considered, whereas other opioids are generally not recommended because of limited efficacy and potential risks.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Journal of Pain Research",
+            "sourceYear": 2026,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC13589972/",
+            "excerpt": "Although tramadol may be considered, the use of other opioids is generally not recommended because of their limited efficacy and potential risks.",
+            "status": "source_verified",
+            "pmid": "42764960",
+            "pmcid": "PMC13589972"
+          }
+        ]
+      },
+      {
+        "id": "648-fm-04",
+        "question": "How did diagnostic criteria move away from the tender-point examination, in this review?",
+        "options": {
+          "A": "Toward a symptom-based approach using the Widespread Pain Index and Symptom Severity Scale",
+          "B": "Toward more tender points, from 11 to 18 required sites",
+          "C": "Toward a muscle biopsy requirement",
+          "D": "Toward ANA testing as the diagnostic standard"
+        },
+        "correctAnswer": "A",
+        "explanation": "The review says criteria replaced tender-point assessment with a symptom-based approach using the Widespread Pain Index and Symptom Severity Scale.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Journal of Pain Research",
+            "sourceYear": 2026,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC13589972/",
+            "excerpt": "replacing tender point-based assessment with a symptom-based approach using the Widespread Pain Index and Symptom Severity Scale.",
+            "status": "source_verified",
+            "pmid": "42764960",
+            "pmcid": "PMC13589972"
+          }
+        ]
+      },
+      {
+        "id": "648-fm-05",
+        "question": "What care model does the review say fibromyalgia requires?",
+        "options": {
+          "A": "A multidisciplinary approach",
+          "B": "Single-drug care without education",
+          "C": "Surgery",
+          "D": "Isolation from psychological treatment"
+        },
+        "correctAnswer": "A",
+        "explanation": "The review says FM management requires a multidisciplinary approach.",
+        "difficulty": "easy",
+        "sourceRefs": [
+          {
+            "sourceBody": "Journal of Pain Research",
+            "sourceYear": 2026,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC13589972/",
+            "excerpt": "FM management requires a multidisciplinary approach.",
+            "status": "source_verified",
+            "pmid": "42764960",
+            "pmcid": "PMC13589972"
+          }
+        ]
+      }
+    ]
+  }
+}
