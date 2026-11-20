@@ -1,0 +1,23 @@
+{
+  "catalogueId": "2037",
+  "topic": "TNF and IL-17 inhibitors in axSpA: secukinumab, ixekizumab, comparative efficacy",
+  "groundedIn": "42719014",
+  "synopsis": "This pharmacology review treats TNF inhibitors as a well-established first-line biologic option in ankylosing spondylitis, with long-term data and efficacy for extra-articular disease such as uveitis and inflammatory bowel disease. It describes IL-17 inhibitors as providing comparable efficacy for axial disease, with a particular advantage when psoriasis is significant or tuberculosis risk is increased. A Cochrane review it cites found that patients on anti-TNF therapy were about three to four times more likely than placebo patients to reach ASAS40 by 6 months. Secukinumab was the first IL-17A inhibitor approved for ankylosing spondylitis. In MEASURE 1 and 2, ASAS20 at week 16 was approximately 60–61% with secukinumab 150 mg and 75 mg versus 29% with placebo, and ASAS40 was approximately 28–36% versus 11%. In COAST-X, ixekizumab 80 mg every 4 weeks or every 2 weeks produced ASAS40 rates of 35–40% at week 16 versus 19% with placebo in non-radiographic axial spondyloarthritis, which supported approval for active non-radiographic disease with objective inflammation.",
+  "teachingPoints": [
+    {
+      "claim": "TNF inhibitors are a first-line biologic with extra-articular efficacy; IL-17 inhibitors have comparable axial efficacy.",
+      "sourceExcerpt": "TNF inhibitors remain a well-established first-line biologic option"
+    },
+    {
+      "claim": "MEASURE 1 and 2: secukinumab ASAS20 about 60–61% versus 29% placebo at week 16.",
+      "sourceExcerpt": "ASAS20 response at week 16 was approximately 60%–61% with secukinumab 150 mg and 75 mg compared with 29% with placebo"
+    },
+    {
+      "claim": "COAST-X: ixekizumab ASAS40 35–40% versus 19% placebo at week 16.",
+      "sourceExcerpt": "ixekizumab 80 mg every 4 weeks or every 2 weeks yielded ASAS40 response rates of 35%–40% at week 16 compared with 19% on placebo"
+    }
+  ],
+  "uncertaintiesNotedInSource": [
+    "The review reports approximate trial percentages from the cited papers. It is not a head-to-head trial of secukinumab versus ixekizumab."
+  ]
+}

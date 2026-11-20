@@ -1,0 +1,21 @@
+{
+  "catalogueId": "626",
+  "spreadsheetRow": 137,
+  "topic": "ORAL Surveillance trial: cardiovascular safety of tofacitinib vs TNFi in RA",
+  "specialty": "Rheumatology",
+  "decision": "downloaded_open_source",
+  "source": {
+    "title": "Risk of major adverse cardiovascular events with tofacitinib versus tumour necrosis factor inhibitors in patients with rheumatoid arthritis",
+    "year": 2023,
+    "pmid": "36137735",
+    "pmcid": "PMC9811099",
+    "doi": "10.1136/ard-2022-222259",
+    "sourceBody": "Annals of the Rheumatic Diseases",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9811099/",
+    "whyItFits": "Open analysis that reports the ORAL Surveillance primary cardiovascular comparison of tofacitinib versus TNF inhibitors, including the hazard ratio, non-inferiority margin, and age pattern."
+  },
+  "whyItFits": "Open analysis that reports the ORAL Surveillance primary cardiovascular comparison of tofacitinib versus TNF inhibitors, including the hazard ratio, non-inferiority margin, and age pattern.",
+  "coverageNote": "The NEJM primary paper was not open on PMC. This open paper reports the ORAL Surveillance cardiovascular comparison and is used only for figures it states.",
+  "rejectedInAppHints": "A dengue-surveillance paper matched the word surveillance and was rejected. The NEJM record was not open access.",
+  "sourceFile": "source.txt"
+}

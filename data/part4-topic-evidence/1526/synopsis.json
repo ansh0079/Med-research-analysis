@@ -1,0 +1,23 @@
+{
+  "catalogueId": "1526",
+  "topic": "Spondylolysis and Spondylolisthesis",
+  "groundedIn": "36526328",
+  "synopsis": "Spondylolysis is an anatomic defect of the pars interarticularis, typically a stress reaction and then a fracture from repetitive lumbar loading in extension and rotation. When the defect is bilateral, the vertebra can translate forward on the one below it; that translation is isthmic spondylolisthesis. The two are described as a continuum. Adult prevalence estimates are 5% to 11.5% for spondylolysis and 4% to 8% for isthmic spondylolisthesis. The Meyerding grade describes the slip: 0% to 25% is grade I, 25% to 50% grade II, 50% to 75% grade III, 75% to 100% grade IV, and greater than 100% is grade V, or spondyloptosis. Most patients improve with activity restriction, physical therapy, and bracing. Others need surgery for persistent symptoms. The Wiltse-Newman classification separates isthmic, dysplastic, degenerative, post-traumatic, and pathologic slips; this article focuses on spondylolysis and isthmic spondylolisthesis in adolescents and young adults.",
+  "teachingPoints": [
+    {
+      "claim": "Spondylolysis is a pars interarticularis defect from repetitive extension and rotation.",
+      "sourceExcerpt": "Spondylolysis is the term used to describe an anatomic defect of the pars interarticularis"
+    },
+    {
+      "claim": "Meyerding grades I–V divide slip from 0–25% through spondyloptosis.",
+      "sourceExcerpt": "0% to 25% is Grade I, 25% to 50% is Grade II, 50% to 75% is Grade III, 75% to 100% is Grade IV, and greater than 100% is Grade V"
+    },
+    {
+      "claim": "Most patients improve with activity restriction, physical therapy, and bracing.",
+      "sourceExcerpt": "the majority of patients improve with conservative therapy including activity restriction, physical therapy and bracing"
+    }
+  ],
+  "uncertaintiesNotedInSource": [
+    "The grade figure is reproduced from OrthoInfo; the percentages are stated in the article text."
+  ]
+}

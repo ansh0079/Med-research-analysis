@@ -1,0 +1,21 @@
+{
+  "catalogueId": "2159",
+  "spreadsheetRow": 136,
+  "topic": "Neuropsychiatric SLE: NPSLE syndromes, attribution, immunosuppression vs anticoagulation",
+  "specialty": "Rheumatology",
+  "decision": "downloaded_open_source",
+  "source": {
+    "title": "Neuropsychiatric Systemic Lupus Erythematosus: A Systematic Review",
+    "year": 2024,
+    "pmid": "38975440",
+    "pmcid": "PMC11227614",
+    "doi": "10.7759/cureus.62787",
+    "sourceBody": "Cureus",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11227614/",
+    "whyItFits": "Open systematic review organized around the ACR neuropsychiatric SLE syndromes and the treatment patterns reported for them, including immunosuppression and anticoagulation."
+  },
+  "whyItFits": "Open systematic review organized around the ACR neuropsychiatric SLE syndromes and the treatment patterns reported for them, including immunosuppression and anticoagulation.",
+  "coverageNote": "Questions focus on when the review uses immunosuppression versus anticoagulation. No attribution score was invented.",
+  "rejectedInAppHints": "Same rejection of the lupus-nephritis synopsis.",
+  "sourceFile": "source.txt"
+}

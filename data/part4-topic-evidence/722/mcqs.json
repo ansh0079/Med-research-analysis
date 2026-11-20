@@ -1,0 +1,149 @@
+{
+  "reviewState": "unreviewed",
+  "method": "Hand-written single-best-answer MCQs grounded only in the accepted open full text.",
+  "topic": {
+    "topicKey": "osteoarthritis",
+    "topicDisplayName": "Osteoarthritis",
+    "catalogueId": "722",
+    "aliases": [],
+    "storedRowCount": 0,
+    "coverageNote": "Management guideline. Pathophysiology and Kellgren-Lawrence grading are not its subject; those are covered for catalogue 723 by a separate review.",
+    "mcqs": [
+      {
+        "id": "c722-01",
+        "question": "For which sites does the ACR/Arthritis Foundation guideline strongly recommend exercise?",
+        "options": {
+          "A": "Knee, hip, and/or hand osteoarthritis",
+          "B": "Only the spine",
+          "C": "Only the first metatarsophalangeal joint",
+          "D": "Exercise is conditionally recommended against in knee OA",
+          "E": "Exercise is reserved for patients awaiting arthroplasty"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "Knee, hip, and/or hand osteoarthritis",
+        "explanation": "Exercise is strongly recommended for patients with knee, hip, and/or hand OA.",
+        "difficulty": "easy",
+        "sourceRefs": [
+          {
+            "sourceBody": "Arthritis Care & Research",
+            "sourceYear": 2020,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11488261/",
+            "pmid": "31908149",
+            "pmcid": "PMC11488261",
+            "doi": "10.1002/acr.24131",
+            "status": "open_full_text",
+            "excerpt": "Exercise is strongly recommended for patients with knee, hip, and/or hand OA."
+          }
+        ]
+      },
+      {
+        "id": "c722-02",
+        "question": "How does the strength of exercise evidence compare across joints?",
+        "options": {
+          "A": "There is considerably more evidence, and a wider range of studied exercise, for knee and hip OA than for hand OA",
+          "B": "Hand OA has the largest exercise evidence base",
+          "C": "Evidence is identical for every joint",
+          "D": "Exercise evidence exists only for the hip",
+          "E": "The guideline recommends against exercise in the knee because trials are lacking"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "There is considerably more evidence, and a wider range of studied exercise, for knee and hip OA than for hand OA",
+        "explanation": "The guideline says there is considerably more evidence for exercise in knee and hip OA than in hand OA, and a greater variety of exercise options has been studied.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Arthritis Care & Research",
+            "sourceYear": 2020,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11488261/",
+            "pmid": "31908149",
+            "pmcid": "PMC11488261",
+            "doi": "10.1002/acr.24131",
+            "status": "open_full_text",
+            "excerpt": "there is considerably more evidence for the use of exercise in the treatment of knee and hip OA than for hand OA, and the variety of exercise options studied is far greater."
+          }
+        ]
+      },
+      {
+        "id": "c722-03",
+        "question": "What status do oral NSAIDs have in this guideline?",
+        "options": {
+          "A": "Strongly recommended, and the initial oral medication of choice over other oral medications",
+          "B": "Recommended only after opioids fail",
+          "C": "Contraindicated in knee OA",
+          "D": "Limited to a single dose for hand OA",
+          "E": "Not mentioned"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "Strongly recommended, and the initial oral medication of choice over other oral medications",
+        "explanation": "Oral NSAIDs are strongly recommended for knee, hip, and/or hand OA and are the initial oral medication of choice, recommended over other available oral medications.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Arthritis Care & Research",
+            "sourceYear": 2020,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11488261/",
+            "pmid": "31908149",
+            "pmcid": "PMC11488261",
+            "doi": "10.1002/acr.24131",
+            "status": "open_full_text",
+            "excerpt": "Oral NSAIDs are the initial oral medication of choice in the treatment of OA, regardless of anatomic location, and are recommended over all other"
+          }
+        ]
+      },
+      {
+        "id": "c722-04",
+        "question": "How are topical NSAIDs recommended?",
+        "options": {
+          "A": "Strongly for knee OA and conditionally for hand OA, and they should be considered before oral NSAIDs",
+          "B": "Strongly for hip OA because the joint is superficial",
+          "C": "Against any use in the knee",
+          "D": "Only in combination with an opioid",
+          "E": "They are preferred because they have greater systemic exposure"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "Strongly for knee OA and conditionally for hand OA, and they should be considered before oral NSAIDs",
+        "explanation": "Topical NSAIDs are strongly recommended for knee OA and conditionally recommended for hand OA. Local therapy is preferred before oral NSAIDs because systemic exposure is lower.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Arthritis Care & Research",
+            "sourceYear": 2020,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11488261/",
+            "pmid": "31908149",
+            "pmcid": "PMC11488261",
+            "doi": "10.1002/acr.24131",
+            "status": "open_full_text",
+            "excerpt": "Topical NSAIDs are strongly recommended for patients with knee OA and conditionally recommended for patients with hand OA."
+          }
+        ]
+      },
+      {
+        "id": "c722-05",
+        "question": "Why is the hand recommendation for topical NSAIDs only conditional?",
+        "options": {
+          "A": "Practical issues such as frequent hand washing, and a lack of direct evidence of efficacy in the hand",
+          "B": "Topical NSAIDs cause more GI bleeding than oral NSAIDs",
+          "C": "Hand OA is not an approved diagnosis",
+          "D": "The panel found harm in every hand trial",
+          "E": "Topical agents cannot be applied to skin"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "Practical issues such as frequent hand washing, and a lack of direct evidence of efficacy in the hand",
+        "explanation": "The guideline cites practical considerations such as frequent hand washing and the lack of direct evidence of efficacy in the hand.",
+        "difficulty": "hard",
+        "sourceRefs": [
+          {
+            "sourceBody": "Arthritis Care & Research",
+            "sourceYear": 2020,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11488261/",
+            "pmid": "31908149",
+            "pmcid": "PMC11488261",
+            "doi": "10.1002/acr.24131",
+            "status": "open_full_text",
+            "excerpt": "Practical considerations (e.g., frequent hand washing) and the lack of direct evidence of efficacy in the hand lead to"
+          }
+        ]
+      }
+    ]
+  }
+}

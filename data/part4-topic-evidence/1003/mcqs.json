@@ -1,0 +1,149 @@
+{
+  "reviewState": "unreviewed",
+  "method": "Hand-written single-best-answer MCQs grounded only in the accepted open full text.",
+  "topic": {
+    "topicKey": "pegloticase-and-lesinurad-in-refractory-gout-indications-infusion-reac",
+    "topicDisplayName": "Pegloticase and lesinurad in refractory gout: indications, infusion reactions",
+    "catalogueId": "1003",
+    "aliases": [],
+    "storedRowCount": 0,
+    "coverageNote": "Pegloticase indications and allergic/infusion burden are explicit. Lesinurad is covered as a withdrawn-but-still-approved drug whose data were considered; a dosing regimen was not copied from memory.",
+    "mcqs": [
+      {
+        "id": "c1003-01",
+        "question": "When is switching to pegloticase strongly recommended?",
+        "options": {
+          "A": "After XOI, uricosurics, and other interventions fail to reach the serum-urate target, if flares continue at ≥2 per year or subcutaneous tophi are not resolving",
+          "B": "As the first prescription for any gout flare",
+          "C": "Only when the serum urate is already at target",
+          "D": "For asymptomatic hyperuricemia without flares or tophi",
+          "E": "Instead of treating a septic joint"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "After XOI, uricosurics, and other interventions fail to reach the serum-urate target, if flares continue at ≥2 per year or subcutaneous tophi are not resolving",
+        "explanation": "The strong recommendation for pegloticase requires failure of XOI, uricosurics, and other interventions plus frequent flares (≥2/year) or non-resolving subcutaneous tophi.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Arthritis & Rheumatology",
+            "sourceYear": 2020,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10563586/",
+            "pmid": "32391934",
+            "pmcid": "PMC10563586",
+            "doi": "10.1002/art.41247",
+            "status": "open_full_text",
+            "excerpt": "Switching to pegloticase over continuing current ULT is strongly recommended for patients with gout for whom XOI treatment, uricosurics, and other interventions have failed to achieve the SU target, and who continue to have frequent gout flares (≥2 flares/year) OR who have nonresolving subcutaneous tophi."
+          }
+        ]
+      },
+      {
+        "id": "c1003-02",
+        "question": "When is pegloticase strongly recommended against, despite a missed serum-urate target?",
+        "options": {
+          "A": "Infrequent flares (<2 per year) and no tophi",
+          "B": "Three flares in the past year and a draining tophus",
+          "C": "Allopurinol hypersensitivity with monthly polyarticular flares",
+          "D": "Non-resolving tophi after febuxostat failure",
+          "E": "CKD is present, regardless of flare rate"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "Infrequent flares (<2 per year) and no tophi",
+        "explanation": "Switching to pegloticase is strongly recommended against when XOI and other therapy have failed but flares are infrequent (<2/year) and there are no tophi.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Arthritis & Rheumatology",
+            "sourceYear": 2020,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10563586/",
+            "pmid": "32391934",
+            "pmcid": "PMC10563586",
+            "doi": "10.1002/art.41247",
+            "status": "open_full_text",
+            "excerpt": "Switching to pegloticase over continuing current ULT is strongly recommended against for patients with gout for whom XOI treatment, uricosurics, and other interventions have failed to achieve the SU target, but who have infrequent gout flares (<2 flares/year) AND no tophi."
+          }
+        ]
+      },
+      {
+        "id": "c1003-03",
+        "question": "What harms and logistics does the guideline attach to pegloticase?",
+        "options": {
+          "A": "High cost, twice-monthly infusions, and potential serious allergic reactions",
+          "B": "Once-yearly oral dosing with no allergic risk",
+          "C": "Only gastrointestinal upset",
+          "D": "A requirement for daily intramuscular injections",
+          "E": "No monitoring because reactions do not occur"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "High cost, twice-monthly infusions, and potential serious allergic reactions",
+        "explanation": "Improved urate, flare, tophus, and quality-of-life outcomes came with high costs, twice-monthly infusions, and the potential for serious allergic reactions.",
+        "difficulty": "easy",
+        "sourceRefs": [
+          {
+            "sourceBody": "Arthritis & Rheumatology",
+            "sourceYear": 2020,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10563586/",
+            "pmid": "32391934",
+            "pmcid": "PMC10563586",
+            "doi": "10.1002/art.41247",
+            "status": "open_full_text",
+            "excerpt": "these outcomes come with high costs, twice-monthly infusions, and the potential for serious allergic reactions."
+          }
+        ]
+      },
+      {
+        "id": "c1003-04",
+        "question": "What first-line status does pegloticase have?",
+        "options": {
+          "A": "Strongly recommended against as first-line urate-lowering therapy",
+          "B": "Strongly recommended first-line for every patient",
+          "C": "Preferred over allopurinol in CKD stage 1",
+          "D": "Interchangeable with colchicine prophylaxis",
+          "E": "The guideline does not discuss line of therapy"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "Strongly recommended against as first-line urate-lowering therapy",
+        "explanation": "Starting pegloticase as first-line therapy is strongly recommended against.",
+        "difficulty": "easy",
+        "sourceRefs": [
+          {
+            "sourceBody": "Arthritis & Rheumatology",
+            "sourceYear": 2020,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10563586/",
+            "pmid": "32391934",
+            "pmcid": "PMC10563586",
+            "doi": "10.1002/art.41247",
+            "status": "open_full_text",
+            "excerpt": "pegloticase as a first-line therapy is strongly recommended against."
+          }
+        ]
+      },
+      {
+        "id": "c1003-05",
+        "question": "What does the guideline say about lesinurad's availability while the recommendations were written?",
+        "options": {
+          "A": "The manufacturer withdrew it from the US market, but it remained FDA-approved, so the panel still considered the data",
+          "B": "It had never been FDA-approved",
+          "C": "It replaced allopurinol as the preferred first-line drug",
+          "D": "It was recommended for every patient with CKD",
+          "E": "Infusion reactions were its main toxicity and the reason for withdrawal in the text"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "The manufacturer withdrew it from the US market, but it remained FDA-approved, so the panel still considered the data",
+        "explanation": "Lesinurad was withdrawn from the US market by the manufacturer during guideline development, remained FDA-approved, and its data were still considered for relevant questions.",
+        "difficulty": "hard",
+        "sourceRefs": [
+          {
+            "sourceBody": "Arthritis & Rheumatology",
+            "sourceYear": 2020,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10563586/",
+            "pmid": "32391934",
+            "pmcid": "PMC10563586",
+            "doi": "10.1002/art.41247",
+            "status": "open_full_text",
+            "excerpt": "Although lesinurad was withdrawn from the US market by the manufacturer during the course of guideline development, it remains Food and Drug Administration (FDA) approved, and we therefore considered the data"
+          }
+        ]
+      }
+    ]
+  }
+}

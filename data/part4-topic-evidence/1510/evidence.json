@@ -1,0 +1,21 @@
+{
+  "catalogueId": "1510",
+  "spreadsheetRow": 158,
+  "topic": "Scleroderma renal crisis: ACE inhibitors, hypertensive emergency, captopril",
+  "specialty": "Rheumatology",
+  "decision": "downloaded_open_source",
+  "source": {
+    "title": "Renal Disease and Systemic Sclerosis: an Update on Scleroderma Renal Crisis",
+    "year": 2023,
+    "pmid": "35648373",
+    "pmcid": "PMC10167155",
+    "doi": "10.1007/s00296-022-05149-6",
+    "sourceBody": "Rheumatology International",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10167155/",
+    "whyItFits": "Open update on scleroderma renal crisis that defines the presentation and specifies immediate ACE-inhibitor treatment, including captopril."
+  },
+  "whyItFits": "Open update on scleroderma renal crisis that defines the presentation and specifies immediate ACE-inhibitor treatment, including captopril.",
+  "coverageNote": "Questions are limited to ACE-inhibitor choice, titration, and pregnancy.",
+  "rejectedInAppHints": "Same source as 461; the UKSSG PDF was not openly retrieved as full text.",
+  "sourceFile": "source.txt"
+}

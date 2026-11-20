@@ -1,0 +1,21 @@
+{
+  "catalogueId": "590",
+  "spreadsheetRow": 160,
+  "topic": "Septic arthritis: diagnosis, Gram stain, joint aspiration, empirical antibiotics, surgical drainage",
+  "specialty": "Rheumatology",
+  "decision": "downloaded_open_source",
+  "source": {
+    "title": "Guideline for management of septic arthritis in native joints (SANJO)",
+    "year": 2023,
+    "pmid": "36756304",
+    "pmcid": "PMC9901514",
+    "doi": "10.1302/2058-5241.8.220083",
+    "sourceBody": "EFORT Open Reviews",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9901514/",
+    "whyItFits": "Open guideline on native-joint septic arthritis covering aspiration, synovial white-cell thresholds, crystals, Gram stain, culture, antibiotics, and surgical lavage."
+  },
+  "whyItFits": "Open guideline on native-joint septic arthritis covering aspiration, synovial white-cell thresholds, crystals, Gram stain, culture, antibiotics, and surgical lavage.",
+  "coverageNote": "Same SANJO guideline, with questions on aspiration timing, Gram stain, and drainage.",
+  "rejectedInAppHints": "BSR 2006 hot-swollen-joint full text was not the PMC record retrieved for the remembered PMID.",
+  "sourceFile": "source.txt"
+}

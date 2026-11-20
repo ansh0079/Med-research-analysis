@@ -1,0 +1,23 @@
+{
+  "catalogueId": "829",
+  "topic": "Scleroderma ILD: HRCT patterns, nintedanib, mycophenolate, cyclophosphamide",
+  "groundedIn": "36624431",
+  "synopsis": "A European consensus statement cited here identifies chest high-resolution CT as the primary diagnostic tool for systemic-sclerosis ILD, with pulmonary function tests used for screening and diagnosis. Falling FVC and DLCO suggest progression. EULAR guidelines are quoted as recommending cyclophosphamide for systemic-sclerosis ILD. Mycophenolate mofetil is described as providing similar efficacy to cyclophosphamide with less toxicity. Hematopoietic stem-cell transplantation may be considered for rapidly progressive disease at risk of organ failure, with a high risk of treatment-related side effects and death. Nintedanib is approved for systemic-sclerosis ILD on the basis of SENSCIS, and for chronic fibrosing ILDs with a progressive phenotype on the basis of INBUILD. The consensus panel was given additional questions about nintedanib after SENSCIS was published. Specific HRCT pattern names such as honeycombing percentages are not stated in the sentences used.",
+  "teachingPoints": [
+    {
+      "claim": "HRCT is the primary diagnostic tool; PFTs support screening and diagnosis.",
+      "sourceExcerpt": "chest high-resolution computed tomography (HRCT) as the primary diagnostic tool for SSc-ILD, supported by pulmonary function tests (PFTs) for screening and diagnosis"
+    },
+    {
+      "claim": "MMF has similar efficacy to cyclophosphamide with less toxicity.",
+      "sourceExcerpt": "Mycophenolate mofetil (MMF) provides similar efficacy to CYC and is associated with less toxicity"
+    },
+    {
+      "claim": "Nintedanib is approved for SSc-ILD based on SENSCIS.",
+      "sourceExcerpt": "Nintedanib has been approved for the treatment of SSc-ILD and chronic fibrosing ILDs with a progressive phenotype based on the results of the SENSCIS and INBUILD trials respectively"
+    }
+  ],
+  "uncertaintiesNotedInSource": [
+    "HRCT is endorsed as the diagnostic test, but subtype percentages (UIP versus NSIP) are not given in the sentences used."
+  ]
+}

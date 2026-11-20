@@ -1,0 +1,23 @@
+{
+  "catalogueId": "574",
+  "topic": "Remission maintenance in AAV: azathioprine, rituximab, MAINRITSAN trial",
+  "groundedIn": "36958796",
+  "synopsis": "The NEJM MAINRITSAN paper was not open on PMC. This later open trial report states what MAINRITSAN 1 showed and is used only for those statements. Fixed-interval repeat-dose rituximab was superior to azathioprine as maintenance after cyclophosphamide and glucocorticoid induction in a largely newly diagnosed ANCA-associated vasculitis population. The same paper says prolonged rituximab has been associated with infection and hypogammaglobulinaemia. It explicitly contrasts its own relapsing population and higher relapse rate with MAINRITSAN 1, attributing the difference to patient population and trial design: MAINRITSAN 1 was predominantly newly diagnosed disease after cyclophosphamide, whereas the later trial recruited patients at relapse. Questions do not reuse unpublished MAINRITSAN percentages.",
+  "teachingPoints": [
+    {
+      "claim": "MAINRITSAN 1: rituximab was superior to azathioprine after cyclophosphamide-glucocorticoid induction in largely newly diagnosed AAV.",
+      "sourceExcerpt": "Fixed-interval, repeat dose rituximab was superior to azathioprine as a maintenance strategy in a largely newly diagnosed AAV after induction with cyclophosphamide and glucocorticoid in the MAINRITSAN 1 trial."
+    },
+    {
+      "claim": "Prolonged rituximab has been associated with infection and hypogammaglobulinaemia.",
+      "sourceExcerpt": "prolonged use of rituximab in AAV has been associated with an increased risk of infection and the development of hypogammaglobulinaemia."
+    },
+    {
+      "claim": "A higher relapse rate in the later relapsing-disease trial versus MAINRITSAN 1 reflected population and design, not a denial of the MAINRITSAN result.",
+      "sourceExcerpt": "The higher relapse rate found in this trial compared with the MAINRITSAN 1 trial reflects differences in patient populations and trial design."
+    }
+  ],
+  "uncertaintiesNotedInSource": [
+    "Exact MAINRITSAN relapse percentages are not in this source and are not used."
+  ]
+}

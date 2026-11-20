@@ -1,0 +1,23 @@
+{
+  "catalogueId": "717",
+  "topic": "Neonatal Lupus and Congenital Heart Block",
+  "groundedIn": "39285783",
+  "synopsis": "Neonatal lupus is reviewed as an antibody-mediated fetal and neonatal disease. Third-degree heart block is described as one of the most severe complications and tends to be permanent. It occurs in about 2% of anti-Ro/SSA and/or anti-La/SSB pregnancies without a prior neonatal-lupus history, and after cutaneous or cardiac neonatal lupus the risk of third-degree block in a later pregnancy rises to about 13–18%. Fetal mortality associated with neonatal lupus is given as 15–20%, related to hydrops, cardiomyopathy, and related complications. Women with both SSA/Ro (especially anti-Ro52) and SSB/La, even without a known systemic autoimmune disease, have an increased risk of an affected child. The review advises that patients be in clinical and serological remission on pregnancy-compatible drugs such as azathioprine and hydroxychloroquine before conception, that antibody screening occur before conception when a rheumatic disease is already known, and that fetal echocardiography can detect first- through complete heart block, with surveillance as often as weekly after a previously affected pregnancy.",
+  "teachingPoints": [
+    {
+      "claim": "Third-degree block occurs in about 2% of anti-Ro/La pregnancies with no prior neonatal lupus, and in 13–18% of subsequent pregnancies after an affected child.",
+      "sourceExcerpt": "Third-degree heart block occurs in about 2% of anti-Ro/SSA and/or anti-La/SSB antibody-associated pregnancies without a prior history of NLS. Following cutaneous or cardiac NLS, the risk of third-degree heart block in a subsequent pregnancy increases significantly and ranges between 13% and 18%."
+    },
+    {
+      "claim": "Fetal mortality associated with neonatal lupus is about 15–20%.",
+      "sourceExcerpt": "There is significant fetal mortality associated with NLS, ranging from 15% to 20%."
+    },
+    {
+      "claim": "Preconception care emphasizes remission on pregnancy-safe drugs such as azathioprine and hydroxychloroquine, and fetal echo surveillance.",
+      "sourceExcerpt": "The patients should also be in clinical and serological remission on these pregnancy-safe medications such as azathioprine and hydroxychloroquine (HCQ) before conceiving."
+    }
+  ],
+  "uncertaintiesNotedInSource": [
+    "Fetal echocardiography detects block early but the review states it cannot predict progression to complete heart block."
+  ]
+}

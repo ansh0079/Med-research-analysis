@@ -1,0 +1,23 @@
+{
+  "catalogueId": "1267",
+  "topic": "Trochanteric Bursitis",
+  "groundedIn": "34158938",
+  "synopsis": "Greater trochanteric pain syndrome is the broader term for peritrochanteric disorders, including trochanteric bursitis, abductor tendon pathology, and external snapping hip. Lateral hip pain was often labelled trochanteric bursitis, meaning inflammation of the bursae deep to the iliotibial band and abductor tendons. Radiographic and histologic studies show the bursae are rarely affected in isolation; bursal distention is usually associated with tendon pathology. In one surgical series summarized here, findings included partial or full-thickness gluteus medius tears, gluteus medius tendinopathy in 62.5%, and trochanteric bursitis with tendinopathy in 8.3%. Many patients are refractory to physical therapy, NSAIDs, and corticosteroid injection. In a trial of 120 patients, 55% of those who received a corticosteroid injection plus analgesics and physical therapy were strongly or fully recovered at 3 months, compared with 34% who received analgesics and physical therapy without the injection, and the injection group reported greater pain improvement.",
+  "teachingPoints": [
+    {
+      "claim": "GTPS includes trochanteric bursitis, abductor tendon disease, and external snapping.",
+      "sourceExcerpt": "including trochanteric bursitis, abductor tendon pathology, and external coxa saltans"
+    },
+    {
+      "claim": "Isolated bursitis is uncommon.",
+      "sourceExcerpt": "the trochanteric bursae are rarely affected in isolation"
+    },
+    {
+      "claim": "CSI plus therapy: 55% recovered at 3 months versus 34% without CSI.",
+      "sourceExcerpt": "55% of the CSI group had strongly or fully recovered at 3 months compared with 34% of the solely analgesics and physical therapy group"
+    }
+  ],
+  "uncertaintiesNotedInSource": [
+    "The 62.5% and 8.3% figures are from a surgical series cited by the review, not a population prevalence."
+  ]
+}

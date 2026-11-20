@@ -1,0 +1,21 @@
+{
+  "catalogueId": "717",
+  "spreadsheetRow": 133,
+  "topic": "Neonatal Lupus and Congenital Heart Block",
+  "specialty": "Rheumatology",
+  "decision": "downloaded_open_source",
+  "source": {
+    "title": "A review of neonatal lupus syndrome",
+    "year": 2024,
+    "pmid": "39285783",
+    "pmcid": "PMC11418246",
+    "doi": "10.1097/JCMA.0000000000001117",
+    "sourceBody": "Journal of the Chinese Medical Association",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11418246/",
+    "whyItFits": "Open clinical review of neonatal lupus, anti-Ro/La antibodies, congenital heart block risk and recurrence, fetal echocardiography, and preconception counselling."
+  },
+  "whyItFits": "Open clinical review of neonatal lupus, anti-Ro/La antibodies, congenital heart block risk and recurrence, fetal echocardiography, and preconception counselling.",
+  "coverageNote": "Same open review is used for catalogue 1934 with different questions. ACR 2020 reproductive-health guideline PMIDs in the spreadsheet did not resolve to that paper in Europe PMC.",
+  "rejectedInAppHints": "In-app 'congenital heart block' hits were unrelated (systemic disease and heart block abstracts). A feeding-dysfunction paper was rejected.",
+  "sourceFile": "source.txt"
+}

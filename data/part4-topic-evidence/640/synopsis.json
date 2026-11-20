@@ -1,0 +1,23 @@
+{
+  "catalogueId": "640",
+  "topic": "RA and cardiovascular risk: accelerated atherosclerosis, NSAIDs, coxib caution",
+  "groundedIn": "34932581",
+  "synopsis": "The introduction states that mortality in rheumatoid arthritis is higher than in the general population and is largely attributable to cardiovascular disease, particularly fatal and non-fatal myocardial infarction from coronary atherosclerosis. Risks of myocardial infarction and stroke are amplified and may result from inflammation-associated vascular damage. Coxibs were developed to reduce the upper-gastrointestinal toxicity of non-selective NSAIDs. Celecoxib at 200 or 400 mg/day is described as symptomatically as effective as conventional NSAIDs and able to reduce upper-gastrointestinal events, but rofecoxib's cardiovascular signal led to its worldwide withdrawal in 2004, and celecoxib's cardiovascular safety versus other NSAIDs remained uncertain, especially in people with established cardiovascular disease. The review's own conclusion is that celecoxib does not significantly increase cardiovascular events compared with placebo and slightly decreases all-cause and cardiovascular mortality compared with non-selective NSAIDs. The authors say this is in line with PRECISION, in which celecoxib was non-inferior to naproxen or ibuprofen for cardiovascular outcomes.",
+  "teachingPoints": [
+    {
+      "claim": "RA mortality is driven largely by myocardial infarction from coronary atherosclerosis.",
+      "sourceExcerpt": "the mortality rate among rheumatoid arthritis patients is higher, which is largely attributable to cardiovascular disease, particularly (fatal and non-fatal) myocardial infarction due to coronary atherosclerosis"
+    },
+    {
+      "claim": "Rofecoxib was withdrawn worldwide in 2004 after increased cardiovascular events.",
+      "sourceExcerpt": "rofecoxib, was found to increase cardiovascular events, which led to its worldwide withdrawal in 2004"
+    },
+    {
+      "claim": "This meta-analysis found celecoxib did not significantly increase cardiovascular events versus placebo.",
+      "sourceExcerpt": "celecoxib does not significantly increase cardiovascular events compared with placebo and slightly decreases the risk of all-cause mortality and cardiovascular mortality compared with nsNSAIDs"
+    }
+  ],
+  "uncertaintiesNotedInSource": [
+    "The authors still describe celecoxib's cardiovascular safety versus other NSAIDs as previously uncertain, especially with established cardiovascular disease; their conclusion is the pooled result, aligned with PRECISION."
+  ]
+}

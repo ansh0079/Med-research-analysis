@@ -1,0 +1,23 @@
+{
+  "catalogueId": "2007",
+  "topic": "SLE: SLICC 2012 and ACR/EULAR 2019 classification criteria compared",
+  "groundedIn": "31385462",
+  "synopsis": "The 2019 criteria paper reviews what SLICC 2012 changed relative to the 1997 ACR criteria: added mucocutaneous and neuropsychiatric manifestations, hypocomplementemia, and newer antiphospholipid tests, required at least one immunologic criterion, and allowed histology-proven lupus nephritis plus ANA or anti-dsDNA to classify SLE. SLICC increased sensitivity but had lower specificity than the 1997 ACR criteria. The 2019 effort used a positive ANA as an entry criterion because of ANA's high sensitivity and limited specificity, and because that structure was thought to reflect pathogenesis. Criteria were weighted rather than counted equally, on the grounds that mucosal ulcers and biopsy-proven nephritis are not equally useful. Existing criteria were also noted to perform better in longstanding than in new-onset SLE, so the 2019 samples were enriched for early disease.",
+  "teachingPoints": [
+    {
+      "claim": "SLICC required an immunologic criterion and allowed classifiable nephritis if ANA or anti-dsDNA was present.",
+      "sourceExcerpt": "The SLICC criteria emphasized that SLE is primarily an autoantibody disease, requiring at least one immunological criterion to be present, and categorized histology-proven nephritis compatible with SLE as sufficient for classification, if ANA or antibodies to dsDNA were present."
+    },
+    {
+      "claim": "SLICC gained sensitivity and lost specificity versus 1997 ACR criteria.",
+      "sourceExcerpt": "While achieving their goal of increasing sensitivity, the SLICC criteria have lower specificity than the 1997 ACR criteria"
+    },
+    {
+      "claim": "2019 criteria use positive ANA as an entry criterion and weighted items.",
+      "sourceExcerpt": "we expected individual criteria would not be of equal utility (weight) for the classification of SLE ... the validity of using positive ANA as an entry criterion was explicitly addressed"
+    }
+  ],
+  "uncertaintiesNotedInSource": [
+    "The comparative operating characteristics versus SLICC are discussed qualitatively here; a full contingency table is not reproduced in the sentences used."
+  ]
+}

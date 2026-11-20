@@ -1,0 +1,149 @@
+{
+  "reviewState": "unreviewed",
+  "method": "Hand-written single-best-answer MCQs grounded only in the accepted open full text.",
+  "topic": {
+    "topicKey": "urate-lowering-therapy-allopurinol-febuxostat-target-serum-urate-titra",
+    "topicDisplayName": "Urate-lowering therapy: allopurinol, febuxostat, target serum urate, titration",
+    "catalogueId": "2057",
+    "aliases": [],
+    "storedRowCount": 0,
+    "coverageNote": "In-app NICE NG219 recommendations chapter (question-repair source import, guideline document for https://www.nice.org.uk/guidance/ng219). Dose-step tables from the evidence reviews are not in the stored chapter.",
+    "mcqs": [
+      {
+        "id": "c2057-01",
+        "question": "What serum urate target does NG219 say to aim for?",
+        "options": {
+          "A": "Below 360 micromol/litre (6 mg/dl)",
+          "B": "Below 600 micromol/litre",
+          "C": "Any fall from baseline, with no numeric target",
+          "D": "Above 360 micromol/litre",
+          "E": "Normalisation of CRP rather than urate"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "Below 360 micromol/litre (6 mg/dl)",
+        "explanation": "Aim for a target serum urate level below 360 micromol/litre (6 mg/dl).",
+        "difficulty": "easy",
+        "sourceRefs": [
+          {
+            "sourceBody": "NICE",
+            "sourceYear": 2022,
+            "sourceUrl": "https://www.nice.org.uk/guidance/ng219",
+            "pmid": null,
+            "pmcid": null,
+            "doi": null,
+            "status": "open_full_text",
+            "excerpt": "Aim for a target serum urate level below 360 micromol/litre (6 mg/dl)."
+          }
+        ]
+      },
+      {
+        "id": "c2057-02",
+        "question": "When does NG219 say to consider a target below 300 micromol/litre (5 mg/dl)?",
+        "options": {
+          "A": "Tophi, chronic gouty arthritis, or ongoing frequent flares despite a urate already below 360",
+          "B": "Every patient at the start of treatment",
+          "C": "Only during an acute flare",
+          "D": "Never; 360 is the floor",
+          "E": "Only if febuxostat is contraindicated"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "Tophi, chronic gouty arthritis, or ongoing frequent flares despite a urate already below 360",
+        "explanation": "Consider a lower target below 300 micromol/litre (5 mg/dl) for tophi, chronic gouty arthritis, or ongoing frequent flares despite a serum urate already below 360.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "NICE",
+            "sourceYear": 2022,
+            "sourceUrl": "https://www.nice.org.uk/guidance/ng219",
+            "pmid": null,
+            "pmcid": null,
+            "doi": null,
+            "status": "open_full_text",
+            "excerpt": "Consider a lower target serum urate level below 300 micromol/litre (5 mg/dl) for people with gout who: have tophi or chronic gouty arthritis continue to have ongoing frequent flares despite having a serum urate level below 360 micromol/litre (6 mg/dl)."
+          }
+        ]
+      },
+      {
+        "id": "c2057-03",
+        "question": "Which drugs does NG219 offer as first-line treat-to-target urate-lowering therapy?",
+        "options": {
+          "A": "Either allopurinol or febuxostat, accounting for comorbidities and preferences",
+          "B": "Probenecid only",
+          "C": "Colchicine as the urate-lowering drug",
+          "D": "Allopurinol is prohibited",
+          "E": "Pegloticase for every new start"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "Either allopurinol or febuxostat, accounting for comorbidities and preferences",
+        "explanation": "Offer either allopurinol or febuxostat as first-line treatment when starting treat-to-target ULT, taking comorbidities and preferences into account.",
+        "difficulty": "easy",
+        "sourceRefs": [
+          {
+            "sourceBody": "NICE",
+            "sourceYear": 2022,
+            "sourceUrl": "https://www.nice.org.uk/guidance/ng219",
+            "pmid": null,
+            "pmcid": null,
+            "doi": null,
+            "status": "open_full_text",
+            "excerpt": "Offer either allopurinol or febuxostat as first-line treatment when starting treat-to-target ULT, taking into account the person's comorbidities and preferences."
+          }
+        ]
+      },
+      {
+        "id": "c2057-04",
+        "question": "Which urate-lowering drug does NG219 say to offer first-line in major cardiovascular disease?",
+        "options": {
+          "A": "Allopurinol",
+          "B": "Febuxostat",
+          "C": "Lesinurad",
+          "D": "Benzbromarone",
+          "E": "Either, with no preference stated"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "Allopurinol",
+        "explanation": "Offer allopurinol as first-line treatment to people with gout and major cardiovascular disease, with examples including previous myocardial infarction, stroke, or unstable angina.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "NICE",
+            "sourceYear": 2022,
+            "sourceUrl": "https://www.nice.org.uk/guidance/ng219",
+            "pmid": null,
+            "pmcid": null,
+            "doi": null,
+            "status": "open_full_text",
+            "excerpt": "Offer allopurinol as first-line treatment to people with gout who have major cardiovascular disease (for example, previous myocardial infarction or stroke, or unstable angina)."
+          }
+        ]
+      },
+      {
+        "id": "c2057-05",
+        "question": "How should the dose be titrated?",
+        "options": {
+          "A": "Start low and use monthly serum urate levels to guide increases until the target is reached",
+          "B": "Start at the maximum dose and reduce if the urate is low",
+          "C": "Check serum urate once a year during titration",
+          "D": "Do not change the dose after the first prescription",
+          "E": "Titrate to a creatinine target rather than a urate target"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "Start low and use monthly serum urate levels to guide increases until the target is reached",
+        "explanation": "Start with a low dose and use monthly serum urate levels to guide dose increases, as tolerated, until the target serum urate is reached. ULT is usually continued after the target is reached and is typically lifelong.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "NICE",
+            "sourceYear": 2022,
+            "sourceUrl": "https://www.nice.org.uk/guidance/ng219",
+            "pmid": null,
+            "pmcid": null,
+            "doi": null,
+            "status": "open_full_text",
+            "excerpt": "Start with a low dose of ULT and use monthly serum urate levels to guide dose increases, as tolerated, until the target serum urate level is reached."
+          }
+        ]
+      }
+    ]
+  }
+}

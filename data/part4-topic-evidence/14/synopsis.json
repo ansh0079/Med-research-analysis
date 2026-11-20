@@ -1,0 +1,23 @@
+{
+  "catalogueId": "14",
+  "topic": "Sjogren syndrome: sicca symptoms, anti-Ro, anti-La, MALT lymphoma risk, systemic features",
+  "groundedIn": "38331820",
+  "synopsis": "Sjögren disease is a systemic autoimmune disorder characterized by hypofunction of the salivary and lacrimal glands, which produces the sicca picture, and it can also cause systemic disease. Anti-SSA/Ro antibodies are present in nearly 75% of patients and play a key role in diagnosis; anti-Ro antibodies detected with an assay that includes Ro60 and Ro52 are described as relatively specific. Anti-La/SSB positivity was associated with higher mortality in the studies this review cites, along with older age and male sex. Systemic disease includes interstitial lung disease, and lymphoma significantly affects prognosis. Patients have a four- to sevenfold higher risk of non-Hodgkin lymphoma than the general population. Non-Hodgkin lymphoma occurs in about 2–9% of patients with primary disease, and the MALT subtype accounts for about two-thirds of those lymphomas.",
+  "teachingPoints": [
+    {
+      "claim": "The disease is defined by salivary and lacrimal hypofunction and can be systemic.",
+      "sourceExcerpt": "Sjögren’s disease is a systemic autoimmune disorder characterized by hypofunction of salivary and lacrimal glands"
+    },
+    {
+      "claim": "Anti-SSA/Ro is present in nearly 75% and is diagnostically important.",
+      "sourceExcerpt": "Anti-SSA/Ro antibodies are present in nearly 75% of patients with Sjögren’s disease"
+    },
+    {
+      "claim": "MALT lymphoma accounts for about two-thirds of the non-Hodgkin lymphomas.",
+      "sourceExcerpt": "mucosa-associated lymphoid tissue (MALT) subtype accounting for approximately two-thirds of cases"
+    }
+  ],
+  "uncertaintiesNotedInSource": [
+    "Mortality associations for anti-La/SSB are cited from registry studies, not derived in this review."
+  ]
+}

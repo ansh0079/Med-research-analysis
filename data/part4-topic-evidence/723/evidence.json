@@ -1,0 +1,21 @@
+{
+  "catalogueId": "723",
+  "spreadsheetRow": 139,
+  "topic": "Osteoarthritis: pathophysiology, risk factors, radiographic grading, pharmacological management",
+  "specialty": "Rheumatology",
+  "decision": "downloaded_open_source",
+  "source": {
+    "title": "Diagnosis and Treatment of Hip and Knee Osteoarthritis: A Review",
+    "year": 2021,
+    "pmid": "33560326",
+    "pmcid": "PMC8225295",
+    "doi": "10.1001/jama.2020.22171",
+    "sourceBody": "JAMA",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8225295/",
+    "whyItFits": "Open review covering osteoarthritis risk factors, Kellgren-Lawrence radiographic grades, and pharmacologic treatment including NSAIDs."
+  },
+  "whyItFits": "Open review covering osteoarthritis risk factors, Kellgren-Lawrence radiographic grades, and pharmacologic treatment including NSAIDs.",
+  "coverageNote": "Covers risk factors, Kellgren-Lawrence grading, and drug therapy. It is a review, not a society guideline.",
+  "rejectedInAppHints": "The osteoporosis living guideline suggested in the spreadsheet does not grade osteoarthritis.",
+  "sourceFile": "source.txt"
+}

@@ -1,0 +1,23 @@
+{
+  "catalogueId": "210",
+  "topic": "Relapsing Polychondritis",
+  "groundedIn": "30072598",
+  "synopsis": "Relapsing polychondritis is described as an immune-mediated disease of recurrent inflammation in cartilage and proteoglycan-rich tissue: elastic cartilage of the ear and nose, hyaline cartilage of peripheral joints, fibrocartilage at axial sites, and tracheobronchial cartilage, leading to deformation and functional loss. In over 80% of patients it presents with auricular chondritis and polyarthritis. Onset is often insidious, with painful crises and spontaneous remissions, which delays diagnosis. Another autoimmune disease is present in 30% of adult patients, most often rheumatoid arthritis. Airway disease thickens the tracheal wall and destroys cartilage rings. Tracheomalacia can collapse the airway. Chronic inflammation produces strictures, subglottic inflammation, tracheal collapse, and secondary pulmonary infection. Airway intervention often requires balloon dilatation, stent placement, tracheotomy, or a combination.",
+  "teachingPoints": [
+    {
+      "claim": "Auricular chondritis and polyarthritis disclose the disease in over 80%.",
+      "sourceExcerpt": "In over 80% of patients, RP is disclosed by auricular chondritis and polyarthritis"
+    },
+    {
+      "claim": "Another autoimmune disease is present in 30% of adults, most often rheumatoid arthritis.",
+      "sourceExcerpt": "Association with other autoimmune disorders is found in 30% of all adult RP patients, rheumatoid arthritis (RA) being the most common."
+    },
+    {
+      "claim": "Airway collapse may require balloon dilatation, stenting, or tracheotomy.",
+      "sourceExcerpt": "Airway intervention is frequently required, by means of balloon dilatation, stent placement, tracheotomy, or a combination of the"
+    }
+  ],
+  "uncertaintiesNotedInSource": [
+    "Diagnostic criteria are discussed in the review's scope, but a specific validated score is not used for these questions."
+  ]
+}

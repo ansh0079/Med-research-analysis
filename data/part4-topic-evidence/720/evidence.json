@@ -1,0 +1,21 @@
+{
+  "catalogueId": "720",
+  "spreadsheetRow": 132,
+  "topic": "NSAID therapy in axSpA: continuous vs on-demand, radiographic progression",
+  "specialty": "Rheumatology",
+  "decision": "downloaded_open_source",
+  "source": {
+    "title": "Nonsteroidal Antiinflammatory Drugs as Potential Disease-Modifying Medications in Axial Spondyloarthritis",
+    "year": 2020,
+    "pmid": "31705611",
+    "pmcid": "PMC7113090",
+    "doi": "10.1002/art.41164",
+    "sourceBody": "Arthritis & Rheumatology",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7113090/",
+    "whyItFits": "Open review of whether NSAIDs modify radiographic progression in axial spondyloarthritis, including the continuous versus on-demand celecoxib and diclofenac trials."
+  },
+  "whyItFits": "Open review of whether NSAIDs modify radiographic progression in axial spondyloarthritis, including the continuous versus on-demand celecoxib and diclofenac trials.",
+  "coverageNote": "Covers continuous versus on-demand NSAID use and radiographic progression. The two trials disagree, and that disagreement is preserved rather than resolved by adding numbers that are not in the review.",
+  "rejectedInAppHints": "ASAS-EULAR 2022 was not in PMC. The in-app nr-axSpA review did not contain the continuous-versus-on-demand trial comparison.",
+  "sourceFile": "source.txt"
+}

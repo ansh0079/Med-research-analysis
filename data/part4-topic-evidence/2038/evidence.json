@@ -1,0 +1,21 @@
+{
+  "catalogueId": "2038",
+  "spreadsheetRow": 165,
+  "topic": "TNF Receptor-Associated Periodic Syndrome",
+  "specialty": "Rheumatology",
+  "decision": "downloaded_open_source",
+  "source": {
+    "title": "Revisiting TNF Receptor-Associated Periodic Syndrome (TRAPS): Current Perspectives",
+    "year": 2020,
+    "pmid": "32380704",
+    "pmcid": "PMC7246474",
+    "doi": "10.3390/ijms21093263",
+    "sourceBody": "International Journal of Molecular Sciences",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7246474/",
+    "whyItFits": "Open review of TRAPS genetics, the prolonged febrile attacks, AA amyloidosis, and the limited effect of etanercept versus the role of IL-1."
+  },
+  "whyItFits": "Open review of TRAPS genetics, the prolonged febrile attacks, AA amyloidosis, and the limited effect of etanercept versus the role of IL-1.",
+  "coverageNote": "Genetics, attack phenotype, amyloidosis, etanercept, and IL-1 are all in this review.",
+  "rejectedInAppHints": "No stored TRAPS full text was accepted.",
+  "sourceFile": "source.txt"
+}

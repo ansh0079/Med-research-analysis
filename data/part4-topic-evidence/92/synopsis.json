@@ -1,0 +1,23 @@
+{
+  "catalogueId": "92",
+  "topic": "Total joint replacement in OA: indications, outcomes, complications, revision rates",
+  "groundedIn": "https://www.nice.org.uk/guidance/ng226",
+  "synopsis": "NICE NG226 says to consider referral for hip, knee, or shoulder replacement when joint symptoms such as pain, stiffness, reduced function, or progressive deformity are substantially affecting quality of life, and non-surgical management such as therapeutic exercise, weight loss, or pain relief is ineffective or unsuitable. The decision should use clinical assessment rather than a numerical severity score. People should not be excluded from referral because of age, sex or gender, smoking, comorbidities, or overweight and obesity, including BMI. If referral is discussed, explain that the risks of replacement can vary with those factors. The recommendations chapter does not publish revision rates or a table of complication frequencies, so those figures are not stated here. Arthroscopic lavage or debridement is a separate recommendation and is not offered for osteoarthritis.",
+  "teachingPoints": [
+    {
+      "claim": "Refer when symptoms substantially affect quality of life and non-surgical care is ineffective or unsuitable.",
+      "sourceExcerpt": "their joint symptoms (such as pain, stiffness, reduced function or progressive joint deformity) are substantially impacting their quality of life and non-surgical management (for example, therapeutic exercise, weight loss, pain relief) is ineffective or unsuitable"
+    },
+    {
+      "claim": "Do not use a numeric severity score in place of clinical assessment.",
+      "sourceExcerpt": "Use clinical assessment when deciding to refer someone for joint replacement, instead of systems that numerically score severity of disease"
+    },
+    {
+      "claim": "Age, sex, smoking, comorbidity, and BMI must not exclude referral.",
+      "sourceExcerpt": "Do not exclude people with osteoarthritis from referral for joint replacement because of: age sex or gender smoking comorbidities overweight or obesity"
+    }
+  ],
+  "uncertaintiesNotedInSource": [
+    "Revision rates and numeric complication rates are not in the NG226 recommendations chapter."
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "catalogueId": "720",
+  "topic": "NSAID therapy in axSpA: continuous vs on-demand, radiographic progression",
+  "groundedIn": "31705611",
+  "synopsis": "This review examines whether NSAIDs slow radiographic progression in axial spondyloarthritis rather than only relieving symptoms. Two randomized trials compared continuous with on-demand NSAID use and reached opposite conclusions. In the celecoxib trial, TNF-inhibitor-naive patients with ankylosing spondylitis were randomized to continuous versus on-demand celecoxib 100 mg twice daily or higher; after 2 years the continuous-use group had less radiographic progression (p=0.002), and a post-hoc analysis found the slowing was greater when ESR or CRP was elevated. A separate diclofenac trial did not reproduce that benefit, so the review treats a disease-modifying effect of continuous NSAIDs as uncertain.",
+  "teachingPoints": [
+    {
+      "claim": "Continuous celecoxib was associated with less 2-year radiographic progression than on-demand use in one trial (p=0.002).",
+      "sourceExcerpt": "After 2 years, patients in the continuous use group had less radiographic progression compared to on-demand group (p=0.002)"
+    },
+    {
+      "claim": "The celecoxib slowing of progression was greater in patients with elevated ESR or CRP.",
+      "sourceExcerpt": "slowing of progression with continuous treatment was greater in patients with elevated inflammatory markers (erythrocyte sedimentation rate or CRP)"
+    },
+    {
+      "claim": "A diclofenac continuous-versus-on-demand trial reached the opposite conclusion.",
+      "sourceExcerpt": "Two randomized trials examined the effects of continuous use versus on-demand use of NSAIDs on disease progression in AS, and came to opposite conclusions"
+    }
+  ],
+  "uncertaintiesNotedInSource": [
+    "Whether continuous NSAIDs are disease-modifying remains uncertain because the two trials disagree."
+  ]
+}

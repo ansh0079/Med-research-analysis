@@ -1,0 +1,21 @@
+{
+  "catalogueId": "210",
+  "spreadsheetRow": 150,
+  "topic": "Relapsing Polychondritis",
+  "specialty": "Rheumatology",
+  "decision": "downloaded_open_source",
+  "source": {
+    "title": "Relapsing Polychondritis: An Updated Review",
+    "year": 2018,
+    "pmid": "30072598",
+    "pmcid": "PMC6164217",
+    "doi": "10.3390/biomedicines6030084",
+    "sourceBody": "Biomedicines",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6164217/",
+    "whyItFits": "Open clinical review of relapsing polychondritis covering cartilage sites, associated autoimmune disease, and airway complications."
+  },
+  "whyItFits": "Open clinical review of relapsing polychondritis covering cartilage sites, associated autoimmune disease, and airway complications.",
+  "coverageNote": "Clinical review used because the short PMC record titled only 'Relapsing Polychondritis' was under 2,000 characters.",
+  "rejectedInAppHints": "No stored full text met the topic. A commentary without full text was not accepted.",
+  "sourceFile": "source.txt"
+}

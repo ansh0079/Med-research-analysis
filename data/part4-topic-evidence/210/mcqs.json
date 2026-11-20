@@ -1,0 +1,149 @@
+{
+  "reviewState": "unreviewed",
+  "method": "Hand-written single-best-answer MCQs grounded only in the accepted open full text.",
+  "topic": {
+    "topicKey": "relapsing-polychondritis",
+    "topicDisplayName": "Relapsing Polychondritis",
+    "catalogueId": "210",
+    "aliases": [],
+    "storedRowCount": 0,
+    "coverageNote": "Clinical review used because the short PMC record titled only 'Relapsing Polychondritis' was under 2,000 characters.",
+    "mcqs": [
+      {
+        "id": "c210-01",
+        "question": "Which tissues does the review say relapsing polychondritis inflames?",
+        "options": {
+          "A": "Elastic cartilage of ear and nose, hyaline cartilage of peripheral joints, axial fibrocartilage, and tracheobronchial cartilage",
+          "B": "Only synovial lining",
+          "C": "Only the aortic valve",
+          "D": "Bone marrow",
+          "E": "Skeletal muscle"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "Elastic cartilage of ear and nose, hyaline cartilage of peripheral joints, axial fibrocartilage, and tracheobronchial cartilage",
+        "explanation": "Inflammation involves elastic cartilage of the ear and nose, hyaline cartilage of peripheral joints, axial fibrocartilage, and tracheobronchial cartilage.",
+        "difficulty": "easy",
+        "sourceRefs": [
+          {
+            "sourceBody": "Biomedicines",
+            "sourceYear": 2018,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6164217/",
+            "pmid": "30072598",
+            "pmcid": "PMC6164217",
+            "doi": "10.3390/biomedicines6030084",
+            "status": "open_full_text",
+            "excerpt": "cartilaginous and proteoglycan-rich tissues, including the elastic cartilage of the ear and nose, the hyaline cartilage of peripheral joints, the fibrocartilage at axial sites and the cartilage of the tracheobronchial tree"
+          }
+        ]
+      },
+      {
+        "id": "c210-02",
+        "question": "What is the most common presenting pair of features?",
+        "options": {
+          "A": "Auricular chondritis and polyarthritis, in over 80%",
+          "B": "Scleritis and pulmonary hemorrhage",
+          "C": "Isolated nasal crusting in under 10%",
+          "D": "Only airway collapse at onset",
+          "E": "Glomerulonephritis"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "Auricular chondritis and polyarthritis, in over 80%",
+        "explanation": "In over 80% of patients the disease is disclosed by auricular chondritis and polyarthritis.",
+        "difficulty": "easy",
+        "sourceRefs": [
+          {
+            "sourceBody": "Biomedicines",
+            "sourceYear": 2018,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6164217/",
+            "pmid": "30072598",
+            "pmcid": "PMC6164217",
+            "doi": "10.3390/biomedicines6030084",
+            "status": "open_full_text",
+            "excerpt": "In over 80% of patients, RP is disclosed by auricular chondritis and polyarthritis"
+          }
+        ]
+      },
+      {
+        "id": "c210-03",
+        "question": "How often is another autoimmune disease associated, and which is most common?",
+        "options": {
+          "A": "In 30% of adult patients, most often rheumatoid arthritis",
+          "B": "In 90%, most often lupus",
+          "C": "Never",
+          "D": "In 30%, most often ANCA vasculitis",
+          "E": "Only in children, most often diabetes"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "In 30% of adult patients, most often rheumatoid arthritis",
+        "explanation": "Another autoimmune disorder is found in 30% of adult patients, rheumatoid arthritis being the most common.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Biomedicines",
+            "sourceYear": 2018,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6164217/",
+            "pmid": "30072598",
+            "pmcid": "PMC6164217",
+            "doi": "10.3390/biomedicines6030084",
+            "status": "open_full_text",
+            "excerpt": "Association with other autoimmune disorders is found in 30% of all adult RP patients, rheumatoid arthritis (RA) being the most common."
+          }
+        ]
+      },
+      {
+        "id": "c210-04",
+        "question": "What structural airway consequences does the review describe?",
+        "options": {
+          "A": "Destruction of tracheal rings, tracheomalacia with airway collapse, and strictures from granulation and fibrosis",
+          "B": "Emphysema without cartilage injury",
+          "C": "Only vocal-cord nodules",
+          "D": "Airway disease does not occur",
+          "E": "Isolated pulmonary embolism"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "Destruction of tracheal rings, tracheomalacia with airway collapse, and strictures from granulation and fibrosis",
+        "explanation": "Tracheal-wall thickening destroys cartilage rings. Tracheomalacia may collapse the airway. Strictures develop from granulation tissue and peribronchial fibrosis.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Biomedicines",
+            "sourceYear": 2018,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6164217/",
+            "pmid": "30072598",
+            "pmcid": "PMC6164217",
+            "doi": "10.3390/biomedicines6030084",
+            "status": "open_full_text",
+            "excerpt": "The thickening of the tracheal wall with destruction of the cartilaginous rings is characteristic. Tracheomalacia may be observed, with resultant airway"
+          }
+        ]
+      },
+      {
+        "id": "c210-05",
+        "question": "Which interventions does the review say are frequently required for the airway?",
+        "options": {
+          "A": "Balloon dilatation, stent placement, tracheotomy, or a combination",
+          "B": "Tonsillectomy",
+          "C": "Lung transplant as the first procedure",
+          "D": "No procedural intervention is ever needed",
+          "E": "Only inhaled beta-agonists"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "Balloon dilatation, stent placement, tracheotomy, or a combination",
+        "explanation": "Airway intervention is frequently required by balloon dilatation, stent placement, tracheotomy, or a combination.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Biomedicines",
+            "sourceYear": 2018,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6164217/",
+            "pmid": "30072598",
+            "pmcid": "PMC6164217",
+            "doi": "10.3390/biomedicines6030084",
+            "status": "open_full_text",
+            "excerpt": "Airway intervention is frequently required, by means of balloon dilatation, stent placement, tracheotomy, or a combination"
+          }
+        ]
+      }
+    ]
+  }
+}

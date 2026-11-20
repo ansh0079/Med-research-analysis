@@ -1,0 +1,21 @@
+{
+  "catalogueId": "896",
+  "spreadsheetRow": 161,
+  "topic": "Shared decision making and patient reported outcomes in rheumatology: HAQ, PROMIS, PROs",
+  "specialty": "Rheumatology",
+  "decision": "downloaded_open_source",
+  "source": {
+    "title": "2019 Update of the American College of Rheumatology Recommended Rheumatoid Arthritis Disease Activity Measures",
+    "year": 2019,
+    "pmid": "31709779",
+    "pmcid": "PMC6884664",
+    "doi": "10.1002/acr.24042",
+    "sourceBody": "Arthritis Care & Research",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6884664/",
+    "whyItFits": "Open ACR update that selects preferred RA disease-activity measures, including patient-reported instruments, and names PROMIS Physical Function, MD-HAQ, and HAQ-II for function."
+  },
+  "whyItFits": "Open ACR update that selects preferred RA disease-activity measures, including patient-reported instruments, and names PROMIS Physical Function, MD-HAQ, and HAQ-II for function.",
+  "coverageNote": "Grounds HAQ, PROMIS, and preferred patient-reported disease-activity measures. It does not describe a shared-decision-making method, so none is taught.",
+  "rejectedInAppHints": "A cost-and-shared-decision paper did not specify HAQ or PROMIS performance.",
+  "sourceFile": "source.txt"
+}

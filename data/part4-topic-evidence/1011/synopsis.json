@@ -1,0 +1,23 @@
+{
+  "catalogueId": "1011",
+  "topic": "Rituximab in rheumatic disease: dosing, pre-treatment screening, hypogammaglobulinaemia",
+  "groundedIn": "27747531",
+  "synopsis": "Although rituximab does not deplete immunoglobulin-secreting plasma cells directly, repeated courses in rheumatoid arthritis have caused hypogammaglobulinemia. A registry review found low IgG before rituximab was a risk factor for serious infection. In an analysis of three randomized trials (1039 patients), low IgM was present in 10.3% at week 24, 18.5% after a second cycle, and 23.5% after a third; low IgG was 1.5%, 4.3%, and 5.9% across those same points. Immunoglobulin levels should be measured because low IgG raises infection risk, and rituximab in existing hypogammaglobulinemia should be considered with caution or avoided. Hepatitis B and C serologies are required because reactivation of HBsAg-negative, anti-HBc-positive infection has rarely been reported. People negative for HBsAg and anti-HBc should consider vaccination before rituximab. Patients positive for HBsAg and/or anti-HBc need specialist management before treatment.",
+  "teachingPoints": [
+    {
+      "claim": "Low IgM and IgG become more common with successive rituximab cycles.",
+      "sourceExcerpt": "10.3% had a low IgM at week 24, but this increased to 18.5% with a second cycle and 23.5% after a third cycle ... 1.5% had a low IgG at week 24; 4.3% and 5.9% with subsequent cycles"
+    },
+    {
+      "claim": "Measure immunoglobulins; use rituximab cautiously or avoid it if IgG is already low.",
+      "sourceExcerpt": "Immunoglobulin levels should be measured, since low IgG levels are associated with a higher risk of infection, and the use of rituximab in patients with existing hypogammaglobulinemia should be considered with caution or avoided"
+    },
+    {
+      "claim": "Check hepatitis B and C serology and consider vaccination if HBsAg and anti-HBc are negative.",
+      "sourceExcerpt": "Hepatitis B and C serologies should be undertaken ... Those patients who are HBsAg and anti-HBc negative should consider vaccination before rituximab is initiated"
+    }
+  ],
+  "uncertaintiesNotedInSource": [
+    "Serious-infection rates in the trial analysis did not rise in parallel with the immunoglobulin falls in the sentence used; that nuance is not turned into a claim that infection risk is absent."
+  ]
+}

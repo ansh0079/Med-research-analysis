@@ -1,0 +1,23 @@
+{
+  "catalogueId": "549",
+  "topic": "Polymyositis differentiation",
+  "groundedIn": "29106061",
+  "synopsis": "The 2017 EULAR/ACR criteria were built because idiopathic inflammatory myopathies are heterogeneous. In adults the most common subgroups named are dermatomyositis, polymyositis, and inclusion-body myositis; in children, juvenile dermatomyositis. Candidate structures included a count of items, a probability score, and a classification tree. The probability-score model discriminated best and was retained: points for the features present are summed, and the probability of idiopathic inflammatory myopathy is calculated with a formula that differs if a muscle-biopsy score is included. The probability with biopsy is 1 / [1 + exponential(5.33 − score)], and without biopsy 1 / [1 + exponential(6.49 − score)], or an online calculator can be used. The best balance of sensitivity and specificity was at a probability of 55–60% when biopsy was not included.",
+  "teachingPoints": [
+    {
+      "claim": "Adult subgroups named are dermatomyositis, polymyositis, and inclusion-body myositis.",
+      "sourceExcerpt": "The most common subgroups in adults are dermatomyositis (DM), polymyositis (PM), and inclusion body myositis (IBM)"
+    },
+    {
+      "claim": "A probability score outperformed item counts and a classification tree.",
+      "sourceExcerpt": "Due to the observed superior discriminating performance of the probability-score model, the other models were set aside."
+    },
+    {
+      "claim": "The best sensitivity-specificity balance without biopsy was a probability of 55–60%.",
+      "sourceExcerpt": "The best balance between sensitivity and specificity was found for a probability of 55–60% for the criteria n"
+    }
+  ],
+  "uncertaintiesNotedInSource": [
+    "Cut-points differ when muscle biopsy is included; the 55–60% figure used here is the non-biopsy balance stated in the text."
+  ]
+}

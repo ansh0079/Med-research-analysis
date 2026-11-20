@@ -1,0 +1,149 @@
+{
+  "reviewState": "unreviewed",
+  "method": "Hand-written single-best-answer MCQs grounded only in the accepted open full text.",
+  "topic": {
+    "topicKey": "rituximab-in-rheumatic-disease-dosing-pre-treatment-screening-hypogamm",
+    "topicDisplayName": "Rituximab in rheumatic disease: dosing, pre-treatment screening, hypogammaglobulinaemia",
+    "catalogueId": "1011",
+    "aliases": [],
+    "storedRowCount": 0,
+    "coverageNote": "Screening and hypogammaglobulinemia are explicit. A separate hypogammaglobulinemia cohort used a 2×1 g then 1 g every 6 months schedule; that dosing schedule is not imported into this paper's MCQs.",
+    "mcqs": [
+      {
+        "id": "c1011-01",
+        "question": "In the pooled trial analysis, how did low IgM change across rituximab cycles?",
+        "options": {
+          "A": "10.3% at week 24, 18.5% after a second cycle, and 23.5% after a third",
+          "B": "It fell from 23% to 1%",
+          "C": "It was unchanged at 50%",
+          "D": "IgM was not measured",
+          "E": "Low IgM occurred only before the first dose"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "10.3% at week 24, 18.5% after a second cycle, and 23.5% after a third",
+        "explanation": "Low IgM was 10.3% at week 24, 18.5% with a second cycle, and 23.5% after a third cycle.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Rheumatology and Therapy",
+            "sourceYear": 2015,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4883263/",
+            "pmid": "27747531",
+            "pmcid": "PMC4883263",
+            "doi": "10.1007/s40744-015-0016-9",
+            "status": "open_full_text",
+            "excerpt": "10.3% had a low IgM at week 24, but this increased to 18.5% with a second cycle and 23.5% after a third cycle of therapy"
+          }
+        ]
+      },
+      {
+        "id": "c1011-02",
+        "question": "What happened to low IgG across those cycles?",
+        "options": {
+          "A": "1.5% at week 24, then 4.3% and 5.9% with subsequent cycles",
+          "B": "IgG deficiency was universal after one dose",
+          "C": "IgG rose in every patient",
+          "D": "IgG was an exclusion that never occurred on treatment",
+          "E": "IgG was lower than IgM at every time point in the opposite direction of the text"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "1.5% at week 24, then 4.3% and 5.9% with subsequent cycles",
+        "explanation": "Low IgG was 1.5% at week 24 and 4.3% then 5.9% with subsequent cycles. The review notes low immunoglobulins were observed, IgM more than IgG.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Rheumatology and Therapy",
+            "sourceYear": 2015,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4883263/",
+            "pmid": "27747531",
+            "pmcid": "PMC4883263",
+            "doi": "10.1007/s40744-015-0016-9",
+            "status": "open_full_text",
+            "excerpt": "1.5% had a low IgG at week 24; 4.3% and 5.9% with subsequent cycles of therapy."
+          }
+        ]
+      },
+      {
+        "id": "c1011-03",
+        "question": "What pre-treatment immunoglobulin action does the review recommend?",
+        "options": {
+          "A": "Measure immunoglobulin levels; if hypogammaglobulinemia is already present, use rituximab with caution or avoid it",
+          "B": "Immunoglobulins are irrelevant because plasma cells are untouched",
+          "C": "Give intravenous immunoglobulin to every patient before the first dose",
+          "D": "Check only IgA",
+          "E": "Defer immunoglobulin testing until after the third cycle"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "Measure immunoglobulin levels; if hypogammaglobulinemia is already present, use rituximab with caution or avoid it",
+        "explanation": "Immunoglobulins should be measured because low IgG is associated with higher infection risk, and existing hypogammaglobulinemia warrants caution or avoidance.",
+        "difficulty": "easy",
+        "sourceRefs": [
+          {
+            "sourceBody": "Rheumatology and Therapy",
+            "sourceYear": 2015,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4883263/",
+            "pmid": "27747531",
+            "pmcid": "PMC4883263",
+            "doi": "10.1007/s40744-015-0016-9",
+            "status": "open_full_text",
+            "excerpt": "levels should be measured, since low IgG levels are associated with a higher risk of infection, and the use of rituximab in patients with"
+          }
+        ]
+      },
+      {
+        "id": "c1011-04",
+        "question": "Which viral serologies are required before rituximab, and why?",
+        "options": {
+          "A": "Hepatitis B and C, because HBsAg-negative, anti-HBc-positive hepatitis B reactivation has rarely been reported",
+          "B": "Only HIV, because hepatitis B is unaffected",
+          "C": "Hepatitis A only",
+          "D": "No viral testing",
+          "E": "CMV IgM in every patient"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "Hepatitis B and C, because HBsAg-negative, anti-HBc-positive hepatitis B reactivation has rarely been reported",
+        "explanation": "Hepatitis B and C serologies should be done because reactivation of HBsAg-negative, hepatitis B core-antibody-positive disease has rarely been reported.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Rheumatology and Therapy",
+            "sourceYear": 2015,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4883263/",
+            "pmid": "27747531",
+            "pmcid": "PMC4883263",
+            "doi": "10.1007/s40744-015-0016-9",
+            "status": "open_full_text",
+            "excerpt": "Hepatitis B and C serologies should be undertaken, because reactivation of hepatitis B surface Ag negative but hepatitis B core Ab positive disease has been rarely reported"
+          }
+        ]
+      },
+      {
+        "id": "c1011-05",
+        "question": "Who should consider hepatitis B vaccination before rituximab?",
+        "options": {
+          "A": "Patients negative for both HBsAg and anti-HBc",
+          "B": "Patients with active HBsAg-positive hepatitis, as the only step",
+          "C": "Everyone, including those already anti-HBs positive from vaccination is not the group specified",
+          "D": "No one, because rituximab improves vaccine responses",
+          "E": "Only patients with low IgG"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "Patients negative for both HBsAg and anti-HBc",
+        "explanation": "Patients who are HBsAg-negative and anti-HBc-negative should consider vaccination before rituximab. Those who are HBsAg and/or anti-HBc positive need evaluation before treatment rather than routine vaccination alone.",
+        "difficulty": "hard",
+        "sourceRefs": [
+          {
+            "sourceBody": "Rheumatology and Therapy",
+            "sourceYear": 2015,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4883263/",
+            "pmid": "27747531",
+            "pmcid": "PMC4883263",
+            "doi": "10.1007/s40744-015-0016-9",
+            "status": "open_full_text",
+            "excerpt": "Those patients who are HBsAg and anti-HBc negative should consider vaccination before rituximab is initiated"
+          }
+        ]
+      }
+    ]
+  }
+}

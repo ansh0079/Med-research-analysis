@@ -1,0 +1,23 @@
+{
+  "catalogueId": "2170",
+  "topic": "Rotator Cuff Tendinopathy and Adhesive Capsulitis",
+  "groundedIn": "41492609",
+  "synopsis": "This review separates rotator cuff-related shoulder pain (tendinopathy, partial tears, and impingement) from adhesive capsulitis. For rotator cuff-related pain, structured rehabilitation that emphasizes scapular stabilization, motor control, and progressive rotator cuff and periscapular strengthening is described as the cornerstone of care. Oral or topical NSAIDs give modest short-term analgesia and need gastrointestinal, renal, and cardiovascular risk stratification. A subacromial corticosteroid injection can give short-term relief that helps rehabilitation, but the benefit wanes and repeated dosing may impair tendon biology. Adhesive capsulitis is described as typically self-limited but prolonged, across freezing, frozen, and thawing phases, and a subset of patients may have lasting limitations. NSAIDs or acetaminophen may help early pain without altering the course. Supervised mobilization and stretching plus home exercise improve pain and function. An intra-articular corticosteroid, especially early, improves short-term pain and function and is most effective when paired with therapy. Hydrodilatation is reported to offer superior short-term range-of-motion and pain gains versus steroid alone in several analyses.",
+  "teachingPoints": [
+    {
+      "claim": "Exercise-based rehabilitation is the cornerstone for rotator cuff-related shoulder pain.",
+      "sourceExcerpt": "Structured rehabilitation emphasizing scapular stabilization, motor control, and progressive rotator cuff/periscapular strengthening is the cornerstone of care"
+    },
+    {
+      "claim": "Adhesive capsulitis is usually prolonged and self-limited, with a subset left limited.",
+      "sourceExcerpt": "Typically self-limited but prolonged across freezing-frozen-thawing phases; a subset may have lasting limitations"
+    },
+    {
+      "claim": "Early intra-articular steroid works best when combined with therapy; hydrodilatation may add short-term motion.",
+      "sourceExcerpt": "Intra-articular corticosteroid injection, especially early, improves short-term pain and function and is most effective when paired with therapy"
+    }
+  ],
+  "uncertaintiesNotedInSource": [
+    "Effect sizes are summarized from the cited trials rather than recalculated in this review."
+  ]
+}
