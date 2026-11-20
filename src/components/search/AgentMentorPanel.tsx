@@ -126,11 +126,18 @@ export const AgentMentorPanel: React.FC<AgentMentorPanelProps> = ({
           </span>
         )}
         <span className={`rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider ${
-          agentGuidance.status === 'human_reviewed' && !agentGuidance.awaitingReview
+          agentGuidance.status === 'evidence_verified' && !agentGuidance.awaitingReview
             ? 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-300'
             : 'bg-amber-50 text-amber-700 dark:bg-amber-950/40 dark:text-amber-300'
         }`}>
-          {agentGuidance.awaitingReview ? 'Summary requires review' : agentGuidance.status === 'human_reviewed' ? 'Clinician reviewed' : 'AI generated'}
+          {/* human_reviewed pages were stamped by a bulk sync script, never by a clinician. */}
+          {agentGuidance.awaitingReview
+            ? 'Summary requires review'
+            : agentGuidance.status === 'evidence_verified'
+            ? (agentGuidance.teachingPoints?.length ?? 0) < 3 ? 'Evidence verified · limited evidence' : 'Evidence verified'
+            : agentGuidance.status === 'human_reviewed'
+            ? 'Unverified'
+            : 'AI generated'}
         </span>
         {agentGuidance.awaitingReview && (
           <span className="text-[11px] text-amber-700 dark:text-amber-300">

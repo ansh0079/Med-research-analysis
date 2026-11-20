@@ -117,14 +117,16 @@ export const TopicBriefStatusBands: React.FC<Props> = ({
           </span>
         )}
         <span className={`ml-auto rounded-full px-2 py-0.5 font-bold uppercase tracking-wider ${
-          agentGuidance.status === 'human_reviewed' || agentGuidance.status === 'evidence_verified'
+          agentGuidance.status === 'evidence_verified'
             ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300'
             : agentGuidance.status === 'human_edited'
             ? 'bg-sky-100 text-sky-700 dark:bg-sky-900/40 dark:text-sky-300'
             : 'bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300'
         }`}>
+          {/* Every human_reviewed page live today was stamped by a bulk sync script, not by a clinician
+              (no mentor draft has a review decision), so it must not claim clinician review. */}
           {agentGuidance.status === 'human_reviewed'
-            ? 'Clinician reviewed'
+            ? 'Unverified'
             : agentGuidance.status === 'human_edited'
             ? 'Clinician edited'
             : agentGuidance.status === 'evidence_verified'

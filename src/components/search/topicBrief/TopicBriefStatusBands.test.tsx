@@ -46,6 +46,12 @@ describe('TopicBriefStatusBands mentor status', () => {
     expect(screen.getByText('Limited evidence')).toBeInTheDocument();
   });
 
+  it('does not claim clinician review for sync-stamped human_reviewed pages', () => {
+    renderBands(guidance('human_reviewed', 4));
+    expect(screen.getByText('Unverified')).toBeInTheDocument();
+    expect(screen.queryByText('Clinician reviewed')).not.toBeInTheDocument();
+  });
+
   it('keeps the AI generated label for unverified machine pages', () => {
     renderBands(guidance('ai_generated', 2));
     expect(screen.getByText('AI generated')).toBeInTheDocument();
