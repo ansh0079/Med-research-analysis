@@ -1,0 +1,21 @@
+{
+  "catalogueId": "1050",
+  "topic": "Principles of Radiotherapy",
+  "specialty": "Oncology",
+  "decision": "downloaded open source",
+  "rejected": [],
+  "unresolvedReason": null,
+  "source": {
+    "title": "Cancer and radiation therapy: current advances and future directions",
+    "year": 2012,
+    "pmid": "22408567",
+    "pmcid": "PMC3298009",
+    "doi": "10.7150/ijms.3635",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3298009/",
+    "sourceBody": "International Journal of Medical Sciences",
+    "type": "review",
+    "whyItFits": "Baskar's open review of why radiotherapy is fractionated, what it does to DNA, and how external beam differs from brachytherapy."
+  },
+  "evidenceTextFile": "data/part4-topic-evidence/1050/evidence.txt",
+  "evidenceChars": 22323
+}

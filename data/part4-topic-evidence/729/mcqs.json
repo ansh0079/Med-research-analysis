@@ -1,0 +1,107 @@
+[
+  {
+    "type": "multiple_choice",
+    "questionType": "guideline",
+    "question": "Which markers are measured before and after orchidectomy?",
+    "options": {
+      "A": "AFP, β-hCG, and LDH",
+      "B": "PSA only",
+      "C": "CA19-9",
+      "D": "CEA and CA-125",
+      "E": "Chromogranin only"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "AFP, β-hCG, and LDH",
+    "explanation": "AFP, β-hCG, and LDH should be determined before and after orchidectomy and throughout follow-up [1].",
+    "difficulty": "easy",
+    "sourceArticle": "EAU Guidelines on Testicular Cancer, limited update April 2024",
+    "sourceReference": null,
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "clinical_application",
+    "question": "Stage IS means:",
+    "options": {
+      "A": "After orchidectomy the markers rise, stay elevated, or do not fall as their half-lives predict",
+      "B": "A normal marker and a normal CT",
+      "C": "Pure seminoma confined to the testis",
+      "D": "A benign cyst",
+      "E": "Markers were never measured"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "After orchidectomy the markers rise, stay elevated, or do not fall as their half-lives predict",
+    "explanation": "Stage IS is persistent or rising markers, or failure to decline as expected by half-lives, after orchidectomy, implying subclinical metastatic disease [1].",
+    "difficulty": "medium",
+    "sourceArticle": "EAU Guidelines on Testicular Cancer, limited update April 2024",
+    "sourceReference": null,
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "guideline",
+    "question": "When is one course of BEP a strong recommendation in stage I non-seminoma?",
+    "options": {
+      "A": "When the patient will not undergo or comply with surveillance",
+      "B": "For every patient instead of surveillance",
+      "C": "Only after relapse in the brain",
+      "D": "Never",
+      "E": "As the treatment of a contralateral benign cyst"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "When the patient will not undergo or comply with surveillance",
+    "explanation": "One course of cisplatin, etoposide, and bleomycin is an adjuvant alternative, with a strong recommendation, if the patient is not willing to undergo or comply with surveillance [1].",
+    "difficulty": "medium",
+    "sourceArticle": "EAU Guidelines on Testicular Cancer, limited update April 2024",
+    "sourceReference": null,
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "trial_interpretation",
+    "question": "Median sensitivity and specificity of abdominal contrast CT for staging are:",
+    "options": {
+      "A": "67% and 95%",
+      "B": "95% and 67%",
+      "C": "100% and 100%",
+      "D": "30% and 30%",
+      "E": "Not stated"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "67% and 95%",
+    "explanation": "For abdominal staging, contrast CT has a median sensitivity of 67% and specificity of 95% [1].",
+    "difficulty": "hard",
+    "sourceArticle": "EAU Guidelines on Testicular Cancer, limited update April 2024",
+    "sourceReference": null,
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "pitfall",
+    "question": "Why can the diagnosis be delayed?",
+    "options": {
+      "A": "Pain, whether scrotal or in the abdomen or back, may be present and delay recognition of a usually painless mass",
+      "B": "Markers are always normal",
+      "C": "Ultrasound cannot see the testis",
+      "D": "The mass is always painful, so delay is impossible",
+      "E": "Gynaecomastia occurs in every patient"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "Pain, whether scrotal or in the abdomen or back, may be present and delay recognition of a usually painless mass",
+    "explanation": "Presentation is often a painless mass or an incidental ultrasound finding. Scrotal or abdominal or back pain may occur and can delay diagnosis [1].",
+    "difficulty": "easy",
+    "sourceArticle": "EAU Guidelines on Testicular Cancer, limited update April 2024",
+    "sourceReference": null,
+    "sourceIndices": [
+      1
+    ]
+  }
+]

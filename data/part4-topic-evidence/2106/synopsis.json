@@ -1,0 +1,26 @@
+{
+  "takeaway": "Use tidal volumes of 4–8 mL/kg predicted body weight, and prone patients with PaO2/FiO2 under 150 mmHg despite PEEP of at least 5 cmH2O for sessions of at least 16 hours [1].",
+  "clinicalQuestion": "Which ventilation strategy does ESICM recommend for severe ARDS?",
+  "background": "Traditional ventilation aimed to normalise blood gases. ESICM prioritises limiting ventilator-induced lung injury [1].",
+  "studyDesign": "ESICM clinical practice guideline.",
+  "population": "Adults with ARDS, including moderate-severe disease defined by PaO2/FiO2 under 150 mmHg.",
+  "intervention": "Low tidal volume and prone positioning.",
+  "comparator": "Larger tidal volumes and supine ventilation.",
+  "primaryOutcome": "Mortality.",
+  "mainFindings": "Recommend low tidal volume ventilation (4–8 mL/kg predicted body weight) rather than larger volumes used to normalise blood gases, to reduce mortality in non-COVID ARDS. Strong recommendation based on expert opinion despite lack of statistical significance; high level of evidence. Recommend prone rather than supine position for moderate-severe ARDS (PaO2/FiO2 under 150 mmHg and PEEP at least 5 cmH2O after optimisation) to reduce mortality. Strong recommendation, high level of evidence; the same recommendation applies to COVID-19 ARDS with moderate evidence because of indirectness. Start prone positioning early after stabilisation on low tidal volume and adjusted PEEP if PaO2/FiO2 remains under 150, for at least 16 consecutive hours [1].",
+  "clinicalMeaning": "Severe ARDS ventilation is lung-protective volume plus prolonged prone sessions, not normalisation of carbon dioxide at the cost of large volumes [1].",
+  "limitations": "The low-tidal-volume recommendation notes a lack of statistical significance even though the panel still makes a strong recommendation. COVID-19 evidence is downgraded for indirectness [1].",
+  "bottomLine": "Set 4–8 mL/kg predicted body weight and, if PaO2/FiO2 stays under 150 on PEEP of at least 5, prone for 16 hours or more [1].",
+  "practiceImplication": "Do not delay proning until late refractory hypoxaemia once the PaO2/FiO2 criterion is met after stabilisation [1].",
+  "safetyOutcomes": [],
+  "trustRating": "HIGH",
+  "trustRationale": "Current ESICM guideline with explicit recommendation strength.",
+  "quizFocusPoints": [
+    "4–8 mL/kg PBW",
+    "PaO2/FiO2 under 150",
+    "16-hour prone sessions"
+  ],
+  "whatNotToOverclaim": [
+    "A near-drowning ECMO case is not the ventilation recommendation."
+  ]
+}

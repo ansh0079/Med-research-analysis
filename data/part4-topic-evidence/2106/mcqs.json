@@ -1,0 +1,107 @@
+[
+  {
+    "type": "multiple_choice",
+    "questionType": "guideline",
+    "question": "Which tidal volume does ESICM recommend for ARDS?",
+    "options": {
+      "A": "4–8 mL/kg predicted body weight",
+      "B": "12–15 mL/kg actual body weight",
+      "C": "20 mL/kg",
+      "D": "Volume targeted only to a normal PaCO2, with no upper limit",
+      "E": "Non-invasive ventilation only"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "4–8 mL/kg predicted body weight",
+    "explanation": "Recommendation 5.1 recommends low tidal volume strategies, 4–8 mL/kg predicted body weight, compared with larger volumes traditionally used to normalise blood gases [1].",
+    "difficulty": "easy",
+    "sourceArticle": "ESICM guidelines on acute respiratory distress syndrome: definition, phenotyping and respiratory support strategies",
+    "sourceReference": "PMID 37326646",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "guideline",
+    "question": "When is prone positioning strongly recommended to reduce mortality?",
+    "options": {
+      "A": "Moderate-severe ARDS with PaO2/FiO2 under 150 mmHg and PEEP at least 5 cmH2O",
+      "B": "Every patient on oxygen by nasal cannula",
+      "C": "Only if PaO2/FiO2 is above 300",
+      "D": "Only after 2 weeks of supine ventilation",
+      "E": "Never in COVID-19"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "Moderate-severe ARDS with PaO2/FiO2 under 150 mmHg and PEEP at least 5 cmH2O",
+    "explanation": "Recommendation 7.1 strongly recommends prone rather than supine position when PaO2/FiO2 is under 150 mmHg and PEEP is at least 5 cmH2O despite optimisation. The recommendation also applies to COVID-19 ARDS [1].",
+    "difficulty": "medium",
+    "sourceArticle": "ESICM guidelines on acute respiratory distress syndrome: definition, phenotyping and respiratory support strategies",
+    "sourceReference": "PMID 37326646",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "guideline",
+    "question": "How long should prone sessions last?",
+    "options": {
+      "A": "16 consecutive hours or more",
+      "B": "30 minutes",
+      "C": "2 hours twice a week",
+      "D": "Until the patient asks to turn",
+      "E": "One hour only"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "16 consecutive hours or more",
+    "explanation": "Recommendation 7.2 says proning should be applied for prolonged sessions of 16 consecutive hours or more [1].",
+    "difficulty": "medium",
+    "sourceArticle": "ESICM guidelines on acute respiratory distress syndrome: definition, phenotyping and respiratory support strategies",
+    "sourceReference": "PMID 37326646",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "clinical_application",
+    "question": "When should proning start?",
+    "options": {
+      "A": "Early after intubation, once low tidal volume and PEEP are set and PaO2/FiO2 is still under 150",
+      "B": "Only after ECMO",
+      "C": "After a month of paralysis",
+      "D": "Before any PEEP is applied",
+      "E": "Only in the operating theatre"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "Early after intubation, once low tidal volume and PEEP are set and PaO2/FiO2 is still under 150",
+    "explanation": "Start prone position early after a stabilisation period in which low tidal volume is applied and PEEP is adjusted, if PaO2/FiO2 remains under 150 mmHg [1].",
+    "difficulty": "hard",
+    "sourceArticle": "ESICM guidelines on acute respiratory distress syndrome: definition, phenotyping and respiratory support strategies",
+    "sourceReference": "PMID 37326646",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "guideline",
+    "question": "How is the low-tidal-volume recommendation graded for non-COVID ARDS?",
+    "options": {
+      "A": "Strong recommendation, with high level of evidence, despite the panel noting a lack of statistical significance",
+      "B": "Weak suggestion only",
+      "C": "Recommendation against low tidal volume",
+      "D": "No recommendation",
+      "E": "Strong recommendation based on a single case"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "Strong recommendation, with high level of evidence, despite the panel noting a lack of statistical significance",
+    "explanation": "The panel makes a strong recommendation based on expert opinion despite lack of statistical significance, and assigns a high level of evidence, for low tidal volume to reduce mortality in ARDS not due to COVID-19 [1].",
+    "difficulty": "hard",
+    "sourceArticle": "ESICM guidelines on acute respiratory distress syndrome: definition, phenotyping and respiratory support strategies",
+    "sourceReference": "PMID 37326646",
+    "sourceIndices": [
+      1
+    ]
+  }
+]

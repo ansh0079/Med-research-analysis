@@ -1,0 +1,30 @@
+{
+  "takeaway": "CD3-engaging bispecific antibodies in haematologic cancers commonly cause cytokine-release syndrome, usually grade 1–2 and within 1–2 days; several blinatumomab studies reported neurologic events in more than half of patients [1].",
+  "clinicalQuestion": "What efficacy and toxicity pattern do bispecific antibodies show in haematologic neoplasms?",
+  "background": "Bispecific T-cell engagers bring CD3-positive T cells to a tumour antigen. That mechanism produces a characteristic toxicity [1].",
+  "studyDesign": "Systematic review of clinical studies.",
+  "population": "Patients with haematologic neoplasms treated with bispecific antibodies.",
+  "intervention": "Bispecific antibodies, especially CD3 engagers such as blinatumomab, teclistamab, and talquetamab.",
+  "comparator": null,
+  "primaryOutcome": "Response and immune toxicities including cytokine-release syndrome and neurotoxicity.",
+  "mainFindings": "Cytokine-release syndrome was the most common immune toxicity of CD3-engaging bispecifics. Across studies its incidence ranged from 1.59% to 82.61%. Most events were grade 1–2 and began within 1–2 days. Neurologic events exceeded 50% in several blinatumomab studies. Teclistamab (CD3–BCMA) and talquetamab (CD3–GPRC5D) were associated with frequent cytokine-release syndrome, and neurotoxicity was also reported. Hodgkin and T-cell lymphoma studies were described as early-phase, with limited efficacy and no approvals at the time of the review [1].",
+  "clinicalMeaning": "Expect early, usually low-grade cytokine release with a CD3 engager, and do not treat a B-cell or myeloma bispecific as if it had the same evidence in Hodgkin lymphoma [1].",
+  "limitations": "Incidences are ranges across heterogeneous studies, not one drug's label. Approval status is that of the review [1].",
+  "bottomLine": "Counsel for cytokine-release syndrome in the first day or two, mostly grade 1–2, and for neurotoxicity with CD3 engagers [1].",
+  "practiceImplication": "Use step-up monitoring because the syndrome starts within 1–2 days, as the review reports [1].",
+  "safetyOutcomes": [
+    "CRS incidence 1.59–82.61%, mostly grade 1–2, onset 1–2 days.",
+    "Neurologic events over 50% in several blinatumomab studies."
+  ],
+  "trustRating": "MODERATE",
+  "trustRationale": "Systematic review of clinical studies; toxicity ranges are wide because studies were pooled.",
+  "quizFocusPoints": [
+    "CRS timing",
+    "grade 1–2",
+    "blinatumomab neurotoxicity"
+  ],
+  "whatNotToOverclaim": [
+    "Do not quote one response rate for every bispecific.",
+    "A COVID haematology consensus is not this topic."
+  ]
+}

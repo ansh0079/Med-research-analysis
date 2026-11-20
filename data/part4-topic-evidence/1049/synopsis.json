@@ -1,0 +1,29 @@
+{
+  "takeaway": "High-dose intravenous methotrexate is the most important single agent in primary CNS lymphoma. This update strengthens autologous stem-cell transplant as first-line consolidation. The benefit of rituximab is still inconclusive [1].",
+  "clinicalQuestion": "What is the backbone of first-line treatment for primary CNS lymphoma?",
+  "background": "EANO updated its guideline in 2021 after practice-changing trials, for immunocompetent adults, and added immunosuppressed patients [1].",
+  "studyDesign": "Evidence-based guideline.",
+  "setting": "Neuro-oncology.",
+  "population": "Adults with primary CNS lymphoma, including intraocular disease and older patients.",
+  "intervention": "High-dose methotrexate induction and autologous transplant consolidation.",
+  "comparator": "Routine full-dose whole-brain radiotherapy.",
+  "primaryOutcome": "Disease control with attention to neurotoxicity.",
+  "mainFindings": "High-dose intravenous methotrexate is the most important and beneficial single agent. Penetration depends on the total dose and the infusion rate, and the optimal dose is not settled. The update strengthened the evidence for autologous stem-cell transplant as first-line consolidation. Rituximab's role remains inconclusive. Reduced-dose whole-brain radiotherapy, 23.4–30 Gy in 1.8–2.0 Gy fractions, for patients in complete response is a therapeutic option still being tested in randomised trials. Neurotoxicity and the alternative of transplant, or of omitting consolidation, should be weighed for the individual patient [1].",
+  "clinicalMeaning": "Build the regimen on high-dose methotrexate. Prefer transplant consolidation over assuming that whole-brain radiotherapy is required [1].",
+  "limitations": "The optimal methotrexate dose is explicitly unsettled, so no dose is taught [1].",
+  "bottomLine": "Methotrexate first. Transplant is the consolidation this update strengthens. Rituximab is unproven [1].",
+  "practiceImplication": "Discuss neurotoxicity before choosing whole-brain radiotherapy, including the reduced-dose schedules still under trial [1].",
+  "safetyOutcomes": [
+    "Neurotoxicity is the harm to weigh against whole-brain radiotherapy."
+  ],
+  "trustRating": "HIGH",
+  "trustRationale": "Specialty guideline citing randomised consolidation evidence, while staying honest about rituximab and methotrexate dose.",
+  "quizFocusPoints": [
+    "HD-MTX backbone",
+    "ASCT consolidation",
+    "rituximab inconclusive"
+  ],
+  "whatNotToOverclaim": [
+    "Do not quote a methotrexate gram dose."
+  ]
+}

@@ -1,0 +1,107 @@
+[
+  {
+    "type": "multiple_choice",
+    "questionType": "guideline",
+    "question": "Transanal local excision is appropriate for:",
+    "options": {
+      "A": "Selected T1 N0 tumours that are small, under 3 cm, and well to moderately differentiated",
+      "B": "Every rectal cancer",
+      "C": "T4 tumours",
+      "D": "Node-positive disease",
+      "E": "Patients who have already had an abdominoperineal resection"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "Selected T1 N0 tumours that are small, under 3 cm, and well to moderately differentiated",
+    "explanation": "Local excision is only appropriate for selected T1 N0 early-stage cancers: small, under 3 cm, well to moderately differentiated [1].",
+    "difficulty": "medium",
+    "sourceArticle": "Rectal Cancer, Version 2.2018, NCCN Clinical Practice Guidelines in Oncology",
+    "sourceReference": "PMID 30006429",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "recall",
+    "question": "Which operations remove the rectum with total mesorectal excision?",
+    "options": {
+      "A": "Low anterior resection, proctectomy with TME and coloanal anastomosis, and abdominoperineal resection",
+      "B": "Transanal excision of a T1 tumour",
+      "C": "Polypectomy",
+      "D": "Right hemicolectomy",
+      "E": "No operation uses TME"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "Low anterior resection, proctectomy with TME and coloanal anastomosis, and abdominoperineal resection",
+    "explanation": "The radical operations named are low anterior resection, proctectomy with total mesorectal excision and coloanal anastomosis, and abdominoperineal resection [1].",
+    "difficulty": "medium",
+    "sourceArticle": "Rectal Cancer, Version 2.2018, NCCN Clinical Practice Guidelines in Oncology",
+    "sourceReference": "PMID 30006429",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "clinical_application",
+    "question": "Restaging after neoadjuvant treatment is done to:",
+    "options": {
+      "A": "Find distant metastases, plan surgery, and see whether resection can be avoided in select patients",
+      "B": "Avoid all imaging",
+      "C": "Confirm that every patient needs immediate surgery without new information",
+      "D": "Replace pathology",
+      "E": "Measure CEA only"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "Find distant metastases, plan surgery, and see whether resection can be avoided in select patients",
+    "explanation": "Restaging detects distant metastases that would change strategy, plans the operation, and determines whether resection can be avoided in select patients [1].",
+    "difficulty": "medium",
+    "sourceArticle": "Rectal Cancer, Version 2.2018, NCCN Clinical Practice Guidelines in Oncology",
+    "sourceReference": "PMID 30006429",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "guideline",
+    "question": "NCCN recommendations in this guideline are:",
+    "options": {
+      "A": "Category 2A except where noted",
+      "B": "All category 1",
+      "C": "All category 3",
+      "D": "Unclassified",
+      "E": "Expert opinion with no categories"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "Category 2A except where noted",
+    "explanation": "Recommendations are classified as category 2A except where noted [1].",
+    "difficulty": "easy",
+    "sourceArticle": "Rectal Cancer, Version 2.2018, NCCN Clinical Practice Guidelines in Oncology",
+    "sourceReference": "PMID 30006429",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "recall",
+    "question": "What does the panel prefer over standard therapy, especially in advanced disease?",
+    "options": {
+      "A": "Participation in a clinical trial",
+      "B": "Immediate abdominoperineal resection for every stage",
+      "C": "Observation without staging",
+      "D": "Chemotherapy without a multidisciplinary plan",
+      "E": "Local excision for T3 tumours"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "Participation in a clinical trial",
+    "explanation": "The panel unanimously endorses clinical-trial participation over standard or accepted therapy, especially for advanced disease [1].",
+    "difficulty": "easy",
+    "sourceArticle": "Rectal Cancer, Version 2.2018, NCCN Clinical Practice Guidelines in Oncology",
+    "sourceReference": "PMID 30006429",
+    "sourceIndices": [
+      1
+    ]
+  }
+]

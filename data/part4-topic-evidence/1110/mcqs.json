@@ -1,0 +1,107 @@
+[
+  {
+    "type": "multiple_choice",
+    "questionType": "guideline",
+    "question": "The cornerstone of treatment is:",
+    "options": {
+      "A": "Complete en bloc gross resection as a single specimen with involved organs",
+      "B": "Radiation alone",
+      "C": "Chemotherapy without surgery",
+      "D": "Incisional biopsy left open",
+      "E": "Observation for leiomyosarcoma"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "Complete en bloc gross resection as a single specimen with involved organs",
+    "explanation": "Complete en bloc gross resection is the cornerstone, aiming at a macroscopically complete single specimen [1].",
+    "difficulty": "easy",
+    "sourceArticle": "Management of Primary Retroperitoneal Sarcoma (RPS) in the Adult: An Updated Consensus Approach from the Transatlantic Australasian RPS Working Group",
+    "sourceReference": "PMID 33852100",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "guideline",
+    "question": "The standard biopsy is:",
+    "options": {
+      "A": "Image-guided coaxial core needle biopsy, 14–18 gauge",
+      "B": "Fine-needle aspiration only",
+      "C": "Open biopsy in every case",
+      "D": "No biopsy is ever appropriate",
+      "E": "Excision of a groin node"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "Image-guided coaxial core needle biopsy, 14–18 gauge",
+    "explanation": "Image-guided percutaneous coaxial core needle biopsy, 14–18 gauge, is strongly recommended [1].",
+    "difficulty": "medium",
+    "sourceArticle": "Management of Primary Retroperitoneal Sarcoma (RPS) in the Adult: An Updated Consensus Approach from the Transatlantic Australasian RPS Working Group",
+    "sourceReference": "PMID 33852100",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "clinical_application",
+    "question": "When may biopsy be omitted?",
+    "options": {
+      "A": "When an expert finds the imaging pathognomonic, such as heterogeneous dedifferentiated or well-differentiated liposarcoma",
+      "B": "Always",
+      "C": "Never, even then",
+      "D": "Only after radiotherapy",
+      "E": "If the patient refuses CT"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "When an expert finds the imaging pathognomonic, such as heterogeneous dedifferentiated or well-differentiated liposarcoma",
+    "explanation": "Biopsy may occasionally be omitted when imaging is judged pathognomonic by an expert, with dedifferentiated or well-differentiated liposarcoma given as the example [1].",
+    "difficulty": "hard",
+    "sourceArticle": "Management of Primary Retroperitoneal Sarcoma (RPS) in the Adult: An Updated Consensus Approach from the Transatlantic Australasian RPS Working Group",
+    "sourceReference": "PMID 33852100",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "trial_interpretation",
+    "question": "What did STRASS change?",
+    "options": {
+      "A": "Routine neoadjuvant radiotherapy is not recommended, based on abdominal recurrence-free survival",
+      "B": "Radiotherapy became mandatory",
+      "C": "Surgery was abandoned",
+      "D": "The trial supported radiotherapy for every subtype",
+      "E": "It studied chemotherapy only"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "Routine neoadjuvant radiotherapy is not recommended, based on abdominal recurrence-free survival",
+    "explanation": "Based on the primary endpoint of abdominal recurrence-free survival, routine use of neoadjuvant radiotherapy is not recommended [1].",
+    "difficulty": "medium",
+    "sourceArticle": "Management of Primary Retroperitoneal Sarcoma (RPS) in the Adult: An Updated Consensus Approach from the Transatlantic Australasian RPS Working Group",
+    "sourceReference": "PMID 33852100",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "recall",
+    "question": "About half of retroperitoneal sarcomas are:",
+    "options": {
+      "A": "Liposarcoma",
+      "B": "Osteosarcoma",
+      "C": "Ewing sarcoma",
+      "D": "Synovial sarcoma only",
+      "E": "Angiosarcoma"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "Liposarcoma",
+    "explanation": "Low- and intermediate-grade liposarcoma make up the histologic subtypes of about one-half of retroperitoneal sarcomas [1].",
+    "difficulty": "easy",
+    "sourceArticle": "Management of Primary Retroperitoneal Sarcoma (RPS) in the Adult: An Updated Consensus Approach from the Transatlantic Australasian RPS Working Group",
+    "sourceReference": "PMID 33852100",
+    "sourceIndices": [
+      1
+    ]
+  }
+]

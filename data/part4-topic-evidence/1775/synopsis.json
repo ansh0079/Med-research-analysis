@@ -1,0 +1,29 @@
+{
+  "takeaway": "Low-risk GTN (FIGO stages I–III, score under 7) is treated with single-agent chemotherapy and survival approaches 100%. High-risk disease (score 7 or more, or stage IV) needs multiagent chemotherapy and survival is about 90% [1].",
+  "clinicalQuestion": "How does the FIGO score split treatment of gestational trophoblastic neoplasia?",
+  "background": "Gestational trophoblastic disease runs from partial and complete mole to invasive mole, choriocarcinoma, placental-site tumour, and epithelioid trophoblastic tumour [1].",
+  "studyDesign": "FIGO Cancer Report 2021 update.",
+  "setting": "Pregnancy-related trophoblastic disease.",
+  "population": "Patients with gestational trophoblastic disease or neoplasia.",
+  "intervention": "hCG follow-up, then single-agent or multiagent chemotherapy by risk.",
+  "comparator": "Risk groups defined by FIGO stage and score.",
+  "primaryOutcome": "Cure, stratified by low- and high-risk disease.",
+  "mainFindings": "hCG follow-up is essential for early diagnosis of neoplasia, and the length of monitoring depends on histology and the regression rate. Low-risk GTN (stages I–III, score under 7) is treated with single-agent chemotherapy but may need further agents. Scores of 5–6 are associated with more drug resistance, yet overall survival approaches 100%. High-risk GTN (stages II–III with score 7 or more, and stage IV) is treated with multiagent chemotherapy, with or without surgery for resistant foci or radiotherapy for brain metastases, with survival of about 90%. Gentle induction chemotherapy reduces early deaths when the tumour burden is extensive. Late deaths still occur from resistant recurrence. The report's synopsis says that, managed properly, the likelihood of cure is almost 100% [1].",
+  "clinicalMeaning": "A score of 5 or 6 is still low-risk, but expect more resistance. Do not start multiagent chemotherapy for a score under 7 unless the FIGO stage is IV [1].",
+  "limitations": "Drug names and cycle doses are not taken beyond the risk split stated in the update [1].",
+  "bottomLine": "Score under 7 and stages I–III: single agent, survival near 100%. Score 7 or more, or stage IV: multiagent treatment, survival about 90% [1].",
+  "practiceImplication": "Follow hCG after a mole. Use gentle induction when the burden is extensive, to reduce early death [1].",
+  "safetyOutcomes": [
+    "Early death is reduced by gentle induction; late death still occurs from resistant tumours."
+  ],
+  "trustRating": "HIGH",
+  "trustRationale": "FIGO cancer-report update with explicit stage and score thresholds.",
+  "quizFocusPoints": [
+    "score <7 single agent",
+    "scores 5–6 more resistance",
+    "high-risk survival about 90%"
+  ],
+  "whatNotToOverclaim": [
+    "Do not teach a methotrexate dose that this summary does not quote."
+  ]
+}

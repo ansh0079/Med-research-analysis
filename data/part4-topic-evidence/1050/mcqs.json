@@ -1,0 +1,107 @@
+[
+  {
+    "type": "multiple_choice",
+    "questionType": "recall",
+    "question": "About what share of people with cancer receive radiotherapy at some point?",
+    "options": {
+      "A": "About 50%, and radiotherapy contributes about 40% of cures",
+      "B": "Under 5%",
+      "C": "Every patient",
+      "D": "None, because drugs replaced it",
+      "E": "Only patients with leukaemia"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "About 50%, and radiotherapy contributes about 40% of cures",
+    "explanation": "Approximately 50% receive radiotherapy during the illness, and it contributes towards 40% of curative treatment [1].",
+    "difficulty": "easy",
+    "sourceArticle": "Cancer and radiation therapy: current advances and future directions",
+    "sourceReference": "PMID 22408567",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "recall",
+    "question": "Why is treatment fractionated?",
+    "options": {
+      "A": "Normal tissues repair sublethal damage between fractions better than cancer cells",
+      "B": "To make treatment longer for its own sake",
+      "C": "Because DNA is not the target",
+      "D": "Fractionation increases the dose to normal tissue on purpose",
+      "E": "It is required only for brachytherapy"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "Normal tissues repair sublethal damage between fractions better than cancer cells",
+    "explanation": "Fractionation amplifies the survival advantage of normal tissues, largely because they repair better between fractions [1].",
+    "difficulty": "medium",
+    "sourceArticle": "Cancer and radiation therapy: current advances and future directions",
+    "sourceReference": "PMID 22408567",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "recall",
+    "question": "What is the critical cellular target?",
+    "options": {
+      "A": "DNA, blocking further division",
+      "B": "The cell membrane only",
+      "C": "Haemoglobin",
+      "D": "Mitochondria exclusively",
+      "E": "Collagen"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "DNA, blocking further division",
+    "explanation": "Radiation damages DNA and thereby blocks the ability of cells to divide and proliferate [1].",
+    "difficulty": "easy",
+    "sourceArticle": "Cancer and radiation therapy: current advances and future directions",
+    "sourceReference": "PMID 22408567",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "clinical_application",
+    "question": "Brachytherapy is:",
+    "options": {
+      "A": "Sealed radioactive sources placed in the tumour, routine in gynaecologic and prostate cancer",
+      "B": "External beam from a linear accelerator only",
+      "C": "A drug",
+      "D": "Unsealed antibody therapy only",
+      "E": "Never used for retreatment"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "Sealed radioactive sources placed in the tumour, routine in gynaecologic and prostate cancer",
+    "explanation": "Brachytherapy delivers radiation from sealed sources in catheters or seeds and is routine in gynaecologic and prostate cancer and in some retreatments [1].",
+    "difficulty": "medium",
+    "sourceArticle": "Cancer and radiation therapy: current advances and future directions",
+    "sourceReference": "PMID 22408567",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "recall",
+    "question": "What replaced rectangular 2D fields?",
+    "options": {
+      "A": "CT-based 3D conformal radiotherapy",
+      "B": "Clinical examination alone",
+      "C": "Orthovoltage as the only modern method",
+      "D": "Brachytherapy for every tumour",
+      "E": "No technical change has occurred"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "CT-based 3D conformal radiotherapy",
+    "explanation": "2D therapy with rectangular fields based on plain films has largely been replaced by 3D therapy based on CT [1].",
+    "difficulty": "easy",
+    "sourceArticle": "Cancer and radiation therapy: current advances and future directions",
+    "sourceReference": "PMID 22408567",
+    "sourceIndices": [
+      1
+    ]
+  }
+]

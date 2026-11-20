@@ -1,0 +1,31 @@
+{
+  "takeaway": "KDIGO recommends a biologic induction agent for kidney transplant recipients. An interleukin-2 receptor antagonist is first-line. A lymphocyte-depleting antibody is suggested only for high immunologic risk, because it prevents more rejection but causes more infection and malignancy [1].",
+  "clinicalQuestion": "Which induction antibody should a kidney transplant recipient receive?",
+  "background": "Induction is a biologic, either a lymphocyte-depleting agent or an interleukin-2 receptor antagonist, started before, at, or immediately after transplantation, when oral maintenance drugs have not yet taken full effect [1].",
+  "studyDesign": "KDIGO clinical practice guideline chapter, with Cochrane meta-analyses of randomised trials.",
+  "setting": "Adult kidney transplantation. The chapter does not write heart or liver induction protocols.",
+  "population": "Kidney transplant recipients.",
+  "intervention": "Interleukin-2 receptor antagonist (basiliximab or daclizumab) or a lymphocyte-depleting antibody such as antithymocyte globulin.",
+  "comparator": "No induction, and each antibody class against the other.",
+  "primaryOutcome": "Acute rejection, graft loss, death, cytomegalovirus infection, and malignancy.",
+  "mainFindings": "Start combination immunosuppression before or at transplantation (1A), and include a biologic induction agent (1A). An interleukin-2 receptor antagonist is first-line (1B). A lymphocyte-depleting agent, rather than an interleukin-2 receptor antagonist, is suggested for high immunologic risk (2B). Basiliximab and daclizumab bind CD25 and block interleukin-2 on activated T cells. Antithymocyte globulin is a depleting antibody. The Cochrane review cited by the chapter included 30 trials and 4670 patients, with outcomes reported at 1 year. Versus no induction, biopsy-proven acute rejection fell (14 trials, 3861 patients, relative risk 0.77) and death-censored graft loss fell (16 trials, 2973 patients, relative risk 0.74, 0.55–0.99). All-cause mortality (24 trials, 4468 patients, relative risk 0.73, 0.50–1.07) and cytomegalovirus infection (17 trials, 3767 patients, relative risk 0.90, 0.76–1.06) were not significantly different. Against depleting antibodies, interleukin-2 receptor antagonists had more acute rejection (nine trials, 1166 patients, relative risk 1.27, 1.00–1.61) but less cytomegalovirus infection (13 trials, 1480 patients, relative risk 0.69, 0.49–0.97) and less malignancy (six trials, 840 patients, relative risk 0.23, 0.06–0.93). Graft loss was not significantly different (12 trials, 1430 patients, relative risk 1.10, 0.73–1.65). Alemtuzumab is a humanised anti-CD52 depleting antibody approved in the United States for B-cell lymphoma, not for transplantation. The small induction trials did not clearly show that its benefits outweigh its harms [1].",
+  "clinicalMeaning": "Use basiliximab or another interleukin-2 receptor antagonist for ordinary immunologic risk. Reserve antithymocyte globulin for high risk. Do not treat alemtuzumab as a proven first-line induction agent on this evidence [1].",
+  "limitations": "This is the 2009 kidney chapter. Daclizumab is no longer marketed. The printed confidence interval beside the rejection relative risk of 0.77 is broken by a page header, so that interval is not quoted. Heart, liver, and lung induction are outside the chapter [1].",
+  "bottomLine": "Interleukin-2 receptor antagonist first. Depleting antibody for high immunologic risk. Alemtuzumab is not established by the trials KDIGO reviewed [1].",
+  "practiceImplication": "Name the risk factor before choosing antithymocyte globulin. The chapter lists HLA mismatch, younger recipient age, older donor age, African-American ethnicity in the United States, panel-reactive antibody above 0%, donor-specific antibody, blood-group incompatibility, delayed graft function, and cold ischaemia longer than 24 hours [1].",
+  "safetyOutcomes": [
+    "Depleting antibodies increase infection and malignancy compared with interleukin-2 receptor antagonists.",
+    "Alemtuzumab trials were too small and confounded to show a favourable balance of benefit and harm."
+  ],
+  "trustRating": "HIGH",
+  "trustRationale": "Graded guideline chapter based on Cochrane reviews of randomised trials. The evidence is from 2009 and is limited to kidney recipients.",
+  "quizFocusPoints": [
+    "IL2-RA first-line (1B)",
+    "depleting antibody for high risk (2B)",
+    "alemtuzumab not shown to have net benefit"
+  ],
+  "whatNotToOverclaim": [
+    "Do not apply these grades to heart or liver transplantation.",
+    "Do not quote a confidence interval for the rejection relative risk of 0.77."
+  ]
+}

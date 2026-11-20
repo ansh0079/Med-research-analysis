@@ -1,0 +1,29 @@
+{
+  "takeaway": "Laboratory tumour lysis is two or more metabolic abnormalities from 3 days before to 7 days after chemotherapy. Low-risk patients get hydration and allopurinol. High-risk patients get hydration and rasburicase, and allopurinol is not given with rasburicase [1].",
+  "clinicalQuestion": "How is tumour lysis recognised and prevented?",
+  "background": "Tumour lysis is a metabolic emergency of bulky, treatment-sensitive haematologic cancers, especially high-grade lymphoma and acute leukaemia. It can also occur before any treatment [1].",
+  "studyDesign": "Narrative review using the Cairo-Bishop definition.",
+  "setting": "Inpatient haematology.",
+  "population": "Patients with haematologic malignancies at risk of tumour lysis.",
+  "intervention": "Hydration for everyone at risk, allopurinol for low risk, rasburicase for high risk.",
+  "comparator": "Waiting for symptoms, or combining allopurinol with rasburicase.",
+  "primaryOutcome": "Prevention of renal failure, arrhythmia, and seizures.",
+  "mainFindings": "Dying cells release potassium, phosphate, and purines. The result is hyperuricaemia, hyperkalaemia, hyperphosphataemia, and secondary hypocalcaemia, which can cause renal failure, arrhythmia, seizure, and death. Cairo and Bishop defined laboratory tumour lysis as two or more of those abnormalities, from 3 days before chemotherapy to 7 days after, or a 25% change from baseline. The review's printed uric-acid cut-off uses a unit that is not a usable clinical concentration, so the numeric uric-acid threshold is not taught from this paper. Potassium of at least 6.0 mmol/L is one of the stated abnormalities. Clinical tumour lysis is laboratory lysis plus creatinine above 1.5 times the upper limit of normal, arrhythmia or sudden death, or seizure. Signs are most often 24–48 hours after chemotherapy starts. Prophylaxis is recommended for all patients with haematologic malignancies receiving chemotherapy. Low-risk patients receive hydration and allopurinol. High-risk patients receive hydration and rasburicase as inpatients. Allopurinol should not be given with rasburicase, to avoid xanthine accumulation and loss of substrate. Hydration should start 24–48 hours before chemotherapy when possible. The review cites incidence up to 45% in children with acute lymphoblastic leukaemia, depending on risk and definition [1].",
+  "clinicalMeaning": "Risk-stratify before the first dose. Do not add allopurinol on top of rasburicase [1].",
+  "limitations": "The review prints the uric-acid threshold as 476 mmol/L. That unit is not used for teaching. Phosphate and calcium cut-offs are left out of the questions for the same reason: only the potassium value and the 25% rule are used [1].",
+  "bottomLine": "Two abnormalities, or a 25% shift, around the start of chemotherapy. Allopurinol if low risk. Rasburicase, without allopurinol, if high risk [1].",
+  "practiceImplication": "Start intravenous fluid a day or two before chemotherapy when the patient can tolerate it [1].",
+  "safetyOutcomes": [
+    "Fluid can overload a patient with kidney injury or heart failure, so those patients need close monitoring. Diuretics are only for a well-hydrated patient."
+  ],
+  "trustRating": "MODERATE",
+  "trustRationale": "Open review that states Cairo-Bishop timing and the drug split. One printed laboratory unit is internally unusable and is excluded.",
+  "quizFocusPoints": [
+    "two or more abnormalities",
+    "3 days before to 7 days after",
+    "no allopurinol with rasburicase"
+  ],
+  "whatNotToOverclaim": [
+    "Do not teach a uric acid of 476 mmol/L."
+  ]
+}

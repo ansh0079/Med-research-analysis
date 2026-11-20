@@ -1,0 +1,23 @@
+{
+  "catalogueId": "2033",
+  "topic": "thyroid disease",
+  "specialty": "Endocrinology",
+  "decision": "downloaded open source",
+  "rejected": [
+    "ENDOCAN anaplastic thyroid-cancer advice in the app is a different disease."
+  ],
+  "unresolvedReason": null,
+  "source": {
+    "title": "Thyroid disease: assessment and management (NICE guideline NG145)",
+    "year": 2023,
+    "pmid": "31996347",
+    "pmcid": null,
+    "doi": null,
+    "url": "https://www.nice.org.uk/guidance/ng145/chapter/Recommendations",
+    "sourceBody": "NICE",
+    "type": "clinical_practice_guideline",
+    "whyItFits": "NG145 is the assessment and management guideline for thyroid disease, updated 12 October 2023, and the recommendations are openly published."
+  },
+  "evidenceTextFile": "data/part4-topic-evidence/2033/evidence.txt",
+  "evidenceChars": 35975
+}

@@ -1,0 +1,29 @@
+{
+  "takeaway": "The WHO ladder uses regular oral drugs matched to the person: paracetamol is step 1, codeine is step 2, and strong opioids such as morphine are third-line. Studies report adequate relief in a very wide range, 20% to 100% [1].",
+  "clinicalQuestion": "What is the WHO analgesic ladder and how strong is the evidence that it relieves cancer pain?",
+  "background": "The WHO cancer pain guidelines used a three-step ladder so that effective, inexpensive drugs, including strong opioids, could be used openly and safely [1].",
+  "studyDesign": "Integrative review of studies evaluating the WHO cancer pain guidelines.",
+  "population": "People with cancer pain treated according to the WHO ladder.",
+  "intervention": "Three-step ladder: step 1 non-opioid exemplified by paracetamol, step 2 weak opioid exemplified by codeine, step 3 strong opioid.",
+  "comparator": "Regimens that start with a strong opioid, discussed as departures from the guideline.",
+  "primaryOutcome": "Adequate cancer-pain relief.",
+  "mainFindings": "The ladder's purpose was regular oral administration, individualised dosing, and safety, and to legitimise strong opioids where they were unacceptable or illegal. The review identifies paracetamol/acetaminophen as WHO step 1 and codeine as step 2. Strong opioids are described as third-line treatment in the guidelines. Weak opioids have a ceiling effect: a higher dose does not further reduce pain. The authors conclude the guidelines are useful and that research indicates at least 20% to 100% of patients can be given adequate relief across the illness. They also note that moderate or greater pain remains common, so adoption is incomplete [1].",
+  "clinicalMeaning": "Move up a step when the current step fails. Do not keep increasing a weak opioid past its ceiling [1].",
+  "limitations": "The 20–100% range is too wide for a single success rate. The review does not provide a modern opioid-conversion table [1].",
+  "bottomLine": "Teach three steps, oral and regular dosing, and a ceiling at step 2. Do not quote one precise success percentage [1].",
+  "practiceImplication": "If step 2 fails because of the ceiling, move to a strong opioid rather than escalating codeine indefinitely [1].",
+  "safetyOutcomes": [
+    "Ceiling effect and more adverse effects when step 2 is pushed, as discussed via Nunes and colleagues."
+  ],
+  "trustRating": "MODERATE",
+  "trustRationale": "Open integrative review that states the ladder's structure; effectiveness estimates are heterogeneous.",
+  "quizFocusPoints": [
+    "step 1 paracetamol",
+    "step 2 codeine and ceiling",
+    "oral regular dosing"
+  ],
+  "whatNotToOverclaim": [
+    "Do not cite 69–100% from the older 1995 series as this review's conclusion.",
+    "Do not invent doses."
+  ]
+}

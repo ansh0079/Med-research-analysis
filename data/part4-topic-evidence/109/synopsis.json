@@ -1,0 +1,27 @@
+{
+  "takeaway": "Anal squamous-cell cancer is usually an HPV-related cancer treated with chemoradiation; persistent or recurrent disease goes to salvage surgery, and metastatic disease to systemic therapy [1].",
+  "clinicalQuestion": "How is anal canal squamous-cell cancer treated by stage?",
+  "background": "Anal cancer is uncommon but increasing, and squamous-cell carcinoma is the dominant histology [1].",
+  "studyDesign": "Narrative review.",
+  "population": "Patients with anal squamous-cell carcinoma.",
+  "intervention": "Chemoradiation for early-stage disease; systemic therapy for metastases; salvage surgery after failure.",
+  "comparator": null,
+  "primaryOutcome": "Stage-based management.",
+  "mainFindings": "Anal cancer is about 2% of gastrointestinal malignancies. Incidence of all stages of anal squamous-cell cancer has been increasing, by 2.7% annually in the last decade in the review's citation. HPV is a key risk factor in 80–85% of cases, mostly HPV-16. Chemoradiation remains the mainstay for most patients with early-stage disease. Systemic therapy is the primary treatment for metastatic disease. Persistent disease or recurrence after chemoradiation is treated with salvage surgery [1].",
+  "clinicalMeaning": "Do not send localised anal squamous-cell cancer straight to abdominoperineal resection; chemoradiation is the mainstay, with surgery reserved for failure [1].",
+  "limitations": "This is a review, so it does not replace a guideline dose schedule. Drug doses are not used here because this summary stays with the review's stage framework [1].",
+  "bottomLine": "HPV-related squamous-cell cancer of the anus is treated first with chemoradiation when localised, with salvage surgery if that fails [1].",
+  "practiceImplication": "Ask about immunosuppression and HPV, and do not omit surveillance, because salvage surgery can still be curative for persistence [1].",
+  "safetyOutcomes": [],
+  "trustRating": "MODERATE",
+  "trustRationale": "Recent open review of the whole pathway; not a graded guideline.",
+  "quizFocusPoints": [
+    "chemoradiation first",
+    "salvage surgery",
+    "HPV 80–85%"
+  ],
+  "whatNotToOverclaim": [
+    "Do not invent mitomycin doses from this summary.",
+    "The NCCN discussion stored in the app is only a short abstract."
+  ]
+}

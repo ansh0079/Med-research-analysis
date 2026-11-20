@@ -1,0 +1,29 @@
+{
+  "takeaway": "HPV-positive oropharyngeal cancer had a 3-year overall survival of 82.4%, against 57.1% if HPV-negative. After adjustment the hazard ratio for death was 0.42 [1].",
+  "clinicalQuestion": "Does tumour HPV status independently predict survival in oropharyngeal cancer?",
+  "background": "Many oropharyngeal squamous cancers contain high-risk HPV, predominantly HPV-16, whose E6 and E7 proteins inactivate p53 and retinoblastoma protein [1].",
+  "studyDesign": "Retrospective HPV analysis of a randomised radiotherapy trial (RTOG 0129).",
+  "setting": "Patients treated with cisplatin plus either accelerated-fractionation or standard-fractionation radiotherapy.",
+  "population": "323 patients with oropharyngeal cancer who had HPV results; 206 (63.8%) were HPV-positive.",
+  "intervention": "Accelerated-fractionation radiotherapy plus cisplatin, compared with standard fractionation plus cisplatin, with HPV analysed in the oropharyngeal subset.",
+  "comparator": "HPV-negative tumours, and the alternate radiotherapy schedule.",
+  "primaryOutcome": "Overall survival by tumour HPV status.",
+  "mainFindings": "Median follow-up was 4.8 years. Accelerated and standard fractionation had similar 3-year overall survival (70.3% vs 64.3%; P = 0.18; hazard ratio for death 0.90; 95% CI 0.72 to 1.13). Among oropharyngeal cancers, HPV-positive tumours had 3-year overall survival of 82.4% (95% CI 77.2 to 87.6) versus 57.1% (48.1 to 66.1), and 3-year progression-free survival of 73.7% versus 43.4%. After adjustment for age, race, tumour and nodal stage, tobacco exposure, and treatment assignment, HPV positivity conferred a 58% reduction in the risk of death (hazard ratio 0.42; 95% CI 0.27 to 0.66). The risk of death rose with each additional pack-year of smoking. The authors conclude that tumour HPV status is a strong independent prognostic factor and that future trials should separate or stratify by HPV [1].",
+  "clinicalMeaning": "Record HPV status and smoking history. Do not treat the two diseases as if they had the same prognosis [1].",
+  "limitations": "This is a prognostic analysis inside a treatment trial, not a trial of de-escalation. It does not show that radiotherapy dose can be reduced [1].",
+  "bottomLine": "HPV-positive oropharyngeal cancer: 3-year survival 82.4% versus 57.1%, adjusted hazard ratio for death 0.42 [1].",
+  "practiceImplication": "Test the tumour for HPV and quantify pack-years, because both mark survival in this study [1].",
+  "safetyOutcomes": [
+    "Grade 3–4 acute toxicity was 80.0% with accelerated fractionation and 83.7% with standard fractionation (P = 0.21)."
+  ],
+  "trustRating": "HIGH",
+  "trustRationale": "Large randomised cohort with prespecified multivariable adjustment.",
+  "quizFocusPoints": [
+    "82.4% vs 57.1%",
+    "HR 0.42",
+    "fractionation schedules equivalent"
+  ],
+  "whatNotToOverclaim": [
+    "Do not use this paper to justify omitting cisplatin or lowering the radiation dose."
+  ]
+}

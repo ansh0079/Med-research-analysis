@@ -1,0 +1,29 @@
+{
+  "takeaway": "For sepsis-induced hypoperfusion or septic shock, give at least 30 mL/kg of IV crystalloid within 3 hours, prefer balanced crystalloid over saline, and guide further fluid with dynamic measures [1].",
+  "clinicalQuestion": "How should clinicians choose and dose resuscitation fluid in sepsis?",
+  "background": "The 2016 guideline had already recommended a minimum of 30 mL/kg of IV crystalloid. The 2021 panel revisited fluid choice and how to judge ongoing need [1].",
+  "studyDesign": "Practice guideline using GRADE-style strong and weak recommendations.",
+  "population": "Adults with sepsis or septic shock.",
+  "intervention": "Intravenous crystalloid, preferably balanced.",
+  "comparator": "Normal saline, or unguided further fluid.",
+  "primaryOutcome": "Resuscitation recommendations aimed at hypoperfusion and shock.",
+  "mainFindings": "Suggest at least 30 mL/kg IV crystalloid within the first 3 hours for sepsis-induced hypoperfusion or septic shock (weak, low-quality evidence). Suggest dynamic measures over physical examination or static parameters to guide further fluid. Suggest balanced crystalloids instead of normal saline (weak, low quality). Suggest albumin in patients who have received large volumes of crystalloid rather than crystalloid alone (weak). Suggest measuring blood lactate in adults with suspected sepsis (weak, low quality) [1].",
+  "clinicalMeaning": "Start a defined crystalloid volume quickly, then stop guessing from examination alone [1].",
+  "limitations": "The 30 mL/kg suggestion is weak and low-quality; the panel notes there is no prospective trial comparing different initial volumes. Balanced-fluid evidence is also low quality [1].",
+  "bottomLine": "Use at least 30 mL/kg IV crystalloid within 3 hours, prefer a balanced fluid, and reassess with dynamic measures [1].",
+  "practiceImplication": "Do not treat 30 mL/kg as a strong mandate to keep pouring fluid after the first hours [1].",
+  "safetyOutcomes": [
+    "Further fluid without dynamic assessment is discouraged."
+  ],
+  "trustRating": "HIGH",
+  "trustRationale": "Current international sepsis guideline with explicit strength and certainty labels.",
+  "quizFocusPoints": [
+    "30 mL/kg within 3 hours",
+    "balanced versus saline",
+    "weak versus strong"
+  ],
+  "whatNotToOverclaim": [
+    "Do not call the 30 mL/kg suggestion a strong recommendation.",
+    "The 2012 text stored in the app is not this guideline."
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "catalogueId": "109",
+  "topic": "Anal Canal Cancer",
+  "specialty": "Oncology",
+  "decision": "downloaded open source",
+  "rejected": [
+    "A one-paragraph NCCN discussion in the app states chemoradiation but is too thin to carry regimen teaching. RTOG 0529 is a phase 2 toxicity study, not the whole pathway."
+  ],
+  "unresolvedReason": null,
+  "source": {
+    "title": "Anal Cancer: The Past, Present and Future",
+    "year": 2023,
+    "pmid": "36975459",
+    "pmcid": "PMC10047250",
+    "doi": "10.3390/curroncol30030246",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10047250/",
+    "sourceBody": "Current Oncology",
+    "type": "review",
+    "whyItFits": "Reviews epidemiology, HPV, and the current split between chemoradiation for localised disease, systemic therapy for metastases, and salvage surgery after persistent disease."
+  },
+  "evidenceTextFile": "data/part4-topic-evidence/109/evidence.txt",
+  "evidenceChars": 47161
+}

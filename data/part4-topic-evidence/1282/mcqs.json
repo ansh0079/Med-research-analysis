@@ -1,0 +1,107 @@
+[
+  {
+    "type": "multiple_choice",
+    "questionType": "recall",
+    "question": "In this review, which drug is identified as WHO ladder step 1?",
+    "options": {
+      "A": "Paracetamol/acetaminophen",
+      "B": "Morphine",
+      "C": "Fentanyl",
+      "D": "Codeine",
+      "E": "Methadone"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "Paracetamol/acetaminophen",
+    "explanation": "The review refers to paracetamol/acetaminophen as WHO ladder step 1 and to codeine as step 2 [1].",
+    "difficulty": "easy",
+    "sourceArticle": "Effectiveness of the World Health Organization cancer pain relief guidelines: an integrative review",
+    "sourceReference": "PMID 27524918",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "guideline",
+    "question": "Where do strong opioids such as morphine sit on the ladder as the review describes the guidelines?",
+    "options": {
+      "A": "Third-line",
+      "B": "First-line for every mild pain",
+      "C": "They are excluded",
+      "D": "They replace step 1 only",
+      "E": "They are topical agents only"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "Third-line",
+    "explanation": "The review says the guidelines suggest strong opioids as third-line treatment, and that one purpose of the guidelines was to legitimise morphine and its derivatives [1].",
+    "difficulty": "medium",
+    "sourceArticle": "Effectiveness of the World Health Organization cancer pain relief guidelines: an integrative review",
+    "sourceReference": "PMID 27524918",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "pitfall",
+    "question": "What limitation of weak opioids does the review emphasise?",
+    "options": {
+      "A": "A ceiling effect, where a higher dose does not further reduce pain",
+      "B": "They are always more effective than morphine",
+      "C": "They have no adverse effects",
+      "D": "They cannot be given orally",
+      "E": "They replace the need for assessment"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "A ceiling effect, where a higher dose does not further reduce pain",
+    "explanation": "Proof of effectiveness of weak opioids is described as lacking, and a ceiling effect means an increase in dose does not produce a further decrease in pain [1].",
+    "difficulty": "medium",
+    "sourceArticle": "Effectiveness of the World Health Organization cancer pain relief guidelines: an integrative review",
+    "sourceReference": "PMID 27524918",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "recall",
+    "question": "How were the drugs meant to be given?",
+    "options": {
+      "A": "Regularly, orally, and individualised, with attention to safety",
+      "B": "Only by injection in hospital",
+      "C": "Once a week regardless of pain",
+      "D": "Only if pain scores are zero",
+      "E": "As a single dose before surgery"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "Regularly, orally, and individualised, with attention to safety",
+    "explanation": "The ladder was meant to make relief available with effective inexpensive drugs given regularly, orally, and on an individual basis, while focusing on safety [1].",
+    "difficulty": "easy",
+    "sourceArticle": "Effectiveness of the World Health Organization cancer pain relief guidelines: an integrative review",
+    "sourceReference": "PMID 27524918",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "trial_interpretation",
+    "question": "What range of adequate relief does the review conclude research indicates?",
+    "options": {
+      "A": "At least 20% to 100% across the course of illness",
+      "B": "A precise 95% in every study",
+      "C": "0%",
+      "D": "Adequate relief is impossible",
+      "E": "Only 5%"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "At least 20% to 100% across the course of illness",
+    "explanation": "The conclusion says research indicates at least 20%–100% of patients can receive adequate relief from treatment through to death. The width of that range is a limit of the evidence, and the authors note that moderate or greater pain is still common [1].",
+    "difficulty": "hard",
+    "sourceArticle": "Effectiveness of the World Health Organization cancer pain relief guidelines: an integrative review",
+    "sourceReference": "PMID 27524918",
+    "sourceIndices": [
+      1
+    ]
+  }
+]

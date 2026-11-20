@@ -1,0 +1,204 @@
+
+## Abstract
+Gestational trophoblastic disease (GTD) arises from abnormal placenta and is composed of a spectrum of premalignant to malignant disorders. Changes in epidemiology of GTD have been noted in various countries. In addition to histology, molecular genetic studies can help in the diagnostic pathway. Earlier detection of molar pregnancy by ultrasound has resulted in changes in clinical presentation and decreased morbidity from uterine evacuation. Follow‐up with human chorionic gonadotropin (hCG) is essential for early diagnosis of gestational trophoblastic neoplasia (GTN). The duration of hCG monitoring varies depending on histological type and regression rate. Low‐risk GTN (FIGO Stages I–III: score <7) is treated with single‐agent chemotherapy but may require additional agents; although scores 5–6 are associated with more drug resistance, overall survival approaches 100%. High‐risk GTN (FIGO Stages II–III: score ≥7 and Stage IV) is treated with multiagent chemotherapy, with or without adjuvant surgery for excision of resistant foci of disease or radiotherapy for brain metastases, achieving a survival rate of approximately 90%. Gentle induction chemotherapy helps reduce early deaths in patients with extensive tumor burden, but late mortality still occurs from recurrent treatment‐resistant tumors. Keywords: choriocarcinoma, epithelioid trophoblastic tumor, FIGO Cancer Report, gestational trophoblastic disease, gestational trophoblastic neoplasia, moles, placental site trophoblastic tumor 
+## Synopsis
+Gestational trophoblastic disease, although rare, needs special attention because if managed properly, likelihood of cure is almost 100%. status released display-pdf yes is-in-collection-domain yes is-olf no is-manuscript no is-preprint no is-journal-matter no is-scanned no is-retracted no Issue date 2021 Oct. 1. 
+## INTRODUCTION
+Gestational trophoblastic disease (GTD) is a group of uncommon conditions associated with pregnancy. Histologically, it includes the premalignant partial hydatidiform mole (PHM) and complete hydatidiform mole (CHM), as well as the malignant invasive mole, choriocarcinoma, placental site trophoblastic tumor (PSTT), and epithelioid trophoblastic tumor (ETT). The last three malignant forms can arise after any type of pregnancy and all are collectively known as gestational trophoblastic neoplasia (GTN). The GTD spectrum has recently been expanded to also include atypical placental site nodule (APSN) as 10%–15% may coexist with or develop into PSTT/ETT. 
+1
+While PSTT, ETT, and APSN have more varied production of the pregnancy hormone—human chorionic gonadotropin (hCG)—all other forms of GTD produce this hormone. Indeed, hCG is an excellent biomarker of disease progression, response, and subsequent post‐treatment surveillance. Thus, a plateaued or rising hCG level enables the early detection of progression of CHM and PHM to GTN that occurs in 15%−20% and 0.5%−5% of cases, respectively. 
+2
+, 
+3
+Use of this biomarker together with the development of highly effective therapies has transformed survival outcomes, so that today, nearly all women affected by GTN can expect to be cured if managed properly. 2. 
+## EPIDEMIOLOGY
+Wide variations exist in the reported incidence of GTD, with higher frequencies reported from Asia, the Middle East, and Africa, which may be influenced by the difficulties in obtaining accurate data. 
+4
+, 
+5
+The incidence of hydatidiform mole varies between 0.57 to 2 per 1000 pregnancies. 
+2
+Recent reports from the Republic of Korea and Japan show that the incidence of hydatidiform mole has become as low as that in Europe or the USA. 
+6
+, 
+7
+The established risk factors for complete mole are pregnancy at extremes of maternal age and prior molar pregnancy. 
+8
+Compared to the risk for the 21–35 years age group, risk for complete mole is nearly twice for women younger than 21 years and older than 35 years, and 7.5 times higher for women over 40 years. This suggests increased risk of abnormal gametogenesis and fertilization of the ovum produced at extremes of reproductive age. Prior molar pregnancy increases the risk to 10 times for sporadic complete moles, while familial clustering and recurrent mole is the rule in familial biparental recurrent moles due to mutations of NLRP7 and KHDC3L genes. 
+9
+The reported incidence of choriocarcinoma ranges from 1 in 40 000 pregnancies in North America and Europe, to 9.2 and 3.3 per 40 000 pregnancies in Southeast Asia and Japan, respectively. 
+2
+3. 
+## GENETICS AND PATHOLOGY
+3.1. 
+## Molar pregnancy
+Grossly, CHM consists of hydropic villi to semitransparent vesicles of variable sizes with absence of normal placenta. Early CHM may have minimal or no gross evidence of abnormal villi. Differential diagnoses of CHM include PHM, hydropic abortion, and early nonmolar gestation with florid trophoblastic hyperplasia. Histologically, complete mole has florid cistern formation, trophoblastic proliferation, and absence of fetal parts. Significant cytological atypia and mitotic figures may be seen. In the first trimester, CHM villi may not be markedly enlarged but have a distinct polypoid appearance with abnormal villous stromal changes and mild to moderate trophoblastic hyperplasia. In contrast, such histologic features are less marked in partial mole, and fetal parts or cells are present. 
+3
+Hydropic spontaneous abortion may mimic the appearance of partial mole. A cyclin‐dependent kinase inhibitor p57 is encoded by the paternally imprinted and maternally expressed gene and hence is absent in the villous cytotrophoblasts and stromal cells of CHM without the maternal genome. In contrast, PHM and nonmolar abnormal gestations with maternal genome have strong nuclear p57 staining, which can be used to exclude complete mole. However, p57 cannot differentiate PHM from nonmolar gestations. The cytogenetics of CHM, PHM, and hydropic spontaneous abortion are different. Typically, CHM is diploid and has 46, XX chromosomes with both X chromosomes from paternal origin, whereas PHM is triploid with maternal and paternal genetic origin. Hydropic spontaneous abortion normally has 46, XX or XY from both parents. 
+3
+Microsatellite short tandem repeat (STR) genotyping enables precise diagnosis of CHM and PHM by identifying the absence of maternal genetic contribution and diandric triploidy, respectively. 
+9
+Rarely, invasive and metastatic moles can be diagnosed by hysterectomy or biopsy of a metastatic lesion. 3.2. 
+## Choriocarcinoma
+Grossly, the tumor is bulky with hemorrhagic and necrotic areas. Apart from the uterus, it can be found in tubes, ovaries, lung, liver, spleen, kidneys, bowel, or brain. 
+3
+Histologically, choriocarcinoma shows absence of chorionic villi and presence of abnormal intermediate trophoblast and cytotrophoblast, rimmed with syncytiotrophoblasts with areas of necrosis and hemorrhage. Genotyping analysis can identify unique paternal alleles and confirm the choriocarcinoma or germ cell origin and somatic carcinoma with trophoblast differentiation. 3.3. 
+## Placental site trophoblastic tumor (PSTT)
+Grossly, PSTT appears as white‐tan to yellow nodular masses varying from 1–10 cm (average 5 cm) in the endomyometrium with half of the cases invading deep into the myometrium. Histologically, PSTT arises from the mononuclear intermediate trophoblast on the maternal side of the placental bed. Tumor cells have irregular nuclear membranes, hyperchromatic nuclei, and dense eosinophilic to amphophilic cytoplasm. Most tumors have a low mitotic count. Chorionic villi are absent. Tumor cells diffusely express human placental lactogen (hPL), MUC‐4, HSD3B1, HLA‐G, and Mel‐CAM (CD146). Expression of hCG and inhibin is focal. The proliferation index is generally increased, with Ki67 expressed in 10%–30% of cells—higher than that of benign exaggerated placental site reaction. 
+3
+, 
+10
+PSTT shows rare genetic imbalances. 3.4. 
+## Epithelioid trophoblastic tumor (ETT)
+Grossly, the tumor appears as white‐tan to brown discrete nodules or cystic hemorrhagic masses invading deep into surrounding tissues. Nearly half arise in the cervix or lower segment of the uterus and some in the fundus and broad ligament. Histologically, ETT arises from the chorionic‐type intermediate trophoblast. Islands of relatively uniform intermediate trophoblastic cells with a moderate amount of eosinophilic to clear cytoplasm and round nuclei are surrounded by extensive necrosis and associated with a hyaline‐like matrix. Extensive or “geographic” necrosis is often present. ETT may coexist with other trophoblastic neoplasms. Ki67 proliferation index is greater than 10%. ETT may mimic choriocarcinoma (especially after chemotherapy), PSTT, and squamous cell carcinoma of the cervix. 
+10
+4. 
+## CLINICAL PRESENTATION, INVESTIGATIONS, AND DIAGNOSIS
+4.1. 
+## Molar pregnancy
+Patients usually present with second trimester vaginal bleeding. As diagnosis is often made in the first trimester with ultrasound examination, complications such as hyperemesis gravidarum, pre‐eclampsia, and hyperthyroidism are less and less common. If there is vaginal passage of the gestational product, vesicles may be seen. The typical honeycomb appearance of a complete mole is rarely seen, especially in the first trimester. Typically, there is absence of fetal parts and cystic appearance of the placenta. Hence, molar pregnancies should be diagnosed on histologic examination after evacuation for a spontaneous abortion or a suspected molar pregnancy. 4.2. 
+## Gestational trophoblastic neoplasia
+Postmolar GTN is usually diagnosed by hCG surveillance without symptoms. At the FIGO Gynecology Oncology Committee meeting in 2000, the definition of postmolar GTN based on hCG level changes, histology, and specific investigations was agreed (Box 1 and 2 ). 
+11
+Box 1 
+## FIGO criteria for diagnosis of postmolar gestational trophoblastic neoplasia
+Box 2 
+## Tools for investigation of gestational trophoblastic neoplasia
+4.3. 
+## Human chorionic gonadotropin monitoring
+For monitoring of GTN, an hCG assay that can detect all forms of hCG including beta‐hCG, core hCG, C‐terminal hCG, nicked‐free beta, beta core, and preferably the hyperglycosylated forms, should be used when possible. A persistently low hCG level needs continuous monitoring as some may progress to GTN with rising hCG levels. 
+12
+, 
+13
+To exclude a false‐positive result, retest with another assay kit or a test for urine hCG may be used. 4.4. 
+## Gestational trophoblastic neoplasia after nonmolar pregnancy
+As only about 50% of GTN follows molar pregnancy, the rest can occur after a spontaneous abortion, ectopic pregnancy, or a term pregnancy. Aside from postpartum abnormal vaginal bleeding, other clinical presentations can include bleeding from metastatic sites such as the liver, spleen, intestines, lung, or brain, pulmonary symptoms, and neurological signs from spine or brain metastasis. 
+2
+GTN should be considered in the differential diagnosis of patients with unusual presentations and serum hCG should be performed as part of the workup of such patients. 5. 
+## TREATMENT
+5.1. 
+## Molar pregnancy
+Suction evacuation and curettage, ideally performed under ultrasound guidance, is the preferred method of evacuation of a molar pregnancy independent of uterine size if maintenance of fertility is desired. It is recommended that a 12–14 mm suction cannula be used and that an intravenous oxytocin infusion may be started at the onset of suction curettage and may be continued for several hours postoperatively to enhance uterine contractility and decrease blood loss. Because the risk of bleeding increases with uterine size, blood for transfusion should be available when the uterus is greater than 16 weeks in gestational size. Rh immune globulin should be given to Rh‐negative women at the time of molar evacuation as RhD factor is expressed on the trophoblast. Judicious use of appropriate evacuation equipment and techniques, access to blood products, careful intraoperative monitoring, and early recognition and correction of complications results in improved outcomes. If there is no persistent bleeding, a second evacuation is usually not needed. 
+2
+, 
+3
+, 
+8
+Hysterectomy is an alternative to suction curettage if childbearing is complete. In addition to evacuating the molar pregnancy, hysterectomy provides permanent sterilization and decreases the need for subsequent chemotherapy by eliminating the risk of local myometrial invasion as a cause of persistent disease. 
+14
+Medical induction of labor and hysterotomy are not recommended for molar evacuation since these methods increase maternal morbidity and the development of postmolar GTN requiring chemotherapy. 
+15
+Prophylactic administration of either methotrexate or actinomycin D chemotherapy at the time of or immediately following molar evacuation is associated with a reduction in the incidence of postmolar GTN to 3%–8%. However, it should be limited to special situations in which the risk of postmolar GTN is much greater than normal or where adequate hCG follow‐up is not possible. 
+16
+Follow‐up hCG monitoring every 1–2 weeks is essential for early diagnosis of and management of postmolar GTN. On the other hand, postmolar GTN rarely occurs after the spontaneous return of hCG levels to normal, allowing for a shortened follow‐up period for most women. Hence, a single additional confirmatory normal hCG measurement 1 month after first hCG normalization is recommended for a PHM and monthly hCG measurements should be obtained for only 6 months after hCG normalization for a CHM. 
+17
+Termination of pregnancy is not indicated if accidental pregnancy occurs during surveillance after the hCG level has returned to normal. In addition, data now show that it is safe to recommend oral contraceptives. 
+18
+The risk of recurrence in a later pregnancy is low (0.6%–2%) after one molar pregnancy, although much increased after consecutive molar pregnancies. 
+19
+Mutations in NLRP7 and KHDC3L have been reported in women with recurrent molar pregnancy. 
+9
+5.2. 
+## Coexisting normal pregnancy with mole
+Molar pregnancy rarely coexists with a normal pregnancy. The diagnosis is usually made on ultrasound. Although there is a high risk of spontaneous abortion, about 40%–60% result in live births. The risk of GTN in coexisting molar and normal pregnancy compared with singleton molar pregnancy is increased from 15%–20% to 27%–46%. In the absence of complications and normal genetic and ultrasound findings, pregnancy can proceed. 
+20
+, 
+21
+, 
+22
+5.3. 
+## Gestational trophoblastic neoplasia
+Treatment of GTN is generally by chemotherapy. The best regimen depends on stage and classification. In the 2000 FIGO staging and classification (Tables  1 and 2 ), a risk score of 6 and below is classified as low risk and above 6 is considered high risk. TABLE 1 FIGO staging and classification for gestational trophoblastic neoplasia FIGO stage Description I Gestational trophoblastic tumors strictly confined to the uterine corpus II Gestational trophoblastic tumors extending to the adnexa or to the vagina, but limited to the genital structures III Gestational trophoblastic tumors extending to the lungs, with or without genital tract involvement IV All other metastatic sites TABLE 2 World Health Organization scoring system based on prognostic factors modified as FIGO score FIGO score 0 1 2 4 Age <40 >40 – – Antecedent pregnancy Mole Abortion Term Interval from index pregnancy, months <4 4–6 7–12 >12 Pretreatment hCG mIU/ml <103
+>103–104
+>104–105
+>105
+Largest tumor size including uterus 
+a
+, cm – 3–4 ≥5 – Site of metastases including uterus Lung Spleen, kidney Gastrointestinal tract Brain, liver Number of metastases identified – 1–4 5–8 >8 Previous failed chemotherapy – – Single drug Two or more drugs To stage and allot a risk factor score, a patient's diagnosis is allocated to a Stage as represented by a Roman numeral I, II, III, or IV. This is then separated by a colon from the sum of all the actual risk factor scores expressed in Arabic numerals e.g. Stage II: 4, Stage IV: 9. This Stage and score will be allotted for each patient. 
+a
+Size of the tumor in the uterus. 5.3.1. 
+## Low‐risk gestational trophoblastic neoplasia
+Patients with low‐risk GTN should be treated with one of the single agent methotrexate or actinomycin D protocols listed in Box 3 . The Cochrane Review in 2016, including 667patients in seven randomized controlled trials, showed that actinomycin D is probably more likely to achieve a primary cure (risk ratio [RR] 0.65; 95% CI, 0.57−0.75) than methotrexate, 
+23
+and first‐line methotrexate is probably more likely to fail than actinomycin D treatment (RR 3.55; 95% CI, 1.81−6.95). Box 3 
+## First‐line single agent chemotherapy regimens for low‐risk gestational trophoblastic neoplasia
+Chemotherapy should be changed to the alternative single agent if there has been a good response to the first agent but the hCG level plateaus or rises during treatment, or if toxicity precludes an adequate dose or frequency of treatment. Studies showed that change to single agent actinomycin D from single agent methotrexate gives a good response rate of between 76% and 87% in patients with relatively low hCG levels. 
+3
+, 
+24
+, 
+25
+, 
+26
+Chance of curative treatment is strongly related to the hCG level at the time when single agent actinomycin D starts. As there are continuous updates on the cutoff level based on evolving data, physicians should refer to local guidelines from time to time. Otherwise, multiple agents should be considered. The complete response rate for avelumab as second‐line treatment for methotrexate‐failed low‐risk patients is only 53%, disappointingly lower than second‐line actinomycin D chemotherapy, and is not recommended as a standard salvage treatment in low‐risk cases. 
+27
+Higher risk score of 5–6 and clinicopathologic diagnosis of choriocarcinoma are both associated with an increased risk of resistance to single agent chemotherapy. Lowering the threshold for the use of multiple agent chemotherapy in these otherwise low‐risk patients can be considered. In low‐risk disease, although hysterectomy is an option for select patients who have fulfilled their child wish, 
+28
+postoperative chemotherapy will still be needed as well as hCG monitoring, similar to patients managed exclusively with chemotherapy. As a result, hysterectomy is not highly recommended. After the hCG level has returned to normal, consolidation with 2−3 more cycles of chemotherapy will decrease the chance of recurrence. The overall complete remission rate is close to 100%. 
+3
+, 
+29
+5.3.2. 
+## High‐risk gestational trophoblastic neoplasia
+Multiple agent chemotherapy regimens are used to treat high‐risk GTN. The most commonly used is EMA‐CO (etoposide, methotrexate, actinomycin D, cyclophosphamide, vincristine) (Table  3 ), although the Cochrane Database review failed to conclude what combination was best. 
+30
+About 20% of patients do not attain complete response with EMA‐CO therapy but most can be salvaged with further therapy; the overall survival rates for patients with high‐risk GTN are now running as high as 95%. A number of adverse features that predict poorer outcomes, including liver and/or brain metastasis, 
+31
+, 
+32
+and the management of such patients together with salvage therapies are discussed below. TABLE 3 EMA‐CO (etoposide, methotrexate, actinomycin D, cyclophosphamide, vincristine) chemotherapy Regimens Regimen 1 Day 1 Etoposide 100 mg/m2 intravenous infusion over 30 min Actinomycin D 0.5 mg intravenous bolus Methotrexate 
+100 mg/m2 intravenous bolus 
+200 mg/m2 intravenous infusion over 12 h 
+Day 2 Etoposide 100 mg/m2 intravenous infusion over 30 min Actinomycin‐D 0.5 mg intravenous bolus Folinic acid rescue 15 mg intramuscularly or orally every 12 h for four doses (starting 24 h after beginning the methotrexate infusion) Regimen 2 Day 8 Vincristine 1 mg/m2 intravenous bolus (maximum 2 mg) Cyclophosphamide 600 mg/m2 intravenous infusion over 30 min 
+The two regimens alternate each week
+5.3.3. 
+## Ultra high‐risk gestational trophoblastic neoplasia and salvage therapy
+Among the high‐risk group as defined by FIGO staging and classification, a subgroup with score of 13 or greater, as well as patients with liver, brain, or extensive metastases, do poorly when treated with first‐line multiple agent chemotherapy. Similar findings have been reported by others. 
+33
+For those with massive disease, starting with standard chemotherapy may cause sudden tumor collapse with severe bleeding, metabolic acidosis, myelosuppression, septicemia, and multiple organ failure, any or all of which can result in early death. To avoid this, the use of initial gentle rather than full‐dose chemotherapy seems logical. Indeed, induction etoposide 100 mg/m2 and cisplatin 20 mg/m2 on days 1 and 2, repeated weekly for 1−3 weeks before starting normal chemotherapy, appears to have eliminated early deaths in one series, 
+34
+with promising results now reported by others. 
+33
+For those patients with liver metastases, with or without brain metastases, or a very high‐risk score, EP (etoposide and platinum)/EMA or another more intensive chemotherapy regimen (Box 4 ), rather than EMA‐CO, may yield a better response and outcome. 
+31
+For such high‐risk patients, a longer consolidation with four cycles of chemotherapy should be considered. Box 4 
+## Salvage therapies
+In patients with brain metastases, an increase in the methotrexate infusion to 1 g/m2 will help the drug cross the blood–brain barrier and intrathecal methotrexate 12.5 mg may be used in some centers. This can be given at the time of CO when EMA‐CO is used, or with the EP in the EP/EMA regimen. Some centers may give whole brain radiotherapy 3000 cGy in 200 cGy daily fractions concurrent with chemotherapy or use stereotactic or gamma knife radiation to treat existing or residual brain metastases after chemotherapy. 
+35
+Patients with resistance to EMA‐CO are mostly salvaged with paclitaxel and etoposide alternating with paclitaxel and cisplatin (TE/TP) or with EP/EMA. In China, the 5FU‐based FAEV regimen is also an effective salvage treatment. When there is resistance to EP/EMA or TE/TP, options include a number of other standard or high‐dose chemotherapy regimens with autologous peripheral stem cell support 
+36
+(Box 4 ). Recent work suggests that checkpoint immunotherapies such as pembrolizumab may also save women and spare them the toxicity of high‐dose chemotherapy. 
+37
+Finally, surgical salvage should not be overlooked. 5.4. 
+## Role of surgery
+Surgery may have an important role in the management of GTN. Hysterectomy can be considered in uncontrolled uterine bleeding, although it can often be avoided with the use of uterine artery embolization. Minimally invasive versus open abdominal hysterectomy in patients with GTD appears to have comparable oncologic outcomes with less blood loss and shorter hospital stay. 
+5
+Laparotomy may be needed to stop bleeding in organs such as the liver, gastrointestinal tract, kidneys, and spleen. Neurosurgery is needed if there is bleeding into the brain or increased intracranial pressure. The resection of an isolated drug‐resistant tumor may also be curative. 
+4
+, 
+13
+5.5. 
+## Role of radiotherapy
+Radiotherapy has a limited role in GTN, except in treatment of brain metastasis, although its efficacy compared with intrathecal methotrexate is controversial. 
+4
+, 
+13
+5.6. 
+## PSTT/ETT
+Both PSTT and ETT are less chemosensitive than choriocarcinoma. Hysterectomy is the primary mode of treatment in most cases and surgery also plays an important role in metastatic disease such as resection of solitary lung metastasis. If fertility preservation is desired, especially in a localized lesion, conservative management such as uterine curettage, hysteroscopic resection, and chemotherapy may be considered. 
+38
+Fertility preservation is not suitable in diffuse lesions. In advanced stage, EP‐EMA or TE/TP can be considered. Interval from antecedent pregnancy of more than 48 months and/or Stage IV disease appear to be the most significant adverse prognostic factors. Such individuals require additional experimental therapies. 
+39
+5.7. 
+## Follow‐up
+After treatment of a GTN, follow‐up hCG monitoring every month for at least 12 months is essential for surveillance of relapse. Reliable contraception must be used throughout this period. Future fertility, pregnancy, and offspring are not affected, although psychosocial and sexual counseling may be needed for some patients. 6. 
+## ESTABLISHMENT OF A (NATIONAL) GTD CENTER
+Centralized care is needed for optimal management of a rare disease like GTD. Without some type of centralization, treatment decisions will be inconsistent. Centralized management can vary from only central hCG monitoring with given treatment advice to complete patient referral to the center. Creating a center is not easy and requires considerable time and dedication. It starts with sharing the idea with colleagues and promoting it at national meetings. Make sure you have support from the national obstetrics and gynecology governing body. Create a multidisciplinary team of gynecology, gynecological oncology, medical oncology, pathology, midwives, nurses, and the hCG laboratory. Work with a clear model of care. Create a clinical guideline, create a database, develop a website, and make sure you are using a proper hCG assay system. Establish a connection with other centers through the international societies: the International Society for the Study for Trophoblastic Diseases (ISSTD) or the European Organisation for Treatment of Trophoblastic Diseases (EOTTD). Try to establish central pathology review for the whole region. Some form of annual funding will be needed for the center to develop and maintain a database, website, patient information, reading material, and nursing staff, and to allow presentations at national meetings. 
+## AUTHOR CONTRIBUTIONS
+Each author contributed to writing different sections of the article as well as critical appraisal of the whole article. 
+## CONFLICTS OF INTEREST
+The authors have no conflicts of interest to declare. 
+## ACKNOWLEDGMENTS
+This chapter updates the information published in the FIGO Cancer Report 2018 (Ngan HY, Seckl MJ, Berkowitz RS, Xiang Y, Golfier F, Sekharan PK, Lurain JR, Massuger L. Update on the diagnosis and management of gestational trophoblastic disease. Int J Gynecol Obstet. 2018;143 Suppl 2:79–85). 
+Ngan HYS, Seckl MJ, Berkowitz RS, et al. Diagnosis and management of gestational trophoblastic disease: 2021 update. Int J Gynecol Obstet. 2021;155(Suppl. 1):86–93. 10.1002/ijgo.13877
+FIGO CANCER REPORT 2021 

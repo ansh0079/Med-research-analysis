@@ -1,0 +1,107 @@
+[
+  {
+    "type": "multiple_choice",
+    "questionType": "recall",
+    "question": "What is the mainstay of treatment for most early-stage anal squamous-cell cancers in this review?",
+    "options": {
+      "A": "Chemoradiation",
+      "B": "Immediate abdominoperineal resection for every stage",
+      "C": "Immunotherapy alone",
+      "D": "Observation",
+      "E": "Hormone therapy"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "Chemoradiation",
+    "explanation": "The review states that chemoradiation remains the mainstay for most patients with early-stage disease [1].",
+    "difficulty": "easy",
+    "sourceArticle": "Anal Cancer: The Past, Present and Future",
+    "sourceReference": "PMID 36975459",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "clinical_application",
+    "question": "Persistent local disease after chemoradiation is treated with:",
+    "options": {
+      "A": "Salvage surgery",
+      "B": "A second cancer vaccine only",
+      "C": "No further treatment",
+      "D": "Thyroidectomy",
+      "E": "Dialysis"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "Salvage surgery",
+    "explanation": "Patients with persistent disease or recurrence following chemoradiation are treated with salvage surgery [1].",
+    "difficulty": "medium",
+    "sourceArticle": "Anal Cancer: The Past, Present and Future",
+    "sourceReference": "PMID 36975459",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "recall",
+    "question": "What share of anal cancers does the review attribute to HPV?",
+    "options": {
+      "A": "80–85%, mostly HPV-16",
+      "B": "Under 10%",
+      "C": "Only HPV-6",
+      "D": "None",
+      "E": "HPV-18 only"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "80–85%, mostly HPV-16",
+    "explanation": "HPV is a key risk factor in 80–85% of anal cancer cases, and most are associated with HPV-16 [1].",
+    "difficulty": "medium",
+    "sourceArticle": "Anal Cancer: The Past, Present and Future",
+    "sourceReference": "PMID 36975459",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "clinical_application",
+    "question": "Metastatic anal cancer is primarily treated with:",
+    "options": {
+      "A": "Systemic therapy",
+      "B": "Local excision alone",
+      "C": "Observation",
+      "D": "Radioiodine",
+      "E": "Topical steroid"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "Systemic therapy",
+    "explanation": "Systemic therapy is the primary treatment for patients with metastatic disease [1].",
+    "difficulty": "easy",
+    "sourceArticle": "Anal Cancer: The Past, Present and Future",
+    "sourceReference": "PMID 36975459",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "recall",
+    "question": "Anal cancer accounts for about what fraction of gastrointestinal malignancies?",
+    "options": {
+      "A": "About 2%",
+      "B": "About 40%",
+      "C": "About 70%",
+      "D": "The most common GI cancer",
+      "E": "Under 0.01% with a falling incidence"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "About 2%",
+    "explanation": "The review says anal cancer accounts for about 2% of all gastrointestinal tract malignancies, and the incidence of anal squamous-cell cancer has been increasing [1].",
+    "difficulty": "easy",
+    "sourceArticle": "Anal Cancer: The Past, Present and Future",
+    "sourceReference": "PMID 36975459",
+    "sourceIndices": [
+      1
+    ]
+  }
+]

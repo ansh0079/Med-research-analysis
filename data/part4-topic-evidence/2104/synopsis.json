@@ -1,0 +1,29 @@
+{
+  "takeaway": "If type 2 diabetes coexists with both cardiovascular disease and chronic kidney disease, the panel makes a weak recommendation for a GLP-1 receptor agonist and a strong recommendation for an SGLT2 inhibitor [1].",
+  "clinicalQuestion": "When should a GLP-1 receptor agonist be started for cardiovascular and kidney risk in type 2 diabetes?",
+  "background": "The panel moved beyond glucose targets because trials showed atherosclerotic and kidney benefit independent of glucose lowering [1].",
+  "studyDesign": "BMJ Rapid Recommendation using GRADE, linked to a network meta-analysis of 764 trials.",
+  "population": "Adults with type 2 diabetes, stratified by cardiovascular and kidney risk.",
+  "intervention": "Starting an SGLT2 inhibitor or a GLP-1 receptor agonist.",
+  "comparator": "Usual care, and each drug class against the other.",
+  "primaryOutcome": "Death, myocardial infarction, stroke, heart-failure hospitalisation, and end-stage kidney disease.",
+  "mainFindings": "Three or fewer cardiovascular risk factors and no established CVD or CKD: weak recommendation against starting either class. More than three risk factors without established disease: weak for an SGLT2 inhibitor and weak against a GLP-1 receptor agonist. Established CVD or CKD: weak for both. Established CVD and CKD: strong for an SGLT2 inhibitor and weak for a GLP-1 receptor agonist. For people committed to further risk reduction, weak recommendation for an SGLT2 inhibitor rather than a GLP-1 receptor agonist. The linked evidence found both classes generally reduce overall death, myocardial infarction, and end-stage kidney disease or kidney failure (moderate to high certainty). Absolute benefit varied from 5 fewer to 48 fewer deaths per 1,000 treated over five years from lowest to highest risk [1].",
+  "clinicalMeaning": "A GLP-1 receptor agonist is not the default in low-risk type 2 diabetes. It becomes a weak recommendation once CVD or CKD is established, including when both are present [1].",
+  "limitations": "The stored app text is the guideline summary, not the full evidence profiles. Most GLP-1 recommendations are weak. The strong recommendation in combined CVD and CKD is for the SGLT2 inhibitor [1].",
+  "bottomLine": "Offer a GLP-1 receptor agonist as a weak recommendation when CVD or CKD is established; make the strong recommendation in combined disease for the SGLT2 inhibitor [1].",
+  "practiceImplication": "Stratify risk before starting either drug. Do not treat the two classes as interchangeable when the patient wants the larger cardiorenal benefit [1].",
+  "safetyOutcomes": [
+    "The summary says the drugs have different effects on stroke, heart-failure hospitalisation, and adverse events across subgroups, without listing those rates in the stored text."
+  ],
+  "trustRating": "MODERATE",
+  "trustRationale": "Trustworthy GRADE panel, but the stored text is the summary rather than the full linked review.",
+  "quizFocusPoints": [
+    "weak GLP-1 recommendation once CVD or CKD exists",
+    "strong SGLT2 recommendation only when both exist",
+    "absolute deaths from 5 to 48 per 1000"
+  ],
+  "whatNotToOverclaim": [
+    "Do not call the GLP-1 recommendation strong.",
+    "Do not invent trial hazard ratios that are not in the stored summary."
+  ]
+}

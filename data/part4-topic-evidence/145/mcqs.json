@@ -1,0 +1,107 @@
+[
+  {
+    "type": "multiple_choice",
+    "questionType": "guideline",
+    "question": "What share of cervical carcinomas does ESMO describe as HPV-independent?",
+    "options": {
+      "A": "10–15%",
+      "B": "None",
+      "C": "About 70%",
+      "D": "About 95%",
+      "E": "All adenocarcinomas"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "10–15%",
+    "explanation": "The vast majority are HPV-associated, whereas 10–15% are HPV-independent [1].",
+    "difficulty": "easy",
+    "sourceArticle": "Cervical cancer: ESMO Clinical Practice Guideline for diagnosis, treatment and follow-up",
+    "sourceReference": "PMID 42914498",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "recall",
+    "question": "Squamous-cell carcinoma accounts for approximately:",
+    "options": {
+      "A": "70–80% of cervical cancers",
+      "B": "5%",
+      "C": "20–25%",
+      "D": "All cervical cancers",
+      "E": "Only HPV-independent tumours"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "70–80% of cervical cancers",
+    "explanation": "Squamous-cell carcinoma accounts for 70–80% and adenocarcinoma for 20–25% [1].",
+    "difficulty": "easy",
+    "sourceArticle": "Cervical cancer: ESMO Clinical Practice Guideline for diagnosis, treatment and follow-up",
+    "sourceReference": "PMID 42914498",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "guideline",
+    "question": "When does ESMO recommend PD-L1 combined positive score?",
+    "options": {
+      "A": "When it has therapeutic implications, level [I, A]",
+      "B": "Never",
+      "C": "Only after recurrence in the brain",
+      "D": "Instead of histology",
+      "E": "Only in pregnancy"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "When it has therapeutic implications, level [I, A]",
+    "explanation": "Assessing PD-L1 expression by combined positive score is recommended when it has therapeutic implications, graded [I, A] [1].",
+    "difficulty": "medium",
+    "sourceArticle": "Cervical cancer: ESMO Clinical Practice Guideline for diagnosis, treatment and follow-up",
+    "sourceReference": "PMID 42914498",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "guideline",
+    "question": "How should a retrieved lymph node be submitted?",
+    "options": {
+      "A": "The whole node in 2 mm sections [III, A]",
+      "B": "A single scrape",
+      "C": "Cytology only",
+      "D": "It should be discarded if under 1 cm",
+      "E": "Frozen section of fat only"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "The whole node in 2 mm sections [III, A]",
+    "explanation": "Total submission of the lymph node in 2 mm sections into paraffin blocks is recommended [III, A] [1].",
+    "difficulty": "medium",
+    "sourceArticle": "Cervical cancer: ESMO Clinical Practice Guideline for diagnosis, treatment and follow-up",
+    "sourceReference": "PMID 42914498",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "trial_interpretation",
+    "question": "PET-CT sensitivity for para-aortic nodes in locally advanced disease is:",
+    "options": {
+      "A": "0.40 (95% CI 0.18–0.66)",
+      "B": "0.99",
+      "C": "1.00",
+      "D": "0.10 with specificity 0.10",
+      "E": "Not stated"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "0.40 (95% CI 0.18–0.66)",
+    "explanation": "Sensitivity for para-aortic nodes is 0.40 (95% CI 0.18–0.66) and specificity 0.93 (0.91–0.95). Pelvic-node sensitivity is higher, 0.88, but with a wide confidence interval [1].",
+    "difficulty": "hard",
+    "sourceArticle": "Cervical cancer: ESMO Clinical Practice Guideline for diagnosis, treatment and follow-up",
+    "sourceReference": "PMID 42914498",
+    "sourceIndices": [
+      1
+    ]
+  }
+]

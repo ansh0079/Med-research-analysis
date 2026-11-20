@@ -1,0 +1,28 @@
+{
+  "takeaway": "Meningioma is the most common intracranial tumour. MRI can suggest it, including as an incidental finding, but WHO diagnosis needs tissue, and some patients, including older ones, are watched [1].",
+  "clinicalQuestion": "How is a suspected meningioma diagnosed and when is surgery required?",
+  "background": "Few controlled trials exist, so practice has varied. Molecular data and the 2021 WHO classification prompted an EANO update [1].",
+  "studyDesign": "EANO evidence-based recommendation update.",
+  "setting": "Neuro-oncology practice.",
+  "population": "Patients with suspected or confirmed meningioma.",
+  "intervention": "MRI diagnosis, watch-and-scan in selected patients, and surgery when tissue or tumour control is needed.",
+  "comparator": "Operating on every incidental lesion.",
+  "primaryOutcome": "A secure diagnosis and an appropriate first plan.",
+  "mainFindings": "Meningiomas are the most common intracranial tumours. A provisional diagnosis is typically made on MRI and may be incidental, so a significant proportion are found that way. Selected patients, including elderly patients, may be managed by watch-and-scan. Surgery, commonly aiming at gross total resection, is required for a definitive diagnosis according to the WHO classification. Extent of resection is still often described with the Simpson classification, but trials usually use gross total versus subtotal resection. Molecular profiling, including methylation, and the 2021 WHO classification now shape diagnosis. Fractionated radiotherapy is used when surgery will not deal with the tumour, and the timing and dose of radiotherapy remain controversial [1].",
+  "clinicalMeaning": "An incidental MRI lesion can be watched. Do not assign a WHO grade without tissue [1].",
+  "limitations": "Dose schedules and the exact age or size cut-off for observation are not copied beyond what this summary read [1].",
+  "bottomLine": "MRI suggests the diagnosis. Tissue confirms it. Watch-and-scan is a real option [1].",
+  "practiceImplication": "Discuss observation for a small incidental meningioma in an older patient, and reserve Simpson language for the operative note rather than for a trial endpoint [1].",
+  "safetyOutcomes": [],
+  "trustRating": "MODERATE",
+  "trustRationale": "Specialty guideline update. Numeric selection criteria for observation were not fully extracted, so they are not taught.",
+  "quizFocusPoints": [
+    "most common intracranial tumour",
+    "tissue for WHO grade",
+    "watch-and-scan"
+  ],
+  "whatNotToOverclaim": [
+    "Do not invent a radiation dose.",
+    "Do not say every incidental meningioma needs surgery."
+  ]
+}

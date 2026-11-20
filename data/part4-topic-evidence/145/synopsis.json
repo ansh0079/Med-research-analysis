@@ -1,0 +1,26 @@
+{
+  "takeaway": "Most cervical cancers are HPV-associated; squamous cell carcinoma is 70–80%. Assess PD-L1 by combined positive score when it would change treatment, and submit all lymph-node tissue in 2 mm sections [1].",
+  "clinicalQuestion": "How does the ESMO cervical-cancer guideline frame cause, histology, and key pathology or biomarker steps?",
+  "background": "ESMO published an updated clinical practice guideline for diagnosis, treatment, and follow-up [1].",
+  "studyDesign": "ESMO clinical practice guideline with graded recommendations.",
+  "population": "People with cervical cancer.",
+  "intervention": "HPV-aware diagnosis, PD-L1 testing when actionable, and complete lymph-node submission.",
+  "comparator": null,
+  "primaryOutcome": "Diagnostic and staging recommendations that direct treatment.",
+  "mainFindings": "The vast majority of cervical carcinomas are HPV-associated, whereas 10–15% are HPV-independent. Squamous-cell carcinoma accounts for 70–80% and adenocarcinoma for 20–25%. Total submission of the lymph node in 2 mm sections is recommended [III, A]. Assessing PD-L1 by combined positive score is recommended when it has therapeutic implications [I, A]. In locally advanced disease, PET-CT sensitivity for pelvic nodes is 0.88 (95% CI 0.40–0.99) and specificity 0.93 (0.85–0.97); for para-aortic nodes sensitivity is 0.40 (0.18–0.66) and specificity 0.93 (0.91–0.95) [1].",
+  "clinicalMeaning": "Do not assume every cervical cancer is HPV-positive, and do not skip PD-L1 when the result would change systemic therapy [1].",
+  "limitations": "Only recommendations that were fully readable in the extracted text are used. Drug regimens are not invented from headings [1].",
+  "bottomLine": "Record HPV status and histology, submit nodes at 2 mm, and order PD-L1 CPS when it will change treatment [1].",
+  "practiceImplication": "Use PET-CT knowing pelvic-node sensitivity is high but imprecise, and para-aortic sensitivity is only 0.40 [1].",
+  "safetyOutcomes": [],
+  "trustRating": "HIGH",
+  "trustRationale": "Current ESMO guideline with explicit evidence levels.",
+  "quizFocusPoints": [
+    "10–15% HPV-independent",
+    "PD-L1 CPS [I, A]",
+    "para-aortic PET sensitivity 0.40"
+  ],
+  "whatNotToOverclaim": [
+    "A self-sampling HPV screening paper is not the treatment guideline."
+  ]
+}

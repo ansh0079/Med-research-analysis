@@ -1,0 +1,29 @@
+{
+  "takeaway": "Do not plasma-exchange an asymptomatic high viscosity. Bleeding or neurologic symptoms are the indication, and treatment need not wait for the laboratory result if the picture is typical [1].",
+  "clinicalQuestion": "Who with a high serum viscosity needs plasma exchange?",
+  "background": "Hyperviscosity is a rare complication of monoclonal or polyclonal immunoglobulin excess. Waldenström described bleeding, visual change, and neurologic dysfunction [1].",
+  "studyDesign": "Narrative clinical review.",
+  "setting": "Hospital care of paraprotein-related hyperviscosity.",
+  "population": "Patients with monoclonal or polyclonal hyperviscosity, including Waldenström macroglobulinaemia and myeloma.",
+  "intervention": "Plasma exchange for symptomatic disease; phlebotomy for extreme red-cell elevation.",
+  "comparator": "Observation when viscosity is high but the patient has no hyperviscosity symptoms.",
+  "primaryOutcome": "Symptom relief and a safe decision to exchange.",
+  "mainFindings": "Asymptomatic patients with a high serum viscosity do not need plasma exchange, and most already have another reason for treatment. For bleeding or central-nervous-system manifestations, plasma exchange is the therapy of choice and is relatively safe. A viscosity result is not required before starting if suspicion is high and the presentation is typical, but a sample should be sent. Normal serum viscosity is at or below 1.5 centipoise. IgM raises viscosity at much lower concentrations than IgG: the median IgM associated with hyperviscosity in Waldenström macroglobulinaemia in the UCSF series was about 5000 mg/dL, whereas monomeric IgG often needs more than 10000 mg/dL. There is no single viscosity number that should trigger prophylactic exchange in a symptom-free patient. Rituximab can cause an IgM flare in 22% of newly diagnosed patients and that flare can be symptomatic; some regimens therefore withhold rituximab until after the first cycle. In a registry, adverse events occurred in 5.6% of plasma-exchange procedures and were severe in 0.5% [1].",
+  "clinicalMeaning": "Treat the syndrome, not the number. Send the viscosity, but do not delay exchange for epistaxis, visual change, or somnolence [1].",
+  "limitations": "The 5000 mg/dL figure is one centre's median, not a treatment threshold [1].",
+  "bottomLine": "Symptomatic hyperviscosity is treated with plasma exchange. An asymptomatic number is not [1].",
+  "practiceImplication": "Delay rituximab in a new Waldenström patient if the IgM is high enough to flare into symptoms [1].",
+  "safetyOutcomes": [
+    "Procedure adverse events 5.6%, severe 0.5%. Citrate paraesthesias and hypotension are among the reported events."
+  ],
+  "trustRating": "MODERATE",
+  "trustRationale": "Expert open review in Blood with explicit thresholds and a registry safety figure.",
+  "quizFocusPoints": [
+    "no exchange if asymptomatic",
+    "do not wait for the result",
+    "rituximab flare 22%"
+  ],
+  "whatNotToOverclaim": [
+    "Do not set 5000 mg/dL as an automatic exchange trigger."
+  ]
+}

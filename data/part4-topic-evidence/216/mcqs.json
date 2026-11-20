@@ -1,0 +1,107 @@
+[
+  {
+    "type": "multiple_choice",
+    "questionType": "clinical_application",
+    "question": "SVCS is a medical emergency when it is associated with:",
+    "options": {
+      "A": "Laryngeal or cerebral oedema",
+      "B": "Mild facial plethora alone",
+      "C": "A normal chest radiograph",
+      "D": "An old pacemaker lead and no symptoms",
+      "E": "Unilateral leg swelling"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "Laryngeal or cerebral oedema",
+    "explanation": "The review states that SVCS is a medical emergency if associated with laryngeal or cerebral oedema [1].",
+    "difficulty": "easy",
+    "sourceArticle": "Superior vena cava syndrome: etiology and management review",
+    "sourceReference": null,
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "clinical_application",
+    "question": "Non-malignant SVCS from thrombus or infection is managed with:",
+    "options": {
+      "A": "Anticoagulation or antibiotics, respectively",
+      "B": "Immediate radiotherapy in every case",
+      "C": "Chemotherapy",
+      "D": "Observation for cerebral oedema",
+      "E": "Thyroidectomy"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "Anticoagulation or antibiotics, respectively",
+    "explanation": "Infectious causes are managed with antibiotics and thrombus with anticoagulation [1].",
+    "difficulty": "medium",
+    "sourceArticle": "Superior vena cava syndrome: etiology and management review",
+    "sourceReference": null,
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "recall",
+    "question": "What advantage does percutaneous stenting add besides rapid relief?",
+    "options": {
+      "A": "It does not alter local tissue, so a biopsy can still be obtained",
+      "B": "It cures the underlying cancer",
+      "C": "It replaces the need for any diagnosis",
+      "D": "It is used only for infection",
+      "E": "It makes later radiotherapy impossible"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "It does not alter local tissue, so a biopsy can still be obtained",
+    "explanation": "Stenting does not alter local tissue and therefore allows a subsequent biopsy and histologic diagnosis [1].",
+    "difficulty": "medium",
+    "sourceArticle": "Superior vena cava syndrome: etiology and management review",
+    "sourceReference": null,
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "recall",
+    "question": "Which treatments can address the malignant cause itself with curative intent?",
+    "options": {
+      "A": "Radiotherapy and chemotherapy",
+      "B": "Stenting alone",
+      "C": "Antibiotics",
+      "D": "Anticoagulation",
+      "E": "Diuretics"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "Radiotherapy and chemotherapy",
+    "explanation": "Radiotherapy and chemotherapy are still the only modalities that can provide curative treatment for an underlying malignant cause [1].",
+    "difficulty": "medium",
+    "sourceArticle": "Superior vena cava syndrome: etiology and management review",
+    "sourceReference": null,
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "pitfall",
+    "question": "In a stable patient, what should precede emergent therapy?",
+    "options": {
+      "A": "Accurate diagnosis and biopsy",
+      "B": "Radiotherapy the same hour without tissue",
+      "C": "A stent in every stable patient before any thought of histology",
+      "D": "Nothing, because SVCS is never biopsied",
+      "E": "Empirical antifungal therapy"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "Accurate diagnosis and biopsy",
+    "explanation": "Accurate diagnosis and biopsy should precede emergent therapeutic intervention in most cases. Immediate stenting followed by radiotherapy is for laryngeal or cerebral oedema [1].",
+    "difficulty": "hard",
+    "sourceArticle": "Superior vena cava syndrome: etiology and management review",
+    "sourceReference": null,
+    "sourceIndices": [
+      1
+    ]
+  }
+]

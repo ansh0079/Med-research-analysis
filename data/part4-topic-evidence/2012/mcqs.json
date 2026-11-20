@@ -1,0 +1,107 @@
+[
+  {
+    "type": "multiple_choice",
+    "questionType": "trial_interpretation",
+    "question": "In the CTT individual-participant meta-analysis, what did statin therapy do to cancer incidence across ages?",
+    "options": {
+      "A": "It increased cancer at every age",
+      "B": "It had no effect at any age on cancer incidence or cancer death",
+      "C": "It prevented all cancers over age 75",
+      "D": "It increased cancer only under age 65",
+      "E": "Cancer was not recorded"
+    },
+    "correctAnswer": "B",
+    "correctAnswerText": "It had no effect at any age on cancer incidence or cancer death",
+    "explanation": "The authors report no effect at any age on non-vascular mortality, cancer death, or cancer incidence [1].",
+    "difficulty": "medium",
+    "sourceArticle": "Efficacy and safety of statin therapy in older people: a meta-analysis of individual participant data from 28 randomised controlled trials",
+    "sourceReference": "PMID 30712900",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "trial_interpretation",
+    "question": "What proportional reduction in major vascular events was seen per 1.0 mmol/L lower LDL cholesterol?",
+    "options": {
+      "A": "5% (RR 0.95)",
+      "B": "21% (RR 0.79, 95% CI 0.77–0.81)",
+      "C": "50% (RR 0.50)",
+      "D": "No reduction over age 65",
+      "E": "An increase in events"
+    },
+    "correctAnswer": "B",
+    "correctAnswerText": "21% (RR 0.79, 95% CI 0.77–0.81)",
+    "explanation": "Overall, statin therapy or a more intensive regimen produced a 21% proportional reduction in major vascular events per 1.0 mmol/L LDL reduction (RR 0.79, 95% CI 0.77–0.81) [1].",
+    "difficulty": "medium",
+    "sourceArticle": "Efficacy and safety of statin therapy in older people: a meta-analysis of individual participant data from 28 randomised controlled trials",
+    "sourceReference": "PMID 30712900",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "recall",
+    "question": "How many participants were older than 75 at randomisation?",
+    "options": {
+      "A": "None",
+      "B": "14,483 (8% of 186,854)",
+      "C": "Half the cohort",
+      "D": "Only patients on dialysis",
+      "E": "1,000"
+    },
+    "correctAnswer": "B",
+    "correctAnswerText": "14,483 (8% of 186,854)",
+    "explanation": "14,483 (8%) of 186,854 participants in the 28 trials were older than 75. Median follow-up was 4.9 years [1].",
+    "difficulty": "easy",
+    "sourceArticle": "Efficacy and safety of statin therapy in older people: a meta-analysis of individual participant data from 28 randomised controlled trials",
+    "sourceReference": "PMID 30712900",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "clinical_application",
+    "question": "Where do the authors say direct evidence of benefit is more limited?",
+    "options": {
+      "A": "Secondary prevention under age 50",
+      "B": "Patients older than 75 without known occlusive vascular disease",
+      "C": "Anyone with a prior myocardial infarction",
+      "D": "People with LDL above 5 mmol/L",
+      "E": "Only women"
+    },
+    "correctAnswer": "B",
+    "correctAnswerText": "Patients older than 75 without known occlusive vascular disease",
+    "explanation": "The interpretation states there is less direct evidence of benefit among patients older than 75 who do not already have occlusive vascular disease [1].",
+    "difficulty": "hard",
+    "sourceArticle": "Efficacy and safety of statin therapy in older people: a meta-analysis of individual participant data from 28 randomised controlled trials",
+    "sourceReference": "PMID 30712900",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "pitfall",
+    "question": "Which safety statement is supported by this meta-analysis?",
+    "options": {
+      "A": "Statins raise non-vascular mortality after age 75",
+      "B": "There was no adverse effect on cancer or non-vascular mortality in any age group",
+      "C": "Statins cause cancer in 10% of older adults",
+      "D": "Myopathy occurred in half of participants over 75",
+      "E": "The trials excluded everyone over 70"
+    },
+    "correctAnswer": "B",
+    "correctAnswerText": "There was no adverse effect on cancer or non-vascular mortality in any age group",
+    "explanation": "Despite previous concerns, the collaboration found no adverse effects on cancer or non-vascular mortality in any age group [1].",
+    "difficulty": "medium",
+    "sourceArticle": "Efficacy and safety of statin therapy in older people: a meta-analysis of individual participant data from 28 randomised controlled trials",
+    "sourceReference": "PMID 30712900",
+    "sourceIndices": [
+      1
+    ]
+  }
+]

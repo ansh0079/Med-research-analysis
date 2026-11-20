@@ -1,0 +1,21 @@
+{
+  "catalogueId": "1105",
+  "topic": "Renal Cell Carcinoma",
+  "specialty": "Oncology",
+  "decision": "downloaded open source",
+  "rejected": [],
+  "unresolvedReason": null,
+  "source": {
+    "title": "Renal Cell Carcinoma",
+    "year": 2024,
+    "pmid": "39196544",
+    "pmcid": "PMC11790279",
+    "doi": "10.1001/jama.2024.12848",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11790279/",
+    "sourceBody": "JAMA",
+    "type": "review",
+    "whyItFits": "A 2024 JAMA review of histology, incidental detection, partial nephrectomy, and immune-combination therapy for metastatic disease."
+  },
+  "evidenceTextFile": "data/part4-topic-evidence/1105/evidence.txt",
+  "evidenceChars": 37536
+}

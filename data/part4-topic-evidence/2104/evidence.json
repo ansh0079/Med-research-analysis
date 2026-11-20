@@ -1,0 +1,24 @@
+{
+  "catalogueId": "2104",
+  "topic": "type 2 diabetes GLP-1 receptor agonist cardiovascular outcomes chronic kidney disease",
+  "specialty": null,
+  "decision": "in-app document",
+  "rejected": [
+    "The comparative-effectiveness file stored under a GLP-1 title is a different, older glycaemic-control paper and was not used."
+  ],
+  "unresolvedReason": null,
+  "source": {
+    "title": "SGLT-2 inhibitors or GLP-1 receptor agonists for adults with type 2 diabetes: a clinical practice guideline",
+    "year": 2021,
+    "pmid": "33975892",
+    "pmcid": null,
+    "doi": "10.1136/bmj.n1091",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/33975892/",
+    "sourceBody": "BMJ",
+    "type": "clinical_practice_guideline",
+    "whyItFits": "The stored guideline text gives risk-stratified recommendations for starting a GLP-1 receptor agonist when cardiovascular disease, chronic kidney disease, or both are already present.",
+    "storedIn": "data/question-repair-source-import.json",
+    "fullTextSource": "bibliographic_abstract"
+  },
+  "storedIn": "data/question-repair-source-import.json"
+}

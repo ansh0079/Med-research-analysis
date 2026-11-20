@@ -1,0 +1,21 @@
+{
+  "catalogueId": "2182",
+  "topic": "Tumour Lysis Syndrome in Oncology",
+  "specialty": "Oncology",
+  "decision": "downloaded open source",
+  "rejected": [],
+  "unresolvedReason": null,
+  "source": {
+    "title": "Tumor Lysis Syndrome in Patients with Hematological Malignancies",
+    "year": 2017,
+    "pmid": "29230244",
+    "pmcid": "PMC5688348",
+    "doi": "10.1155/2017/9684909",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5688348/",
+    "sourceBody": "Journal of Oncology",
+    "type": "review",
+    "whyItFits": "Defines laboratory and clinical tumour lysis and the split between allopurinol and rasburicase."
+  },
+  "evidenceTextFile": "data/part4-topic-evidence/2182/evidence.txt",
+  "evidenceChars": 33488
+}

@@ -1,0 +1,27 @@
+{
+  "takeaway": "The 2021 guideline suggests, rather than strongly recommends, at least 30 mL/kg of IV crystalloid within 3 hours, then dynamic measures instead of a fixed further target [1].",
+  "clinicalQuestion": "What fluid-resuscitation target do the sepsis guidelines actually set?",
+  "background": "Clinicians often remember 30 mL/kg as a hard target. The 2021 wording is a weak suggestion, and further fluid is not protocolised to a static number [1].",
+  "studyDesign": "Practice guideline.",
+  "population": "Adults with sepsis-induced hypoperfusion or septic shock, and adults with suspected sepsis for lactate.",
+  "intervention": "Initial crystalloid volume and later dynamic assessment.",
+  "comparator": "Unguided additional fluid or static targets.",
+  "primaryOutcome": "Recommendations on the initial resuscitation volume and on guiding further fluid.",
+  "mainFindings": "Suggest at least 30 mL/kg IV crystalloid within the first 3 hours (weak, low-quality). The 2016 document had recommended a minimum of 30 mL/kg of ideal body weight; the 2021 panel notes there are no prospective trials comparing different initial volumes. Suggest dynamic measures over physical examination or static parameters. Suggest measuring blood lactate (weak, low-quality), which is part of the Hour-1 bundle because lactate is associated with mortality [1].",
+  "clinicalMeaning": "30 mL/kg in 3 hours is the initial suggestion, not a licence to chase a static filling pressure afterwards [1].",
+  "limitations": "Low-quality evidence for the volume. Lactate is a suggested measurement, not itself a fluid-volume target with a numeric clearance goal in the sentences used here [1].",
+  "bottomLine": "Quote a weak suggestion of at least 30 mL/kg within 3 hours, then dynamic reassessment. Do not invent a central-venous-pressure target from this guideline [1].",
+  "practiceImplication": "Tell learners the strength of the recommendation, not only the number [1].",
+  "safetyOutcomes": [],
+  "trustRating": "HIGH",
+  "trustRationale": "The question is what the guideline says, and this is that guideline.",
+  "quizFocusPoints": [
+    "weak not strong",
+    "3-hour window",
+    "dynamic measures after the initial volume"
+  ],
+  "whatNotToOverclaim": [
+    "Do not add a lactate-clearance percentage the cited sentences do not state.",
+    "Do not cite the mislabelled 2012 file."
+  ]
+}

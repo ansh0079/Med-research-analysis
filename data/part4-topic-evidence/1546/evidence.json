@@ -1,0 +1,21 @@
+{
+  "catalogueId": "1546",
+  "topic": "T-Cell Lymphomas in Oncology",
+  "specialty": "Oncology",
+  "decision": "downloaded open source",
+  "rejected": [],
+  "unresolvedReason": null,
+  "source": {
+    "title": "From molecular pathogenesis to novel therapeutic approaches: a review of recent advances in the treatment of peripheral T-cell lymphomas",
+    "year": 2026,
+    "pmid": "42642781",
+    "pmcid": "PMC13508296",
+    "doi": "10.1186/s40364-026-00985-1",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC13508296/",
+    "sourceBody": "Biomarker Research",
+    "type": "review",
+    "whyItFits": "A current review of first-line CHOP, the ALK-positive exception, and brentuximab plus CHP for CD30-positive peripheral T-cell lymphoma."
+  },
+  "evidenceTextFile": "data/part4-topic-evidence/1546/evidence.txt",
+  "evidenceChars": 73930
+}

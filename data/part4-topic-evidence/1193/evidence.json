@@ -1,0 +1,21 @@
+{
+  "catalogueId": "1193",
+  "topic": "HPV-Related Oropharyngeal Cancer",
+  "specialty": "Oncology",
+  "decision": "downloaded open source",
+  "rejected": [],
+  "unresolvedReason": null,
+  "source": {
+    "title": "Human Papillomavirus and Survival of Patients with Oropharyngeal Cancer",
+    "year": 2010,
+    "pmid": "20530316",
+    "pmcid": "PMC2943767",
+    "doi": "10.1056/NEJMoa0912217",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC2943767/",
+    "sourceBody": "New England Journal of Medicine",
+    "type": "randomized_trial",
+    "whyItFits": "RTOG 0129 analysis showing that tumour HPV status independently predicts survival in oropharyngeal cancer, with the 3-year rates and adjusted hazard ratio."
+  },
+  "evidenceTextFile": "data/part4-topic-evidence/1193/evidence.txt",
+  "evidenceChars": 29572
+}

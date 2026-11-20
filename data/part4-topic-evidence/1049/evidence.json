@@ -1,0 +1,21 @@
+{
+  "catalogueId": "1049",
+  "topic": "Primary CNS Lymphoma",
+  "specialty": "Oncology",
+  "decision": "downloaded open source",
+  "rejected": [],
+  "unresolvedReason": null,
+  "source": {
+    "title": "EANO guidelines for primary CNS lymphoma in immunocompetent patients, with a section on immunosuppressed patients",
+    "year": 2021,
+    "pmid": null,
+    "pmcid": null,
+    "doi": null,
+    "url": null,
+    "sourceBody": "European Association of Neuro-Oncology",
+    "type": "clinical_practice_guideline",
+    "whyItFits": "The updated EANO PCNSL guideline names high-dose methotrexate as the key drug and autologous transplant as consolidation."
+  },
+  "evidenceTextFile": "data/part4-topic-evidence/1049/evidence.txt",
+  "evidenceChars": 63434
+}

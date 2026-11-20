@@ -1,0 +1,27 @@
+{
+  "takeaway": "Primary retroperitoneal sarcoma is managed by complete en bloc resection. Image-guided core biopsy is standard. After STRASS, routine neoadjuvant radiotherapy is not recommended [1].",
+  "clinicalQuestion": "What is the standard operation and the role of preoperative radiotherapy?",
+  "background": "Liposarcoma accounts for about half of retroperitoneal sarcomas. Leiomyosarcoma carries a higher risk of distant metastasis [1].",
+  "studyDesign": "Updated international consensus.",
+  "setting": "Specialist sarcoma surgery.",
+  "population": "Adults with primary retroperitoneal sarcoma.",
+  "intervention": "Percutaneous core biopsy and macroscopically complete en bloc resection.",
+  "comparator": "Routine neoadjuvant radiotherapy, tested in STRASS.",
+  "primaryOutcome": "Complete resection and avoidance of ineffective routine radiotherapy.",
+  "mainFindings": "Complete en bloc gross resection is the cornerstone. Surgery should produce one specimen containing the tumour and involved contiguous organs. Image-guided coaxial core needle biopsy, 14–18 gauge, is strongly recommended. Biopsy may occasionally be omitted if an expert judges the imaging pathognomonic, for example heterogeneous dedifferentiated or well-differentiated liposarcoma. STRASS compared preoperative radiotherapy plus surgery with surgery alone. On the primary endpoint of abdominal recurrence-free survival, routine neoadjuvant radiotherapy is not recommended [1].",
+  "clinicalMeaning": "Biopsy, then plan one en bloc specimen. Do not add preoperative radiotherapy as a routine [1].",
+  "limitations": "The consensus grades individual statements. This summary uses the resection, biopsy, and STRASS conclusions that were read in full [1].",
+  "bottomLine": "One complete specimen. Core biopsy unless imaging is pathognomonic. No routine neoadjuvant radiotherapy [1].",
+  "practiceImplication": "Refer before an unplanned open biopsy or a piecemeal resection [1].",
+  "safetyOutcomes": [],
+  "trustRating": "HIGH",
+  "trustRationale": "Updated specialist consensus citing a phase 3 radiotherapy trial.",
+  "quizFocusPoints": [
+    "en bloc resection",
+    "14–18 gauge core",
+    "STRASS no routine RT"
+  ],
+  "whatNotToOverclaim": [
+    "Do not say radiotherapy has no role in every subtype; the statement is against routine use."
+  ]
+}

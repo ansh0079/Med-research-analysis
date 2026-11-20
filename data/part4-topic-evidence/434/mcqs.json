@@ -1,0 +1,107 @@
+[
+  {
+    "type": "multiple_choice",
+    "questionType": "recall",
+    "question": "What five-year survival does the review give for pancreatic adenocarcinoma overall?",
+    "options": {
+      "A": "2–9%",
+      "B": "50–60%",
+      "C": "Over 90%",
+      "D": "The best of all cancers",
+      "E": "Survival is not stated"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "2–9%",
+    "explanation": "The review cites five-year survival of 2–9%, ranking last among cancer sites in its comparison [1].",
+    "difficulty": "easy",
+    "sourceArticle": "Review of pancreatic adenocarcinoma risk, diagnosis, treatment, and outcomes",
+    "sourceReference": null,
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "pitfall",
+    "question": "How should CA19-9 be used?",
+    "options": {
+      "A": "To monitor response and recurrence, not to screen asymptomatic people",
+      "B": "As a population screening test",
+      "C": "Instead of histology",
+      "D": "Only in prostate cancer",
+      "E": "It has no clinical use"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "To monitor response and recurrence, not to screen asymptomatic people",
+    "explanation": "The positive predictive value is too low for screening. The marker is appropriate for monitoring response and recurrence [1].",
+    "difficulty": "medium",
+    "sourceArticle": "Review of pancreatic adenocarcinoma risk, diagnosis, treatment, and outcomes",
+    "sourceReference": null,
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "trial_interpretation",
+    "question": "In CONKO-001, adjuvant gemcitabine changed median disease-free survival from:",
+    "options": {
+      "A": "6.7 months with surgery alone to 13.4 months",
+      "B": "13.4 months to 6.7 months",
+      "C": "No change",
+      "D": "2 months to 20 months",
+      "E": "The trial did not report disease-free survival"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "6.7 months with surgery alone to 13.4 months",
+    "explanation": "Median disease-free survival was 13.4 versus 6.7 months, with five-year survival 20.7% versus 10.4% [1].",
+    "difficulty": "hard",
+    "sourceArticle": "Review of pancreatic adenocarcinoma risk, diagnosis, treatment, and outcomes",
+    "sourceReference": null,
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "trial_interpretation",
+    "question": "In the metastatic trial cited, FOLFIRINOX versus gemcitabine gave median overall survival of:",
+    "options": {
+      "A": "11.1 versus 6.8 months (HR 0.57)",
+      "B": "6.8 versus 11.1 months",
+      "C": "24 versus 24 months",
+      "D": "A survival worsening with HR 1.8",
+      "E": "The trial was not randomised"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "11.1 versus 6.8 months (HR 0.57)",
+    "explanation": "Median overall survival was 11.1 months (95% CI 9.0–13.2) versus 6.8 months (5.5–7.6), HR 0.57 (95% CI 0.45–0.73) [1].",
+    "difficulty": "medium",
+    "sourceArticle": "Review of pancreatic adenocarcinoma risk, diagnosis, treatment, and outcomes",
+    "sourceReference": null,
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "pitfall",
+    "question": "What trade-off did FOLFIRINOX carry?",
+    "options": {
+      "A": "More adverse effects",
+      "B": "No added toxicity",
+      "C": "Less neuropathy by design",
+      "D": "It could not be given with fluorouracil",
+      "E": "It replaced surgery"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "More adverse effects",
+    "explanation": "The review notes an increased incidence of adverse effects with FOLFIRINOX [1].",
+    "difficulty": "easy",
+    "sourceArticle": "Review of pancreatic adenocarcinoma risk, diagnosis, treatment, and outcomes",
+    "sourceReference": null,
+    "sourceIndices": [
+      1
+    ]
+  }
+]

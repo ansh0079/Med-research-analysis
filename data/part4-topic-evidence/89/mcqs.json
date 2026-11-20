@@ -1,0 +1,107 @@
+[
+  {
+    "type": "multiple_choice",
+    "questionType": "pitfall",
+    "question": "In patients with known cancer, what causes most pericardial effusions?",
+    "options": {
+      "A": "Non-malignant disease, in almost two-thirds",
+      "B": "Always the cancer",
+      "C": "Always tuberculosis",
+      "D": "Always hypothyroidism",
+      "E": "Always a drug, with no other cause"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "Non-malignant disease, in almost two-thirds",
+    "explanation": "In almost two-thirds of patients with documented malignancy, the effusion is caused by non-malignant disease such as radiation, other therapies, or opportunistic infection [1].",
+    "difficulty": "medium",
+    "sourceArticle": "2015 ESC Guidelines for the diagnosis and management of pericardial diseases",
+    "sourceReference": "PMID 26320112",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "recall",
+    "question": "How is a malignant pericardial effusion proved?",
+    "options": {
+      "A": "Confirmation of malignant infiltration within the pericardium",
+      "B": "A history of cancer alone",
+      "C": "A large effusion on echo",
+      "D": "An elevated CRP",
+      "E": "Sinus tachycardia"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "Confirmation of malignant infiltration within the pericardium",
+    "explanation": "The diagnosis is based on confirmation of malignant infiltration within the pericardium [1].",
+    "difficulty": "easy",
+    "sourceArticle": "2015 ESC Guidelines for the diagnosis and management of pericardial diseases",
+    "sourceReference": "PMID 26320112",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "guideline",
+    "question": "For neoplastic effusion without tamponade, which triad does the guideline list?",
+    "options": {
+      "A": "Systemic anticancer therapy, pericardiocentesis, and intrapericardial cytostatic or sclerosing agents",
+      "B": "Observation only",
+      "C": "Pericardiectomy as the first step in every case",
+      "D": "Antibiotics alone",
+      "E": "Diuretics without drainage"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "Systemic anticancer therapy, pericardiocentesis, and intrapericardial cytostatic or sclerosing agents",
+    "explanation": "The guideline lists systemic antineoplastic treatment, pericardiocentesis to relieve symptoms and establish the diagnosis, and intrapericardial instillation to prevent recurrence [1].",
+    "difficulty": "medium",
+    "sourceArticle": "2015 ESC Guidelines for the diagnosis and management of pericardial diseases",
+    "sourceReference": "PMID 26320112",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "guideline",
+    "question": "Why drain every large pericardial effusion?",
+    "options": {
+      "A": "The recurrence rate is 40–70%",
+      "B": "Large effusions never recur",
+      "C": "Drainage cures the cancer",
+      "D": "The fluid is always chyle",
+      "E": "Guidelines advise against drainage"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "The recurrence rate is 40–70%",
+    "explanation": "Pericardial drainage is recommended in all patients with large effusions because of a high recurrence rate of 40–70% [1].",
+    "difficulty": "medium",
+    "sourceArticle": "2015 ESC Guidelines for the diagnosis and management of pericardial diseases",
+    "sourceReference": "PMID 26320112",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "clinical_application",
+    "question": "Malignant pericardial effusion can present as:",
+    "options": {
+      "A": "The first sign of cancer, with impending tamponade or constriction",
+      "B": "Only a tiny chronic effusion that never matters",
+      "C": "Only after twenty years of follow-up",
+      "D": "A disease confined to the myocardium",
+      "E": "Isolated hypertension"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "The first sign of cancer, with impending tamponade or constriction",
+    "explanation": "Malignant effusions may be the initial sign of malignant disease and may present with imminent tamponade or constriction [1].",
+    "difficulty": "easy",
+    "sourceArticle": "2015 ESC Guidelines for the diagnosis and management of pericardial diseases",
+    "sourceReference": "PMID 26320112",
+    "sourceIndices": [
+      1
+    ]
+  }
+]

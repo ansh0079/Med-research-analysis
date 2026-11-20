@@ -1,0 +1,107 @@
+[
+  {
+    "type": "multiple_choice",
+    "questionType": "guideline",
+    "question": "An adult with type 2 diabetes has established cardiovascular disease and chronic kidney disease. What does the BMJ panel recommend?",
+    "options": {
+      "A": "Strong recommendation for an SGLT2 inhibitor and weak recommendation for a GLP-1 receptor agonist",
+      "B": "Strong recommendation for a GLP-1 receptor agonist only",
+      "C": "Weak recommendation against both",
+      "D": "No drug until HbA1c exceeds 10%",
+      "E": "Insulin as the only evidence-based option"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "Strong recommendation for an SGLT2 inhibitor and weak recommendation for a GLP-1 receptor agonist",
+    "explanation": "Established CVD and CKD: strong recommendation for starting an SGLT2 inhibitor and weak recommendation for starting a GLP-1 receptor agonist [1].",
+    "difficulty": "medium",
+    "sourceArticle": "SGLT-2 inhibitors or GLP-1 receptor agonists for adults with type 2 diabetes: a clinical practice guideline",
+    "sourceReference": "PMID 33975892",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "guideline",
+    "question": "The patient has established CKD but not established cardiovascular disease. How is a GLP-1 receptor agonist graded?",
+    "options": {
+      "A": "Weak recommendation for starting it",
+      "B": "Strong recommendation for starting it",
+      "C": "Weak recommendation against it",
+      "D": "Contraindicated",
+      "E": "Not discussed"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "Weak recommendation for starting it",
+    "explanation": "Established CVD or CKD: weak recommendation for starting SGLT2 inhibitors and GLP-1 receptor agonists. The 'and' category, both diseases together, is the setting of the strong SGLT2 recommendation [1].",
+    "difficulty": "hard",
+    "sourceArticle": "SGLT-2 inhibitors or GLP-1 receptor agonists for adults with type 2 diabetes: a clinical practice guideline",
+    "sourceReference": "PMID 33975892",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "guideline",
+    "question": "Three or fewer cardiovascular risk factors and no established CVD or CKD. What does the panel say?",
+    "options": {
+      "A": "Weak recommendation against starting either class",
+      "B": "Strong recommendation for both",
+      "C": "Start a GLP-1 receptor agonist immediately",
+      "D": "Start both and stop metformin",
+      "E": "Use insulin only"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "Weak recommendation against starting either class",
+    "explanation": "With three or fewer risk factors and no established CVD or CKD, the panel makes a weak recommendation against starting an SGLT2 inhibitor or a GLP-1 receptor agonist [1].",
+    "difficulty": "medium",
+    "sourceArticle": "SGLT-2 inhibitors or GLP-1 receptor agonists for adults with type 2 diabetes: a clinical practice guideline",
+    "sourceReference": "PMID 33975892",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "recall",
+    "question": "The linked evidence says both classes generally reduce which outcomes?",
+    "options": {
+      "A": "Overall death, myocardial infarction, and end-stage kidney disease or kidney failure",
+      "B": "Only body weight",
+      "C": "Only amputations",
+      "D": "Stroke in every subgroup equally",
+      "E": "Hospital admission for any cause"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "Overall death, myocardial infarction, and end-stage kidney disease or kidney failure",
+    "explanation": "The stored summary says SGLT2 inhibitors and GLP-1 receptor agonists generally reduce overall death, myocardial infarction, and end-stage kidney disease or kidney failure, at moderate to high certainty [1].",
+    "difficulty": "medium",
+    "sourceArticle": "SGLT-2 inhibitors or GLP-1 receptor agonists for adults with type 2 diabetes: a clinical practice guideline",
+    "sourceReference": "PMID 33975892",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "trial_interpretation",
+    "question": "Over five years, how did absolute deaths prevented vary with baseline risk?",
+    "options": {
+      "A": "From 5 fewer to 48 fewer deaths per 1,000 patients, lowest to highest risk",
+      "B": "A fixed 48 fewer deaths in every patient",
+      "C": "No mortality difference",
+      "D": "5 more deaths in the highest-risk group",
+      "E": "The summary gives no absolute figures"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "From 5 fewer to 48 fewer deaths per 1,000 patients, lowest to highest risk",
+    "explanation": "Absolute effects varied widely, for example from five fewer deaths in the lowest risk group to 48 fewer deaths in the highest risk group per 1,000 patients treated over five years [1].",
+    "difficulty": "hard",
+    "sourceArticle": "SGLT-2 inhibitors or GLP-1 receptor agonists for adults with type 2 diabetes: a clinical practice guideline",
+    "sourceReference": "PMID 33975892",
+    "sourceIndices": [
+      1
+    ]
+  }
+]
