@@ -404,25 +404,88 @@ async getLocalTopicDocuments(topic, { limit = 12 } = {}) {
     }
     const normalizedTopic = this.normalizeTopic ? this.normalizeTopic(topic) : String(topic || '').trim().toLowerCase();
     if (normalizedTopic) {
+        const dehyphen = normalizedTopic.replace(/-/g, ' ');
         const linked = await this.all(
-            `SELECT document_id FROM topic_guidelines WHERE normalized_topic = ? AND document_id IS NOT NULL`,
-            [normalizedTopic]
+            `SELECT document_id FROM topic_guidelines WHERE REPLACE(normalized_topic, '-', ' ') = ? AND document_id IS NOT NULL`,
+            [dehyphen]
         ).catch(() => []);
-        const docIds = [...new Set(linked.map((r) => r.document_id).filter(Boolean))];
+        const confirmed = await this.all(
+            `SELECT guideline_document_id AS document_id, pmid
+             FROM topic_documents
+             WHERE REPLACE(LOWER(topic), '-', ' ') = ?
+               AND review_state = 'confirmed'`,
+            [dehyphen]
+        ).catch(() => []);
+        const catalogue = await this.all(
+            `SELECT guideline_document_id AS document_id, pmid
+             FROM topic_evidence_catalogue
+             WHERE REPLACE(LOWER(COALESCE(normalized_topic, topic)), '-', ' ') = ?
+               AND guideline_document_id IS NOT NULL`,
+            [dehyphen]
+        ).catch(() => []);
+        const docIds = [...new Set([
+            ...linked.map((r) => r.document_id),
+            ...confirmed.map((r) => r.document_id),
+            ...catalogue.map((r) => r.document_id),
+        ].filter(Boolean))];
         if (docIds.length) {
             clauses.push(`id IN (${docIds.map(() => '?').join(',')})`);
             params.push(...docIds);
         }
+        const confirmedPmids = [...new Set([
+            ...confirmed.map((r) => r.pmid),
+            ...catalogue.map((r) => r.pmid),
+        ].filter(Boolean))];
+        if (confirmedPmids.length) {
+            clauses.push(`pmid IN (${confirmedPmids.map(() => '?').join(',')})`);
+            params.push(...confirmedPmids);
+        }
     }
-    if (!clauses.length) return [];
-    return this.all(
-        `SELECT id, pmid, pmcid, doi, title, source_body, source_year, source_url,
-                document_label, full_text_source, SUBSTR(full_text, 1, 12000) AS text_excerpt
-         FROM guideline_documents
-         WHERE (${clauses.join(' OR ')}) AND full_text IS NOT NULL AND LENGTH(full_text) > 0
-         ORDER BY source_year DESC NULLS LAST, id DESC LIMIT ?`,
-        [...params, Math.min(20, Math.max(1, Number(limit) || 12))]
+    const safeLimit = Math.min(30, Math.max(1, Number(limit) || 12));
+    const directRows = clauses.length
+        ? await this.all(
+            `SELECT id, pmid, pmcid, doi, title, source_body, source_year, source_url,
+                    document_label, evidence_tier, full_text_source, word_count,
+                    SUBSTR(full_text, 1, 12000) AS text_excerpt
+             FROM guideline_documents
+             WHERE (${clauses.join(' OR ')}) AND full_text IS NOT NULL AND LENGTH(full_text) >= 500
+               AND COALESCE(full_text_source, '') NOT IN ('abstract', 'bibliographic_abstract', 'pubmed_abstract')
+             ORDER BY source_year DESC NULLS LAST, id DESC LIMIT ?`,
+            [...params, safeLimit]
+        ).catch(() => [])
+        : [];
+    if (directRows.length >= safeLimit || typeof this.searchGuidelineDocumentsForTopic !== 'function') {
+        return directRows;
+    }
+    const seenIds = new Set(directRows.map((r) => r.id));
+    const ftsOrTopical = await this.searchGuidelineDocumentsForTopic(topic, { limit: safeLimit }).catch(() => []);
+    for (const row of ftsOrTopical) {
+        if (directRows.length >= safeLimit) break;
+        if (row?.id && !seenIds.has(row.id) && row.text_excerpt && String(row.text_excerpt).length >= 500) {
+            seenIds.add(row.id);
+            directRows.push(row);
+        }
+    }
+    return directRows;
+}
+
+async ensureGuidelineDocumentsFts() {
+    if (!this.kysely || this.isPostgres) return false;
+    await this.run(
+        `CREATE VIRTUAL TABLE IF NOT EXISTS guideline_documents_fts
+         USING fts5(id UNINDEXED, pmid UNINDEXED, title, source_body, document_label, text_excerpt)`
     );
+    const countRow = await this.get('SELECT COUNT(*) AS c FROM guideline_documents_fts').catch(() => ({ c: 0 }));
+    if (Number(countRow?.c || 0) > 0) return true;
+    await this.run(
+        `INSERT INTO guideline_documents_fts(rowid, id, pmid, title, source_body, document_label, text_excerpt)
+         SELECT id, id, COALESCE(pmid, ''), COALESCE(title, ''), COALESCE(source_body, ''),
+                COALESCE(document_label, ''), SUBSTR(COALESCE(full_text, ''), 1, 16000)
+         FROM guideline_documents
+         WHERE full_text IS NOT NULL AND LENGTH(TRIM(full_text)) >= 500
+           AND COALESCE(full_text_source, '') NOT IN ('abstract', 'bibliographic_abstract', 'pubmed_abstract')`
+    );
+    return true;
 }
 
 /**
@@ -453,7 +516,7 @@ async searchGuidelineDocumentsForTopic(topic, { limit = 25 } = {}) {
         }
     }
     const rows = await this.all(
-        `SELECT id, title, source_body, source_year, source_url, document_label, evidence_tier, full_text_source,
+        `SELECT id, pmid, pmcid, doi, title, source_body, source_year, source_url, document_label, evidence_tier, full_text_source, word_count,
                 SUBSTR(full_text, 1, 16000) AS text_excerpt
          FROM guideline_documents
          WHERE (${clauses.join(' OR ')})

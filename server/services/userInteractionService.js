@@ -2,6 +2,11 @@
 
 const { emit } = require('../lib/eventBus');
 const { normalizeSearchId } = require('../../shared/searchId');
+const {
+    attributeSearchInteractionReward,
+    attributeSynopsisStyleReward,
+    attributeRecommendationFollowThrough,
+} = require('./search/searchLearningOutcomeService');
 
 const INTERACTION_EVENT_MAP = {
     click: 'paper_click',
@@ -79,6 +84,66 @@ async function trackUserInteraction(db, input, { logger } = {}) {
                 logger?.warn?.({ err }, 'recordLearningEvent failed');
             })
         );
+    }
+
+    const rawInteraction = String(input.rawType || payload.type.replace('paper_', '') || '').toLowerCase();
+    const isClick = rawInteraction === 'click' || Boolean(payload.metadata?.clicked);
+    const isSave = rawInteraction === 'save' || Boolean(payload.metadata?.saved);
+    const dwellMs = payload.duration != null ? Number(payload.duration) : 0;
+
+    if (db?.all && (payload.userId || payload.sessionId)) {
+        if (isClick || isSave || dwellMs >= 5000) {
+            tasks.push(
+                attributeSearchInteractionReward(db, payload.userId, {
+                    searchId: payload.searchId,
+                    articleUid: payload.paperId,
+                    decisionId: payload.metadata?.decisionId || null,
+                    interactionType: rawInteraction,
+                    dwellMs,
+                    wasClicked: isClick,
+                    wasSaved: isSave,
+                    sessionId: payload.sessionId,
+                    topic: payload.topic || '',
+                }).catch((err) => {
+                    logger?.warn?.({ err }, 'attributeSearchInteractionReward failed');
+                })
+            );
+        }
+
+        if (isSave || dwellMs >= 15000 || payload.metadata?.feedback) {
+            tasks.push(
+                attributeSynopsisStyleReward(db, {
+                    userId: payload.userId,
+                    sessionId: payload.sessionId,
+                    topic: payload.topic || '',
+                    styleArm: payload.metadata?.styleArm || null,
+                    articleUid: payload.paperId,
+                    decisionId: payload.metadata?.synopsisDecisionId || null,
+                    dwellTimeMs: dwellMs,
+                    feedback: payload.metadata?.feedback || null,
+                    reason: payload.metadata?.reason || null,
+                    isSaved: isSave,
+                }).catch((err) => {
+                    logger?.warn?.({ err }, 'attributeSynopsisStyleReward failed');
+                })
+            );
+        }
+
+        if (payload.topic && (isClick || isSave || dwellMs >= 15000)) {
+            const normalizedTopic = typeof db.normalizeTopic === 'function'
+                ? db.normalizeTopic(payload.topic)
+                : String(payload.topic).toLowerCase().trim();
+            tasks.push(
+                attributeRecommendationFollowThrough(db, payload.userId, {
+                    topic: payload.topic,
+                    normalizedTopic,
+                    eventType: INTERACTION_EVENT_MAP[rawInteraction] || 'paper_view',
+                    sessionId: payload.sessionId,
+                }).catch((err) => {
+                    logger?.warn?.({ err }, 'attributeRecommendationFollowThrough failed');
+                })
+            );
+        }
     }
 
     await Promise.allSettled(tasks);

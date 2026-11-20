@@ -299,7 +299,7 @@ const CALIBRATION_FILE = path.join(__dirname, '..', 'config', 'judgeCalibration.
  * The recorded human calibration of the support judge, or null. Nothing ships one: it comes from a
  * clinician labelling the calibration sheet, and only then can a judge raise a claim to 'supported'.
  */
-function loadJudgeCalibration(file = CALIBRATION_FILE) {
+function loadJudgeCalibration(file = process.env.SYNOPSIS_JUDGE_CALIBRATION_FILE || CALIBRATION_FILE) {
     try {
         return JSON.parse(fs.readFileSync(file, 'utf8'));
     } catch {

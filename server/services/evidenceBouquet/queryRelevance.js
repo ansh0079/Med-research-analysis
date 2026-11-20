@@ -18,6 +18,8 @@ const { clinicalFacts, populationCovers, queryFacts } = require('../clinical/cli
  * about adults; only genuinely disjoint scopes are dropped. An article that states no population is
  * never dropped: silence is not a mismatch.
  */
+const ORGAN_SCOPES = new Set(['renal_impairment', 'dialysis', 'hepatic_impairment']);
+
 function matchesPopulationFilter(article, query) {
     const wanted = queryFacts(query).population;
     if (!wanted) return true;
@@ -31,6 +33,12 @@ function matchesPopulationFilter(article, query) {
     // Pregnancy sits outside the age hierarchy. A pregnancy study still answers a general adult
     // question; only a pregnancy question rejects on its absence.
     if (wanted !== 'pregnancy' && populations.includes('pregnancy')) return true;
+    // Organ-impairment scopes (CKD/dialysis/cirrhosis) are orthogonal to adult age scope:
+    // an adult study is not hard-rejected for an organ-impairment query (laneScoring ranks
+    // the organ-specific study higher via populationFit), and an organ-impairment study is
+    // eligible for an adult query unless it is strictly paediatric/neonatal.
+    if (ORGAN_SCOPES.has(wanted) && populations.every((t) => ['adult', 'older_adult'].includes(t))) return true;
+    if (['adult', 'older_adult'].includes(wanted) && populations.some((t) => ORGAN_SCOPES.has(t))) return true;
     return false;
 }
 

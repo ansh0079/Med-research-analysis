@@ -19,13 +19,16 @@ const LEGACY_TAG = {
     adult: 'adult',
     older_adult: 'adult',
     pregnancy: 'pregnancy',
+    renal_impairment: 'renal_impairment',
+    dialysis: 'dialysis',
+    hepatic_impairment: 'hepatic_impairment',
 };
 
 function queryPopulationCue(query) {
     const { populations } = queryFacts(query);
     // Pregnancy wins over a generic adult mention: "heart failure in pregnancy in adults" is a
-    // pregnancy question. Paediatric likewise beats an incidental "adults" comparison arm.
-    for (const preferred of ['pregnancy', 'paediatric', 'adult']) {
+    // pregnancy question. Paediatric and organ-impairment scopes likewise beat an incidental "adults" arm.
+    for (const preferred of ['pregnancy', 'paediatric', 'dialysis', 'renal_impairment', 'hepatic_impairment', 'adult']) {
         if (populations.some((tag) => LEGACY_TAG[tag] === preferred)) return preferred;
     }
     return null;

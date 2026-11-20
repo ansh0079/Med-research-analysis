@@ -70,4 +70,36 @@ describe('mentorEvidenceClearanceService', () => {
             expect(result.cleared).toBe(true);
         } finally { sqlite.close(); }
     });
+
+    test('clears an inferred/paraphrased statement that provides the exact same information, and rejects contradicted direction/numbers', async () => {
+        const inferredSameInfo = 'In the prespecified population, the intervention decreased hospital admissions without raising serious adverse events.';
+        const cleared = await evaluateMentorEvidenceClearance(db, {
+            sources: [source],
+            teaching_points: [{
+                claim: inferredSameInfo,
+                evidenceAnchors: [{ pmid: '12345', quote: inferredSameInfo }],
+            }],
+        });
+        expect(cleared.cleared).toBe(true);
+
+        const reversedDirection = 'In the prespecified population, the intervention increased hospital admissions and reduced serious adverse events.';
+        const rejectedDir = await evaluateMentorEvidenceClearance(db, {
+            sources: [source],
+            teaching_points: [{
+                claim: reversedDirection,
+                evidenceAnchors: [{ pmid: '12345', quote: reversedDirection }],
+            }],
+        });
+        expect(rejectedDir.cleared).toBe(false);
+
+        const wrongNumber = 'In the prespecified population, the intervention reduced hospital admission by 45% without increasing serious adverse events.';
+        const rejectedNum = await evaluateMentorEvidenceClearance(db, {
+            sources: [source],
+            teaching_points: [{
+                claim: wrongNumber,
+                evidenceAnchors: [{ pmid: '12345', quote: wrongNumber }],
+            }],
+        });
+        expect(rejectedNum.cleared).toBe(false);
+    });
 });

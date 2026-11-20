@@ -45,8 +45,11 @@ const POPULATION_PATTERNS = Object.freeze({
     child: /\b(children|child|paediatric|pediatric|schoolchild\w*|toddlers?)\b/i,
     adolescent: /\b(adolescents?|teenagers?|teens?|youths?)\b/i,
     adult: /\b(adults?|middle-aged)\b/i,
-    older_adult: /\b(older adults?|elderly|geriatric|frail|aged\s*(?:>=|≥|over)?\s*(?:6[05]|7\d|8\d)|(?:>=|≥)\s*6[05]\s*years?)\b/i,
+    older_adult: /\b(older adults?|elderly|geriatric|frail|aged\s*(?:>=|≥|over)?\s*(?:6[05]|7\d|8\d)|(?:>=|≥)\s*6[05]\s*years?|over\s*(?:6[05]|7\d|8\d))\b/i,
     pregnancy: /\b(pregnan\w*|gestation\w*|antenatal|obstetric\w*|peripartum|postpartum|maternal|in utero)\b/i,
+    renal_impairment: /\b(chronic kidney disease|ckd|renal (?:impairment|insufficiency|failure|dysfunction)|kidney (?:impairment|failure|dysfunction)|egfr|crcl|creatinine clearance)\b/i,
+    dialysis: /\b(dialysis|haemodialysis|hemodialysis|peritoneal dialysis|end[- ]stage (?:renal|kidney) disease|esrd|eskd|rrt|renal replacement therapy)\b/i,
+    hepatic_impairment: /\b(hepatic (?:impairment|insufficiency|failure|dysfunction)|liver (?:impairment|failure|cirrhosis|dysfunction)|cirrho\w*|child[- ]pugh|decompensated (?:liver|cirrhosis))\b/i,
 });
 
 /** Parent of each tag. A source about the parent covers a claim about the child, never the reverse. */
@@ -55,6 +58,7 @@ const POPULATION_PARENT = Object.freeze({
     infant: 'child',
     adolescent: 'child',
     older_adult: 'adult',
+    dialysis: 'renal_impairment',
 });
 
 const POPULATION_TAGS = Object.freeze(Object.keys(POPULATION_PATTERNS));
@@ -95,6 +99,12 @@ const LEGACY_POPULATION_ALIASES = Object.freeze({
     geriatric: 'older_adult',
     neonate: 'neonatal',
     pregnant: 'pregnancy',
+    ckd: 'renal_impairment',
+    renal: 'renal_impairment',
+    esrd: 'dialysis',
+    eskd: 'dialysis',
+    cirrhosis: 'hepatic_impairment',
+    hepatic: 'hepatic_impairment',
 });
 
 /** @returns {string|null} a canonical tag, from a canonical name, a legacy alias, or free text. */
@@ -165,6 +175,13 @@ function studyDesign(article) {
 const ISSUERS = Object.freeze([
     ['NICE', 'uk', /\b(nice|national institute for health and care excellence)\b/i],
     ['SIGN', 'uk', /\bsign\s+guideline|scottish intercollegiate\b/i],
+    ['BTS', 'uk', /\b(bts|british thoracic society)\b/i],
+    ['BSG', 'uk', /\b(bsg|british society of gastroenterology)\b/i],
+    ['BSR', 'uk', /\b(bsr|british society for rheumatology)\b/i],
+    ['BSH', 'uk', /\b(bsh|british society for haematology)\b/i],
+    ['RCOG', 'uk', /\b(rcog|royal college of obstetricians)\b/i],
+    ['UKKA', 'uk', /\b(ukka|uk kidney association|renal association)\b/i],
+    ['BHIVA', 'uk', /\b(bhiva|british hiv association)\b/i],
     ['WHO', 'global', /\b(who|world health organization)\b/i],
     ['USPSTF', 'us', /\b(uspstf|u\.s\. preventive services task force)\b/i],
     ['CDC', 'us', /\b(cdc|centers for disease control)\b/i],
@@ -180,24 +197,44 @@ const ISSUERS = Object.freeze([
     ['ACG', 'us', /\b(acg|american college of gastroenterology)\b/i],
     ['AGA', 'us', /\baga\b/i],
     ['AASLD', 'us', /\b(aasld|american association for the study of liver)\b/i],
+    ['ASH', 'us', /\b(ash|american society of hematology)\b/i],
+    ['AAN', 'us', /\b(aan|american academy of neurology)\b/i],
+    ['ACOG', 'us', /\b(acog|american college of obstetricians)\b/i],
+    ['CHEST', 'us', /\b(chest|american college of chest physicians|accp)\b/i],
     ['ESC', 'europe', /\b(esc|european society of cardiology)\b/i],
     ['ERS', 'europe', /\b(ers|european respiratory society)\b/i],
     ['EASL', 'europe', /\beasl\b/i],
     ['EASD', 'europe', /\beasd\b/i],
     ['EULAR', 'europe', /\beular\b/i],
+    ['ESMO', 'europe', /\b(esmo|european society for medical oncology)\b/i],
+    ['ESCMID', 'europe', /\b(escmid|european society of clinical microbiology)\b/i],
+    ['ERA', 'europe', /\b(era-edta|european renal association)\b/i],
+    ['ECCO', 'europe', /\b(ecco|european crohn's and colitis)\b/i],
+    ['ESO', 'europe', /\b(eso|european stroke organisation)\b/i],
+    ['EAN', 'europe', /\b(ean|european academy of neurology)\b/i],
+    ['EBJIS', 'europe', /\b(ebjis|european bone and joint infection society|sanjo)\b/i],
     ['KDIGO', 'global', /\bkdigo\b/i],
     ['KDOQI', 'us', /\bkdoqi\b/i],
     ['GINA', 'global', /\bgina\b/i],
     ['GOLD', 'global', /\bgold\b/i],
     ['Surviving Sepsis', 'global', /\bsurviving sepsis\b/i],
+    ['ISTH', 'global', /\b(isth|international society on thrombosis and haemostasis)\b/i],
+    ['WGO', 'global', /\b(wgo|world gastroenterology organisation)\b/i],
     ['Endocrine Society', 'us', /\bendocrine society\b/i],
     ['NKF', 'us', /\b(nkf|national kidney foundation)\b/i],
+    ['CCS', 'canada', /\b(ccs|canadian cardiovascular society)\b/i],
+    ['CTS', 'canada', /\b(cts|canadian thoracic society)\b/i],
+    ['CSN', 'canada', /\b(csn|canadian society of nephrology)\b/i],
+    ['NHFA', 'australia', /\b(nhfa|national heart foundation of australia|csanz)\b/i],
+    ['KHA-CARI', 'australia', /\b(kha-cari|cari guidelines)\b/i],
 ]);
 
 const JURISDICTION_PATTERNS = Object.freeze({
-    uk: /\b(uk|united kingdom|nhs|britain|british)\b/i,
+    uk: /\b(uk|united kingdom|nhs|britain|british|england|scotland|wales)\b/i,
     us: /\b(usa|united states|u\.s\.|american)\b/i,
     europe: /\b(europe|european)\b/i,
+    canada: /\b(canada|canadian)\b/i,
+    australia: /\b(australia|australian|australasian)\b/i,
     global: /\b(global|international|worldwide)\b/i,
 });
 

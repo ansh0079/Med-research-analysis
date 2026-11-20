@@ -61,6 +61,8 @@ function phrasesForConcept(name) {
  * states no population admits everything - silence is not a mismatch. Pregnancy sits outside the age
  * hierarchy, so only a pregnancy question rejects on its absence.
  */
+const ORGAN_SCOPES = new Set(['renal_impairment', 'dialysis', 'hepatic_impairment']);
+
 function entryMatchesQueryScope(entry, query) {
     const jurCue = queryJurisdictionCue(query);
     const jur = String(entry.jurisdiction || '').toLowerCase();
@@ -75,6 +77,11 @@ function entryMatchesQueryScope(entry, query) {
         || entryTags.some((tag) => populationCovers([wanted], tag));
     if (overlaps) return true;
     if (wanted !== 'pregnancy' && entryTags.includes('pregnancy')) return true;
+    // An adult guideline without organ-specific narrowing still applies to an organ-impairment query,
+    // and an organ-impairment guideline still applies to a general adult query; only age-group or
+    // pregnancy conflicts (e.g. paediatric vs adult, adult-only vs pregnancy) are hard rejections.
+    if (ORGAN_SCOPES.has(wanted) && entryTags.every((t) => ['adult', 'older_adult'].includes(t))) return true;
+    if (['adult', 'older_adult'].includes(wanted) && entryTags.some((t) => ORGAN_SCOPES.has(t))) return true;
     return false;
 }
 
@@ -92,12 +99,14 @@ function inferJurisdiction({ sourceRegion, issuer } = {}) {
 const SCOPE_FOR_TAG = Object.freeze({
     pregnancy: 'pregnancy',
     neonatal: 'paediatric', infant: 'paediatric', child: 'paediatric', adolescent: 'paediatric',
+    dialysis: 'renal_impairment', renal_impairment: 'renal_impairment',
+    hepatic_impairment: 'hepatic_impairment',
     adult: 'adult', older_adult: 'adult',
 });
 
 function inferScope({ population, topic, recommendationText } = {}) {
     const tags = populationsIn(`${population || ''} ${topic || ''} ${recommendationText || ''}`);
-    for (const preferred of ['pregnancy', 'paediatric', 'adult']) {
+    for (const preferred of ['pregnancy', 'paediatric', 'renal_impairment', 'hepatic_impairment', 'adult']) {
         if (tags.some((tag) => SCOPE_FOR_TAG[tag] === preferred)) return preferred;
     }
     return 'unspecified';

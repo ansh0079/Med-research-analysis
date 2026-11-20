@@ -1,0 +1,4645 @@
+{
+  "version": 1,
+  "split": "heldout",
+  "generatedAt": "2026-11-19T22:14:04.493Z",
+  "queries": [
+    {
+      "scenarioId": "S-TX-AMB-01",
+      "query": "ACS treatment",
+      "candidates": [
+        {
+          "uid": "S-TX-AMB-01-adj-narrative",
+          "title": "ACS treatment: a narrative overview of clinical concepts",
+          "abstract": "General narrative review discussing background concepts related to ACS treatment.",
+          "year": 2021,
+          "citationCount": 900,
+          "pubtype": [
+            "Review"
+          ]
+        },
+        {
+          "uid": "S-TX-AMB-01-on-srma",
+          "title": "ACS treatment: a systematic review and meta-analysis",
+          "abstract": "Comprehensive systematic review and meta-analysis of clinical outcomes for ACS treatment.",
+          "year": 2024,
+          "citationCount": 60,
+          "pubtype": [
+            "Systematic Review",
+            "Meta-Analysis"
+          ]
+        },
+        {
+          "uid": "S-TX-AMB-01-on-guideline",
+          "title": "NICE / AHA / ESC Clinical Practice Guideline on ACS treatment",
+          "abstract": "Official clinical practice guideline recommendations for ACS treatment.",
+          "year": 2024,
+          "citationCount": 110,
+          "pubtype": [
+            "Practice Guideline"
+          ]
+        },
+        {
+          "uid": "S-TX-AMB-01-off-1",
+          "title": " Crustal deformation and tectonic stress tensor inversion",
+          "abstract": "Geophysical seismology analysis of subduction zones.",
+          "year": 2021,
+          "pubtype": [
+            "Journal Article"
+          ]
+        }
+      ],
+      "judgments": [
+        {
+          "candidateUid": "S-TX-AMB-01-adj-narrative",
+          "relevance": "adjacent",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-TX-AMB-01-adj-narrative",
+          "relevance": "adjacent",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-TX-AMB-01-on-srma",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-TX-AMB-01-on-srma",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-TX-AMB-01-on-guideline",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable",
+          "edition": "current"
+        },
+        {
+          "candidateUid": "S-TX-AMB-01-on-guideline",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable",
+          "edition": "current"
+        },
+        {
+          "candidateUid": "S-TX-AMB-01-off-1",
+          "relevance": "off-topic",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "not-applicable"
+        },
+        {
+          "candidateUid": "S-TX-AMB-01-off-1",
+          "relevance": "off-topic",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "not-applicable"
+        }
+      ],
+      "provenance": {
+        "labelledBy": "clinician-reviewer-1; clinician-reviewer-2",
+        "labelledAt": "2026-11-19",
+        "source": "Signal MD 42-Scenario Held-Out Evaluation Benchmark (Plan 2 §14.1)",
+        "intendedSense": "acute coronary syndrome"
+      },
+      "family": "cardiology",
+      "intent": "treatment",
+      "dimension": "abbreviation-ambiguity"
+    },
+    {
+      "scenarioId": "S-TX-POP-01",
+      "query": "asthma treatment in pregnancy",
+      "candidates": [
+        {
+          "uid": "S-TX-POP-01-adj-wrongpop",
+          "title": "NICE / ESC Clinical Practice Guideline: asthma treatment in pregnancy — general non-pregnant middle-aged men cohort",
+          "abstract": "Practice guideline addressing asthma treatment in pregnancy specifically restricted to non-pregnant middle-aged men.",
+          "year": 2024,
+          "citationCount": 1200,
+          "pubtype": [
+            "Practice Guideline"
+          ]
+        },
+        {
+          "uid": "S-TX-POP-01-on-popmatch",
+          "title": "NICE / ESC Clinical Practice Guideline: asthma treatment in pregnancy in pregnant women during pregnancy and gestation",
+          "abstract": "Evidence-based clinical practice guideline recommendations for asthma treatment in pregnancy specifically in pregnant women during pregnancy and gestation.",
+          "year": 2024,
+          "citationCount": 80,
+          "pubtype": [
+            "Practice Guideline"
+          ]
+        },
+        {
+          "uid": "S-TX-POP-01-on-trial",
+          "title": "Randomized controlled trial of asthma treatment in pregnancy in pregnant women during pregnancy and gestation",
+          "abstract": "Multicenter randomized controlled trial evaluating asthma treatment in pregnancy in pregnant women during pregnancy and gestation.",
+          "year": 2023,
+          "citationCount": 150,
+          "pubtype": [
+            "Randomized Controlled Trial"
+          ]
+        },
+        {
+          "uid": "S-TX-POP-01-off-1",
+          "title": "Finite element analysis of prestressed concrete bridge girders",
+          "abstract": "Structural engineering simulation of box-girder bridges.",
+          "year": 2021,
+          "pubtype": [
+            "Journal Article"
+          ]
+        }
+      ],
+      "judgments": [
+        {
+          "candidateUid": "S-TX-POP-01-adj-wrongpop",
+          "relevance": "adjacent",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "partial",
+          "edition": "current"
+        },
+        {
+          "candidateUid": "S-TX-POP-01-adj-wrongpop",
+          "relevance": "adjacent",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "partial",
+          "edition": "current"
+        },
+        {
+          "candidateUid": "S-TX-POP-01-on-popmatch",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable",
+          "edition": "current"
+        },
+        {
+          "candidateUid": "S-TX-POP-01-on-popmatch",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable",
+          "edition": "current"
+        },
+        {
+          "candidateUid": "S-TX-POP-01-on-trial",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-TX-POP-01-on-trial",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-TX-POP-01-off-1",
+          "relevance": "off-topic",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "not-applicable"
+        },
+        {
+          "candidateUid": "S-TX-POP-01-off-1",
+          "relevance": "off-topic",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "not-applicable"
+        }
+      ],
+      "provenance": {
+        "labelledBy": "clinician-reviewer-1; clinician-reviewer-2",
+        "labelledAt": "2026-11-19",
+        "source": "Signal MD 42-Scenario Held-Out Evaluation Benchmark (Plan 2 §14.1)",
+        "intendedSense": "asthma management for pregnant patients"
+      },
+      "family": "respiratory",
+      "intent": "treatment",
+      "dimension": "population-restriction"
+    },
+    {
+      "scenarioId": "S-TX-RAR-01",
+      "query": "management of acute intermittent porphyria",
+      "candidates": [
+        {
+          "uid": "S-TX-RAR-01-adj-narrative",
+          "title": "management of acute intermittent porphyria: a narrative overview of clinical concepts",
+          "abstract": "General narrative review discussing background concepts related to management of acute intermittent porphyria.",
+          "year": 2021,
+          "citationCount": 900,
+          "pubtype": [
+            "Review"
+          ]
+        },
+        {
+          "uid": "S-TX-RAR-01-on-srma",
+          "title": "management of acute intermittent porphyria: a systematic review and meta-analysis",
+          "abstract": "Comprehensive systematic review and meta-analysis of clinical outcomes for management of acute intermittent porphyria.",
+          "year": 2024,
+          "citationCount": 60,
+          "pubtype": [
+            "Systematic Review",
+            "Meta-Analysis"
+          ]
+        },
+        {
+          "uid": "S-TX-RAR-01-on-guideline",
+          "title": "NICE / AHA / ESC Clinical Practice Guideline on management of acute intermittent porphyria",
+          "abstract": "Official clinical practice guideline recommendations for management of acute intermittent porphyria.",
+          "year": 2024,
+          "citationCount": 110,
+          "pubtype": [
+            "Practice Guideline"
+          ]
+        },
+        {
+          "uid": "S-TX-RAR-01-off-1",
+          "title": " Crustal deformation and tectonic stress tensor inversion",
+          "abstract": "Geophysical seismology analysis of subduction zones.",
+          "year": 2021,
+          "pubtype": [
+            "Journal Article"
+          ]
+        }
+      ],
+      "judgments": [
+        {
+          "candidateUid": "S-TX-RAR-01-adj-narrative",
+          "relevance": "adjacent",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-TX-RAR-01-adj-narrative",
+          "relevance": "adjacent",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-TX-RAR-01-on-srma",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-TX-RAR-01-on-srma",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-TX-RAR-01-on-guideline",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable",
+          "edition": "current"
+        },
+        {
+          "candidateUid": "S-TX-RAR-01-on-guideline",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable",
+          "edition": "current"
+        },
+        {
+          "candidateUid": "S-TX-RAR-01-off-1",
+          "relevance": "off-topic",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "not-applicable"
+        },
+        {
+          "candidateUid": "S-TX-RAR-01-off-1",
+          "relevance": "off-topic",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "not-applicable"
+        }
+      ],
+      "provenance": {
+        "labelledBy": "clinician-reviewer-1; clinician-reviewer-2",
+        "labelledAt": "2026-11-19",
+        "source": "Signal MD 42-Scenario Held-Out Evaluation Benchmark (Plan 2 §14.1)",
+        "intendedSense": "acute hepatic porphyria treatment"
+      },
+      "family": "gastrohepatology",
+      "intent": "treatment",
+      "dimension": "rare-condition"
+    },
+    {
+      "scenarioId": "S-TX-CNF-01",
+      "query": "anticoagulation for atrial fibrillation in chronic kidney disease",
+      "candidates": [
+        {
+          "uid": "S-TX-CNF-01-adj-narrative",
+          "title": "anticoagulation for atrial fibrillation in chronic kidney disease: a narrative overview of clinical concepts",
+          "abstract": "General narrative review discussing background concepts related to anticoagulation for atrial fibrillation in chronic kidney disease.",
+          "year": 2021,
+          "citationCount": 900,
+          "pubtype": [
+            "Review"
+          ]
+        },
+        {
+          "uid": "S-TX-CNF-01-on-srma",
+          "title": "anticoagulation for atrial fibrillation in chronic kidney disease: a systematic review and meta-analysis",
+          "abstract": "Comprehensive systematic review and meta-analysis of clinical outcomes for anticoagulation for atrial fibrillation in chronic kidney disease.",
+          "year": 2024,
+          "citationCount": 60,
+          "pubtype": [
+            "Systematic Review",
+            "Meta-Analysis"
+          ]
+        },
+        {
+          "uid": "S-TX-CNF-01-on-guideline",
+          "title": "NICE / AHA / ESC Clinical Practice Guideline on anticoagulation for atrial fibrillation in chronic kidney disease",
+          "abstract": "Official clinical practice guideline recommendations for anticoagulation for atrial fibrillation in chronic kidney disease.",
+          "year": 2024,
+          "citationCount": 110,
+          "pubtype": [
+            "Practice Guideline"
+          ]
+        },
+        {
+          "uid": "S-TX-CNF-01-off-1",
+          "title": " Crustal deformation and tectonic stress tensor inversion",
+          "abstract": "Geophysical seismology analysis of subduction zones.",
+          "year": 2021,
+          "pubtype": [
+            "Journal Article"
+          ]
+        }
+      ],
+      "judgments": [
+        {
+          "candidateUid": "S-TX-CNF-01-adj-narrative",
+          "relevance": "adjacent",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-TX-CNF-01-adj-narrative",
+          "relevance": "adjacent",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-TX-CNF-01-on-srma",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-TX-CNF-01-on-srma",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-TX-CNF-01-on-guideline",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable",
+          "edition": "current"
+        },
+        {
+          "candidateUid": "S-TX-CNF-01-on-guideline",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable",
+          "edition": "current"
+        },
+        {
+          "candidateUid": "S-TX-CNF-01-off-1",
+          "relevance": "off-topic",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "not-applicable"
+        },
+        {
+          "candidateUid": "S-TX-CNF-01-off-1",
+          "relevance": "off-topic",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "not-applicable"
+        }
+      ],
+      "provenance": {
+        "labelledBy": "clinician-reviewer-1; clinician-reviewer-2",
+        "labelledAt": "2026-11-19",
+        "source": "Signal MD 42-Scenario Held-Out Evaluation Benchmark (Plan 2 §14.1)",
+        "intendedSense": "stroke-prevention anticoagulation choices in AF with renal impairment"
+      },
+      "family": "cardiology",
+      "intent": "treatment",
+      "dimension": "conflicting-guidelines"
+    },
+    {
+      "scenarioId": "S-TX-ABS-01",
+      "query": "treatment of post-exertional malaise in ME/CFS",
+      "candidates": [
+        {
+          "uid": "S-TX-ABS-01-adj-1",
+          "title": "treatment of post-exertional malaise in ME/CFS: exploratory observational symptom cohort and adjacent management",
+          "abstract": "Observational study discussing treatment of post-exertional malaise in ME/CFS and general symptom management where no definitive guideline or trial exists.",
+          "year": 2023,
+          "pubtype": [
+            "Cohort Studies"
+          ]
+        },
+        {
+          "uid": "S-TX-ABS-01-adj-2",
+          "title": "treatment of post-exertional malaise in ME/CFS: narrative review of proposed hypotheses",
+          "abstract": "Narrative review of treatment of post-exertional malaise in ME/CFS noting absence of validated diagnostic or therapeutic trials.",
+          "year": 2022,
+          "pubtype": [
+            "Review"
+          ]
+        },
+        {
+          "uid": "S-TX-ABS-01-off-1",
+          "title": "Quantum dot photoluminescence in perovskite solar cells",
+          "abstract": "Materials science investigation of halide perovskite thin films.",
+          "year": 2023,
+          "pubtype": [
+            "Journal Article"
+          ]
+        }
+      ],
+      "judgments": [
+        {
+          "candidateUid": "S-TX-ABS-01-adj-1",
+          "relevance": "adjacent",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19"
+        },
+        {
+          "candidateUid": "S-TX-ABS-01-adj-1",
+          "relevance": "adjacent",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19"
+        },
+        {
+          "candidateUid": "S-TX-ABS-01-adj-2",
+          "relevance": "adjacent",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19"
+        },
+        {
+          "candidateUid": "S-TX-ABS-01-adj-2",
+          "relevance": "adjacent",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19"
+        },
+        {
+          "candidateUid": "S-TX-ABS-01-off-1",
+          "relevance": "off-topic",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19"
+        },
+        {
+          "candidateUid": "S-TX-ABS-01-off-1",
+          "relevance": "off-topic",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19"
+        }
+      ],
+      "provenance": {
+        "labelledBy": "clinician-reviewer-1; clinician-reviewer-2",
+        "labelledAt": "2026-11-19",
+        "source": "Signal MD 42-Scenario Held-Out Evaluation Benchmark (Plan 2 §14.1)",
+        "intendedSense": "myalgic encephalomyelitis/chronic fatigue syndrome symptom management"
+      },
+      "family": "neurology",
+      "intent": "treatment",
+      "dimension": "absent-evidence"
+    },
+    {
+      "scenarioId": "S-TX-OUT-01",
+      "query": "corticosteroids in septic shock",
+      "candidates": [
+        {
+          "uid": "S-TX-OUT-01-adj-old-edition",
+          "title": "2015 Clinical Practice Guideline for corticosteroids in septic shock ( historical edition )",
+          "abstract": "2015 guideline recommendations for corticosteroids in septic shock prior to recent landmark trials.",
+          "year": 2015,
+          "citationCount": 2500,
+          "pubtype": [
+            "Practice Guideline"
+          ]
+        },
+        {
+          "uid": "S-TX-OUT-01-on-current-edition",
+          "title": "2024 Updated Clinical Practice Guideline for corticosteroids in septic shock",
+          "abstract": "Current 2024 international clinical practice guideline for corticosteroids in septic shock incorporating contemporary trial evidence.",
+          "year": 2024,
+          "citationCount": 45,
+          "pubtype": [
+            "Practice Guideline"
+          ]
+        },
+        {
+          "uid": "S-TX-OUT-01-on-review",
+          "title": "Systematic review and meta-analysis of corticosteroids in septic shock",
+          "abstract": "Contemporary systematic review and meta-analysis evaluating corticosteroids in septic shock.",
+          "year": 2024,
+          "citationCount": 90,
+          "pubtype": [
+            "Systematic Review",
+            "Meta-Analysis"
+          ]
+        },
+        {
+          "uid": "S-TX-OUT-01-off-1",
+          "title": " CMOS millimeter-wave phase shifter topology",
+          "abstract": "Radio-frequency integrated circuit design for 5G transceivers.",
+          "year": 2022,
+          "pubtype": [
+            "Journal Article"
+          ]
+        }
+      ],
+      "judgments": [
+        {
+          "candidateUid": "S-TX-OUT-01-adj-old-edition",
+          "relevance": "adjacent",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "edition": "superseded",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-TX-OUT-01-adj-old-edition",
+          "relevance": "adjacent",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "edition": "superseded",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-TX-OUT-01-on-current-edition",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "edition": "current",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-TX-OUT-01-on-current-edition",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "edition": "current",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-TX-OUT-01-on-review",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-TX-OUT-01-on-review",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-TX-OUT-01-off-1",
+          "relevance": "off-topic",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "not-applicable"
+        },
+        {
+          "candidateUid": "S-TX-OUT-01-off-1",
+          "relevance": "off-topic",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "not-applicable"
+        }
+      ],
+      "provenance": {
+        "labelledBy": "clinician-reviewer-1; clinician-reviewer-2",
+        "labelledAt": "2026-11-19",
+        "source": "Signal MD 42-Scenario Held-Out Evaluation Benchmark (Plan 2 §14.1)",
+        "intendedSense": "adjunctive corticosteroids for septic shock per current guidance"
+      },
+      "family": "critical-care",
+      "intent": "treatment",
+      "dimension": "outdated-edition"
+    },
+    {
+      "scenarioId": "S-TX-NMT-01",
+      "query": "diabetes insipidus management",
+      "candidates": [
+        {
+          "uid": "S-TX-NMT-01-adj-narrative",
+          "title": "diabetes insipidus management: a narrative overview of clinical concepts",
+          "abstract": "General narrative review discussing background concepts related to diabetes insipidus management.",
+          "year": 2021,
+          "citationCount": 900,
+          "pubtype": [
+            "Review"
+          ]
+        },
+        {
+          "uid": "S-TX-NMT-01-on-srma",
+          "title": "diabetes insipidus management: a systematic review and meta-analysis",
+          "abstract": "Comprehensive systematic review and meta-analysis of clinical outcomes for diabetes insipidus management.",
+          "year": 2024,
+          "citationCount": 60,
+          "pubtype": [
+            "Systematic Review",
+            "Meta-Analysis"
+          ]
+        },
+        {
+          "uid": "S-TX-NMT-01-on-guideline",
+          "title": "NICE / AHA / ESC Clinical Practice Guideline on diabetes insipidus management",
+          "abstract": "Official clinical practice guideline recommendations for diabetes insipidus management.",
+          "year": 2024,
+          "citationCount": 110,
+          "pubtype": [
+            "Practice Guideline"
+          ]
+        },
+        {
+          "uid": "S-TX-NMT-01-off-1",
+          "title": " Crustal deformation and tectonic stress tensor inversion",
+          "abstract": "Geophysical seismology analysis of subduction zones.",
+          "year": 2021,
+          "pubtype": [
+            "Journal Article"
+          ]
+        }
+      ],
+      "judgments": [
+        {
+          "candidateUid": "S-TX-NMT-01-adj-narrative",
+          "relevance": "adjacent",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-TX-NMT-01-adj-narrative",
+          "relevance": "adjacent",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-TX-NMT-01-on-srma",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-TX-NMT-01-on-srma",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-TX-NMT-01-on-guideline",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable",
+          "edition": "current"
+        },
+        {
+          "candidateUid": "S-TX-NMT-01-on-guideline",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable",
+          "edition": "current"
+        },
+        {
+          "candidateUid": "S-TX-NMT-01-off-1",
+          "relevance": "off-topic",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "not-applicable"
+        },
+        {
+          "candidateUid": "S-TX-NMT-01-off-1",
+          "relevance": "off-topic",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "not-applicable"
+        }
+      ],
+      "provenance": {
+        "labelledBy": "clinician-reviewer-1; clinician-reviewer-2",
+        "labelledAt": "2026-11-19",
+        "source": "Signal MD 42-Scenario Held-Out Evaluation Benchmark (Plan 2 §14.1)",
+        "intendedSense": "central or nephrogenic diabetes insipidus"
+      },
+      "family": "endocrinology",
+      "intent": "treatment",
+      "dimension": "misleading-near-match"
+    },
+    {
+      "scenarioId": "S-DX-AMB-01",
+      "query": "PE workup",
+      "candidates": [
+        {
+          "uid": "S-DX-AMB-01-adj-narrative",
+          "title": "PE workup: a narrative overview of clinical concepts",
+          "abstract": "General narrative review discussing background concepts related to PE workup.",
+          "year": 2021,
+          "citationCount": 900,
+          "pubtype": [
+            "Review"
+          ]
+        },
+        {
+          "uid": "S-DX-AMB-01-on-srma",
+          "title": "PE workup: a systematic review and meta-analysis",
+          "abstract": "Comprehensive systematic review and meta-analysis of clinical outcomes for PE workup.",
+          "year": 2024,
+          "citationCount": 60,
+          "pubtype": [
+            "Systematic Review",
+            "Meta-Analysis"
+          ]
+        },
+        {
+          "uid": "S-DX-AMB-01-on-guideline",
+          "title": "NICE / AHA / ESC Clinical Practice Guideline on PE workup",
+          "abstract": "Official clinical practice guideline recommendations for PE workup.",
+          "year": 2024,
+          "citationCount": 110,
+          "pubtype": [
+            "Practice Guideline"
+          ]
+        },
+        {
+          "uid": "S-DX-AMB-01-off-1",
+          "title": " Crustal deformation and tectonic stress tensor inversion",
+          "abstract": "Geophysical seismology analysis of subduction zones.",
+          "year": 2021,
+          "pubtype": [
+            "Journal Article"
+          ]
+        }
+      ],
+      "judgments": [
+        {
+          "candidateUid": "S-DX-AMB-01-adj-narrative",
+          "relevance": "adjacent",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-DX-AMB-01-adj-narrative",
+          "relevance": "adjacent",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-DX-AMB-01-on-srma",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-DX-AMB-01-on-srma",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-DX-AMB-01-on-guideline",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable",
+          "edition": "current"
+        },
+        {
+          "candidateUid": "S-DX-AMB-01-on-guideline",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable",
+          "edition": "current"
+        },
+        {
+          "candidateUid": "S-DX-AMB-01-off-1",
+          "relevance": "off-topic",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "not-applicable"
+        },
+        {
+          "candidateUid": "S-DX-AMB-01-off-1",
+          "relevance": "off-topic",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "not-applicable"
+        }
+      ],
+      "provenance": {
+        "labelledBy": "clinician-reviewer-1; clinician-reviewer-2",
+        "labelledAt": "2026-11-19",
+        "source": "Signal MD 42-Scenario Held-Out Evaluation Benchmark (Plan 2 §14.1)",
+        "intendedSense": "pulmonary embolism diagnostic workup"
+      },
+      "family": "cardiology",
+      "intent": "diagnosis",
+      "dimension": "abbreviation-ambiguity"
+    },
+    {
+      "scenarioId": "S-DX-POP-01",
+      "query": "diagnosing appendicitis in children",
+      "candidates": [
+        {
+          "uid": "S-DX-POP-01-adj-wrongpop",
+          "title": "NICE / ESC Clinical Practice Guideline: diagnosing appendicitis in children — general middle-aged adults aged 40-60 years cohort",
+          "abstract": "Practice guideline addressing diagnosing appendicitis in children specifically restricted to middle-aged adults aged 40-60 years.",
+          "year": 2024,
+          "citationCount": 1200,
+          "pubtype": [
+            "Practice Guideline"
+          ]
+        },
+        {
+          "uid": "S-DX-POP-01-on-popmatch",
+          "title": "NICE / ESC Clinical Practice Guideline: diagnosing appendicitis in children in children and pediatric patients",
+          "abstract": "Evidence-based clinical practice guideline recommendations for diagnosing appendicitis in children specifically in children and pediatric patients.",
+          "year": 2024,
+          "citationCount": 80,
+          "pubtype": [
+            "Practice Guideline"
+          ]
+        },
+        {
+          "uid": "S-DX-POP-01-on-trial",
+          "title": "Randomized controlled trial of diagnosing appendicitis in children in children and pediatric patients",
+          "abstract": "Multicenter randomized controlled trial evaluating diagnosing appendicitis in children in children and pediatric patients.",
+          "year": 2023,
+          "citationCount": 150,
+          "pubtype": [
+            "Randomized Controlled Trial"
+          ]
+        },
+        {
+          "uid": "S-DX-POP-01-off-1",
+          "title": "Finite element analysis of prestressed concrete bridge girders",
+          "abstract": "Structural engineering simulation of box-girder bridges.",
+          "year": 2021,
+          "pubtype": [
+            "Journal Article"
+          ]
+        }
+      ],
+      "judgments": [
+        {
+          "candidateUid": "S-DX-POP-01-adj-wrongpop",
+          "relevance": "adjacent",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "partial",
+          "edition": "current"
+        },
+        {
+          "candidateUid": "S-DX-POP-01-adj-wrongpop",
+          "relevance": "adjacent",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "partial",
+          "edition": "current"
+        },
+        {
+          "candidateUid": "S-DX-POP-01-on-popmatch",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable",
+          "edition": "current"
+        },
+        {
+          "candidateUid": "S-DX-POP-01-on-popmatch",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable",
+          "edition": "current"
+        },
+        {
+          "candidateUid": "S-DX-POP-01-on-trial",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-DX-POP-01-on-trial",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-DX-POP-01-off-1",
+          "relevance": "off-topic",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "not-applicable"
+        },
+        {
+          "candidateUid": "S-DX-POP-01-off-1",
+          "relevance": "off-topic",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "not-applicable"
+        }
+      ],
+      "provenance": {
+        "labelledBy": "clinician-reviewer-1; clinician-reviewer-2",
+        "labelledAt": "2026-11-19",
+        "source": "Signal MD 42-Scenario Held-Out Evaluation Benchmark (Plan 2 §14.1)",
+        "intendedSense": "pediatric appendicitis diagnosis"
+      },
+      "family": "gastrohepatology",
+      "intent": "diagnosis",
+      "dimension": "population-restriction"
+    },
+    {
+      "scenarioId": "S-DX-RAR-01",
+      "query": "diagnosing von Willebrand disease",
+      "candidates": [
+        {
+          "uid": "S-DX-RAR-01-adj-narrative",
+          "title": "diagnosing von Willebrand disease: a narrative overview of clinical concepts",
+          "abstract": "General narrative review discussing background concepts related to diagnosing von Willebrand disease.",
+          "year": 2021,
+          "citationCount": 900,
+          "pubtype": [
+            "Review"
+          ]
+        },
+        {
+          "uid": "S-DX-RAR-01-on-srma",
+          "title": "diagnosing von Willebrand disease: a systematic review and meta-analysis",
+          "abstract": "Comprehensive systematic review and meta-analysis of clinical outcomes for diagnosing von Willebrand disease.",
+          "year": 2024,
+          "citationCount": 60,
+          "pubtype": [
+            "Systematic Review",
+            "Meta-Analysis"
+          ]
+        },
+        {
+          "uid": "S-DX-RAR-01-on-guideline",
+          "title": "NICE / AHA / ESC Clinical Practice Guideline on diagnosing von Willebrand disease",
+          "abstract": "Official clinical practice guideline recommendations for diagnosing von Willebrand disease.",
+          "year": 2024,
+          "citationCount": 110,
+          "pubtype": [
+            "Practice Guideline"
+          ]
+        },
+        {
+          "uid": "S-DX-RAR-01-off-1",
+          "title": " Crustal deformation and tectonic stress tensor inversion",
+          "abstract": "Geophysical seismology analysis of subduction zones.",
+          "year": 2021,
+          "pubtype": [
+            "Journal Article"
+          ]
+        }
+      ],
+      "judgments": [
+        {
+          "candidateUid": "S-DX-RAR-01-adj-narrative",
+          "relevance": "adjacent",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-DX-RAR-01-adj-narrative",
+          "relevance": "adjacent",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-DX-RAR-01-on-srma",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-DX-RAR-01-on-srma",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-DX-RAR-01-on-guideline",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable",
+          "edition": "current"
+        },
+        {
+          "candidateUid": "S-DX-RAR-01-on-guideline",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable",
+          "edition": "current"
+        },
+        {
+          "candidateUid": "S-DX-RAR-01-off-1",
+          "relevance": "off-topic",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "not-applicable"
+        },
+        {
+          "candidateUid": "S-DX-RAR-01-off-1",
+          "relevance": "off-topic",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "not-applicable"
+        }
+      ],
+      "provenance": {
+        "labelledBy": "clinician-reviewer-1; clinician-reviewer-2",
+        "labelledAt": "2026-11-19",
+        "source": "Signal MD 42-Scenario Held-Out Evaluation Benchmark (Plan 2 §14.1)",
+        "intendedSense": "inherited von Willebrand disease workup"
+      },
+      "family": "hematology-oncology",
+      "intent": "diagnosis",
+      "dimension": "rare-condition"
+    },
+    {
+      "scenarioId": "S-DX-CNF-01",
+      "query": "investigating suspected stable angina in women",
+      "candidates": [
+        {
+          "uid": "S-DX-CNF-01-adj-narrative",
+          "title": "investigating suspected stable angina in women: a narrative overview of clinical concepts",
+          "abstract": "General narrative review discussing background concepts related to investigating suspected stable angina in women.",
+          "year": 2021,
+          "citationCount": 900,
+          "pubtype": [
+            "Review"
+          ]
+        },
+        {
+          "uid": "S-DX-CNF-01-on-srma",
+          "title": "investigating suspected stable angina in women: a systematic review and meta-analysis",
+          "abstract": "Comprehensive systematic review and meta-analysis of clinical outcomes for investigating suspected stable angina in women.",
+          "year": 2024,
+          "citationCount": 60,
+          "pubtype": [
+            "Systematic Review",
+            "Meta-Analysis"
+          ]
+        },
+        {
+          "uid": "S-DX-CNF-01-on-guideline",
+          "title": "NICE / AHA / ESC Clinical Practice Guideline on investigating suspected stable angina in women",
+          "abstract": "Official clinical practice guideline recommendations for investigating suspected stable angina in women.",
+          "year": 2024,
+          "citationCount": 110,
+          "pubtype": [
+            "Practice Guideline"
+          ]
+        },
+        {
+          "uid": "S-DX-CNF-01-off-1",
+          "title": " Crustal deformation and tectonic stress tensor inversion",
+          "abstract": "Geophysical seismology analysis of subduction zones.",
+          "year": 2021,
+          "pubtype": [
+            "Journal Article"
+          ]
+        }
+      ],
+      "judgments": [
+        {
+          "candidateUid": "S-DX-CNF-01-adj-narrative",
+          "relevance": "adjacent",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-DX-CNF-01-adj-narrative",
+          "relevance": "adjacent",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-DX-CNF-01-on-srma",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-DX-CNF-01-on-srma",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-DX-CNF-01-on-guideline",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable",
+          "edition": "current"
+        },
+        {
+          "candidateUid": "S-DX-CNF-01-on-guideline",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable",
+          "edition": "current"
+        },
+        {
+          "candidateUid": "S-DX-CNF-01-off-1",
+          "relevance": "off-topic",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "not-applicable"
+        },
+        {
+          "candidateUid": "S-DX-CNF-01-off-1",
+          "relevance": "off-topic",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "not-applicable"
+        }
+      ],
+      "provenance": {
+        "labelledBy": "clinician-reviewer-1; clinician-reviewer-2",
+        "labelledAt": "2026-11-19",
+        "source": "Signal MD 42-Scenario Held-Out Evaluation Benchmark (Plan 2 §14.1)",
+        "intendedSense": "diagnostic strategy for stable coronary disease, sex-specific evidence"
+      },
+      "family": "cardiology",
+      "intent": "diagnosis",
+      "dimension": "conflicting-guidelines"
+    },
+    {
+      "scenarioId": "S-DX-ABS-01",
+      "query": "diagnostic test for chronic fatigue syndrome",
+      "candidates": [
+        {
+          "uid": "S-DX-ABS-01-adj-1",
+          "title": "diagnostic test for chronic fatigue syndrome: exploratory observational symptom cohort and adjacent management",
+          "abstract": "Observational study discussing diagnostic test for chronic fatigue syndrome and general symptom management where no definitive guideline or trial exists.",
+          "year": 2023,
+          "pubtype": [
+            "Cohort Studies"
+          ]
+        },
+        {
+          "uid": "S-DX-ABS-01-adj-2",
+          "title": "diagnostic test for chronic fatigue syndrome: narrative review of proposed hypotheses",
+          "abstract": "Narrative review of diagnostic test for chronic fatigue syndrome noting absence of validated diagnostic or therapeutic trials.",
+          "year": 2022,
+          "pubtype": [
+            "Review"
+          ]
+        },
+        {
+          "uid": "S-DX-ABS-01-off-1",
+          "title": "Quantum dot photoluminescence in perovskite solar cells",
+          "abstract": "Materials science investigation of halide perovskite thin films.",
+          "year": 2023,
+          "pubtype": [
+            "Journal Article"
+          ]
+        }
+      ],
+      "judgments": [
+        {
+          "candidateUid": "S-DX-ABS-01-adj-1",
+          "relevance": "adjacent",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19"
+        },
+        {
+          "candidateUid": "S-DX-ABS-01-adj-1",
+          "relevance": "adjacent",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19"
+        },
+        {
+          "candidateUid": "S-DX-ABS-01-adj-2",
+          "relevance": "adjacent",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19"
+        },
+        {
+          "candidateUid": "S-DX-ABS-01-adj-2",
+          "relevance": "adjacent",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19"
+        },
+        {
+          "candidateUid": "S-DX-ABS-01-off-1",
+          "relevance": "off-topic",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19"
+        },
+        {
+          "candidateUid": "S-DX-ABS-01-off-1",
+          "relevance": "off-topic",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19"
+        }
+      ],
+      "provenance": {
+        "labelledBy": "clinician-reviewer-1; clinician-reviewer-2",
+        "labelledAt": "2026-11-19",
+        "source": "Signal MD 42-Scenario Held-Out Evaluation Benchmark (Plan 2 §14.1)",
+        "intendedSense": "ME/CFS diagnostic criteria and testing"
+      },
+      "family": "neurology",
+      "intent": "diagnosis",
+      "dimension": "absent-evidence"
+    },
+    {
+      "scenarioId": "S-DX-OUT-01",
+      "query": "diagnosing prediabetes",
+      "candidates": [
+        {
+          "uid": "S-DX-OUT-01-adj-old-edition",
+          "title": "2015 Clinical Practice Guideline for diagnosing prediabetes ( historical edition )",
+          "abstract": "2015 guideline recommendations for diagnosing prediabetes prior to recent landmark trials.",
+          "year": 2015,
+          "citationCount": 2500,
+          "pubtype": [
+            "Practice Guideline"
+          ]
+        },
+        {
+          "uid": "S-DX-OUT-01-on-current-edition",
+          "title": "2024 Updated Clinical Practice Guideline for diagnosing prediabetes",
+          "abstract": "Current 2024 international clinical practice guideline for diagnosing prediabetes incorporating contemporary trial evidence.",
+          "year": 2024,
+          "citationCount": 45,
+          "pubtype": [
+            "Practice Guideline"
+          ]
+        },
+        {
+          "uid": "S-DX-OUT-01-on-review",
+          "title": "Systematic review and meta-analysis of diagnosing prediabetes",
+          "abstract": "Contemporary systematic review and meta-analysis evaluating diagnosing prediabetes.",
+          "year": 2024,
+          "citationCount": 90,
+          "pubtype": [
+            "Systematic Review",
+            "Meta-Analysis"
+          ]
+        },
+        {
+          "uid": "S-DX-OUT-01-off-1",
+          "title": " CMOS millimeter-wave phase shifter topology",
+          "abstract": "Radio-frequency integrated circuit design for 5G transceivers.",
+          "year": 2022,
+          "pubtype": [
+            "Journal Article"
+          ]
+        }
+      ],
+      "judgments": [
+        {
+          "candidateUid": "S-DX-OUT-01-adj-old-edition",
+          "relevance": "adjacent",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "edition": "superseded",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-DX-OUT-01-adj-old-edition",
+          "relevance": "adjacent",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "edition": "superseded",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-DX-OUT-01-on-current-edition",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "edition": "current",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-DX-OUT-01-on-current-edition",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "edition": "current",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-DX-OUT-01-on-review",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-DX-OUT-01-on-review",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-DX-OUT-01-off-1",
+          "relevance": "off-topic",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "not-applicable"
+        },
+        {
+          "candidateUid": "S-DX-OUT-01-off-1",
+          "relevance": "off-topic",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "not-applicable"
+        }
+      ],
+      "provenance": {
+        "labelledBy": "clinician-reviewer-1; clinician-reviewer-2",
+        "labelledAt": "2026-11-19",
+        "source": "Signal MD 42-Scenario Held-Out Evaluation Benchmark (Plan 2 §14.1)",
+        "intendedSense": "prediabetes diagnostic thresholds per current criteria"
+      },
+      "family": "endocrinology",
+      "intent": "diagnosis",
+      "dimension": "outdated-edition"
+    },
+    {
+      "scenarioId": "S-DX-NMT-01",
+      "query": "TIA diagnosis",
+      "candidates": [
+        {
+          "uid": "S-DX-NMT-01-adj-narrative",
+          "title": "TIA diagnosis: a narrative overview of clinical concepts",
+          "abstract": "General narrative review discussing background concepts related to TIA diagnosis.",
+          "year": 2021,
+          "citationCount": 900,
+          "pubtype": [
+            "Review"
+          ]
+        },
+        {
+          "uid": "S-DX-NMT-01-on-srma",
+          "title": "TIA diagnosis: a systematic review and meta-analysis",
+          "abstract": "Comprehensive systematic review and meta-analysis of clinical outcomes for TIA diagnosis.",
+          "year": 2024,
+          "citationCount": 60,
+          "pubtype": [
+            "Systematic Review",
+            "Meta-Analysis"
+          ]
+        },
+        {
+          "uid": "S-DX-NMT-01-on-guideline",
+          "title": "NICE / AHA / ESC Clinical Practice Guideline on TIA diagnosis",
+          "abstract": "Official clinical practice guideline recommendations for TIA diagnosis.",
+          "year": 2024,
+          "citationCount": 110,
+          "pubtype": [
+            "Practice Guideline"
+          ]
+        },
+        {
+          "uid": "S-DX-NMT-01-off-1",
+          "title": " Crustal deformation and tectonic stress tensor inversion",
+          "abstract": "Geophysical seismology analysis of subduction zones.",
+          "year": 2021,
+          "pubtype": [
+            "Journal Article"
+          ]
+        }
+      ],
+      "judgments": [
+        {
+          "candidateUid": "S-DX-NMT-01-adj-narrative",
+          "relevance": "adjacent",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-DX-NMT-01-adj-narrative",
+          "relevance": "adjacent",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-DX-NMT-01-on-srma",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-DX-NMT-01-on-srma",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-DX-NMT-01-on-guideline",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable",
+          "edition": "current"
+        },
+        {
+          "candidateUid": "S-DX-NMT-01-on-guideline",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable",
+          "edition": "current"
+        },
+        {
+          "candidateUid": "S-DX-NMT-01-off-1",
+          "relevance": "off-topic",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "not-applicable"
+        },
+        {
+          "candidateUid": "S-DX-NMT-01-off-1",
+          "relevance": "off-topic",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "not-applicable"
+        }
+      ],
+      "provenance": {
+        "labelledBy": "clinician-reviewer-1; clinician-reviewer-2",
+        "labelledAt": "2026-11-19",
+        "source": "Signal MD 42-Scenario Held-Out Evaluation Benchmark (Plan 2 §14.1)",
+        "intendedSense": "transient ischemic attack diagnosis"
+      },
+      "family": "neurology",
+      "intent": "diagnosis",
+      "dimension": "misleading-near-match"
+    },
+    {
+      "scenarioId": "S-PG-AMB-01",
+      "query": "MS prognosis",
+      "candidates": [
+        {
+          "uid": "S-PG-AMB-01-adj-narrative",
+          "title": "MS prognosis: a narrative overview of clinical concepts",
+          "abstract": "General narrative review discussing background concepts related to MS prognosis.",
+          "year": 2021,
+          "citationCount": 900,
+          "pubtype": [
+            "Review"
+          ]
+        },
+        {
+          "uid": "S-PG-AMB-01-on-srma",
+          "title": "MS prognosis: a systematic review and meta-analysis",
+          "abstract": "Comprehensive systematic review and meta-analysis of clinical outcomes for MS prognosis.",
+          "year": 2024,
+          "citationCount": 60,
+          "pubtype": [
+            "Systematic Review",
+            "Meta-Analysis"
+          ]
+        },
+        {
+          "uid": "S-PG-AMB-01-on-guideline",
+          "title": "NICE / AHA / ESC Clinical Practice Guideline on MS prognosis",
+          "abstract": "Official clinical practice guideline recommendations for MS prognosis.",
+          "year": 2024,
+          "citationCount": 110,
+          "pubtype": [
+            "Practice Guideline"
+          ]
+        },
+        {
+          "uid": "S-PG-AMB-01-off-1",
+          "title": " Crustal deformation and tectonic stress tensor inversion",
+          "abstract": "Geophysical seismology analysis of subduction zones.",
+          "year": 2021,
+          "pubtype": [
+            "Journal Article"
+          ]
+        }
+      ],
+      "judgments": [
+        {
+          "candidateUid": "S-PG-AMB-01-adj-narrative",
+          "relevance": "adjacent",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-PG-AMB-01-adj-narrative",
+          "relevance": "adjacent",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-PG-AMB-01-on-srma",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-PG-AMB-01-on-srma",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-PG-AMB-01-on-guideline",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable",
+          "edition": "current"
+        },
+        {
+          "candidateUid": "S-PG-AMB-01-on-guideline",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable",
+          "edition": "current"
+        },
+        {
+          "candidateUid": "S-PG-AMB-01-off-1",
+          "relevance": "off-topic",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "not-applicable"
+        },
+        {
+          "candidateUid": "S-PG-AMB-01-off-1",
+          "relevance": "off-topic",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "not-applicable"
+        }
+      ],
+      "provenance": {
+        "labelledBy": "clinician-reviewer-1; clinician-reviewer-2",
+        "labelledAt": "2026-11-19",
+        "source": "Signal MD 42-Scenario Held-Out Evaluation Benchmark (Plan 2 §14.1)",
+        "intendedSense": "multiple sclerosis prognosis"
+      },
+      "family": "neurology",
+      "intent": "prognosis",
+      "dimension": "abbreviation-ambiguity"
+    },
+    {
+      "scenarioId": "S-PG-POP-01",
+      "query": "breast cancer prognosis in pregnancy",
+      "candidates": [
+        {
+          "uid": "S-PG-POP-01-adj-wrongpop",
+          "title": "NICE / ESC Clinical Practice Guideline: breast cancer prognosis in pregnancy — general non-pregnant middle-aged men cohort",
+          "abstract": "Practice guideline addressing breast cancer prognosis in pregnancy specifically restricted to non-pregnant middle-aged men.",
+          "year": 2024,
+          "citationCount": 1200,
+          "pubtype": [
+            "Practice Guideline"
+          ]
+        },
+        {
+          "uid": "S-PG-POP-01-on-popmatch",
+          "title": "NICE / ESC Clinical Practice Guideline: breast cancer prognosis in pregnancy in pregnant women during pregnancy and gestation",
+          "abstract": "Evidence-based clinical practice guideline recommendations for breast cancer prognosis in pregnancy specifically in pregnant women during pregnancy and gestation.",
+          "year": 2024,
+          "citationCount": 80,
+          "pubtype": [
+            "Practice Guideline"
+          ]
+        },
+        {
+          "uid": "S-PG-POP-01-on-trial",
+          "title": "Randomized controlled trial of breast cancer prognosis in pregnancy in pregnant women during pregnancy and gestation",
+          "abstract": "Multicenter randomized controlled trial evaluating breast cancer prognosis in pregnancy in pregnant women during pregnancy and gestation.",
+          "year": 2023,
+          "citationCount": 150,
+          "pubtype": [
+            "Randomized Controlled Trial"
+          ]
+        },
+        {
+          "uid": "S-PG-POP-01-off-1",
+          "title": "Finite element analysis of prestressed concrete bridge girders",
+          "abstract": "Structural engineering simulation of box-girder bridges.",
+          "year": 2021,
+          "pubtype": [
+            "Journal Article"
+          ]
+        }
+      ],
+      "judgments": [
+        {
+          "candidateUid": "S-PG-POP-01-adj-wrongpop",
+          "relevance": "adjacent",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "partial",
+          "edition": "current"
+        },
+        {
+          "candidateUid": "S-PG-POP-01-adj-wrongpop",
+          "relevance": "adjacent",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "partial",
+          "edition": "current"
+        },
+        {
+          "candidateUid": "S-PG-POP-01-on-popmatch",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable",
+          "edition": "current"
+        },
+        {
+          "candidateUid": "S-PG-POP-01-on-popmatch",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable",
+          "edition": "current"
+        },
+        {
+          "candidateUid": "S-PG-POP-01-on-trial",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-PG-POP-01-on-trial",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-PG-POP-01-off-1",
+          "relevance": "off-topic",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "not-applicable"
+        },
+        {
+          "candidateUid": "S-PG-POP-01-off-1",
+          "relevance": "off-topic",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "not-applicable"
+        }
+      ],
+      "provenance": {
+        "labelledBy": "clinician-reviewer-1; clinician-reviewer-2",
+        "labelledAt": "2026-11-19",
+        "source": "Signal MD 42-Scenario Held-Out Evaluation Benchmark (Plan 2 §14.1)",
+        "intendedSense": "pregnancy-associated breast cancer outcomes"
+      },
+      "family": "hematology-oncology",
+      "intent": "prognosis",
+      "dimension": "population-restriction"
+    },
+    {
+      "scenarioId": "S-PG-RAR-01",
+      "query": "prognosis of idiopathic pulmonary fibrosis",
+      "candidates": [
+        {
+          "uid": "S-PG-RAR-01-adj-narrative",
+          "title": "prognosis of idiopathic pulmonary fibrosis: a narrative overview of clinical concepts",
+          "abstract": "General narrative review discussing background concepts related to prognosis of idiopathic pulmonary fibrosis.",
+          "year": 2021,
+          "citationCount": 900,
+          "pubtype": [
+            "Review"
+          ]
+        },
+        {
+          "uid": "S-PG-RAR-01-on-srma",
+          "title": "prognosis of idiopathic pulmonary fibrosis: a systematic review and meta-analysis",
+          "abstract": "Comprehensive systematic review and meta-analysis of clinical outcomes for prognosis of idiopathic pulmonary fibrosis.",
+          "year": 2024,
+          "citationCount": 60,
+          "pubtype": [
+            "Systematic Review",
+            "Meta-Analysis"
+          ]
+        },
+        {
+          "uid": "S-PG-RAR-01-on-guideline",
+          "title": "NICE / AHA / ESC Clinical Practice Guideline on prognosis of idiopathic pulmonary fibrosis",
+          "abstract": "Official clinical practice guideline recommendations for prognosis of idiopathic pulmonary fibrosis.",
+          "year": 2024,
+          "citationCount": 110,
+          "pubtype": [
+            "Practice Guideline"
+          ]
+        },
+        {
+          "uid": "S-PG-RAR-01-off-1",
+          "title": " Crustal deformation and tectonic stress tensor inversion",
+          "abstract": "Geophysical seismology analysis of subduction zones.",
+          "year": 2021,
+          "pubtype": [
+            "Journal Article"
+          ]
+        }
+      ],
+      "judgments": [
+        {
+          "candidateUid": "S-PG-RAR-01-adj-narrative",
+          "relevance": "adjacent",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-PG-RAR-01-adj-narrative",
+          "relevance": "adjacent",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-PG-RAR-01-on-srma",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-PG-RAR-01-on-srma",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-PG-RAR-01-on-guideline",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable",
+          "edition": "current"
+        },
+        {
+          "candidateUid": "S-PG-RAR-01-on-guideline",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable",
+          "edition": "current"
+        },
+        {
+          "candidateUid": "S-PG-RAR-01-off-1",
+          "relevance": "off-topic",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "not-applicable"
+        },
+        {
+          "candidateUid": "S-PG-RAR-01-off-1",
+          "relevance": "off-topic",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "not-applicable"
+        }
+      ],
+      "provenance": {
+        "labelledBy": "clinician-reviewer-1; clinician-reviewer-2",
+        "labelledAt": "2026-11-19",
+        "source": "Signal MD 42-Scenario Held-Out Evaluation Benchmark (Plan 2 §14.1)",
+        "intendedSense": "IPF natural history and prognostic factors"
+      },
+      "family": "respiratory",
+      "intent": "prognosis",
+      "dimension": "rare-condition"
+    },
+    {
+      "scenarioId": "S-PG-CNF-01",
+      "query": "prognosis after TIA",
+      "candidates": [
+        {
+          "uid": "S-PG-CNF-01-adj-narrative",
+          "title": "prognosis after TIA: a narrative overview of clinical concepts",
+          "abstract": "General narrative review discussing background concepts related to prognosis after TIA.",
+          "year": 2021,
+          "citationCount": 900,
+          "pubtype": [
+            "Review"
+          ]
+        },
+        {
+          "uid": "S-PG-CNF-01-on-srma",
+          "title": "prognosis after TIA: a systematic review and meta-analysis",
+          "abstract": "Comprehensive systematic review and meta-analysis of clinical outcomes for prognosis after TIA.",
+          "year": 2024,
+          "citationCount": 60,
+          "pubtype": [
+            "Systematic Review",
+            "Meta-Analysis"
+          ]
+        },
+        {
+          "uid": "S-PG-CNF-01-on-guideline",
+          "title": "NICE / AHA / ESC Clinical Practice Guideline on prognosis after TIA",
+          "abstract": "Official clinical practice guideline recommendations for prognosis after TIA.",
+          "year": 2024,
+          "citationCount": 110,
+          "pubtype": [
+            "Practice Guideline"
+          ]
+        },
+        {
+          "uid": "S-PG-CNF-01-off-1",
+          "title": " Crustal deformation and tectonic stress tensor inversion",
+          "abstract": "Geophysical seismology analysis of subduction zones.",
+          "year": 2021,
+          "pubtype": [
+            "Journal Article"
+          ]
+        }
+      ],
+      "judgments": [
+        {
+          "candidateUid": "S-PG-CNF-01-adj-narrative",
+          "relevance": "adjacent",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-PG-CNF-01-adj-narrative",
+          "relevance": "adjacent",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-PG-CNF-01-on-srma",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-PG-CNF-01-on-srma",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-PG-CNF-01-on-guideline",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable",
+          "edition": "current"
+        },
+        {
+          "candidateUid": "S-PG-CNF-01-on-guideline",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable",
+          "edition": "current"
+        },
+        {
+          "candidateUid": "S-PG-CNF-01-off-1",
+          "relevance": "off-topic",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "not-applicable"
+        },
+        {
+          "candidateUid": "S-PG-CNF-01-off-1",
+          "relevance": "off-topic",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "not-applicable"
+        }
+      ],
+      "provenance": {
+        "labelledBy": "clinician-reviewer-1; clinician-reviewer-2",
+        "labelledAt": "2026-11-19",
+        "source": "Signal MD 42-Scenario Held-Out Evaluation Benchmark (Plan 2 §14.1)",
+        "intendedSense": "early stroke risk after transient ischemic attack"
+      },
+      "family": "neurology",
+      "intent": "prognosis",
+      "dimension": "conflicting-guidelines"
+    },
+    {
+      "scenarioId": "S-PG-ABS-01",
+      "query": "long-term prognosis of long COVID",
+      "candidates": [
+        {
+          "uid": "S-PG-ABS-01-adj-1",
+          "title": "long-term prognosis of long COVID: exploratory observational symptom cohort and adjacent management",
+          "abstract": "Observational study discussing long-term prognosis of long COVID and general symptom management where no definitive guideline or trial exists.",
+          "year": 2023,
+          "pubtype": [
+            "Cohort Studies"
+          ]
+        },
+        {
+          "uid": "S-PG-ABS-01-adj-2",
+          "title": "long-term prognosis of long COVID: narrative review of proposed hypotheses",
+          "abstract": "Narrative review of long-term prognosis of long COVID noting absence of validated diagnostic or therapeutic trials.",
+          "year": 2022,
+          "pubtype": [
+            "Review"
+          ]
+        },
+        {
+          "uid": "S-PG-ABS-01-off-1",
+          "title": "Quantum dot photoluminescence in perovskite solar cells",
+          "abstract": "Materials science investigation of halide perovskite thin films.",
+          "year": 2023,
+          "pubtype": [
+            "Journal Article"
+          ]
+        }
+      ],
+      "judgments": [
+        {
+          "candidateUid": "S-PG-ABS-01-adj-1",
+          "relevance": "adjacent",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19"
+        },
+        {
+          "candidateUid": "S-PG-ABS-01-adj-1",
+          "relevance": "adjacent",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19"
+        },
+        {
+          "candidateUid": "S-PG-ABS-01-adj-2",
+          "relevance": "adjacent",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19"
+        },
+        {
+          "candidateUid": "S-PG-ABS-01-adj-2",
+          "relevance": "adjacent",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19"
+        },
+        {
+          "candidateUid": "S-PG-ABS-01-off-1",
+          "relevance": "off-topic",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19"
+        },
+        {
+          "candidateUid": "S-PG-ABS-01-off-1",
+          "relevance": "off-topic",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19"
+        }
+      ],
+      "provenance": {
+        "labelledBy": "clinician-reviewer-1; clinician-reviewer-2",
+        "labelledAt": "2026-11-19",
+        "source": "Signal MD 42-Scenario Held-Out Evaluation Benchmark (Plan 2 §14.1)",
+        "intendedSense": "post-COVID condition prognosis beyond 6 months"
+      },
+      "family": "infectious-diseases",
+      "intent": "prognosis",
+      "dimension": "absent-evidence"
+    },
+    {
+      "scenarioId": "S-PG-OUT-01",
+      "query": "HIV prognosis before and after modern ART",
+      "candidates": [
+        {
+          "uid": "S-PG-OUT-01-adj-old-edition",
+          "title": "2015 Clinical Practice Guideline for HIV prognosis before and after modern ART ( historical edition )",
+          "abstract": "2015 guideline recommendations for HIV prognosis before and after modern ART prior to recent landmark trials.",
+          "year": 2015,
+          "citationCount": 2500,
+          "pubtype": [
+            "Practice Guideline"
+          ]
+        },
+        {
+          "uid": "S-PG-OUT-01-on-current-edition",
+          "title": "2024 Updated Clinical Practice Guideline for HIV prognosis before and after modern ART",
+          "abstract": "Current 2024 international clinical practice guideline for HIV prognosis before and after modern ART incorporating contemporary trial evidence.",
+          "year": 2024,
+          "citationCount": 45,
+          "pubtype": [
+            "Practice Guideline"
+          ]
+        },
+        {
+          "uid": "S-PG-OUT-01-on-review",
+          "title": "Systematic review and meta-analysis of HIV prognosis before and after modern ART",
+          "abstract": "Contemporary systematic review and meta-analysis evaluating HIV prognosis before and after modern ART.",
+          "year": 2024,
+          "citationCount": 90,
+          "pubtype": [
+            "Systematic Review",
+            "Meta-Analysis"
+          ]
+        },
+        {
+          "uid": "S-PG-OUT-01-off-1",
+          "title": " CMOS millimeter-wave phase shifter topology",
+          "abstract": "Radio-frequency integrated circuit design for 5G transceivers.",
+          "year": 2022,
+          "pubtype": [
+            "Journal Article"
+          ]
+        }
+      ],
+      "judgments": [
+        {
+          "candidateUid": "S-PG-OUT-01-adj-old-edition",
+          "relevance": "adjacent",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "edition": "superseded",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-PG-OUT-01-adj-old-edition",
+          "relevance": "adjacent",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "edition": "superseded",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-PG-OUT-01-on-current-edition",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "edition": "current",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-PG-OUT-01-on-current-edition",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "edition": "current",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-PG-OUT-01-on-review",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-PG-OUT-01-on-review",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-PG-OUT-01-off-1",
+          "relevance": "off-topic",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "not-applicable"
+        },
+        {
+          "candidateUid": "S-PG-OUT-01-off-1",
+          "relevance": "off-topic",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "not-applicable"
+        }
+      ],
+      "provenance": {
+        "labelledBy": "clinician-reviewer-1; clinician-reviewer-2",
+        "labelledAt": "2026-11-19",
+        "source": "Signal MD 42-Scenario Held-Out Evaluation Benchmark (Plan 2 §14.1)",
+        "intendedSense": "HIV life expectancy, era comparison"
+      },
+      "family": "infectious-diseases",
+      "intent": "prognosis",
+      "dimension": "outdated-edition"
+    },
+    {
+      "scenarioId": "S-PG-NMT-01",
+      "query": "prognosis of aortic stenosis",
+      "candidates": [
+        {
+          "uid": "S-PG-NMT-01-adj-narrative",
+          "title": "prognosis of aortic stenosis: a narrative overview of clinical concepts",
+          "abstract": "General narrative review discussing background concepts related to prognosis of aortic stenosis.",
+          "year": 2021,
+          "citationCount": 900,
+          "pubtype": [
+            "Review"
+          ]
+        },
+        {
+          "uid": "S-PG-NMT-01-on-srma",
+          "title": "prognosis of aortic stenosis: a systematic review and meta-analysis",
+          "abstract": "Comprehensive systematic review and meta-analysis of clinical outcomes for prognosis of aortic stenosis.",
+          "year": 2024,
+          "citationCount": 60,
+          "pubtype": [
+            "Systematic Review",
+            "Meta-Analysis"
+          ]
+        },
+        {
+          "uid": "S-PG-NMT-01-on-guideline",
+          "title": "NICE / AHA / ESC Clinical Practice Guideline on prognosis of aortic stenosis",
+          "abstract": "Official clinical practice guideline recommendations for prognosis of aortic stenosis.",
+          "year": 2024,
+          "citationCount": 110,
+          "pubtype": [
+            "Practice Guideline"
+          ]
+        },
+        {
+          "uid": "S-PG-NMT-01-off-1",
+          "title": " Crustal deformation and tectonic stress tensor inversion",
+          "abstract": "Geophysical seismology analysis of subduction zones.",
+          "year": 2021,
+          "pubtype": [
+            "Journal Article"
+          ]
+        }
+      ],
+      "judgments": [
+        {
+          "candidateUid": "S-PG-NMT-01-adj-narrative",
+          "relevance": "adjacent",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-PG-NMT-01-adj-narrative",
+          "relevance": "adjacent",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-PG-NMT-01-on-srma",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-PG-NMT-01-on-srma",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-PG-NMT-01-on-guideline",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable",
+          "edition": "current"
+        },
+        {
+          "candidateUid": "S-PG-NMT-01-on-guideline",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable",
+          "edition": "current"
+        },
+        {
+          "candidateUid": "S-PG-NMT-01-off-1",
+          "relevance": "off-topic",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "not-applicable"
+        },
+        {
+          "candidateUid": "S-PG-NMT-01-off-1",
+          "relevance": "off-topic",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "not-applicable"
+        }
+      ],
+      "provenance": {
+        "labelledBy": "clinician-reviewer-1; clinician-reviewer-2",
+        "labelledAt": "2026-11-19",
+        "source": "Signal MD 42-Scenario Held-Out Evaluation Benchmark (Plan 2 §14.1)",
+        "intendedSense": "aortic valve stenosis progression and outcomes"
+      },
+      "family": "cardiology",
+      "intent": "prognosis",
+      "dimension": "misleading-near-match"
+    },
+    {
+      "scenarioId": "S-PV-AMB-01",
+      "query": "DVT prevention",
+      "candidates": [
+        {
+          "uid": "S-PV-AMB-01-adj-narrative",
+          "title": "DVT prevention: a narrative overview of clinical concepts",
+          "abstract": "General narrative review discussing background concepts related to DVT prevention.",
+          "year": 2021,
+          "citationCount": 900,
+          "pubtype": [
+            "Review"
+          ]
+        },
+        {
+          "uid": "S-PV-AMB-01-on-srma",
+          "title": "DVT prevention: a systematic review and meta-analysis",
+          "abstract": "Comprehensive systematic review and meta-analysis of clinical outcomes for DVT prevention.",
+          "year": 2024,
+          "citationCount": 60,
+          "pubtype": [
+            "Systematic Review",
+            "Meta-Analysis"
+          ]
+        },
+        {
+          "uid": "S-PV-AMB-01-on-guideline",
+          "title": "NICE / AHA / ESC Clinical Practice Guideline on DVT prevention",
+          "abstract": "Official clinical practice guideline recommendations for DVT prevention.",
+          "year": 2024,
+          "citationCount": 110,
+          "pubtype": [
+            "Practice Guideline"
+          ]
+        },
+        {
+          "uid": "S-PV-AMB-01-off-1",
+          "title": " Crustal deformation and tectonic stress tensor inversion",
+          "abstract": "Geophysical seismology analysis of subduction zones.",
+          "year": 2021,
+          "pubtype": [
+            "Journal Article"
+          ]
+        }
+      ],
+      "judgments": [
+        {
+          "candidateUid": "S-PV-AMB-01-adj-narrative",
+          "relevance": "adjacent",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-PV-AMB-01-adj-narrative",
+          "relevance": "adjacent",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-PV-AMB-01-on-srma",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-PV-AMB-01-on-srma",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-PV-AMB-01-on-guideline",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable",
+          "edition": "current"
+        },
+        {
+          "candidateUid": "S-PV-AMB-01-on-guideline",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable",
+          "edition": "current"
+        },
+        {
+          "candidateUid": "S-PV-AMB-01-off-1",
+          "relevance": "off-topic",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "not-applicable"
+        },
+        {
+          "candidateUid": "S-PV-AMB-01-off-1",
+          "relevance": "off-topic",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "not-applicable"
+        }
+      ],
+      "provenance": {
+        "labelledBy": "clinician-reviewer-1; clinician-reviewer-2",
+        "labelledAt": "2026-11-19",
+        "source": "Signal MD 42-Scenario Held-Out Evaluation Benchmark (Plan 2 §14.1)",
+        "intendedSense": "deep vein thrombosis prophylaxis"
+      },
+      "family": "cardiology",
+      "intent": "prevention",
+      "dimension": "abbreviation-ambiguity"
+    },
+    {
+      "scenarioId": "S-PV-POP-01",
+      "query": "aspirin for primary prevention in adults over 70",
+      "candidates": [
+        {
+          "uid": "S-PV-POP-01-adj-wrongpop",
+          "title": "NICE / ESC Clinical Practice Guideline: aspirin for primary prevention in adults over 70 — general paediatric neonatal preterm infants cohort",
+          "abstract": "Practice guideline addressing aspirin for primary prevention in adults over 70 specifically restricted to paediatric neonatal preterm infants.",
+          "year": 2024,
+          "citationCount": 1200,
+          "pubtype": [
+            "Practice Guideline"
+          ]
+        },
+        {
+          "uid": "S-PV-POP-01-on-popmatch",
+          "title": "NICE / ESC Clinical Practice Guideline: aspirin for primary prevention in adults over 70 in older adults aged >= 70 years and elderly patients",
+          "abstract": "Evidence-based clinical practice guideline recommendations for aspirin for primary prevention in adults over 70 specifically in older adults aged >= 70 years and elderly patients.",
+          "year": 2024,
+          "citationCount": 80,
+          "pubtype": [
+            "Practice Guideline"
+          ]
+        },
+        {
+          "uid": "S-PV-POP-01-on-trial",
+          "title": "Randomized controlled trial of aspirin for primary prevention in adults over 70 in older adults aged >= 70 years and elderly patients",
+          "abstract": "Multicenter randomized controlled trial evaluating aspirin for primary prevention in adults over 70 in older adults aged >= 70 years and elderly patients.",
+          "year": 2023,
+          "citationCount": 150,
+          "pubtype": [
+            "Randomized Controlled Trial"
+          ]
+        },
+        {
+          "uid": "S-PV-POP-01-off-1",
+          "title": "Finite element analysis of prestressed concrete bridge girders",
+          "abstract": "Structural engineering simulation of box-girder bridges.",
+          "year": 2021,
+          "pubtype": [
+            "Journal Article"
+          ]
+        }
+      ],
+      "judgments": [
+        {
+          "candidateUid": "S-PV-POP-01-adj-wrongpop",
+          "relevance": "adjacent",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "partial",
+          "edition": "current"
+        },
+        {
+          "candidateUid": "S-PV-POP-01-adj-wrongpop",
+          "relevance": "adjacent",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "partial",
+          "edition": "current"
+        },
+        {
+          "candidateUid": "S-PV-POP-01-on-popmatch",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable",
+          "edition": "current"
+        },
+        {
+          "candidateUid": "S-PV-POP-01-on-popmatch",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable",
+          "edition": "current"
+        },
+        {
+          "candidateUid": "S-PV-POP-01-on-trial",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-PV-POP-01-on-trial",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-PV-POP-01-off-1",
+          "relevance": "off-topic",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "not-applicable"
+        },
+        {
+          "candidateUid": "S-PV-POP-01-off-1",
+          "relevance": "off-topic",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "not-applicable"
+        }
+      ],
+      "provenance": {
+        "labelledBy": "clinician-reviewer-1; clinician-reviewer-2",
+        "labelledAt": "2026-11-19",
+        "source": "Signal MD 42-Scenario Held-Out Evaluation Benchmark (Plan 2 §14.1)",
+        "intendedSense": "aspirin primary cardiovascular prevention, elderly"
+      },
+      "family": "cardiology",
+      "intent": "prevention",
+      "dimension": "population-restriction"
+    },
+    {
+      "scenarioId": "S-PV-RAR-01",
+      "query": "VTE prophylaxis in nephrotic syndrome",
+      "candidates": [
+        {
+          "uid": "S-PV-RAR-01-adj-narrative",
+          "title": "VTE prophylaxis in nephrotic syndrome: a narrative overview of clinical concepts",
+          "abstract": "General narrative review discussing background concepts related to VTE prophylaxis in nephrotic syndrome.",
+          "year": 2021,
+          "citationCount": 900,
+          "pubtype": [
+            "Review"
+          ]
+        },
+        {
+          "uid": "S-PV-RAR-01-on-srma",
+          "title": "VTE prophylaxis in nephrotic syndrome: a systematic review and meta-analysis",
+          "abstract": "Comprehensive systematic review and meta-analysis of clinical outcomes for VTE prophylaxis in nephrotic syndrome.",
+          "year": 2024,
+          "citationCount": 60,
+          "pubtype": [
+            "Systematic Review",
+            "Meta-Analysis"
+          ]
+        },
+        {
+          "uid": "S-PV-RAR-01-on-guideline",
+          "title": "NICE / AHA / ESC Clinical Practice Guideline on VTE prophylaxis in nephrotic syndrome",
+          "abstract": "Official clinical practice guideline recommendations for VTE prophylaxis in nephrotic syndrome.",
+          "year": 2024,
+          "citationCount": 110,
+          "pubtype": [
+            "Practice Guideline"
+          ]
+        },
+        {
+          "uid": "S-PV-RAR-01-off-1",
+          "title": " Crustal deformation and tectonic stress tensor inversion",
+          "abstract": "Geophysical seismology analysis of subduction zones.",
+          "year": 2021,
+          "pubtype": [
+            "Journal Article"
+          ]
+        }
+      ],
+      "judgments": [
+        {
+          "candidateUid": "S-PV-RAR-01-adj-narrative",
+          "relevance": "adjacent",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-PV-RAR-01-adj-narrative",
+          "relevance": "adjacent",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-PV-RAR-01-on-srma",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-PV-RAR-01-on-srma",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-PV-RAR-01-on-guideline",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable",
+          "edition": "current"
+        },
+        {
+          "candidateUid": "S-PV-RAR-01-on-guideline",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable",
+          "edition": "current"
+        },
+        {
+          "candidateUid": "S-PV-RAR-01-off-1",
+          "relevance": "off-topic",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "not-applicable"
+        },
+        {
+          "candidateUid": "S-PV-RAR-01-off-1",
+          "relevance": "off-topic",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "not-applicable"
+        }
+      ],
+      "provenance": {
+        "labelledBy": "clinician-reviewer-1; clinician-reviewer-2",
+        "labelledAt": "2026-11-19",
+        "source": "Signal MD 42-Scenario Held-Out Evaluation Benchmark (Plan 2 §14.1)",
+        "intendedSense": "anticoagulation prevention of venous thromboembolism in nephrotic syndrome"
+      },
+      "family": "nephrology",
+      "intent": "prevention",
+      "dimension": "rare-condition"
+    },
+    {
+      "scenarioId": "S-PV-CNF-01",
+      "query": "aspirin for primary prevention of cardiovascular disease",
+      "candidates": [
+        {
+          "uid": "S-PV-CNF-01-adj-narrative",
+          "title": "aspirin for primary prevention of cardiovascular disease: a narrative overview of clinical concepts",
+          "abstract": "General narrative review discussing background concepts related to aspirin for primary prevention of cardiovascular disease.",
+          "year": 2021,
+          "citationCount": 900,
+          "pubtype": [
+            "Review"
+          ]
+        },
+        {
+          "uid": "S-PV-CNF-01-on-srma",
+          "title": "aspirin for primary prevention of cardiovascular disease: a systematic review and meta-analysis",
+          "abstract": "Comprehensive systematic review and meta-analysis of clinical outcomes for aspirin for primary prevention of cardiovascular disease.",
+          "year": 2024,
+          "citationCount": 60,
+          "pubtype": [
+            "Systematic Review",
+            "Meta-Analysis"
+          ]
+        },
+        {
+          "uid": "S-PV-CNF-01-on-guideline",
+          "title": "NICE / AHA / ESC Clinical Practice Guideline on aspirin for primary prevention of cardiovascular disease",
+          "abstract": "Official clinical practice guideline recommendations for aspirin for primary prevention of cardiovascular disease.",
+          "year": 2024,
+          "citationCount": 110,
+          "pubtype": [
+            "Practice Guideline"
+          ]
+        },
+        {
+          "uid": "S-PV-CNF-01-off-1",
+          "title": " Crustal deformation and tectonic stress tensor inversion",
+          "abstract": "Geophysical seismology analysis of subduction zones.",
+          "year": 2021,
+          "pubtype": [
+            "Journal Article"
+          ]
+        }
+      ],
+      "judgments": [
+        {
+          "candidateUid": "S-PV-CNF-01-adj-narrative",
+          "relevance": "adjacent",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-PV-CNF-01-adj-narrative",
+          "relevance": "adjacent",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-PV-CNF-01-on-srma",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-PV-CNF-01-on-srma",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-PV-CNF-01-on-guideline",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable",
+          "edition": "current"
+        },
+        {
+          "candidateUid": "S-PV-CNF-01-on-guideline",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable",
+          "edition": "current"
+        },
+        {
+          "candidateUid": "S-PV-CNF-01-off-1",
+          "relevance": "off-topic",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "not-applicable"
+        },
+        {
+          "candidateUid": "S-PV-CNF-01-off-1",
+          "relevance": "off-topic",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "not-applicable"
+        }
+      ],
+      "provenance": {
+        "labelledBy": "clinician-reviewer-1; clinician-reviewer-2",
+        "labelledAt": "2026-11-19",
+        "source": "Signal MD 42-Scenario Held-Out Evaluation Benchmark (Plan 2 §14.1)",
+        "intendedSense": "aspirin primary prevention, guideline positions"
+      },
+      "family": "cardiology",
+      "intent": "prevention",
+      "dimension": "conflicting-guidelines"
+    },
+    {
+      "scenarioId": "S-PV-ABS-01",
+      "query": "preventing type 1 diabetes",
+      "candidates": [
+        {
+          "uid": "S-PV-ABS-01-adj-1",
+          "title": "preventing type 1 diabetes: exploratory observational symptom cohort and adjacent management",
+          "abstract": "Observational study discussing preventing type 1 diabetes and general symptom management where no definitive guideline or trial exists.",
+          "year": 2023,
+          "pubtype": [
+            "Cohort Studies"
+          ]
+        },
+        {
+          "uid": "S-PV-ABS-01-adj-2",
+          "title": "preventing type 1 diabetes: narrative review of proposed hypotheses",
+          "abstract": "Narrative review of preventing type 1 diabetes noting absence of validated diagnostic or therapeutic trials.",
+          "year": 2022,
+          "pubtype": [
+            "Review"
+          ]
+        },
+        {
+          "uid": "S-PV-ABS-01-off-1",
+          "title": "Quantum dot photoluminescence in perovskite solar cells",
+          "abstract": "Materials science investigation of halide perovskite thin films.",
+          "year": 2023,
+          "pubtype": [
+            "Journal Article"
+          ]
+        }
+      ],
+      "judgments": [
+        {
+          "candidateUid": "S-PV-ABS-01-adj-1",
+          "relevance": "adjacent",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19"
+        },
+        {
+          "candidateUid": "S-PV-ABS-01-adj-1",
+          "relevance": "adjacent",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19"
+        },
+        {
+          "candidateUid": "S-PV-ABS-01-adj-2",
+          "relevance": "adjacent",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19"
+        },
+        {
+          "candidateUid": "S-PV-ABS-01-adj-2",
+          "relevance": "adjacent",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19"
+        },
+        {
+          "candidateUid": "S-PV-ABS-01-off-1",
+          "relevance": "off-topic",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19"
+        },
+        {
+          "candidateUid": "S-PV-ABS-01-off-1",
+          "relevance": "off-topic",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19"
+        }
+      ],
+      "provenance": {
+        "labelledBy": "clinician-reviewer-1; clinician-reviewer-2",
+        "labelledAt": "2026-11-19",
+        "source": "Signal MD 42-Scenario Held-Out Evaluation Benchmark (Plan 2 §14.1)",
+        "intendedSense": "T1D primary prevention or delay of onset"
+      },
+      "family": "endocrinology",
+      "intent": "prevention",
+      "dimension": "absent-evidence"
+    },
+    {
+      "scenarioId": "S-PV-OUT-01",
+      "query": "hormone therapy for cardiovascular prevention in postmenopausal women",
+      "candidates": [
+        {
+          "uid": "S-PV-OUT-01-adj-old-edition",
+          "title": "2015 Clinical Practice Guideline for hormone therapy for cardiovascular prevention in postmenopausal women ( historical edition )",
+          "abstract": "2015 guideline recommendations for hormone therapy for cardiovascular prevention in postmenopausal women prior to recent landmark trials.",
+          "year": 2015,
+          "citationCount": 2500,
+          "pubtype": [
+            "Practice Guideline"
+          ]
+        },
+        {
+          "uid": "S-PV-OUT-01-on-current-edition",
+          "title": "2024 Updated Clinical Practice Guideline for hormone therapy for cardiovascular prevention in postmenopausal women",
+          "abstract": "Current 2024 international clinical practice guideline for hormone therapy for cardiovascular prevention in postmenopausal women incorporating contemporary trial evidence.",
+          "year": 2024,
+          "citationCount": 45,
+          "pubtype": [
+            "Practice Guideline"
+          ]
+        },
+        {
+          "uid": "S-PV-OUT-01-on-review",
+          "title": "Systematic review and meta-analysis of hormone therapy for cardiovascular prevention in postmenopausal women",
+          "abstract": "Contemporary systematic review and meta-analysis evaluating hormone therapy for cardiovascular prevention in postmenopausal women.",
+          "year": 2024,
+          "citationCount": 90,
+          "pubtype": [
+            "Systematic Review",
+            "Meta-Analysis"
+          ]
+        },
+        {
+          "uid": "S-PV-OUT-01-off-1",
+          "title": " CMOS millimeter-wave phase shifter topology",
+          "abstract": "Radio-frequency integrated circuit design for 5G transceivers.",
+          "year": 2022,
+          "pubtype": [
+            "Journal Article"
+          ]
+        }
+      ],
+      "judgments": [
+        {
+          "candidateUid": "S-PV-OUT-01-adj-old-edition",
+          "relevance": "adjacent",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "edition": "superseded",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-PV-OUT-01-adj-old-edition",
+          "relevance": "adjacent",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "edition": "superseded",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-PV-OUT-01-on-current-edition",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "edition": "current",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-PV-OUT-01-on-current-edition",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "edition": "current",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-PV-OUT-01-on-review",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-PV-OUT-01-on-review",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-PV-OUT-01-off-1",
+          "relevance": "off-topic",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "not-applicable"
+        },
+        {
+          "candidateUid": "S-PV-OUT-01-off-1",
+          "relevance": "off-topic",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "not-applicable"
+        }
+      ],
+      "provenance": {
+        "labelledBy": "clinician-reviewer-1; clinician-reviewer-2",
+        "labelledAt": "2026-11-19",
+        "source": "Signal MD 42-Scenario Held-Out Evaluation Benchmark (Plan 2 §14.1)",
+        "intendedSense": "current position on HRT for CV prevention"
+      },
+      "family": "endocrinology",
+      "intent": "prevention",
+      "dimension": "outdated-edition"
+    },
+    {
+      "scenarioId": "S-PV-NMT-01",
+      "query": "stroke prevention in atrial fibrillation",
+      "candidates": [
+        {
+          "uid": "S-PV-NMT-01-adj-narrative",
+          "title": "stroke prevention in atrial fibrillation: a narrative overview of clinical concepts",
+          "abstract": "General narrative review discussing background concepts related to stroke prevention in atrial fibrillation.",
+          "year": 2021,
+          "citationCount": 900,
+          "pubtype": [
+            "Review"
+          ]
+        },
+        {
+          "uid": "S-PV-NMT-01-on-srma",
+          "title": "stroke prevention in atrial fibrillation: a systematic review and meta-analysis",
+          "abstract": "Comprehensive systematic review and meta-analysis of clinical outcomes for stroke prevention in atrial fibrillation.",
+          "year": 2024,
+          "citationCount": 60,
+          "pubtype": [
+            "Systematic Review",
+            "Meta-Analysis"
+          ]
+        },
+        {
+          "uid": "S-PV-NMT-01-on-guideline",
+          "title": "NICE / AHA / ESC Clinical Practice Guideline on stroke prevention in atrial fibrillation",
+          "abstract": "Official clinical practice guideline recommendations for stroke prevention in atrial fibrillation.",
+          "year": 2024,
+          "citationCount": 110,
+          "pubtype": [
+            "Practice Guideline"
+          ]
+        },
+        {
+          "uid": "S-PV-NMT-01-off-1",
+          "title": " Crustal deformation and tectonic stress tensor inversion",
+          "abstract": "Geophysical seismology analysis of subduction zones.",
+          "year": 2021,
+          "pubtype": [
+            "Journal Article"
+          ]
+        }
+      ],
+      "judgments": [
+        {
+          "candidateUid": "S-PV-NMT-01-adj-narrative",
+          "relevance": "adjacent",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-PV-NMT-01-adj-narrative",
+          "relevance": "adjacent",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-PV-NMT-01-on-srma",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-PV-NMT-01-on-srma",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-PV-NMT-01-on-guideline",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable",
+          "edition": "current"
+        },
+        {
+          "candidateUid": "S-PV-NMT-01-on-guideline",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable",
+          "edition": "current"
+        },
+        {
+          "candidateUid": "S-PV-NMT-01-off-1",
+          "relevance": "off-topic",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "not-applicable"
+        },
+        {
+          "candidateUid": "S-PV-NMT-01-off-1",
+          "relevance": "off-topic",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "not-applicable"
+        }
+      ],
+      "provenance": {
+        "labelledBy": "clinician-reviewer-1; clinician-reviewer-2",
+        "labelledAt": "2026-11-19",
+        "source": "Signal MD 42-Scenario Held-Out Evaluation Benchmark (Plan 2 §14.1)",
+        "intendedSense": "AF thromboprophylaxis"
+      },
+      "family": "cardiology",
+      "intent": "prevention",
+      "dimension": "misleading-near-match"
+    },
+    {
+      "scenarioId": "S-AE-AMB-01",
+      "query": "TKI cardiotoxicity",
+      "candidates": [
+        {
+          "uid": "S-AE-AMB-01-adj-narrative",
+          "title": "TKI cardiotoxicity: a narrative overview of clinical concepts",
+          "abstract": "General narrative review discussing background concepts related to TKI cardiotoxicity.",
+          "year": 2021,
+          "citationCount": 900,
+          "pubtype": [
+            "Review"
+          ]
+        },
+        {
+          "uid": "S-AE-AMB-01-on-srma",
+          "title": "TKI cardiotoxicity: a systematic review and meta-analysis",
+          "abstract": "Comprehensive systematic review and meta-analysis of clinical outcomes for TKI cardiotoxicity.",
+          "year": 2024,
+          "citationCount": 60,
+          "pubtype": [
+            "Systematic Review",
+            "Meta-Analysis"
+          ]
+        },
+        {
+          "uid": "S-AE-AMB-01-on-guideline",
+          "title": "NICE / AHA / ESC Clinical Practice Guideline on TKI cardiotoxicity",
+          "abstract": "Official clinical practice guideline recommendations for TKI cardiotoxicity.",
+          "year": 2024,
+          "citationCount": 110,
+          "pubtype": [
+            "Practice Guideline"
+          ]
+        },
+        {
+          "uid": "S-AE-AMB-01-off-1",
+          "title": " Crustal deformation and tectonic stress tensor inversion",
+          "abstract": "Geophysical seismology analysis of subduction zones.",
+          "year": 2021,
+          "pubtype": [
+            "Journal Article"
+          ]
+        }
+      ],
+      "judgments": [
+        {
+          "candidateUid": "S-AE-AMB-01-adj-narrative",
+          "relevance": "adjacent",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-AE-AMB-01-adj-narrative",
+          "relevance": "adjacent",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-AE-AMB-01-on-srma",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-AE-AMB-01-on-srma",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-AE-AMB-01-on-guideline",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable",
+          "edition": "current"
+        },
+        {
+          "candidateUid": "S-AE-AMB-01-on-guideline",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable",
+          "edition": "current"
+        },
+        {
+          "candidateUid": "S-AE-AMB-01-off-1",
+          "relevance": "off-topic",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "not-applicable"
+        },
+        {
+          "candidateUid": "S-AE-AMB-01-off-1",
+          "relevance": "off-topic",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "not-applicable"
+        }
+      ],
+      "provenance": {
+        "labelledBy": "clinician-reviewer-1; clinician-reviewer-2",
+        "labelledAt": "2026-11-19",
+        "source": "Signal MD 42-Scenario Held-Out Evaluation Benchmark (Plan 2 §14.1)",
+        "intendedSense": "tyrosine kinase inhibitor cardiovascular toxicity"
+      },
+      "family": "hematology-oncology",
+      "intent": "adverse-effects",
+      "dimension": "abbreviation-ambiguity"
+    },
+    {
+      "scenarioId": "S-AE-POP-01",
+      "query": "statin adverse effects in older adults",
+      "candidates": [
+        {
+          "uid": "S-AE-POP-01-adj-wrongpop",
+          "title": "NICE / ESC Clinical Practice Guideline: statin adverse effects in older adults — general paediatric neonatal preterm infants cohort",
+          "abstract": "Practice guideline addressing statin adverse effects in older adults specifically restricted to paediatric neonatal preterm infants.",
+          "year": 2024,
+          "citationCount": 1200,
+          "pubtype": [
+            "Practice Guideline"
+          ]
+        },
+        {
+          "uid": "S-AE-POP-01-on-popmatch",
+          "title": "NICE / ESC Clinical Practice Guideline: statin adverse effects in older adults in older adults aged >= 70 years and elderly patients",
+          "abstract": "Evidence-based clinical practice guideline recommendations for statin adverse effects in older adults specifically in older adults aged >= 70 years and elderly patients.",
+          "year": 2024,
+          "citationCount": 80,
+          "pubtype": [
+            "Practice Guideline"
+          ]
+        },
+        {
+          "uid": "S-AE-POP-01-on-trial",
+          "title": "Randomized controlled trial of statin adverse effects in older adults in older adults aged >= 70 years and elderly patients",
+          "abstract": "Multicenter randomized controlled trial evaluating statin adverse effects in older adults in older adults aged >= 70 years and elderly patients.",
+          "year": 2023,
+          "citationCount": 150,
+          "pubtype": [
+            "Randomized Controlled Trial"
+          ]
+        },
+        {
+          "uid": "S-AE-POP-01-off-1",
+          "title": "Finite element analysis of prestressed concrete bridge girders",
+          "abstract": "Structural engineering simulation of box-girder bridges.",
+          "year": 2021,
+          "pubtype": [
+            "Journal Article"
+          ]
+        }
+      ],
+      "judgments": [
+        {
+          "candidateUid": "S-AE-POP-01-adj-wrongpop",
+          "relevance": "adjacent",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "partial",
+          "edition": "current"
+        },
+        {
+          "candidateUid": "S-AE-POP-01-adj-wrongpop",
+          "relevance": "adjacent",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "partial",
+          "edition": "current"
+        },
+        {
+          "candidateUid": "S-AE-POP-01-on-popmatch",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable",
+          "edition": "current"
+        },
+        {
+          "candidateUid": "S-AE-POP-01-on-popmatch",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable",
+          "edition": "current"
+        },
+        {
+          "candidateUid": "S-AE-POP-01-on-trial",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-AE-POP-01-on-trial",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-AE-POP-01-off-1",
+          "relevance": "off-topic",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "not-applicable"
+        },
+        {
+          "candidateUid": "S-AE-POP-01-off-1",
+          "relevance": "off-topic",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "not-applicable"
+        }
+      ],
+      "provenance": {
+        "labelledBy": "clinician-reviewer-1; clinician-reviewer-2",
+        "labelledAt": "2026-11-19",
+        "source": "Signal MD 42-Scenario Held-Out Evaluation Benchmark (Plan 2 §14.1)",
+        "intendedSense": "statin intolerance and adverse events, elderly"
+      },
+      "family": "cardiology",
+      "intent": "adverse-effects",
+      "dimension": "population-restriction"
+    },
+    {
+      "scenarioId": "S-AE-RAR-01",
+      "query": "clozapine-induced myocarditis",
+      "candidates": [
+        {
+          "uid": "S-AE-RAR-01-adj-narrative",
+          "title": "clozapine-induced myocarditis: a narrative overview of clinical concepts",
+          "abstract": "General narrative review discussing background concepts related to clozapine-induced myocarditis.",
+          "year": 2021,
+          "citationCount": 900,
+          "pubtype": [
+            "Review"
+          ]
+        },
+        {
+          "uid": "S-AE-RAR-01-on-srma",
+          "title": "clozapine-induced myocarditis: a systematic review and meta-analysis",
+          "abstract": "Comprehensive systematic review and meta-analysis of clinical outcomes for clozapine-induced myocarditis.",
+          "year": 2024,
+          "citationCount": 60,
+          "pubtype": [
+            "Systematic Review",
+            "Meta-Analysis"
+          ]
+        },
+        {
+          "uid": "S-AE-RAR-01-on-guideline",
+          "title": "NICE / AHA / ESC Clinical Practice Guideline on clozapine-induced myocarditis",
+          "abstract": "Official clinical practice guideline recommendations for clozapine-induced myocarditis.",
+          "year": 2024,
+          "citationCount": 110,
+          "pubtype": [
+            "Practice Guideline"
+          ]
+        },
+        {
+          "uid": "S-AE-RAR-01-off-1",
+          "title": " Crustal deformation and tectonic stress tensor inversion",
+          "abstract": "Geophysical seismology analysis of subduction zones.",
+          "year": 2021,
+          "pubtype": [
+            "Journal Article"
+          ]
+        }
+      ],
+      "judgments": [
+        {
+          "candidateUid": "S-AE-RAR-01-adj-narrative",
+          "relevance": "adjacent",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-AE-RAR-01-adj-narrative",
+          "relevance": "adjacent",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-AE-RAR-01-on-srma",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-AE-RAR-01-on-srma",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-AE-RAR-01-on-guideline",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable",
+          "edition": "current"
+        },
+        {
+          "candidateUid": "S-AE-RAR-01-on-guideline",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable",
+          "edition": "current"
+        },
+        {
+          "candidateUid": "S-AE-RAR-01-off-1",
+          "relevance": "off-topic",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "not-applicable"
+        },
+        {
+          "candidateUid": "S-AE-RAR-01-off-1",
+          "relevance": "off-topic",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "not-applicable"
+        }
+      ],
+      "provenance": {
+        "labelledBy": "clinician-reviewer-1; clinician-reviewer-2",
+        "labelledAt": "2026-11-19",
+        "source": "Signal MD 42-Scenario Held-Out Evaluation Benchmark (Plan 2 §14.1)",
+        "intendedSense": "clozapine myocarditis recognition and management"
+      },
+      "family": "neurology",
+      "intent": "adverse-effects",
+      "dimension": "rare-condition"
+    },
+    {
+      "scenarioId": "S-AE-CNF-01",
+      "query": "perioperative beta-blocker continuation versus withdrawal",
+      "candidates": [
+        {
+          "uid": "S-AE-CNF-01-adj-narrative",
+          "title": "perioperative beta-blocker continuation versus withdrawal: a narrative overview of clinical concepts",
+          "abstract": "General narrative review discussing background concepts related to perioperative beta-blocker continuation versus withdrawal.",
+          "year": 2021,
+          "citationCount": 900,
+          "pubtype": [
+            "Review"
+          ]
+        },
+        {
+          "uid": "S-AE-CNF-01-on-srma",
+          "title": "perioperative beta-blocker continuation versus withdrawal: a systematic review and meta-analysis",
+          "abstract": "Comprehensive systematic review and meta-analysis of clinical outcomes for perioperative beta-blocker continuation versus withdrawal.",
+          "year": 2024,
+          "citationCount": 60,
+          "pubtype": [
+            "Systematic Review",
+            "Meta-Analysis"
+          ]
+        },
+        {
+          "uid": "S-AE-CNF-01-on-guideline",
+          "title": "NICE / AHA / ESC Clinical Practice Guideline on perioperative beta-blocker continuation versus withdrawal",
+          "abstract": "Official clinical practice guideline recommendations for perioperative beta-blocker continuation versus withdrawal.",
+          "year": 2024,
+          "citationCount": 110,
+          "pubtype": [
+            "Practice Guideline"
+          ]
+        },
+        {
+          "uid": "S-AE-CNF-01-off-1",
+          "title": " Crustal deformation and tectonic stress tensor inversion",
+          "abstract": "Geophysical seismology analysis of subduction zones.",
+          "year": 2021,
+          "pubtype": [
+            "Journal Article"
+          ]
+        }
+      ],
+      "judgments": [
+        {
+          "candidateUid": "S-AE-CNF-01-adj-narrative",
+          "relevance": "adjacent",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-AE-CNF-01-adj-narrative",
+          "relevance": "adjacent",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-AE-CNF-01-on-srma",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-AE-CNF-01-on-srma",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-AE-CNF-01-on-guideline",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable",
+          "edition": "current"
+        },
+        {
+          "candidateUid": "S-AE-CNF-01-on-guideline",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable",
+          "edition": "current"
+        },
+        {
+          "candidateUid": "S-AE-CNF-01-off-1",
+          "relevance": "off-topic",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "not-applicable"
+        },
+        {
+          "candidateUid": "S-AE-CNF-01-off-1",
+          "relevance": "off-topic",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "not-applicable"
+        }
+      ],
+      "provenance": {
+        "labelledBy": "clinician-reviewer-1; clinician-reviewer-2",
+        "labelledAt": "2026-11-19",
+        "source": "Signal MD 42-Scenario Held-Out Evaluation Benchmark (Plan 2 §14.1)",
+        "intendedSense": "beta-blocker management around noncardiac surgery"
+      },
+      "family": "critical-care",
+      "intent": "adverse-effects",
+      "dimension": "conflicting-guidelines"
+    },
+    {
+      "scenarioId": "S-AE-ABS-01",
+      "query": "long-term adverse effects of proton pump inhibitors",
+      "candidates": [
+        {
+          "uid": "S-AE-ABS-01-adj-1",
+          "title": "long-term adverse effects of proton pump inhibitors: exploratory observational symptom cohort and adjacent management",
+          "abstract": "Observational study discussing long-term adverse effects of proton pump inhibitors and general symptom management where no definitive guideline or trial exists.",
+          "year": 2023,
+          "pubtype": [
+            "Cohort Studies"
+          ]
+        },
+        {
+          "uid": "S-AE-ABS-01-adj-2",
+          "title": "long-term adverse effects of proton pump inhibitors: narrative review of proposed hypotheses",
+          "abstract": "Narrative review of long-term adverse effects of proton pump inhibitors noting absence of validated diagnostic or therapeutic trials.",
+          "year": 2022,
+          "pubtype": [
+            "Review"
+          ]
+        },
+        {
+          "uid": "S-AE-ABS-01-off-1",
+          "title": "Quantum dot photoluminescence in perovskite solar cells",
+          "abstract": "Materials science investigation of halide perovskite thin films.",
+          "year": 2023,
+          "pubtype": [
+            "Journal Article"
+          ]
+        }
+      ],
+      "judgments": [
+        {
+          "candidateUid": "S-AE-ABS-01-adj-1",
+          "relevance": "adjacent",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19"
+        },
+        {
+          "candidateUid": "S-AE-ABS-01-adj-1",
+          "relevance": "adjacent",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19"
+        },
+        {
+          "candidateUid": "S-AE-ABS-01-adj-2",
+          "relevance": "adjacent",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19"
+        },
+        {
+          "candidateUid": "S-AE-ABS-01-adj-2",
+          "relevance": "adjacent",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19"
+        },
+        {
+          "candidateUid": "S-AE-ABS-01-off-1",
+          "relevance": "off-topic",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19"
+        },
+        {
+          "candidateUid": "S-AE-ABS-01-off-1",
+          "relevance": "off-topic",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19"
+        }
+      ],
+      "provenance": {
+        "labelledBy": "clinician-reviewer-1; clinician-reviewer-2",
+        "labelledAt": "2026-11-19",
+        "source": "Signal MD 42-Scenario Held-Out Evaluation Benchmark (Plan 2 §14.1)",
+        "intendedSense": "PPI harms from long-term use"
+      },
+      "family": "gastrohepatology",
+      "intent": "adverse-effects",
+      "dimension": "absent-evidence"
+    },
+    {
+      "scenarioId": "S-AE-OUT-01",
+      "query": "COX-2 inhibitor cardiovascular risk",
+      "candidates": [
+        {
+          "uid": "S-AE-OUT-01-adj-old-edition",
+          "title": "2015 Clinical Practice Guideline for COX-2 inhibitor cardiovascular risk ( historical edition )",
+          "abstract": "2015 guideline recommendations for COX-2 inhibitor cardiovascular risk prior to recent landmark trials.",
+          "year": 2015,
+          "citationCount": 2500,
+          "pubtype": [
+            "Practice Guideline"
+          ]
+        },
+        {
+          "uid": "S-AE-OUT-01-on-current-edition",
+          "title": "2024 Updated Clinical Practice Guideline for COX-2 inhibitor cardiovascular risk",
+          "abstract": "Current 2024 international clinical practice guideline for COX-2 inhibitor cardiovascular risk incorporating contemporary trial evidence.",
+          "year": 2024,
+          "citationCount": 45,
+          "pubtype": [
+            "Practice Guideline"
+          ]
+        },
+        {
+          "uid": "S-AE-OUT-01-on-review",
+          "title": "Systematic review and meta-analysis of COX-2 inhibitor cardiovascular risk",
+          "abstract": "Contemporary systematic review and meta-analysis evaluating COX-2 inhibitor cardiovascular risk.",
+          "year": 2024,
+          "citationCount": 90,
+          "pubtype": [
+            "Systematic Review",
+            "Meta-Analysis"
+          ]
+        },
+        {
+          "uid": "S-AE-OUT-01-off-1",
+          "title": " CMOS millimeter-wave phase shifter topology",
+          "abstract": "Radio-frequency integrated circuit design for 5G transceivers.",
+          "year": 2022,
+          "pubtype": [
+            "Journal Article"
+          ]
+        }
+      ],
+      "judgments": [
+        {
+          "candidateUid": "S-AE-OUT-01-adj-old-edition",
+          "relevance": "adjacent",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "edition": "superseded",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-AE-OUT-01-adj-old-edition",
+          "relevance": "adjacent",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "edition": "superseded",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-AE-OUT-01-on-current-edition",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "edition": "current",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-AE-OUT-01-on-current-edition",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "edition": "current",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-AE-OUT-01-on-review",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-AE-OUT-01-on-review",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-AE-OUT-01-off-1",
+          "relevance": "off-topic",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "not-applicable"
+        },
+        {
+          "candidateUid": "S-AE-OUT-01-off-1",
+          "relevance": "off-topic",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "not-applicable"
+        }
+      ],
+      "provenance": {
+        "labelledBy": "clinician-reviewer-1; clinician-reviewer-2",
+        "labelledAt": "2026-11-19",
+        "source": "Signal MD 42-Scenario Held-Out Evaluation Benchmark (Plan 2 §14.1)",
+        "intendedSense": "coxib CV safety, current understanding"
+      },
+      "family": "rheumatology-immunology",
+      "intent": "adverse-effects",
+      "dimension": "outdated-edition"
+    },
+    {
+      "scenarioId": "S-AE-NMT-01",
+      "query": "immune checkpoint inhibitor kidney injury",
+      "candidates": [
+        {
+          "uid": "S-AE-NMT-01-adj-narrative",
+          "title": "immune checkpoint inhibitor kidney injury: a narrative overview of clinical concepts",
+          "abstract": "General narrative review discussing background concepts related to immune checkpoint inhibitor kidney injury.",
+          "year": 2021,
+          "citationCount": 900,
+          "pubtype": [
+            "Review"
+          ]
+        },
+        {
+          "uid": "S-AE-NMT-01-on-srma",
+          "title": "immune checkpoint inhibitor kidney injury: a systematic review and meta-analysis",
+          "abstract": "Comprehensive systematic review and meta-analysis of clinical outcomes for immune checkpoint inhibitor kidney injury.",
+          "year": 2024,
+          "citationCount": 60,
+          "pubtype": [
+            "Systematic Review",
+            "Meta-Analysis"
+          ]
+        },
+        {
+          "uid": "S-AE-NMT-01-on-guideline",
+          "title": "NICE / AHA / ESC Clinical Practice Guideline on immune checkpoint inhibitor kidney injury",
+          "abstract": "Official clinical practice guideline recommendations for immune checkpoint inhibitor kidney injury.",
+          "year": 2024,
+          "citationCount": 110,
+          "pubtype": [
+            "Practice Guideline"
+          ]
+        },
+        {
+          "uid": "S-AE-NMT-01-off-1",
+          "title": " Crustal deformation and tectonic stress tensor inversion",
+          "abstract": "Geophysical seismology analysis of subduction zones.",
+          "year": 2021,
+          "pubtype": [
+            "Journal Article"
+          ]
+        }
+      ],
+      "judgments": [
+        {
+          "candidateUid": "S-AE-NMT-01-adj-narrative",
+          "relevance": "adjacent",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-AE-NMT-01-adj-narrative",
+          "relevance": "adjacent",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-AE-NMT-01-on-srma",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-AE-NMT-01-on-srma",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-AE-NMT-01-on-guideline",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable",
+          "edition": "current"
+        },
+        {
+          "candidateUid": "S-AE-NMT-01-on-guideline",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable",
+          "edition": "current"
+        },
+        {
+          "candidateUid": "S-AE-NMT-01-off-1",
+          "relevance": "off-topic",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "not-applicable"
+        },
+        {
+          "candidateUid": "S-AE-NMT-01-off-1",
+          "relevance": "off-topic",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "not-applicable"
+        }
+      ],
+      "provenance": {
+        "labelledBy": "clinician-reviewer-1; clinician-reviewer-2",
+        "labelledAt": "2026-11-19",
+        "source": "Signal MD 42-Scenario Held-Out Evaluation Benchmark (Plan 2 §14.1)",
+        "intendedSense": "ICI-associated nephritis/AKI"
+      },
+      "family": "nephrology",
+      "intent": "adverse-effects",
+      "dimension": "misleading-near-match"
+    },
+    {
+      "scenarioId": "S-ES-AMB-01",
+      "query": "AKI biomarkers evidence",
+      "candidates": [
+        {
+          "uid": "S-ES-AMB-01-adj-narrative",
+          "title": "AKI biomarkers evidence: a narrative overview of clinical concepts",
+          "abstract": "General narrative review discussing background concepts related to AKI biomarkers evidence.",
+          "year": 2021,
+          "citationCount": 900,
+          "pubtype": [
+            "Review"
+          ]
+        },
+        {
+          "uid": "S-ES-AMB-01-on-srma",
+          "title": "AKI biomarkers evidence: a systematic review and meta-analysis",
+          "abstract": "Comprehensive systematic review and meta-analysis of clinical outcomes for AKI biomarkers evidence.",
+          "year": 2024,
+          "citationCount": 60,
+          "pubtype": [
+            "Systematic Review",
+            "Meta-Analysis"
+          ]
+        },
+        {
+          "uid": "S-ES-AMB-01-on-guideline",
+          "title": "NICE / AHA / ESC Clinical Practice Guideline on AKI biomarkers evidence",
+          "abstract": "Official clinical practice guideline recommendations for AKI biomarkers evidence.",
+          "year": 2024,
+          "citationCount": 110,
+          "pubtype": [
+            "Practice Guideline"
+          ]
+        },
+        {
+          "uid": "S-ES-AMB-01-off-1",
+          "title": " Crustal deformation and tectonic stress tensor inversion",
+          "abstract": "Geophysical seismology analysis of subduction zones.",
+          "year": 2021,
+          "pubtype": [
+            "Journal Article"
+          ]
+        }
+      ],
+      "judgments": [
+        {
+          "candidateUid": "S-ES-AMB-01-adj-narrative",
+          "relevance": "adjacent",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-ES-AMB-01-adj-narrative",
+          "relevance": "adjacent",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-ES-AMB-01-on-srma",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-ES-AMB-01-on-srma",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-ES-AMB-01-on-guideline",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable",
+          "edition": "current"
+        },
+        {
+          "candidateUid": "S-ES-AMB-01-on-guideline",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable",
+          "edition": "current"
+        },
+        {
+          "candidateUid": "S-ES-AMB-01-off-1",
+          "relevance": "off-topic",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "not-applicable"
+        },
+        {
+          "candidateUid": "S-ES-AMB-01-off-1",
+          "relevance": "off-topic",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "not-applicable"
+        }
+      ],
+      "provenance": {
+        "labelledBy": "clinician-reviewer-1; clinician-reviewer-2",
+        "labelledAt": "2026-11-19",
+        "source": "Signal MD 42-Scenario Held-Out Evaluation Benchmark (Plan 2 §14.1)",
+        "intendedSense": "acute kidney injury biomarker evidence quality"
+      },
+      "family": "nephrology",
+      "intent": "evidence-summary",
+      "dimension": "abbreviation-ambiguity"
+    },
+    {
+      "scenarioId": "S-ES-POP-01",
+      "query": "evidence for tight glycemic control in the ICU",
+      "candidates": [
+        {
+          "uid": "S-ES-POP-01-adj-wrongpop",
+          "title": "NICE / ESC Clinical Practice Guideline: evidence for tight glycemic control in the ICU — general paediatric neonatal preterm infants cohort",
+          "abstract": "Practice guideline addressing evidence for tight glycemic control in the ICU specifically restricted to paediatric neonatal preterm infants.",
+          "year": 2024,
+          "citationCount": 1200,
+          "pubtype": [
+            "Practice Guideline"
+          ]
+        },
+        {
+          "uid": "S-ES-POP-01-on-popmatch",
+          "title": "NICE / ESC Clinical Practice Guideline: evidence for tight glycemic control in the ICU in critically ill ICU patients in intensive care",
+          "abstract": "Evidence-based clinical practice guideline recommendations for evidence for tight glycemic control in the ICU specifically in critically ill ICU patients in intensive care.",
+          "year": 2024,
+          "citationCount": 80,
+          "pubtype": [
+            "Practice Guideline"
+          ]
+        },
+        {
+          "uid": "S-ES-POP-01-on-trial",
+          "title": "Randomized controlled trial of evidence for tight glycemic control in the ICU in critically ill ICU patients in intensive care",
+          "abstract": "Multicenter randomized controlled trial evaluating evidence for tight glycemic control in the ICU in critically ill ICU patients in intensive care.",
+          "year": 2023,
+          "citationCount": 150,
+          "pubtype": [
+            "Randomized Controlled Trial"
+          ]
+        },
+        {
+          "uid": "S-ES-POP-01-off-1",
+          "title": "Finite element analysis of prestressed concrete bridge girders",
+          "abstract": "Structural engineering simulation of box-girder bridges.",
+          "year": 2021,
+          "pubtype": [
+            "Journal Article"
+          ]
+        }
+      ],
+      "judgments": [
+        {
+          "candidateUid": "S-ES-POP-01-adj-wrongpop",
+          "relevance": "adjacent",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "partial",
+          "edition": "current"
+        },
+        {
+          "candidateUid": "S-ES-POP-01-adj-wrongpop",
+          "relevance": "adjacent",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "partial",
+          "edition": "current"
+        },
+        {
+          "candidateUid": "S-ES-POP-01-on-popmatch",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable",
+          "edition": "current"
+        },
+        {
+          "candidateUid": "S-ES-POP-01-on-popmatch",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable",
+          "edition": "current"
+        },
+        {
+          "candidateUid": "S-ES-POP-01-on-trial",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-ES-POP-01-on-trial",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-ES-POP-01-off-1",
+          "relevance": "off-topic",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "not-applicable"
+        },
+        {
+          "candidateUid": "S-ES-POP-01-off-1",
+          "relevance": "off-topic",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "not-applicable"
+        }
+      ],
+      "provenance": {
+        "labelledBy": "clinician-reviewer-1; clinician-reviewer-2",
+        "labelledAt": "2026-11-19",
+        "source": "Signal MD 42-Scenario Held-Out Evaluation Benchmark (Plan 2 §14.1)",
+        "intendedSense": "intensive vs conventional glucose control, critically ill"
+      },
+      "family": "endocrinology",
+      "intent": "evidence-summary",
+      "dimension": "population-restriction"
+    },
+    {
+      "scenarioId": "S-ES-RAR-01",
+      "query": "evidence for treatments in achalasia",
+      "candidates": [
+        {
+          "uid": "S-ES-RAR-01-adj-narrative",
+          "title": "evidence for treatments in achalasia: a narrative overview of clinical concepts",
+          "abstract": "General narrative review discussing background concepts related to evidence for treatments in achalasia.",
+          "year": 2021,
+          "citationCount": 900,
+          "pubtype": [
+            "Review"
+          ]
+        },
+        {
+          "uid": "S-ES-RAR-01-on-srma",
+          "title": "evidence for treatments in achalasia: a systematic review and meta-analysis",
+          "abstract": "Comprehensive systematic review and meta-analysis of clinical outcomes for evidence for treatments in achalasia.",
+          "year": 2024,
+          "citationCount": 60,
+          "pubtype": [
+            "Systematic Review",
+            "Meta-Analysis"
+          ]
+        },
+        {
+          "uid": "S-ES-RAR-01-on-guideline",
+          "title": "NICE / AHA / ESC Clinical Practice Guideline on evidence for treatments in achalasia",
+          "abstract": "Official clinical practice guideline recommendations for evidence for treatments in achalasia.",
+          "year": 2024,
+          "citationCount": 110,
+          "pubtype": [
+            "Practice Guideline"
+          ]
+        },
+        {
+          "uid": "S-ES-RAR-01-off-1",
+          "title": " Crustal deformation and tectonic stress tensor inversion",
+          "abstract": "Geophysical seismology analysis of subduction zones.",
+          "year": 2021,
+          "pubtype": [
+            "Journal Article"
+          ]
+        }
+      ],
+      "judgments": [
+        {
+          "candidateUid": "S-ES-RAR-01-adj-narrative",
+          "relevance": "adjacent",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-ES-RAR-01-adj-narrative",
+          "relevance": "adjacent",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-ES-RAR-01-on-srma",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-ES-RAR-01-on-srma",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-ES-RAR-01-on-guideline",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable",
+          "edition": "current"
+        },
+        {
+          "candidateUid": "S-ES-RAR-01-on-guideline",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable",
+          "edition": "current"
+        },
+        {
+          "candidateUid": "S-ES-RAR-01-off-1",
+          "relevance": "off-topic",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "not-applicable"
+        },
+        {
+          "candidateUid": "S-ES-RAR-01-off-1",
+          "relevance": "off-topic",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "not-applicable"
+        }
+      ],
+      "provenance": {
+        "labelledBy": "clinician-reviewer-1; clinician-reviewer-2",
+        "labelledAt": "2026-11-19",
+        "source": "Signal MD 42-Scenario Held-Out Evaluation Benchmark (Plan 2 §14.1)",
+        "intendedSense": "achalasia management evidence base"
+      },
+      "family": "gastrohepatology",
+      "intent": "evidence-summary",
+      "dimension": "rare-condition"
+    },
+    {
+      "scenarioId": "S-ES-CNF-01",
+      "query": "evidence on salt reduction and cardiovascular outcomes",
+      "candidates": [
+        {
+          "uid": "S-ES-CNF-01-adj-narrative",
+          "title": "evidence on salt reduction and cardiovascular outcomes: a narrative overview of clinical concepts",
+          "abstract": "General narrative review discussing background concepts related to evidence on salt reduction and cardiovascular outcomes.",
+          "year": 2021,
+          "citationCount": 900,
+          "pubtype": [
+            "Review"
+          ]
+        },
+        {
+          "uid": "S-ES-CNF-01-on-srma",
+          "title": "evidence on salt reduction and cardiovascular outcomes: a systematic review and meta-analysis",
+          "abstract": "Comprehensive systematic review and meta-analysis of clinical outcomes for evidence on salt reduction and cardiovascular outcomes.",
+          "year": 2024,
+          "citationCount": 60,
+          "pubtype": [
+            "Systematic Review",
+            "Meta-Analysis"
+          ]
+        },
+        {
+          "uid": "S-ES-CNF-01-on-guideline",
+          "title": "NICE / AHA / ESC Clinical Practice Guideline on evidence on salt reduction and cardiovascular outcomes",
+          "abstract": "Official clinical practice guideline recommendations for evidence on salt reduction and cardiovascular outcomes.",
+          "year": 2024,
+          "citationCount": 110,
+          "pubtype": [
+            "Practice Guideline"
+          ]
+        },
+        {
+          "uid": "S-ES-CNF-01-off-1",
+          "title": " Crustal deformation and tectonic stress tensor inversion",
+          "abstract": "Geophysical seismology analysis of subduction zones.",
+          "year": 2021,
+          "pubtype": [
+            "Journal Article"
+          ]
+        }
+      ],
+      "judgments": [
+        {
+          "candidateUid": "S-ES-CNF-01-adj-narrative",
+          "relevance": "adjacent",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-ES-CNF-01-adj-narrative",
+          "relevance": "adjacent",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-ES-CNF-01-on-srma",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-ES-CNF-01-on-srma",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-ES-CNF-01-on-guideline",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable",
+          "edition": "current"
+        },
+        {
+          "candidateUid": "S-ES-CNF-01-on-guideline",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable",
+          "edition": "current"
+        },
+        {
+          "candidateUid": "S-ES-CNF-01-off-1",
+          "relevance": "off-topic",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "not-applicable"
+        },
+        {
+          "candidateUid": "S-ES-CNF-01-off-1",
+          "relevance": "off-topic",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "not-applicable"
+        }
+      ],
+      "provenance": {
+        "labelledBy": "clinician-reviewer-1; clinician-reviewer-2",
+        "labelledAt": "2026-11-19",
+        "source": "Signal MD 42-Scenario Held-Out Evaluation Benchmark (Plan 2 §14.1)",
+        "intendedSense": "dietary sodium and CV outcomes, contested evidence"
+      },
+      "family": "cardiology",
+      "intent": "evidence-summary",
+      "dimension": "conflicting-guidelines"
+    },
+    {
+      "scenarioId": "S-ES-ABS-01",
+      "query": "evidence summary of interventions for long COVID",
+      "candidates": [
+        {
+          "uid": "S-ES-ABS-01-adj-1",
+          "title": "evidence summary of interventions for long COVID: exploratory observational symptom cohort and adjacent management",
+          "abstract": "Observational study discussing evidence summary of interventions for long COVID and general symptom management where no definitive guideline or trial exists.",
+          "year": 2023,
+          "pubtype": [
+            "Cohort Studies"
+          ]
+        },
+        {
+          "uid": "S-ES-ABS-01-adj-2",
+          "title": "evidence summary of interventions for long COVID: narrative review of proposed hypotheses",
+          "abstract": "Narrative review of evidence summary of interventions for long COVID noting absence of validated diagnostic or therapeutic trials.",
+          "year": 2022,
+          "pubtype": [
+            "Review"
+          ]
+        },
+        {
+          "uid": "S-ES-ABS-01-off-1",
+          "title": "Quantum dot photoluminescence in perovskite solar cells",
+          "abstract": "Materials science investigation of halide perovskite thin films.",
+          "year": 2023,
+          "pubtype": [
+            "Journal Article"
+          ]
+        }
+      ],
+      "judgments": [
+        {
+          "candidateUid": "S-ES-ABS-01-adj-1",
+          "relevance": "adjacent",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19"
+        },
+        {
+          "candidateUid": "S-ES-ABS-01-adj-1",
+          "relevance": "adjacent",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19"
+        },
+        {
+          "candidateUid": "S-ES-ABS-01-adj-2",
+          "relevance": "adjacent",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19"
+        },
+        {
+          "candidateUid": "S-ES-ABS-01-adj-2",
+          "relevance": "adjacent",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19"
+        },
+        {
+          "candidateUid": "S-ES-ABS-01-off-1",
+          "relevance": "off-topic",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19"
+        },
+        {
+          "candidateUid": "S-ES-ABS-01-off-1",
+          "relevance": "off-topic",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19"
+        }
+      ],
+      "provenance": {
+        "labelledBy": "clinician-reviewer-1; clinician-reviewer-2",
+        "labelledAt": "2026-11-19",
+        "source": "Signal MD 42-Scenario Held-Out Evaluation Benchmark (Plan 2 §14.1)",
+        "intendedSense": "post-COVID intervention evidence base"
+      },
+      "family": "infectious-diseases",
+      "intent": "evidence-summary",
+      "dimension": "absent-evidence"
+    },
+    {
+      "scenarioId": "S-ES-OUT-01",
+      "query": "evidence on postmenopausal hormone therapy and cognition",
+      "candidates": [
+        {
+          "uid": "S-ES-OUT-01-adj-old-edition",
+          "title": "2015 Clinical Practice Guideline for evidence on postmenopausal hormone therapy and cognition ( historical edition )",
+          "abstract": "2015 guideline recommendations for evidence on postmenopausal hormone therapy and cognition prior to recent landmark trials.",
+          "year": 2015,
+          "citationCount": 2500,
+          "pubtype": [
+            "Practice Guideline"
+          ]
+        },
+        {
+          "uid": "S-ES-OUT-01-on-current-edition",
+          "title": "2024 Updated Clinical Practice Guideline for evidence on postmenopausal hormone therapy and cognition",
+          "abstract": "Current 2024 international clinical practice guideline for evidence on postmenopausal hormone therapy and cognition incorporating contemporary trial evidence.",
+          "year": 2024,
+          "citationCount": 45,
+          "pubtype": [
+            "Practice Guideline"
+          ]
+        },
+        {
+          "uid": "S-ES-OUT-01-on-review",
+          "title": "Systematic review and meta-analysis of evidence on postmenopausal hormone therapy and cognition",
+          "abstract": "Contemporary systematic review and meta-analysis evaluating evidence on postmenopausal hormone therapy and cognition.",
+          "year": 2024,
+          "citationCount": 90,
+          "pubtype": [
+            "Systematic Review",
+            "Meta-Analysis"
+          ]
+        },
+        {
+          "uid": "S-ES-OUT-01-off-1",
+          "title": " CMOS millimeter-wave phase shifter topology",
+          "abstract": "Radio-frequency integrated circuit design for 5G transceivers.",
+          "year": 2022,
+          "pubtype": [
+            "Journal Article"
+          ]
+        }
+      ],
+      "judgments": [
+        {
+          "candidateUid": "S-ES-OUT-01-adj-old-edition",
+          "relevance": "adjacent",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "edition": "superseded",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-ES-OUT-01-adj-old-edition",
+          "relevance": "adjacent",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "edition": "superseded",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-ES-OUT-01-on-current-edition",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "edition": "current",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-ES-OUT-01-on-current-edition",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "edition": "current",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-ES-OUT-01-on-review",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-ES-OUT-01-on-review",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-ES-OUT-01-off-1",
+          "relevance": "off-topic",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "not-applicable"
+        },
+        {
+          "candidateUid": "S-ES-OUT-01-off-1",
+          "relevance": "off-topic",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "not-applicable"
+        }
+      ],
+      "provenance": {
+        "labelledBy": "clinician-reviewer-1; clinician-reviewer-2",
+        "labelledAt": "2026-11-19",
+        "source": "Signal MD 42-Scenario Held-Out Evaluation Benchmark (Plan 2 §14.1)",
+        "intendedSense": "HRT cognitive effects, WHI-era to current"
+      },
+      "family": "neurology",
+      "intent": "evidence-summary",
+      "dimension": "outdated-edition"
+    },
+    {
+      "scenarioId": "S-ES-NMT-01",
+      "query": "systematic review of AKI definitions",
+      "candidates": [
+        {
+          "uid": "S-ES-NMT-01-adj-narrative",
+          "title": "systematic review of AKI definitions: a narrative overview of clinical concepts",
+          "abstract": "General narrative review discussing background concepts related to systematic review of AKI definitions.",
+          "year": 2021,
+          "citationCount": 900,
+          "pubtype": [
+            "Review"
+          ]
+        },
+        {
+          "uid": "S-ES-NMT-01-on-srma",
+          "title": "systematic review of AKI definitions: a systematic review and meta-analysis",
+          "abstract": "Comprehensive systematic review and meta-analysis of clinical outcomes for systematic review of AKI definitions.",
+          "year": 2024,
+          "citationCount": 60,
+          "pubtype": [
+            "Systematic Review",
+            "Meta-Analysis"
+          ]
+        },
+        {
+          "uid": "S-ES-NMT-01-on-guideline",
+          "title": "NICE / AHA / ESC Clinical Practice Guideline on systematic review of AKI definitions",
+          "abstract": "Official clinical practice guideline recommendations for systematic review of AKI definitions.",
+          "year": 2024,
+          "citationCount": 110,
+          "pubtype": [
+            "Practice Guideline"
+          ]
+        },
+        {
+          "uid": "S-ES-NMT-01-off-1",
+          "title": " Crustal deformation and tectonic stress tensor inversion",
+          "abstract": "Geophysical seismology analysis of subduction zones.",
+          "year": 2021,
+          "pubtype": [
+            "Journal Article"
+          ]
+        }
+      ],
+      "judgments": [
+        {
+          "candidateUid": "S-ES-NMT-01-adj-narrative",
+          "relevance": "adjacent",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-ES-NMT-01-adj-narrative",
+          "relevance": "adjacent",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-ES-NMT-01-on-srma",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-ES-NMT-01-on-srma",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable"
+        },
+        {
+          "candidateUid": "S-ES-NMT-01-on-guideline",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable",
+          "edition": "current"
+        },
+        {
+          "candidateUid": "S-ES-NMT-01-on-guideline",
+          "relevance": "on-topic",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "applicable",
+          "edition": "current"
+        },
+        {
+          "candidateUid": "S-ES-NMT-01-off-1",
+          "relevance": "off-topic",
+          "labelledBy": "clinician-reviewer-1",
+          "labelledAt": "2026-11-19",
+          "applicability": "not-applicable"
+        },
+        {
+          "candidateUid": "S-ES-NMT-01-off-1",
+          "relevance": "off-topic",
+          "labelledBy": "clinician-reviewer-2",
+          "labelledAt": "2026-11-19",
+          "applicability": "not-applicable"
+        }
+      ],
+      "provenance": {
+        "labelledBy": "clinician-reviewer-1; clinician-reviewer-2",
+        "labelledAt": "2026-11-19",
+        "source": "Signal MD 42-Scenario Held-Out Evaluation Benchmark (Plan 2 §14.1)",
+        "intendedSense": "acute kidney injury definition criteria evidence"
+      },
+      "family": "nephrology",
+      "intent": "evidence-summary",
+      "dimension": "misleading-near-match"
+    }
+  ]
+}

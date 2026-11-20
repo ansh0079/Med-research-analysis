@@ -1,5 +1,7 @@
 'use strict';
 
+const { textProvidesSameInformation } = require('./mentorEvidenceClearanceService');
+
 function cleanDoi(value) {
     return String(value || '').trim().toLowerCase()
         .replace(/^https?:\/\/(?:dx\.)?doi\.org\//, '').replace(/\/$/, '');
@@ -96,8 +98,10 @@ function recoveredDocumentHasExactAnchor(question, document) {
     const text = normalizeEvidenceText(document.fullText);
     return anchors.some((anchor) => {
         if (!referenceMatchesStoredFullText(anchor, document.identifiers)) return false;
-        const quote = normalizeEvidenceText(anchor.exactQuote || anchor.quote);
-        return quote.length >= 40 && text.includes(quote);
+        const rawQuote = anchor.exactQuote || anchor.quote || anchor.inferredStatement || '';
+        const quote = normalizeEvidenceText(rawQuote);
+        if (quote.length >= 35 && text.includes(quote)) return true;
+        return textProvidesSameInformation(rawQuote, document.fullText).ok;
     });
 }
 

@@ -33,6 +33,17 @@ function articleYear(article = {}) {
     return Number.isFinite(year) ? year : 0;
 }
 
+function mapPubTypesForLocalDocument(doc = {}) {
+    const classified = classifyImportedDocument({ title: doc.title });
+    const tier = String(doc.evidence_tier || doc.document_label || '').toLowerCase();
+    if (classified === 'clinical_practice_guideline' || tier.includes('guideline')) return ['Practice Guideline'];
+    if (classified === 'systematic_review_meta_analysis' || tier.includes('meta_analysis')) return ['Systematic Review', 'Meta-Analysis'];
+    if (tier.includes('systematic_review')) return ['Systematic Review'];
+    if (classified === 'randomized_controlled_trial' || tier.includes('trial')) return ['Randomized Controlled Trial'];
+    if (classified === 'review_article' || tier.includes('review')) return ['Review'];
+    return [];
+}
+
 function localHybridScore(article = {}, query = '') {
     const qTokens = tokenSet(query);
     const titleTokens = tokenSet(article.title);
@@ -46,7 +57,7 @@ function localHybridScore(article = {}, query = '') {
     const semanticLite = jaccard(qTrigrams, textTrigrams) * 0.2;
     const impact = Math.min(0.12, Math.log10(citationCount + 1) / 40);
     const recency = Math.max(0, 1 - (age / 20)) * 0.08;
-    const sourceBonus = article._source === 'pubmed' ? 0.03 : 0;
+    const sourceBonus = article._source === 'pubmed' ? 0.03 : (article.documentId ? 0.05 : 0);
     return lexical + semanticLite + impact + recency + sourceBonus;
 }
 
@@ -68,21 +79,32 @@ async function searchLocalArticleCache(db, {
     limit = 20,
     enabled = String(process.env.LOCAL_RETRIEVAL_ENABLED || 'true').toLowerCase() !== 'false',
 } = {}) {
-    if (!enabled || (!db?.searchCachedArticlesLocal && !db?.getLocalTopicDocuments) || !query) {
-        return { articles: [], used: false, available: Boolean(db?.searchCachedArticlesLocal) };
+    if (!enabled || (!db?.searchCachedArticlesLocal && !db?.getLocalTopicDocuments && !db?.searchGuidelineDocumentsForTopic) || !query) {
+        return { articles: [], used: false, available: Boolean(db?.searchCachedArticlesLocal || db?.getLocalTopicDocuments || db?.searchGuidelineDocumentsForTopic) };
     }
     const fetchLimit = Math.min(Math.max(Number(limit) || 20, 1) * 4, 100);
-    const [cached, documents] = await Promise.all([
+    const [cached, documents, topicalDocuments] = await Promise.all([
         db.searchCachedArticlesLocal ? db.searchCachedArticlesLocal(query, { limit: fetchLimit }).catch(() => []) : [],
-        db.getLocalTopicDocuments ? db.getLocalTopicDocuments(query, { limit: 12 }).catch(() => []) : [],
+        db.getLocalTopicDocuments ? db.getLocalTopicDocuments(query, { limit: 16 }).catch(() => []) : [],
+        db.searchGuidelineDocumentsForTopic ? db.searchGuidelineDocumentsForTopic(query, { limit: 16 }).catch(() => []) : [],
     ]);
-    const local = documents.map((doc) => ({
-        uid: doc.pmid || doc.pmcid || doc.doi,
+    const rawDocs = [...documents, ...topicalDocuments];
+    const seenDocIds = new Set();
+    const uniqueDocs = rawDocs.filter((doc) => {
+        if (!doc) return false;
+        const k = doc.id != null ? `id:${doc.id}` : String(doc.pmid || doc.pmcid || doc.doi || doc.title || '');
+        if (!k || seenDocIds.has(k)) return false;
+        seenDocIds.add(k);
+        return true;
+    });
+    const local = uniqueDocs.map((doc) => ({
+        uid: doc.pmid || doc.pmcid || doc.doi || (doc.id != null ? `doc:${doc.id}` : undefined),
         pmid: doc.pmid, pmcid: doc.pmcid, doi: doc.doi, title: doc.title,
         abstract: doc.text_excerpt, pubdate: String(doc.source_year || ''),
+        year: doc.source_year || undefined,
         journal: doc.source_body, source: 'local', _source: 'local',
         url: doc.source_url, documentId: doc.id, fullTextSource: doc.full_text_source,
-        pubtype: classifyImportedDocument({ title: doc.title }) === 'clinical_practice_guideline' ? ['Practice Guideline'] : [],
+        pubtype: mapPubTypesForLocalDocument(doc),
     })).filter((article) => assessTopicRelevance(query, article).accepted);
     const articles = [...new Map([...cached, ...local].map((article) => [String(article.pmid || article.uid || article.doi), article])).values()];
     const ranked = rankLocalArticlesHybrid(articles, query, limit);
@@ -99,4 +121,5 @@ module.exports = {
     localHybridScore,
     rankLocalArticlesHybrid,
     searchLocalArticleCache,
+    mapPubTypesForLocalDocument,
 };

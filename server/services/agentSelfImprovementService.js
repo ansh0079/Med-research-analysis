@@ -2,6 +2,8 @@
 
 const logger = require('../config/logger');
 const { sanitizeUserInput } = require('../utils/sanitization');
+const { POLICY_TEACHING_STRATEGY } = require('./bandit/constants');
+const { recordBanditReward } = require('./bandit/rewards');
 
 /**
  * Agent Self-Improvement Service
@@ -132,12 +134,56 @@ async function analyzeConversationQuality(db, threadId) {
         });
     }
 
+    // Signal 4: Attribute RL reward / penalty to the thread's teaching strategy arm
+    let teachingStrategyReward = 0;
+    if (userFeedback?.rating === 'helpful') teachingStrategyReward += 0.45;
+    if (userFeedback?.rating === 'unhelpful') teachingStrategyReward -= 0.45;
+    if (mistakes.length > 0) teachingStrategyReward -= Math.min(0.5, mistakes.length * 0.25);
+    if (clarificationRequests.length > 1) teachingStrategyReward -= 0.2;
+    teachingStrategyReward = Math.max(-1, Math.min(1, Number(teachingStrategyReward.toFixed(4))));
+
+    let rewardedArmId = null;
+    if (teachingStrategyReward !== 0) {
+        rewardedArmId = thread.metadata?.teachingStrategyArm
+            || thread.metadata?.banditMeta?.armId
+            || messages.slice().reverse().find((m) => m.role === 'assistant' && (m.metadata?.teachingStrategyArm || m.banditArmId))?.metadata?.teachingStrategyArm
+            || null;
+
+        if (!rewardedArmId && typeof db.all === 'function') {
+            const normTopic = typeof db.normalizeTopic === 'function' ? db.normalizeTopic(topic) : String(topic || '').toLowerCase();
+            const rows = await db.all(
+                `SELECT id, arm_id FROM personalization_decisions
+                 WHERE policy_type = ? AND (user_id = ? OR normalized_topic = ?)
+                 ORDER BY created_at DESC LIMIT 1`,
+                [POLICY_TEACHING_STRATEGY, userId || '', normTopic]
+            ).catch(() => []);
+            if (rows?.[0]?.arm_id) {
+                rewardedArmId = rows[0].arm_id;
+                if (typeof db.updatePersonalizationDecisionReward === 'function') {
+                    await db.updatePersonalizationDecisionReward(rows[0].id, {
+                        delayedReward: teachingStrategyReward,
+                        totalReward: teachingStrategyReward,
+                    }).catch(() => null);
+                }
+            }
+        }
+
+        if (rewardedArmId) {
+            await recordBanditReward(db, POLICY_TEACHING_STRATEGY, rewardedArmId, teachingStrategyReward, userId, {
+                applicationKey: `thread_quality:${threadId}:${teachingStrategyReward > 0 ? 'pos' : 'neg'}`,
+                source: 'conversation_quality_analysis',
+            }).catch(() => null);
+        }
+    }
+
     return {
         analyzed: true,
         corrections: corrections.length,
         helpfulnessRating: userFeedback?.rating,
         clarificationRequests: clarificationRequests.length,
-        learnedMistakes: mistakes.length
+        learnedMistakes: mistakes.length,
+        teachingStrategyReward,
+        rewardedArmId,
     };
 }
 

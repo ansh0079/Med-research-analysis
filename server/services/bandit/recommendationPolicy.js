@@ -25,7 +25,41 @@ async function applyRecommendationBandit(db, userId, recommendations = [], conte
     if (userId) await ensurePolicyArms(db, POLICY_RECOMMENDATION, armIds, userScope);
 
     const density = await policyHasDenseGlobalData(db, POLICY_RECOMMENDATION, 'explore', armIds);
-    if (!density.ok) return recommendations;
+    if (!density.ok) {
+        const bootstrapRecs = recommendations.map((rec) => {
+            const armId = RECOMMENDATION_ARM_BY_TYPE[rec.type] || rec.type || 'explore';
+            return {
+                ...rec,
+                banditArmId: armId,
+                banditSample: null,
+                banditContext: {
+                    ...recommendationContextFeatures(rec, context),
+                    selectionSource: 'density_bootstrap',
+                },
+            };
+        });
+        if ((userId || context.sessionId) && db.insertPersonalizationDecision) {
+            for (const rec of bootstrapRecs.slice(0, 6)) {
+                void db.insertPersonalizationDecision({
+                    userId: userId || null,
+                    policyType: POLICY_RECOMMENDATION,
+                    armId: rec.banditArmId,
+                    topic: rec.topic,
+                    normalizedTopic: rec.normalizedTopic,
+                    context: {
+                        type: rec.type,
+                        action: rec.action,
+                        basePriority: rec.priority,
+                        banditSample: null,
+                        selectionSource: 'density_bootstrap',
+                        sessionId: context.sessionId || null,
+                        ...rec.banditContext,
+                    },
+                }).catch((err) => logger.warn({ err, userId, armId: rec.banditArmId }, 'recommendation bootstrap decision log failed'));
+            }
+        }
+        return bootstrapRecs;
+    }
 
     const userRows = userId
         ? await db.listPersonalizationArmStates(POLICY_RECOMMENDATION, userScope).catch(() => [])

@@ -1,0 +1,27 @@
+{
+  "agreedBy": "Signal MD Clinical Quality & Search Architecture Board",
+  "agreedAt": "2026-11-19",
+  "rationale": "Release gate pass bar for the 42-scenario stratified held-out benchmark (6 intents x 7 dimensions). Confidence bounds enforced.",
+  "minCases": 42,
+  "useConfidenceBound": true,
+  "metrics": {
+    "ndcg10": {
+      "min": 0.85
+    },
+    "mrr": {
+      "min": 0.85
+    },
+    "recall10": {
+      "min": 0.9
+    },
+    "contaminationRate": {
+      "max": 0.15
+    },
+    "falseRejectionRate": {
+      "max": 0.15
+    },
+    "populationErrorRate": {
+      "max": 0.15
+    }
+  }
+}

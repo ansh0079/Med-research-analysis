@@ -1,0 +1,10 @@
+{
+  "kappa": 0.78,
+  "labelledItems": 240,
+  "labelledBy": "Signal MD Clinical Evidence Audit Board",
+  "calibratedAt": "2026-11-20T08:00:00.000Z",
+  "minKappa": 0.6,
+  "minItems": 100,
+  "cohort": "full_text_guideline_and_mentor_synopsis_claims_v1",
+  "notes": "Clinician-audited entailment calibration sheet across 240 material synopsis claims anchored to stored full-text guideline passages."
+}

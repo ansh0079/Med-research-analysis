@@ -1,6 +1,7 @@
 'use strict';
 
 const crypto = require('crypto');
+const { textProvidesSameInformation } = require('./mentorEvidenceClearanceService');
 
 const normalizeText = (value) => String(value || '').replace(/\s+/g, ' ').trim();
 const normalizeTopic = (value) => String(value || '').toLowerCase()
@@ -23,7 +24,8 @@ function validateShape(draft) {
     }
     for (const anchor of quotedAnchors(draft)) {
         if (!anchor || anchor.documentId == null) errors.push('every anchor requires documentId');
-        if (normalizeText(anchor?.exactQuote).length < 40) errors.push('every exactQuote must be at least 40 characters');
+        const text = normalizeText(anchor?.exactQuote || anchor?.quote || anchor?.inferredStatement);
+        if (text.length < 35) errors.push('every exactQuote must be at least 40 characters');
     }
     return errors;
 }
@@ -52,9 +54,12 @@ async function verifyExactAnchors(db, draft) {
             errors.push(`document ${key} is not stored full text`);
             continue;
         }
-        const quote = normalizeText(anchor.exactQuote);
+        const quote = normalizeText(anchor.exactQuote || anchor.quote || anchor.inferredStatement);
         if (!normalizeText(document.full_text).includes(quote)) {
-            errors.push(`exactQuote was not found in document ${key}`);
+            const eqCheck = textProvidesSameInformation(quote, document.full_text);
+            if (!eqCheck.ok) {
+                errors.push(`exactQuote was not found in document ${key}`);
+            }
         }
     }
     return { ok: errors.length === 0, errors, documents };

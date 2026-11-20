@@ -1,5 +1,6 @@
 const logger = require('../config/logger');
 const { createRecommendationService } = require('../services/recommendationService');
+const { trackUserInteraction } = require('../services/userInteractionService');
 
 /**
  * @param {import('express').Application} app
@@ -70,14 +71,32 @@ function registerRecommendationRoutes(app, deps) {
 
         try {
             if (req.user.id !== userId) {
-            return res.status(403).json({ error: 'Forbidden: userId mismatch' });
-        }
-        rec.recordInteraction({ userId, articleId, dwellTime, saved, clicked });
+                return res.status(403).json({ error: 'Forbidden: userId mismatch' });
+            }
+            rec.recordInteraction({ userId, articleId, dwellTime, saved, clicked });
+
+            const rawType = saved !== undefined ? 'save' : clicked ? 'click' : (Number(dwellTime) > 0 ? 'dwell' : 'view');
+            await trackUserInteraction(db, {
+                type: `paper_${rawType}`,
+                rawType,
+                userId,
+                sessionId: req.sessionId || null,
+                paperId: articleId,
+                searchId: req.body.searchId || null,
+                topic: req.body.topic || null,
+                duration: dwellTime != null ? Number(dwellTime) : null,
+                metadata: {
+                    saved: Boolean(saved),
+                    clicked: Boolean(clicked),
+                    styleArm: req.body.styleArm || null,
+                    decisionId: req.body.decisionId || null,
+                },
+            }, { logger });
 
             await db.logEvent('interaction', req.sessionId, {
                 userId,
                 articleId,
-                type: saved !== undefined ? 'save' : clicked ? 'click' : 'view',
+                type: rawType,
                 dwellTime,
             });
 
