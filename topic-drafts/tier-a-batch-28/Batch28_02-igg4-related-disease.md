@@ -6,7 +6,7 @@
 
 The 2020 UEG and SGF guideline is about IgG4-related digestive disease in adults and children. Serum IgG4 alone does not establish the diagnosis. Diagnosis rests on the clinical picture, imaging, histology, other-organ involvement, and steroid response. Symptomatic patients, including those with pancreatic pain or obstructive jaundice, should be considered for treatment. Glucocorticoids are started by weight at 0.6-0.8 mg/kg/day (typically prednisone 30-40 mg/day) to induce remission. Relapse is a reason to add immunosuppression, and rituximab is considered when high-dose glucocorticoids cannot be used. The statements are graded, mostly with strong agreement.
 
-## All recommendations of the lead guideline (45 statements + 0 body-text details)
+## All recommendations of the lead guideline (61 statements + 0 body-text details)
 
 ### Serum IgG4 and monitoring
 
@@ -125,6 +125,45 @@ The 2020 UEG and SGF guideline is about IgG4-related digestive disease in adults
 45. Immunosuppressive drugs. Immunosuppressants used include: thiopurines (azathioprine and 6-mercaptopurine), mycophenolate mofetil, methotrexate, or calcineurin inhibitors (tacrolimus and cyclosporine A). (GRADE 2A)  
    *Anchor:* "Immunosuppressive drugs. Immunosuppressants used include: thiopurines (azathi- oprine and 6-mercaptopurine), mycophenolate mofetil, methotrexate, or calcineurin inhibitors (tacrolimus and cyclosporine A). (GRADE 2A)"
 
+### Added after a second read of the stored text
+
+46. Statement 2.1. A download banner splits this sentence. Both pieces are in the stored text. There are four key histological features of AIP type 1: (a) lymphoplasmacytic inﬁltra- tion affecting the tissue either diffusely or in a patchy manner, (b) storiform ﬁbrosis, (c) obliterative phlebitis, and (d) increased numbers of IgG4 þ plasma cells. (GRADE 1B; strong agreement)  
+   *Anchor:* "There are four key histological features of AIP type 1: (a) lymphoplasmacytic inﬁltra- tion affecting the tissue either diffusely or in a patchy manner, (b) storiform ﬁbrosis, (c) obliterative phlebitis,"
+   *Anchor:* "and (d) increased numbers of IgG4 þ plasma cells. (GRADE 1B; strong agreement)"
+47. Statement 3.1. A download banner splits this sentence. Statement 3.1: The most common manifestation of IgG4-related hepatobiliary disease is IgG4-related cholangitis. (GRADE 2C; strong agreement)  
+   *Anchor:* "Statement 3.1: The most common manifestation of IgG4-related"
+   *Anchor:* "hepatobiliary disease is IgG4-related cholangitis. (GRADE 2C; strong agreement)"
+48. Statement 3.4. A figure and a download banner interrupt this sentence. Statement 3.4: IgG4-related chol- angitis and IgG4-related hepatic pseudotumours are hepatic manifestations within the spectrum of IgG4- related disease. Other histopathological features of liver tissue might also be interpreted as reactive changes due to IgG4-related cholangitis or autoimmune pancre- atitis. (GRADE 2C; strong agreement)  
+   *Anchor:* "Statement 3.4: IgG4-related chol- angitis and IgG4-related hepatic pseudotumours are hepatic manifestations within the spectrum of IgG4- related disease. Other histopathological features of liver tissue might also be interpreted as reactive changes"
+   *Anchor:* "due to IgG4-related cholangitis or autoimmune pancre- atitis. (GRADE 2C; strong agreement)"
+49. Statement 4.3.1. Pharmacological therapy of IgG4- related disease of the gut is based on the same princi- ples as IgG4-related disease of other organs. (GRADE 2C; strong agreement)  
+   *Anchor:* "Pharmacological therapy of IgG4- related disease of the gut is based on the same princi- ples as IgG4-related disease of other organs. (GRADE 2C; strong agreement)"
+50. Statement 4.3.2. In a patient with gastrointestinal mass lesion and equivocal/nondiagnostic histology for IgG4-related disease with negative malignant cells, empirical treatment with glucocorticoid for 1 month may be a suitable option. (GRADE 2C; strong agreement)  
+   *Anchor:* "In a patient with gastrointestinal mass lesion and equivocal/nondiagnostic histology for IgG4-related disease with negative malignant cells, empirical treatment with glucocorticoid for 1 month may be a suitable option. (GRADE 2C; strong agreement)"
+51. Statement 5.2.2. A download banner splits this sentence. Whenever possible the diagnosis of IgG4-related disease should be conﬁrmed by pathological examination from a guided biopsy. (GRADE 1A; strong agreement)  
+   *Anchor:* "Whenever possible the diagnosis of IgG4-related disease should be conﬁrmed by"
+   *Anchor:* "pathological examination from a guided biopsy. (GRADE 1A; strong agreement)"
+52. Statement 8.2.2. Radiological differentiation between IgG4-related disease and cancer is challenging. A few imaging ﬁndings may aid in the differential diag- nosis. (GRADE 2C; strong agreement)  
+   *Anchor:* "Radiological differentiation between IgG4-related disease and cancer is challenging. A few imaging ﬁndings may aid in the differential diag- nosis. (GRADE 2C; strong agreement)"
+53. Statement 8.3.2. In biopsy specimens, distinguishing IgG4-related disease and cancer is more challenging. Risk of sampling error should be considered in a neg- ative biopsy. Non-speciﬁc inﬂammation, with increased IgG4-positive cells can occur in both cancer and IgG4- related disease. (GRADE 2C; strong agreement)  
+   *Anchor:* "In biopsy specimens, distinguishing IgG4-related disease and cancer is more challenging. Risk of sampling error should be considered in a neg- ative biopsy. Non-speciﬁc inﬂammation, with increased IgG4-positive cells can occur in both cancer and IgG4- related disease. (GRADE 2C; strong agreement)"
+54. Statement 8.3.3. An increased frequency of synchro- nous or metachronous lymphomas and IgG4-related disease has been reported. Immunohistochemical, ﬂow cytometric, and molecular studies may help to dif- ferentiate them. (GRADE 2C; strong agreement)  
+   *Anchor:* "An increased frequency of synchro- nous or metachronous lymphomas and IgG4-related disease has been reported. Immunohistochemical, ﬂow cytometric, and molecular studies may help to dif- ferentiate them. (GRADE 2C; strong agreement)"
+55. Histology comment. For the diagnosis of AIP, the number of IgG4 þ plasma cells should exceed 50 cells/high-power ﬁeld (HPF) in surgi- cal specimens and 10 cells/HPF in biopsy samples (average of counts in three hot spots [400 /C2 ]). In addi- tion, the IgG4/IgG ratio should be more than 40%.  
+   *Anchor:* "For the diagnosis of AIP, the number of IgG4 þ plasma cells should exceed 50 cells/high-power ﬁeld (HPF) in surgi- cal specimens and 10 cells/HPF in biopsy samples (average of counts in three hot spots [400 /C2 ]). In addi- tion, the IgG4/IgG ratio should be more than 40%."
+56. Comment on the starting glucocorticoid dose. This adjustment must be based on body weight, in case of particularly aggressive disease (use initial dos- ages above 40 mg/d), or in case of elderly patients, with very mild clinical symptoms (use <20 mg/d).  
+   *Anchor:* "This adjustment must be based on body weight, in case of particularly aggressive disease (use initial dos- ages above 40 mg/d), or in case of elderly patients, with very mild clinical symptoms (use <20 mg/d)."
+57. Abstract wording. Maintenance treatment with glucocorticoids should be considered in multi-organ disease or history of relapse.  
+   *Anchor:* "Maintenance treatment with glucocorticoids should be considered in multi-organ disease or history of relapse."
+58. Abstract wording. If there is no change in disease activity and burden within 3 months, the diagnosis should be reconsidered.  
+   *Anchor:* "If there is no change in disease activity and burden within 3 months, the diagnosis should be reconsidered."
+59. Comment on glucocorticoid-sparing treatment. conventional glucocorticoid-sparing agents, including azathioprine, 6-mercaptopurine, mycophenolate mofetil, cyclosporine A, tacrolimus, methotrexate, cyclophosphamide, or rituximab, must be considered.  
+   *Anchor:* "conventional glucocorticoid-sparing agents, including azathioprine, 6-mercaptopurine, mycophenolate mofetil, cyclosporine A, tacrolimus, methotrexate, cyclophosphamide, or rituximab, must be considered."
+60. Comment on azathioprine. a target dose of 2–2.5 mg/kg body weight should be sought under close clinical and laboratory control.  
+   *Anchor:* "a target dose of 2–2.5 mg/kg body weight should be sought under close clinical and laboratory control."
+61. Comment on mycophenolate mofetil. MMF should commence with 1 g/day and can be increased to 1.5–2 g/day under close monitoring of complete blood count.  
+   *Anchor:* "MMF should commence with 1 g/day and can be increased to 1.5–2 g/day under close monitoring of complete blood count."
+
 ## MCQs (answer and explanation quotes verified in stored text)
 
 **Q1. Which wording does the stored lead document use (Serum IgG4 and monitoring)?**
@@ -190,3 +229,5 @@ Quote: "Immunosuppressive drugs. Immunosuppressants used include: thiopurines (a
 ## Notes
 
 Spreadsheet lead document 1359 is the guideline on IgG4-related sclerosing cholangitis. Document 1806 is the newer European guideline on IgG4-related digestive disease and is the text used here. Scope is digestive disease, not every organ system. A few statements in the stored PDF are split by a download banner and were left out rather than reconstructed. A 2026 item titled Management of IgG4-Related Disease is only 246 words and was not used.
+
+Statements split by a Wiley download banner are listed as two quotes. Comment and abstract sentences that direct a dose or an action are included with the numbered statements.

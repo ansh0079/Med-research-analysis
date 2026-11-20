@@ -6,7 +6,7 @@
 
 The 2022 EULAR/ACR points address the start of care when HLH or MAS is suspected. Individual findings are non-specific and have to be read together over time. There was broad consensus that ferritin should be checked in every patient with new, ongoing, or heightened suspicion, even if an earlier result was normal. Work-up for contributors should start immediately and be aimed at the likely causes. Malignancy should be considered in all patients, particularly adults. Infection testing follows the clinical picture, and genetic testing should be considered especially in young children. The formal numbered point statements sit in table 4, which is not reproduced as a table in the stored text, so this record lists only the directives written out in the narrative.
 
-## All recommendations of the lead guideline (29 statements + 0 body-text details)
+## All recommendations of the lead guideline (44 statements + 0 body-text details)
 
 ### Narrative points in the stored text
 
@@ -68,6 +68,39 @@ The 2022 EULAR/ACR points address the start of care when HLH or MAS is suspected
    *Anchor:* "Ongoing monitoring and reassessment should prompt re-evaluation of treatments being given."
 29. FL=flow cytometry can assess protein abundance; NK=NK function should be abnormal even in remission; Degran=CD107a mobilisation should be abnormal; IL-18=chronically and highly elevated serum IL-18.  
    *Anchor:* "FL=flow cytometry can assess protein abundance; NK=NK function should be abnormal even in remission; Degran=CD107a mobilisation should be abnormal; IL-18=chronically and highly elevated serum IL-18."
+
+### Added after a second read of the stored text
+
+30. The TF recommended assessment of specialised inflammatory biomarkers, interpreted with the aid of consultants, when available  
+   *Anchor:* "The TF recommended assessment of specialised inflammatory biomarkers, interpreted with the aid of consultants, when available"
+31. Primary HLH treatment protocols are rarely indicated in the MAS subset of secondary HLH  
+   *Anchor:* "primary HLH treatment protocols are rarely indicated in the MAS subset of secondary HLH"
+32. Region-specific and season-specific infections should also be considered as causes of HLH/MAS in endemic areas, including dengue virus  
+   *Anchor:* "Region-specific and season-specific infections should also be considered as causes of HLH/MAS in endemic areas, including dengue virus"
+33. The TF supported early genetic testing in children and high-risk adults, preferably using multigene panels or whole exome/genome sequencing  
+   *Anchor:* "the TF supported early genetic testing in children and high-risk adults, preferably using multigene panels or whole exome/genome sequencing"
+34. Genetic counselling is warranted for all patients undergoing genetic testing  
+   *Anchor:* "Genetic counselling is warranted for all patients undergoing genetic testing"
+35. Features suggestive of a genetic cause include young age at presentation, positive family history, consanguinity and prominent CNS disease  
+   *Anchor:* "Features suggestive of a genetic cause include young age at presentation, positive family history, consanguinity and prominent CNS disease"
+36. In patients with high-risk features or progressive HLH/MAS, the TF strongly recommends considering empiric immunomodulation during the initial evaluation and management period  
+   *Anchor:* "In patients with high-risk features or progressive HLH/MAS, the TF strongly recommends considering empiric immunomodulation during the initial evaluation and management period"
+37. The TF currently endorses use of glucocorticoids (GCs), the recombinant IL-1 receptor antagonist (IL-1RA) anakinra and/or intravenous immunoglobulin (IVIg) for empiric immunomodulation in suspected HLH/MAS  
+   *Anchor:* "The TF currently endorses use of glucocorticoids (GCs), the recombinant IL-1 receptor antagonist (IL-1RA) anakinra and/or intravenous immunoglobulin (IVIg) for empiric immunomodulation in suspected HLH/MAS"
+38. Evidence for high-dose etoposide is less favourable for HLH/MAS in the context of sJIA/AOSD  
+   *Anchor:* "Evidence for high-dose etoposide is less favourable for HLH/MAS in the context of sJIA/AOSD"
+39. Treatment escalation with higher doses of GC and/or alternative agents (table 9) should be considered in consultation with HLH/MAS experts  
+   *Anchor:* "treatment escalation with higher doses of GC and/or alternative agents (table 9) should be considered in consultation with HLH/MAS experts"
+40. The stored sentence does not name the drug this dose replaces. Can be substituted with tacrolimus (initial dose 0.1 mg/kg/day per os divided every 12 hours, targeting trough 8–20 ng/mL)  
+   *Anchor:* "Can be substituted with tacrolimus (initial dose 0.1 mg/kg/day per os divided every 12 hours, targeting trough 8–20 ng/mL)"
+41. This will often include empiric antimicrobial and sometimes antiviral agents, accounting for exposures/geography, comorbidities (eg, renal failure) and chronic immunosuppression  
+   *Anchor:* "This will often include empiric antimicrobial and sometimes antiviral agents, accounting for exposures/geography, comorbidities (eg, renal failure) and chronic immunosuppression"
+42. Antifungal and Pneumocystis jirovecii pneumonia prophylaxis are recommended, and are part of the HLH-94 protocol  
+   *Anchor:* "Antifungal and Pneumocystis jirovecii pneumonia prophylaxis are recommended, and are part of the HLH-94 protocol"
+43. Initial monitoring may include daily assessment of inflammatory biomarkers (eg, CRP, ferritin), indicators of organ damage (eg, CBC, fibrinogen, ALT)  
+   *Anchor:* "initial monitoring may include daily assessment of inflammatory biomarkers (eg, CRP, ferritin), indicators of organ damage (eg, CBC, fibrinogen, ALT)"
+44. A multidisciplinary team experienced in managing HLH/MAS may improve recognition, reduce immunosuppression and improve outcomes  
+   *Anchor:* "a multidisciplinary team experienced in managing HLH/MAS may improve recognition, reduce immunosuppression and improve outcomes"
 
 ## MCQs (answer and explanation quotes verified in stored text)
 

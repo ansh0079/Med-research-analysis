@@ -6,7 +6,7 @@
 
 The spreadsheet lead is an epidemiology review and states no management recommendations. This record uses the 2018 AUA guideline on surgery for LUTS attributed to BPH. Evaluation includes history, the AUA Symptom Index, urinalysis, and, before surgery, post-void residual; prostate size and shape, uroflowmetry, and pressure-flow studies are considered as the statements say. Surgery is recommended for renal insufficiency, refractory retention, and the other complications the statement lists. TURP should be offered. TUIP is an option for prostates of 30 g or less. TUNA is not recommended. Prostate artery embolisation is not recommended outside a clinical trial. HoLEP, PVP, and ThuLEP should be considered when bleeding risk is higher, including anticoagulation.
 
-## All recommendations of the lead guideline (22 statements + 0 body-text details)
+## All recommendations of the lead guideline (25 statements + 0 body-text details)
 
 ### AUA surgical guideline statements
 
@@ -54,6 +54,15 @@ The spreadsheet lead is an epidemiology review and states no management recommen
    *Anchor:* "21. PAE is not recommended for the treatment of LUTS/BPH outside the context of a clinical trial. (Expert Opinion)"
 22. 22. HoLEP, PVP, and ThuLEP should be considered in patients who are at higher risk of bleeding, such as those on anti-coagulation drugs. (Expert Opinion)  
    *Anchor:* "22. HoLEP, PVP, and ThuLEP should be considered in patients who are at higher risk of bleeding, such as those on anti-coagulation drugs. (Expert Opinion)"
+
+### Added after a second read of the stored text
+
+23. The impact of LUTS/BPH on QoL can be signiﬁ- cant and should not be underestimated  
+   *Anchor:* "the impact of LUTS/BPH on QoL can be signiﬁ- cant and should not be underestimated"
+24. Patients should be counselled about the sexual side effects of any surgical intervention and should be made aware that surgical treatment can cause ejaculatory dysfunction and may worsen ED  
+   *Anchor:* "Patients should be counselled about the sexual side effects of any surgical intervention and should be made aware that surgical treatment can cause ejaculatory dysfunction and may worsen ED"
+25. Patients should be provided with the risk/beneﬁt proﬁle for all treatment options in light of their circumstances to allow them to make informed de- cisions regarding their treatments  
+   *Anchor:* "Patients should be provided with the risk/beneﬁt proﬁle for all treatment options in light of their circumstances to allow them to make informed de- cisions regarding their treatments"
 
 ## MCQs (answer and explanation quotes verified in stored text)
 

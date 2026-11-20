@@ -6,14 +6,16 @@
 
 The 2021 CHEST update is about treatment of VTE, not primary prophylaxis. For leg DVT or pulmonary embolism it recommends a DOAC (apixaban, dabigatran, edoxaban, or rivaroxaban) over a vitamin K antagonist for the treatment phase, and a 3-month treatment phase when anticoagulation is not contraindicated. Extended anticoagulation is recommended against after a major transient risk factor, suggested against after a minor one, and recommended with a DOAC when VTE is unprovoked or provoked by a persistent risk factor. In cancer it recommends an oral Xa inhibitor over low-molecular-weight heparin. Most pulmonary emboli without hypotension should not receive systemic thrombolysis. An IVC filter is recommended only when anticoagulation is contraindicated in acute proximal leg DVT, and is recommended against when anticoagulants are being given. Routine compression stockings to prevent post-thrombotic syndrome are suggested against.
 
-## All recommendations of the lead guideline (29 statements + 0 body-text details)
+## All recommendations of the lead guideline (30 statements + 0 body-text details)
 
 ### CHEST recommendations
 
-1. In patients with acute isolated distal DVT of the leg: and (i) without severe symptoms or risk factors for extension (see text), we suggest serial imaging of the deep veins for 2 weeks over anticoagulation (weak recommendation, moderate-certainty evidence)  
+1. In patients with acute isolated distal DVT of the leg: and (i) without severe symptoms or risk factors for extension (see text), we suggest serial imaging of the deep veins for 2 weeks over anticoagulation (weak recommendation, moderate-certainty evidence) or (ii) with severe symptoms or risk factors for extension (see text), we suggest anticoagulation over serial imaging of the deep veins (weak recommendation, low-certainty evidence).  
    *Anchor:* "In patients with acute isolated distal DVT of the leg: and (i) without severe symptoms or risk factors for extension (see text), we suggest serial imaging of the deep veins for 2 weeks over anticoagulation (weak recommendation, moderate-cer"
-2. In patients with subsegmental pulmonary embolism (PE) (no involvement of more proximal pulmonary arteries) and no proximal DVT in the legs who have a (i) low risk for recurrent VTE (see text), we suggest clinical surveillance over anticoagulation (weak recommendation, low-certainty evidence)  
+   *Anchor:* " or (ii) with severe symptoms or risk factors for extension (see text), we suggest anticoagulation over serial imaging of the deep veins (weak recommendation, low-certainty evidence)."
+2. In patients with subsegmental pulmonary embolism (PE) (no involvement of more proximal pulmonary arteries) and no proximal DVT in the legs who have a (i) low risk for recurrent VTE (see text), we suggest clinical surveillance over anticoagulation (weak recommendation, low-certainty evidence) or (ii) high risk for recurrent VTE (see text), we suggest anticoagulation over clinical surveillance (weak recommendation, low-certainty evidence).  
    *Anchor:* "In patients with subsegmental pulmonary embolism (PE) (no involvement of more proximal pulmonary arteries) and no proximal DVT in the legs who have a (i) low risk for recurrent VTE (see text), we suggest clinical surveillance over anticoagu"
+   *Anchor:* " or (ii) high risk for recurrent VTE (see text), we suggest anticoagulation over clinical surveillance (weak recommendation, low-certainty evidence)."
 3. In patients who are incidentally found to have asymptomatic PE, we suggest the same initiation and treatment phase anticoagulation as for comparable patients with symptomatic PE (weak recommendation, moderate-certainty evidence)  
    *Anchor:* "In patients who are incidentally found to have asymptomatic PE, we suggest the same initiation and treatment phase anticoagulation as for comparable patients with symptomatic PE (weak recommendation, moderate-certainty evidence)"
 4. In patients with cerebral vein/venous sinus thrombosis, we recommend anticoagulation therapy for at least the treatment phase ( first 3 months) over no anticoagulant therapy (strong recommendation, low-certainty evidence)  
@@ -58,8 +60,9 @@ The 2021 CHEST update is about treatment of VTE, not primary prophylaxis. For le
    *Anchor:* "In patients with VTE diagnosed in the absence of transient risk factor (unprovoked VTE or provoked by a persistent risk factor) who cannot receive a DOAC, we suggest offering extended-phase anticoagulation with a VKA (weak recommendation, m"
 24. In patients offered extended-phase anticoagulation, we suggest the use of reduced-dose apixaban or rivaroxaban over full-dose apixaban or rivaroxaban (weak recommendation, very lowcertainty evidence)  
    *Anchor:* "In patients offered extended-phase anticoagulation, we suggest the use of reduced-dose apixaban or rivaroxaban over full-dose apixaban or rivaroxaban (weak recommendation, very lowcertainty evidence)"
-25. In patients offered extended-phase anticoagulation, we recommend reduced-dose DOAC over aspirin or no therapy (strong recommendation, low-certainty evidence)  
+25. In patients offered extended-phase anticoagulation, we recommend reduced-dose DOAC over aspirin or no therapy (strong recommendation, low-certainty evidence) and suggest rivaroxaban over aspirin (weak recommendation, moderate-certainty evidence).  
    *Anchor:* "In patients offered extended-phase anticoagulation, we recommend reduced-dose DOAC over aspirin or no therapy (strong recommendation, low-certainty evidence)"
+   *Anchor:* " and suggest rivaroxaban over aspirin (weak recommendation, moderate-certainty evidence)."
 26. In patients with an unprovoked proximal DVT or PE who are stopping anticoagulant therapy and do not have a contraindication to aspirin, we suggest aspirin over no aspirin to prevent recurrent VTE (weak recommendation, low-certainty evidence)  
    *Anchor:* "In patients with an unprovoked proximal DVT or PE who are stopping anticoagulant therapy and do not have a contraindication to aspirin, we suggest aspirin over no aspirin to prevent recurrent VTE (weak recommendation, low-certainty evidence"
 27. In patients with acute DVT of the leg, we suggest against using compression stockings routinely to prevent post-thrombotic syndrome (PTS) (weak recommendation, low-certainty evidence)  
@@ -68,6 +71,11 @@ The 2021 CHEST update is about treatment of VTE, not primary prophylaxis. For le
    *Anchor:* "In patients with acute isolated distal DVT of the leg who are treated with serial imaging, we (i) recommend no anticoagulation if the thrombus does not extend (strong recommendation, moderate-certainty evidence), (ii) su"
 29. In patients with acute PE associated with hypotension (eg, systolic BP < 90 mm Hg) who do not have a high bleeding risk, we suggest systemically administered thrombolytic therapy over no such therapy (weak recommendation, low-certainty evidence) [stored text inserts a running header between these clauses]  
    *Anchor:* "In patients with acute PE associated with hypotension (eg, systolic BP < 90 mm Hg) who do not have a high bleeding risk, we suggest systemically"
+
+### Added after a second read of the stored text
+
+30. Ungraded remark in the isolated distal DVT section. In patients with acute isolated distal DVT of the leg who are treated with anticoagulation, the same anticoagulation regimen as for patients with acute proximal should be used.  
+   *Anchor:* "In patients with acute isolated distal DVT of the leg who are treated with anticoagulation, the same anticoagulation regimen as for patients with acute proximal should be used."
 
 ## MCQs (answer and explanation quotes verified in stored text)
 

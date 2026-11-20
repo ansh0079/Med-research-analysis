@@ -6,7 +6,7 @@
 
 The named lead is about medical students and does not address infant failure to thrive. The on-topic document in the database is this 2023 expert opinion on faltering growth in infants and young children. It tells clinicians to identify and manage faltering growth, and not to leave it untreated because of fear of causing excessive weight gain. Nutritional support in critically ill children should follow the phase of illness. The recommendations are expert consensus from a modified Delphi process, not a graded government guideline.
 
-## All recommendations of the lead guideline (44 statements + 0 body-text details)
+## All recommendations of the lead guideline (52 statements + 0 body-text details)
 
 ### Expert opinion
 
@@ -98,6 +98,25 @@ The named lead is about medical students and does not address infant failure to 
    *Anchor:* "The nutritional management plan should include a target for appropriate catch-up growth that is monitored at an interval that is deemed appropriate by the health care professional, the available health care service, and the severity of the "
 44. Properly designed randomized controlled trials should be initiated to further clarify optimal intervention strategies for FG and the focus should be on both weight and height.  
    *Anchor:* "Properly designed randomized controlled trials should be initiated to further clarify optimal intervention strategies for FG and the focus should be on both weight and height."
+
+### Added after a second read of the stored text
+
+45. In all settings it is essential to detect FG, address underlying causes and support catch-up growth where this is indicated  
+   *Anchor:* "in all settings it is essential to detect FG, address underlying causes and support catch-up growth where this is indicated"
+46. Few investigations other than screening for urinary tract infection and celiac disease are recommended in an otherwise well child who is asymptomatic  
+   *Anchor:* "few investigations other than screening for urinary tract infection and celiac disease are recommended in an otherwise well child who is asymptomatic"
+47. Further investigation of a possible underlying medical cause for FG is generally indicated only where children have additional symptoms, for example vomiting or cough or persistent diarrhea  
+   *Anchor:* "Further investigation of a possible underlying medical cause for FG is generally indicated only where children have additional symptoms, for example vomiting or cough or persistent diarrhea"
+48. During the acute phase there is a considerable risk of overfeeding which can harm the patient and nutrient restriction might be beneficial in the early acute catabolic phase  
+   *Anchor:* "During the acute phase there is a considerable risk of overfeeding which can harm the patient and nutrient restriction might be beneficial in the early acute catabolic phase"
+49. To treat infants with FG a 3-step approach may be used: (1) normalize intake, (2) enrichment with protein/lipid/carbohydrate modules, and (3) protein-energy enriched (PEE) formula  
+   *Anchor:* "To treat infants with FG a 3-step approach may be used: (1) normalize intake, (2) enrichment with protein/lipid/carbohydrate modules, and (3) protein-energy enriched (PEE) formula"
+50. Nutritional management of disease- and non-disease-related FG requires a balanced ratio of energy and protein in addition to micronutrients for optimal catch-up  
+   *Anchor:* "Nutritional management of disease- and non-disease-related FG requires a balanced ratio of energy and protein in addition to micronutrients for optimal catch-up"
+51. Micronutrient deficiencies need to be corrected as part of the nutritional treatment plan, with appropriate therapeutic dosages and monitoring of the intervention is required at an interval appropriate for the deficiency  
+   *Anchor:* "Micronutrient deficiencies need to be corrected as part of the nutritional treatment plan, with appropriate therapeutic dosages and monitoring of the intervention is required at an interval appropriate for the deficiency"
+52. Combined approaches are recommended using nutrition-specific and nutrition-sensitive interventions  
+   *Anchor:* "combined approaches are recommended using nutrition-specific and nutrition-sensitive interventions"
 
 ## MCQs (answer and explanation quotes verified in stored text)
 
