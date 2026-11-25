@@ -71,6 +71,29 @@ describe('mentorEvidenceClearanceService', () => {
         } finally { sqlite.close(); }
     });
 
+    test('an anchor documentId pins the lookup to that row even when an older row shares the title', async () => {
+        const Sqlite = require('better-sqlite3');
+        const sqlite = new Sqlite(':memory:');
+        try {
+            sqlite.exec(`CREATE TABLE guideline_documents (id INTEGER PRIMARY KEY, pmid TEXT, pmcid TEXT, doi TEXT, title TEXT,
+                document_label TEXT, evidence_tier TEXT, full_text TEXT, full_text_source TEXT, word_count INTEGER,
+                source_year INTEGER, source_url TEXT)`);
+            const insert = sqlite.prepare(`INSERT INTO guideline_documents (id, pmid, title, document_label, evidence_tier, full_text, full_text_source)
+                VALUES (?, NULL, ?, ?, ?, ?, 'pdf')`);
+            // Older row: same title, unaccepted tier, differently extracted text. Newer row (id 2) holds the quote.
+            insert.run(1, 'Shared Guideline Title', 'old copy', 'unknown', 'Broken extraction of the same document with odd hyphen- ation.');
+            insert.run(2, 'Shared Guideline Title', 'guideline', 'guideline', `Preamble. ${fullText}`);
+            const realDb = { get: async (sql, params) => sqlite.prepare(sql).get(...params) };
+            const page = (documentId) => ({
+                sources: [{ pmid: 'DOC2', title: 'Shared Guideline Title' }],
+                teaching_points: [{ claim: 'Admissions fell.', evidenceAnchors: [{ pmid: 'DOC2', quote: fullText, ...(documentId ? { documentId } : {}) }] }],
+            });
+            expect((await evaluateMentorEvidenceClearance(realDb, page(2))).cleared).toBe(true);
+            // Without the documentId the title lookup lands on the older row and fails (previous behaviour).
+            expect((await evaluateMentorEvidenceClearance(realDb, page(null))).cleared).toBe(false);
+        } finally { sqlite.close(); }
+    });
+
     test('clears an inferred/paraphrased statement that provides the exact same information, and rejects contradicted direction/numbers', async () => {
         const inferredSameInfo = 'In the prespecified population, the intervention decreased hospital admissions without raising serious adverse events.';
         const cleared = await evaluateMentorEvidenceClearance(db, {

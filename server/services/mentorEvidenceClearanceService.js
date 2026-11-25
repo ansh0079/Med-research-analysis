@@ -226,7 +226,22 @@ function anchorsForPoint(point = {}) {
  * DOI, then exact title) so a different row that merely shares a title — e.g. a second, unlabelled
  * copy of the same guideline with different text extraction — can never stand in for the cited one.
  */
-async function findDocument(db, source = {}) {
+async function findDocument(db, source = {}, documentId = null) {
+    // An anchor that names its stored row (documentId) pins the lookup to that row, so a newer copy of a
+    // guideline can never be shadowed by an older row with the same title. The row is refused if it
+    // carries a different PMID/PMCID than the cited source (the anchor then falls back to identifiers).
+    const docId = Number(documentId);
+    if (Number.isInteger(docId) && docId > 0) {
+        const row = await db.get(
+            `SELECT id, pmid, pmcid, doi, title, document_label, evidence_tier,
+                    full_text, full_text_source, word_count, source_year, source_url
+             FROM guideline_documents WHERE id = ?`,
+            [docId],
+        );
+        const clash = row && ((source.pmid && /^\d+$/.test(String(source.pmid)) && row.pmid && String(row.pmid) !== String(source.pmid))
+            || (source.pmcid && row.pmcid && String(row.pmcid) !== String(source.pmcid)));
+        if (row && !clash && row.full_text) return row;
+    }
     const lookups = [];
     if (source.pmid) lookups.push(['pmid = ?', String(source.pmid)]);
     if (source.pmcid) lookups.push(['pmcid = ?', String(source.pmcid)]);
@@ -283,10 +298,12 @@ async function evaluateMentorEvidenceClearance(db, page = {}) {
                 failures.push({ code: 'unresolved_anchor_source', pointIndex, sourceId: id || null });
                 continue;
             }
-            let document = documents.get(id);
+            const anchorDocId = anchor.documentId ?? anchor.document_id ?? null;
+            const docKey = `${id}|${anchorDocId || ''}`;
+            let document = documents.get(docKey);
             if (document === undefined) {
-                document = await findDocument(db, source);
-                documents.set(id, document || null);
+                document = await findDocument(db, source, anchorDocId);
+                documents.set(docKey, document || null);
             }
             if (!document) {
                 failures.push({ code: 'source_not_catalogued', pointIndex, sourceId: id });
