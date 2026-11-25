@@ -2,11 +2,11 @@
 
 Records are offline drafts. They were not written to `app.db`. The 55 skip-list topics were not built.
 
-Anchors were checked as exact 40–130 character substrings of the downloaded stored full text.
+Anchors were checked as exact 40–130 character substrings of the source text used for that record. For the stored-document records that source is the stored full text. For rows 46, 81, 95, 97, and 118 the source is the downloaded PDF text.
 
-Build list: 154. Built: 145. Fit error, not built: 9.
+Build list: 154. Built: 150. Fit error, not built: 4.
 
-Six of the original fit errors were rebuilt from a different stored document whose title matches the topic (rows 64, 67, 92, 117, 136, 139). The assigned document ids were left unchanged in the table. Preferred sources for the nine that still have no usable stored full text are listed after the skip table.
+Six of the original fit errors were rebuilt from a different stored document whose title matches the topic (rows 64, 67, 92, 117, 136, 139). Five more were rebuilt from downloaded guideline PDFs (rows 46, 81, 95, 97, 118). The assigned document ids were left unchanged in the table. Four topics still have no open full text (rows 37, 70, 120, 154).
 
 | # | Topic | Doc ID | Built? | Recs Count | Anchors Verified (pass/total) | Fit | Sections Excluded / Notes |
 |---:|---|---:|---|---:|---|---|---|
@@ -55,7 +55,7 @@ Six of the original fit errors were rebuilt from a different stored document who
 | 43 | tenecteplase alteplase acute ischemic stroke EXTEND-IA TNK | 2972 | yes | 11 | 11/11 | full | length_ratio is 1.78, which is above 1.5. The stored text is longer than the expected character count. The document is an updated meta-analysis of tenecteplase versus alteplase in  |
 | 44 | Chemotherapy Extravasation | 3495 | yes | 13 | 13/13 | partly | The source is a systematic review of the nursing role, risk factors, and nurse training in chemotherapy extravasation. Drug-specific antidote protocols and a full surgical manageme |
 | 45 | Vocal Cord Dysfunction | 2911 | yes | 22 | 22/22 | full |  |
-| 46 | Synovial fluid analysis: WBC thresholds, crystals, viscosity, culture interpretation | 4661 | no | 0 | 0/0 | fit_error | The source is a systematic review of synovial-fluid proteomic biomarkers in knee osteoarthritis. It does not address synovial fluid white-cell thresholds, crystal identification, v |
+| 46 | Synovial fluid analysis: WBC thresholds, crystals, viscosity, culture interpretation | 4661 | yes | 12 | 12/12 | partly | Assigned doc 4661 is osteoarthritis proteomics. Rebuilt from the downloaded SANJO 2023 PDF. Viscosity is not in that guideline. Antibiotic and surgical sections were left out. |
 | 47 | Opioid Rotation and Equianalgesic Dosing | 5064 | yes | 21 | 21/21 | partly | The source is a practical review of opioid rotation and equianalgesic ratios, drawn mainly from studies of chronic cancer pain and the pairs among morphine, oxycodone, fentanyl, an |
 | 48 | Intra-aortic balloon pump and Impella: principles and ICU management | 3223 | yes | 20 | 20/20 | partly | The source is a review of short-term mechanical circulatory support covering intra-aortic balloon pump and Impella together with extracorporeal membrane oxygenation and TandemHeart |
 | 49 | Acute Cholecystitis | 2246 | yes | 18 | 18/18 | partly | The source is an international Delphi consensus limited to percutaneous cholecystostomy in acute cholecystitis. Antibiotic regimens and the broader operative pathway for acute chol |
@@ -90,7 +90,7 @@ Six of the original fit errors were rebuilt from a different stored document who
 | 78 | Metabolic Alkalosis | 5019 | yes | 18 | 18/18 | full |  |
 | 79 | Chronic Tophaceous Gout | 3602 | yes | 58 | 58/58 | partly | The source is the 2012 ACR gout guideline Part 1 on nonpharmacologic and pharmacologic urate-lowering therapy. Chronic tophaceous gouty arthropathy is one of the case scenarios, an |
 | 80 | Cervical Cancer | 2072 | yes | 26 | 26/26 | partly | The source is a guideline on self-collected vaginal specimens for HPV testing in cervical cancer screening and on management of those results. Staging and treatment of invasive cer |
-| 81 | Bone Marrow Fibrosis Grading | 4673 | no | 0 | 0/0 | fit_error | The source is a review of multimodal artificial intelligence for bone marrow examination. It does not address bone marrow fibrosis grading. Fibrosis is mentioned only as one histol |
+| 81 | Bone Marrow Fibrosis Grading | 4673 | yes | 10 | 10/10 | full | Assigned doc 4673 is an artificial-intelligence review. Rebuilt from the downloaded Thiele 2005 European consensus PDF, including Table 3. The Kvasnicka 2016 separate collagen and osteosclerosis scores were not available. |
 | 82 | systemic analgesia | 2948 | yes | 7 | 7/7 | partly | The source compares regional analgesia techniques with systemic analgesia after gastrectomy for gastric cancer. It does not address systemic analgesic drug choice, dosing, or use o |
 | 83 | Large bowel obstruction, volvulus, and pseudo-obstruction management | 2245 | yes | 19 | 19/19 | partly | The source is a WSES consensus limited to sigmoid volvulus, with additional statements on megacolon, pregnancy, and ileosigmoid volvulus. Non-volvulus large-bowel obstruction and c |
 | 84 | Sedation and analgesia in mechanically ventilated patients: ABCDEF bundle | 5114 | yes | 6 | 6/6 | partly | The source is a retrospective cohort of nurse-led targeted sedation-analgesia in mechanically ventilated adults. It is not an ABCDEF-bundle guideline; the bundle is cited as extern |
@@ -104,9 +104,9 @@ Six of the original fit errors were rebuilt from a different stored document who
 | 92 | Sjogren syndrome systemic and topical therapy | 1489 | yes | 5 | 5/5 | partly | Assigned doc 1489 is an atopic dermatitis guideline. Rebuilt from stored document 1463 (PMID 31672775), the EULAR Sjögren summary. The 12 graded statements are not in that 2,840-character copy. |
 | 93 | Cryptococcal meningitis induction therapy | 2275 | yes | 24 | 24/24 | partly | length_ratio is 1.79, above 1.5. The source file is an extract of a global cryptococcosis guideline, with windows kept around meningitis and recommendation language. Induction regi |
 | 94 | Psychogenic non-epileptic seizures (PNES): video-EEG differentiation, management | 1555 | yes | 7 | 7/7 | partly | The document is a systematic review of psychiatric comorbidities of functional neurological disorder and psychogenic non-epileptic seizures, with GRADE-based policy recommendations |
-| 95 | Bronchial Provocation Testing | 1779 | no | 0 | 0/0 | fit_error | The document is a Chinese expert consensus on fractional exhaled nitric oxide testing, quality control, and clinical application. Bronchial provocation testing is a different proce |
+| 95 | Bronchial Provocation Testing | 1779 | yes | 10 | 10/10 | partly | Assigned doc 1779 is a Chinese exhaled-nitric-oxide consensus. Rebuilt from the downloaded 2017 ERS methacholine technical standard. Indirect challenges are a separate paper and were left out. |
 | 96 | Acute Disseminated Encephalomyelitis (ADEM): paediatric predominance, MRI characte... | 5248 | yes | 24 | 24/24 | full |  |
-| 97 | Viral haemorrhagic fevers and high-consequence infectious diseases in the ICU | 1595 | no | 0 | 0/0 | fit_error | The document reviews autopsy practices, biosafety guidance, alternatives to conventional autopsy, and the absence of BSL-4 autopsy protocols for high-consequence infectious disease |
+| 97 | Viral haemorrhagic fevers and high-consequence infectious diseases in the ICU | 1595 | yes | 16 | 16/16 | partly | Assigned doc 1595 is an autopsy review. Rebuilt from the downloaded 2016 WHO pocket guide (severe-disease section) and the 2019 WHO Ebola supportive-care procedures. Screening, infection prevention, pregnancy, nutrition, and electrolyte recipes were left out. |
 | 98 | ICU delirium: CAM-ICU assessment, prevention, and management | 4449 | yes | 6 | 6/6 | partly | CAM-ICU and other delirium screening instruments are not addressed. This focused update answers selected questions on benzodiazepines for anxiety, dexmedetomidine versus propofol,  |
 | 99 | seizures | 1980 | yes | 23 | 23/23 | partly | The source file is an extract of an ILAE guideline limited to antiseizure medication and related management of seizures in neonates. Seizures outside the neonatal period, and adult |
 | 100 | Contrast-associated acute kidney injury prevention | 4185 | yes | 8 | 8/8 | full |  |
@@ -127,7 +127,7 @@ Six of the original fit errors were rebuilt from a different stored document who
 | 115 | Airway Obstruction in Malignancy | 1422 | yes | 11 | 11/11 | partly | The source is a guideline on airway stenting for malignant central airway obstruction. Other treatments of malignant airway obstruction are out of scope. length_ratio is 0.66, belo |
 | 116 | Gynaecomastia: causes, drug-induced, physiological, investigation, management | 3553 | yes | 42 | 42/42 | full | The source file is an extract. The recommendation list continues beyond the extract windows, so statements were copied from the stored full text. |
 | 117 | Asthma biologic therapy anti-IgE and anti-IL5 | 5084 | yes | 4 | 4/4 | partly | Assigned doc 5084 is an anti-CCP paper. Rebuilt from stored document 4959 (PMID 41904357). Anti-IL-4/13 and anti-TSLP sections of that review were left out. |
-| 118 | Coronary angiography timing after cardiac arrest | 1453 | no | 0 | 0/0 | fit_error | The stored document is an international consensus on evidence gaps and research opportunities in extracorporeal cardiopulmonary resuscitation for refractory out-of-hospital cardiac |
+| 118 | Coronary angiography timing after cardiac arrest | 1453 | yes | 5 | 5/5 | partly | Assigned doc 1453 is an extracorporeal CPR evidence-gaps consensus. Rebuilt from the cardiac-arrest angiography recommendations in the downloaded 2023 ESC acute coronary syndrome guideline. The rest of that guideline was left out. |
 | 119 | Autoimmune Gastritis and Pernicious Anaemia | 5111 | yes | 8 | 8/8 | full | The source file is an extract of a qualitative study of diagnosis and treatment experiences of people living with autoimmune gastritis and pernicious anemia. There is no numbered g |
 | 120 | new airway devices | 2028 | no | 0 | 0/0 | fit_error | Topic 120 is new airway devices. The stored document is a review of what is changing in pediatric cardiac implantable electronic device guidelines (pacemakers, ICDs, and loop recor |
 | 121 | Chronic Pancreatitis | 1467 | yes | 31 | 31/31 | partly | The source file is an extract of the ESPEN practical guideline on clinical nutrition in acute and chronic pancreatitis. Statements below are the chronic-pancreatitis nutrition stat |
@@ -227,9 +227,9 @@ Six of the original fit errors were rebuilt from a different stored document who
 
 These 55 topics were not built.
 
-## Preferred documents for the nine fit errors that still have no usable stored full text
+## Preferred documents for the nine topics with no usable stored full text
 
-These were looked up online. No synopsis was written from them, because the stored library does not hold a usable full text and these records stay anchored to stored text only.
+Synopses for rows 46, 81, 95, 97, and 118 were written from the downloaded PDFs listed below and are anchored to those PDF texts. Rows 37, 70, 120, and 154 still have no open full text, so no synopsis was written for them.
 
 | # | Topic | What the library holds | Preferred document |
 |---:|---|---|---|
