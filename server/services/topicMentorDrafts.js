@@ -113,15 +113,34 @@ function draftToKnowledge(page) {
         doi: s.doi || null,
     }));
     const hasGuideline = (cites) => cites.some((c) => sources.find((s) => String(s.pmid) === String(c))?.design === 'guideline');
+    const normalizeAnchors = (t) => {
+        const raw = t?.evidenceAnchors || t?.evidence_anchors || t?.supports || t?.evidence;
+        if (!Array.isArray(raw)) return [];
+        return raw
+            .filter((a) => a && typeof a === 'object')
+            .map((a) => ({
+                ...(a.pmid != null ? { pmid: String(a.pmid) } : {}),
+                ...(a.pmcid ? { pmcid: String(a.pmcid) } : {}),
+                ...(a.doi ? { doi: String(a.doi) } : {}),
+                ...(a.uid ? { uid: String(a.uid) } : {}),
+                ...(a.documentId != null || a.document_id != null ? { documentId: Number(a.documentId ?? a.document_id) } : {}),
+                exactQuote: String(a.exactQuote || a.exact_quote || a.quote || a.supportingQuote || a.supporting_text || '').trim(),
+            }))
+            .filter((a) => a.exactQuote.length > 0);
+    };
     return {
         knowledge: {
             mentorMessage: page.mentor_intro,
-            teachingPoints: (page.teaching_points || []).map((t) => ({
-                claim: t.claim,
-                sourceIndices: (t.cites || []).map((c) => indexOf.get(String(c))).filter(Boolean),
-                guidelineIndices: [],
-                confidence: hasGuideline(t.cites || []) ? 'HIGH' : 'MODERATE',
-            })),
+            teachingPoints: (page.teaching_points || []).map((t) => {
+                const evidenceAnchors = normalizeAnchors(t);
+                return {
+                    claim: t.claim,
+                    sourceIndices: (t.cites || []).map((c) => indexOf.get(String(c))).filter(Boolean),
+                    guidelineIndices: [],
+                    confidence: hasGuideline(t.cites || []) ? 'HIGH' : 'MODERATE',
+                    ...(evidenceAnchors.length ? { evidenceAnchors } : {}),
+                };
+            }),
             caseGenerationHooks: page.case_hooks || [],
             mcqAngles: page.mcq_angles || [],
             controversies: (page.uncertainties || []).map((issue) => ({ issue, sourceIndices: [], guidelineIndices: [] })),

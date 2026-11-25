@@ -68,6 +68,21 @@ describe('topic mentor drafts', () => {
         expect(knowledge.controversies[0].issue).toBe('U.');
     });
 
+    test('preserves per-claim evidenceAnchors when mapping draft to knowledge', () => {
+        const { knowledge } = draftToKnowledge({
+            mentor_intro: 'Intro.',
+            sources: [{ pmid: '11', title: 'Guide', design: 'guideline', year: '2025' }],
+            teaching_points: [{
+                claim: 'Anchored claim.',
+                cites: ['11'],
+                evidence_anchors: [{ pmid: '11', documentId: 42, quote: 'Exact verbatim quote from the stored guideline text.' }],
+            }],
+        });
+        expect(knowledge.teachingPoints[0].evidenceAnchors).toEqual([
+            { pmid: '11', documentId: 42, exactQuote: 'Exact verbatim quote from the stored guideline text.' },
+        ]);
+    });
+
     test('uncited textbook points are excluded from served mentor knowledge', () => {
         const page = { mentor_intro: 'x', sources: [{ pmid: '1', title: 't', design: 'guideline', year: 2024 }], teaching_points: [{ claim: 'cited', cites: ['1'] }],
             standard_knowledge: [{ claim: 'textbook fact', basis: 'textbook' }], case_hooks: [], mcq_angles: [], uncertainties: [], gaps: '' };
