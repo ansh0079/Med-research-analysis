@@ -1,0 +1,263 @@
+# Pathology and Mineralogy of the Pneumoconioses
+
+PMC11617341. Seminars in respiratory and critical care medicine, 44(3):327–339. Published 2023-03-27.
+
+## Authors
+
+Jeremy T. Hua, Carlyne D. Cool, Francis H. Y. Green
+
+## Details
+
+- DOI: https://doi.org/10.1055/s-0043-1764406
+- PMID: 36972614 (https://pubmed.ncbi.nlm.nih.gov/36972614/)
+- PMCID: PMC11617341
+- License: TDM
+- Author manuscript
+
+---
+
+## Abstract
+
+Pneumoconioses represent the spectrum of lung diseases caused by inhalation of respirable particulate matter small enough (typically <5-μm diameter) to reach the terminal airways and alveoli. Pneumoconioses primarily occur in occupational settings where workers perform demanding and skilled manual labor including mining, construction, stone fabrication, farming, plumbing, electronics manufacturing, shipyards, and more. Most pneumoconioses develop after decades of exposure, though shorter latencies can occur from more intense particulate matter exposures. In this review, we summarize the industrial exposures, pathologic findings, and mineralogic features of various well-characterized pneumoconioses including silicosis, silicatosis, mixed-dust pneumoconiosis, coal workers’ pneumoconiosis, asbestosis, chronic beryllium disease, aluminosis, hard metal pneumoconiosis, and some less severe pneumoconioses. We also review a general framework for the diagnostic workup of pneumoconioses for pulmonologists including obtaining a detailed occupational and environmental exposure history. Many pneumoconioses are irreversible and develop due to excessive cumulative respirable dust inhalation. Accurate diagnosis permits interventions to minimize ongoing fibrogenic dust exposure. A consistent occupational exposure history coupled with typical chest imaging findings is usually sufficient to make a clinical diagnosis without the need for tissue sampling. Lung biopsy may be required when exposure history, imaging, and testing are inconsistent, there are unusual or new exposures, or there is a need to obtain tissue for another indication such as suspected malignancy. Close collaboration and information-sharing with the pathologist prior to biopsy is of great importance for diagnosis, as many occupational lung diseases are missed due to insufficient communication. The pathologist has a broad range of analytic techniques including bright-field microscopy, polarized light microscopy, and special histologic stains that may confirm the diagnosis. Advanced techniques for particle characterization such as scanning electron microscopy/energy dispersive spectroscopy may be available in some centers.
+
+Pneumoconioses represent the spectrum of lung diseases caused by inhalation of respirable particulate matter small enough (typically <5-μm diameter) to reach the terminal bronchioles and alveoli. Pneumoconioses primarily result from occupational exposures and affect workers who perform manual labor under challenging conditions. Workers in industries such as mining, construction, stone fabrication, farming, plumbing, electronics manufacturing, railways, shipyards, aerospace, and nanotechnology may be at increased risk.
+
+While enforceable federal exposure limits and workplace safety requirements exist in the United States for certain respirable dusts such as coal (30 CFR § 70.100), silica (29 CFR § 1910.1053), beryllium (29 CFR § 1910.1024), and asbestos (29 CFR § 1910.1001), targeted standards for many other particulates are not available. Additionally, regulations may not cover all circumstances where workers are exposed, and employers may not always comply with dust monitoring and controls. Respiratory personal protective equipment is the weakest form of protection due to poor adherence caused by uncomfortable equipment and increased work of breathing when performing manual labor. As a result, the burden of pneumoconiosis remains substantial. New cases are estimated at 60,000 workers worldwide each year, 1 likely a gross underestimate of the true incidence because of underreporting and underrecognition.
+
+The aim of this review is to provide pulmonologists with a framework for the diagnosis of several well-characterized pneumoconioses. We also provide guidance about indications for tissue biopsy and interpretation of histopathologic findings.
+
+## Approach to Pneumoconiosis Diagnosis and Management
+
+An accurate diagnosis of pneumoconiosis depends on a detailed occupational and environmental exposure history, which should include information about the patient’s place and duration of work, job tasks performed, and type of materials and equipment used. Additional information regarding engineering controls (such as local exhaust ventilation and wet-spray methods) and use of respiratory personal protection are important for understanding the risk of work-related lung disease. There are no standardized exposure questionnaires for pneumoconioses, though various frameworks for taking a comprehensive occupational history exist. 2,3 
+
+Diagnosis of silicosis, coal workers’ pneumoconiosis, or asbestosis may be made based on a suggestive occupational history and typical chest imaging without the need for tissue sampling. A chest radiograph classified using the International Labor Office (ILO) system has been the mainstay for medical surveillance of pneumoconioses in dusty trades. 4 High-resolution computed tomography provides greater diagnostic clarity especially when interpreted using the International Classification of High-resolution Computed Tomography for Occupational and Environmental Respiratory Diseases. 5 
+
+A tissue biopsy should only be obtained if the occupational history is suggestive but clinical and imaging findings are atypical or unusual, if there are unusual or newly described exposures, or a tissue biopsy is needed for a separate indication such as malignancy evaluation. There are also certain occasions where tissue sampling is necessary for definitive pneumoconiosis diagnosis, such as establishing the presence of nonnecrotizing granulomas for chronic beryllium disease (CBD) and giant cell interstitial pneumonia (GIP) for hard metal pneumoconiosis.
+
+It is vital that pulmonologists or thoracic surgeons sample areas of the lung where imaging findings are abnormal or where pneumoconioses are most likely to occur. The treating clinicians should communicate the exposure history to the pathologist to ensure appropriate tissue analysis. The pathologist may then interpret nonspecific findings such as nonnecrotizing granulomas in the context of the patient’s exposures. The pathologist can consider supplementing conventional bright-field microscopy with polarized light microscopy (PLM) to identify mineral particulates. Advanced analysis may also be considered when there is a history of exposure to beryllium or hard metals to detect the elemental composition of lung particulate matter. Biomarker testing, such as a beryllium lymphocyte proliferation test (BeLPT) from blood and/or bronchoalveolar lavage samples, may aid in the diagnosis. 6 
+
+Occasionally, a lung tissue biopsy performed for other indications such as to rule out malignancy may yield a diagnosis of pneumoconiosis. In these cases, the clinician should obtain a detailed occupational and environmental history to correlate with the pathologic findings and determine if any other diagnostic testing is needed.
+
+Most pneumoconioses are irreversible and incurable, but disease progression can be mitigated by removal from or reduction in further exposure. The treating clinician should consider recommending workplace exposure restrictions or accommodations, counseling about safer alternative forms of gainful employment, assisting with disability or worker’s compensation claims, or referral to benefits programs such as the Federal Black Lung Program 7 or Energy Employees Occupational Illness Compensation Program. 8 Consultation with an occupational medicine specialist or industrial hygienist may be useful in complex cases. Additional testing may also be warranted, such as for autoimmunity, kidney disease, or superimposed pulmonary infection in a new diagnosis of silicosis. 9 
+
+## Microscopy Techniques for Lung Pathology and Mineralogy Analysis
+
+### Bright-Field Microscopy
+
+Standard visualization of lung tissue is performed under bright-field microscopy using hematoxylin and eosin (H&E) staining. Additional stains for infectious organisms, connective tissue proteins, asbestos bodies, and inflammatory cell markers may be indicated. Most occupational lung diseases can be diagnosed with these routine stains. Of central importance is linking the pathologic features to the patient’s exposure history. Carbonaceous and mineral particles are found in the lungs of urban dwellers, although the concentrations are orders of magnitude lower than that found in occupationally exposed workers. 10,11 
+
+### Polarized Light Microscopy
+
+PLM is used to visualize birefringent crystalline mineral particulate that may be found in lung tissue samples. The pathologist places polarizing filter lenses oriented at perpendicular polarization planes both above and below the tissue sample on a conventional bright-field microscope. Under PLM, background tissue and other nonrefractile matter appear dark and inconspicuous, while birefringent particles appear sharply contrasted and bright in appearance. Weakly birefringent collagen fibers in tissue specimens provide an internal control to calibrate the microscope. Silica and silicates are birefringent, and their distinctive appearance can be used to document their relative abundance. Silica and silicates are found in all adult lungs, particularly around vessels, airways, and within the pleura and lymph nodes. A heavy burden of these particles should raise concern for mixed-dust pneumoconiosis (MDP), silicatosis, or silicosis.
+
+### Scanning Electron Microscopy
+
+Scanning electron microscopy/energy dispersive spectroscopy (SEM/EDS) has been used for decades for research and diagnosis of pneumoconioses. SEM/EDS technology is cost-prohibitive for many medical centers and requires staff with special expertise and experience. SEM/EDS provides detailed analysis of the elemental composition of dust particles in tissue aiding the diagnosis of pneumoconioses, especially when particles are not easily visible under bright-field or PLM or when the disease is caused by very low concentrations of particulate that generate an immunologic response. The mineralogical characterization of dust particles may be done in situ using tissue sections or on particles extracted from lung tissue by digestion. Both techniques provide valuable information, though in situ methods can link the location of mineral dust particles with specific pathologic features.
+
+## Summary of Selected Pneumoconioses
+
+A summary of pertinent workplace job duties, exposure sources, and clinical syndromes for numerous well-characterized pneumoconioses is presented in this section. Histopathologic findings and mineralogical particulate matter analyses are then described to aid in linking tissue sample findings with clinical diagnoses.
+
+### Silicosis
+
+Silicosis is the oldest recognized pneumoconiosis and occupational lung disease, having been described in Greek quarry workers and later by Bernardino Ramazzini in stone cutters in the 1700s. 12 In its crystalline forms, silica generates dust that leads to severe and debilitating pulmonary fibrosis. Exposure to respirable crystalline silica (RCS) occurs with natural stone such as granite or marble, engineered or artificial stone (typically >90% silica content), concrete, and sand. Silicosis is observed in hard rock miners, coal miners, construction workers, countertop fabricators, and sandblasters, typically after decades of exposure. The severity of illness typically correlates with cumulative exposure burden, although acute silicosis from intense short-term exposures can occur. Particle characteristics such as free radicals in freshly fractured silica-containing materials can accelerate injury to within 5 years of first exposure. 13,14 Silicosis is also associated with the development of non-pneumoconiosis manifestations including collagen vascular disease, tuberculosis, lung cancer, emphysema, and kidney disease. 9,15 
+
+#### Pathology
+
+Simple silicosis is characterized by the classic mature silicotic nodule, which consists of central, circumscribed, hyalinized, and whorled collagen surrounded by mild chronic inflammation and fibrosis (►Fig. 1). The mature silicotic nodule develops following an immature stage characterized by aggregations of histiocytes, lymphocytes, fibroblasts, and immature collagen fibers. Complicated silicosis, or progressive massive fibrosis (PMF), is typified by coalescence or growth of individual nodules to form fibrotic masses greater than 1cm in largest diameter (►Fig. 2). Silicoproteinosis associated with mineral dust exposure, also termed mineral dust–related alveolar proteinosis, is similar in histologic appearance to primary pulmonary alveolar proteinosis. Airspaces are filled by eosinophilic, finely granular, lipoproteinaceous material admixed with foamy macrophages (►Fig. 3). Interstitial changes are usually minimal. Periodic acid–Schiff, with or without diastase treatment, can be used to highlight the amorphous intra-alveolar material.
+
+#### Mineralogy
+
+Silica particles are not visible using bright-field microscopy alone. Along with other silicates derived from silica and metal salts, crystalline silica particles are birefringent and become illuminated under PLM. Particles of silica are mostly cuboidal in shape and slightly blue in color under polarized light. Silica tends to appear dull or weakly birefringent under polarized light, in comparison to brighter silicates. 16,17 Birefringent particles are identified within a silicotic nodule or at its periphery (►Fig. 1, inset). The duration and intensity of silica exposure over time correlates with clinical disease severity and progression, and may correlate with the relative burden of silica particles visualized by the pathologist.
+
+### Silicatosis
+
+Silicates are mineral composites formed between silica and other metal compounds. Aluminosilicates are common in geologic formations and are the primary constituent in clay, mica, and ceramics. Talc used in cosmetics, lubricants, and medication tablets is a form of magnesium silicate. Non-fibrous silicates are less fibrogenic than asbestos or silica, but nonetheless, they can cause severe pneumoconiosis when inhaled at high concentrations. Agricultural dust, talc, mica, and other silicate-rich mineral dusts have all been shown to cause lung disease alone or with minimal silica co-exposure. 16 
+
+### Pathology
+
+The pathology of silicates has much in common with that seen for silica and coal mine dust exposure, comprising nodular lesions, interstitial fibrosis, and occasionally PMF lesions. 16 Giant cells containing strongly birefringent particles under PLM within granulomas (►Fig. 4) are indicative of talcosis. These may result from dust inhalation or from intravenous injection of crushed pills containing talcum powder. The location and size of the particles and pathologic features are slightly different, depending on the route of exposure.
+
+#### Mineralogy
+
+Silicates appear brighter under PLM than weakly birefringent silica particles and may assume platelike or fibrous shapes. 16,17 However, it may be difficult for inexperienced pathologists to differentiate these minerals using light microscopy, whereas SEM/EDS can accurately identify these particles.
+
+### Mixed-Dust Pneumoconiosis
+
+MDP is diagnosed pathologically when there is evidence of multiple mineral dust types in lung tissue. These often include RCS and other dusts such as coal or asbestos. 18 Miners, quarry workers, foundry workers, pottery and ceramic workers, stone cutters, agricultural workers, and other occupational groups may all be at risk for mixed-dust exposure.
+
+#### Pathology
+
+The major pathologic features of MDP are dust macules, irregular stellate fibrotic nodules, and irregular interstitial fibrosis (►Fig. 5). PMF may result from coalescence or growth of the nodules. The orientation of collagen fibers (fibrosis) within and around the stellate nodules is random, without the concentric orientation seen in classic silicosis. The presence of a few classic silicotic nodules together with numerous mixed-dust lesions is common and should be described in the pathology report.
+
+In addition to the lesions described, many cases of MDP or other pneumoconioses also exhibit small airway disease involving both membranous and respiratory bronchioles. 19 The pathology of small airways disease includes thickening of the bronchiolar walls by fibrosis, muscular hypertrophy, chronic inflammation, and narrowing of the airway lumen. Cigarette smoking increases the severity of small airways disease, so a history of cigarette smoking along with findings of “smokers’ macrophages” within the airway lumen and/or adjacent alveoli should be evaluated. 20 
+
+#### Mineralogy
+
+Any combination of particle types may be visualized under bright-field microscopy and PLM including silica, silicates, carbonaceous particles, asbestos bodies, or various metals. Particulates are concentrated in the fibrotic airway wall in small airways disease. 20 
+
+### Coal Workers’ Pneumoconiosis
+
+Coal mine dust lung disease (CMDLD), or black lung, is a group of lung conditions caused by exposure to coal mine dust, including emphysema, chronic obstructive pulmonary disease, dust-related diffuse fibrosis, and coal worker’s pneumoconiosis (CWP). CWP can be diagnosed by finding rounded or irregular linear opacities on chest imaging in association with a compatible exposure history. Pathologic studies have shown that rounded opacities on chest imaging correspond to coal macules and coal nodules, and irregular opacities to interstitial fibrosis. 21 Like silicosis, the latency between initial exposure and clinically apparent disease onset in CWP is often decades. The risk increases with duration and intensity of exposure and is more commonly seen in workers with jobs closest to the mine face (e.g., roof bolters, coal cutting machine operators). 22 If CMDLD is suspected, clinicians should consider referring patients for evaluation by specialized providers under the Federal Black Lung Program. 7 Notably, the presence of PMF, defined as CWP lesions greater than 1 cm, triggers a presumption of disabling black lung that qualifies the miner for benefits through this program (20 CFR § 718.305). Emphysema and chronic bronchitis are also compensable conditions, as the relative contributions from coal mine dust and tobacco smoking are independent and additive to each other. 23 A recent surge in cases of CWP and PMF since the 1990s has been linked to increasing exposure to RCS from the overburden rock in an era of mechanized mining equipment. 24 
+
+#### Pathology
+
+Simple CWP is pathologically defined by the presence of coal macules and nodules. The coal macule is the earliest lesion to form and consists of black pigment deposited around walls of respiratory bronchioles and alveolar ducts. The lesions are usually between 1 and 5 mm and are nonpalpable (►Fig. 6A). Coal nodules are larger (usually between 5 and 10 mm), palpable, irregular or rounded in shape, and can be located throughout the interstitium rather than confined to the terminal airways (►Fig. 6B). Coal-type PMF, similar to silica-type PMF, is a fibrotic mass greater than 1 cm in greatest diameter (►Fig. 7A).
+
+#### Mineralogy
+
+Coal is generated by millions of years of geologic organic matter breakdown into carbon-rich deposits. “Coal mine dust” is heterogeneous and encompasses all particles present in the coal mine atmosphere, including carbonaceous coal dust, RCS and silicates from overburden rock, metal elements such as titanium and aluminum, and carbonate rock dust sprayed on underground surfaces to attenuate flammability. 25 Coal dust has a distinctive black or brown pigmented appearance, and deposition of this particulate matter in the lung tissue, or anthracosis, is easily visible under bright-field microscopy alone (►Fig. 7B). Bituminous coal dust particles under bright-field light are semi-translucent, brownish in color, cuboidal, and under PLM have slight red birefringence. Anthracite coal particles, mostly found in eastern Pennsylvania mines, by contrast, are opaque, black, irregular in shape, and are not birefringent under PLM. Birefringent particles of RCS and silicates under PLM are found in most coal miner lungs, though the amount and type will vary.
+
+### Asbestosis
+
+Asbestos is a silicate mineral with fibrous properties that maintains high tensile strength and exceptional heat resistance. Until the 1970s, asbestos was widely used in insulation for walls, pipes, stoves, and furnaces, and as a fire retardant for automobile brakes or personal protective clothing among other applications. Asbestos products were banned in all European Union countries in 2005 because of the risk of pulmonary fibrosis, primary lung cancer, and mesothelioma associated with exposure. 26 Despite U.S. regulations to minimize asbestos in manufacturing processes, asbestos-containing products remain available commercially, albeit less commonly. Chronic asbestos inhalation causes interstitial fibrosis presenting on chest imaging as irregular/linear opacities, diffuse and circumscribed pleural plaques, and pleural effusions often decades after exposure. Diaphragmatic pleural plaques are thought to be pathognomonic of previous asbestos exposure. Due to the use of asbestos insulation on ships, sailors and shipyard workers have been at particular risk of developing asbestos-related lung disease.
+
+#### Pathology
+
+Asbestos fibers are highly fibrogenic and microscopic diagnosis of asbestosis requires the presence of a characteristic interstitial fibrosis, together with asbestos bodies (►Fig. 8A, B). The fibrosis is paucicellular and can be graded for pathologic severity. 27 
+
+Lung biopsies and resections of lung tumors should always be carefully examined for asbestosis and asbestos bodies in the lung adjacent to the tumor given the association between asbestos exposure and lung cancer.
+
+#### Mineralogy
+
+Visualization of the “asbestos body” is vital for tissue diagnosis of asbestosis since the histopathologic findings may be nonspecific. While six types of naturally occurring asbestos exist, 90% of commercial asbestos consists of serpentine chrysotile asbestos. Chrysotile asbestos is both fibrogenic and carcinogenic. 28,29 The remaining asbestos types belong to the amphibole group. Amphibole asbestos types including crocidolite, amosite, tremolite, anthophyllite, and actinolite are all considered Group 1 carcinogens by the International Agency for Research on Cancer (IARC). 26 
+
+Chrysotile asbestos is fine and flexible and slowly degrades in the body. The amphibole asbestos fibers are longer, stiffer, and less degradable. The classic asbestos ferruginous body is formed on amphibole asbestos fibers, and in chrysotile workers they specifically form on tremolite amphibole fibers that contaminate chrysotile asbestos. 29 Ferruginous bodies are formed by alveolar macrophages attempting to phagocytose the long amphibole fibers, surrounding them with an iron coating that has a characteristic orange-brown beaded appearance under bright-field microscopy (►Fig. 8A). Other types of mineral fibers can trigger a ferruginous coating to form, but the translucent core of an asbestos body separates it from other ferruginous bodies. 30 Uncoated fibers are present in much larger numbers but are less visible in tissue sections. Small numbers of asbestos fibers are present in the lungs of individuals living in modern industrialized societies, but more than a thousand-fold increase in fiber concentration is seen in occupational exposures sufficient to cause pulmonary fibrosis and lung cancer. 31 Digestion of formalin fixed lung tissue and counting of asbestos bodies is a relatively simple way to quantify exposure to asbestos but is not required for diagnosis. SEM/EDS techniques are needed to characterize asbestos fiber types but are also not indicated for routine diagnosis of asbestosis (►Fig. 8B).
+
+### Chronic Beryllium Disease
+
+Beryllium is a low-atomic-weight metal with broad industrial applications. Beryllium exposure causes a hypersensitivity reaction in susceptible workers, and genetic markers of increased predisposition to beryllium sensitization have been identified. 32,33 CBD occurs in sensitized individuals who develop granulomatous lung inflammation in response to exposure. CBD has been reported in workers engaged in the production of computers and electronics, metal alloys in the aeronautic industry, nuclear weaponry, and dental prostheses. 34 Typical radiographic findings of CBD mimic pulmonary findings in sarcoidosis including perilymphatic nodularity and mediastinal adenopathy. Granulomatous inflammation in lung pathology should prompt a detailed history of exposures including beryllium, silica, organic dusts, and infections, as sarcoidosis remains a diagnosis of exclusion. 35 A BeLPT on peripheral blood or bronchoalveolar lavage lymphocytes is used to determine beryllium sensitization. 6 The combination of a consistent occupational history, chest imaging findings, granulomatous inflammation, and a positive BeLPT test confirms the diagnosis of CBD. Notably, up to 40% of those initially diagnosed with sarcoidosis who report previous beryllium exposure end up correctly diagnosed with CBD. 36 Additional referral for federal benefits evaluation may be needed if the worker has been previously employed at a qualifying U.S. Department of Energy facility. 8 
+
+#### Pathology
+
+CBD is histologically indistinct from sarcoidosis. Both show compact nonnecrotizing granulomas characterized by tight clusters of epithelioid histiocytes and multinucleated giant cells (►Fig. 9). Like sarcoidosis, inclusions such as Schaumann and asteroid bodies may be seen in the cytoplasm of the multinucleated giant cells (►Fig. 9, inset). In longstanding CBD, Schaumann bodies without concurrent granulomas may be seen in association with diffuse interstitial fibrosis.
+
+#### Mineralogy
+
+Retained beryllium dust is not visible with conventional microscopy or PLM and may be difficult to detect even using SEM/EDS due to its small atomic weight. 37 Therefore, identification of beryllium dust in tissues is not required for the diagnosis of CBD. SEM/EDS may be useful to characterize the quantity of retained dust since workers exposed to beryllium are often exposed to RCS and other metals as part of workplace processes.
+
+### Aluminosis
+
+Aluminum is an important metal used in a wide variety of industries. Exposure to respirable aluminum dust formed during grinding, cutting, or shaping of aluminum sheets or to welding fumes containing gaseous aluminum oxides are implicated in the development of lung fibrosis with surrounding emphysema, increasing the risk for pneumothorax caused by rupture of emphysematous blebs. 38 Aluminosis has been reported in aluminum welders, millers, smelter workers, refiners, and abrasive manufacturers. Aluminum inhalation and absorption, like numerous other metals, can be quantified in serum and urine samples as a marker of exposure. Questions have been raised about whether pneumoconiosis in aluminum workers is related to aluminum or, because of the disease rarity, related to other known offenders also encountered in these workplaces including silica and beryllium. However, the quantitative burden of aluminum particulates identified under SEM/EDS highlights substantial dust retention. 39 
+
+#### Pathology
+
+Inhalation of dust containing aluminum particles imparts a gray-tan appearance to the interstitial histiocytes, which engulf the particles resulting in nodule formation, particularly around bronchovascular bundles (►Fig. 10). Pulmonary interstitial fibrosis is rare but has been reported in aluminum arc welders. 40 
+
+#### Mineralogy
+
+Aluminum particles show no birefringence under PLM, but birefringent particles may be visible if dust exposure is intermixed with silicates. Closer analysis has shown that aluminum particulates may be comprised of ultrafine particle conglomerates originating from welding fumes. 38 Exposure can be confirmed by SEM/EDS. 41 
+
+### Hard Metal Pneumoconiosis
+
+Hard metal pneumoconiosis is caused by exposure to hard metal alloys, a term that should not be confused with “heavy metal,” which refers to a more generic classification of metallic elements with a high atomic weight and density. Hard metal alloys consist largely of tungsten (90%), cobalt (10%), and lesser amounts of other compounds such as nickel and titanium and are 10 times harder than steel. 42 Hard metal maintains its favorable properties in a wide range of ambient conditions and, as a result, is commonly used to form tools for cutting, shaping, grinding, polishing diamonds, or drilling. Workers who frequently operate these tools are at greatest risk for exposure, but as in CBD, hard metal pneumoconiosis is caused by an exuberant hypersensitivity reaction in susceptible workers. Disease onset, timing, and severity are less dependent on the cumulative dust burden and more on host factors and immunogenicity. Chest imaging in patients with hard metal pneumoconiosis often shows nonspecific diffuse ground-glass opacities. Tissue biopsy is required to confirm the diagnosis even in cases with a compatible occupational history.
+
+#### Pathology
+
+The classic histologic appearance of hard metal pneumoconiosis is GIP. 43 GIP has a similar appearance to the intra-alveolar macrophages of desquamative interstitial pneumonia; however, GIP is typified by bizarre syncytial giant cells that line the alveolar septa. The giant cells may phagocytose macrophages and other inflammatory cells. The alveolar septa in GIP are expanded by patchy chronic inflammatory infiltrates, often centered on bronchioles (►Fig. 11).
+
+#### Mineralogy
+
+The presence of multinucleated giant cells is sufficient to make the diagnosis of hard metal pneumoconiosis. SEM/EDS and electron probe microanalysis have been used in research settings to confirm the presence and location of tungsten and cobalt dust. 44 
+
+### Less Severe Pneumoconioses
+
+Retained dust from iron (siderosis), barium (baritosis), and tin (stannosis) exposures has been detected in lung samples from workers with minimal or no respiratory symptoms or impairment. These exposures are often classified as less severe pneumoconioses. These diseases may be present for years and have small reticulonodular opacities that are difficult to distinguish from other pneumoconioses on chest imaging. One distinguishing feature is that the opacities may be quite dense and radio-opaque due to the high atomic weight of these elements. 45,46 Notably, radiographic changes may slowly regress after removal from exposure in contrast to the irreversible nature of other pneumoconioses.
+
+#### Pathology
+
+The particles associated with siderosis are weakly fibrogenic. Histologically, macrophages filled with golden-brown to black dust accumulate within the interstitium as opposed to the airspace hemosiderin-laden macrophages associated with idiopathic pulmonary hemosiderosis. Iron particles in macrophages in the walls of respiratory bronchioles are common in welder’s lungs (►Fig. 12A).
+
+#### Mineralogy
+
+Perls Prussian blue staining can highlight the presence of iron deposition on histopathology (►Fig. 12B). Identification of retained dust showing iron, barium, or tin using SEM/EDS is helpful for diagnosis if the occupational exposure history is not straightforward.
+
+## Conclusion
+
+Millions of workers worldwide are exposed to mineral, metal, and composite dusts and are at risk for pneumoconiosis. They present with a spectrum of lung disease findings that may not immediately be associated with their occupation. Clinicians must therefore take a detailed occupational, environmental, and avocational history to elicit possible causal exposures. This combined with chest imaging findings may help elucidate a clear etiology and circumvent the need for tissue biopsy. In cases where the diagnosis remains murky, lung biopsy may be quite useful. In the context of the exposure history, pathologists may request supplementary tests including specialized stains, PLM, and SEM/EDS to assist with the histologic and mineralogic diagnosis of pneumoconiosis.
+
+Once the diagnosis of pneumoconiosis is made, comprehensive care of the patient includes monitoring for disease progression, screening for pneumoconiosis-associated conditions, and treatment of immunologically driven disease. Clinicians should go beyond standard medical care and take steps to prevent ongoing exposure, as well as refer workers for counseling and assistance with compensation claims, which may be time limited due to statutes of limitation. Consultation with an occupational medicine specialist or industrial hygienist may be needed. New technologies, materials, and processes are developed daily and may result in exposures beyond the well-characterized diseases highlighted in this review. 47 Lung pathology and mineralogy will certainly play an important role in the characterization, prevention, and treatment of these emerging pneumoconioses.
+
+*Fig. 1 Mature silicotic nodule. The center of the nodule (arrow) is composed of hyalinized, whorled collagen surrounded by concentric rings of collagen. The periphery of the lesion demonstrates dust-laden histiocytes. There is alveolar proteinosis noted (star). The inset shows abundant weakly birefringent silica and strongly birefringent silicate particles under polarized light microscopy. Strands of collagen are also evident as fibrillar birefringence.*
+
+*Fig. 2 Silica-type progressive massive fibrosis (PMF). (A) Silica-type PMF, greater than 1-cm diameter, in a contemporary miner comprised of fused, mature silicotic nodules. The surrounding lung parenchyma shows silicotic nodules (stars), bridging fibrosis (arrows), and mild scar emphysema (arrowheads) adjacent to areas of fibrosis. (B) Silica-type PMF again comprised of fused silicotic nodules. A majority of the silicotic nodules within this PMF lesion and in the parenchyma are immature. There is also severe interstitial fibrosis (arrows).*
+
+*Fig. 3 Mineral dust–related alveolar proteinosis (MDAP) or silicoproteinosis. (A) Low-power view of airspaces filled with pink, slightly granular material (arrows) with artifactual cracks from shrinkage (arrowheads). (B) High-power view of MDAP in a coal miner with extensive silica exposure highlights the granularity of the lipoproteinaceous material.*
+
+*Fig. 4 Talcosis. Lung biopsy from an intravenous drug user presenting with large pulmonary masses and interstitial fibrosis. A section of parenchyma shows small fibrotic nodular lesions in the interstitium adjacent to small pulmonary vessels. Strongly birefringent particles are seen throughout the nodules, along with occasional macrophage giant cells (arrows). The particles are platelike and substantially larger (up to 30 μm in maximum dimension) than would be expected in distal lung tissue from inhalation. The large particle size, location of particles adjacent to small pulmonary vessels, and history of intravenous drug use were diagnostic of talcosis. X-ray spectroscopy may be used to confirm the presence of talc but is not required for diagnosis.*
+
+*Fig. 5 Mixed-dust pneumoconiosis. Lung section from an autopsied coal miner showing a ~4 mm fibrotic nodule (arrow) with central necrosis and whorling of the surrounding hyalinized collagen fibers, indicative of a silicotic nodule. The periphery of the lesion is composed of black dust, fibroblasts/fibrocytes, and irregularly arranged collagen fibers. Higher magnification showed black dust consistent with the bituminous coal mine dust, but there were also fine particles more consistent with combustion products such as from smoking or diesel emissions. Examination with polarized light microscopy (inset) revealed a heavy burden of small, weakly birefringent particles (consistent with silica), and lesser numbers of larger particles with strong birefringence (consistent with silicates). Note: This pathology is common to a wide variety of occupations with sufficient silica exposure to produce some of its characteristic pathologic features. 18 The worker in this case was a coal miner, so this mixed-dust lesion might be best classified as coal workers’ pneumoconiosis, with coal and silicotic nodules. The diagnosis of mixed-dust pneumoconiosis on its own is best reserved for workers with a complex exposure history and/or multiple relevant jobs.*
+
+*Fig. 6 Coal macules and nodules. (A) Classic coal macule from a coal miner with dust-laden macrophages in a reticulin stroma in the wall of a respiratory bronchiole, and with associated centrilobular emphysema (arrowheads). The small pulmonary artery (star) supplying this terminal region appears normal, as does the parenchyma further away from the macule. (B) Several coal nodules are shown in the lung parenchyma of a coal miner. Coal nodules are generally larger than macules, have more collagen, and are palpable to the touch. Smaller nodules are shown in the walls of respiratory bronchioles and have more pink collagen than the macule in A. Several nodules adjacent to larger airways and blood vessels coalesce to form the large centrally placed nodule (arrow); and this tendency to coalesce and agglomerate is considered the major factor in development of progressive massive fibrosis lesions.*
+
+*Fig. 7 Coal-type progressive massive fibrosis (PMF). (A) PMF lesion in a traditional coal miner. PMF, by definition, must have a long-axis diameter greater than 1 cm. The truncated lesion shown is substantially larger than 1 cm and appears to further extend beyond the resection margins. There is also an area of necrosis with cavitation (star), vascular changes (arrow), and extension into the lung parenchyma. (B) Intense black pigmentation with characteristic features of anthracite coal is shown under high-power view.*
+
+*Fig. 8 Asbestos bodies. (A) Characteristic appearance of asbestos bodies in a tissue section from a patient with asbestosis. The orange-brown color comes from a beaded iron coating laid down on the asbestos fiber by alveolar macrophages. The translucent asbestos fibers may be visible (black arrows). X-ray spectroscopic studies have shown that asbestos bodies always form on amphibole asbestos fibers, which are thin and straight. (B) Scanning electron micrograph of two asbestos bodies extracted from lung tissue by bleach digestion. The beading results from attempts by alveolar macrophages to phagocytose particles many times their size.*
+
+*Fig. 9 Chronic beryllium disease (CBD). The classic histologic appearance of CBD resembles sarcoidosis. There are coalescing, well-formed, nonnecrotizing granulomas surrounded by collagen. The inset demonstrates the presence of Schaumann bodies (arrows), which are calcium and protein inclusions within the giant cells of the compact granuloma. Patients with chronic beryllium disease may develop interstitial fibrosis, and over time, the only hint to CBD is the collection of Schaumann bodies within the interstitium. Schaumann bodies are not pathognomonic of CBD and may be see in other granulomatous conditions.*
+
+*Fig. 10 Aluminosis. Exposure to aluminum fumes in this aluminum arc welder’s lung imparts a gray-tan appearance to the dust-laden macrophages within the interstitium. Early in disease, centrilobular macules are evident, as in this image. Although the bronchiole is not identifiable, the centrilobular location can be deduced by the presence of a small pulmonary artery (star). Two lymphoid aggregates (arrows) accompany the nodular collection of aluminum-laden histiocytes.*
+
+*Fig. 11 Hard metal pneumoconiosis. Lung biopsy from a machinist exposed to tungsten carbide dust illustrates the classic appearance of GIP. GIP is typified by airspace multinucleated giant cells and a centrilobular chronic interstitial inflammatory infiltrate. Lymphoid aggregates, some with germinal center formation, are evident (stars). Multinucleated giant cells are seen throughout (arrows) and shown on high-power view (inset).*
+
+*Fig. 12 Siderosis (welder’s lung). (A) Characteristic parenchymal lesion in the lung of a steel welder showing a macular lesion at the junction of a terminal bronchiole and the respiratory bronchioles. The lesion shows some pink collagen but the overall fibrosis is mild. Airspaces adjacent to the macule are enlarged and characteristic of mild centrilobular emphysema. (B) The macule is similar to those in coal miners (►Fig. 6A); however, Perls Prussian blue stain for iron is strongly positive, confirming the diagnosis of siderosis.*
+
+## Funding
+
+J.T.H. was supported by the Reuben M. Cherniack research fellowship at National Jewish Health and a National Institutes of Health fellowship training program grant (grant no.: NIH/NHLBI 2T32HL007085–46).
+
+## Footnotes
+
+Conflict of Interest
+
+C. D. C. receives consulting fees for pathology reviews of black lung cases for coal workers and their families. F. H. Y. G. receives consulting fees for expert opinions on cases of occupational lung disease for both plaintiff and defense parties.
+
+## References
+
+- 1 Shi P, Xing X, Xi S, Trends in global, regional and national incidence of pneumoconiosis caused by different aetiologies: an analysis from the Global Burden of Disease Study 2017. Occup Environ Med 2020; 77 ( 06): 407 – 414 pmid: 32188634 doi: 10.1136/oemed-2019-106321
+- 2 Lax MB, Grant WD, Manetti FA, Klein R. Recognizing occupational disease–taking an effective occupational history. Am Fam Physician 1998; 58 ( 04): 935 – 944 pmid: 9767728
+- 3 Levy BS, Wegman DH. The occupational history in medical practice. What questions to ask and when to ask them. Postgrad Med 1986; 79 ( 08): 301 – 311 pmid: 3714592 doi: 10.1080/00325481.1986.11699439
+- 4 International Labour Office. Guidelines for the Use of the ILO International Classification of Radiographs of Pneumoconiosis, Revised edition 2011. 2011. Accessed September 9, 2022 at: https://www.ilo.org/wcmsp5/groups/public/—ed_protect/—protrav/—safework/documents/publication/wcms_168260.pdf
+- 5 Tamura T, Suganuma N, Hering KG, Relationships (I) of International Classification of High-resolution Computed Tomography for Occupational and Environmental Respiratory Diseases with the ILO International Classification of Radiographs of Pneumoconioses for parenchymal abnormalities. Ind Health 2015; 53 ( 03): 260 – 270 pmid: 25810444 doi: 10.2486/indhealth.2014-0073 pmcid: PMC4463184
+- 6 Newman LS. Significance of the blood beryllium lymphocyte proliferation test. Environ Health Perspect 1996; 104 ( suppl 5, suppl 5): 953 – 956 pmid: 8933041 doi: 10.1289/ehp.96104s5953 pmcid: PMC1469695
+- 7 US Department of Labor. Black lung program. Accessed September 9, 2022 at: https://www.dol.gov/agencies/owcp/dcmwc
+- 8 US Department of Labor. Energy workers program. Accessed September 9, 2022 at: https://www.dol.gov/agencies/owcp/energy
+- 9 Leung CC, Yu IT, Chen W. Silicosis. Lancet 2012; 379 ( 9830): 2008 – 2018 pmid: 22534002 doi: 10.1016/S0140-6736(12)60235-9
+- 10 Stettler L, Platek S, Groth D, Green F, Vallyathan V. Particle contents of human lungs. In: Basu S, Millette J, eds. Electron Microscopy in Forensic, Occupational, and Environmental Health Sciences. SpringerLink; 1986: 217 – 226
+- 11 Mastin JP, Stettler LE, Shelburne JD. Quantitative analysis of particulate burden in lung tissue. Scanning Microsc 1988; 2 ( 03): 1613 – 1629 pmid: 3059480
+- 12 Krefft S, Wolff J, Rose C. Silicosis: an update and guide for clinicians. Clin Chest Med 2020; 41 ( 04): 709 – 722 pmid: 33153689 doi: 10.1016/j.ccm.2020.08.012
+- 13 Pavan C, Polimeni M, Tomatis M, Editor’s highlight: abrasion of artificial stones as a new cause of an ancient disease. Physicochemical features and cellular responses. Toxicol Sci 2016; 153 ( 01): 4 – 17 pmid: 27255382 doi: 10.1093/toxsci/kfw101
+- 14 Hua J, Zell-Baran L, Go L, Demographic, exposure and clinical characteristics in a multinational registry of engineered stone workers with silicosis. Occup Environ Med 2022; 79: 586 – 593 pmid: 35504722 doi: 10.1136/oemed-2021-108190 pmcid: PMC9453561
+- 15 Hoy RF, Chambers DC. Silica-related diseases in the modern world. Allergy 2020; 75 ( 11): 2805 – 2817 pmid: 31989662 doi: 10.1111/all.14202
+- 16 Craighead J, Kleinerman J, Abraham J,; Silicosis and Silicate Disease Committee. Diseases associated with exposure to silica and nonfibrous silicate minerals. Arch Pathol Lab Med 1988; 112 ( 07): 673 – 720 pmid: 2838005
+- 17 McDonald JW, Roggli VL. Detection of silica particles in lung tissue by polarizing light microscopy. Arch Pathol Lab Med 1995; 119 ( 03): 242 – 246 pmid: 7887777
+- 18 Honma K, Abraham JL, Chiyotani K, Proposed criteria for mixed-dust pneumoconiosis: definition, descriptions, and guidelines for pathologic diagnosis and clinical correlation. Hum Pathol 2004; 35 ( 12): 1515 – 1523 pmid: 15619211 doi: 10.1016/j.humpath.2004.09.008
+- 19 Churg A, Wright JL, Wiggs B, Paré PD, Lazar N. Small airways disease and mineral dust exposure. Prevalence, structure, and function. Am Rev Respir Dis 1985; 131 ( 01): 139 – 143 pmid: 3966701 doi: 10.1164/arrd.1985.131.1.139
+- 20 Schenker MB, Pinkerton KE, Mitchell D, Vallyathan V, Elvine-Kreis B, Green FH. Pneumoconiosis from agricultural dust exposure among young California farmworkers. Environ Health Perspect 2009; 117 ( 06): 988 – 994 pmid: 19590695 doi: 10.1289/ehp.0800144 pmcid: PMC2702418
+- 21 Vallyathan V, Brower PS, Green FH, Attfield MD. Radiographic and pathologic correlation of coal workers’ pneumoconiosis. Am J Respir Crit Care Med 1996; 154 ( 3 Pt 1): 741 – 748 pmid: 8810614 doi: 10.1164/ajrccm.154.3.8810614
+- 22 Petsonk EL, Rose C, Cohen R. Coal mine dust lung disease. New lessons from old exposure. Am J Respir Crit Care Med 2013; 187 ( 11): 1178 – 1185 pmid: 23590267 doi: 10.1164/rccm.201301-0042CI
+- 23 Kuempel ED, Wheeler MW, Smith RJ, Vallyathan V, Green FH. Contributions of dust exposure and cigarette smoking to emphysema severity in coal miners in the United States. Am J Respir Crit Care Med 2009; 180 ( 03): 257 – 264 pmid: 19423717 doi: 10.1164/rccm.200806-840OC
+- 24 Cohen RA, Rose CS, Go LHT, Pathology and mineralogy demonstrate respirable crystalline silica is a major cause of severe pneumoconiosis in U.S. coal miners. Ann Am Thorac Soc 2022; 19 ( 09): 1469 – 1478 pmid: 35353671 doi: 10.1513/AnnalsATS.202109-1064OC pmcid: PMC9447385
+- 25 Sarver E, Keles C, Rezaee M. Characteristics of respirable dust in eight appalachian coal mines: a dataset including particle size and mineralogy distributions, and metal and trace element mass concentrations. Data Brief 2019; 25: 104032 pmid: 31198830 doi: 10.1016/j.dib.2019.104032 pmcid: PMC6557733
+- 26 International Agency for Research on Cancer. Asbestos (chrysotile, amosite, crocidolite, tremolite, actinolite, and anthopyhllite). 2018. IARC Monograph. Accessed September 1, 2022 at: https://monographs.iarc.who.int/wp-content/uploads/2018/06/mono100C-11.pdf
+- 27 Craighead JE, Abraham JL, Churg A, The pathology of asbestos-associated diseases of the lungs and pleural cavities: diagnostic criteria and proposed grading schema. Report of the Pneumoconiosis Committee of the College of American Pathologists and the National Institute for Occupational Safety and Health. Arch Pathol Lab Med 1982; 106 ( 11): 544 – 596 pmid: 6897166
+- 28 Hodgson JT, Darnton A. The quantitative risks of mesothelioma and lung cancer in relation to asbestos exposure. Ann Occup Hyg 2000; 44 ( 08): 565 – 601 pmid: 11108782
+- 29 Green FH, Harley R, Vallyathan V, Exposure and mineralogical correlates of pulmonary fibrosis in chrysotile asbestos workers. Occup Environ Med 1997; 54 ( 08): 549 – 559 pmid: 9326158 doi: 10.1136/oem.54.8.549 pmcid: PMC1128979
+- 30 Roggli VL, Oury TD, Sporn TA. Pathology of Asbestos-Associated Diseases. 2nd ed. Springer; 2004
+- 31 Roggli VL, Pratt PC, Brody AR. Asbestos content of lung tissue in asbestos associated diseases: a study of 110 cases. Br J Ind Med 1986; 43 ( 01): 18 – 28 pmid: 3947558 doi: 10.1136/oem.43.1.18 pmcid: PMC1007596
+- 32 Fontenot AP, Maier LA. Genetic susceptibility and immune-mediated destruction in beryllium-induced disease. Trends Immunol 2005; 26 ( 10): 543 – 549 pmid: 16099719 doi: 10.1016/j.it.2005.08.004
+- 33 Newman LS, Kreiss K, King TE Jr, Seay S, Campbell PA. Pathologic and immunologic alterations in early stages of beryllium disease. Re-examination of disease definition and natural history. Am Rev Respir Dis 1989; 139 ( 06): 1479 – 1486 pmid: 2729754 doi: 10.1164/ajrccm/139.6.1479
+- 34 Mayer A, Hamzeh N. Beryllium and other metal-induced lung disease. Curr Opin Pulm Med 2015; 21 ( 02): 178 – 184 pmid: 25602804 doi: 10.1097/MCP.0000000000000140
+- 35 Oliver LC, Zarnke AM. Sarcoidosis: an occupational disease? Chest 2021; 160 ( 04): 1360 – 1367 pmid: 34102140 doi: 10.1016/j.chest.2021.06.003 pmcid: PMC8546237
+- 36 Müller-Quernheim J, Gaede KI, Fireman E, Zissel G. Diagnoses of chronic beryllium disease within cohorts of sarcoidosis patients. Eur Respir J 2006; 27 ( 06): 1190 – 1195 pmid: 16540500 doi: 10.1183/09031936.06.00112205
+- 37 Kartaloglu Z, Ilvan A, Aydilek R, Dental technician’s pneumoconiosis: mineralogical analysis of two cases. Yonsei Med J 2003; 44 ( 01): 169 – 173 pmid: 12619195 doi: 10.3349/ymj.2003.44.1.169
+- 38 Taiwo OA. Diffuse parenchymal diseases associated with aluminum use and primary aluminum production. J Occup Environ Med 2014; 56 ( 5, suppl): S71 – S72 pmid: 24806728 doi: 10.1097/JOM.0000000000000054 pmcid: PMC4131931
+- 39 Hull MJ, Abraham JL. Aluminum welding fume-induced pneumoconiosis. Hum Pathol 2002; 33 ( 08): 819 – 825 pmid: 12203215 doi: 10.1053/hupa.2002.125382
+- 40 Vallyathan V, Bergeron WN, Robichaux PA, Craighead JE. Pulmonary fibrosis in an aluminum arc welder. Chest 1982; 81 ( 03): 372 – 374 pmid: 7056115 doi: 10.1378/chest.81.3.372
+- 41 Carney J, McAdams P, McCluskey J, Roggli VL. Aluminum-induced pneumoconiosis confirmed by analytical scanning electron microscopy: a case report and review of the literature. Ultrastruct Pathol 2016; 40 ( 03): 155 – 158 pmid: 26895029 doi: 10.3109/01913123.2016.1141824
+- 42 Mizutani RF, Terra-Filho M, Lima E, Hard metal lung disease: a case series. J Bras Pneumol 2016; 42 ( 06): 447 – 452 pmid: 28117477 doi: 10.1590/S1806-37562016000000260 pmcid: PMC5344095
+- 43 Naqvi AH, Hunt A, Burnett BR, Abraham JL. Pathologic spectrum and lung dust burden in giant cell interstitial pneumonia (hard metal disease/cobalt pneumonitis): review of 100 cases. Arch Environ Occup Health 2008; 63 ( 02): 51 – 70 pmid: 18628077 doi: 10.3200/AEOH.63.2.51-70
+- 44 Moriyama H, Kobayashi M, Takada T, Two-dimensional analysis of elements and mononuclear cells in hard metal lung disease. Am J Respir Crit Care Med 2007; 176 ( 01): 70 – 77 pmid: 17363774 doi: 10.1164/rccm.200601-134OC
+- 45 Doig AT. Baritosis: a benign pneumoconiosis. Thorax 1976; 31 ( 01): 30 – 39 pmid: 1257935 doi: 10.1136/thx.31.1.30 pmcid: PMC470358
+- 46 Chong S, Lee KS, Chung MJ, Han J, Kwon OJ, Kim TS. Pneumoconiosis: comparison of imaging and pathologic findings. Radiographics 2006; 26 ( 01): 59 – 77 pmid: 16418244 doi: 10.1148/rg.261055070
+- 47 Li JJ, Muralikrishnan S, Ng CT, Yung LY, Bay BH. Nanoparticle-induced pulmonary toxicity. Exp Biol Med (Maywood) 2010; 235 ( 09): 1025 – 1033 pmid: 20719818 doi: 10.1258/ebm.2010.010021

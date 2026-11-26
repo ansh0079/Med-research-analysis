@@ -1,0 +1,22 @@
+{
+  "catalogueId": "2100",
+  "spreadsheetRow": 86,
+  "topic": "Severe CAP requiring ICU admission",
+  "specialty": "Pulmonology",
+  "decision": "downloaded open source",
+  "source": {
+    "title": "Diagnosis and Treatment of Adults with Community-acquired Pneumonia. An Official Clinical Practice Guideline of the American Thoracic Society and Infectious Diseases Society of America.",
+    "year": 2019,
+    "pmid": "31573350",
+    "pmcid": "PMC6812437",
+    "doi": "10.1164/rccm.201908-1581ST",
+    "url": "https://europepmc.org/articles/PMC6812437",
+    "sourceBody": "ATS/IDSA",
+    "storedAs": ""
+  },
+  "whyItFits": "ATS/IDSA 2019 CAP guideline criteria that define severe pneumonia, carried forward from the 2007 IDSA/ATS rule.",
+  "limitations": "Severity criteria from the open ATS/IDSA 2019 guideline. Steroid trials were not used.",
+  "synopsisWritten": true,
+  "mcqsWritten": true,
+  "mcqCount": 5
+}

@@ -1,0 +1,136 @@
+{
+  "catalogueId": "59",
+  "topic": "Pulmonary Capillaritis",
+  "mcqs": [
+    {
+      "id": "59-01",
+      "question": "Which entity is listed first in the paper’s classification of DAH without systemic vasculitis?",
+      "options": {
+        "A": "Anti-GBM disease in a limited pulmonary form",
+        "B": "Infective endocarditis",
+        "C": "Left-ventricular failure",
+        "D": "Community pneumonia",
+        "E": "The classification is not given"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Anti-GBM disease in a limited pulmonary form",
+      "explanation": "The first category is anti-GBM disease in limited pulmonary form.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "Case report with classification",
+          "sourceYear": 2015,
+          "sourceUrl": "https://europepmc.org/articles/PMC4298921",
+          "pmid": "25624599",
+          "pmcid": "PMC4298921",
+          "doi": "",
+          "excerpt": "Anti-GBM disease in limited pulmonary form"
+        }
+      ]
+    },
+    {
+      "id": "59-02",
+      "question": "What is the second category in that classification?",
+      "options": {
+        "A": "Pulmonary-limited microscopic polyangiitis",
+        "B": "Sarcoidosis",
+        "C": "Asthma",
+        "D": "Pulmonary embolism",
+        "E": "It is not listed"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Pulmonary-limited microscopic polyangiitis",
+      "explanation": "The second category is pulmonary-limited MPA, described as p-ANCA and MPO-ANCA positive.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "Case report with classification",
+          "sourceYear": 2015,
+          "sourceUrl": "https://europepmc.org/articles/PMC4298921",
+          "pmid": "25624599",
+          "pmcid": "PMC4298921",
+          "doi": "",
+          "excerpt": "pulmonary-limited MPA"
+        }
+      ]
+    },
+    {
+      "id": "59-03",
+      "question": "How is isolated pauci-immune pulmonary capillaritis characterised in the classification?",
+      "options": {
+        "A": "ANCA-negative neutrophilic pulmonary capillaritis",
+        "B": "ANCA-positive with linear IgG",
+        "C": "Bland haemorrhage in young smokers only",
+        "D": "A cancer",
+        "E": "It is excluded from the classification"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "ANCA-negative neutrophilic pulmonary capillaritis",
+      "explanation": "It is ANCA-negative neutrophilic pulmonary capillaritis.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "Case report with classification",
+          "sourceYear": 2015,
+          "sourceUrl": "https://europepmc.org/articles/PMC4298921",
+          "pmid": "25624599",
+          "pmcid": "PMC4298921",
+          "doi": "",
+          "excerpt": "isolated pauci-immune pulmonary capillaritis (ANCA negative neutrophilic pulmonary capillaritis)"
+        }
+      ]
+    },
+    {
+      "id": "59-04",
+      "question": "What is the fourth category?",
+      "options": {
+        "A": "Idiopathic pulmonary haemosiderosis",
+        "B": "Goodpasture syndrome with renal failure as the only entry",
+        "C": "Lymphangitic carcinoma",
+        "D": "Hard-metal disease",
+        "E": "Not listed"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Idiopathic pulmonary haemosiderosis",
+      "explanation": "The fourth category is idiopathic pulmonary haemosiderosis, described as bland DAH without vasculitis.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "Case report with classification",
+          "sourceYear": 2015,
+          "sourceUrl": "https://europepmc.org/articles/PMC4298921",
+          "pmid": "25624599",
+          "pmcid": "PMC4298921",
+          "doi": "",
+          "excerpt": "idiopathic pulmonary hemosiderosis"
+        }
+      ]
+    },
+    {
+      "id": "59-05",
+      "question": "In the paper’s wording, idiopathic pulmonary haemosiderosis is bland DAH without vasculitis in which group?",
+      "options": {
+        "A": "Young smokers",
+        "B": "Older never-smokers only",
+        "C": "Neonates",
+        "D": "The phrase names no group",
+        "E": "Only patients with anti-GBM antibodies"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Young smokers",
+      "explanation": "The parenthetical description is bland DAH in the absence of vasculitis in young smokers.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "Case report with classification",
+          "sourceYear": 2015,
+          "sourceUrl": "https://europepmc.org/articles/PMC4298921",
+          "pmid": "25624599",
+          "pmcid": "PMC4298921",
+          "doi": "",
+          "excerpt": "absence vasculitis in young smokers"
+        }
+      ]
+    }
+  ]
+}

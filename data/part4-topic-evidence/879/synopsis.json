@@ -1,0 +1,36 @@
+{
+  "catalogueId": "879",
+  "topic": "Paediatric asthma: diagnosis, assessment and stepwise management",
+  "scope": "2020 NAEPP focused update of asthma management, with separate stepwise figures for ages 0–4, 5–11, and 12 years and older, and guidance on SMART with formoterol.",
+  "keyRecommendations": [
+    {
+      "text": "Stepwise figures are age-specific: Fig 2 ages 0–4 years, Fig 3 ages 5–11 years, Fig 4 ages 12 years and older.",
+      "strength": "not_graded",
+      "population": "Children and adolescents with asthma"
+    },
+    {
+      "text": "Scheduled daily ICS remains the preferred controller for persistent asthma at all ages in the background cited by the update.",
+      "strength": "not_graded",
+      "population": "Persistent asthma"
+    },
+    {
+      "text": "SMART has been used only with formoterol. Do not exceed 8 puffs (36 μg) total daily formoterol at ages 4–11 years, or 12 puffs (54 μg) at ages 12 years and above.",
+      "strength": "not_graded",
+      "population": "Patients on SMART"
+    }
+  ],
+  "clinicalBottomLine": "Choose the NAEPP step figure that matches the child’s age, keep daily ICS as the preferred controller for persistent asthma, and if SMART is used, use formoterol and stay within the stated daily puff limits.",
+  "notableCaveats": [
+    "This is a focused update, not a full paediatric diagnostic guideline. MCQs stay inside the age-band and SMART statements in the text."
+  ],
+  "source": {
+    "title": "2020 Focused Updates to the Asthma Management Guidelines: A Report from the National Asthma Education and Prevention Program.",
+    "year": 2020,
+    "pmid": "33280709",
+    "pmcid": "PMC7924476",
+    "doi": "10.1016/j.jaci.2020.10.003",
+    "url": "https://europepmc.org/articles/PMC7924476",
+    "sourceBody": "NAEPP / J Allergy Clin Immunol",
+    "storedAs": ""
+  }
+}

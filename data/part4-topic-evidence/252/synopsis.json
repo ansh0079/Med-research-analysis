@@ -1,0 +1,34 @@
+{
+  "catalogueId": "252",
+  "topic": "Anxiety disorders and panic disorder: diagnosis and management",
+  "scope": "2014 Canadian guidelines for panic disorder and the other anxiety and related disorders, including CBT and antidepressant treatment.",
+  "keyRecommendations": [
+    {
+      "text": "CBT alone or CBT combined with pharmacotherapy should be considered first-line.",
+      "strength": "not_graded",
+      "population": "Anxiety and related disorders"
+    },
+    {
+      "text": "A three-trial meta-analysis found no benefit of psychotherapy plus benzodiazepines versus psychotherapy or medication alone.",
+      "strength": "not_graded",
+      "population": "Anxiety disorders"
+    },
+    {
+      "text": "SSRIs, SNRIs, NaSSAs, TCAs, MAOIs, and RIMAs have demonstrated some efficacy.",
+      "strength": "not_graded",
+      "population": "Anxiety and related disorders"
+    }
+  ],
+  "clinicalBottomLine": "Consider CBT alone or with pharmacotherapy as first-line, and do not expect added benefit from combining psychotherapy with a benzodiazepine on the evidence cited.",
+  "notableCaveats": [],
+  "source": {
+    "title": "Canadian clinical practice guidelines for the management of anxiety, posttraumatic stress and obsessive-compulsive disorders.",
+    "year": 2014,
+    "pmid": "25081580",
+    "pmcid": "PMC4120194",
+    "doi": "10.1186/1471-244X-14-S1-S1",
+    "url": "https://europepmc.org/articles/PMC4120194",
+    "sourceBody": "BMC Psychiatry",
+    "storedAs": ""
+  }
+}

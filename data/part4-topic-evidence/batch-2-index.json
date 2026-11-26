@@ -1,0 +1,857 @@
+{
+  "batch": 2,
+  "spreadsheet": "Topics_without_evidence_part4of4.xlsx",
+  "sheet": "Part 4 of 4",
+  "rows": "45-87",
+  "topicCount": 43,
+  "counts": {
+    "downloaded open source": 40,
+    "in-app document": 3
+  },
+  "note": "Per-topic files are the association path. Shared corpus indexes were not edited. Gap pass replaced abstract-only sources where an open full text was found and grounded the four previously unresolved topics.",
+  "topics": [
+    {
+      "catalogueId": "2072",
+      "row": 45,
+      "topic": "Vulvar and Vaginal Cancers",
+      "specialty": "Oncology",
+      "decision": "downloaded open source",
+      "sourceTitle": "European Society of Gynaecological Oncology guidelines for the management of patients with vulvar cancer - update 2023.",
+      "year": 2023,
+      "pmid": "37369376",
+      "pmcid": "PMC10359596",
+      "doi": "10.1136/ijgc-2023-004486",
+      "url": "https://europepmc.org/articles/PMC10359596",
+      "files": {
+        "evidence": "data/part4-topic-evidence/2072/evidence.json",
+        "source": "data/part4-topic-evidence/2072/source.txt",
+        "synopsis": "data/part4-topic-evidence/2072/synopsis.json",
+        "mcqs": "data/part4-topic-evidence/2072/mcqs.json",
+        "source_vaginal": "data/part4-topic-evidence/2072/source-vaginal.txt"
+      },
+      "additionalSources": [
+        {
+          "title": "Cancer of the vagina: 2025 update.",
+          "year": 2025,
+          "pmid": "40631450",
+          "pmcid": "PMC12411808",
+          "doi": "10.1002/ijgo.70325",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12411808/",
+          "sourceBody": "FIGO / Int J Gynaecol Obstet",
+          "file": "data/part4-topic-evidence/2072/source-vaginal.txt"
+        }
+      ]
+    },
+    {
+      "catalogueId": "1506",
+      "row": 46,
+      "topic": "Retinal detachment: presentation and emergency management",
+      "specialty": "Ophthalmology",
+      "decision": "downloaded open source",
+      "sourceTitle": "Rhegmatogenous retinal detachment: a review of current practice in diagnosis and management.",
+      "year": 2020,
+      "pmid": "33083551",
+      "pmcid": "PMC7549457",
+      "doi": "10.1136/bmjophth-2020-000474",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7549457/",
+      "files": {
+        "evidence": "data/part4-topic-evidence/1506/evidence.json",
+        "source": "data/part4-topic-evidence/1506/source.txt",
+        "synopsis": "data/part4-topic-evidence/1506/synopsis.json",
+        "mcqs": "data/part4-topic-evidence/1506/mcqs.json"
+      }
+    },
+    {
+      "catalogueId": "991",
+      "row": 47,
+      "topic": "Neonatal jaundice: assessment, phototherapy and exchange transfusion",
+      "specialty": "Paediatrics",
+      "decision": "downloaded open source",
+      "sourceTitle": "Jaundice in newborn babies under 28 days. NICE guideline CG98.",
+      "year": 2010,
+      "pmid": "",
+      "pmcid": "",
+      "doi": "",
+      "url": "https://www.nice.org.uk/guidance/cg98",
+      "files": {
+        "evidence": "data/part4-topic-evidence/991/evidence.json",
+        "source": "data/part4-topic-evidence/991/source.txt",
+        "synopsis": "data/part4-topic-evidence/991/synopsis.json",
+        "mcqs": "data/part4-topic-evidence/991/mcqs.json"
+      }
+    },
+    {
+      "catalogueId": "879",
+      "row": 48,
+      "topic": "Paediatric asthma: diagnosis, assessment and stepwise management",
+      "specialty": "Paediatrics",
+      "decision": "downloaded open source",
+      "sourceTitle": "2020 Focused Updates to the Asthma Management Guidelines: A Report from the National Asthma Education and Prevention Program.",
+      "year": 2020,
+      "pmid": "33280709",
+      "pmcid": "PMC7924476",
+      "doi": "10.1016/j.jaci.2020.10.003",
+      "url": "https://europepmc.org/articles/PMC7924476",
+      "files": {
+        "evidence": "data/part4-topic-evidence/879/evidence.json",
+        "source": "data/part4-topic-evidence/879/source.txt",
+        "synopsis": "data/part4-topic-evidence/879/synopsis.json",
+        "mcqs": "data/part4-topic-evidence/879/mcqs.json"
+      }
+    },
+    {
+      "catalogueId": "2177",
+      "row": 49,
+      "topic": "The febrile child: assessment, red flags and paediatric sepsis",
+      "specialty": "Paediatrics",
+      "decision": "downloaded open source",
+      "sourceTitle": "Fever in under 5s: assessment and initial management. NICE guideline NG143.",
+      "year": 2019,
+      "pmid": "",
+      "pmcid": "",
+      "doi": "",
+      "url": "https://www.nice.org.uk/guidance/ng143",
+      "files": {
+        "evidence": "data/part4-topic-evidence/2177/evidence.json",
+        "source": "data/part4-topic-evidence/2177/source.txt",
+        "synopsis": "data/part4-topic-evidence/2177/synopsis.json",
+        "mcqs": "data/part4-topic-evidence/2177/mcqs.json"
+      }
+    },
+    {
+      "catalogueId": "999",
+      "row": 50,
+      "topic": "paediatric dehydration",
+      "specialty": "Paediatrics",
+      "decision": "downloaded open source",
+      "sourceTitle": "Diarrhoea and vomiting caused by gastroenteritis in under 5s: diagnosis and management. NICE guideline CG84.",
+      "year": 2009,
+      "pmid": "",
+      "pmcid": "",
+      "doi": "",
+      "url": "https://www.nice.org.uk/guidance/cg84",
+      "files": {
+        "evidence": "data/part4-topic-evidence/999/evidence.json",
+        "source": "data/part4-topic-evidence/999/source.txt",
+        "synopsis": "data/part4-topic-evidence/999/synopsis.json",
+        "mcqs": "data/part4-topic-evidence/999/mcqs.json"
+      }
+    },
+    {
+      "catalogueId": "424",
+      "row": 51,
+      "topic": "Alcohol withdrawal syndrome and delirium tremens management in ICU",
+      "specialty": "Psychiatry",
+      "decision": "in-app document",
+      "sourceTitle": "Alcohol-use disorders: diagnosis and management of physical complications. NICE guideline CG100.",
+      "year": 2010,
+      "pmid": "",
+      "pmcid": "",
+      "doi": "",
+      "url": "https://www.nice.org.uk/guidance/cg100",
+      "files": {
+        "evidence": "data/part4-topic-evidence/424/evidence.json",
+        "source": "data/part4-topic-evidence/424/source.txt",
+        "synopsis": "data/part4-topic-evidence/424/synopsis.json",
+        "mcqs": "data/part4-topic-evidence/424/mcqs.json"
+      }
+    },
+    {
+      "catalogueId": "252",
+      "row": 52,
+      "topic": "Anxiety disorders and panic disorder: diagnosis and management",
+      "specialty": "Psychiatry",
+      "decision": "downloaded open source",
+      "sourceTitle": "Canadian clinical practice guidelines for the management of anxiety, posttraumatic stress and obsessive-compulsive disorders.",
+      "year": 2014,
+      "pmid": "25081580",
+      "pmcid": "PMC4120194",
+      "doi": "10.1186/1471-244X-14-S1-S1",
+      "url": "https://europepmc.org/articles/PMC4120194",
+      "files": {
+        "evidence": "data/part4-topic-evidence/252/evidence.json",
+        "source": "data/part4-topic-evidence/252/source.txt",
+        "synopsis": "data/part4-topic-evidence/252/synopsis.json",
+        "mcqs": "data/part4-topic-evidence/252/mcqs.json"
+      }
+    },
+    {
+      "catalogueId": "1035",
+      "row": 53,
+      "topic": "Depression: diagnosis, pharmacotherapy and monitoring",
+      "specialty": "Psychiatry",
+      "decision": "downloaded open source",
+      "sourceTitle": "Depression in adults: treatment and management. NICE guideline NG222.",
+      "year": 2022,
+      "pmid": "",
+      "pmcid": "",
+      "doi": "",
+      "url": "https://www.nice.org.uk/guidance/ng222",
+      "files": {
+        "evidence": "data/part4-topic-evidence/1035/evidence.json",
+        "source": "data/part4-topic-evidence/1035/source.txt",
+        "synopsis": "data/part4-topic-evidence/1035/synopsis.json",
+        "mcqs": "data/part4-topic-evidence/1035/mcqs.json"
+      }
+    },
+    {
+      "catalogueId": "2015",
+      "row": 54,
+      "topic": "substance use disorder",
+      "specialty": "Psychiatry",
+      "decision": "downloaded open source",
+      "sourceTitle": "Substance use disorders: a comprehensive update of classification, epidemiology, neurobiology, clinical aspects, treatment and prevention.",
+      "year": 2023,
+      "pmid": "37159360",
+      "pmcid": "PMC10168177",
+      "doi": "10.1002/wps.21073",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10168177/",
+      "files": {
+        "evidence": "data/part4-topic-evidence/2015/evidence.json",
+        "source": "data/part4-topic-evidence/2015/source.txt",
+        "synopsis": "data/part4-topic-evidence/2015/synopsis.json",
+        "mcqs": "data/part4-topic-evidence/2015/mcqs.json"
+      }
+    },
+    {
+      "catalogueId": "2108",
+      "row": 55,
+      "topic": "Acute asthma and COPD exacerbations",
+      "specialty": "Pulmonology",
+      "decision": "downloaded open source",
+      "sourceTitle": "Saudi expert consensus on the management of acute asthma and COPD exacerbations with algorithm of aerosol drug delivery device recommendations.",
+      "year": 2026,
+      "pmid": "42625150",
+      "pmcid": "PMC13491584",
+      "doi": "",
+      "url": "https://europepmc.org/articles/PMC13491584",
+      "files": {
+        "evidence": "data/part4-topic-evidence/2108/evidence.json",
+        "source": "data/part4-topic-evidence/2108/source.txt",
+        "synopsis": "data/part4-topic-evidence/2108/synopsis.json",
+        "mcqs": "data/part4-topic-evidence/2108/mcqs.json"
+      }
+    },
+    {
+      "catalogueId": "1146",
+      "row": 56,
+      "topic": "Acute severe asthma",
+      "specialty": "Pulmonology",
+      "decision": "downloaded open source",
+      "sourceTitle": "Status Asthmaticus in the Pediatric ICU: A Comprehensive Review of Management and Challenges.",
+      "year": 2024,
+      "pmid": "39189288",
+      "pmcid": "PMC11348376",
+      "doi": "",
+      "url": "https://europepmc.org/articles/PMC11348376",
+      "files": {
+        "evidence": "data/part4-topic-evidence/1146/evidence.json",
+        "source": "data/part4-topic-evidence/1146/source.txt",
+        "synopsis": "data/part4-topic-evidence/1146/synopsis.json",
+        "mcqs": "data/part4-topic-evidence/1146/mcqs.json"
+      }
+    },
+    {
+      "catalogueId": "1646",
+      "row": 57,
+      "topic": "Aspiration Pneumonia",
+      "specialty": "Pulmonology",
+      "decision": "downloaded open source",
+      "sourceTitle": "Aspiration pneumonia.",
+      "year": 2022,
+      "pmid": "35488832",
+      "pmcid": "PMC9106188",
+      "doi": "",
+      "url": "https://europepmc.org/articles/PMC9106188",
+      "files": {
+        "evidence": "data/part4-topic-evidence/1646/evidence.json",
+        "source": "data/part4-topic-evidence/1646/source.txt",
+        "synopsis": "data/part4-topic-evidence/1646/synopsis.json",
+        "mcqs": "data/part4-topic-evidence/1646/mcqs.json"
+      }
+    },
+    {
+      "catalogueId": "2117",
+      "row": 58,
+      "topic": "Asthma severity classification and step-care",
+      "specialty": "Pulmonology",
+      "decision": "downloaded open source",
+      "sourceTitle": "Global Initiative for Asthma Strategy 2021: executive summary and rationale for key changes.",
+      "year": 2022,
+      "pmid": "34667060",
+      "pmcid": "PMC8719459",
+      "doi": "10.1183/13993003.02730-2021",
+      "url": "https://europepmc.org/articles/PMC8719459",
+      "files": {
+        "evidence": "data/part4-topic-evidence/2117/evidence.json",
+        "source": "data/part4-topic-evidence/2117/source.txt",
+        "synopsis": "data/part4-topic-evidence/2117/synopsis.json",
+        "mcqs": "data/part4-topic-evidence/2117/mcqs.json"
+      }
+    },
+    {
+      "catalogueId": "325",
+      "row": 59,
+      "topic": "Benign lung tumors",
+      "specialty": "Pulmonology",
+      "decision": "downloaded open source",
+      "sourceTitle": "Benign tumors and tumorlike conditions of the lung.",
+      "year": 2008,
+      "pmid": "18605764",
+      "pmcid": "",
+      "doi": "10.5858/2008-132-1133-BTATCO",
+      "url": "https://meridian.allenpress.com/aplm/article/132/7/1133/460534/Benign-Tumors-and-Tumorlike-Conditions-of-the-Lung",
+      "files": {
+        "evidence": "data/part4-topic-evidence/325/evidence.json",
+        "source": "data/part4-topic-evidence/325/source.txt",
+        "synopsis": "data/part4-topic-evidence/325/synopsis.json",
+        "mcqs": "data/part4-topic-evidence/325/mcqs.json"
+      }
+    },
+    {
+      "catalogueId": "257",
+      "row": 60,
+      "topic": "Bronchial Provocation Testing",
+      "specialty": "Pulmonology",
+      "decision": "downloaded open source",
+      "sourceTitle": "Methacholine challenge testing: comparative pharmacology.",
+      "year": 2018,
+      "pmid": "29785128",
+      "pmcid": "PMC5957064",
+      "doi": "10.2147/JAA.S160607",
+      "url": "https://europepmc.org/articles/PMC5957064",
+      "files": {
+        "evidence": "data/part4-topic-evidence/257/evidence.json",
+        "source": "data/part4-topic-evidence/257/source.txt",
+        "synopsis": "data/part4-topic-evidence/257/synopsis.json",
+        "mcqs": "data/part4-topic-evidence/257/mcqs.json"
+      }
+    },
+    {
+      "catalogueId": "327",
+      "row": 61,
+      "topic": "Byssinosis",
+      "specialty": "Pulmonology",
+      "decision": "downloaded open source",
+      "sourceTitle": "Byssinosis and lung health among cotton textile workers: baseline findings of the MultiTex trial in Karachi, Pakistan.",
+      "year": 2023,
+      "pmid": "36717255",
+      "pmcid": "PMC9985716",
+      "doi": "",
+      "url": "https://europepmc.org/articles/PMC9985716",
+      "files": {
+        "evidence": "data/part4-topic-evidence/327/evidence.json",
+        "source": "data/part4-topic-evidence/327/source.txt",
+        "synopsis": "data/part4-topic-evidence/327/synopsis.json",
+        "mcqs": "data/part4-topic-evidence/327/mcqs.json"
+      }
+    },
+    {
+      "catalogueId": "35",
+      "row": 62,
+      "topic": "COPD diagnosis and staging",
+      "specialty": "Pulmonology",
+      "decision": "in-app document",
+      "sourceTitle": "Chronic obstructive pulmonary disease in over 16s: diagnosis and management. NICE guideline NG115.",
+      "year": 2018,
+      "pmid": "",
+      "pmcid": "",
+      "doi": "",
+      "url": "https://www.nice.org.uk/guidance/ng115",
+      "files": {
+        "evidence": "data/part4-topic-evidence/35/evidence.json",
+        "source": "data/part4-topic-evidence/35/source.txt",
+        "synopsis": "data/part4-topic-evidence/35/synopsis.json",
+        "mcqs": "data/part4-topic-evidence/35/mcqs.json"
+      }
+    },
+    {
+      "catalogueId": "1375",
+      "row": 63,
+      "topic": "Diffuse Alveolar Hemorrhage",
+      "specialty": "Pulmonology",
+      "decision": "downloaded open source",
+      "sourceTitle": "Systemic lupus erythematosus and diffuse alveolar hemorrhage, etiology and novel treatment strategies.",
+      "year": 2020,
+      "pmid": "32036761",
+      "pmcid": "PMC7436451",
+      "doi": "",
+      "url": "https://europepmc.org/articles/PMC7436451",
+      "files": {
+        "evidence": "data/part4-topic-evidence/1375/evidence.json",
+        "source": "data/part4-topic-evidence/1375/source.txt",
+        "synopsis": "data/part4-topic-evidence/1375/synopsis.json",
+        "mcqs": "data/part4-topic-evidence/1375/mcqs.json"
+      }
+    },
+    {
+      "catalogueId": "1032",
+      "row": 64,
+      "topic": "Diffusing Capacity of the Lung for Carbon Monoxide",
+      "specialty": "Pulmonology",
+      "decision": "downloaded open source",
+      "sourceTitle": "Diffusing capacity of the lungs for carbon monoxide.",
+      "year": 2024,
+      "pmid": "",
+      "pmcid": "",
+      "doi": "",
+      "url": "https://www.ncbi.nlm.nih.gov/books/NBK556149/",
+      "files": {
+        "evidence": "data/part4-topic-evidence/1032/evidence.json",
+        "source": "data/part4-topic-evidence/1032/source.txt",
+        "synopsis": "data/part4-topic-evidence/1032/synopsis.json",
+        "mcqs": "data/part4-topic-evidence/1032/mcqs.json"
+      }
+    },
+    {
+      "catalogueId": "1381",
+      "row": 65,
+      "topic": "Drug-Induced ILD",
+      "specialty": "Pulmonology",
+      "decision": "downloaded open source",
+      "sourceTitle": "Drug-Induced Interstitial Lung Disease: A Systematic Review.",
+      "year": 2018,
+      "pmid": "30326612",
+      "pmcid": "PMC6209877",
+      "doi": "10.3390/jcm7100356",
+      "url": "https://europepmc.org/articles/PMC6209877",
+      "files": {
+        "evidence": "data/part4-topic-evidence/1381/evidence.json",
+        "source": "data/part4-topic-evidence/1381/source.txt",
+        "synopsis": "data/part4-topic-evidence/1381/synopsis.json",
+        "mcqs": "data/part4-topic-evidence/1381/mcqs.json"
+      }
+    },
+    {
+      "catalogueId": "342",
+      "row": 66,
+      "topic": "GOLD COPD strategies",
+      "specialty": "Pulmonology",
+      "decision": "downloaded open source",
+      "sourceTitle": "Global Initiative for Chronic Obstructive Lung Disease 2023 Report: GOLD Executive Summary.",
+      "year": 2023,
+      "pmid": "36856433",
+      "pmcid": "PMC10111975",
+      "doi": "10.1164/rccm.202301-0106pp",
+      "url": "https://europepmc.org/articles/PMC10111975",
+      "files": {
+        "evidence": "data/part4-topic-evidence/342/evidence.json",
+        "source": "data/part4-topic-evidence/342/source.txt",
+        "synopsis": "data/part4-topic-evidence/342/synopsis.json",
+        "mcqs": "data/part4-topic-evidence/342/mcqs.json"
+      }
+    },
+    {
+      "catalogueId": "2092",
+      "row": 67,
+      "topic": "Goodpasture Syndrome",
+      "specialty": "Pulmonology",
+      "decision": "in-app document",
+      "sourceTitle": "Goodpasture syndrome and anti-glomerular basement membrane disease.",
+      "year": 2023,
+      "pmid": "36995324",
+      "pmcid": "",
+      "doi": "10.55563/clinexprheumatol/tep3k5",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/36995324/",
+      "files": {
+        "evidence": "data/part4-topic-evidence/2092/evidence.json",
+        "source": "data/part4-topic-evidence/2092/source.txt",
+        "synopsis": "data/part4-topic-evidence/2092/synopsis.json",
+        "mcqs": "data/part4-topic-evidence/2092/mcqs.json"
+      }
+    },
+    {
+      "catalogueId": "124",
+      "row": 68,
+      "topic": "Hard Metal Lung Disease",
+      "specialty": "Pulmonology",
+      "decision": "downloaded open source",
+      "sourceTitle": "Pathology and mineralogy of the pneumoconioses.",
+      "year": 2023,
+      "pmid": "36972614",
+      "pmcid": "PMC11617341",
+      "doi": "10.1055/s-0043-1764406",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11617341/",
+      "files": {
+        "evidence": "data/part4-topic-evidence/124/evidence.json",
+        "source": "data/part4-topic-evidence/124/source.txt",
+        "synopsis": "data/part4-topic-evidence/124/synopsis.json",
+        "mcqs": "data/part4-topic-evidence/124/mcqs.json"
+      }
+    },
+    {
+      "catalogueId": "97",
+      "row": 69,
+      "topic": "Hepatopulmonary Syndrome",
+      "specialty": "Pulmonology",
+      "decision": "downloaded open source",
+      "sourceTitle": "Hepatopulmonary syndrome.",
+      "year": 2022,
+      "pmid": "36035361",
+      "pmcid": "PMC9403489",
+      "doi": "",
+      "url": "https://europepmc.org/articles/PMC9403489",
+      "files": {
+        "evidence": "data/part4-topic-evidence/97/evidence.json",
+        "source": "data/part4-topic-evidence/97/source.txt",
+        "synopsis": "data/part4-topic-evidence/97/synopsis.json",
+        "mcqs": "data/part4-topic-evidence/97/mcqs.json"
+      }
+    },
+    {
+      "catalogueId": "1192",
+      "row": 70,
+      "topic": "High Altitude Pulmonary Edema",
+      "specialty": "Pulmonology",
+      "decision": "downloaded open source",
+      "sourceTitle": "High-altitude pulmonary edema.",
+      "year": 2021,
+      "pmid": "33732460",
+      "pmcid": "PMC7947961",
+      "doi": "",
+      "url": "https://europepmc.org/articles/PMC7947961",
+      "files": {
+        "evidence": "data/part4-topic-evidence/1192/evidence.json",
+        "source": "data/part4-topic-evidence/1192/source.txt",
+        "synopsis": "data/part4-topic-evidence/1192/synopsis.json",
+        "mcqs": "data/part4-topic-evidence/1192/mcqs.json"
+      }
+    },
+    {
+      "catalogueId": "347",
+      "row": 71,
+      "topic": "Hyperventilation Syndrome",
+      "specialty": "Pulmonology",
+      "decision": "downloaded open source",
+      "sourceTitle": "Dysfunctional breathing: a review of the literature and proposal for classification.",
+      "year": 2016,
+      "pmid": "27581828",
+      "pmcid": "PMC9487208",
+      "doi": "",
+      "url": "https://europepmc.org/articles/PMC9487208",
+      "files": {
+        "evidence": "data/part4-topic-evidence/347/evidence.json",
+        "source": "data/part4-topic-evidence/347/source.txt",
+        "synopsis": "data/part4-topic-evidence/347/synopsis.json",
+        "mcqs": "data/part4-topic-evidence/347/mcqs.json"
+      }
+    },
+    {
+      "catalogueId": "819",
+      "row": 72,
+      "topic": "Lung Cancer screening guidelines",
+      "specialty": "Pulmonology",
+      "decision": "downloaded open source",
+      "sourceTitle": "Lung Cancer: Screening. U.S. Preventive Services Task Force recommendation.",
+      "year": 2021,
+      "pmid": "",
+      "pmcid": "",
+      "doi": "",
+      "url": "https://www.uspreventiveservicestaskforce.org/uspstf/recommendation/lung-cancer-screening",
+      "files": {
+        "evidence": "data/part4-topic-evidence/819/evidence.json",
+        "source": "data/part4-topic-evidence/819/source.txt",
+        "synopsis": "data/part4-topic-evidence/819/synopsis.json",
+        "mcqs": "data/part4-topic-evidence/819/mcqs.json"
+      }
+    },
+    {
+      "catalogueId": "971",
+      "row": 73,
+      "topic": "Lung Transplantation",
+      "specialty": "Pulmonology",
+      "decision": "downloaded open source",
+      "sourceTitle": "Consensus document for the selection of lung transplant candidates: An update from the International Society for Heart and Lung Transplantation.",
+      "year": 2021,
+      "pmid": "34419372",
+      "pmcid": "PMC8979471",
+      "doi": "",
+      "url": "https://europepmc.org/articles/PMC8979471",
+      "files": {
+        "evidence": "data/part4-topic-evidence/971/evidence.json",
+        "source": "data/part4-topic-evidence/971/source.txt",
+        "synopsis": "data/part4-topic-evidence/971/synopsis.json",
+        "mcqs": "data/part4-topic-evidence/971/mcqs.json"
+      }
+    },
+    {
+      "catalogueId": "353",
+      "row": 74,
+      "topic": "Lung Volumes and Spirometry interpretation",
+      "specialty": "Pulmonology",
+      "decision": "downloaded open source",
+      "sourceTitle": "The physiological basis and clinical significance of lung volume measurements.",
+      "year": 2017,
+      "pmid": "28194273",
+      "pmcid": "PMC5299792",
+      "doi": "10.1186/s40248-017-0084-5",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5299792/",
+      "files": {
+        "evidence": "data/part4-topic-evidence/353/evidence.json",
+        "source": "data/part4-topic-evidence/353/source.txt",
+        "synopsis": "data/part4-topic-evidence/353/synopsis.json",
+        "mcqs": "data/part4-topic-evidence/353/mcqs.json",
+        "source_spirometry": "data/part4-topic-evidence/353/source-spirometry.txt"
+      },
+      "additionalSources": [
+        {
+          "title": "Standardization of Spirometry 2019 Update.",
+          "year": 2019,
+          "pmid": "31613151",
+          "pmcid": "PMC6794117",
+          "doi": "",
+          "url": "https://europepmc.org/articles/PMC6794117",
+          "sourceBody": "ATS/ERS",
+          "file": "data/part4-topic-evidence/353/source-spirometry.txt"
+        }
+      ]
+    },
+    {
+      "catalogueId": "1889",
+      "row": 75,
+      "topic": "Lung cancer screening low-dose CT",
+      "specialty": "Pulmonology",
+      "decision": "downloaded open source",
+      "sourceTitle": "Reduced lung-cancer mortality with low-dose computed tomographic screening.",
+      "year": 2011,
+      "pmid": "21714641",
+      "pmcid": "PMC4356534",
+      "doi": "10.1056/NEJMoa1102873",
+      "url": "https://europepmc.org/articles/PMC4356534",
+      "files": {
+        "evidence": "data/part4-topic-evidence/1889/evidence.json",
+        "source": "data/part4-topic-evidence/1889/source.txt",
+        "synopsis": "data/part4-topic-evidence/1889/synopsis.json",
+        "mcqs": "data/part4-topic-evidence/1889/mcqs.json"
+      }
+    },
+    {
+      "catalogueId": "165",
+      "row": 76,
+      "topic": "Lymphangioleiomyomatosis",
+      "specialty": "Pulmonology",
+      "decision": "downloaded open source",
+      "sourceTitle": "Official American Thoracic Society/Japanese Respiratory Society clinical practice guidelines: lymphangioleiomyomatosis diagnosis and management.",
+      "year": 2016,
+      "pmid": "27628078",
+      "pmcid": "PMC5803656",
+      "doi": "10.1164/rccm.201607-1384ST",
+      "url": "https://www.thoracic.org/statements/resources/interstitial-lung-disease/lam-guideline.pdf",
+      "files": {
+        "evidence": "data/part4-topic-evidence/165/evidence.json",
+        "source": "data/part4-topic-evidence/165/source.txt",
+        "synopsis": "data/part4-topic-evidence/165/synopsis.json",
+        "mcqs": "data/part4-topic-evidence/165/mcqs.json"
+      }
+    },
+    {
+      "catalogueId": "110",
+      "row": 77,
+      "topic": "Lymphangitic Carcinomatosis",
+      "specialty": "Pulmonology",
+      "decision": "downloaded open source",
+      "sourceTitle": "Lymphangitic carcinomatosis.",
+      "year": 2023,
+      "pmid": "",
+      "pmcid": "",
+      "doi": "",
+      "url": "https://www.ncbi.nlm.nih.gov/books/NBK560921/",
+      "files": {
+        "evidence": "data/part4-topic-evidence/110/evidence.json",
+        "source": "data/part4-topic-evidence/110/source.txt",
+        "synopsis": "data/part4-topic-evidence/110/synopsis.json",
+        "mcqs": "data/part4-topic-evidence/110/mcqs.json"
+      }
+    },
+    {
+      "catalogueId": "1899",
+      "row": 78,
+      "topic": "Massive Hemoptysis management",
+      "specialty": "Pulmonology",
+      "decision": "downloaded open source",
+      "sourceTitle": "Efficacy and safety of bronchial artery embolization in the treatment of hemoptysis: a systematic review and meta-analysis of RCTs.",
+      "year": 2026,
+      "pmid": "",
+      "pmcid": "PMC13733285",
+      "doi": "10.3389/fmed.2026.1959450",
+      "url": "https://europepmc.org/articles/PMC13733285",
+      "files": {
+        "evidence": "data/part4-topic-evidence/1899/evidence.json",
+        "source": "data/part4-topic-evidence/1899/source.txt",
+        "synopsis": "data/part4-topic-evidence/1899/synopsis.json",
+        "mcqs": "data/part4-topic-evidence/1899/mcqs.json"
+      }
+    },
+    {
+      "catalogueId": "1237",
+      "row": 79,
+      "topic": "Neuromuscular Respiratory Failure",
+      "specialty": "Pulmonology",
+      "decision": "downloaded open source",
+      "sourceTitle": "Acute on Chronic Neuromuscular Respiratory Failure in the Intensive Care Unit: A Narrative Review.",
+      "year": 2021,
+      "pmid": "34381654",
+      "pmcid": "PMC8351614",
+      "doi": "",
+      "url": "https://europepmc.org/articles/PMC8351614",
+      "files": {
+        "evidence": "data/part4-topic-evidence/1237/evidence.json",
+        "source": "data/part4-topic-evidence/1237/source.txt",
+        "synopsis": "data/part4-topic-evidence/1237/synopsis.json",
+        "mcqs": "data/part4-topic-evidence/1237/mcqs.json"
+      }
+    },
+    {
+      "catalogueId": "997",
+      "row": 80,
+      "topic": "Obstructive Sleep Apnea",
+      "specialty": "Pulmonology",
+      "decision": "downloaded open source",
+      "sourceTitle": "Treatment of adult obstructive sleep apnea with positive airway pressure: an American Academy of Sleep Medicine systematic review, meta-analysis, and GRADE assessment.",
+      "year": 2019,
+      "pmid": "",
+      "pmcid": "PMC6374080",
+      "doi": "",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6374080/",
+      "files": {
+        "evidence": "data/part4-topic-evidence/997/evidence.json",
+        "source": "data/part4-topic-evidence/997/source.txt",
+        "synopsis": "data/part4-topic-evidence/997/synopsis.json",
+        "mcqs": "data/part4-topic-evidence/997/mcqs.json"
+      }
+    },
+    {
+      "catalogueId": "426",
+      "row": 81,
+      "topic": "Occupational Asthma",
+      "specialty": "Pulmonology",
+      "decision": "downloaded open source",
+      "sourceTitle": "Work-related asthma.",
+      "year": 2021,
+      "pmid": "34406224",
+      "pmcid": "PMC8352763",
+      "doi": "",
+      "url": "https://europepmc.org/articles/PMC8352763",
+      "files": {
+        "evidence": "data/part4-topic-evidence/426/evidence.json",
+        "source": "data/part4-topic-evidence/426/source.txt",
+        "synopsis": "data/part4-topic-evidence/426/synopsis.json",
+        "mcqs": "data/part4-topic-evidence/426/mcqs.json"
+      }
+    },
+    {
+      "catalogueId": "206",
+      "row": 82,
+      "topic": "Pancoast Tumors",
+      "specialty": "Pulmonology",
+      "decision": "downloaded open source",
+      "sourceTitle": "Superior sulcus (Pancoast) tumors: current evidence on diagnosis and radical treatment.",
+      "year": 2013,
+      "pmid": "24102007",
+      "pmcid": "PMC3791502",
+      "doi": "10.3978/j.issn.2072-1439.2013.04.08",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3791502/",
+      "files": {
+        "evidence": "data/part4-topic-evidence/206/evidence.json",
+        "source": "data/part4-topic-evidence/206/source.txt",
+        "synopsis": "data/part4-topic-evidence/206/synopsis.json",
+        "mcqs": "data/part4-topic-evidence/206/mcqs.json"
+      }
+    },
+    {
+      "catalogueId": "59",
+      "row": 83,
+      "topic": "Pulmonary Capillaritis",
+      "specialty": "Pulmonology",
+      "decision": "downloaded open source",
+      "sourceTitle": "Isolated pauci-immune pulmonary capillaritis.",
+      "year": 2015,
+      "pmid": "25624599",
+      "pmcid": "PMC4298921",
+      "doi": "",
+      "url": "https://europepmc.org/articles/PMC4298921",
+      "files": {
+        "evidence": "data/part4-topic-evidence/59/evidence.json",
+        "source": "data/part4-topic-evidence/59/source.txt",
+        "synopsis": "data/part4-topic-evidence/59/synopsis.json",
+        "mcqs": "data/part4-topic-evidence/59/mcqs.json"
+      }
+    },
+    {
+      "catalogueId": "1356",
+      "row": 84,
+      "topic": "Pulmonary Langerhans Cell Histiocytosis",
+      "specialty": "Pulmonology",
+      "decision": "downloaded open source",
+      "sourceTitle": "Pulmonary Langerhans cell histiocytosis.",
+      "year": 2012,
+      "pmid": "22429393",
+      "pmcid": "PMC3342091",
+      "doi": "",
+      "url": "https://europepmc.org/articles/PMC3342091",
+      "files": {
+        "evidence": "data/part4-topic-evidence/1356/evidence.json",
+        "source": "data/part4-topic-evidence/1356/source.txt",
+        "synopsis": "data/part4-topic-evidence/1356/synopsis.json",
+        "mcqs": "data/part4-topic-evidence/1356/mcqs.json"
+      }
+    },
+    {
+      "catalogueId": "1493",
+      "row": 85,
+      "topic": "Pulmonary Veno-Occlusive Disease",
+      "specialty": "Pulmonology",
+      "decision": "downloaded open source",
+      "sourceTitle": "Pulmonary veno-occlusive disease: illustrative cases and literature review.",
+      "year": 2024,
+      "pmid": "38232988",
+      "pmcid": "PMC10792437",
+      "doi": "",
+      "url": "https://europepmc.org/articles/PMC10792437",
+      "files": {
+        "evidence": "data/part4-topic-evidence/1493/evidence.json",
+        "source": "data/part4-topic-evidence/1493/source.txt",
+        "synopsis": "data/part4-topic-evidence/1493/synopsis.json",
+        "mcqs": "data/part4-topic-evidence/1493/mcqs.json"
+      }
+    },
+    {
+      "catalogueId": "2100",
+      "row": 86,
+      "topic": "Severe CAP requiring ICU admission",
+      "specialty": "Pulmonology",
+      "decision": "downloaded open source",
+      "sourceTitle": "Diagnosis and Treatment of Adults with Community-acquired Pneumonia. An Official Clinical Practice Guideline of the American Thoracic Society and Infectious Diseases Society of America.",
+      "year": 2019,
+      "pmid": "31573350",
+      "pmcid": "PMC6812437",
+      "doi": "10.1164/rccm.201908-1581ST",
+      "url": "https://europepmc.org/articles/PMC6812437",
+      "files": {
+        "evidence": "data/part4-topic-evidence/2100/evidence.json",
+        "source": "data/part4-topic-evidence/2100/source.txt",
+        "synopsis": "data/part4-topic-evidence/2100/synopsis.json",
+        "mcqs": "data/part4-topic-evidence/2100/mcqs.json"
+      }
+    },
+    {
+      "catalogueId": "1029",
+      "row": 87,
+      "topic": "Sleep-related hypoxemia in COPD",
+      "specialty": "Pulmonology",
+      "decision": "downloaded open source",
+      "sourceTitle": "Prognostic value of oxygen inhalation therapy for simple nocturnal hypoxemia in COPD: a meta-analysis.",
+      "year": 2023,
+      "pmid": "37663258",
+      "pmcid": "PMC10469590",
+      "doi": "10.3389/fphar.2023.1123945",
+      "url": "https://europepmc.org/articles/PMC10469590",
+      "files": {
+        "evidence": "data/part4-topic-evidence/1029/evidence.json",
+        "source": "data/part4-topic-evidence/1029/source.txt",
+        "synopsis": "data/part4-topic-evidence/1029/synopsis.json",
+        "mcqs": "data/part4-topic-evidence/1029/mcqs.json"
+      }
+    }
+  ]
+}

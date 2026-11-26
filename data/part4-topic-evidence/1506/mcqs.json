@@ -1,0 +1,136 @@
+{
+  "catalogueId": "1506",
+  "topic": "Retinal detachment: presentation and emergency management",
+  "mcqs": [
+    {
+      "id": "1506-01",
+      "question": "What primary surgical success does this review report for rhegmatogenous retinal detachment?",
+      "options": {
+        "A": "Over 80 to 90 percent",
+        "B": "Under 20 percent",
+        "C": "The condition remains untreatable",
+        "D": "100 percent in every series",
+        "E": "Success is not stated"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Over 80 to 90 percent",
+      "explanation": "The review says RRD now achieves primary surgical success rates of over 80 to 90 percent.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "BMJ Open Ophthalmology",
+          "sourceYear": 2020,
+          "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7549457/",
+          "pmid": "33083551",
+          "pmcid": "PMC7549457",
+          "doi": "10.1136/bmjophth-2020-000474",
+          "excerpt": "Previously untreatable, RRD now achieves primary surgical success rates of over 80%–90% with complex cases also amenable to treatment."
+        }
+      ]
+    },
+    {
+      "id": "1506-02",
+      "question": "Which three operations does the review name as the current options?",
+      "options": {
+        "A": "Pneumatic retinopexy, scleral buckle, and pars plana vitrectomy",
+        "B": "Cataract extraction only",
+        "C": "Enucleation as first-line treatment",
+        "D": "Topical antibiotics alone",
+        "E": "Observation for every symptomatic detachment"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Pneumatic retinopexy, scleral buckle, and pars plana vitrectomy",
+      "explanation": "The three options are pneumoretinopexy, scleral buckle, and pars plana vitrectomy.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "BMJ Open Ophthalmology",
+          "sourceYear": 2020,
+          "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7549457/",
+          "pmid": "33083551",
+          "pmcid": "PMC7549457",
+          "doi": "10.1136/bmjophth-2020-000474",
+          "excerpt": "There are three main current options for the management of RRD, namely pneumoretinopexy (PnR), SB and PPV."
+        }
+      ]
+    },
+    {
+      "id": "1506-03",
+      "question": "What does the review call the most predictive variable for failure of primary surgery?",
+      "options": {
+        "A": "Proliferative vitreoretinopathy, with success falling from 90 to 68 percent if it is present",
+        "B": "The patient's age alone",
+        "C": "Use of a buckle rather than gas",
+        "D": "A macula-on status",
+        "E": "Failure is not discussed"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Proliferative vitreoretinopathy, with success falling from 90 to 68 percent if it is present",
+      "explanation": "PVR is the most predictive variable. Success drops from 90 to 68 percent if PVR is present preoperatively.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "BMJ Open Ophthalmology",
+          "sourceYear": 2020,
+          "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7549457/",
+          "pmid": "33083551",
+          "pmcid": "PMC7549457",
+          "doi": "10.1136/bmjophth-2020-000474",
+          "excerpt": "PVR remains the most predictive variable for failure of primary surgery with success rates dropping from 90% to 68% if PVR is present preoperatively."
+        }
+      ]
+    },
+    {
+      "id": "1506-04",
+      "question": "How does the review divide detachments on presentation, and which has the better visual prognosis?",
+      "options": {
+        "A": "Macula-on, in which the foveal centre is not involved, has the better prognosis",
+        "B": "Macula-off has the better prognosis",
+        "C": "The macula is irrelevant",
+        "D": "Only chronic asymptomatic detachments are divided this way",
+        "E": "Macula-on means the fovea is detached"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Macula-on, in which the foveal centre is not involved, has the better prognosis",
+      "explanation": "Macula-on means the foveal centre is not involved and has a better visual prognosis with successful surgery.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "BMJ Open Ophthalmology",
+          "sourceYear": 2020,
+          "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7549457/",
+          "pmid": "33083551",
+          "pmcid": "PMC7549457",
+          "doi": "10.1136/bmjophth-2020-000474",
+          "excerpt": "On presentation, RRD is usually divided into ‘macula-on’ where the foveal centre is not involved, and ‘macula-off’ where the fovea is detached."
+        }
+      ]
+    },
+    {
+      "id": "1506-05",
+      "question": "What does the review say about symptomatic rhegmatogenous detachment?",
+      "options": {
+        "A": "It is a clear indication for surgery",
+        "B": "It should be observed for a month",
+        "C": "It is treated with drops alone",
+        "D": "Surgery is reserved for asymptomatic chronic detachment",
+        "E": "The benefit of treating symptomatic detachment is unclear"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "It is a clear indication for surgery",
+      "explanation": "The benefit of treating asymptomatic chronic detachment is unclear, but symptomatic RRD is a clear indication for surgery.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "BMJ Open Ophthalmology",
+          "sourceYear": 2020,
+          "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7549457/",
+          "pmid": "33083551",
+          "pmcid": "PMC7549457",
+          "doi": "10.1136/bmjophth-2020-000474",
+          "excerpt": "symptomatic RRD is a clear indication for surgery."
+        }
+      ]
+    }
+  ]
+}

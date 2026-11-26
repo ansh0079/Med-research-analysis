@@ -1,0 +1,22 @@
+{
+  "catalogueId": "991",
+  "spreadsheetRow": 47,
+  "topic": "Neonatal jaundice: assessment, phototherapy and exchange transfusion",
+  "specialty": "Paediatrics",
+  "decision": "downloaded open source",
+  "source": {
+    "title": "Jaundice in newborn babies under 28 days. NICE guideline CG98.",
+    "year": 2010,
+    "pmid": "",
+    "pmcid": "",
+    "doi": "",
+    "url": "https://www.nice.org.uk/guidance/cg98",
+    "sourceBody": "NICE",
+    "storedAs": ""
+  },
+  "whyItFits": "NICE CG98 recommendations on information, bilirubin thresholds, phototherapy, and exchange transfusion for babies under 28 days. Thresholds quoted here are the consensus table for babies of 38 weeks or more.",
+  "limitations": "AAP 2022 (PMID 35927462) is not in PMC. NICE CG98 is the open full recommendation text.",
+  "synopsisWritten": true,
+  "mcqsWritten": true,
+  "mcqCount": 5
+}

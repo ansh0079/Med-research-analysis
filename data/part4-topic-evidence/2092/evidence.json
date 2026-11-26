@@ -1,0 +1,22 @@
+{
+  "catalogueId": "2092",
+  "spreadsheetRow": 67,
+  "topic": "Goodpasture Syndrome",
+  "specialty": "Pulmonology",
+  "decision": "in-app document",
+  "source": {
+    "title": "Goodpasture syndrome and anti-glomerular basement membrane disease.",
+    "year": 2023,
+    "pmid": "36995324",
+    "pmcid": "",
+    "doi": "10.55563/clinexprheumatol/tep3k5",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/36995324/",
+    "sourceBody": "Clin Exp Rheumatol",
+    "storedAs": "data/question-repair-source-import.json paper_articles abstract"
+  },
+  "whyItFits": "Stored abstract of the review of anti-GBM disease: lung and kidney capillaries, RPGN, alveolar haemorrhage, and treatment with steroids, cyclophosphamide, and plasmapheresis.",
+  "limitations": "",
+  "synopsisWritten": true,
+  "mcqsWritten": true,
+  "mcqCount": 5
+}

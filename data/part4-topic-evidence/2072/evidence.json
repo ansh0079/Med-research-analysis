@@ -1,0 +1,34 @@
+{
+  "catalogueId": "2072",
+  "spreadsheetRow": 45,
+  "topic": "Vulvar and Vaginal Cancers",
+  "specialty": "Oncology",
+  "decision": "downloaded open source",
+  "source": {
+    "title": "European Society of Gynaecological Oncology guidelines for the management of patients with vulvar cancer - update 2023.",
+    "year": 2023,
+    "pmid": "37369376",
+    "pmcid": "PMC10359596",
+    "doi": "10.1136/ijgc-2023-004486",
+    "url": "https://europepmc.org/articles/PMC10359596",
+    "sourceBody": "ESGO",
+    "storedAs": ""
+  },
+  "whyItFits": "Vulvar cancer is grounded in the 2023 ESGO guideline. Vaginal cancer is grounded in the open 2025 FIGO update.",
+  "limitations": "Vulvar recommendations are from the open ESGO 2023 guideline. Vaginal-cancer recommendations are from the open FIGO 2025 update (PMC12411808). The ESGO pocket PDF was not stored.",
+  "synopsisWritten": true,
+  "mcqsWritten": true,
+  "mcqCount": 5,
+  "additionalSources": [
+    {
+      "title": "Cancer of the vagina: 2025 update.",
+      "year": 2025,
+      "pmid": "40631450",
+      "pmcid": "PMC12411808",
+      "doi": "10.1002/ijgo.70325",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12411808/",
+      "sourceBody": "FIGO / Int J Gynaecol Obstet",
+      "file": "data/part4-topic-evidence/2072/source-vaginal.txt"
+    }
+  ]
+}

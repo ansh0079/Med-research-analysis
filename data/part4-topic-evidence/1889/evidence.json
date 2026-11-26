@@ -1,0 +1,22 @@
+{
+  "catalogueId": "1889",
+  "spreadsheetRow": 75,
+  "topic": "Lung cancer screening low-dose CT",
+  "specialty": "Pulmonology",
+  "decision": "downloaded open source",
+  "source": {
+    "title": "Reduced lung-cancer mortality with low-dose computed tomographic screening.",
+    "year": 2011,
+    "pmid": "21714641",
+    "pmcid": "PMC4356534",
+    "doi": "10.1056/NEJMoa1102873",
+    "url": "https://europepmc.org/articles/PMC4356534",
+    "sourceBody": "NLST / N Engl J Med",
+    "storedAs": ""
+  },
+  "whyItFits": "National Lung Screening Trial: low-dose CT versus chest radiography, with the reported relative reduction in lung-cancer mortality.",
+  "limitations": "Public PMC author manuscript of the NEJM paper. The publisher PDF was not copied.",
+  "synopsisWritten": true,
+  "mcqsWritten": true,
+  "mcqCount": 5
+}

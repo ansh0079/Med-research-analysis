@@ -1,0 +1,334 @@
+# The physiological basis and clinical significance of lung volume measurements
+
+PMC5299792. Multidisciplinary Respiratory Medicine, 12:3. Published 2017-02-09.
+
+## Authors
+
+Mohamed Faisal Lutfi
+
+## Details
+
+- DOI: https://doi.org/10.1186/s40248-017-0084-5
+- PMID: 28194273 (https://pubmed.ncbi.nlm.nih.gov/28194273/)
+- PMCID: PMC5299792
+- License: https://creativecommons.org/licenses/by/4.0/
+
+---
+
+## Abstract
+
+From a physiological standpoint, the lung volumes are either dynamic or static. Both subclasses are measured at different degrees of inspiration or expiration; however, dynamic lung volumes are characteristically dependent on the rate of air flow. The static lung volumes/capacities are further subdivided into four standard volumes (tidal, inspiratory reserve, expiratory reserve, and residual volumes) and four standard capacities (inspiratory, functional residual, vital and total lung capacities). The dynamic lung volumes are mostly derived from vital capacity. While dynamic lung volumes are essential for diagnosis and follow up of obstructive lung diseases, static lung volumes are equally important for evaluation of obstructive as well as restrictive ventilatory defects. This review intends to update the reader with the physiological basis, clinical significance and interpretative approaches of the standard static lung volumes and capacities.
+
+## Background
+
+Four standard lung volumes, namely, tidal (TV), inspiratory reserve (IRV), expiratory reserve (ERV), and residual volumes (RV) are described in the literature. Alternatively, the standard lung capacities are inspiratory (IC), functional residual (FRC), vital (VC) and total lung capacities (TLC). Figure 1 gives a schematic summary of the standard lung volumes and capacities [1–3]. RV constitutes part of FRC as well as TLC and, therefore, these capacities are impossible to measure through simple spirometers. The procedures used for measurement of RV, FRC and TLC are based on radiological, plethysmographic or dilutional techniques (helium dilution and nitrogen washout methods) [4]. However, body plethysmography and dilutional techniques may under-and overestimate lung volumes and capacities, respectively [5]. For the details of the procedures, advantages, disadvantages and recommendations for best practice of these techniques, the reader can refer to the reports revised and published by the joint committee of ATS/ERS [6].
+
+*Fig. 1 Standard lung volumes and capacities from a spirometer trace. The solid black and gray arrows indicate lung volumes and capacities respectively*
+
+The way how static lung volumes and capacities change in different physiological/pathological conditions depends on the understanding of the mechanics of breathing and the physiological determinants of pulmonary ventilation, which will be discussed in the following paragraphs.
+
+## Mechanics of breathing
+
+Towards the end of tidal expiration, the lungs tend to recoil inward while the chest wall tends to recoil outwards. These two opposing forces lead to a negative pressure within the potential space between the parietal and visceral pleurae. The negative intrapleural pressure (P Pl) is one of the important factors that keep the patency of small airways, which lack cartilaginous support. The rhythmic contraction of inspiratory muscles causes cyclic changes in the dimensions of the thoracic cage and consequently comparable cyclic fluctuation of P Pl.
+
+During tidal inspiration, P Pl drops from −5 to −8 cmH 2 O enforcing the intra-alveolar pressure (P alv) to drop one cmH 2 O below atmospheric pressure (P atm), Fig. 2a. As a result, air flows into the alveoli. The drop of P Pl also decreases the airways resistance by dilating the small airways and thus enhancing the air flow further. The sequence of events reverses during tidal expiration. When inspiratory muscles relax, dimensions of the thoracic cage decrease, P Pl increases from −8 back to −5 cmH 2 O and P alv increases one cmH 2 O above P atm. As a result, air flows outside the alveoli following the pressure gradient, Fig. 2b. Tidal expiration is therefore a passive process, which needs no further muscle contraction. During tidal breathing, whether inspiratory or expiratory, intra-airways (P aw) pressure is always more than P Pl. This explains why small airways are always opened, even at the end of tidal expiration.
+
+*Fig. 2 Intrapleural and alveolar pressures towards the end of inspiration (a), expiration (b), and forceful expiration (c). The dotted line indicates the change in thoracic dimensions during a, b and c compared with the previous phase of the respiratory cycle*
+
+If inspiration above the tidal limit is required, accessory muscles of inspiration must be activated. Thoracic cage expands more leading to higher drop in P Pl and P alv compared with tidal inspiration, which explains why more air is delivered to the alveoli compared with tidal inspiration. Alternatively, expiration below the tidal level is an active process that requires contraction of expiratory muscles. During forceful expiration, the thoracic cage is compressed to the maximum. Both P Pl and P alv rise above P atm; however, P alv remains more than P Pl due to the effect of elastic recoil pressure (P el) of the alveolar wall. As demonstrated in Fig. 3c, P aw decreases from the area next to the alveoli upwards. This gradual drop in P aw is secondary to simultaneous increase in the airways resistance towards the trachea. Taking into consideration the relatively constant P Pl around the lung, each small airway can be subdivided into three segments (Fig. 2c):
+
+An inflated segment, where P Pl is lower than P aw.
+
+An equal pressure point, where P Pl is equal to P aw.
+
+An airflow limiting segment, where P Pl is higher than P aw.
+
+*Fig. 3 Static PVC of the lungs and chest wall. The lung and chest wall curve was plotted by the addition of the individual lung and chest wall curves*
+
+Development of airflow limiting segments occurs in small airways that lack cartilaginous support and explains why the lungs cannot be empty completely. What limits airflow upon forceful expiration was previously explained by development of choke points i.e. the points where local flow velocity equalizes the local speed of pressure wave propagation (wave speed theory) [7, 8]. This is akin to a waterfall in which height and flow upstream the river are unlikely to affect the speed of the free falling water; nevertheless, if waterfall is broader, an extra water will be displaced. It is important to note that upon forced expiration, the increase in P alv is accompanied by gas compression within the lung. This will result in reduction of both lung volume and P el. The decrease in P el in turn attenuates the driving as well as the distending pressures at the choke points. This explains why the actual volume of forcefully expired air is always less than that measured with body plethysmograph. Based on the preceding narrative, it is easy to interpret why FEV 1 measured with spirometer (FEV 1-Sp) is typically less than that measured with body plethysmograph (FEV 1-Pl) by an amount equal to thoracic gas compression volume (TGCV) [9–11].
+
+Expiration after development of airflow limiting segments is effort independent. What remains in the lungs when small airways start to close is called the closing capacity (CC) [12, 13]. Alternatively, RV remains in the lung when all small airways are closed. The volume of air expired between CC and RV is called the closing volume (CV).
+
+It is evident from the above description that pulmonary ventilation depends on the airways resistance offered to the airflow and expansibility (compliance) of the lungs and the thoracic cage. These two major determinants of pulmonary ventilation are crucial for understanding the pattern of change in static lung volume in different types of lung diseases.
+
+Airways resistance
+
+The tracheobronchial tree undergoes successive dichotomizations, where the airways become narrower but more distensible as we proceed downward. It is, therefore, difficult to apply simple laws of physics that govern fluid flow across single, non-branched, non-distensible tube system to evaluate respiratory airways resistance. For example, the lowest airways resistance resides on smallest bronchioles but not large airways. Because bronchioles are arranged in parallel, their resistances depend on the total cross sectional area of all bronchioles rather than the radius of a single bronchiole.
+
+Airways resistance is inversely proportional to the lung volume. P Pl decreases significantly upon inspiration, which enhances distension of airways especially small bronchioles. At higher lung volumes, attachments from the alveolar walls pull small airways apart and hence enhance the effect of P Pl on decreasing airways resistance. In contrast, airways resistance increases significantly during forceful expiration due to formation of flow limiting segments.
+
+2. Compliance of the lung and the chest wall
+
+Compliance is a physical term used to predict the change in volume per unit change in the transmural pressure (P T) i.e. the pressure difference across two sides of a wall. From physiological perspective, the P T for the lungs (trans-pulmonary pressure), chest wall (trans-chest wall pressure) and respiratory system (trans-respiratory pressure) are calculated by subtracting P alv – P Pl, P Pl – P atm and P alv – P atm, respectively. According to physics, if P T is equal to zero then the system is resting i.e. neither inflating nor deflating.
+
+Like lung volumes, the lung compliance can be measured under static and dynamic conditions. Figure 3 shows the static pressure volume curves (PVC) of the lungs and the chest wall. The entire lung PVC in Fig. 3 falls within the positive limb of P aw, suggesting the tendency of the lungs to collapse at any degree of pulmonary inflation. The lungs are never rested within the chest cage i.e. trans-pulmonary pressure never reaches zero. If removed outside the body then trans-pulmonary pressure can reach zero; however, the lung will not be empty completely, Fig. 3.
+
+In comparison, chest wall tends to recoil outward as far as the lung is filled with 80% of TLC or less. At lung volumes more than 80% of TLC, the chest wall recoils inward, Fig. 3.
+
+The lung–chest wall system is rested when P alv is equal P atm and the lungs are filled with FRC. At this point the inward recoil tendency of the lungs is equal to the outward recoil tendency of the chest wall, Fig. 3.
+
+The PVC of the lungs can also be recorded during breathing to evaluate dynamic lung compliance. It is evident from Fig. 4a that dynamic PVC for inspiration and expiration are separate and do not follow the same pathway. This phenomenon is known as hysteresis and can be explained by the variations of surface tension at alveolar air-fluid interface during inspiration and expiration. Pulmonary surfactant is a natural substance that reduces surface tension of the fluid layer lining the alveoli. During inspiration, alveolar surface tension is likely to increase because pulmonary surfactant spreads over a wider alveolar surface. The reverse occurs during expiration, where pulmonary surfactant condenses in a smaller alveolar surface. Hysteresis can also be explained by progressive opening “recruitment” and closure “derecruitment” of small airways and alveoli during inspiration and expiration respectively.
+
+*Fig. 4 a Dynamic PVC of the lungs. b Work of breathing*
+
+The work of breathing is usually estimated by the area under the dynamic PVC of the lungs (Fig. 4b). During inspiration, the work needed to overcome elastic forces of the chest wall, lungs parenchyma and alveolar surface tension is called elastic work of breathing. In addition, a resistive work is needed during inspiration to overcome tissue and airways resistance. In contrast to inspiration, only resistive work of breathing is required during expiration. Under physiological condition the work needed for inspiration is more than that needed for expiration. The energy stored in the elastic lung structures during inspiration is partly consumed as expiratory resistive work and partly dissipated as heat (Fig. 4b).
+
+Physiologically, the diseases that affect the respiratory system are characterized by restrictive, obstructive or combined pattern of ventilatory defects [14, 15]. Restrictive lung diseases (RLD) are associated with decreased compliance of the lungs, chest wall or both. This results in rightward shift of static PVC of the lungs, chest wall or both [15]. It is evident from Fig. 5 (a and b) that decreased compliance of the lungs increases P Pl needed for tidal inspiration, yet tidal volume is below the expected average. In RLD, the rightward shift of dynamic lung compliance curves increases the elastic work of breathing required for inspiration, which is usually compensated by rapid shallow breathing [16]. Causes of RLD may be intrinsic or extrinsic to the lung parenchyma. Examples of intrinsic causes are interstitial lung diseases, pneumonia and surfactant deficiency e.g. acute respiratory distress syndrome. Alternatively, respiratory muscles weakness, chest deformities, cardiomegaly, hemothorax, pneumothorax, empyema, pleural effusion or thickening are examples of extrinsic causes.
+
+*Fig. 5 Work of breathing in normal subjects (a) and patients with RLD (b) and OLD (c)*
+
+In obstructive lung diseases (OLD), the pulmonary compliance is normal or increased especially if emphysematous lung changes co-exist. No extra-negative P Pl is needed as dynamic lung compliance curves are either not displaced or shifted leftward if emphysematous lung changes developed (Fig. 5c). The main defect in OLD is increased airways resistance, especially during expiration. Normally, expiration is a passive process as the energy needed to overcome expiratory resistive work of breathing is stored in the elastic fibers of the lung during inspiration. It is evident from Fig. 5c that expiration is not completely passive if OLD exists as an extra-work is needed during expiration, which is usually performed with the aid of expiratory muscles. Famous examples of obstructive pulmonary diseases include bronchial asthma, emphysema, chronic bronchitis and bronchiectasis.
+
+## Physiological determinant of the static lung volumes and capacities
+
+### Age
+
+The lung volumes increase steadily from birth to adulthood. The lungs mature at the age of 20–25 years, yet only minimal changes occur in the lung volumes over the following 10 years [17]. After 35 years, aging is associated with gradual changes in the lung volumes and other pulmonary functions [18]. These changes include enhanced static lung compliance due to diminished alveolar elastic recoil and depressed chest wall compliance due to stiffening and increased outward recoil of the thoracic cage [19, 20]. As a result of these changes in the lung and chest wall compliances, the inward recoil of the lung balances the outward recoil of the chest at higher FRC as age progress [12, 13]. These variations in lung and chest wall compliances act synergistically to cause early closure of small airways upon forced expiration and hence explain increased RV in elder people [19]. As shown in Fig. 6, TLC corrected for age remains almost constant throughout life. However, gradual increase in FRC and RV with age results in simultaneous decrease in IC and VC, respectively [17]. It is also apparent from Fig. 6 that the increase in CC when age advances is more compared with FRC. This results in a reduction of the difference between these two capacities i.e. D (FRC ─ CC) as age progress. In the sitting position, CC is likely to exceed FRC at an age of 75 years or more [12] (Fig. 6), but much earlier in the supine position (≈44 years) [13].
+
+*Fig. 6 Changes in static lung volume and capacities with age*
+
+### Gender
+
+Standard morphometric methods confirmed that males had larger lung size, more respiratory bronchioles and wider airways diameters compared with females with the same age and stature [21, 22]. These anatomical lung differences between males and females explain the gender variations in static lung volumes and capacities. Males tend to have larger anthropometric measurements and are, therefore, more likely to have increased static lung volumes and capacities [23].
+
+### Anthropometric measurements
+
+Tall stature is typically associated with higher static lung volumes and capacities [24]. Increased body weight is associated with lower lung volumes in obese subjects [25]. Central obesity preferentially depresses chest wall compliance leading to marked decrease in FRC and ERV [26]. Waist-to-hip ratio could be a better predictor for fat distribution than BMI [27]. However, the effects of obesity on the highest (TLC) and lowest (RV) lung volumes are modest [28]. In athletes, repeated muscular exercise increases muscle mass and consequently body weight. In such condition, the static lung volumes and capacities are expected to increase with weight [29–32]. Increased total body fat content, therefore, seems better than high BMI as an indicator of obesity as well as predictor for decreased static lung volumes and capacities [33].
+
+### Ethnicity
+
+Previous studies demonstrated ethnic differences in the lung volumes/capacities [34, 35]. Such variations were largely attributed to anthropometric differences between different ethnic groups. For example, white Americans of European descent have larger trunk/leg ratio, and consequently higher lung volumes, compared with black Americans of African descent [36]. Other studies failed to justify ethnic differences in lung volumes by the variations in chest contours and suggest differences in inspiratory muscle strength and/or lung compliance as alternative explanation(s) [37]. Recently, GLI (Global Lung Initiative) offered spirometric prediction equations, that also considered ethnic differences, to be used worldwide [38].
+
+### Other factors
+
+Although age, gender, weight, height and ethnicity are the main physiological determinants of the static lung volumes/capacities, other factors should be considered while interpreting results of spirometry.
+
+Lung volumes correlate well with the level of physical activity [39], regular exercise, especially swimming and endurance training [32]. Alternatively, ascending to high altitude may decrease lung volumes probably due to increased pulmonary blood flow, pulmonary edema or premature small airways closure [40]. Alterations in lung volumes associated with high altitude are usually temporal and resolve after returning to the sea level [41].
+
+The position of the subject is important while measuring lung volumes and capacities [42]. Compared with the standing position, the effect of gravity on abdominal viscera is less at sitting position and least if lying supine [43]. The supine position, therefore, compromises diaphragmatic movement and chest wall recoil during breathing. FRC and ERV are higher upon standing compared with sitting and supine positions [44]. Increased intra-abdominal pressure during pregnancy also causes decreased FRC and ERV [45].
+
+## Interpretation of static lung volumes and capacities
+
+The quality and accuracy of the test(s) used for estimation of the lung volumes/capacities should be ensured before interpretation [46]. The measurement of the lung volumes is not an easy task and requires cooperative patients and qualified technicians. Personnel in the pulmonary laboratory must be able to judge precisely test acceptability and reproducibility criteria for the different techniques used for estimation of the lung volumes/capacities [46]. Special attention should be given to the accuracy of the method used for estimation of the static lung volumes and capacities. Plethysmography was claimed to overestimate while dilutional techniques may underestimate the true measurements of the lung volumes and capacities [5].
+
+The normal lung volumes and capacities can be predicted based on gender, age, weight, height and ethnicity of the subject [47]. Although authorized spirometric reference values are available for most populations, normal ranges of lung volumes and capacities were not established in others yet. Static lung volumes and capacities are frequently expressed as a percent of the predicted value, where 80% and 120% are considered as the lower (LLN) and upper (ULN) limits of normal. However, the use of these cut-off points may be misleading in characterizing ventilatory defects in some pulmonary diseases if only simple spirometry is performed [48, 49].
+
+## Patterns of changes of static lung volumes and capacities in pulmonary diseases
+
+### Restrictive lung diseases
+
+Diseases associated with diminished pulmonary compliance interfere with lung expansion and ultimately reduce static lung volumes/capacities, Fig. 7. According to ATS/ERS, restrictive ventilatory defect is ideally confirmed by a reduction in TLC below the 5 th percentile of the predicted value, and a normal FEV 1 /VC [46], though most pulmonary laboratories use VC instead because it constitutes most of the TLC [50, 51]. The use of VC as a surrogate for TLC in diagnosis of RLD assumes a proportional decrease in RV and TLC so that their ratio remains constant [46, 52]. Simultaneous increase of RV with VC reduction is indicative of obstructive lung disease because of small airway closure or expiratory flow limitation [53]. Therefore, decreased VC readings are better interpreted in conjunction with other clinical and spirometric indicators of OLD, especially if measurements of RV and TLC are not available [54]. According to Aaron et al., the chances of restrictive ventilatory defect are 2.4% and 58% in those with normal and low VC readings, respectively [55]. These findings suggest that normal VC may be effective in exclusion, but not confirmation, of RLD. This hypothesis is further supported by Vandevoorde et al., who concluded that RLD can be ruled out if FVC is more than 100% of predicted in males or greater than 85% of predicted in females [56].
+
+*Fig. 7 Typical changes in the static lung volumes and capacities in RLD and OLD*
+
+If thoracic cage expansion is restricted, rightward displacement of the chest wall static PVC takes place. This readjusts the point where the inward recoil of the lung equalizes the outward recoil of the chest wall at a lower FRC level. In cases with severe central obesity, decreased chest wall compliance reduces FRC and ERV [57]. According to Jones et al., FRC and ERV at a body mass index (BMI) of 30 kg/m 2 were about 75% and 47% of the respective measurements for subjects with BMI of 20 kg/m 2 [26]. The same study failed to demonstrate a significant effect of high BMI on RV/TLC ratio, which indicates proportional reduction in RV and TLC in overweight and obese subjects. Marked reduction of FRC and ERV in such cases may induce premature formation of flow limiting segments during quiet breathing, especially in the lower regions of the lungs [57]. This implication is further supported by the studies that confirm an inverse relationship between FRC and airway resistance in obese patients [58, 59]. Furthermore, temporal variability of ventilation heterogeneities increases in obesity when FRC falls approximately below 65% of predicted or ERV below 0.6 l, promoting ventilation perfusion inhomogeneity and eventually hypoxemia [60].
+
+### Obstructive lung diseases
+
+ATS/ERS defined obstructive ventilatory defect as “disproportionate reduction of maximal airflow from the lung in relation to the maximal volume (i.e. VC) that can be displaced from the lung” [46]. Obstructive ventilatory defect is ideally confirmed by FEV 1 /VC ratio below the 5 th percentile of the predicted value [46].
+
+VC can be measured while doing slow (SIVC) or forceful (FIVC) inspiration starting from RV up to the level of TLC [61, 62]. Likewise, VC can be estimated while doing slow (SEVC) or forceful (FEVC) expiration starting from TLC up to the level of RV [62, 63]. Taking into consideration the variations in airways resistance between inspiration and expiration, it is easy to conclude that different types of VC are not equal. The differences between the four types of VC are minimal in those with no ventilatory defect [61]. In patients with OLD, FIVC > SIVC > SEVC > FEVC [50, 63]. FEVC (commonly abbreviated as FVC) is, therefore, the most affected type of VC in cases with severe obstructive lung disease [63].
+
+In OLD, formation of flow limiting segments occurs early due to narrowing of airways. Premature closure of small airways in OLD results in increased RV. In such conditions, RV may increase at the expense of VC so that TLC remains unchanged [53]. Alternatively, RV may increase while VC remains almost unchanged leading to higher TLC values [64]. In both scenarios, RV/TLC ratio is likely to increase irrespective of the changes in the VC, a fact that explains the superiority RV/TLC over TLC in evaluation of OLD [65].
+
+Similar to the RV and VC changes occurring in patients with OLD, FRC may increase at the expense of IC so that TLC remains unchanged [4]. IC can directly be measured by spirometry, which is advantageous in places where there are no facilities to measure RV and TLC. There are accumulating evidences that indices derived from IC are helpful to assess severity, prognosis and response to treatment of many OLD [66–69]. According to Yetkin and Gunen, IC is more efficient than FEV 1 is assessing severity of COPD during acute exacerbation [68]. In another study, COPD patients with IC/TLC ratio < 25% are more likely to have unscheduled doctor visits due to exacerbations or need of carefully monitored treatment [69]. This fact is further supported by the finding of French et al., where IC/TLC ≤ 25% was identified as significant predictor of death in patients with emphysematous COPD [67].
+
+It is evident from the above reports that air trapping in obstructive ventilatory defects correlates positively with RV, FRC, TLC and RV/TLC, but negatively with VC, IC and IC/TLC. As described earlier, FIVC > SIVC > SEVC > FEVC in patients with OLD [50, 63]. Accordingly, lung hyperinflation can also be evaluated by assessing the difference between FIVC and FEVC [62, 63, 70, 71]. Larger difference between FIVC and FEVC had been validated not only as an efficient index of severity of airflow limitation, but also as powerful predictor of exercise tolerance in patients with COPD [62, 71]. Likewise, lung hyperinflation secondary to air trapping can be estimated by calculating the difference between lung volumes measured by plethysmography and dilutional techniques. This assumption was validated by Tantucci et al. when they evaluated FRC in asthmatic patient by plethysmography (FRC pl) and helium dilution method (FRC He) following methacholine challenge test [72]. The results confirmed that comparing FRC pl with FRC He was helpful in identifying asthmatic patients at risk of tidal airway closure induced by methacholine. In addition, Tantucci et al. demonstrated significant correlation between (FRC pl ─ FRC He) and the unventilated lung volume following provocation of bronchoconstriction [72]. Typical changes in the static lung volumes and capacities in OLD are summarized in Fig. 7.
+
+It is important to note that FEV 1 should be interpreted with caution when measured with spirometers (FEV 1-Sp) rather than plethysmography (FEV 1-Pl). As explaineed earlier, FEV 1-Sp, but not FEV 1-Pl, is biased by TGCV [9–11]. In a recent study involving asthmatic patients during methacholine challenge, FEV 1-Sp overestimated bronchoconstrictor response in those with larger lung volume [73]. FEV 1-Sp also overestimated bronchodilator response following administration of salbutamol to the same patients. In another study, FEV 1-Sp and FEV 1-Pl were simultaneously measured in 47 and 51 subjects with dominant emphysema and dominant chronic bronchitis, respectively [74]. The results confirmed larger lung volumes and lower FEV 1-Sp in emphysematous patients compared with those with dominant chronic bronchitis. When FEV 1-Pl was used instead of FEV 1-Sp, the disease severity was less in classes with dominant emphysema than those with dominant chronic bronchitis. The study concluded that FEV 1-Sp was biased by TGCV more in patients with dominant emphysema because their TLCs were larger.
+
+### Mixed obstructive and restrictive lung diseases
+
+Decreased TLC in patients with spirometric evidence of airways obstruction e.g. RV above ULN or FEV 1 % below LLN is suggestive of mixed obstructive-restrictive lung diseases (MORLD). In MORLD, premature formation of flow limiting segments and diminished pulmonary compliance synergistically decrease FVC. The reduction in FVC sometimes exceeds that occurs in FEV 1 and consequently results in relatively higher FEV 1 % [75]. This fact explains the findings of Balfe et al. study, which compared grading of airway obstruction based FEV 1 (American Thoracic Society (ATS) recommendation) and FEV 1 % (Intermountain Thoracic Society (ITS) recommendation). According to Balfe et al. results, ATS recommendation graded 90% of 147 MORLD patients as having severe obstruction while ITS recommendation graded only 3% with the same degree of obstruction [76]. An additional evidence was given by another study that demonstrated an inverse correlation between FEV 1 % and RV/TLC in patients with MORLD [77]. Accordingly, adjustment of FEV 1 % for the reduction in TLC is likely to improve grading of the severity of obstruction in patients with MORLD. This assumption was verified in a study evaluating 199 patients with MORLD, where FEV 1 %/TLC was used for adjustment for the degree of restriction [78]. Based on ATS/ERS grading, 76% and 11% of MORLD patients were classified as having severe and mild-to-moderate obstruction, respectively. In comparison, the adjusted FEV 1 % (FEV 1 %/TLC) classified 33% and 44% of the same patients as having severe and mild-to-moderate obstruction. The study concluded that subdividing FEV 1 % by TLC resulted in an appropriate severity classification of obstruction when restriction coexists [78].
+
+## Non-specific pattern of changes in lung volumes and capacities
+
+The term non-specific pattern (NSP) is used to describe coexistence of low FEV 1 and FVC with normal TLC and FEV 1 % [46, 79]. Although lower values of both FEV 1 and FVC are associated with obstructive as well as restrictive ventilatory defect, the other components of NSP (i.e. normal TLC and FEV 1 %) minimize the possibility of these conditions. Hypothetically, if RV increases while TLC remains unchanged, VC and consequently FEV 1 are expected to decrease below the normal limits. NSP may, therefore, reflect an obstructive impairment of small airways, where RV expands at the expense of VC so that TLC remains unaffected [53, 79]. However, NSP was also demonstrated in patients with restrictive ventilatory defects [80]. In a previous study, in depth evaluation of a random sample of patients with the NSP confirmed OLD and RLD as a possible cause in 68% and 32% of the examined subjects, respectively [80]. In another study, NSP persisted in 64% of 1,284 patients after 3 years follow up. Nonetheless, the NSP changed to RLD, OLD, MORLD and normal patterns in 16%, 15%, 2% and 3% of the studied patients, respectively [81]. Possible explanation for NSP in patients with restrictive ventilatory defects remains for further investigations and researches.
+
+## Conclusions
+
+Physiological factors that influence lung volumes/capacities include age, gender, weight, height and ethnicity, physical activity, altitude and others, which should be considered while interpreting results of spirometry. Likewise, the quality and accuracy of the test(s) used for estimation of the lung volumes/capacities should be considered before interpretation.
+
+RLDs are ideally confirmed by low TLC, though most pulmonary laboratories use VC instead. VC instead of TLC may be effective in exclusion, but not confirmation, of RLD. Simultaneous increase in RV with VC reduction is indicative of obstructive lung disease. Therefore, decreased VC readings are better interpreted in conjunction with other clinical and spirometric indicators of OLD. In RLD like central obesity, decreased chest wall compliance reduces FRC and ERV, which may induce premature formation of flow limiting segments during quiet breathing.
+
+Premature closure of small airways in OLDs results in increased RV. In such conditions, RV may increase at the expense of VC so that TLC remains unchanged. Alternatively, RV may increase while VC remains almost unchanged leading to higher TLC values. In both scenarios, RV/TLC ratio is likely to increase irrespective of the changes in the VC, a fact that explains the superiority RV/TLC over TLC in evaluation of OLD. Similarly, FRC may increase at the expense of IC so that TLC remains unchanged.
+
+Decreased TLC in patients with spirometric evidence of airways obstruction is suggestive of MORLD. In such conditions, the reduction in FVC exceeds that occurs in FEV 1 and consequently results in relatively higher FEV 1 %. The term NSP is used to describe coexistence of low FEV 1 and FVC with normal TLC and FEV 1 %. NSP may reflect an obstructive impairment of small airways, where RV expands at the expense of VC so that TLC remains unaffected. NSP was also demonstrated in patients with restrictive ventilatory defects, which needs further investigations and researches.
+
+American Thoracic Society
+
+Chronic obstructive pulmonary disease
+
+European Respiratory Society
+
+Expiratory reserve volume
+
+Forced expiratory volume in the first second
+
+FEV 1 measured with spirometer
+
+FEV 1 measured with plethysmography
+
+Forced expiratory vital capacity
+
+Forced inspiratory vital capacity
+
+Functional residual capacity
+
+Forced vital capacity
+
+Inspiratory capacity
+
+Inspiratory reserve volume
+
+Intermountain Thoracic Society
+
+Lower limits of normal
+
+Non-specific pattern
+
+Obstructive lung diseases
+
+Intra-alveolar pressure
+
+Atmospheric pressure
+
+Intra-airways pressure
+
+Elastic recoil pressure
+
+Intrapleural pressure
+
+Transmural pressure
+
+Pressure volume curves
+
+Restrictive lung diseases
+
+Residual volume
+
+Slow expiratory vital capacity
+
+Slow inspiratory vital capacity
+
+Thoracic gas compression volume
+
+Total lung capacity
+
+Tidal volume
+
+Upper limits of normal
+
+Vital capacity
+
+## Acknowledgements
+
+None to declare.
+
+### Funding
+
+None to declare.
+
+### Availability of data and materials
+
+The datasets supporting the conclusions of this article are included within the manuscript.
+
+### Authors’ contributions
+
+MFL performed literature search, drafted and revised the manuscript.
+
+### Competing interests
+
+The author declares that he have no competing interests.
+
+### Consent for publication
+
+Not applicable.
+
+### Ethics approval and consent to participate
+
+Not applicable.
+
+## References
+
+- 1. Barr RG, Stemple KJ, Mesia-Vela S, Basner RC, Derk SJ, Henneberger PK, et al. Reproducibility and validity of a handheld spirometer. Respir Care. 2008;53(4):433–41. http://www.ncbi.nlm.nih.gov/pubmed/18364054. pmcid: PMC3595551 pmid: 18364054
+- 2. Gerbase MW, Dupuis-Lozeron E, Schindler C, Keidel D, Bridevaux PO, Kriemler S, et al. Agreement between spirometers: a challenge in the follow-up of patients and populations? Respiration 2013 85 6 505 14 doi: 10.1159/000346649 pmid: 23485575
+- 3. Liistro G, Vanwelde C, Vincken W, Vandevoorde J, Verleden G, Buffels J, et al. Technical and functional assessment of 10 office spirometers: A multicenter comparative study Chest 2006 130 3 657 65 doi: 10.1378/chest.130.3.657 pmid: 16963659
+- 4. Ruppel GL. What is the clinical value of lung volumes? Respir Care 2012 57 1 26 doi: 10.4187/respcare.01374 pmid: 22222123
+- 5. Sue DY. Measurement of lung volumes in patients with obstructive lung disease. A matter of time (constants) Ann Am Thorac Soc 2013 10 5 525 30 doi: 10.1513/AnnalsATS.201307-236OC pmid: 24161058
+- 6. Swanney MP, Beckert LE, Frampton CM, Wallace LA, Jensen RL, Crapo RO. Validity of the American Thoracic Society and other spirometric algorithms using FVC and forced expiratory volume at 6s for predicting a reduced total lung capacity Chest 2004 126 6 1861 6 doi: 10.1378/chest.126.6.1861 pmid: 15596685
+- 7. Dawson SV, Elliott EA. Wave-speed limitation on expiratory flow-a unifying concept J Appl Physiol 1977 43 3 498 515 pmid: 914721 doi: 10.1152/jappl.1977.43.3.498
+- 8. Elliott EA, Dawson SV. Test of wave-speed theory of flow limitation in elastic tubes J Appl Physiol 1977 43 3 516 522 pmid: 914722 doi: 10.1152/jappl.1977.43.3.516
+- 9. Krowka MJ, Enright PL, Rodarte JR, Hyatt RE. Effect of Effort on Measurement of Forced Expiratory Volume in One Second Am Rev Respir Dis 1987 136 4 829 33 doi: 10.1164/ajrccm/136.4.829 pmid: 3662235
+- 10. Sharafkhaneh A, Goodnight-White S, Officer TM, Rodarte JR, Boriek AM. Altered thoracic gas compression contributes to improvement in spirometry with lung volume reduction surgery Thorax 2005 60 4 288 92 doi: 10.1136/thx.2004.033589 pmid: 15790983 pmcid: PMC1747381
+- 11. Sharafkhaneh A, Babb TG, Officer TM, Hanania NA, Sharafkhaneh H, Boriek AM. The Confounding Effects of Thoracic Gas Compression on Measurement of Acute Bronchodilator Response Am J Respir Crit Care Med 2007 175 4 330 5 doi: 10.1164/rccm.200602-255OC pmid: 17110648 pmcid: PMC1899266
+- 12. Milic-Emili J, Torchio R, D’Angelo E. Closing volume: a reappraisal (1967–2007) Eur J Appl Physiol 2007 99 6 567 83 doi: 10.1007/s00421-006-0389-0 pmid: 17237952
+- 13. Leblanc P, Ruff F, Milic-Emili J. Effects of age and body position on "airway closure" in man. J Appl Physiol. 1970;28(4):448–51. http://www.ncbi.nlm.nih.gov/pubmed/5437433. Accessed 24 Dec 2016. doi: 10.1152/jappl.1970.28.4.448 pmid: 5437433
+- 14. Mannino DM, Ford ES, Redd SC. Obstructive and restrictive lung disease and functional limitation: data from the Third National Health and Nutrition Examination J Intern Med 2003 254 6 540 547 doi: 10.1111/j.1365-2796.2003.01211.x pmid: 14641794
+- 15. Arabalibeik H, Khomami MH, Agin K, Setayeshi S. Classification of restrictive and obstructive pulmonary diseases using spirometry data Stud Health Technol Inform 2009 142 25 27 pmid: 19377105
+- 16. Javaheri S, Sicilian L. Lung function, breathing pattern, and gas exchange in interstitial lung disease Thorax 1992 47 2 93 97 doi: 10.1136/thx.47.2.93 pmid: 1549829 pmcid: PMC463579
+- 17. Sharma G, Goodwin J. Effect of aging on respiratory system physiology and immunology Clin Interv Aging 2006 1 3 253 260 doi: 10.2147/ciia.2006.1.3.253 pmid: 18046878 pmcid: PMC2695176
+- 18. Zeleznik J. Normative aging of the respiratory system Clin Geriatr Med 2003 19 1 1 18 doi: 10.1016/S0749-0690(02)00063-0 pmid: 12735112
+- 19. Mittman C, Edelman NH, Norris AH, Shock NW. Relationship between chest wall and pulmonary compliance and age J Appl Physiol 1965 20 6 1211 1216
+- 20. Janssens JP, Pache JC, Nicod LP. Physiological changes in respiratory function associated with ageing Eur Respir J 1999 13 1 197 205 doi: 10.1183/09031936.99.14614549 pmid: 10836348
+- 21. Martin TR, Castile RG, Fredberg JJ, Wohl ME, Mead J. Airway size is related to sex but not lung size in normal adults J Appl Physiol 1987 63 5 2042 2047 pmid: 3693235 doi: 10.1152/jappl.1987.63.5.2042
+- 22. Thurlbeck WM. Postnatal human lung growth Thorax 1982 37 8 564 571 doi: 10.1136/thx.37.8.564 pmid: 7179184 pmcid: PMC459376
+- 23. Carey MA, Card JW, Voltz JW, Germolec DR, Korach KS, Zeldin DC. The impact of sex and sex hormones on lung physiology and disease: lessons from animal studies. Am J Physiol Lung Cell Mol Physiol. 2007;293(2):L272–8. doi: 10.1152/ajplung.00174.2007 pmid: 17575008
+- 24. Bhatti U, Rani K, Memon MQ. Variation in lung volumes and capacities among young males in relation to height. J Ayub Med Coll Abbottabad. 26(2):200–2. http://www.ncbi.nlm.nih.gov/pubmed/25603677. Accessed 16 Oct 2016. pmid: 25603677
+- 25. Littleton SW. Impact of obesity on respiratory function Respirology 2012 17 1 43 9 doi: 10.1111/j.1440-1843.2011.02096.x pmid: 22040049
+- 26. Jones RL, Nzekwu M-MU. The effects of body mass index on lung volumes Chest 2006 130 3 827 33 doi: 10.1378/chest.130.3.827 pmid: 16963682
+- 27. Zavorsky GS, Murias JM, Kim DJ, Gow J, Sylvestre J-L, Christou NV. Waist-to-Hip Ratio Is Associated With Pulmonary Gas Exchange in the Morbidly Obese. Chest. 2007;131(2):362–7. doi: 10.1378/chest.06-1513 pmid: 17296634
+- 28. Mehari A, Afreen S, Ngwa J, Setse R, Thomas AN, Poddar V, et al. Obesity and Pulmonary Function in African Americans PLoS One 2015 10 10 doi: 10.1371/journal.pone.0140610 pmid: 26488406 pmcid: PMC4619259
+- 29. Myrianthefs P, Grammatopoulou I, Katsoulas T, Baltopoulos G. Spirometry may underestimate airway obstruction in professional Greek athletes Clin Respir J 2014 8 2 240 7 doi: 10.1111/crj.12066 pmid: 24131526
+- 30. Myrianthefs P, Baltopoulos G. A higher tidal volume may be used for athletes according to measured FVC. Scientific World Journal. 2013;2013:526138. doi:10.1155/2013/526138. doi: 10.1155/2013/526138 pmcid: PMC3826291 pmid: 24288489
+- 31. Lemaitre F, Coquart JB, Chavallard F, Castres I, Mucci P, Costalat G, et al. Effect of additional respiratory muscle endurance training in young well-trained swimmers. J Sports Sci Med. 2013;12(4):630–8. http://www.ncbi.nlm.nih.gov/pubmed/24421721. Accessed 16 Oct 2016. pmcid: PMC3873652 pmid: 24421721
+- 32. Rong C, Bei H, Yun M, Yuzhu W, Mingwu Z. Lung function and cytokine levels in professional athletes J Asthma 2008 45 4 343 8 doi: 10.1080/02770900801956371 pmid: 18446601
+- 33. Kamal R, Kesavachandran CN, Bihari V, Sathian B, Srivastava AK. Alterations in Lung Functions Based on BMI and Body Fat % Among Obese Indian Population at National Capital Region Nepal J Epidemiol 2015 5 2 470 9 pmid: 26913206 doi: 10.3126/nje.v5i2.12829 pmcid: PMC4727546
+- 34. Piirilä P, Seikkula T, Välimäki P. Differences between Finnish and European reference values for pulmonary diffusing capacity Int J Circumpolar Health 2007 66 5 449 457 doi: 10.3402/ijch.v66i5.18316 pmid: 18274210
+- 35. Korotzer B, Ong S, Hansen JE. Ethnic differences in pulmonary function in healthy nonsmoking Asian-Americans and European-Americans Am J Respir Crit Care Med 2000 161 4 Pt 1 1101 8 doi: 10.1164/ajrccm.161.4.9902063 pmid: 10764297
+- 36. Rossiter CE, Weill H. Ethnic differences in lung function: evidence for proportional differences Int J Epidemiol 1974 3 1 55 61 doi: 10.1093/ije/3.1.55 pmid: 4838716
+- 37. Whittaker AL, Sutton AJ, Beardsmore CS. Are ethnic differences in lung function explained by chest size? Arch Dis Child Fetal Neonatal Ed 2005 90 5 F423 8 doi: 10.1136/adc.2004.062497 pmid: 15871993 pmcid: PMC1721951
+- 38. Quanjer PH, Stanojevic S, Cole TJ, Baur X, Hall GL, Culver BH, et al. Multi-ethnic reference values for spirometry for the 3–95-yr age range: the global lung function 2012 equations. Eur Respir J. 2012;40(6):1324–43. doi: 10.1183/09031936.00080312 pmcid: PMC3786581 pmid: 22743675
+- 39. Nystad W, Samuelsen SO, Nafstad P, Langhammer A. Association between level of physical activity and lung function among Norwegian men and women: the HUNT study Int J Tuberc Lung Dis 2006 10 12 1399 1405 pmid: 17167959
+- 40. Pollard AJ, Mason NP, Barry PW, Pollard RC, Collier DJ, Fraser RS, et al. Effect of altitude on spirometric parameters and the performance of peak flow meters. Thorax. 1996;51(2):175–8. http://www.ncbi.nlm.nih.gov/pubmed/8711651. Accessed 16 Oct 2016. doi: 10.1136/thx.51.2.175 pmcid: PMC473030 pmid: 8711651
+- 41. Cogo A, Legnani D, Allegra L. Respiratory function at different altitudes Respiration 1997 64 6 416 421 doi: 10.1159/000196717 pmid: 9383816
+- 42. Melam GR, Buragadda S, Alhusaini A, Alghamdi MA, Alghamdi MS, Kaushal P. Effect of Different Positions on FVC and FEV1 Measurements of Asthmatic Patients J Phys Ther Sci 2014 26 4 591 3 doi: 10.1589/jpts.26.591 pmid: 24764640 pmcid: PMC3996428
+- 43. Kera T, Maruyama H. The effect of posture on respiratory activity of the abdominal muscles J Physiol Anthropol Appl Human Sci 2005 24 4 259 265 doi: 10.2114/jpa.24.259 pmid: 16079565
+- 44. Nielsen KG, Holte K, Kehlet H. Effects of posture on postoperative pulmonary function Acta Anaesthesiol Scand 2003 47 10 1270 1275 doi: 10.1046/j.1399-6576.2003.00240.x pmid: 14616326
+- 45. LoMauro A, Aliverti A. Respiratory physiology of pregnancy: Physiology masterclass. Breathe (Sheff). 2015;11(4):297–301. doi: 10.1183/20734735.008615 pmcid: PMC4818213 pmid: 27066123
+- 46. Pellegrino R, Viegi G, Brusasco V, Crapo RO, Burgos F, Casaburi R, et al. Interpretative strategies for lung function tests. Eur Respir J. 2005;26(5):948–68. doi: 10.1183/09031936.05.00035205 pmid: 16264058
+- 47. Degens P, Merget R. Reference values for spirometry of the European Coal and Steel Community: time for change Eur Respir J 2008 31 3 687 doi: 10.1183/09031936.00145507 pmid: 18310407
+- 48. Miller MR, Quanjer PH, Swanney MP, Ruppel G, Enright PL. Interpreting lung function data using 80% predicted and fixed thresholds misclassifies more than 20% of patients Chest 2011 139 1 52 9 doi: 10.1378/chest.10-0189 pmid: 20522571
+- 49. Mannino DM, Diaz-Guzman E. Interpreting lung function data using 80% predicted and fixed thresholds identifies patients at increased risk of mortality. Chest. 2012;141(1):73–80. doi: 10.1378/chest.11-0797 pmid: 21659434
+- 50. Lutfi MF. Review Article Vital capacity derived spirometric measurements. Sudan Med J. 2012;48(1):86–100.
+- 51. Venkateshiah SB, Ioachimescu OC, McCarthy K, Stoller JK. The utility of spirometry in diagnosing pulmonary restriction. Lung. 186(1):19–25. doi: 10.1007/s00408-007-9052-8 pmid: 17990034
+- 52. Mehrparvar AH, Sakhvidi MJZ, Mostaghaci M, Davari MH, Hashemi SH, Zare Z. Spirometry values for detecting a restrictive pattern in occupational health settings Tanaffos 2014 13 2 27 34 pmid: 25506373 pmcid: PMC4260070
+- 53. Dykstra BJ, Scanlon PD, Kester MM, Beck KC, Enright PL. Lung volumes in 4,774 patients with obstructive lung disease Chest 1999 115 1 68 74 doi: 10.1378/chest.115.1.68 pmid: 9925064
+- 54. Quadrelli S, Bosio M, Salvado A, Chertcoff J. [Accuracy of spirometry in the diagnosis of pulmonary restriction] Medicina (B Aires) 2007 67 6 Pt 2 685 690 pmid: 18422058
+- 55. Aaron SD, Dales RE, Cardinal P. How accurate is spirometry at predicting restrictive pulmonary impairment? Chest 1999 115 3 869 873 doi: 10.1378/chest.115.3.869 pmid: 10084506
+- 56. Vandevoorde J, Verbanck S, Schuermans D, Broekaert L, Devroey D, Kartounian J, et al. Forced vital capacity and forced expiratory volume in six seconds as predictors of reduced total lung capacity. Eur Respir J. 2008;31(2):391-5. doi: 10.1183/09031936.00032307 pmid: 17928313
+- 57. Lin C-K, Lin C-C. Work of breathing and respiratory drive in obesity. Respirology. 2012;17(3):402–11. doi: 10.1111/j.1440-1843.2011.02124.x pmid: 22212441
+- 58. Pelosi P, Croci M, Ravagnan I, Tredici S, Pedoto A, Lissoni A, et al. The effects of body mass on lung volumes, respiratory mechanics, and gas exchange during general anesthesia. Anesth Analg. 1998;87(3):654–60. http://www.ncbi.nlm.nih.gov/pubmed/9728848. Accessed 20 Oct 2016. doi: 10.1097/00000539-199809000-00031 pmid: 9728848
+- 59. Zerah F, Harf A, Perlemuter L, Lorino H, Lorino AM, Atlan G. Effects of obesity on respiratory resistance Chest 1993 103 5 1470 1476 doi: 10.1378/chest.103.5.1470 pmid: 8486029
+- 60. Pellegrino R, Gobbi A, Antonelli A, Torchio R, Gulotta C, Pellegrino GM, et al. Ventilation heterogeneity in obesity. J Appl Physiol. 2014;116(9):1175–81. doi:10.1152/japplphysiol.01339.2013. doi: 10.1152/japplphysiol.01339.2013 pmid: 24651986
+- 61. Bencowitz HZ. Inspiratory and expiratory vital capacity Chest 1984 85 6 834 835 doi: 10.1378/chest.85.6.834 pmid: 6723401
+- 62. Brusasco V, Pellegrino R, Rodarte JR. Vital capacities in acute and chronic airway obstruction: dependence on flow and volume histories Eur Respir J 1997 10 6 1316 1320 doi: 10.1183/09031936.97.10061316 pmid: 9192935
+- 63. Chhabra SK. Forced vital capacity, slow vital capacity, or inspiratory vital capacity: which is the best measure of vital capacity? J Asthma 1998 35 4 361 365 doi: 10.3109/02770909809075669 pmid: 9669830
+- 64. Ranu H, Wilde M, Madden B. Pulmonary function tests Ulster Med J 2011 80 2 84 90 pmid: 22347750 pmcid: PMC3229853
+- 65. Shin TR, Oh Y-M, Park JH, et al. The Prognostic Value of Residual Volume/Total Lung Capacity in Patients with Chronic Obstructive Pulmonary Disease J Korean Med Sci 2015 30 10 1459 65 doi: 10.3346/jkms.2015.30.10.1459 pmid: 26425043 pmcid: PMC4575935
+- 66. Celli BR, Decramer M, Lystig T, Kesten S, Tashkin DP. Longitudinal inspiratory capacity changes in chronic obstructive pulmonary disease Respir Res. 2012 13 66 doi: 10.1186/1465-9921-13-66 pmid: 22866681 pmcid: PMC3443002
+- 67. French A, Balfe D, Mirocha JM, Falk JA, Mosenifar Z. The inspiratory capacity/total lung capacity ratio as a predictor of survival in an emphysematous phenotype of chronic obstructive pulmonary disease Int J Chron Obstruct Pulmon Dis. 2015 10 1305 12 pmid: 26203237 doi: 10.2147/COPD.S76739 pmcid: PMC4506024
+- 68. Yetkin O, Gunen H. Inspiratory capacity and forced expiratory volume in the first second in exacerbation of chronic obstructive pulmonary disease Clin Respir J 2008 2 1 36 40 doi: 10.1111/j.1752-699X.2007.00040.x pmid: 20298302
+- 69. Zaman M, Mahmood S, Altayeh A. Low inspiratory capacity to total lung capacity ratio is a risk factor for chronic obstructive pulmonary disease exacerbation Am J Med Sci 2010 339 5 411 4 doi: 10.1097/MAJ.0b013e3181d6578c pmid: 20375693
+- 70. Engel T, Heinig JH, Madsen F, Nikander K. Peak inspiratory flow and inspiratory vital capacity of patients with asthma measured with and without a new dry-powder inhaler device (Turbuhaler) Eur Respir J 1990 3 9 1037 1041 pmid: 2289551
+- 71. Yuan W, He X, Xu Q-F, Wang H-Y, Casaburi R. Increased difference between slow and forced vital capacity is associated with reduced exercise tolerance in COPD patients BMC Pulm Med. 2014 14 16 doi: 10.1186/1471-2466-14-16 pmid: 24507622 pmcid: PMC3938036
+- 72. Tantucci C, Guerini M, Boni E, Corda L, Pini L. Tidal airway closure during bronchoconstriction in asthma: usefulness of lung volume measurements J Asthma 2011 48 1 33 40 doi: 10.3109/02770903.2010.528499 pmid: 21039204
+- 73. Pellegrino R, Antonelli A, Crimi E, Gulotta C, Torchio R, Dutto L, et al. Dependence of bronchoconstrictor and bronchodilator responses on thoracic gas compression volume. Respirology. 2014;19(7):1040–5. doi: 10.1111/resp.12349 pmid: 25039769
+- 74. Pellegrino R, Crimi E, Gobbi A, Torchio R, Antonelli A, Gulotta C, et al. Severity grading of chronic obstructive pulmonary disease: the confounding effect of phenotype and thoracic gas compression J Appl Physiol 2015 118 7 796 802 doi: 10.1152/japplphysiol.00801.2014 pmid: 25414244
+- 75. Wesołowski S, Boros P. Restrictive pattern in spirometry: does FEV(1)/FVC need to be increased? Pneumonol Alergol Pol 2011 79 6 382 387 pmid: 22028116
+- 76. Balfe DL, Lewis M, Mohsenifar Z. Grading the severity of obstruction in the presence of a restrictive ventilatory defect Chest 2002 122 4 1365 1369 doi: 10.1378/chest.122.4.1365 pmid: 12377866
+- 77. Boros P, Franczuk M, Wesołowski S. ["Mixed" changes in spirometry--verification of the pattern of lung function impairment] Pneumonol Alergol Pol 2003 71 11–12 527 532 pmid: 15305658
+- 78. Gardner ZS, Ruppel GL, Kaminsky DA. Grading the severity of obstruction in mixed obstructive-restrictive lung disease. Chest. 2011;140(3):598–603. doi: 10.1378/chest.10-2860 pmid: 21415132
+- 79. Chevalier-Bidaud B, Gillet-Juvin K, Callens E, Chenu R, Graba S, Essalhi M, et al. Non specific pattern of lung function in a respiratory physiology unit: causes and prevalence: results of an observational cross-sectional and longitudinal study. BMC Pulm Med. 2014;14:148. doi: 10.1186/1471-2466-14-148 pmcid: PMC4176867 pmid: 25233902
+- 80. Hyatt RE, Cowl CT, Bjoraker JA, Scanlon PD. Conditions associated with an abnormal nonspecific pattern of pulmonary function tests. Chest. 2009;135(2):419–24. doi: 10.1378/chest.08-1235 pmid: 18812444
+- 81. Iyer VN, Schroeder DR, Parker KO, Hyatt RE, Scanlon PD. The nonspecific pulmonary function test: longitudinal follow-up and outcomes. Chest. 2011;139(4):878–86. doi: 10.1378/chest.10-0804 pmid: 20724741

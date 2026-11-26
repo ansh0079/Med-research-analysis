@@ -1,0 +1,22 @@
+{
+  "catalogueId": "252",
+  "spreadsheetRow": 52,
+  "topic": "Anxiety disorders and panic disorder: diagnosis and management",
+  "specialty": "Psychiatry",
+  "decision": "downloaded open source",
+  "source": {
+    "title": "Canadian clinical practice guidelines for the management of anxiety, posttraumatic stress and obsessive-compulsive disorders.",
+    "year": 2014,
+    "pmid": "25081580",
+    "pmcid": "PMC4120194",
+    "doi": "10.1186/1471-244X-14-S1-S1",
+    "url": "https://europepmc.org/articles/PMC4120194",
+    "sourceBody": "BMC Psychiatry",
+    "storedAs": ""
+  },
+  "whyItFits": "2014 Canadian guidelines for panic disorder and the other anxiety and related disorders, including CBT and antidepressant treatment.",
+  "limitations": "",
+  "synopsisWritten": true,
+  "mcqsWritten": true,
+  "mcqCount": 5
+}

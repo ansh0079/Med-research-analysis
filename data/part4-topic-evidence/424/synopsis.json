@@ -1,0 +1,36 @@
+{
+  "catalogueId": "424",
+  "topic": "Alcohol withdrawal syndrome and delirium tremens management in ICU",
+  "scope": "Stored full NICE CG100 text on acute alcohol withdrawal, delirium tremens, and withdrawal seizures in hospital.",
+  "keyRecommendations": [
+    {
+      "text": "Offer hospital admission for medically assisted withdrawal if the person has, or is at high risk of, withdrawal seizures or delirium tremens.",
+      "strength": "not_graded",
+      "population": "Acute alcohol withdrawal"
+    },
+    {
+      "text": "Use a symptom-triggered regimen in hospital or where 24-hour assessment is available.",
+      "strength": "not_graded",
+      "population": "Inpatient alcohol withdrawal"
+    },
+    {
+      "text": "For delirium tremens, offer oral lorazepam first. If symptoms persist or oral medication is declined, offer parenteral lorazepam or haloperidol. Do not offer phenytoin for withdrawal seizures.",
+      "strength": "not_graded",
+      "population": "Delirium tremens and withdrawal seizures"
+    }
+  ],
+  "clinicalBottomLine": "Admit high-risk withdrawal, including delirium tremens and seizures, for medically assisted withdrawal; treat delirium tremens with oral lorazepam first and do not use phenytoin for withdrawal seizures.",
+  "notableCaveats": [
+    "CG100 is hospital guidance and does not set ICU ventilator targets. MCQs stay inside the withdrawal, delirium tremens, and seizure recommendations."
+  ],
+  "source": {
+    "title": "Alcohol-use disorders: diagnosis and management of physical complications. NICE guideline CG100.",
+    "year": 2010,
+    "pmid": "",
+    "pmcid": "",
+    "doi": "",
+    "url": "https://www.nice.org.uk/guidance/cg100",
+    "sourceBody": "NICE",
+    "storedAs": "data/question-repair-source-import.json guideline_documents source_url cg100"
+  }
+}

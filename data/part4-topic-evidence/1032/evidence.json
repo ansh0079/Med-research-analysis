@@ -1,0 +1,22 @@
+{
+  "catalogueId": "1032",
+  "spreadsheetRow": 64,
+  "topic": "Diffusing Capacity of the Lung for Carbon Monoxide",
+  "specialty": "Pulmonology",
+  "decision": "downloaded open source",
+  "source": {
+    "title": "Diffusing capacity of the lungs for carbon monoxide.",
+    "year": 2024,
+    "pmid": "",
+    "pmcid": "",
+    "doi": "",
+    "url": "https://www.ncbi.nlm.nih.gov/books/NBK556149/",
+    "sourceBody": "StatPearls / NCBI Bookshelf",
+    "storedAs": ""
+  },
+  "whyItFits": "NCBI Bookshelf chapter on how to interpret DLCO, including the percent-predicted range, conditions that raise or lower it, and the Va and Kco components.",
+  "limitations": "Open NCBI Bookshelf chapter. The ERS/ATS 2017 DLCO technical standard was not in PMC. The severity table on the Bookshelf page did not extract as numeric rows, so those percentages are not used except the 75% to 140% sentence that is in the prose.",
+  "synopsisWritten": true,
+  "mcqsWritten": true,
+  "mcqCount": 5
+}

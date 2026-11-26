@@ -1,0 +1,22 @@
+{
+  "catalogueId": "35",
+  "spreadsheetRow": 62,
+  "topic": "COPD diagnosis and staging",
+  "specialty": "Pulmonology",
+  "decision": "in-app document",
+  "source": {
+    "title": "Chronic obstructive pulmonary disease in over 16s: diagnosis and management. NICE guideline NG115.",
+    "year": 2018,
+    "pmid": "",
+    "pmcid": "",
+    "doi": "",
+    "url": "https://www.nice.org.uk/guidance/ng115",
+    "sourceBody": "NICE",
+    "storedAs": "data/question-repair-source-import.json guideline_documents ng115"
+  },
+  "whyItFits": "Stored NICE NG115 recommendations on suspecting COPD, post-bronchodilator spirometry, the 0.7 ratio, and grading obstruction by FEV1.",
+  "limitations": "",
+  "synopsisWritten": true,
+  "mcqsWritten": true,
+  "mcqCount": 5
+}

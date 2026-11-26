@@ -1,0 +1,136 @@
+{
+  "catalogueId": "1029",
+  "topic": "Sleep-related hypoxemia in COPD",
+  "mcqs": [
+    {
+      "id": "1029-01",
+      "question": "Which COPD problem is the subject of this meta-analysis?",
+      "options": {
+        "A": "Simple nocturnal hypoxemia",
+        "B": "Daytime resting hypoxemia as the only eligible group",
+        "C": "Asthma",
+        "D": "Obesity hypoventilation as the title disease",
+        "E": "The population is not stated"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Simple nocturnal hypoxemia",
+      "explanation": "The paper is about oxygen for simple nocturnal hypoxemia in COPD.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "Front Pharmacol",
+          "sourceYear": 2023,
+          "sourceUrl": "https://europepmc.org/articles/PMC10469590",
+          "pmid": "37663258",
+          "pmcid": "PMC10469590",
+          "doi": "10.3389/fphar.2023.1123945",
+          "excerpt": "simple nocturnal hypoxemia in COPD"
+        }
+      ]
+    },
+    {
+      "id": "1029-02",
+      "question": "What total-mortality result does the meta-analysis report for the oxygen group?",
+      "options": {
+        "A": "RR 1.04 (95% CI 0.81–1.33, p = 0.77)",
+        "B": "RR 0.20 with a clear survival benefit",
+        "C": "Mortality was not reported",
+        "D": "RR 0.10",
+        "E": "A significant reduction with p < 0.01"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "RR 1.04 (95% CI 0.81–1.33, p = 0.77)",
+      "explanation": "The reported total-mortality RR is 1.04, with p = 0.77.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "Front Pharmacol",
+          "sourceYear": 2023,
+          "sourceUrl": "https://europepmc.org/articles/PMC10469590",
+          "pmid": "37663258",
+          "pmcid": "PMC10469590",
+          "doi": "10.3389/fphar.2023.1123945",
+          "excerpt": "The total mortality of long-term oxygen therapy (LTOT) in COPD patients with simple NOD in oxygen therapy group (RR = 1.04; 95% CI: 0.81–1.33, p = 0.77)"
+        }
+      ]
+    },
+    {
+      "id": "1029-03",
+      "question": "What result is given for progression to long-term oxygen therapy?",
+      "options": {
+        "A": "RR 1.07 (95% CI 0.76–1.51, p = 0.71)",
+        "B": "A large significant reduction",
+        "C": "The outcome was not studied",
+        "D": "RR 0.10",
+        "E": "Every patient avoided long-term oxygen"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "RR 1.07 (95% CI 0.76–1.51, p = 0.71)",
+      "explanation": "The risk of progression to LTOT events was RR 1.07, p = 0.71.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "Front Pharmacol",
+          "sourceYear": 2023,
+          "sourceUrl": "https://europepmc.org/articles/PMC10469590",
+          "pmid": "37663258",
+          "pmcid": "PMC10469590",
+          "doi": "10.3389/fphar.2023.1123945",
+          "excerpt": "risk of progression to LTOT events (RR = 1.07; 95% CI: 0.76–1.51, p = 0.71)"
+        }
+      ]
+    },
+    {
+      "id": "1029-04",
+      "question": "What did the meta-analysis find for PaO2?",
+      "options": {
+        "A": "Higher in the oxygen group, mean difference 13.47, p = 0.008",
+        "B": "Lower in the oxygen group",
+        "C": "No PaO2 data",
+        "D": "A non-significant fall",
+        "E": "Identical values"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Higher in the oxygen group, mean difference 13.47, p = 0.008",
+      "explanation": "PaO2 was higher in the oxygen group, mean difference 13.47, p = 0.008.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "Front Pharmacol",
+          "sourceYear": 2023,
+          "sourceUrl": "https://europepmc.org/articles/PMC10469590",
+          "pmid": "37663258",
+          "pmcid": "PMC10469590",
+          "doi": "10.3389/fphar.2023.1123945",
+          "excerpt": "PaO2 in patients with COPD and simple NOD in oxygen therapy group was higher than that in non-oxygen therapy group (mean difference (MD) = 13.47; 95% CI: 3.49–23.46, p = 0.008)"
+        }
+      ]
+    },
+    {
+      "id": "1029-05",
+      "question": "What does the paper’s conclusion say about survival?",
+      "options": {
+        "A": "Oxygen therapy has no significant effect on the survival rate",
+        "B": "Oxygen doubles survival",
+        "C": "Survival was not discussed",
+        "D": "Oxygen is harmful to oxygenation",
+        "E": "The conclusion recommends oxygen to extend life"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Oxygen therapy has no significant effect on the survival rate",
+      "explanation": "The conclusion says oxygen has no significant effect on the survival rate, while it can improve PaO2.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "Front Pharmacol",
+          "sourceYear": 2023,
+          "sourceUrl": "https://europepmc.org/articles/PMC10469590",
+          "pmid": "37663258",
+          "pmcid": "PMC10469590",
+          "doi": "10.3389/fphar.2023.1123945",
+          "excerpt": "oxygen therapy has no significant effect on the survival rate"
+        }
+      ]
+    }
+  ]
+}

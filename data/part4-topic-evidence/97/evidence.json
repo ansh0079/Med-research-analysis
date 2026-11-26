@@ -1,0 +1,22 @@
+{
+  "catalogueId": "97",
+  "spreadsheetRow": 69,
+  "topic": "Hepatopulmonary Syndrome",
+  "specialty": "Pulmonology",
+  "decision": "downloaded open source",
+  "source": {
+    "title": "Hepatopulmonary syndrome.",
+    "year": 2022,
+    "pmid": "36035361",
+    "pmcid": "PMC9403489",
+    "doi": "",
+    "url": "https://europepmc.org/articles/PMC9403489",
+    "sourceBody": "Open review",
+    "storedAs": ""
+  },
+  "whyItFits": "Open review of hepatopulmonary syndrome as a liver-disease complication with intrapulmonary vascular dilatations, shunting, and liver transplantation as the disease-modifying treatment.",
+  "limitations": "",
+  "synopsisWritten": true,
+  "mcqsWritten": true,
+  "mcqCount": 5
+}

@@ -1,0 +1,136 @@
+{
+  "catalogueId": "252",
+  "topic": "Anxiety disorders and panic disorder: diagnosis and management",
+  "mcqs": [
+    {
+      "id": "252-01",
+      "question": "What does the Canadian guideline text suggest should be considered first-line?",
+      "options": {
+        "A": "Benzodiazepine monotherapy for every patient",
+        "B": "CBT alone or CBT combined with pharmacotherapy",
+        "C": "Antipsychotic monotherapy",
+        "D": "No psychological treatment",
+        "E": "Stimulants"
+      },
+      "correctAnswer": "B",
+      "correctAnswerText": "CBT alone or CBT combined with pharmacotherapy",
+      "explanation": "The text says CBT alone or CBT combined with pharmacotherapy should be considered first-line.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "BMC Psychiatry",
+          "sourceYear": 2014,
+          "sourceUrl": "https://europepmc.org/articles/PMC4120194",
+          "pmid": "25081580",
+          "pmcid": "PMC4120194",
+          "doi": "10.1186/1471-244X-14-S1-S1",
+          "excerpt": "suggesting that CBT alone or CBT combined with pharmacotherapy should be considered as first-line treatment."
+        }
+      ]
+    },
+    {
+      "id": "252-02",
+      "question": "What did the cited meta-analysis of psychotherapy plus benzodiazepines find?",
+      "options": {
+        "A": "No benefit versus psychotherapy or medication alone",
+        "B": "Superiority to CBT in every trial",
+        "C": "That benzodiazepines cure panic disorder",
+        "D": "Benefit only in dementia",
+        "E": "Harm from all antidepressants"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "No benefit versus psychotherapy or medication alone",
+      "explanation": "That analysis included three trials and found no benefit of combination therapy compared with psychotherapy or medication alone.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "BMC Psychiatry",
+          "sourceYear": 2014,
+          "sourceUrl": "https://europepmc.org/articles/PMC4120194",
+          "pmid": "25081580",
+          "pmcid": "PMC4120194",
+          "doi": "10.1186/1471-244X-14-S1-S1",
+          "excerpt": "found no benefit to combination therapy compared with psychotherapy or medication alone"
+        }
+      ]
+    },
+    {
+      "id": "252-03",
+      "question": "Which classes does the guideline list as having demonstrated some efficacy?",
+      "options": {
+        "A": "SSRIs and SNRIs, among other antidepressants named in the same sentence",
+        "B": "Only lithium",
+        "C": "Only beta blockers",
+        "D": "Only inhaled steroids",
+        "E": "No drug class"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "SSRIs and SNRIs, among other antidepressants named in the same sentence",
+      "explanation": "SSRIs, SNRIs, NaSSAs, TCAs, MAOIs, and RIMAs are listed as having demonstrated some efficacy.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "BMC Psychiatry",
+          "sourceYear": 2014,
+          "sourceUrl": "https://europepmc.org/articles/PMC4120194",
+          "pmid": "25081580",
+          "pmcid": "PMC4120194",
+          "doi": "10.1186/1471-244X-14-S1-S1",
+          "excerpt": "selective serotonin reuptake inhibitors (SSRIs), serotonin norepinephrine reuptake inhibitors (SNRIs)"
+        }
+      ]
+    },
+    {
+      "id": "252-04",
+      "question": "Which set of conditions is named in the guideline scope?",
+      "options": {
+        "A": "Panic disorder, agoraphobia, specific phobia, social anxiety, GAD, OCD, and PTSD",
+        "B": "Only schizophrenia",
+        "C": "Only delirium tremens",
+        "D": "Only dementia",
+        "E": "Only opioid withdrawal"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Panic disorder, agoraphobia, specific phobia, social anxiety, GAD, OCD, and PTSD",
+      "explanation": "Those disorders are listed together in the introduction.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "BMC Psychiatry",
+          "sourceYear": 2014,
+          "sourceUrl": "https://europepmc.org/articles/PMC4120194",
+          "pmid": "25081580",
+          "pmcid": "PMC4120194",
+          "doi": "10.1186/1471-244X-14-S1-S1",
+          "excerpt": "panic disorder, agoraphobia, specific phobia, social anxiety disorder, generalized anxiety disorder, obsessive-compulsive disorder, and posttraumatic stress disorder"
+        }
+      ]
+    },
+    {
+      "id": "252-05",
+      "question": "How does the guideline say to choose a psychological treatment?",
+      "options": {
+        "A": "Prefer the therapies most thoroughly evaluated for that disorder",
+        "B": "Use the same therapy for every diagnosis",
+        "C": "Avoid CBT",
+        "D": "Choose by cost only",
+        "E": "Psychological treatment is not discussed"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Prefer the therapies most thoroughly evaluated for that disorder",
+      "explanation": "The forms of therapy most thoroughly evaluated in that particular disorder should be used first.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "BMC Psychiatry",
+          "sourceYear": 2014,
+          "sourceUrl": "https://europepmc.org/articles/PMC4120194",
+          "pmid": "25081580",
+          "pmcid": "PMC4120194",
+          "doi": "10.1186/1471-244X-14-S1-S1",
+          "excerpt": "the forms of therapy that have been most thoroughly evaluated in the particular anxiety or related disorder should be used fir"
+        }
+      ]
+    }
+  ]
+}

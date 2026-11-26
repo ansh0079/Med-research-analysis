@@ -1,0 +1,36 @@
+{
+  "catalogueId": "1146",
+  "topic": "Acute severe asthma",
+  "scope": "Open review of status asthmaticus management in the paediatric ICU.",
+  "keyRecommendations": [
+    {
+      "text": "Status asthmaticus is described with inhaled beta-agonists, oral or IV steroids, and oxygen, and usually needs hospital admission.",
+      "strength": "not_graded",
+      "population": "Status asthmaticus"
+    },
+    {
+      "text": "Nebulized ipratropium in the PICU is given at 125–500 mcg/dose every 4–6 hours.",
+      "strength": "not_graded",
+      "population": "PICU status asthmaticus"
+    },
+    {
+      "text": "About 5% of PICU admissions with status asthmaticus in a 2009–2019 database required intubation, and that percentage decreased over time.",
+      "strength": "not_graded",
+      "population": "PICU status asthmaticus"
+    }
+  ],
+  "clinicalBottomLine": "Treat status asthmaticus with beta-agonists, systemic steroids, and oxygen; add ipratropium in the stated PICU dose range; intubation is uncommon and became less frequent in the cited database.",
+  "notableCaveats": [
+    "The source is a paediatric ICU review. Adult BTS dose tables are not in this text."
+  ],
+  "source": {
+    "title": "Status Asthmaticus in the Pediatric ICU: A Comprehensive Review of Management and Challenges.",
+    "year": 2024,
+    "pmid": "39189288",
+    "pmcid": "PMC11348376",
+    "doi": "",
+    "url": "https://europepmc.org/articles/PMC11348376",
+    "sourceBody": "Pediatric status asthmaticus review",
+    "storedAs": ""
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "catalogueId": "971",
+  "spreadsheetRow": 73,
+  "topic": "Lung Transplantation",
+  "specialty": "Pulmonology",
+  "decision": "downloaded open source",
+  "source": {
+    "title": "Consensus document for the selection of lung transplant candidates: An update from the International Society for Heart and Lung Transplantation.",
+    "year": 2021,
+    "pmid": "34419372",
+    "pmcid": "PMC8979471",
+    "doi": "",
+    "url": "https://europepmc.org/articles/PMC8979471",
+    "sourceBody": "ISHLT / J Heart Lung Transplant",
+    "storedAs": ""
+  },
+  "whyItFits": "ISHLT consensus update on selecting lung-transplant candidates, including fewer absolute contraindications, timely referral, obesity, and prior malignancy.",
+  "limitations": "",
+  "synopsisWritten": true,
+  "mcqsWritten": true,
+  "mcqCount": 5
+}

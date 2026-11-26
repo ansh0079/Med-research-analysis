@@ -1,0 +1,136 @@
+{
+  "catalogueId": "342",
+  "topic": "GOLD COPD strategies",
+  "mcqs": [
+    {
+      "id": "342-01",
+      "question": "What did GOLD 2023 do with the old C and D groups?",
+      "options": {
+        "A": "Merged them into group E, for exacerbations",
+        "B": "Deleted all pharmacotherapy",
+        "C": "Renamed them group Z for fibrosis",
+        "D": "Left ABCD unchanged",
+        "E": "Replaced spirometry with CT only"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Merged them into group E, for exacerbations",
+      "explanation": "Former C and D are merged into group E. Groups A and B remain.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "GOLD / Am J Respir Crit Care Med",
+          "sourceYear": 2023,
+          "sourceUrl": "https://europepmc.org/articles/PMC10111975",
+          "pmid": "36856433",
+          "pmcid": "PMC10111975",
+          "doi": "10.1164/rccm.202301-0106pp",
+          "excerpt": "the former C and D groups are now merged into a single group termed “E” (for “Exacerbations”)"
+        }
+      ]
+    },
+    {
+      "id": "342-02",
+      "question": "What initial therapy does GOLD 2023 recommend for group E, and what is the eosinophil exception?",
+      "options": {
+        "A": "LAMA+LABA, unless eosinophils are at least 300 cells/μL, when triple therapy can be considered",
+        "B": "ICS alone for everyone",
+        "C": "SABA alone",
+        "D": "Never use a LAMA",
+        "E": "Triple therapy is forbidden if eosinophils are high"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "LAMA+LABA, unless eosinophils are at least 300 cells/μL, when triple therapy can be considered",
+      "explanation": "Group E starts with LAMA+LABA except when blood eosinophils are at least 300 cells/μL, when triple therapy can be considered.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "GOLD / Am J Respir Crit Care Med",
+          "sourceYear": 2023,
+          "sourceUrl": "https://europepmc.org/articles/PMC10111975",
+          "pmid": "36856433",
+          "pmcid": "PMC10111975",
+          "doi": "10.1164/rccm.202301-0106pp",
+          "excerpt": "For patients in Group E, LAMA + LABA is also the recommended initial therapy, except for those patients with blood eosinophils ≥300 cells/μl, in whom starting triple therapy (LABA + LAMA + ICS) can be considered."
+        }
+      ]
+    },
+    {
+      "id": "342-03",
+      "question": "What does the summary say about the symptom and exacerbation thresholds used on the axes?",
+      "options": {
+        "A": "They are unchanged from previous GOLD documents",
+        "B": "They were abolished",
+        "C": "Symptoms are no longer used",
+        "D": "Exacerbations in the previous week replace the previous year",
+        "E": "The axes were not described"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "They are unchanged from previous GOLD documents",
+      "explanation": "Symptom and previous-year exacerbation thresholds are unchanged, which is why A and B stay the same.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "GOLD / Am J Respir Crit Care Med",
+          "sourceYear": 2023,
+          "sourceUrl": "https://europepmc.org/articles/PMC10111975",
+          "pmid": "36856433",
+          "pmcid": "PMC10111975",
+          "doi": "10.1164/rccm.202301-0106pp",
+          "excerpt": "The thresholds proposed for symptoms ( x -axis) and history of exacerbations in the previous year ( y -axis) are unchanged"
+        }
+      ]
+    },
+    {
+      "id": "342-04",
+      "question": "What does GOLD 2023 say about the practical value of the ABE proposal?",
+      "options": {
+        "A": "It needs validation in clinical research",
+        "B": "It is already proven to reduce mortality by a stated percentage",
+        "C": "It should not be used",
+        "D": "Validation is unnecessary",
+        "E": "It applies only to asthma"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "It needs validation in clinical research",
+      "explanation": "The summary says the practical value needs to be validated by appropriate clinical research.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "GOLD / Am J Respir Crit Care Med",
+          "sourceYear": 2023,
+          "sourceUrl": "https://europepmc.org/articles/PMC10111975",
+          "pmid": "36856433",
+          "pmcid": "PMC10111975",
+          "doi": "10.1164/rccm.202301-0106pp",
+          "excerpt": "The practical value of this proposal needs to be validated by appropriate clinical research."
+        }
+      ]
+    },
+    {
+      "id": "342-05",
+      "question": "How does the summary characterise the airflow obstruction of COPD?",
+      "options": {
+        "A": "Persistent and often progressive",
+        "B": "Fully reversible in all patients",
+        "C": "Present only during sleep",
+        "D": "Absent by definition",
+        "E": "Only a restrictive defect"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Persistent and often progressive",
+      "explanation": "COPD is described as persistent, often progressive airflow obstruction from airway and/or alveolar abnormalities.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "GOLD / Am J Respir Crit Care Med",
+          "sourceYear": 2023,
+          "sourceUrl": "https://europepmc.org/articles/PMC10111975",
+          "pmid": "36856433",
+          "pmcid": "PMC10111975",
+          "doi": "10.1164/rccm.202301-0106pp",
+          "excerpt": "often progressive, airflow obstruction"
+        }
+      ]
+    }
+  ]
+}

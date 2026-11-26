@@ -1,0 +1,136 @@
+{
+  "catalogueId": "327",
+  "topic": "Byssinosis",
+  "mcqs": [
+    {
+      "id": "327-01",
+      "question": "Which workers are the population of the MultiTex baseline paper accepted for this topic?",
+      "options": {
+        "A": "Cotton textile workers",
+        "B": "Coal miners only",
+        "C": "Hospital nurses",
+        "D": "Asbestos millers only",
+        "E": "Grain farmers only"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Cotton textile workers",
+      "explanation": "The paper is the MultiTex baseline in cotton textile workers in Karachi.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "Occupational research",
+          "sourceYear": 2023,
+          "sourceUrl": "https://europepmc.org/articles/PMC9985716",
+          "pmid": "36717255",
+          "pmcid": "PMC9985716",
+          "doi": "",
+          "excerpt": "cotton textile workers"
+        }
+      ]
+    },
+    {
+      "id": "327-02",
+      "question": "How does the paper describe Schilling’s criteria?",
+      "options": {
+        "A": "Symptoms with decreased FEV1",
+        "B": "A chest X-ray score alone",
+        "C": "Blood eosinophils over 300",
+        "D": "A positive methacholine test only",
+        "E": "DLCO below 40% only"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Symptoms with decreased FEV1",
+      "explanation": "Schilling’s criteria are described as symptoms with decreased FEV1.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "Occupational research",
+          "sourceYear": 2023,
+          "sourceUrl": "https://europepmc.org/articles/PMC9985716",
+          "pmid": "36717255",
+          "pmcid": "PMC9985716",
+          "doi": "",
+          "excerpt": "Schilling’s criteria (symptoms with decreased forced expiratory volume in 1 s (FEV 1 )"
+        }
+      ]
+    },
+    {
+      "id": "327-03",
+      "question": "How does the MultiTex paper treat a post-bronchodilator FEV1/FVC below the lower limit of normal?",
+      "options": {
+        "A": "It was considered chronic airflow obstruction",
+        "B": "It was considered normal",
+        "C": "It excluded the worker from the study",
+        "D": "It defined asthma only",
+        "E": "The paper does not use spirometry"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "It was considered chronic airflow obstruction",
+      "explanation": "Values of the FEV1/FVC ratio below the lower limit of normal on the post-bronchodilator test were considered chronic airflow obstruction.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "Occupational research",
+          "sourceYear": 2023,
+          "sourceUrl": "https://europepmc.org/articles/PMC9985716",
+          "pmid": "36717255",
+          "pmcid": "PMC9985716",
+          "doi": "",
+          "excerpt": "Values of FEV 1 /forced vital capacity ratio below the lower limit of normality on postbronchodilator test were considered as ‘chronic airflow obstruction’"
+        }
+      ]
+    },
+    {
+      "id": "327-04",
+      "question": "The accepted paper’s title frames byssinosis as a problem of which exposure setting?",
+      "options": {
+        "A": "Cotton textile work",
+        "B": "Office work",
+        "C": "Deep-sea diving",
+        "D": "High altitude",
+        "E": "Radiation"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Cotton textile work",
+      "explanation": "The title is byssinosis and lung health among cotton textile workers.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "Occupational research",
+          "sourceYear": 2023,
+          "sourceUrl": "https://europepmc.org/articles/PMC9985716",
+          "pmid": "36717255",
+          "pmcid": "PMC9985716",
+          "doi": "",
+          "excerpt": "Byssinosis and lung health among cotton textile workers"
+        }
+      ]
+    },
+    {
+      "id": "327-05",
+      "question": "What kind of report is the accepted paper?",
+      "options": {
+        "A": "Baseline findings of the MultiTex trial",
+        "B": "A randomised drug-efficacy trial of pirfenidone",
+        "C": "A surgical case series of lobectomy",
+        "D": "An autopsy series of GIP only",
+        "E": "A vaccine trial"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Baseline findings of the MultiTex trial",
+      "explanation": "It reports baseline findings of the MultiTex trial.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "Occupational research",
+          "sourceYear": 2023,
+          "sourceUrl": "https://europepmc.org/articles/PMC9985716",
+          "pmid": "36717255",
+          "pmcid": "PMC9985716",
+          "doi": "",
+          "excerpt": "baseline findings of the MultiTex trial"
+        }
+      ]
+    }
+  ]
+}

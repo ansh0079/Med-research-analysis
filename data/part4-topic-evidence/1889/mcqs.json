@@ -1,0 +1,136 @@
+{
+  "catalogueId": "1889",
+  "topic": "Lung cancer screening low-dose CT",
+  "mcqs": [
+    {
+      "id": "1889-01",
+      "question": "What relative reduction in lung-cancer mortality did low-dose CT show compared with radiography in the NLST?",
+      "options": {
+        "A": "20.0% (95% CI 6.8 to 26.7)",
+        "B": "No reduction",
+        "C": "50%",
+        "D": "An increase in lung-cancer deaths",
+        "E": "The trial did not report lung-cancer mortality"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "20.0% (95% CI 6.8 to 26.7)",
+      "explanation": "The text reports a relative reduction in mortality from lung cancer with low-dose CT screening of 20.0% (95% CI 6.8 to 26.7).",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "NLST / N Engl J Med",
+          "sourceYear": 2011,
+          "sourceUrl": "https://europepmc.org/articles/PMC4356534",
+          "pmid": "21714641",
+          "pmcid": "PMC4356534",
+          "doi": "10.1056/NEJMoa1102873",
+          "excerpt": "representing a relative reduction in mortality from lung cancer with low-dose CT screening of 20.0% (95% CI, 6.8 to 26.7; P = 0.004)."
+        }
+      ]
+    },
+    {
+      "id": "1889-02",
+      "question": "What happened to all-cause mortality in the low-dose CT group versus radiography?",
+      "options": {
+        "A": "It was reduced by 6.7% (95% CI 1.2 to 13.6)",
+        "B": "It increased",
+        "C": "It was unchanged and not reported",
+        "D": "It fell by 20%",
+        "E": "Only lung-cancer deaths were counted"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "It was reduced by 6.7% (95% CI 1.2 to 13.6)",
+      "explanation": "Death from any cause was reduced by 6.7% compared with the radiography group.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "NLST / N Engl J Med",
+          "sourceYear": 2011,
+          "sourceUrl": "https://europepmc.org/articles/PMC4356534",
+          "pmid": "21714641",
+          "pmcid": "PMC4356534",
+          "doi": "10.1056/NEJMoa1102873",
+          "excerpt": "The rate of death from any cause was reduced in the low-dose CT group, as compared with the radiography group, by 6.7% (95% CI, 1.2 to 13.6; P = 0.02)."
+        }
+      ]
+    },
+    {
+      "id": "1889-03",
+      "question": "What was the comparator screening test in the mortality comparison used here?",
+      "options": {
+        "A": "Chest radiography",
+        "B": "No screening in the community",
+        "C": "PET-CT",
+        "D": "Sputum cytology alone",
+        "E": "MRI"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Chest radiography",
+      "explanation": "The reductions are versus the radiography group.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "NLST / N Engl J Med",
+          "sourceYear": 2011,
+          "sourceUrl": "https://europepmc.org/articles/PMC4356534",
+          "pmid": "21714641",
+          "pmcid": "PMC4356534",
+          "doi": "10.1056/NEJMoa1102873",
+          "excerpt": "as compared with the radiography group"
+        }
+      ]
+    },
+    {
+      "id": "1889-04",
+      "question": "Which screening modality is credited with the relative reduction in lung-cancer mortality?",
+      "options": {
+        "A": "Low-dose CT",
+        "B": "Standard-dose CT of the abdomen",
+        "C": "Chest radiography, which had the lower mortality",
+        "D": "Ultrasound",
+        "E": "No imaging"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Low-dose CT",
+      "explanation": "The relative reduction is with low-dose CT screening.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "NLST / N Engl J Med",
+          "sourceYear": 2011,
+          "sourceUrl": "https://europepmc.org/articles/PMC4356534",
+          "pmid": "21714641",
+          "pmcid": "PMC4356534",
+          "doi": "10.1056/NEJMoa1102873",
+          "excerpt": "low-dose CT screening"
+        }
+      ]
+    },
+    {
+      "id": "1889-05",
+      "question": "What P value does the NLST text attach to the 20.0% relative reduction in lung-cancer mortality?",
+      "options": {
+        "A": "0.004",
+        "B": "0.50",
+        "C": "The result is described as non-significant",
+        "D": "1.0",
+        "E": "No P value is given"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "0.004",
+      "explanation": "The 20.0% relative reduction is reported with P = 0.004.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "NLST / N Engl J Med",
+          "sourceYear": 2011,
+          "sourceUrl": "https://europepmc.org/articles/PMC4356534",
+          "pmid": "21714641",
+          "pmcid": "PMC4356534",
+          "doi": "10.1056/NEJMoa1102873",
+          "excerpt": "P = 0.004"
+        }
+      ]
+    }
+  ]
+}

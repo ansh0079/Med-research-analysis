@@ -1,0 +1,36 @@
+{
+  "catalogueId": "165",
+  "topic": "Lymphangioleiomyomatosis",
+  "scope": "Full ATS/JRS LAM guideline text posted by the American Thoracic Society, including the sirolimus, VEGF-D, doxycycline, and hormonal-therapy recommendations.",
+  "keyRecommendations": [
+    {
+      "text": "For LAM with abnormal or declining lung function, recommend sirolimus rather than observation (strong, moderate-quality evidence).",
+      "strength": "not_graded",
+      "population": "LAM with abnormal lung function"
+    },
+    {
+      "text": "For selected patients with problematic chylous effusions, suggest sirolimus before invasive management.",
+      "strength": "not_graded",
+      "population": "Chylous effusion"
+    },
+    {
+      "text": "Suggest not using doxycycline and not using hormonal therapy. When CT is characteristic but other confirmatory features are absent, recommend VEGF-D testing before lung biopsy.",
+      "strength": "not_graded",
+      "population": "Diagnosis and treatment"
+    }
+  ],
+  "clinicalBottomLine": "Use sirolimus for LAM with falling lung function, and consider it before an invasive procedure for a chylous effusion. Do not use doxycycline or hormonal therapy. Use a VEGF-D test to confirm the diagnosis before biopsy when the CT looks like LAM and there is no other confirmatory feature.",
+  "notableCaveats": [
+    "Replaces the abstract-only PMC record. The society PDF is the full guideline."
+  ],
+  "source": {
+    "title": "Official American Thoracic Society/Japanese Respiratory Society clinical practice guidelines: lymphangioleiomyomatosis diagnosis and management.",
+    "year": 2016,
+    "pmid": "27628078",
+    "pmcid": "PMC5803656",
+    "doi": "10.1164/rccm.201607-1384ST",
+    "url": "https://www.thoracic.org/statements/resources/interstitial-lung-disease/lam-guideline.pdf",
+    "sourceBody": "ATS/JRS",
+    "storedAs": ""
+  }
+}

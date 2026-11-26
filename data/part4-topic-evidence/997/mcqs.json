@@ -1,0 +1,136 @@
+{
+  "catalogueId": "997",
+  "topic": "Obstructive Sleep Apnea",
+  "mcqs": [
+    {
+      "id": "997-01",
+      "question": "Compared with no treatment, what does the review say PAP does?",
+      "options": {
+        "A": "It clinically significantly reduces severity, sleepiness, blood pressure, and motor vehicle accidents, and improves sleep-related quality of life",
+        "B": "It has no effect on sleepiness",
+        "C": "It increases motor vehicle accidents",
+        "D": "It is inferior to no treatment",
+        "E": "The comparison was not made"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "It clinically significantly reduces severity, sleepiness, blood pressure, and motor vehicle accidents, and improves sleep-related quality of life",
+      "explanation": "PAP compared with no treatment produced a clinically significant reduction in disease severity, sleepiness, blood pressure, and motor vehicle accidents, and an improvement in sleep-related quality of life.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "AASM / J Clin Sleep Med",
+          "sourceYear": 2019,
+          "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6374080/",
+          "pmid": "",
+          "pmcid": "PMC6374080",
+          "doi": "",
+          "excerpt": "The data demonstrated that PAP compared to no treatment results in a clinically significant reduction in disease severity, sleepiness, blood pressure, and motor vehicle accidents, and improvement in sleep-related quality of life in adults with OSA."
+        }
+      ]
+    },
+    {
+      "id": "997-02",
+      "question": "How did home initiation of PAP compare with in-laboratory titration?",
+      "options": {
+        "A": "Equivalent effects on patient outcomes",
+        "B": "Home initiation was inferior on every outcome",
+        "C": "Laboratory titration is required and home start is ineffective",
+        "D": "Home initiation was not studied",
+        "E": "Home initiation increased blood pressure only"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Equivalent effects on patient outcomes",
+      "explanation": "Initiation of PAP in the home demonstrated equivalent effects on patient outcomes compared with an in-laboratory titration approach.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "AASM / J Clin Sleep Med",
+          "sourceYear": 2019,
+          "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6374080/",
+          "pmid": "",
+          "pmcid": "PMC6374080",
+          "doi": "",
+          "excerpt": "the initiation of PAP in the home demonstrated equivalent effects on patient outcomes when compared to an in-laboratory titration approach."
+        }
+      ]
+    },
+    {
+      "id": "997-03",
+      "question": "What did the review find for auto-adjusting or bilevel PAP compared with CPAP?",
+      "options": {
+        "A": "No clinically significant difference in patient outcomes",
+        "B": "Bilevel PAP was clearly superior",
+        "C": "Auto-adjusting PAP was harmful",
+        "D": "CPAP was abandoned",
+        "E": "The modalities were not compared"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "No clinically significant difference in patient outcomes",
+      "explanation": "Auto-adjusting or bilevel PAP did not result in clinically significant differences in patient outcomes compared with standard continuous PAP.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "AASM / J Clin Sleep Med",
+          "sourceYear": 2019,
+          "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6374080/",
+          "pmid": "",
+          "pmcid": "PMC6374080",
+          "doi": "",
+          "excerpt": "the use of auto-adjusting or bilevel PAP did not result in clinically significant differences in patient outcomes compared with standard continuous PAP."
+        }
+      ]
+    },
+    {
+      "id": "997-04",
+      "question": "Which added interventions improved PAP adherence?",
+      "options": {
+        "A": "Educational, behavioral, troubleshooting, and telemonitoring interventions",
+        "B": "No intervention improved adherence",
+        "C": "Only a change of machine brand",
+        "D": "Sedatives alone",
+        "E": "Stopping follow-up"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Educational, behavioral, troubleshooting, and telemonitoring interventions",
+      "explanation": "The review reports a clinically significant improvement in adherence with educational, behavioral, troubleshooting, and telemonitoring interventions.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "AASM / J Clin Sleep Med",
+          "sourceYear": 2019,
+          "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6374080/",
+          "pmid": "",
+          "pmcid": "PMC6374080",
+          "doi": "",
+          "excerpt": "data demonstrated a clinically significant improvement in PAP adherence with the use of educational, behavioral, troubleshooting, and telemonitoring interventions."
+        }
+      ]
+    },
+    {
+      "id": "997-05",
+      "question": "How did nasal interfaces compare with oronasal interfaces?",
+      "options": {
+        "A": "Nasal interfaces had improved adherence and slightly greater reductions in OSA severity",
+        "B": "Oronasal interfaces were better on both adherence and severity",
+        "C": "The interfaces were identical and not compared",
+        "D": "Nasal masks were contraindicated",
+        "E": "Only full-face masks reduced the apnea-hypopnea index"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Nasal interfaces had improved adherence and slightly greater reductions in OSA severity",
+      "explanation": "Nasal interfaces compared with oronasal interfaces had improved adherence and slightly greater reductions in OSA severity.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "AASM / J Clin Sleep Med",
+          "sourceYear": 2019,
+          "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6374080/",
+          "pmid": "",
+          "pmcid": "PMC6374080",
+          "doi": "",
+          "excerpt": "nasal interfaces compared to oronasal interfaces have improved adherence and slightly greater reductions in OSA severity, heated humidification compared to no humidification reduces some continuous PAP-related side effects, and pressure profile PAP did not result in clinically significant differences in patient outcomes compared with standard continuous PAP."
+        }
+      ]
+    }
+  ]
+}

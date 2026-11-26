@@ -1,0 +1,136 @@
+{
+  "catalogueId": "2177",
+  "topic": "The febrile child: assessment, red flags and paediatric sepsis",
+  "mcqs": [
+    {
+      "id": "2177-01",
+      "question": "What does NG143 tell the clinician to do when a febrile child under 5 has signs that could be sepsis?",
+      "options": {
+        "A": "Think 'Could this be sepsis?' and use the NICE guideline on suspected sepsis in under 16s",
+        "B": "Give antibiotics only after 5 days of fever",
+        "C": "Ignore appearance if the temperature is under 38°C",
+        "D": "Discharge all children who are drinking",
+        "E": "Use adult qSOFA only"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Think 'Could this be sepsis?' and use the NICE guideline on suspected sepsis in under 16s",
+      "explanation": "NG143 says think 'Could this be sepsis?' and refer to the NICE sepsis guideline when fever is accompanied by possible sepsis features.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "NICE",
+          "sourceYear": 2019,
+          "sourceUrl": "https://www.nice.org.uk/guidance/ng143",
+          "pmid": "",
+          "pmcid": "",
+          "doi": "",
+          "excerpt": "Think 'Could this be sepsis?' and refer to NICE's guideline on suspected sepsis in under 16s if a child presents with fever and symptoms or signs that indicate possible sepsis."
+        }
+      ]
+    },
+    {
+      "id": "2177-02",
+      "question": "Which tool does NG143 use to assess the risk of serious illness in fever under 5?",
+      "options": {
+        "A": "The traffic light system",
+        "B": "The Glasgow-Blatchford score",
+        "C": "CURB-65",
+        "D": "Wells score",
+        "E": "APGAR at 5 minutes only"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "The traffic light system",
+      "explanation": "NG143 says assess the risk of serious illness using the traffic light system.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "NICE",
+          "sourceYear": 2019,
+          "sourceUrl": "https://www.nice.org.uk/guidance/ng143",
+          "pmid": "",
+          "pmcid": "",
+          "doi": "",
+          "excerpt": "predict the risk of serious illness using the traffic light system"
+        }
+      ]
+    },
+    {
+      "id": "2177-03",
+      "question": "How should the traffic-light table be used in a child with a learning disability?",
+      "options": {
+        "A": "Ignore the table",
+        "B": "Take that child's learning disability into account when interpreting the table",
+        "C": "Always score every feature as red",
+        "D": "Use adult early-warning scores instead",
+        "E": "Do not examine the child"
+      },
+      "correctAnswer": "B",
+      "correctAnswerText": "Take that child's learning disability into account when interpreting the table",
+      "explanation": "NG143 says take the individual child's learning disability into account when interpreting the traffic-light table.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "NICE",
+          "sourceYear": 2019,
+          "sourceUrl": "https://www.nice.org.uk/guidance/ng143",
+          "pmid": "",
+          "pmcid": "",
+          "doi": "",
+          "excerpt": "When assessing children with learning disabilities, take the individual child's learning disability into account when interpreting the traffic light table."
+        }
+      ]
+    },
+    {
+      "id": "2177-04",
+      "question": "Which respiratory rates does NG143 list as tachypnoea when assessing a febrile child for pneumonia?",
+      "options": {
+        "A": "Over 60/min at 0–5 months, over 50/min at 6–12 months, and over 40/min when older than 12 months",
+        "B": "Over 20/min at any age",
+        "C": "Over 100/min only",
+        "D": "Bradypnoea below 10/min",
+        "E": "Rate is not used"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Over 60/min at 0–5 months, over 50/min at 6–12 months, and over 40/min when older than 12 months",
+      "explanation": "The pneumonia signs include those age-specific tachypnoea thresholds, plus crackles, nasal flaring, indrawing, cyanosis, and hypoxia.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "NICE",
+          "sourceYear": 2019,
+          "sourceUrl": "https://www.nice.org.uk/guidance/ng143",
+          "pmid": "",
+          "pmcid": "",
+          "doi": "",
+          "excerpt": "tachypnoea (respiratory rate greater than 60 breaths per minute, age 0 to 5 months; greater than 50 breaths per minute, age 6 to 12 months; greater than 40 breaths per minute, age older than 12 months)"
+        }
+      ]
+    },
+    {
+      "id": "2177-05",
+      "question": "What does NG143 say about forehead chemical thermometers?",
+      "options": {
+        "A": "They are the preferred device in infants",
+        "B": "They are unreliable",
+        "C": "They replace axillary measurement in sepsis",
+        "D": "They are required before antibiotics",
+        "E": "They are more accurate than rectal measurement"
+      },
+      "correctAnswer": "B",
+      "correctAnswerText": "They are unreliable",
+      "explanation": "NG143 states that forehead chemical thermometers are unreliable.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "NICE",
+          "sourceYear": 2019,
+          "sourceUrl": "https://www.nice.org.uk/guidance/ng143",
+          "pmid": "",
+          "pmcid": "",
+          "doi": "",
+          "excerpt": "Forehead chemical thermometers are unreliable"
+        }
+      ]
+    }
+  ]
+}

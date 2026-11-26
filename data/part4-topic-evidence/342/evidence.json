@@ -1,0 +1,22 @@
+{
+  "catalogueId": "342",
+  "spreadsheetRow": 66,
+  "topic": "GOLD COPD strategies",
+  "specialty": "Pulmonology",
+  "decision": "downloaded open source",
+  "source": {
+    "title": "Global Initiative for Chronic Obstructive Lung Disease 2023 Report: GOLD Executive Summary.",
+    "year": 2023,
+    "pmid": "36856433",
+    "pmcid": "PMC10111975",
+    "doi": "10.1164/rccm.202301-0106pp",
+    "url": "https://europepmc.org/articles/PMC10111975",
+    "sourceBody": "GOLD / Am J Respir Crit Care Med",
+    "storedAs": ""
+  },
+  "whyItFits": "GOLD 2023 executive summary, including replacement of groups C and D by group E and initial therapy for group E.",
+  "limitations": "",
+  "synopsisWritten": true,
+  "mcqsWritten": true,
+  "mcqCount": 5
+}

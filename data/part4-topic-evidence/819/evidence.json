@@ -1,0 +1,22 @@
+{
+  "catalogueId": "819",
+  "spreadsheetRow": 72,
+  "topic": "Lung Cancer screening guidelines",
+  "specialty": "Pulmonology",
+  "decision": "downloaded open source",
+  "source": {
+    "title": "Lung Cancer: Screening. U.S. Preventive Services Task Force recommendation.",
+    "year": 2021,
+    "pmid": "",
+    "pmcid": "",
+    "doi": "",
+    "url": "https://www.uspreventiveservicestaskforce.org/uspstf/recommendation/lung-cancer-screening",
+    "sourceBody": "USPSTF",
+    "storedAs": ""
+  },
+  "whyItFits": "USPSTF 2021 recommendation statement on annual low-dose CT screening for lung cancer, including who to screen and when to stop.",
+  "limitations": "",
+  "synopsisWritten": true,
+  "mcqsWritten": true,
+  "mcqCount": 5
+}

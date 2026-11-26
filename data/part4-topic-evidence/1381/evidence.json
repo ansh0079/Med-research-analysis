@@ -1,0 +1,22 @@
+{
+  "catalogueId": "1381",
+  "spreadsheetRow": 65,
+  "topic": "Drug-Induced ILD",
+  "specialty": "Pulmonology",
+  "decision": "downloaded open source",
+  "source": {
+    "title": "Drug-Induced Interstitial Lung Disease: A Systematic Review.",
+    "year": 2018,
+    "pmid": "30326612",
+    "pmcid": "PMC6209877",
+    "doi": "10.3390/jcm7100356",
+    "url": "https://europepmc.org/articles/PMC6209877",
+    "sourceBody": "J Clin Med",
+    "storedAs": ""
+  },
+  "whyItFits": "Systematic review of the diagnosis of drug-induced interstitial lung disease, including how often biopsy agrees with the clinical diagnosis.",
+  "limitations": "",
+  "synopsisWritten": true,
+  "mcqsWritten": true,
+  "mcqCount": 5
+}

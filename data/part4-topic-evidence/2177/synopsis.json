@@ -1,0 +1,36 @@
+{
+  "catalogueId": "2177",
+  "topic": "The febrile child: assessment, red flags and paediatric sepsis",
+  "scope": "NICE NG143 on assessing fever in children under 5, including the traffic-light system and when to think of sepsis.",
+  "keyRecommendations": [
+    {
+      "text": "Think 'Could this be sepsis?' and use the NICE suspected-sepsis guideline if fever is accompanied by symptoms or signs of possible sepsis.",
+      "strength": "not_graded",
+      "population": "Fever under 5 years"
+    },
+    {
+      "text": "Assess the risk of serious illness with the traffic-light system.",
+      "strength": "not_graded",
+      "population": "Fever under 5 years"
+    },
+    {
+      "text": "Pneumonia red-flag signs include age-specific tachypnoea, crackles, nasal flaring, chest indrawing, cyanosis, and low oxygen saturation.",
+      "strength": "not_graded",
+      "population": "Fever under 5 with respiratory signs"
+    }
+  ],
+  "clinicalBottomLine": "In a febrile child under 5, use the traffic-light assessment and ask whether this could be sepsis, referring to the sepsis guideline when suggestive signs are present.",
+  "notableCaveats": [
+    "NG143 points to a separate sepsis guideline rather than reproducing a full paediatric sepsis bundle."
+  ],
+  "source": {
+    "title": "Fever in under 5s: assessment and initial management. NICE guideline NG143.",
+    "year": 2019,
+    "pmid": "",
+    "pmcid": "",
+    "doi": "",
+    "url": "https://www.nice.org.uk/guidance/ng143",
+    "sourceBody": "NICE",
+    "storedAs": ""
+  }
+}

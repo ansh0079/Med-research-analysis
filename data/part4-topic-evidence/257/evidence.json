@@ -1,0 +1,22 @@
+{
+  "catalogueId": "257",
+  "spreadsheetRow": 60,
+  "topic": "Bronchial Provocation Testing",
+  "specialty": "Pulmonology",
+  "decision": "downloaded open source",
+  "source": {
+    "title": "Methacholine challenge testing: comparative pharmacology.",
+    "year": 2018,
+    "pmid": "29785128",
+    "pmcid": "PMC5957064",
+    "doi": "10.2147/JAA.S160607",
+    "url": "https://europepmc.org/articles/PMC5957064",
+    "sourceBody": "J Asthma Allergy",
+    "storedAs": ""
+  },
+  "whyItFits": "Open review of methacholine challenge as the common direct bronchoprovocation test, focused on how drugs inhibit the response and how long that effect lasts.",
+  "limitations": "",
+  "synopsisWritten": true,
+  "mcqsWritten": true,
+  "mcqCount": 5
+}

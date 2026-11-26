@@ -1,0 +1,22 @@
+{
+  "catalogueId": "879",
+  "spreadsheetRow": 48,
+  "topic": "Paediatric asthma: diagnosis, assessment and stepwise management",
+  "specialty": "Paediatrics",
+  "decision": "downloaded open source",
+  "source": {
+    "title": "2020 Focused Updates to the Asthma Management Guidelines: A Report from the National Asthma Education and Prevention Program.",
+    "year": 2020,
+    "pmid": "33280709",
+    "pmcid": "PMC7924476",
+    "doi": "10.1016/j.jaci.2020.10.003",
+    "url": "https://europepmc.org/articles/PMC7924476",
+    "sourceBody": "NAEPP / J Allergy Clin Immunol",
+    "storedAs": ""
+  },
+  "whyItFits": "2020 NAEPP focused update of asthma management, with separate stepwise figures for ages 0–4, 5–11, and 12 years and older, and guidance on SMART with formoterol.",
+  "limitations": "",
+  "synopsisWritten": true,
+  "mcqsWritten": true,
+  "mcqCount": 5
+}

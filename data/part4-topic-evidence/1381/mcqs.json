@@ -1,0 +1,136 @@
+{
+  "catalogueId": "1381",
+  "topic": "Drug-Induced ILD",
+  "mcqs": [
+    {
+      "id": "1381-01",
+      "question": "What kind of article is the accepted source?",
+      "options": {
+        "A": "A systematic review of drug-induced interstitial lung disease",
+        "B": "A single-patient letter",
+        "C": "A surgical technique note",
+        "D": "A vaccine study",
+        "E": "An asthma inhaler trial"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "A systematic review of drug-induced interstitial lung disease",
+      "explanation": "The title is a systematic review of drug-induced interstitial lung disease.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "J Clin Med",
+          "sourceYear": 2018,
+          "sourceUrl": "https://europepmc.org/articles/PMC6209877",
+          "pmid": "30326612",
+          "pmcid": "PMC6209877",
+          "doi": "10.3390/jcm7100356",
+          "excerpt": "Drug-Induced Interstitial Lung Disease: A Systematic Review"
+        }
+      ]
+    },
+    {
+      "id": "1381-02",
+      "question": "What overall diagnostic agreement did the cited study of transbronchial biopsy or BAL report?",
+      "options": {
+        "A": "67%",
+        "B": "10%",
+        "C": "100%",
+        "D": "0%",
+        "E": "Agreement was not reported"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "67%",
+      "explanation": "Transbronchial lung biopsy or BAL had overall diagnostic agreement of 67% in that study.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "J Clin Med",
+          "sourceYear": 2018,
+          "sourceUrl": "https://europepmc.org/articles/PMC6209877",
+          "pmid": "30326612",
+          "pmcid": "PMC6209877",
+          "doi": "10.3390/jcm7100356",
+          "excerpt": "overall diagnostic agreement of 67%"
+        }
+      ]
+    },
+    {
+      "id": "1381-03",
+      "question": "What diagnostic agreement did the single-centre biopsy series report?",
+      "options": {
+        "A": "45%",
+        "B": "95%",
+        "C": "The series found perfect agreement",
+        "D": "Biopsy was not discussed",
+        "E": "200%"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "45%",
+      "explanation": "That retrospective series reported lower diagnostic agreement of 45%.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "J Clin Med",
+          "sourceYear": 2018,
+          "sourceUrl": "https://europepmc.org/articles/PMC6209877",
+          "pmid": "30326612",
+          "pmcid": "PMC6209877",
+          "doi": "10.3390/jcm7100356",
+          "excerpt": "lower diagnostic agreement (45%)"
+        }
+      ]
+    },
+    {
+      "id": "1381-04",
+      "question": "Which procedures were combined in the study that reported 67% agreement?",
+      "options": {
+        "A": "Transbronchial lung biopsy or bronchoalveolar lavage",
+        "B": "Coronary angiography",
+        "C": "Liver biopsy only",
+        "D": "Skin prick testing",
+        "E": "Polysomnography"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Transbronchial lung biopsy or bronchoalveolar lavage",
+      "explanation": "The 67% figure is for transbronchial lung biopsy or BAL.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "J Clin Med",
+          "sourceYear": 2018,
+          "sourceUrl": "https://europepmc.org/articles/PMC6209877",
+          "pmid": "30326612",
+          "pmcid": "PMC6209877",
+          "doi": "10.3390/jcm7100356",
+          "excerpt": "transbronchial lung biopsy (TBLB) or bronchoalveolar lavage (BAL)"
+        }
+      ]
+    },
+    {
+      "id": "1381-05",
+      "question": "The review states its aim as investigating which aspects of drug-induced ILD?",
+      "options": {
+        "A": "Diagnosis and management",
+        "B": "Only healthcare costs",
+        "C": "Only veterinary use",
+        "D": "Only tablet colour",
+        "E": "The review has no stated aim"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Diagnosis and management",
+      "explanation": "The abstract describes studies to investigate the diagnosis and management of DIILD.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "J Clin Med",
+          "sourceYear": 2018,
+          "sourceUrl": "https://europepmc.org/articles/PMC6209877",
+          "pmid": "30326612",
+          "pmcid": "PMC6209877",
+          "doi": "10.3390/jcm7100356",
+          "excerpt": "diagnosis and management of DIILD"
+        }
+      ]
+    }
+  ]
+}

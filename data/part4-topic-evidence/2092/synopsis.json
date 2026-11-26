@@ -1,0 +1,36 @@
+{
+  "catalogueId": "2092",
+  "topic": "Goodpasture Syndrome",
+  "scope": "Stored abstract of the review of anti-GBM disease: lung and kidney capillaries, RPGN, alveolar haemorrhage, and treatment with steroids, cyclophosphamide, and plasmapheresis.",
+  "keyRecommendations": [
+    {
+      "text": "Anti-GBM disease is a rare small-vessel vasculitis of kidney and lung capillaries. Most patients develop rapidly progressive crescentic glomerulonephritis, and 40–60% have alveolar haemorrhage.",
+      "strength": "not_graded",
+      "population": "Anti-GBM disease"
+    },
+    {
+      "text": "Initial therapy is corticosteroids and cyclophosphamide to reduce antibody production, and plasmapheresis to remove circulating antibody.",
+      "strength": "not_graded",
+      "population": "Anti-GBM disease"
+    },
+    {
+      "text": "Dialysis at presentation or a high proportion of crescents predicts poor renal outcome. Relapse is rare; renal disease should raise suspicion of concomitant ANCA disease.",
+      "strength": "not_graded",
+      "population": "Anti-GBM disease"
+    }
+  ],
+  "clinicalBottomLine": "Treat anti-GBM disease urgently with corticosteroids, cyclophosphamide, and plasmapheresis. Expect poor renal recovery if the patient already needs dialysis or the biopsy is crescent-rich.",
+  "notableCaveats": [
+    "The stored text is the abstract, not the full article. Doses are not stated and are not invented here."
+  ],
+  "source": {
+    "title": "Goodpasture syndrome and anti-glomerular basement membrane disease.",
+    "year": 2023,
+    "pmid": "36995324",
+    "pmcid": "",
+    "doi": "10.55563/clinexprheumatol/tep3k5",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/36995324/",
+    "sourceBody": "Clin Exp Rheumatol",
+    "storedAs": "data/question-repair-source-import.json paper_articles abstract"
+  }
+}

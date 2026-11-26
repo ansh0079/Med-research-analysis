@@ -1,0 +1,22 @@
+{
+  "catalogueId": "2108",
+  "spreadsheetRow": 55,
+  "topic": "Acute asthma and COPD exacerbations",
+  "specialty": "Pulmonology",
+  "decision": "downloaded open source",
+  "source": {
+    "title": "Saudi expert consensus on the management of acute asthma and COPD exacerbations with algorithm of aerosol drug delivery device recommendations.",
+    "year": 2026,
+    "pmid": "42625150",
+    "pmcid": "PMC13491584",
+    "doi": "",
+    "url": "https://europepmc.org/articles/PMC13491584",
+    "sourceBody": "Int J Emerg Med",
+    "storedAs": ""
+  },
+  "whyItFits": "Open expert consensus on initial drug therapy and aerosol delivery for acute asthma and COPD exacerbations.",
+  "limitations": "",
+  "synopsisWritten": true,
+  "mcqsWritten": true,
+  "mcqCount": 5
+}

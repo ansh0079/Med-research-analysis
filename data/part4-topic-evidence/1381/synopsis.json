@@ -1,0 +1,31 @@
+{
+  "catalogueId": "1381",
+  "topic": "Drug-Induced ILD",
+  "scope": "Systematic review of the diagnosis of drug-induced interstitial lung disease, including how often biopsy agrees with the clinical diagnosis.",
+  "keyRecommendations": [
+    {
+      "text": "A study of transbronchial biopsy or BAL reported overall diagnostic agreement of 67% with the clinical diagnosis of drug-induced ILD.",
+      "strength": "not_graded",
+      "population": "Suspected drug-induced ILD"
+    },
+    {
+      "text": "A single-centre series of transbronchial or open biopsy reported lower diagnostic agreement (45%).",
+      "strength": "not_graded",
+      "population": "Biopsy series"
+    }
+  ],
+  "clinicalBottomLine": "Drug-induced ILD is a clinical diagnosis. Biopsy and lavage do not always agree with that diagnosis; one cited series found 67% agreement and another 45%.",
+  "notableCaveats": [
+    "The review is about diagnostic agreement, not a drug-by-drug dose table."
+  ],
+  "source": {
+    "title": "Drug-Induced Interstitial Lung Disease: A Systematic Review.",
+    "year": 2018,
+    "pmid": "30326612",
+    "pmcid": "PMC6209877",
+    "doi": "10.3390/jcm7100356",
+    "url": "https://europepmc.org/articles/PMC6209877",
+    "sourceBody": "J Clin Med",
+    "storedAs": ""
+  }
+}

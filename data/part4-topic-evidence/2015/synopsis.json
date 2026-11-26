@@ -1,0 +1,36 @@
+{
+  "catalogueId": "2015",
+  "topic": "substance use disorder",
+  "scope": "Full text of the 2023 Volkow and Blanco review of substance use disorders, replacing the opening summary.",
+  "keyRecommendations": [
+    {
+      "text": "Addiction is used for moderate or severe SUD.",
+      "strength": "not_graded",
+      "population": "Classification"
+    },
+    {
+      "text": "Medications have benefit in opioid, nicotine, and alcohol use disorders; behavioral therapies in all SUDs; neuromodulation in nicotine use disorder.",
+      "strength": "not_graded",
+      "population": "Treatment"
+    },
+    {
+      "text": "Use a chronic care model. FDA-approved alcohol medications named are disulfiram, acamprosate, and naltrexone. Smoking-cessation medications named are bupropion, varenicline, and nicotine replacement.",
+      "strength": "not_graded",
+      "population": "Treatment"
+    }
+  ],
+  "clinicalBottomLine": "Treat moderate or severe SUD as a chronic illness. Medication is established for opioid, nicotine, and alcohol use disorders, and behavioral therapy for all SUDs.",
+  "notableCaveats": [
+    "The PMC HTML now contains the article body. The earlier file was only the opening summary."
+  ],
+  "source": {
+    "title": "Substance use disorders: a comprehensive update of classification, epidemiology, neurobiology, clinical aspects, treatment and prevention.",
+    "year": 2023,
+    "pmid": "37159360",
+    "pmcid": "PMC10168177",
+    "doi": "10.1002/wps.21073",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10168177/",
+    "sourceBody": "World Psychiatry",
+    "storedAs": ""
+  }
+}

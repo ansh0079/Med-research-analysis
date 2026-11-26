@@ -1,0 +1,36 @@
+{
+  "catalogueId": "257",
+  "topic": "Bronchial Provocation Testing",
+  "scope": "Open review of methacholine challenge as the common direct bronchoprovocation test, focused on how drugs inhibit the response and how long that effect lasts.",
+  "keyRecommendations": [
+    {
+      "text": "Methacholine challenge is the most common direct bronchoprovocation test. Washout of drugs that affect the response is part of standardisation.",
+      "strength": "not_graded",
+      "population": "Methacholine challenge"
+    },
+    {
+      "text": "Long-acting anti-muscarinic agents can bronchoprotect for up to 7 days, longer than their bronchodilation.",
+      "strength": "not_graded",
+      "population": "Patients on long-acting antimuscarinics"
+    },
+    {
+      "text": "A single dose of ICS or a leukotriene-receptor antagonist does not affect the test; regular ICS use does.",
+      "strength": "not_graded",
+      "population": "Controller therapy before challenge"
+    }
+  ],
+  "clinicalBottomLine": "Before a methacholine test, withhold drugs that bronchoprotect. Long-acting antimuscarinics may affect the test for up to 7 days. A single controller dose does not, but regular ICS use does.",
+  "notableCaveats": [
+    "The 2017 ERS methacholine technical standard is not in PMC. This review covers pharmacology and washout, not the full dosing protocol."
+  ],
+  "source": {
+    "title": "Methacholine challenge testing: comparative pharmacology.",
+    "year": 2018,
+    "pmid": "29785128",
+    "pmcid": "PMC5957064",
+    "doi": "10.2147/JAA.S160607",
+    "url": "https://europepmc.org/articles/PMC5957064",
+    "sourceBody": "J Asthma Allergy",
+    "storedAs": ""
+  }
+}

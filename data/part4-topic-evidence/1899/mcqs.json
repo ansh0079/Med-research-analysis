@@ -1,0 +1,136 @@
+{
+  "catalogueId": "1899",
+  "topic": "Massive Hemoptysis management",
+  "mcqs": [
+    {
+      "id": "1899-01",
+      "question": "Compared with pharmacotherapy, what did BAE show for clinical efficacy?",
+      "options": {
+        "A": "Higher efficacy, RR 1.24 (95% CI 1.18–1.31)",
+        "B": "Lower efficacy",
+        "C": "No difference",
+        "D": "The comparison was not made",
+        "E": "Harm only"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Higher efficacy, RR 1.24 (95% CI 1.18–1.31)",
+      "explanation": "BAE showed higher clinical efficacy than pharmacotherapy, RR 1.24.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "Front Med",
+          "sourceYear": 2026,
+          "sourceUrl": "https://europepmc.org/articles/PMC13733285",
+          "pmid": "",
+          "pmcid": "PMC13733285",
+          "doi": "10.3389/fmed.2026.1959450",
+          "excerpt": "Compared with pharmacotherapy, BAE showed higher clinical efficacy (RR 1.24, 95% CI 1.18–1.31)"
+        }
+      ]
+    },
+    {
+      "id": "1899-02",
+      "question": "What recurrence result does the meta-analysis report for BAE versus pharmacotherapy?",
+      "options": {
+        "A": "Lower recurrence, RR 0.26 (95% CI 0.13–0.54)",
+        "B": "Higher recurrence",
+        "C": "Recurrence was not an outcome",
+        "D": "RR 2.6",
+        "E": "Zero events in every trial"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Lower recurrence, RR 0.26 (95% CI 0.13–0.54)",
+      "explanation": "Recurrence was lower, RR 0.26.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "Front Med",
+          "sourceYear": 2026,
+          "sourceUrl": "https://europepmc.org/articles/PMC13733285",
+          "pmid": "",
+          "pmcid": "PMC13733285",
+          "doi": "10.3389/fmed.2026.1959450",
+          "excerpt": "lower recurrence (RR 0.26, 95% CI 0.13–0.54)"
+        }
+      ]
+    },
+    {
+      "id": "1899-03",
+      "question": "What mortality result is reported?",
+      "options": {
+        "A": "Lower mortality, RR 0.20 (95% CI 0.05–0.90)",
+        "B": "Higher mortality with BAE",
+        "C": "Mortality was excluded",
+        "D": "RR 1.0 exactly",
+        "E": "A non-significant increase"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Lower mortality, RR 0.20 (95% CI 0.05–0.90)",
+      "explanation": "Mortality was lower, RR 0.20, and the review grades the evidence as moderate certainty in the same sentence.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "Front Med",
+          "sourceYear": 2026,
+          "sourceUrl": "https://europepmc.org/articles/PMC13733285",
+          "pmid": "",
+          "pmcid": "PMC13733285",
+          "doi": "10.3389/fmed.2026.1959450",
+          "excerpt": "lower mortality (RR 0.20, 95% CI 0.05–0.90)"
+        }
+      ]
+    },
+    {
+      "id": "1899-04",
+      "question": "What does the meta-analysis say about overall complications?",
+      "options": {
+        "A": "Fewer with BAE, RR 0.41 (95% CI 0.26–0.63)",
+        "B": "More complications with BAE",
+        "C": "Complications were not counted",
+        "D": "Equal complication rates",
+        "E": "Complications occurred only with surgery"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "Fewer with BAE, RR 0.41 (95% CI 0.26–0.63)",
+      "explanation": "There were fewer overall complications, RR 0.41.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "Front Med",
+          "sourceYear": 2026,
+          "sourceUrl": "https://europepmc.org/articles/PMC13733285",
+          "pmid": "",
+          "pmcid": "PMC13733285",
+          "doi": "10.3389/fmed.2026.1959450",
+          "excerpt": "fewer overall complications (RR 0.41, 95% CI 0.26–0.63)"
+        }
+      ]
+    },
+    {
+      "id": "1899-05",
+      "question": "How many included studies involved massive haemoptysis?",
+      "options": {
+        "A": "16",
+        "B": "None",
+        "C": "1",
+        "D": "All 20 were mild haemoptysis only",
+        "E": "The severity mix is not described"
+      },
+      "correctAnswer": "A",
+      "correctAnswerText": "16",
+      "explanation": "With respect to severity, 16 studies involved massive haemoptysis.",
+      "difficulty": "medium",
+      "sourceRefs": [
+        {
+          "sourceBody": "Front Med",
+          "sourceYear": 2026,
+          "sourceUrl": "https://europepmc.org/articles/PMC13733285",
+          "pmid": "",
+          "pmcid": "PMC13733285",
+          "doi": "10.3389/fmed.2026.1959450",
+          "excerpt": "16 involved massive hemoptysis"
+        }
+      ]
+    }
+  ]
+}

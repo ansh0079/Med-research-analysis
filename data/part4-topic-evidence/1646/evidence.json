@@ -1,0 +1,22 @@
+{
+  "catalogueId": "1646",
+  "spreadsheetRow": 57,
+  "topic": "Aspiration Pneumonia",
+  "specialty": "Pulmonology",
+  "decision": "downloaded open source",
+  "source": {
+    "title": "Aspiration pneumonia.",
+    "year": 2022,
+    "pmid": "35488832",
+    "pmcid": "PMC9106188",
+    "doi": "",
+    "url": "https://europepmc.org/articles/PMC9106188",
+    "sourceBody": "Open review",
+    "storedAs": ""
+  },
+  "whyItFits": "Open review of aspiration pneumonia risk factors, including dysphagia and impaired consciousness, and the microbiology of the oropharynx.",
+  "limitations": "",
+  "synopsisWritten": true,
+  "mcqsWritten": true,
+  "mcqCount": 5
+}
