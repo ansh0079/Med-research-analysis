@@ -1,0 +1,29 @@
+{
+  "scope": "2016 revision of fibromyalgia criteria and non-drug management, from the same open review used for catalogue 648.",
+  "keyRecommendations": [
+    {
+      "text": "The 2016 revision added a generalised pain requirement to reduce misclassification.",
+      "strength": "not_graded",
+      "population": "Suspected fibromyalgia"
+    },
+    {
+      "text": "The 2011 simplification replaced physician assessment of symptom extent with three patient-reported symptoms.",
+      "strength": "not_graded",
+      "population": "Suspected fibromyalgia"
+    },
+    {
+      "text": "A 2020 comparison found substantial agreement among ACR 2011, ACR 2016, AAPT, and modified FAS criteria.",
+      "strength": "not_graded",
+      "population": "Fibromyalgia criteria research"
+    },
+    {
+      "text": "Non-pharmacological care remains first-line.",
+      "strength": "not_graded",
+      "population": "Fibromyalgia"
+    }
+  ],
+  "clinicalBottomLine": "The 2016 criteria keep the symptom-based WPI and symptom-severity approach and add a generalised pain requirement. Education, exercise, and psychological therapy stay first-line.",
+  "notableCaveats": [
+    "Central sensitisation is not given a numeric test in the passages used. A mouse IgG transfer study is mentioned as support for an immune contribution and is not turned into a clinical test."
+  ]
+}

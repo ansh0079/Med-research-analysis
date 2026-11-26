@@ -1,0 +1,24 @@
+{
+  "scope": "Microscopic polyangiitis as one of the ANCA-associated vasculitides.",
+  "keyRecommendations": [
+    {
+      "text": "AAV is subdivided into granulomatosis with polyangiitis, microscopic polyangiitis, and eosinophilic granulomatosis with polyangiitis.",
+      "strength": "not_graded",
+      "population": "ANCA-associated vasculitis"
+    },
+    {
+      "text": "The disease is pauci-immune neutrophilic small-vessel inflammation associated with PR3 or MPO antibodies.",
+      "strength": "not_graded",
+      "population": "ANCA-associated vasculitis"
+    },
+    {
+      "text": "Granulomatous respiratory inflammation characterises granulomatosis with polyangiitis. Kidney disease is frequent in both that disease and microscopic polyangiitis. MPO-ANCA microscopic polyangiitis has the worst kidney prognosis in this review.",
+      "strength": "not_graded",
+      "population": "Microscopic polyangiitis and granulomatosis with polyangiitis"
+    }
+  ],
+  "clinicalBottomLine": "Microscopic polyangiitis is the non-eosinophilic ANCA vasculitis that is not defined by respiratory granulomas. It is a pauci-immune small-vessel disease, often MPO-ANCA, with frequent kidney involvement and a poor renal outlook, and alveolar haemorrhage can occur across ANCA vasculitis.",
+  "notableCaveats": [
+    "The source is an AAV review, not an MPA-only monograph. Questions use its statements about MPA, GPA, and shared AAV features. It is licensed CC BY-NC."
+  ]
+}

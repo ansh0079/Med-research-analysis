@@ -1,0 +1,26 @@
+{
+  "catalogueId": 199,
+  "topic": "Leflunomide in RA: mechanism, dosing, washout procedure, hepatotoxicity monitoring",
+  "specialty": "Rheumatology",
+  "decision": "downloaded_open_source",
+  "source": {
+    "title": "Leflunomide tablets, prescribing information",
+    "year": 2026,
+    "pmid": null,
+    "pmcid": null,
+    "doi": null,
+    "url": "https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=c66cacd1-93f7-483a-a2fc-aad53d5342b0",
+    "sourceBody": "DailyMed FDA label",
+    "tier": "literature",
+    "setid": "c66cacd1-93f7-483a-a2fc-aad53d5342b0",
+    "whyItFits": "The open FDA label states the dihydroorotate-dehydrogenase mechanism, the 20 mg daily dose and optional 100 mg loading dose, the cholestyramine or charcoal washout, and the ALT monitoring schedule. The BSR DMARD monitoring PDF was not retrievable from this environment."
+  },
+  "notes": [
+    "FDA label, DailyMed setid c66cacd1-93f7-483a-a2fc-aad53d5342b0, published 5 November 2026. No PMID, so it is stored beside the topic and is not in the PMID link file."
+  ],
+  "files": {
+    "source": "/workspace/data/part4-topic-evidence/199/source.txt",
+    "synopsis": "/workspace/data/part4-topic-evidence/199/synopsis.json",
+    "mcqs": "/workspace/data/part4-topic-evidence/199/mcqs.json"
+  }
+}

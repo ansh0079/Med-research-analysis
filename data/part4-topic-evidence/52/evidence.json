@@ -1,0 +1,23 @@
+{
+  "catalogueId": 52,
+  "topic": "Azathioprine in rheumatic disease: TPMT testing, dosing, bone marrow suppression",
+  "specialty": "Rheumatology",
+  "decision": "downloaded_open_source",
+  "source": {
+    "title": "Clinical Pharmacogenetics Implementation Consortium Guideline for Thiopurine Dosing Based on TPMT and NUDT15 Genotypes: 2018 Update",
+    "year": 2019,
+    "pmid": "30447069",
+    "pmcid": "PMC6576267",
+    "doi": null,
+    "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6576267/",
+    "sourceBody": "Clinical Pharmacology and Therapeutics",
+    "tier": "guideline",
+    "whyItFits": "CPIC states azathioprine dosing from TPMT and NUDT15 genotypes and the myelosuppression risk in poor metabolizers. It explicitly extrapolates pharmacokinetic dosing to non-malignant immunologic disorders, which includes rheumatic use. NICE Crohn's guidance that mentions thiopurines was rejected as the wrong disease."
+  },
+  "notes": [],
+  "files": {
+    "source": "/workspace/data/part4-topic-evidence/52/source.txt",
+    "synopsis": "/workspace/data/part4-topic-evidence/52/synopsis.json",
+    "mcqs": "/workspace/data/part4-topic-evidence/52/mcqs.json"
+  }
+}

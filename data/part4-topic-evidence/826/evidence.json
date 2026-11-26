@@ -1,0 +1,23 @@
+{
+  "catalogueId": 826,
+  "topic": "Microscopic Polyangiitis",
+  "specialty": "Rheumatology",
+  "decision": "downloaded_open_source",
+  "source": {
+    "title": "Practical Management of ANCA-Associated Vasculitis: A Clinician's Perspective",
+    "year": 2025,
+    "pmid": "39991192",
+    "pmcid": "PMC11845170",
+    "doi": "10.1159/000543159",
+    "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC11845170/",
+    "sourceBody": "Glomerular Diseases",
+    "tier": "review",
+    "whyItFits": "Open clinician review of severe ANCA-associated vasculitis that separates microscopic polyangiitis from granulomatosis with polyangiitis and eosinophilic granulomatosis with polyangiitis, and states the pauci-immune small-vessel pathology, the MPO and PR3 antibodies, the kidney and lung patterns, and the worse kidney prognosis of MPO-ANCA MPA. A Watts epidemiology algorithm was not used as a clinical text."
+  },
+  "notes": [],
+  "files": {
+    "source": "/workspace/data/part4-topic-evidence/826/source.txt",
+    "synopsis": "/workspace/data/part4-topic-evidence/826/synopsis.json",
+    "mcqs": "/workspace/data/part4-topic-evidence/826/mcqs.json"
+  }
+}

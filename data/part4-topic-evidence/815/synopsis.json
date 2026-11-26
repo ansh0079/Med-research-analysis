@@ -1,0 +1,24 @@
+{
+  "scope": "Screening and prophylaxis before and during immunosuppression for autoimmune inflammatory rheumatic disease.",
+  "keyRecommendations": [
+    {
+      "text": "For tuberculosis, TST is affected by glucocorticoids and conventional synthetic DMARDs and performs worse than IGRA; agreement between the tests is moderate to low.",
+      "strength": "not_graded",
+      "population": "Adults with autoimmune inflammatory rheumatic diseases"
+    },
+    {
+      "text": "HBsAg-positive patients have increased HBV reactivation risk. Anti-HBc-positive patients are at low risk but should be monitored with liver tests and/or viral load.",
+      "strength": "not_graded",
+      "population": "HBV-exposed patients starting immunosuppression"
+    },
+    {
+      "text": "Pneumocystis prophylaxis should be considered with prednisolone at least 15–30 mg/day for more than 2–4 weeks.",
+      "strength": "not_graded",
+      "population": "Patients on higher-dose prednisolone"
+    }
+  ],
+  "clinicalBottomLine": "Prefer IGRA when screening for latent TB in this setting, treat HBsAg positivity as high risk for reactivation, monitor anti-HBc-positive patients, and consider Pneumocystis prophylaxis when prednisolone is in the 15–30 mg/day range for more than 2–4 weeks.",
+  "notableCaveats": [
+    "The review's conclusion is that approaches differ by patient and disease. The prednisolone threshold is a range, not a single milligram cut-off."
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "catalogueId": 1370,
+  "topic": "Dermatomyositis and Antisynthetase Syndrome",
+  "specialty": "Rheumatology",
+  "decision": "downloaded_open_source",
+  "source": {
+    "title": "The Diagnosis and Treatment of Antisynthetase Syndrome",
+    "year": 2016,
+    "pmid": "27594777",
+    "pmcid": "PMC5006392",
+    "doi": "10.1097/CPM.0000000000000171",
+    "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5006392/",
+    "sourceBody": "Clinical Pulmonary Medicine",
+    "tier": "review",
+    "whyItFits": "Open review defining antisynthetase syndrome by tRNA-synthetase antibodies plus ILD, myositis, Raynaud phenomenon, arthritis, fever, or mechanic's hands, and comparing its ILD burden with dermatomyositis and polymyositis."
+  },
+  "notes": [],
+  "files": {
+    "source": "/workspace/data/part4-topic-evidence/1370/source.txt",
+    "synopsis": "/workspace/data/part4-topic-evidence/1370/synopsis.json",
+    "mcqs": "/workspace/data/part4-topic-evidence/1370/mcqs.json"
+  }
+}

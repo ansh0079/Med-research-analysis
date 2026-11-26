@@ -1,0 +1,134 @@
+{
+  "topic": {
+    "topicKey": "upper-airway-resistance-syndrome",
+    "topicDisplayName": "Upper Airway Resistance Syndrome",
+    "aliases": [
+      "2055",
+      "Pulmonology"
+    ],
+    "storedRowCount": 1,
+    "coverageNote": "Open adult review of UARS that states the diagnostic criterion is not settled, records the heterogeneous polysomnographic thresholds used in treatment studies, and summarises CPAP, oral appliances, and surgery.",
+    "mcqs": [
+      {
+        "id": "2055-uars-01",
+        "question": "What does this adult UARS review say about a diagnostic criterion?",
+        "options": {
+          "A": "It is still not defined",
+          "B": "AHI greater than 30 is required",
+          "C": "The AASM 2012 criterion is a single agreed cut-off used by all authors",
+          "D": "UARS can be diagnosed only by daytime spirometry"
+        },
+        "correctAnswer": "A",
+        "explanation": "The review states that the diagnostic criterion is still not defined, and that some authors place UARS on a continuum from snoring to obstructive sleep apnoea while others treat it as a distinct syndrome.",
+        "difficulty": "easy",
+        "sourceRefs": [
+          {
+            "sourceBody": "Sleep Science",
+            "sourceYear": 2015,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4608900/",
+            "excerpt": "Its diagnostic criterion is still not defined and some authors believe that UARS is part of a continuum between primary snoring and OSAS whereas others believe that it is a distinct syndrome from OSAS.",
+            "status": "source_verified",
+            "pmid": "26483942",
+            "pmcid": "PMC4608900"
+          }
+        ]
+      },
+      {
+        "id": "2055-uars-02",
+        "question": "Which oesophageal-pressure threshold appears among the polysomnographic definitions used in the treatment studies this review counted?",
+        "options": {
+          "A": "Pes more negative than 10 or 20 mmHg in 8 studies",
+          "B": "Pes more negative than 2 mmHg in every study",
+          "C": "Pes was never used",
+          "D": "A positive Pes of +40 mmHg"
+        },
+        "correctAnswer": "A",
+        "explanation": "The review lists Pes more negative than 10 or 20 mmHg among the criteria used, in 8 of the studies it counted.",
+        "difficulty": "hard",
+        "sourceRefs": [
+          {
+            "sourceBody": "Sleep Science",
+            "sourceYear": 2015,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4608900/",
+            "excerpt": "Pes more negative than 10 or 20 mmH 2 O (8 studies)",
+            "status": "source_verified",
+            "pmid": "26483942",
+            "pmcid": "PMC4608900"
+          }
+        ]
+      },
+      {
+        "id": "2055-uars-03",
+        "question": "How does the review describe the role of nasal CPAP in UARS?",
+        "options": {
+          "A": "It has been the mainstay therapy prescribed, but with limited effectiveness",
+          "B": "It is contraindicated",
+          "C": "It cures UARS in all randomised trials cited",
+          "D": "It is used only in children"
+        },
+        "correctAnswer": "A",
+        "explanation": "The review's conclusion says nasal CPAP has been the mainstay therapy prescribed but with limited effectiveness.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Sleep Science",
+            "sourceYear": 2015,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4608900/",
+            "excerpt": "Nasal continuous positive airway pressure (CPAP) has been the mainstay therapy prescribed but with limited effectiveness.",
+            "status": "source_verified",
+            "pmid": "26483942",
+            "pmcid": "PMC4608900"
+          }
+        ]
+      },
+      {
+        "id": "2055-uars-04",
+        "question": "What does the review conclude about oral appliances and surgical treatment studies?",
+        "options": {
+          "A": "Oral appliances seem effective but efficacy is not yet established, and surgical studies had methodological limitations",
+          "B": "Surgery is the only proven first-line therapy",
+          "C": "Oral appliances are ineffective in every study",
+          "D": "Both have large randomised trials establishing superiority over CPAP"
+        },
+        "correctAnswer": "A",
+        "explanation": "The conclusion states that surgical treatment studies had methodological limitations and that oral appliances seem effective but their efficacy is not yet established.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Sleep Science",
+            "sourceYear": 2015,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4608900/",
+            "excerpt": "Studies about surgical treatments had methodological limitations. Oral appliances seem to be effective but their efficacy is not yet established.",
+            "status": "source_verified",
+            "pmid": "26483942",
+            "pmcid": "PMC4608900"
+          }
+        ]
+      },
+      {
+        "id": "2055-uars-05",
+        "question": "What term does the review attribute to the AASM for arousals associated with flow limitation?",
+        "options": {
+          "A": "Respiratory event related arousals (RERA)",
+          "B": "Apnoea-hypopnoea index",
+          "C": "Periodic limb movements",
+          "D": "Central alert pauses"
+        },
+        "correctAnswer": "A",
+        "explanation": "The review says arousals associated with flow limitations were described as respiratory event related arousals (RERA) by the AASM.",
+        "difficulty": "easy",
+        "sourceRefs": [
+          {
+            "sourceBody": "Sleep Science",
+            "sourceYear": 2015,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4608900/",
+            "excerpt": "The arousals associated with flow limitations were described as “respiratory event related arousals” (RERA) by AASM",
+            "status": "source_verified",
+            "pmid": "26483942",
+            "pmcid": "PMC4608900"
+          }
+        ]
+      }
+    ]
+  }
+}

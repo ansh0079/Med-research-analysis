@@ -1,0 +1,134 @@
+{
+  "topic": {
+    "topicKey": "musculoskeletal-ultrasound-in-rheumatology-synovitis-power-doppler-gui",
+    "topicDisplayName": "Musculoskeletal ultrasound in rheumatology: synovitis, power Doppler, guided injection",
+    "aliases": [
+      "828",
+      "Rheumatology"
+    ],
+    "storedRowCount": 1,
+    "coverageNote": "The 2017 EULAR ultrasound-procedure paper was not available as full text. These two open papers cover the missing pieces: the OMERACT/EULAR ultrasound definitions of effusion, synovial hypertrophy, and Doppler signal, and the practical conduct of an ultrasound-guided musculoskeletal injection.",
+    "mcqs": [
+      {
+        "id": "828-us-01",
+        "question": "How does the synovitis review define an effusion?",
+        "options": {
+          "A": "Displaceable, compressible, hypoechoic or anechoic intra-articular material that does not show a Doppler signal",
+          "B": "Non-displaceable hyperechoic tissue with Doppler flow",
+          "C": "Any bright line on the bone surface",
+          "D": "A compressible mass outside the joint"
+        },
+        "correctAnswer": "A",
+        "explanation": "The review, citing the OMERACT/EULAR ultrasound task force, defines effusion as abnormal hypoechoic or anechoic intra-articular material that is displaceable and compressible and does not exhibit a Doppler signal.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Acta Biomedica",
+            "sourceYear": 2018,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6179068/",
+            "excerpt": "effusion is defined as the abnormal presence of hypoechoic or anechoic intra-articular material that is displaceable and compressible, but does not exhibit a Doppler signal,",
+            "status": "source_verified",
+            "pmid": "29350637",
+            "pmcid": "PMC6179068"
+          }
+        ]
+      },
+      {
+        "id": "828-us-02",
+        "question": "How is synovial hypertrophy distinguished in that definition?",
+        "options": {
+          "A": "Abnormal hyperechoic intra-articular tissue that is not displaceable, is poorly compressible, and may show Doppler signal",
+          "B": "Fluid that compresses away and has no Doppler signal",
+          "C": "A normal cartilage line",
+          "D": "Subcutaneous fat"
+        },
+        "correctAnswer": "A",
+        "explanation": "Synovial hypertrophy is abnormal hyperechoic intra-articular tissue that is non-displaceable and poorly compressible and might exhibit a Doppler signal.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Acta Biomedica",
+            "sourceYear": 2018,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6179068/",
+            "excerpt": "synovial hypertrophy or proliferation is represented by the abnormal presence of hyperechoic intra-articular tissue that is nondisplaceable and poorly compressible, and might also exhibit a Doppler signal.",
+            "status": "source_verified",
+            "pmid": "29350637",
+            "pmcid": "PMC6179068"
+          }
+        ]
+      },
+      {
+        "id": "828-us-03",
+        "question": "What does the review call the main ultrasound marker of inflammatory activity?",
+        "options": {
+          "A": "Colour or power Doppler signal within synovial hypertrophy",
+          "B": "Anechoic fluid without Doppler signal",
+          "C": "Cortical irregularity alone",
+          "D": "Shadowing from bone"
+        },
+        "correctAnswer": "A",
+        "explanation": "The review says colour or power Doppler signal within synovial hypertrophy is the main pathologic marker of inflammatory activity.",
+        "difficulty": "easy",
+        "sourceRefs": [
+          {
+            "sourceBody": "Acta Biomedica",
+            "sourceYear": 2018,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6179068/",
+            "excerpt": "color or power Doppler signals within synovial hypertrophy is the main pathologic marker of inflammatory activity ( , ).",
+            "status": "source_verified",
+            "pmid": "29350637",
+            "pmcid": "PMC6179068"
+          }
+        ]
+      },
+      {
+        "id": "828-us-04",
+        "question": "What combination does the procedure review say is used for the most common injections?",
+        "options": {
+          "A": "Local anaesthetic plus a particulate or water-soluble steroid",
+          "B": "Antibiotic alone",
+          "C": "Contrast without a drug",
+          "D": "Saline only"
+        },
+        "correctAnswer": "A",
+        "explanation": "The most common injections use a combination of local anaesthetic and either a particulate or water-soluble steroid for pain or swelling in a joint, bursa, tendon sheath, or nerve.",
+        "difficulty": "easy",
+        "sourceRefs": [
+          {
+            "sourceBody": "Journal of Ultrasonography",
+            "sourceYear": 2023,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC10668939/",
+            "excerpt": "The most common injections are performed using a combination of local anesthetic and either a particulate or water-soluble steroid preparation to address symptoms of pain or swelling, usually localized to a joint (arthritis), bursa (bursitis), tendon sheath (tenosynovitis or tendinosis), or nerve (neuritis/neuroma).",
+            "status": "source_verified",
+            "pmid": "38020507",
+            "pmcid": "PMC10668939"
+          }
+        ]
+      },
+      {
+        "id": "828-us-05",
+        "question": "What does the in-plane, or long-axis, approach keep in view?",
+        "options": {
+          "A": "The length and tip of the needle",
+          "B": "Only the transducer cable",
+          "C": "The needle hub, with the tip deliberately out of the image",
+          "D": "No part of the needle"
+        },
+        "correctAnswer": "A",
+        "explanation": "In the long-axis or in-plane approach the needle is seen along its length, and the length and tip are kept in view.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Journal of Ultrasonography",
+            "sourceYear": 2023,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC10668939/",
+            "excerpt": "long axis” or “in-plane” injection approach, the transducer is orientated such that the needle will be visualized along its length, with the length and tip of the needle kept in view at all times ( ).",
+            "status": "source_verified",
+            "pmid": "38020507",
+            "pmcid": "PMC10668939"
+          }
+        ]
+      }
+    ]
+  }
+}

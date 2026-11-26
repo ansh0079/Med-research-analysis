@@ -1,0 +1,24 @@
+{
+  "scope": "Severe community-acquired pneumonia and influenza-associated respiratory failure, as summarised in a 2026 open evidence framework.",
+  "keyRecommendations": [
+    {
+      "text": "In the CAPE COD trial of ICU patients with severe CAP, continuous intravenous hydrocortisone 200 mg/day was associated with lower 28-day mortality than placebo (6.2% vs 11.9%).",
+      "strength": "not_graded",
+      "population": "ICU patients with severe community-acquired pneumonia"
+    },
+    {
+      "text": "Subgroup analyses in that trial are exploratory and should be interpreted cautiously.",
+      "strength": "not_graded",
+      "population": "Severe CAP"
+    },
+    {
+      "text": "For influenza-associated ARDS, the review states that multiple societies advise against routine systemic corticosteroids unless there is a separate indication.",
+      "strength": "not_graded",
+      "population": "Influenza-associated ARDS"
+    }
+  ],
+  "clinicalBottomLine": "The accepted review supports early hydrocortisone in severe CAP on the basis of CAPE COD, and advises against routine corticosteroids for influenza-associated ARDS unless another indication is present.",
+  "notableCaveats": [
+    "Figures are those reported by the review for CAPE COD, not a re-analysis. Non-severe CAP dosing is not the focus of the quoted CAPE COD section."
+  ]
+}

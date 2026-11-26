@@ -1,0 +1,134 @@
+{
+  "topic": {
+    "topicKey": "livedo-reticularis-workup",
+    "topicDisplayName": "Livedo Reticularis workup",
+    "aliases": [
+      "2154",
+      "Rheumatology"
+    ],
+    "storedRowCount": 1,
+    "coverageNote": "This is the review named in the spreadsheet, and the full text is in PMC. It separates benign livedo reticularis from pathologic livedo racemosa and lists the systemic diseases that drive the workup.",
+    "mcqs": [
+      {
+        "id": "2154-livedo-01",
+        "question": "How does this review describe livedo reticularis?",
+        "options": {
+          "A": "A transient or persistent, blotchy, reddish-blue to purple, net-like cyanotic pattern, and a benign disorder mainly of middle-aged women",
+          "B": "A scarring vasculitis that is always pathologic",
+          "C": "A sign that is synonymous with livedo racemosa",
+          "D": "A bullous drug eruption"
+        },
+        "correctAnswer": "A",
+        "explanation": "The review defines LR as that net-like pattern and calls it a benign disorder affecting mainly middle-aged females, in contrast to livedo racemosa.",
+        "difficulty": "easy",
+        "sourceRefs": [
+          {
+            "sourceBody": "Indian Dermatology Online Journal",
+            "sourceYear": 2015,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4594389/",
+            "excerpt": "Livedo reticularis (LR) is a cutaneous physical sign characterized by transient or persistent, blotchy, reddish-blue to purple, net-like cyanotic pattern. LR is a benign disorder affecting mainly middle-aged females",
+            "status": "source_verified",
+            "pmid": "26500860",
+            "pmcid": "PMC4594389"
+          }
+        ]
+      },
+      {
+        "id": "2154-livedo-02",
+        "question": "How is livedo racemosa characterised relative to antiphospholipid syndrome?",
+        "options": {
+          "A": "It is pathologic and commonly associated with antiphospholipid antibody syndrome",
+          "B": "It is benign and unrelated to APS",
+          "C": "It excludes APS",
+          "D": "It is seen only in children without systemic disease"
+        },
+        "correctAnswer": "A",
+        "explanation": "The review says livedo racemosa is pathologic and commonly associated with antiphospholipid antibody syndrome.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Indian Dermatology Online Journal",
+            "sourceYear": 2015,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4594389/",
+            "excerpt": "livedo racemosa (LRC) is pathologic, commonly associated with antiphospholipid antibody syndrome.",
+            "status": "source_verified",
+            "pmid": "26500860",
+            "pmcid": "PMC4594389"
+          }
+        ]
+      },
+      {
+        "id": "2154-livedo-03",
+        "question": "Why does the review say every patient with livedo needs careful evaluation?",
+        "options": {
+          "A": "Because of potential association with many significant systemic diseases",
+          "B": "Because the rash is always infectious",
+          "C": "Because biopsy is contraindicated",
+          "D": "Because no systemic disease is associated"
+        },
+        "correctAnswer": "A",
+        "explanation": "The workup section says evaluation can be difficult, but every patient should be evaluated carefully because of potential association with many significant systemic diseases.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Indian Dermatology Online Journal",
+            "sourceYear": 2015,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4594389/",
+            "excerpt": "it is very important that every patient be evaluated carefully.",
+            "status": "source_verified",
+            "pmid": "26500860",
+            "pmcid": "PMC4594389"
+          }
+        ]
+      },
+      {
+        "id": "2154-livedo-04",
+        "question": "Of which syndrome is livedo racemosa called the classical sign?",
+        "options": {
+          "A": "Sneddon syndrome",
+          "B": "Carpal tunnel syndrome",
+          "C": "Fibromyalgia",
+          "D": "Hyper-IgD syndrome"
+        },
+        "correctAnswer": "A",
+        "explanation": "The review says livedo racemosa is the classical sign of Sneddon syndrome.",
+        "difficulty": "easy",
+        "sourceRefs": [
+          {
+            "sourceBody": "Indian Dermatology Online Journal",
+            "sourceYear": 2015,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4594389/",
+            "excerpt": "LRC is the classical sign of Sneddon's syndrome",
+            "status": "source_verified",
+            "pmid": "26500860",
+            "pmcid": "PMC4594389"
+          }
+        ]
+      },
+      {
+        "id": "2154-livedo-05",
+        "question": "Which other conditions does the review list alongside Sneddon syndrome as settings for livedo racemosa?",
+        "options": {
+          "A": "Livedoid vasculopathy, APS, and SLE with or without APS, among others",
+          "B": "Only osteoarthritis",
+          "C": "Only tinea corporis",
+          "D": "No associated disease is listed"
+        },
+        "correctAnswer": "A",
+        "explanation": "The review lists livedoid vasculopathy, APS, and SLE with or without APS among the disorders in which livedo racemosa is seen, along with several haematologic and vaso-occlusive diseases.",
+        "difficulty": "hard",
+        "sourceRefs": [
+          {
+            "sourceBody": "Indian Dermatology Online Journal",
+            "sourceYear": 2015,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4594389/",
+            "excerpt": "also seen in other disorders such as livedoid vasculopathy, APS, systemic lupus erythematosus (SLE) with or without APS",
+            "status": "source_verified",
+            "pmid": "26500860",
+            "pmcid": "PMC4594389"
+          }
+        ]
+      }
+    ]
+  }
+}

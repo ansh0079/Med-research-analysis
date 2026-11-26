@@ -1,0 +1,134 @@
+{
+  "topic": {
+    "topicKey": "ct-head-and-ct-pulmonary-angiography-common-acute-findings",
+    "topicDisplayName": "CT head and CT pulmonary angiography: common acute findings",
+    "aliases": [
+      "1181",
+      "Radiology"
+    ],
+    "storedRowCount": 1,
+    "coverageNote": "No single open paper taught both examinations. The Brain Circulation review lists the early non-contrast CT signs of MCA infarction. The Japanese Journal of Radiology review states how acute PE looks on CT pulmonary angiography and which CTPA findings indicate right-ventricular dysfunction. Haemorrhage patterns are not in the CT-head paper, so they are not questioned.",
+    "mcqs": [
+      {
+        "id": "1181-ct-01",
+        "question": "Which early non-contrast CT signs of brain infarction does this review name together?",
+        "options": {
+          "A": "Hyperdense MCA sign, loss of the insular ribbon, loss of the grey-white junction, and effacement of cortical sulci",
+          "B": "A ring-enhancing mass as the first sign",
+          "C": "Only midline shift, with no parenchymal sign named",
+          "D": "A normal scan in every patient imaged within 6 hours"
+        },
+        "correctAnswer": "A",
+        "explanation": "The review lists the hyperdense MCA sign, loss of the insular ribbon, loss of the grey-white matter junction, sulcal effacement, subtle hypodensity, oedema, and midline shift among early signs.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Brain Circulation",
+            "sourceYear": 2019,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6458774/",
+            "excerpt": "Early signs of brain infarction are hyperdense MCA sign, loss of insular ribbon, loss of the gray-white matter junction, effacement of the cortical sulci, subtle hypodensity in the cerebral tissue, parenchymal hypodensity, cerebral edema with compression of the ipsilateral lateral ventricle, and midline shift.[ ]",
+            "status": "source_verified",
+            "pmid": "31001598",
+            "pmcid": "PMC6458774"
+          }
+        ]
+      },
+      {
+        "id": "1181-ct-02",
+        "question": "What does the same review say remains the primary imaging modality for patients with clinical features of acute stroke?",
+        "options": {
+          "A": "Non-contrast CT",
+          "B": "MRI spectroscopy",
+          "C": "Catheter angiography as the first test",
+          "D": "Chest radiography"
+        },
+        "correctAnswer": "A",
+        "explanation": "The review says non-contrast CT remains the primary imaging modality for evaluation of patients with clinical features of acute stroke.",
+        "difficulty": "easy",
+        "sourceRefs": [
+          {
+            "sourceBody": "Brain Circulation",
+            "sourceYear": 2019,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6458774/",
+            "excerpt": "Noncontrast CT remains the primary imaging modality for evaluation of patients with clinical features of acute stroke.[ ]",
+            "status": "source_verified",
+            "pmid": "31001598",
+            "pmcid": "PMC6458774"
+          }
+        ]
+      },
+      {
+        "id": "1181-ct-03",
+        "question": "How often does this review say CT appears healthy in hyperacute infarction?",
+        "options": {
+          "A": "Nearly 30% of cases, even though signs of infarction under 6 hours can usually be detected",
+          "B": "Never, once symptoms have started",
+          "C": "In 90% of scans performed after 24 hours",
+          "D": "Only when contrast has been given"
+        },
+        "correctAnswer": "A",
+        "explanation": "The review says CT can usually detect signs of hyperacute infarction under 6 hours, but it appears healthy in nearly 30% of cases.",
+        "difficulty": "hard",
+        "sourceRefs": [
+          {
+            "sourceBody": "Brain Circulation",
+            "sourceYear": 2019,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6458774/",
+            "excerpt": "Computed tomography (CT) can usually detect signs of hyperacute infarction (<6 h), but it appears healthy in nearly 30% of cases.[ ]",
+            "status": "source_verified",
+            "pmid": "31001598",
+            "pmcid": "PMC6458774"
+          }
+        ]
+      },
+      {
+        "id": "1181-ct-04",
+        "question": "How does the pulmonary-embolism imaging review describe the CT angiography appearance of PE?",
+        "options": {
+          "A": "An intraluminal filling defect that may obstruct the lumen completely or partly, centrally or eccentrically",
+          "B": "Only a Westermark sign on the chest radiograph",
+          "C": "A normal lumen with isolated pleural thickening",
+          "D": "A polo-mint sign defined there as an MRI-only finding and not described for CTA"
+        },
+        "correctAnswer": "A",
+        "explanation": "The review says that at CTA, PE appears as an intraluminal filling defect. The thrombus may obstruct the lumen completely, sometimes enlarging the vessel, or partly, in a central or eccentric location.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Japanese Journal of Radiology",
+            "sourceYear": 2025,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC12479586/",
+            "excerpt": "At CTA, PE appears as an intraluminal filling defect, and the thrombus may completely obstruct the lumen, sometimes causing the enlargement of the vessel, or it may partially obstruct blood flow in a central or eccentric location [ , ].",
+            "status": "source_verified",
+            "pmid": "40580273",
+            "pmcid": "PMC12479586"
+          }
+        ]
+      },
+      {
+        "id": "1181-ct-05",
+        "question": "Which CTPA finding does the review give as right-ventricular dilatation?",
+        "options": {
+          "A": "The RV cavity wider than the LV cavity in the short axis, with an RV/LV ratio greater than 0.9",
+          "B": "An RV cavity narrower than the LV",
+          "C": "Isolated left-atrial enlargement",
+          "D": "A normal septal position as the only RV-dysfunction sign"
+        },
+        "correctAnswer": "A",
+        "explanation": "The review says CTPA findings of right-ventricular dysfunction include RV dilatation, where the RV cavity is wider than the LV in the short axis (RV/LV ratio greater than 0.9), with or without hepatic-vein reflux and leftward septal shift.",
+        "difficulty": "hard",
+        "sourceRefs": [
+          {
+            "sourceBody": "Japanese Journal of Radiology",
+            "sourceYear": 2025,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC12479586/",
+            "excerpt": "CTPA findings related to right ventricular dysfunction consist of right ventricular dilatation, where the right ventricular (RV) cavity is wider than the left ventricular (LV) cavity in the short axis (RV/LV ratio > 0.9), with or without contrast material reflux into the hepatic veins, shift of the interventricular septum towards the left ventricle, azygos vein dilatation, and a PE index exceeding 60 [ , – ].",
+            "status": "source_verified",
+            "pmid": "40580273",
+            "pmcid": "PMC12479586"
+          }
+        ]
+      }
+    ]
+  }
+}

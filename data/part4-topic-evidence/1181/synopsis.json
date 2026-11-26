@@ -1,0 +1,24 @@
+{
+  "scope": "Early non-contrast CT signs of middle-cerebral-artery infarction, and acute CT pulmonary angiography findings of pulmonary embolism.",
+  "keyRecommendations": [
+    {
+      "text": "Non-contrast CT is the primary imaging test for clinical acute stroke, and early MCA-infarct signs include a hyperdense MCA, loss of the insular ribbon and grey-white junction, and sulcal effacement.",
+      "strength": "not_graded",
+      "population": "Suspected acute MCA infarction"
+    },
+    {
+      "text": "On CT angiography, pulmonary embolism is an intraluminal filling defect that may block the lumen completely or partly, in a central or eccentric position.",
+      "strength": "not_graded",
+      "population": "Suspected acute pulmonary embolism"
+    },
+    {
+      "text": "CTPA signs of right-ventricular dysfunction include an RV cavity wider than the LV on the short axis (RV/LV ratio greater than 0.9), with or without hepatic-vein reflux and leftward septal shift.",
+      "strength": "not_graded",
+      "population": "Acute pulmonary embolism on CTPA"
+    }
+  ],
+  "clinicalBottomLine": "Read the non-contrast head CT for the named early MCA-infarct signs, remembering that the scan can look normal in nearly 30% of hyperacute infarcts. On CTPA, call PE from an intraluminal filling defect and look for RV dilatation greater than the LV.",
+  "notableCaveats": [
+    "Intracranial haemorrhage signs are not described in the accepted CT-head paper. Railway-track and polo-mint wording in the PE review sits in its MRI paragraph and is not used as a CTPA fact."
+  ]
+}

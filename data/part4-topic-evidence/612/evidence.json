@@ -1,0 +1,23 @@
+{
+  "catalogueId": 612,
+  "topic": "Hypermobility spectrum disorders and hEDS: Beighton score, management, POTS association",
+  "specialty": "Rheumatology",
+  "decision": "in_app_document",
+  "source": {
+    "title": "AGA Clinical Practice Update on GI Manifestations and Autonomic or Immune Dysfunction in Hypermobile Ehlers-Danlos Syndrome",
+    "year": null,
+    "url": "https://www.gastrojournal.org/article/S0016-5085(24)00300-0/fulltext",
+    "sourceBody": "American Gastroenterological Association",
+    "tier": "guideline",
+    "inAppPath": "data/question-repair-source-import.json",
+    "whyItFits": "Stored AGA expert review that links hEDS and hypermobility spectrum disorders with POTS, tells gastroenterologists to use the Beighton score as a screen and then the 2017 hEDS criteria, and gives a postural vital-sign definition of POTS. It is a GI-facing document, not the full 2017 classification checklist."
+  },
+  "notes": [
+    "URL in the stored file is the journal page; the advice text is what was read."
+  ],
+  "files": {
+    "source": "/workspace/data/part4-topic-evidence/612/source.txt",
+    "synopsis": "/workspace/data/part4-topic-evidence/612/synopsis.json",
+    "mcqs": "/workspace/data/part4-topic-evidence/612/mcqs.json"
+  }
+}

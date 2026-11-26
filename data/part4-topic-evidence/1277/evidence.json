@@ -1,0 +1,23 @@
+{
+  "catalogueId": 1277,
+  "topic": "Vocal Cord Dysfunction",
+  "specialty": "Pulmonology",
+  "decision": "downloaded_open_source",
+  "source": {
+    "title": "Vocal cord dysfunction/inducible laryngeal obstruction-2022 Melbourne Roundtable Report",
+    "year": 2023,
+    "pmid": "37221142",
+    "pmcid": "PMC10947219",
+    "doi": "10.1111/resp.14518",
+    "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC10947219/",
+    "sourceBody": "Respirology",
+    "tier": "review",
+    "whyItFits": "This is the Melbourne roundtable report named in the spreadsheet, and the full text is in PMC. It states the conventional laryngoscopic definition of VCD/ILO."
+  },
+  "notes": [],
+  "files": {
+    "source": "/workspace/data/part4-topic-evidence/1277/source.txt",
+    "synopsis": "/workspace/data/part4-topic-evidence/1277/synopsis.json",
+    "mcqs": "/workspace/data/part4-topic-evidence/1277/mcqs.json"
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "scope": "Basic calcium phosphate crystals, including hydroxyapatite, in destructive joint disease.",
+  "keyRecommendations": [
+    {
+      "text": "Carbonated apatite, hydroxyapatite, octacalcium phosphate, tricalcium phosphate, and whitlockite are associated with osteoarthritis, calcific tendinitis, acute arthritis, and atherosclerosis.",
+      "strength": "not_graded",
+      "population": "People with BCP-associated disease"
+    },
+    {
+      "text": "These crystals are identified in synovial fluid of rapidly destructive osteoarthritis, illustrated by Milwaukee shoulder, and are common in cartilage at knee replacement.",
+      "strength": "not_graded",
+      "population": "Destructive OA"
+    },
+    {
+      "text": "Some investigators still consider articular BCP crystals innocent bystanders or markers of end-stage OA.",
+      "strength": "not_graded",
+      "population": "OA research"
+    }
+  ],
+  "clinicalBottomLine": "Hydroxyapatite-type BCP crystals are tied to calcific tendinitis, acute arthritis, and Milwaukee shoulder, while their causal role in end-stage OA is still debated in this paper.",
+  "notableCaveats": [
+    "The paper is mechanistic as well as clinical. Barbotage technique is not its subject."
+  ]
+}

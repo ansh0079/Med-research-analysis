@@ -1,0 +1,124 @@
+{
+  "topic": {
+    "topicKey": "acute-gout-attack-in-hospital-colchicine-contraindications-iv-corticos",
+    "topicDisplayName": "Acute gout attack in hospital: colchicine contraindications, IV corticosteroids, IL-1 inhibition",
+    "aliases": [
+      "910",
+      "Rheumatology"
+    ],
+    "storedRowCount": 1,
+    "coverageNote": "The same stored NG219 text is the in-app source for hospital flare sequencing: when colchicine or NSAIDs cannot be used, when injectable corticosteroid is considered, and when an IL-1 inhibitor is allowed. It does not list named colchicine drug interactions or recommend intravenous corticosteroid.",
+    "mcqs": [
+      {
+        "id": "910-gout-hospital-01",
+        "question": "If NSAIDs and colchicine are contraindicated, not tolerated, or ineffective, what corticosteroid route does NG219 say to consider?",
+        "options": {
+          "A": "Intra-articular or intramuscular injection",
+          "B": "A five-day intravenous infusion",
+          "C": "Topical corticosteroid only",
+          "D": "Intrathecal corticosteroid"
+        },
+        "correctAnswer": "A",
+        "explanation": "NG219 says to consider an intra-articular or intramuscular corticosteroid injection in that situation. Intravenous corticosteroid is not the recommendation in the stored text.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "NICE",
+            "sourceYear": 2022,
+            "sourceUrl": "https://www.nice.org.uk/guidance/ng219",
+            "excerpt": "Consider an intra-articular or intramuscular corticosteroid injection to treat a gout flare if NSAIDs and colchicine are contraindicated, not tolerated or ineffective.",
+            "status": "source_verified"
+          }
+        ]
+      },
+      {
+        "id": "910-gout-hospital-02",
+        "question": "When does NG219 allow an IL-1 inhibitor for a gout flare?",
+        "options": {
+          "A": "Only if NSAIDs, colchicine, and corticosteroids are contraindicated, not tolerated, or ineffective, and after referral to rheumatology",
+          "B": "As first-line treatment for every hospitalised patient",
+          "C": "Instead of measuring serum urate",
+          "D": "Only if the person is already taking allopurinol"
+        },
+        "correctAnswer": "A",
+        "explanation": "NG219 says not to offer an IL-1 inhibitor unless NSAIDs, colchicine, and corticosteroids have failed or cannot be used, and to refer to rheumatology before prescribing it.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "NICE",
+            "sourceYear": 2022,
+            "sourceUrl": "https://www.nice.org.uk/guidance/ng219",
+            "excerpt": "Do not offer an interleukin-1 (IL-1) inhibitor to treat a gout flare unless NSAIDs, colchicine and corticosteroids are contraindicated, not tolerated or ineffective. Refer the person to a rheumatology service before prescribing an IL-1 inhibitor.",
+            "status": "source_verified"
+          }
+        ]
+      },
+      {
+        "id": "910-gout-hospital-03",
+        "question": "What gastroprotection does NG219 say to consider with an NSAID used for a gout flare?",
+        "options": {
+          "A": "A proton pump inhibitor",
+          "B": "Misoprostol is mandated and a PPI is forbidden",
+          "C": "No gastroprotection is ever considered",
+          "D": "An H2 antagonist must replace the NSAID"
+        },
+        "correctAnswer": "A",
+        "explanation": "NG219 says to consider adding a proton pump inhibitor for people with gout who are taking an NSAID to treat a flare.",
+        "difficulty": "easy",
+        "sourceRefs": [
+          {
+            "sourceBody": "NICE",
+            "sourceYear": 2022,
+            "sourceUrl": "https://www.nice.org.uk/guidance/ng219",
+            "excerpt": "Consider adding a proton pump inhibitor for people with gout who are taking an NSAID to treat a gout flare.",
+            "status": "source_verified"
+          }
+        ]
+      },
+      {
+        "id": "910-gout-hospital-04",
+        "question": "What non-drug measure does NG219 advise alongside prescribed flare medicine?",
+        "options": {
+          "A": "Ice packs to the affected joint",
+          "B": "Heat packs as the only physical measure named",
+          "C": "Immediate weight-bearing exercise of the inflamed joint",
+          "D": "A specific diet that the guideline says prevents flares"
+        },
+        "correctAnswer": "A",
+        "explanation": "NG219 advises that applying ice packs to the affected joint, in addition to prescribed medicine, may help alleviate pain. It also says there is not enough evidence that any specific diet prevents flares.",
+        "difficulty": "easy",
+        "sourceRefs": [
+          {
+            "sourceBody": "NICE",
+            "sourceYear": 2022,
+            "sourceUrl": "https://www.nice.org.uk/guidance/ng219",
+            "excerpt": "Advise people with gout that applying ice packs to the affected joint (cold therapy) in addition to taking prescribed medicine may help alleviate pain.",
+            "status": "source_verified"
+          }
+        ]
+      },
+      {
+        "id": "910-gout-hospital-05",
+        "question": "A hospital patient has a painful red swollen joint and septic arthritis is suspected. What does NG219 say to do?",
+        "options": {
+          "A": "Refer immediately according to the local care pathway",
+          "B": "Start a urate-lowering drug and discharge",
+          "C": "Treat as gout without considering sepsis",
+          "D": "Wait two weeks before any referral"
+        },
+        "correctAnswer": "A",
+        "explanation": "NG219 says that if septic arthritis is suspected, refer immediately according to the local care pathway, and to assess septic arthritis, calcium pyrophosphate deposition, and inflammatory arthritis in a painful red swollen joint.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "NICE",
+            "sourceYear": 2022,
+            "sourceUrl": "https://www.nice.org.uk/guidance/ng219",
+            "excerpt": "If septic arthritis is suspected, refer immediately according to the local care pathway.",
+            "status": "source_verified"
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "catalogueId": 339,
+  "topic": "Erythema Nodosum differential diagnosis",
+  "specialty": "Rheumatology",
+  "decision": "downloaded_open_source",
+  "source": {
+    "title": "Erythema Nodosum: A Practical Approach and Diagnostic Algorithm",
+    "year": 2021,
+    "pmid": "33683567",
+    "pmcid": "PMC7938036",
+    "doi": "10.1007/s40257-021-00592-w",
+    "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7938036/",
+    "sourceBody": "American Journal of Clinical Dermatology",
+    "tier": "review",
+    "whyItFits": "Open practical review of erythema nodosum. It gives the septal-panniculitis histology, the pretibial course, the common identifiable causes, Löfgren syndrome, and the main clinical differentials."
+  },
+  "notes": [],
+  "files": {
+    "source": "/workspace/data/part4-topic-evidence/339/source.txt",
+    "synopsis": "/workspace/data/part4-topic-evidence/339/synopsis.json",
+    "mcqs": "/workspace/data/part4-topic-evidence/339/mcqs.json"
+  }
+}

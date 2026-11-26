@@ -1,0 +1,19 @@
+{
+  "scope": "Incident cancer in the first 2 years after starting a biologic or targeted synthetic DMARD for rheumatoid arthritis.",
+  "keyRecommendations": [
+    {
+      "text": "Initiators of rituximab, abatacept, and JAK inhibitors had higher incidence rates and statistically significantly increased risks of incident cancer than TNF-inhibitor initiators in the first 2 years.",
+      "strength": "not_graded",
+      "population": "RA starting a new bDMARD or tsDMARD"
+    },
+    {
+      "text": "The authors warn that administrative claims and confounding by indication, including channeling of higher-burden patients, limit causal interpretation.",
+      "strength": "not_graded",
+      "population": "This cohort"
+    }
+  ],
+  "clinicalBottomLine": "In this claims cohort, rituximab, abatacept, and JAK inhibitors were associated with more incident cancers than TNF inhibitors over 2 years, but channeling bias is a stated alternative explanation.",
+  "notableCaveats": [
+    "The paper does not establish a site-specific lymphoma or non-melanoma skin cancer rate in the conclusion used here, so those sites are not given as answers."
+  ]
+}

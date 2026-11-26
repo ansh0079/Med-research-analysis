@@ -1,0 +1,24 @@
+{
+  "scope": "Adults with upper airway resistance syndrome, focused on definition and treatment evidence.",
+  "keyRecommendations": [
+    {
+      "text": "A single diagnostic criterion is still not defined; authors disagree on whether UARS is distinct from obstructive sleep apnoea.",
+      "strength": "not_graded",
+      "population": "Adults"
+    },
+    {
+      "text": "Treatment studies have used heterogeneous thresholds, including AHI less than 5–15 events/hour and oesophageal pressure more negative than 10 or 20 mmHg.",
+      "strength": "not_graded",
+      "population": "Adults in the included studies"
+    },
+    {
+      "text": "Nasal CPAP has been the mainstay therapy but with limited effectiveness.",
+      "strength": "not_graded",
+      "population": "Adults with UARS"
+    }
+  ],
+  "clinicalBottomLine": "This review does not support a single PSG cut-off for UARS. CPAP is the usual prescription, with limited effectiveness, and oral-appliance efficacy is not yet established.",
+  "notableCaveats": [
+    "The paper is a treatment-focused narrative review of heterogeneous studies, not a new diagnostic standard."
+  ]
+}

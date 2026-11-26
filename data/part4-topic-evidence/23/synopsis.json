@@ -1,0 +1,24 @@
+{
+  "scope": "Management of Behçet's syndrome in the 2025 EULAR update abstract stored in the app.",
+  "keyRecommendations": [
+    {
+      "text": "Colchicine is recommended first-line for mucocutaneous and joint involvement.",
+      "strength": "not_graded",
+      "population": "Behçet's syndrome with mucocutaneous or joint disease"
+    },
+    {
+      "text": "Apremilast and immunosuppressives, including TNF inhibitors, are recommended for refractory patients.",
+      "strength": "not_graded",
+      "population": "Refractory mucocutaneous disease"
+    },
+    {
+      "text": "Organ involvement is treated more aggressively with glucocorticoids and immunosuppressives for rapid remission, and early monoclonal TNF inhibitors are encouraged for organ- or life-threatening disease.",
+      "strength": "not_graded",
+      "population": "Organ or life-threatening Behçet's syndrome"
+    }
+  ],
+  "clinicalBottomLine": "Individualise treatment for a relapsing disease: colchicine first for mucosa, skin, and joints; escalate refractory disease; use glucocorticoids plus immunosuppression, including early anti-TNF monoclonal antibodies, for organ-threatening disease.",
+  "notableCaveats": [
+    "Pathergy testing and drug doses are not in this abstract and are not asked. The full recommendation table was not in the stored text."
+  ]
+}

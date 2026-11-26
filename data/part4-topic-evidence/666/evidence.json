@@ -1,0 +1,23 @@
+{
+  "catalogueId": 666,
+  "topic": "AA Amyloidosis secondary to chronic arthritis",
+  "specialty": "Rheumatology",
+  "decision": "downloaded_open_source",
+  "source": {
+    "title": "Systemic AA amyloidosis: epidemiology, diagnosis, and management",
+    "year": 2014,
+    "pmid": "25378951",
+    "pmcid": "PMC4218891",
+    "doi": "10.2147/CLEP.S39981",
+    "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4218891/",
+    "sourceBody": "Clinical Epidemiology",
+    "tier": "review",
+    "whyItFits": "Open review of systemic AA amyloidosis. It names rheumatoid arthritis, ankylosing spondylitis, and chronic juvenile arthritis among the inflammatory causes, and it gives the precursor protein, the Congo-red standard, SAP scintigraphy, and the proteinuria presentation."
+  },
+  "notes": [],
+  "files": {
+    "source": "/workspace/data/part4-topic-evidence/666/source.txt",
+    "synopsis": "/workspace/data/part4-topic-evidence/666/synopsis.json",
+    "mcqs": "/workspace/data/part4-topic-evidence/666/mcqs.json"
+  }
+}

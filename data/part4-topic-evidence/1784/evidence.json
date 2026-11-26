@@ -1,0 +1,23 @@
+{
+  "catalogueId": 1784,
+  "topic": "Hand and erosive OA: Heberden nodes, Bouchard nodes, trapeziometacarpal OA",
+  "specialty": "Rheumatology",
+  "decision": "downloaded_open_source",
+  "source": {
+    "title": "The clinical, functional, and radiological features of hand osteoarthritis: TLAR-osteoarthritis multi-center cohort study",
+    "year": 2022,
+    "pmid": "36589604",
+    "pmcid": "PMC9791555",
+    "doi": "10.46497/ArchRheumatol.2022.9234",
+    "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9791555/",
+    "sourceBody": "Archives of Rheumatology",
+    "tier": "literature",
+    "whyItFits": "Open multicentre description of hand osteoarthritis. It names Heberden and Bouchard nodes and bony enlargement as the clinical hallmarks, lists the target joints including the thumb base, and defines thumb-base deformity as subluxation and adduction. The 2018 EULAR hand-OA recommendations were not available as an open PDF from this environment."
+  },
+  "notes": [],
+  "files": {
+    "source": "/workspace/data/part4-topic-evidence/1784/source.txt",
+    "synopsis": "/workspace/data/part4-topic-evidence/1784/synopsis.json",
+    "mcqs": "/workspace/data/part4-topic-evidence/1784/mcqs.json"
+  }
+}

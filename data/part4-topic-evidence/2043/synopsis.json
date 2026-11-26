@@ -1,0 +1,24 @@
+{
+  "scope": "Children with tracheomalacia or tracheobronchomalacia.",
+  "keyRecommendations": [
+    {
+      "text": "There is no definitive standardised guideline for evaluation, diagnosis, and treatment.",
+      "strength": "not_graded",
+      "population": "Children with TM/TBM"
+    },
+    {
+      "text": "Three-phase dynamic bronchoscopy is described as the gold standard for diagnosis.",
+      "strength": "not_graded",
+      "population": "Children with suspected TM/TBM"
+    },
+    {
+      "text": "Most surgeons use more than 50% dynamic narrowing on forced exhalation or coughing as the endoscopic diagnostic threshold, although no standard criterion exists.",
+      "strength": "not_graded",
+      "population": "Children undergoing endoscopy"
+    }
+  ],
+  "clinicalBottomLine": "In this paediatric review, TBM is diagnosed by direct dynamic endoscopy, most often using a greater than 50% expiratory or cough-related collapse, and airway narrowing is accentuated in expiration.",
+  "notableCaveats": [
+    "The accepted review is a paediatric overview. Adult acquired TBM is not its population."
+  ]
+}

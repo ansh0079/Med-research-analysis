@@ -1,0 +1,47 @@
+{
+  "catalogueId": 1233,
+  "topic": "Mycobacterial and Fungal Arthritis",
+  "specialty": "Rheumatology",
+  "decision": "downloaded_open_source",
+  "source": {
+    "title": "Bone and joint tuberculosis: clinical manifestation, diagnostic techniques and drug resistance analysis; and Fungal arthritis: A challenging clinical entity",
+    "year": 2025,
+    "pmid": "41355983",
+    "pmcid": "PMC12678313",
+    "secondary": {
+      "title": "Fungal arthritis: A challenging clinical entity",
+      "year": 2023,
+      "pmid": "36844378",
+      "pmcid": "PMC9945246",
+      "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9945246/"
+    },
+    "doi": null,
+    "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC12678313/",
+    "sourceBody": "Frontiers in Cellular and Infection Microbiology; World Journal of Orthopedics",
+    "tier": "review",
+    "ingestParts": [
+      {
+        "pmid": "41355983",
+        "title": "Bone and joint tuberculosis: clinical manifestation, diagnostic techniques and drug resistance analysis",
+        "year": 2025,
+        "tier": "review",
+        "file": "/tmp/oa/1233_tb.txt"
+      },
+      {
+        "pmid": "36844378",
+        "doi": null,
+        "title": "Fungal arthritis: A challenging clinical entity",
+        "year": 2023,
+        "tier": "review",
+        "file": "/tmp/oa/1233_fungal.txt"
+      }
+    ],
+    "whyItFits": "Two open reviews were required: one on bone and joint tuberculosis and one on fungal arthritis. The ICU invasive-fungal consensus named in the spreadsheet is the wrong setting."
+  },
+  "notes": [],
+  "files": {
+    "source": "/workspace/data/part4-topic-evidence/1233/source.txt",
+    "synopsis": "/workspace/data/part4-topic-evidence/1233/synopsis.json",
+    "mcqs": "/workspace/data/part4-topic-evidence/1233/mcqs.json"
+  }
+}

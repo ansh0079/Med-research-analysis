@@ -1,0 +1,24 @@
+{
+  "scope": "Antisynthetase syndrome and its overlap with dermatomyositis and polymyositis.",
+  "keyRecommendations": [
+    {
+      "text": "Diagnosis is multidisciplinary, using rheumatology and pulmonary assessment plus serology, imaging, and sometimes muscle or lung biopsy.",
+      "strength": "not_graded",
+      "population": "Suspected antisynthetase syndrome"
+    },
+    {
+      "text": "ILD is more prevalent and more severe than in dermatomyositis and polymyositis.",
+      "strength": "not_graded",
+      "population": "Antisynthetase syndrome"
+    },
+    {
+      "text": "Treatment choices are usually experiential because prospective data are lacking, and long-term care must watch immunosuppression and progressive ILD.",
+      "strength": "not_graded",
+      "population": "Antisynthetase syndrome"
+    }
+  ],
+  "clinicalBottomLine": "Antisynthetase syndrome is an inflammatory myopathy marked by antisynthetase antibodies and a high burden of interstitial lung disease, overlapping dermatomyositis and polymyositis but with more lung disease.",
+  "notableCaveats": [
+    "Classic dermatomyositis skin signs other than mechanic's hands are not the focus, so they are not asked."
+  ]
+}

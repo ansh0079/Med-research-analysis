@@ -1,0 +1,23 @@
+{
+  "catalogueId": 791,
+  "topic": "Carpal tunnel syndrome: median nerve compression, Phalen, EMG, conservative vs surgical",
+  "specialty": "Rheumatology",
+  "decision": "downloaded_open_source",
+  "source": {
+    "title": "Carpal tunnel syndrome",
+    "year": 2008,
+    "pmid": "18269111",
+    "pmcid": "PMC2397020",
+    "doi": null,
+    "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2397020/",
+    "sourceBody": "Ulster Medical Journal",
+    "tier": "review",
+    "whyItFits": "Open clinical review stating that CTS diagnosis uses history, examination, and electrophysiology, that individual provocative tests are not diagnostic alone, and listing splints and local steroid among non-surgical options. The stored AAOS summary did not contain the recommendations themselves."
+  },
+  "notes": [],
+  "files": {
+    "source": "/workspace/data/part4-topic-evidence/791/source.txt",
+    "synopsis": "/workspace/data/part4-topic-evidence/791/synopsis.json",
+    "mcqs": "/workspace/data/part4-topic-evidence/791/mcqs.json"
+  }
+}

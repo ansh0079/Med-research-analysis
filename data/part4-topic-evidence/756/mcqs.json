@@ -1,0 +1,134 @@
+{
+  "topic": {
+    "topicKey": "fibromyalgia-2016-acr-diagnostic-criteria-central-sensitisation-non-ph",
+    "topicDisplayName": "Fibromyalgia: 2016 ACR diagnostic criteria, central sensitisation, non-pharmacological management",
+    "aliases": [
+      "756",
+      "Rheumatology"
+    ],
+    "storedRowCount": 1,
+    "coverageNote": "Open review of fibromyalgia diagnosis, including the move from tender points to the Widespread Pain Index and Symptom Severity Scale and the 2016 generalised-pain revision, plus first-line non-drug care and FDA-approved drugs. The stored NG117 bronchiectasis text is the wrong disease.",
+    "mcqs": [
+      {
+        "id": "756-fm-01",
+        "question": "What did the 2016 revision add, according to this review?",
+        "options": {
+          "A": "A generalised pain requirement, to reduce misclassification",
+          "B": "A return to 18 obligatory tender points",
+          "C": "A positive ANA requirement",
+          "D": "Removal of all symptom scores"
+        },
+        "correctAnswer": "A",
+        "explanation": "The review says the 2016 revision refined the criteria to include a generalised pain requirement, reducing the risk of misclassification.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Journal of Pain Research",
+            "sourceYear": 2026,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC13589972/",
+            "excerpt": "The most recent 2016 revision further refined these criteria to include a generalized pain requirement, thereby reducing the risk of misclassification.",
+            "status": "source_verified",
+            "pmid": "42764960",
+            "pmcid": "PMC13589972"
+          }
+        ]
+      },
+      {
+        "id": "756-fm-02",
+        "question": "What change in 2011 does the review describe?",
+        "options": {
+          "A": "Physician assessment of symptom extent was replaced by three patient-reported symptoms",
+          "B": "Tender points were increased",
+          "C": "Biopsy became mandatory",
+          "D": "Criteria were withdrawn"
+        },
+        "correctAnswer": "A",
+        "explanation": "The review says that in 2011 the criteria were simplified by replacing physician-based evaluation of symptom extent with three patient-reported symptoms.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Journal of Pain Research",
+            "sourceYear": 2026,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC13589972/",
+            "excerpt": "In 2011, the criteria were simplified by replacing physician-based evaluation of symptom extent with three patient-reported symptoms.",
+            "status": "source_verified",
+            "pmid": "42764960",
+            "pmcid": "PMC13589972"
+          }
+        ]
+      },
+      {
+        "id": "756-fm-03",
+        "question": "What did Salaffi and colleagues report in 2020 about different fibromyalgia criteria?",
+        "options": {
+          "A": "Substantial agreement among ACR 2011, ACR 2016, AAPT, and modified FAS criteria",
+          "B": "No agreement at all",
+          "C": "Only the 1990 tender-point count remained valid",
+          "D": "AAPT criteria diagnosed a different disease with no overlap"
+        },
+        "correctAnswer": "A",
+        "explanation": "The review cites Salaffi et al, 2020, as a comparison showing substantial agreement among ACR 2011, ACR 2016, AAPT, and modified FAS criteria.",
+        "difficulty": "hard",
+        "sourceRefs": [
+          {
+            "sourceBody": "Journal of Pain Research",
+            "sourceYear": 2026,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC13589972/",
+            "excerpt": "indicating substantial agreement among the different FM diagnostic criteria.",
+            "status": "source_verified",
+            "pmid": "42764960",
+            "pmcid": "PMC13589972"
+          }
+        ]
+      },
+      {
+        "id": "756-fm-04",
+        "question": "Which non-pharmacological measures are recommended first-line in the same review?",
+        "options": {
+          "A": "Patient education, aerobic and resistance exercise, and CBT",
+          "B": "Bed rest and opioids",
+          "C": "Joint replacement",
+          "D": "Plasma exchange"
+        },
+        "correctAnswer": "A",
+        "explanation": "Non-pharmacological interventions including education, aerobic and resistance training, and CBT are recommended as first-line treatments.",
+        "difficulty": "easy",
+        "sourceRefs": [
+          {
+            "sourceBody": "Journal of Pain Research",
+            "sourceYear": 2026,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC13589972/",
+            "excerpt": "exercise (eg, aerobic and resistance training), and psychological therapies, such as cognitive behavioral therapy, are recommended as first-line treatments.",
+            "status": "source_verified",
+            "pmid": "42764960",
+            "pmcid": "PMC13589972"
+          }
+        ]
+      },
+      {
+        "id": "756-fm-05",
+        "question": "Which symptom instruments replaced tender-point assessment?",
+        "options": {
+          "A": "The Widespread Pain Index and the Symptom Severity Scale",
+          "B": "The Beighton score",
+          "C": "DAS28",
+          "D": "CURB-65"
+        },
+        "correctAnswer": "A",
+        "explanation": "The review says tender-point assessment was replaced by a symptom-based approach using the Widespread Pain Index and Symptom Severity Scale.",
+        "difficulty": "easy",
+        "sourceRefs": [
+          {
+            "sourceBody": "Journal of Pain Research",
+            "sourceYear": 2026,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC13589972/",
+            "excerpt": "using the Widespread Pain Index and Symptom Severity Scale.",
+            "status": "source_verified",
+            "pmid": "42764960",
+            "pmcid": "PMC13589972"
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,129 @@
+{
+  "topic": {
+    "topicKey": "cirt-and-cantos-trials-methotrexate-and-canakinumab-for-cardiovascular",
+    "topicDisplayName": "CIRT and CANTOS trials: methotrexate and canakinumab for cardiovascular inflammation",
+    "aliases": [
+      "2128",
+      "Rheumatology"
+    ],
+    "storedRowCount": 1,
+    "coverageNote": "Stored abstract names CANTOS and CIRT, the populations enrolled, canakinumab's MACE result, and the early stop of low-dose methotrexate for lack of benefit.",
+    "mcqs": [
+      {
+        "id": "2128-cantos-01",
+        "question": "Who was enrolled in CANTOS, according to this abstract?",
+        "options": {
+          "A": "Patients with prior myocardial infarction and hsCRP at least 2 mg/L",
+          "B": "Patients with gout and no cardiovascular disease",
+          "C": "Primary-prevention patients with normal CRP",
+          "D": "Only patients with heart failure and low CRP"
+        },
+        "correctAnswer": "A",
+        "explanation": "The abstract says CANTOS enrolled patients with prior MI and a high-sensitivity C-reactive protein of at least 2 mg/L.",
+        "difficulty": "easy",
+        "sourceRefs": [
+          {
+            "sourceBody": "Current Atherosclerosis Reports",
+            "sourceYear": 2020,
+            "sourceUrl": "https://pubmed.ncbi.nlm.nih.gov/32880743/",
+            "excerpt": "CANTOS enrolled patients with prior myocardial infarction (MI) and a high-sensitivity C-reactive protein ≥ 2 mg/L",
+            "status": "source_verified",
+            "pmid": "32880743"
+          }
+        ]
+      },
+      {
+        "id": "2128-cantos-02",
+        "question": "What MACE result does the abstract give for canakinumab in CANTOS?",
+        "options": {
+          "A": "15% reduction, HR 0.85 (95% CI 0.74–0.98)",
+          "B": "No effect, HR 1.00",
+          "C": "A 23% increase in MACE",
+          "D": "The trial was stopped for harm before any HR was estimated"
+        },
+        "correctAnswer": "A",
+        "explanation": "The abstract reports a 15% reduction in MACE with canakinumab, HR 0.85, 95% CI 0.74–0.98.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Current Atherosclerosis Reports",
+            "sourceYear": 2020,
+            "sourceUrl": "https://pubmed.ncbi.nlm.nih.gov/32880743/",
+            "excerpt": "reported a 15% reduction in major adverse cardiovascular events (MACE; HR 0.85, 95% CI 0.74-0.98) with the interleukin-1β inhibitor canakinumab.",
+            "status": "source_verified",
+            "pmid": "32880743"
+          }
+        ]
+      },
+      {
+        "id": "2128-cantos-03",
+        "question": "What drug class does the abstract assign to canakinumab?",
+        "options": {
+          "A": "Interleukin-1β inhibitor",
+          "B": "TNF inhibitor",
+          "C": "Statin",
+          "D": "PCSK9 inhibitor"
+        },
+        "correctAnswer": "A",
+        "explanation": "The abstract calls canakinumab an interleukin-1β inhibitor.",
+        "difficulty": "easy",
+        "sourceRefs": [
+          {
+            "sourceBody": "Current Atherosclerosis Reports",
+            "sourceYear": 2020,
+            "sourceUrl": "https://pubmed.ncbi.nlm.nih.gov/32880743/",
+            "excerpt": "the interleukin-1β inhibitor canakinumab",
+            "status": "source_verified",
+            "pmid": "32880743"
+          }
+        ]
+      },
+      {
+        "id": "2128-cantos-04",
+        "question": "What happened in CIRT?",
+        "options": {
+          "A": "It was stopped early for lack of benefit of low-dose methotrexate on MACE",
+          "B": "Methotrexate reduced MACE by 15%",
+          "C": "It tested canakinumab in diabetes",
+          "D": "It was a primary-prevention diet trial"
+        },
+        "correctAnswer": "A",
+        "explanation": "The abstract says CIRT was stopped early for lack of benefit of low-dose methotrexate in preventing MACE in patients with coronary artery disease and either type 2 diabetes or the metabolic syndrome.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Current Atherosclerosis Reports",
+            "sourceYear": 2020,
+            "sourceUrl": "https://pubmed.ncbi.nlm.nih.gov/32880743/",
+            "excerpt": "CIRT was stopped early for lack of benefit of low-dose methotrexate in preventing MACE in patients with coronary artery disease and either type 2 diabetes or the metabolic syndrome.",
+            "status": "source_verified",
+            "pmid": "32880743"
+          }
+        ]
+      },
+      {
+        "id": "2128-cantos-05",
+        "question": "What marker of residual risk does the abstract highlight?",
+        "options": {
+          "A": "Ongoing subclinical vascular inflammation",
+          "B": "LDL cholesterol alone, with inflammation described as irrelevant",
+          "C": "Serum urate",
+          "D": "Platelet count only"
+        },
+        "correctAnswer": "A",
+        "explanation": "The abstract says ongoing subclinical vascular inflammation is a marker of elevated residual risk, and that reductions in measures of vascular inflammation predict improved outcome.",
+        "difficulty": "easy",
+        "sourceRefs": [
+          {
+            "sourceBody": "Current Atherosclerosis Reports",
+            "sourceYear": 2020,
+            "sourceUrl": "https://pubmed.ncbi.nlm.nih.gov/32880743/",
+            "excerpt": "The presence of ongoing subclinical vascular inflammation is known to be a marker of elevated residual risk",
+            "status": "source_verified",
+            "pmid": "32880743"
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "scope": "hEDS and hypermobility spectrum disorders as they present with gut symptoms, POTS, and mast-cell symptoms.",
+  "keyRecommendations": [
+    {
+      "text": "Clinicians should know the observed associations among hEDS or HSD, POTS, and/or MCAS. Universal POTS/MCAS testing in everyone with hEDS/HSD is not supported.",
+      "strength": "not_graded",
+      "population": "hEDS/HSD"
+    },
+    {
+      "text": "Use the Beighton score as a screen; if positive, consider the 2017 hEDS diagnostic criteria or refer.",
+      "strength": "not_graded",
+      "population": "Patients with disorders of gut-brain interaction"
+    },
+    {
+      "text": "POTS testing uses a symptomatic heart-rate rise of 30 beats/min or more within 10 minutes of standing, without orthostatic hypotension.",
+      "strength": "not_graded",
+      "population": "hEDS/HSD with refractory GI symptoms and orthostatic intolerance"
+    }
+  ],
+  "clinicalBottomLine": "Screen joint hypermobility with the Beighton score, apply or refer for 2017 hEDS criteria if the screen is positive, and look for POTS when orthostatic symptoms accompany refractory gut symptoms rather than testing every patient.",
+  "notableCaveats": [
+    "The Beighton point threshold itself is not printed in this update. Advice statements are expert opinion without formal evidence ratings."
+  ]
+}

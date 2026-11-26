@@ -1,0 +1,25 @@
+{
+  "catalogueId": 599,
+  "topic": "Autoantibody panel interpretation: ANA, ENA, dsDNA, ANCA, RF, anti-CCP clinical utility",
+  "specialty": "Rheumatology",
+  "decision": "downloaded_open_source",
+  "source": {
+    "title": "Clinical relevance of HEp-2 indirect immunofluorescent patterns: the International Consensus on ANA patterns (ICAP) perspective",
+    "year": 2019,
+    "pmid": "30862649",
+    "pmcid": "PMC6585284",
+    "doi": "10.1136/annrheumdis-2018-214436",
+    "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6585284/",
+    "sourceBody": "Annals of the Rheumatic Diseases",
+    "tier": "guideline",
+    "whyItFits": "Open ICAP paper on how HEp-2 IIFA titre and pattern should be interpreted and followed up. It does not cover ANCA, rheumatoid factor, or anti-CCP, so questions stay inside ANA pattern interpretation. A Brazilian HEp-2 consensus in the library was about nomenclature harmonisation and was thinner."
+  },
+  "notes": [
+    "The topic name lists ENA, dsDNA, ANCA, RF, and anti-CCP. Those assays are outside this ICAP paper. Questions do not invent their operating characteristics."
+  ],
+  "files": {
+    "source": "/workspace/data/part4-topic-evidence/599/source.txt",
+    "synopsis": "/workspace/data/part4-topic-evidence/599/synopsis.json",
+    "mcqs": "/workspace/data/part4-topic-evidence/599/mcqs.json"
+  }
+}

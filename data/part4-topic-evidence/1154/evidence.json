@@ -1,0 +1,23 @@
+{
+  "catalogueId": 1154,
+  "topic": "Antiphospholipid Syndrome",
+  "specialty": "Rheumatology",
+  "decision": "downloaded_open_source",
+  "source": {
+    "title": "EULAR recommendations for the management of antiphospholipid syndrome in adults",
+    "year": 2019,
+    "pmid": "31092409",
+    "pmcid": "PMC11034817",
+    "doi": "10.1136/annrheumdis-2019-215213",
+    "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC11034817/",
+    "sourceBody": "Annals of the Rheumatic Diseases",
+    "tier": "guideline",
+    "whyItFits": "The 2019 EULAR adult APS recommendations are in PMC and state aspirin, VKA targets, the rivaroxaban restriction in triple-positive patients, and obstetric combination treatment. Stored APS items were short abstracts."
+  },
+  "notes": [],
+  "files": {
+    "source": "/workspace/data/part4-topic-evidence/1154/source.txt",
+    "synopsis": "/workspace/data/part4-topic-evidence/1154/synopsis.json",
+    "mcqs": "/workspace/data/part4-topic-evidence/1154/mcqs.json"
+  }
+}

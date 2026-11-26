@@ -1,0 +1,24 @@
+{
+  "scope": "Clinical diagnosis and causes of erythema nodosum.",
+  "keyRecommendations": [
+    {
+      "text": "Histology is a predominantly septal panniculitis without vasculitis.",
+      "strength": "not_graded",
+      "population": "Suspected erythema nodosum"
+    },
+    {
+      "text": "Lesions are typically pretibial and usually settle in 1 to 6 weeks, passing through a bruise-like colour change.",
+      "strength": "not_graded",
+      "population": "Erythema nodosum"
+    },
+    {
+      "text": "The most common identifiable causes named are streptococcal infection, primary tuberculosis, sarcoidosis, Behçet disease, drugs, pregnancy, and inflammatory bowel disease.",
+      "strength": "not_graded",
+      "population": "Secondary erythema nodosum"
+    }
+  ],
+  "clinicalBottomLine": "Tender pretibial nodules that evolve like a bruise over 1 to 6 weeks, with septal panniculitis and no vasculitis, are erythema nodosum. Look for streptococcal infection, tuberculosis, sarcoidosis including Löfgren syndrome, Behçet disease, drugs, pregnancy, and inflammatory bowel disease before calling it idiopathic.",
+  "notableCaveats": [
+    "The main differentials named are erythema induratum of Bazin, superficial thrombophlebitis, and other panniculitis. Histopathology separates them."
+  ]
+}

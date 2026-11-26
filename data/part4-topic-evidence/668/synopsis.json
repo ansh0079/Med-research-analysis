@@ -1,0 +1,29 @@
+{
+  "scope": "Adults with suspected or confirmed gout, using stored NICE NG219 recommendation text.",
+  "keyRecommendations": [
+    {
+      "text": "Suspect gout with rapid-onset severe pain, redness and swelling in one or both first MTP joints, or with tophi.",
+      "strength": "not_graded",
+      "population": "People presenting with acute joint symptoms"
+    },
+    {
+      "text": "A serum urate of 360 micromol/L (6 mg/dL) or more supports the clinical diagnosis. If the level is lower during a flare and gout is strongly suspected, repeat it at least 2 weeks after the flare settles.",
+      "strength": "not_graded",
+      "population": "Suspected gout"
+    },
+    {
+      "text": "Offer an NSAID, colchicine, or a short course of oral corticosteroid for a flare, accounting for comorbidities and co-prescriptions.",
+      "strength": "not_graded",
+      "population": "Gout flare"
+    },
+    {
+      "text": "Offer treat-to-target urate-lowering therapy for multiple or troublesome flares, CKD stages 3 to 5, diuretic therapy, tophi, or chronic gouty arthritis.",
+      "strength": "not_graded",
+      "population": "Indicated long-term gout"
+    }
+  ],
+  "clinicalBottomLine": "NG219 diagnoses gout from the clinical picture plus urate, treats the flare with an NSAID, colchicine, or a short oral corticosteroid, and uses treat-to-target urate lowering when high-risk features are present.",
+  "notableCaveats": [
+    "Oral corticosteroids for flares were noted as off-label in June 2022. Colchicine dose and drug-interaction lists are not in the stored recommendation text."
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "catalogueId": 668,
+  "topic": "Acute Gouty Arthritis",
+  "specialty": "Rheumatology",
+  "decision": "in_app_document",
+  "source": {
+    "title": "Gout: diagnosis and management (NICE NG219)",
+    "year": 2022,
+    "pmid": null,
+    "pmcid": null,
+    "url": "https://www.nice.org.uk/guidance/ng219",
+    "sourceBody": "NICE",
+    "tier": "guideline",
+    "inAppPath": "data/question-repair-source-import.json",
+    "whyItFits": "The stored question-repair library contains the NG219 recommendation text, including diagnosis, flare treatment, and urate-lowering therapy. It is long enough to support questions without adding facts from elsewhere."
+  },
+  "notes": [
+    "EULAR gout Part II and the ACP diagnosis abstract in the library are much shorter and were not needed once NG219 recommendation text was read."
+  ],
+  "files": {
+    "source": "/workspace/data/part4-topic-evidence/668/source.txt",
+    "synopsis": "/workspace/data/part4-topic-evidence/668/synopsis.json",
+    "mcqs": "/workspace/data/part4-topic-evidence/668/mcqs.json"
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "catalogueId": 2043,
+  "topic": "Tracheobronchomalacia",
+  "specialty": "Pulmonology",
+  "decision": "downloaded_open_source",
+  "source": {
+    "title": "Tracheomalacia and Tracheobronchomalacia in Pediatrics: An Overview of Evaluation, Medical Management, and Surgical Treatment",
+    "year": 2019,
+    "pmid": "31921725",
+    "pmcid": "PMC6922019",
+    "doi": "10.3389/fped.2019.00512",
+    "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6922019/",
+    "sourceBody": "Frontiers in Pediatrics",
+    "tier": "review",
+    "whyItFits": "Open review of tracheomalacia and tracheobronchomalacia covering dynamic collapse, bronchoscopy as the diagnostic reference, and the commonly used >50% narrowing threshold. No comparable adult full text was in PMC. The scope is paediatric."
+  },
+  "notes": [
+    "Adult in-depth reviews suggested by the spreadsheet were not in PMC as full text."
+  ],
+  "files": {
+    "source": "/workspace/data/part4-topic-evidence/2043/source.txt",
+    "synopsis": "/workspace/data/part4-topic-evidence/2043/synopsis.json",
+    "mcqs": "/workspace/data/part4-topic-evidence/2043/mcqs.json"
+  }
+}

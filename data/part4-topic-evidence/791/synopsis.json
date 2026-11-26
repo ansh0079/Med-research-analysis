@@ -1,0 +1,24 @@
+{
+  "scope": "Clinical diagnosis and initial management of carpal tunnel syndrome.",
+  "keyRecommendations": [
+    {
+      "text": "Diagnosis should be based on history, physical examination, and electrophysiological studies.",
+      "strength": "not_graded",
+      "population": "Suspected CTS"
+    },
+    {
+      "text": "Provocative tests, including those described since Phalen, are complementary and none is diagnostic on its own.",
+      "strength": "not_graded",
+      "population": "Suspected CTS"
+    },
+    {
+      "text": "Non-surgical methods listed include wrist splinting and local corticosteroid injection.",
+      "strength": "not_graded",
+      "population": "CTS"
+    }
+  ],
+  "clinicalBottomLine": "Diagnose CTS from the story, the examination, and nerve-conduction studies rather than from Phalen's test alone, and start with non-surgical measures such as a splint when symptoms are mild.",
+  "notableCaveats": [
+    "The review says a full description of each non-surgical option is beyond its scope, so comparative surgical success rates are not taken from it."
+  ]
+}

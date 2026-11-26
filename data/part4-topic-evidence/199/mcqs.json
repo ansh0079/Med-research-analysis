@@ -1,0 +1,124 @@
+{
+  "topic": {
+    "topicKey": "leflunomide-in-ra-mechanism-dosing-washout-procedure-hepatotoxicity-mo",
+    "topicDisplayName": "Leflunomide in RA: mechanism, dosing, washout procedure, hepatotoxicity monitoring",
+    "aliases": [
+      "199",
+      "Rheumatology"
+    ],
+    "storedRowCount": 1,
+    "coverageNote": "The open FDA label states the dihydroorotate-dehydrogenase mechanism, the 20 mg daily dose and optional 100 mg loading dose, the cholestyramine or charcoal washout, and the ALT monitoring schedule. The BSR DMARD monitoring PDF was not retrievable from this environment.",
+    "mcqs": [
+      {
+        "id": "199-lef-01",
+        "question": "Which enzyme does the label say leflunomide inhibits?",
+        "options": {
+          "A": "Dihydroorotate dehydrogenase, a mitochondrial enzyme in de novo pyrimidine synthesis",
+          "B": "Cyclo-oxygenase",
+          "C": "Xanthine oxidase",
+          "D": "Thiopurine methyltransferase"
+        },
+        "correctAnswer": "A",
+        "explanation": "The label says leflunomide is an isoxazole immunomodulatory agent that inhibits dihydroorotate dehydrogenase, a mitochondrial enzyme involved in de novo pyrimidine synthesis, and has antiproliferative activity.",
+        "difficulty": "easy",
+        "sourceRefs": [
+          {
+            "sourceBody": "DailyMed FDA label",
+            "sourceYear": 2026,
+            "sourceUrl": "https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=c66cacd1-93f7-483a-a2fc-aad53d5342b0",
+            "excerpt": "Leflunomide is an isoxazole immunomodulatory agent that inhibits dihydroorotate dehydrogenase (a mitochondrial enzyme involved in de novo pyrimidine synthesis) and has antiproliferative activity.",
+            "status": "source_verified"
+          }
+        ]
+      },
+      {
+        "id": "199-lef-02",
+        "question": "What loading dose does the label recommend for a patient at low risk of leflunomide hepatotoxicity and myelosuppression?",
+        "options": {
+          "A": "100 mg once daily for 3 days, then 20 mg once daily",
+          "B": "20 mg once daily with no option of a loading dose in any patient",
+          "C": "100 mg weekly for a year",
+          "D": "10 mg three times daily indefinitely"
+        },
+        "correctAnswer": "A",
+        "explanation": "The recommended dose is 20 mg once daily. For low-risk patients the loading dose is 100 mg once daily for 3 days, then 20 mg once daily.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "DailyMed FDA label",
+            "sourceYear": 2026,
+            "sourceUrl": "https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=c66cacd1-93f7-483a-a2fc-aad53d5342b0",
+            "excerpt": "For patients who are at low risk for leflunomide-associated hepatotoxicity and leflunomide-associated myelosuppression the recommended leflunomide loading dose is 100 mg once daily for 3 days. Subsequently administer 20 mg once daily.",
+            "status": "source_verified"
+          }
+        ]
+      },
+      {
+        "id": "199-lef-03",
+        "question": "How should a patient at high risk, such as someone also taking methotrexate, start leflunomide?",
+        "options": {
+          "A": "20 mg once daily without a loading dose",
+          "B": "100 mg daily for 3 days, because high-risk patients need a larger load",
+          "C": "The label forbids any use with methotrexate and gives no dose",
+          "D": "50 mg twice daily"
+        },
+        "correctAnswer": "A",
+        "explanation": "For patients at high risk of hepatotoxicity, for example those taking concomitant methotrexate, or of myelosuppression, the recommended dose is 20 mg once daily without a loading dose.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "DailyMed FDA label",
+            "sourceYear": 2026,
+            "sourceUrl": "https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=c66cacd1-93f7-483a-a2fc-aad53d5342b0",
+            "excerpt": "For patients at high risk for leflunomide-associated hepatotoxicity (e.g., those taking concomitant methotrexate) or leflunomide-associated myelosuppression (e.g., patients taking concomitant immunosuppressants), the recommended leflunomide dosage is 20 mg once daily without a loading dose [see Warnings and Precautions ( 5.2 , 5.4 )].",
+            "status": "source_verified"
+          }
+        ]
+      },
+      {
+        "id": "199-lef-04",
+        "question": "Which accelerated-elimination regimens does the label give?",
+        "options": {
+          "A": "Cholestyramine 8 g orally three times daily for 11 days, or activated charcoal 50 g every 12 hours for 11 days",
+          "B": "A single dose of vitamin K",
+          "C": "Haemodialysis as the only method",
+          "D": "Stopping the drug, with no elimination procedure described"
+        },
+        "correctAnswer": "A",
+        "explanation": "The label says elimination can be accelerated with cholestyramine 8 g orally three times daily for 11 days, or alternatively 50 g of activated charcoal orally every 12 hours for 11 days.",
+        "difficulty": "hard",
+        "sourceRefs": [
+          {
+            "sourceBody": "DailyMed FDA label",
+            "sourceYear": 2026,
+            "sourceUrl": "https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=c66cacd1-93f7-483a-a2fc-aad53d5342b0",
+            "excerpt": "Administer cholestyramine 8 grams orally 3 times daily for 11 days. 2. Alternatively, administer 50 grams of activated charcoal powder (made into a suspension) orally every 12 hours for 11 days.",
+            "status": "source_verified"
+          }
+        ]
+      },
+      {
+        "id": "199-lef-05",
+        "question": "Who should not start leflunomide, and how often is ALT monitored after it is started?",
+        "options": {
+          "A": "Do not treat pre-existing liver disease or a baseline ALT greater than twice the upper limit of normal. Then check ALT at least monthly for six months and every 6 to 8 weeks thereafter",
+          "B": "Start regardless of the baseline ALT and never repeat it",
+          "C": "Check ALT once a year only",
+          "D": "The label contains no liver warning"
+        },
+        "correctAnswer": "A",
+        "explanation": "Patients with pre-existing liver disease, or an ALT greater than twice the upper limit of normal, should not be treated. ALT is monitored at least monthly for six months after starting, then every 6 to 8 weeks.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "DailyMed FDA label",
+            "sourceYear": 2026,
+            "sourceUrl": "https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=c66cacd1-93f7-483a-a2fc-aad53d5342b0",
+            "excerpt": "Patients with pre-existing acute or chronic liver disease, or those with serum alanine aminotransferase (ALT) >2 x ULN before initiating treatment, are at increased risk and should not be treated with leflunomide. Monitor ALT levels at least monthly for six months after starting leflunomide, and thereafter every 6 to 8 weeks.",
+            "status": "source_verified"
+          }
+        ]
+      }
+    ]
+  }
+}

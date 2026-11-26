@@ -1,0 +1,25 @@
+{
+  "catalogueId": 2154,
+  "topic": "Livedo Reticularis workup",
+  "specialty": "Rheumatology",
+  "decision": "downloaded_open_source",
+  "source": {
+    "title": "Livedo reticularis: A review of the literature",
+    "year": 2015,
+    "pmid": "26500860",
+    "pmcid": "PMC4594389",
+    "doi": null,
+    "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4594389/",
+    "sourceBody": "Indian Dermatology Online Journal",
+    "tier": "review",
+    "whyItFits": "This is the review named in the spreadsheet, and the full text is in PMC. It separates benign livedo reticularis from pathologic livedo racemosa and lists the systemic diseases that drive the workup."
+  },
+  "notes": [
+    "PMID taken from the PMC article record if present; the teaching text is the PMC full text."
+  ],
+  "files": {
+    "source": "/workspace/data/part4-topic-evidence/2154/source.txt",
+    "synopsis": "/workspace/data/part4-topic-evidence/2154/synopsis.json",
+    "mcqs": "/workspace/data/part4-topic-evidence/2154/mcqs.json"
+  }
+}

@@ -1,0 +1,134 @@
+{
+  "topic": {
+    "topicKey": "calcium-hydroxyapatite-deposition-disease",
+    "topicDisplayName": "Calcium Hydroxyapatite Deposition Disease",
+    "aliases": [
+      "260",
+      "Rheumatology"
+    ],
+    "storedRowCount": 1,
+    "coverageNote": "Open paper that names hydroxyapatite among basic calcium phosphate crystals and links them to osteoarthritis, calcific tendinitis, acute arthritis, and Milwaukee shoulder. A rotator-cuff calcific-tendinopathy review did not use the word hydroxyapatite and was not the primary source.",
+    "mcqs": [
+      {
+        "id": "260-hap-01",
+        "question": "Which crystals does this paper group with hydroxyapatite in basic calcium phosphate disease?",
+        "options": {
+          "A": "Carbonated apatite, octacalcium phosphate, tricalcium phosphate, and whitlockite",
+          "B": "Monosodium urate only",
+          "C": "Calcium pyrophosphate only",
+          "D": "Cholesterol crystals only"
+        },
+        "correctAnswer": "A",
+        "explanation": "The paper lists carbonated apatite, hydroxyapatite, octacalcium phosphate, tricalcium phosphate, and whitlockite together.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "PLOS ONE",
+            "sourceYear": 2013,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3585350/",
+            "excerpt": "crystals including carbonated-apatite (CA), hydroxyapatite (HA), octacalcium phosphate (OCP), tricalcium phosphate and whitlockite",
+            "status": "source_verified",
+            "pmid": "23468973",
+            "pmcid": "PMC3585350"
+          }
+        ]
+      },
+      {
+        "id": "260-hap-02",
+        "question": "With which clinical conditions does the paper associate these crystals?",
+        "options": {
+          "A": "Osteoarthritis, calcific tendinitis, acute arthritis, and atherosclerosis",
+          "B": "Only gout",
+          "C": "Only septic arthritis",
+          "D": "Only amyloidosis"
+        },
+        "correctAnswer": "A",
+        "explanation": "The paper says these crystals are associated with osteoarthritis, calcific tendinitis, acute arthritis, and atherosclerosis.",
+        "difficulty": "easy",
+        "sourceRefs": [
+          {
+            "sourceBody": "PLOS ONE",
+            "sourceYear": 2013,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3585350/",
+            "excerpt": "are associated with osteoarthritis (OA), calcific tendinitis, acute arthritis and atherosclerosis",
+            "status": "source_verified",
+            "pmid": "23468973",
+            "pmcid": "PMC3585350"
+          }
+        ]
+      },
+      {
+        "id": "260-hap-03",
+        "question": "Which syndrome does the paper use to illustrate BCP crystals in rapidly destructive osteoarthritis?",
+        "options": {
+          "A": "Milwaukee shoulder syndrome",
+          "B": "Carpal tunnel syndrome",
+          "C": "Sneddon syndrome",
+          "D": "Behçet's syndrome"
+        },
+        "correctAnswer": "A",
+        "explanation": "The paper says the crystals are identified in synovial fluid of rapidly destructive OA, as illustrated by Milwaukee shoulder syndrome.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "PLOS ONE",
+            "sourceYear": 2013,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3585350/",
+            "excerpt": "They are identified in the synovial fluid of rapidly destructive OA, as illustrated by the Milwaukee shoulder syndrome",
+            "status": "source_verified",
+            "pmid": "23468973",
+            "pmcid": "PMC3585350"
+          }
+        ]
+      },
+      {
+        "id": "260-hap-04",
+        "question": "What alternative interpretation of articular BCP crystals does the paper say some investigators still hold?",
+        "options": {
+          "A": "They are innocent bystanders or markers of end-stage osteoarthritis",
+          "B": "They are always infection",
+          "C": "They are urate crystals misnamed",
+          "D": "They occur only in children"
+        },
+        "correctAnswer": "A",
+        "explanation": "The paper says some investigators still consider articular BCP crystals innocent bystanders and/or markers of end-stage OA.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "PLOS ONE",
+            "sourceYear": 2013,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3585350/",
+            "excerpt": "Some investigators still consider articular BCP crystals as “innocent bystanders” and/or markers of end-stage OA.",
+            "status": "source_verified",
+            "pmid": "23468973",
+            "pmcid": "PMC3585350"
+          }
+        ]
+      },
+      {
+        "id": "260-hap-05",
+        "question": "Where else does the paper say these crystals are highly prevalent?",
+        "options": {
+          "A": "Cartilage from osteoarthritic knees at joint replacement",
+          "B": "Only dental plaque",
+          "C": "Only the vitreous of the eye",
+          "D": "Healthy cartilage exclusively"
+        },
+        "correctAnswer": "A",
+        "explanation": "The paper says they are also highly prevalent in cartilage from affected OA joints at knee replacement.",
+        "difficulty": "easy",
+        "sourceRefs": [
+          {
+            "sourceBody": "PLOS ONE",
+            "sourceYear": 2013,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3585350/",
+            "excerpt": "highly prevalent in cartilage obtained from affected OA joints at the time of knee joint replacement surgery",
+            "status": "source_verified",
+            "pmid": "23468973",
+            "pmcid": "PMC3585350"
+          }
+        ]
+      }
+    ]
+  }
+}

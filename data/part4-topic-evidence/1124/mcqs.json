@@ -1,0 +1,134 @@
+{
+  "topic": {
+    "topicKey": "steroids-in-pneumonia",
+    "topicDisplayName": "Steroids in pneumonia",
+    "aliases": [
+      "1124",
+      "Pulmonology"
+    ],
+    "storedRowCount": 1,
+    "coverageNote": "Open review that synthesises corticosteroid evidence in severe community-acquired pneumonia, including the CAPE COD hydrocortisone trial and the advice against routine steroids in influenza-associated ARDS. The 2019 ATS/IDSA CAP guideline is also in PMC but predates CAPE COD and recommends against routine steroids; it was not used as the teaching source.",
+    "mcqs": [
+      {
+        "id": "1124-steroids-pneumonia-01",
+        "question": "In the CAPE COD trial, as summarised in the accepted 2026 corticosteroid framework, what hydrocortisone regimen was compared with placebo in ICU patients with severe community-acquired pneumonia?",
+        "options": {
+          "A": "Oral prednisolone 40 mg daily for 10 days",
+          "B": "Continuous intravenous hydrocortisone 200 mg/day",
+          "C": "A single 8 mg dose of dexamethasone",
+          "D": "Inhaled budesonide only"
+        },
+        "correctAnswer": "B",
+        "explanation": "The review states that CAPE COD included 800 ICU patients with severe CAP and compared continuous intravenous hydrocortisone 200 mg/day with placebo.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "European Journal of Clinical Pharmacology",
+            "sourceYear": 2026,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC13736467/",
+            "excerpt": "It included 800 ICU patients with sCAP and compared continuous intravenous hydrocortisone (dose: 200 mg/day) with placebo.",
+            "status": "source_verified",
+            "pmid": "42980831",
+            "pmcid": "PMC13736467"
+          }
+        ]
+      },
+      {
+        "id": "1124-steroids-pneumonia-02",
+        "question": "What 28-day all-cause mortality did the same review report for hydrocortisone versus placebo in CAPE COD?",
+        "options": {
+          "A": "6.2% versus 11.9%",
+          "B": "11.9% versus 6.2%",
+          "C": "20% versus 20%",
+          "D": "No mortality difference at 28 days"
+        },
+        "correctAnswer": "A",
+        "explanation": "The review reports 28-day all-cause mortality of 6.2% in the hydrocortisone group and 11.9% in the control group, an absolute risk reduction of 5.7% (p = 0.006).",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "European Journal of Clinical Pharmacology",
+            "sourceYear": 2026,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC13736467/",
+            "excerpt": "At 28 days, all-cause mortality was lower in the intervention group than in the control group (6.2% vs. 11.9%), corresponding to an absolute risk reduction of 5.7% ( p = 0.006).",
+            "status": "source_verified",
+            "pmid": "42980831",
+            "pmcid": "PMC13736467"
+          }
+        ]
+      },
+      {
+        "id": "1124-steroids-pneumonia-03",
+        "question": "How does the review say the 90-day mortality comparison in CAPE COD related to the 28-day finding?",
+        "options": {
+          "A": "The difference had reversed by 90 days",
+          "B": "The difference persisted at 90 days (9.3% vs 14.7%)",
+          "C": "90-day mortality was not reported",
+          "D": "Only the control group was followed to 90 days"
+        },
+        "correctAnswer": "B",
+        "explanation": "The review states that the mortality difference persisted at 90 days, 9.3% versus 14.7%.",
+        "difficulty": "hard",
+        "sourceRefs": [
+          {
+            "sourceBody": "European Journal of Clinical Pharmacology",
+            "sourceYear": 2026,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC13736467/",
+            "excerpt": "This difference persisted at 90 days (intervention group vs. control group: 9.3% vs. 14.7%).",
+            "status": "source_verified",
+            "pmid": "42980831",
+            "pmcid": "PMC13736467"
+          }
+        ]
+      },
+      {
+        "id": "1124-steroids-pneumonia-04",
+        "question": "What does the review say about prespecified subgroup analyses in CAPE COD, including older adults and higher Pneumonia Severity Index scores?",
+        "options": {
+          "A": "They are definitive indications to withhold hydrocortisone",
+          "B": "They should be interpreted cautiously because they are exploratory",
+          "C": "They showed harm confined to women",
+          "D": "They replaced the primary mortality result"
+        },
+        "correctAnswer": "B",
+        "explanation": "The review notes generally consistent effects, with larger effects in some subgroups, and says those findings should be interpreted cautiously because the analyses are exploratory.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "European Journal of Clinical Pharmacology",
+            "sourceYear": 2026,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC13736467/",
+            "excerpt": "the findings should be interpreted cautiously because of the exploratory nature of subgroup analyses.",
+            "status": "source_verified",
+            "pmid": "42980831",
+            "pmcid": "PMC13736467"
+          }
+        ]
+      },
+      {
+        "id": "1124-steroids-pneumonia-05",
+        "question": "For influenza-associated ARDS, what position does the review attribute to multiple international societies?",
+        "options": {
+          "A": "Routine systemic corticosteroids are advised against unless a separate indication exists",
+          "B": "Hydrocortisone 200 mg/day is mandated for all influenza",
+          "C": "Steroids are first-line antiviral therapy",
+          "D": "Steroids are recommended only after oseltamivir fails"
+        },
+        "correctAnswer": "A",
+        "explanation": "The review states that for influenza-associated ARDS, multiple societies advise against routine systemic corticosteroids unless a separate indication has been established, such as asthma or COPD exacerbation or adrenal insufficiency.",
+        "difficulty": "easy",
+        "sourceRefs": [
+          {
+            "sourceBody": "European Journal of Clinical Pharmacology",
+            "sourceYear": 2026,
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC13736467/",
+            "excerpt": "For influenza-associated ARDS, multiple international societies and clinical guidelines consistently advise against routine use of systemic corticosteroids.",
+            "status": "source_verified",
+            "pmid": "42980831",
+            "pmcid": "PMC13736467"
+          }
+        ]
+      }
+    ]
+  }
+}
