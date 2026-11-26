@@ -80,6 +80,8 @@ function createAiRouteHelpers({ db, ai, serverConfig, logger }) {
                     outlineNodeId: q.outlineNodeId || `claim:${claimKey}`,
                     applicableTopics: Array.isArray(q.applicableTopics) ? q.applicableTopics : null,
                     claimKey,
+                    // 'needs_review' = served before clinician approval; the quiz labels it.
+                    reviewStatus: q.reviewStatus || null,
                     promptVariant: q.promptVariant || null,
         };
     };

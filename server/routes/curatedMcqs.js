@@ -155,6 +155,7 @@ function registerCuratedMcqRoutes(app, deps) {
             outdatedSources: Boolean(q.outdatedSources),
             sourceRefs: Array.isArray(q.sourceRefs) ? q.sourceRefs : [],
             claimKey,
+            reviewStatus: q.reviewStatus || null,
             outlineNodeId,
             outlineLabel,
             sourceArticleUid: q.sourceArticleUid || q.articleUid || null,

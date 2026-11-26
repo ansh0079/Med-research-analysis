@@ -2,6 +2,7 @@ import React from 'react';
 import { Button } from '@components/ui/Button';
 import { api } from '@services/api';
 import type { AgentGuidance, LinkedTopicDocument } from '@types';
+import { NeedsReviewButton } from '@components/ui/NeedsReviewButton';
 import { isLandmarkSeedKnowledge } from '@utils/topicKnowledgeTrust';
 
 interface AgentMentorPanelProps {
@@ -124,6 +125,23 @@ export const AgentMentorPanel: React.FC<AgentMentorPanelProps> = ({
           >
             Landmark seed — not yet enriched
           </span>
+        )}
+        {agentGuidance.status === 'evidence_verified' && (
+          <NeedsReviewButton explanation="Every teaching point on this page is anchored to an exact quote from a stored guideline or review, but a clinician has not yet checked the page as a whole. Check the linked sources before relying on it.">
+            {isAuthenticated ? (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={onReviewTopicKnowledge}
+                disabled={knowledgeReviewStatus === 'saving'}
+                leftIcon={<i className="fas fa-check text-[10px]" />}
+              >
+                {knowledgeReviewStatus === 'saving' ? 'Saving' : 'Clinician: mark reviewed'}
+              </Button>
+            ) : (
+              <span className="block text-[11px] text-slate-500 dark:text-slate-400">Clinicians can sign in to review this page.</span>
+            )}
+          </NeedsReviewButton>
         )}
         <span className={`rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider ${
           agentGuidance.status === 'evidence_verified' && !agentGuidance.awaitingReview

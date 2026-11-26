@@ -11,6 +11,7 @@ import { VerificationBadge } from '@components/ui/VerificationBadge';
 import type { QuizArticle } from '@services/quizService';
 import type { QuizQuestion, QuizState } from '@types';
 import { QuestionLearnerActions, type QuestionReport } from '@components/quiz/QuestionLearnerActions';
+import { NeedsReviewButton } from '@components/ui/NeedsReviewButton';
 
 interface QuizActiveQuestionPanelProps {
   quiz: QuizState;
@@ -86,6 +87,13 @@ export const QuizActiveQuestionPanel: React.FC<QuizActiveQuestionPanelProps> = (
           {currentQ.difficulty}
         </span>
         <QuestionTypeBadge type={currentQ.questionType} />
+        {currentQ.reviewStatus === 'needs_review' && (
+          <NeedsReviewButton explanation="This question is built from an exact quote in a stored guideline or review, but a clinician has not approved it yet. If something looks wrong, answer the question and use the report options below.">
+            {isAnswered && isAuthenticated
+              ? <QuestionLearnerActions options={currentQ.options || []} onSubmit={onQuestionReport} />
+              : <span className="block text-[11px] text-slate-500 dark:text-slate-400">{isAnswered ? 'Sign in to report a problem with this question.' : 'Answer the question first, then report a problem here.'}</span>}
+          </NeedsReviewButton>
+        )}
         {!currentQ.questionType && (
           <span className="text-xs text-slate-400 capitalize">
             {currentQ.type === 'true_false' ? 'True / False' : 'Multiple choice'}
