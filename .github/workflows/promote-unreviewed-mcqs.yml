@@ -1,0 +1,58 @@
+name: Promote unreviewed MCQs
+
+# Beta policy: MCQ drafts that pass the exact-quote check reach learners before clinician approval, labelled
+# "Needs review". This job promotes drafts added since the last run (topics whose drafts are not yet
+# promoted). It is idempotent: a topic with nothing new is skipped. A draft whose quote no longer verifies
+# against stored full text is sent back to needs_changes and never served.
+#
+# Set MCQ_PROMOTE_UNREVIEWED=off in the production environment to stop serving unreviewed drafts; the job then
+# promotes approved drafts only.
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: Report what would be promoted without writing
+        required: false
+        default: false
+        type: boolean
+      topic:
+        description: Limit to one topic (exact topic name); leave empty for all
+        required: false
+        default: ''
+        type: string
+  schedule:
+    # After the topic index refresh (03:20 UTC) and well clear of the nightly backup (01:40 UTC).
+    - cron: '10 4 * * *'
+
+# Share the deploy's group so a deploy never recreates the web container underneath a promotion run.
+concurrency:
+  group: medsearch-production-deploy
+  cancel-in-progress: false
+
+jobs:
+  promote:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    steps:
+      - name: Promote verified MCQ drafts
+        uses: appleboy/ssh-action@v1
+        env:
+          DRY_RUN: ${{ inputs.dry_run }}
+          TOPIC: ${{ inputs.topic }}
+        with:
+          host: 178.105.155.246
+          username: root
+          key: ${{ secrets.HETZNER_SSH_KEY }}
+          command_timeout: 38m
+          envs: DRY_RUN,TOPIC
+          script: |
+            set -e
+            ARGS="--promote"
+            if [ "${DRY_RUN:-false}" != "true" ]; then ARGS="$ARGS --apply"; fi
+            if [ -n "${TOPIC:-}" ]; then ARGS="$ARGS --topic \"$TOPIC\""; fi
+            # Log to a file so a failing run exits non-zero here instead of being masked by a pipe.
+            docker exec medsearch-web sh -c "node scripts/review_and_promote_mcq_drafts.js $ARGS > /tmp/promote-mcqs.log 2>&1" || { docker exec medsearch-web tail -40 /tmp/promote-mcqs.log; exit 1; }
+            docker exec medsearch-web sh -c "grep -v '^✅' /tmp/promote-mcqs.log | head -80"
+            docker exec medsearch-pg psql -U medsearch -d medsearch -At -F ' | ' -c \
+              "SELECT review_state, COUNT(*) AS drafts, COUNT(promoted_at) AS promoted FROM evidence_locked_mcq_drafts GROUP BY 1 ORDER BY 1;"
