@@ -1,0 +1,107 @@
+[
+  {
+    "type": "multiple_choice",
+    "questionType": "recall",
+    "question": "What is the most common immune-mediated toxicity of CD3-engaging bispecific antibodies in this review?",
+    "options": {
+      "A": "Cytokine-release syndrome",
+      "B": "Tumour lysis only",
+      "C": "Pulmonary fibrosis in every patient",
+      "D": "Immediate anaphylaxis to oral iron",
+      "E": "Hypothyroidism"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "Cytokine-release syndrome",
+    "explanation": "The review identifies cytokine-release syndrome as the most common immune-mediated toxicity of CD3-engaging bispecific antibodies [1].",
+    "difficulty": "easy",
+    "sourceArticle": "Safety and efficacy of bispecific antibodies in hematologic neoplasms: a systematic review",
+    "sourceReference": "PMID 42643454",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "clinical_application",
+    "question": "When do most cytokine-release events begin, and what grade are they?",
+    "options": {
+      "A": "Within 1–2 days, mostly grade 1–2",
+      "B": "After 6 months, mostly grade 4",
+      "C": "Only during surgery",
+      "D": "Never in the first week",
+      "E": "Only grade 5"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "Within 1–2 days, mostly grade 1–2",
+    "explanation": "Most cytokine-release events were grade 1–2 and developed within 1 to 2 days [1].",
+    "difficulty": "medium",
+    "sourceArticle": "Safety and efficacy of bispecific antibodies in hematologic neoplasms: a systematic review",
+    "sourceReference": "PMID 42643454",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "trial_interpretation",
+    "question": "The reported range of cytokine-release syndrome incidence across studies was:",
+    "options": {
+      "A": "1.59% to 82.61%",
+      "B": "0% in every study",
+      "C": "100% grade 4",
+      "D": "Under 0.1% only",
+      "E": "Not reported"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "1.59% to 82.61%",
+    "explanation": "Across studies, cytokine-release syndrome incidence ranged from 1.59% to 82.61% [1].",
+    "difficulty": "hard",
+    "sourceArticle": "Safety and efficacy of bispecific antibodies in hematologic neoplasms: a systematic review",
+    "sourceReference": "PMID 42643454",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "recall",
+    "question": "What neurotoxicity figure does the review give for several blinatumomab studies?",
+    "options": {
+      "A": "Neurologic events in more than 50% of patients",
+      "B": "No neurologic events",
+      "C": "Neurologic events only in solid tumours",
+      "D": "A 1% rate of stroke",
+      "E": "Blindness in all patients"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "Neurologic events in more than 50% of patients",
+    "explanation": "Neurologic events were above 50% in several blinatumomab studies. Teclistamab and talquetamab also had reported neurotoxicity along with frequent cytokine release [1].",
+    "difficulty": "medium",
+    "sourceArticle": "Safety and efficacy of bispecific antibodies in hematologic neoplasms: a systematic review",
+    "sourceReference": "PMID 42643454",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "pitfall",
+    "question": "How does the review describe bispecific evidence in Hodgkin and T-cell lymphoma at the time of writing?",
+    "options": {
+      "A": "Early-phase, limited efficacy, and no approvals yet",
+      "B": "Standard first-line therapy with many approvals",
+      "C": "Curative in all patients",
+      "D": "Replacing CHOP with a labelled indication",
+      "E": "Irrelevant to haematology"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "Early-phase, limited efficacy, and no approvals yet",
+    "explanation": "Hodgkin lymphoma and T-cell lymphoma programmes were described as early-phase, with limited efficacy and no approvals to date in the review [1].",
+    "difficulty": "medium",
+    "sourceArticle": "Safety and efficacy of bispecific antibodies in hematologic neoplasms: a systematic review",
+    "sourceReference": "PMID 42643454",
+    "sourceIndices": [
+      1
+    ]
+  }
+]

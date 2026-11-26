@@ -1,0 +1,27 @@
+{
+  "takeaway": "CHOP is the historical anthracycline regimen, but outcomes are poor except in ALK-positive anaplastic large-cell lymphoma. For CD30-positive disease, brentuximab vedotin plus CHP is a standard of care [1].",
+  "clinicalQuestion": "What is standard first-line treatment for peripheral T-cell lymphoma, and where does brentuximab fit?",
+  "background": "Peripheral T-cell lymphomas are biologically heterogeneous and respond poorly to conventional chemotherapy [1].",
+  "studyDesign": "Narrative review of pathogenesis and treatment.",
+  "setting": "Lymphoma practice.",
+  "population": "Patients with peripheral T-cell lymphoma.",
+  "intervention": "CHOP, and brentuximab vedotin plus CHP when CD30 is positive.",
+  "comparator": "CHOP across subtypes that do not share the ALK-positive outlook.",
+  "primaryOutcome": "A subtype-specific first-line choice.",
+  "mainFindings": "Anthracycline regimens such as CHOP (cyclophosphamide, doxorubicin, vincristine, and prednisolone) have been the traditional treatment. Except for ALK-positive anaplastic large-cell lymphoma, outcomes are poor in most subtypes. The ECHELON-2 trial led to approval of brentuximab vedotin, an anti-CD30 antibody-drug conjugate. Combined with CHP (cyclophosphamide, doxorubicin, and prednisolone), it has become a standard of care for CD30-positive peripheral T-cell lymphomas. Even with newer first-line combinations, outcomes for non-anaplastic subtypes remain extremely poor [1].",
+  "clinicalMeaning": "Test for CD30 and for ALK. Do not expect CHOP to perform in PTCL as it does in diffuse large B-cell lymphoma, apart from ALK-positive ALCL [1].",
+  "limitations": "Response percentages from ECHELON-2 are not restated because they were not in the sentences used [1].",
+  "bottomLine": "ALK-positive ALCL is the exception to poor CHOP outcomes. CD30-positive disease is treated with brentuximab plus CHP [1].",
+  "practiceImplication": "Omit vincristine when brentuximab is added, because the regimen is CHP, not CHOP, in this review [1].",
+  "safetyOutcomes": [],
+  "trustRating": "MODERATE",
+  "trustRationale": "Current open review naming the regimen change. Trial numbers are not reproduced beyond the approval statement.",
+  "quizFocusPoints": [
+    "CHOP except ALK-positive ALCL",
+    "BV plus CHP",
+    "CD30"
+  ],
+  "whatNotToOverclaim": [
+    "Do not invent the ECHELON-2 hazard ratio."
+  ]
+}

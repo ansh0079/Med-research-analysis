@@ -1,0 +1,23 @@
+{
+  "catalogueId": "1282",
+  "topic": "Cancer Pain and WHO Analgesic Ladder",
+  "specialty": "Oncology",
+  "decision": "downloaded open source",
+  "rejected": [
+    "The 1995 paper stored in the app concludes the case series are too weak to judge the ladder and does not define the steps."
+  ],
+  "unresolvedReason": null,
+  "source": {
+    "title": "Effectiveness of the World Health Organization cancer pain relief guidelines: an integrative review",
+    "year": 2016,
+    "pmid": "27524918",
+    "pmcid": "PMC4965221",
+    "doi": null,
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4965221/",
+    "sourceBody": "Integrative review",
+    "type": "review",
+    "whyItFits": "Explains the three-step WHO ladder, names paracetamol as step 1, codeine as step 2, and strong opioids as third-line, and reviews how effective the guidelines have been."
+  },
+  "evidenceTextFile": "data/part4-topic-evidence/1282/evidence.txt",
+  "evidenceChars": 91181
+}

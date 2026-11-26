@@ -1,0 +1,107 @@
+[
+  {
+    "type": "multiple_choice",
+    "questionType": "recall",
+    "question": "Meningioma is:",
+    "options": {
+      "A": "The most common intracranial tumour",
+      "B": "Always malignant",
+      "C": "Diagnosed only by lumbar puncture",
+      "D": "A tumour that never occurs incidentally",
+      "E": "Treated first with chemotherapy"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "The most common intracranial tumour",
+    "explanation": "The EANO update states that meningiomas are the most common intracranial tumours [1].",
+    "difficulty": "easy",
+    "sourceArticle": "EANO recommendations for the diagnosis and treatment of meningiomas",
+    "sourceReference": null,
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "guideline",
+    "question": "A WHO diagnosis requires:",
+    "options": {
+      "A": "Surgical tissue",
+      "B": "MRI alone",
+      "C": "A normal CT",
+      "D": "Methylation profiling without histology",
+      "E": "No diagnosis is possible"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "Surgical tissue",
+    "explanation": "A surgical intervention with tissue is required for the definitive diagnosis according to the WHO classification. MRI provides a provisional diagnosis [1].",
+    "difficulty": "medium",
+    "sourceArticle": "EANO recommendations for the diagnosis and treatment of meningiomas",
+    "sourceReference": null,
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "clinical_application",
+    "question": "Which patients may be managed without immediate surgery?",
+    "options": {
+      "A": "Selected patients, including elderly patients, by watch-and-scan",
+      "B": "Nobody",
+      "C": "Only patients with spinal cord compression",
+      "D": "Only children",
+      "E": "Only after radiotherapy has failed"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "Selected patients, including elderly patients, by watch-and-scan",
+    "explanation": "Selected patients, including elderly patients, may be managed by a watch-and-scan strategy [1].",
+    "difficulty": "medium",
+    "sourceArticle": "EANO recommendations for the diagnosis and treatment of meningiomas",
+    "sourceReference": null,
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "recall",
+    "question": "How do clinical trials usually record extent of resection?",
+    "options": {
+      "A": "Gross total versus subtotal resection",
+      "B": "Only the Simpson grade, which trials have abandoned entirely",
+      "C": "By symptoms alone",
+      "D": "They do not record it",
+      "E": "By serum markers"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "Gross total versus subtotal resection",
+    "explanation": "The Simpson classification is still used clinically, but trials usually define extent as gross total or subtotal resection [1].",
+    "difficulty": "hard",
+    "sourceArticle": "EANO recommendations for the diagnosis and treatment of meningiomas",
+    "sourceReference": null,
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "guideline",
+    "question": "What changed the diagnostic framework in this update?",
+    "options": {
+      "A": "The 2021 WHO classification and molecular profiling",
+      "B": "Abandonment of MRI",
+      "C": "A new chemotherapy that replaces surgery",
+      "D": "Removal of radiotherapy from all pathways",
+      "E": "A blood test that replaces histology"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "The 2021 WHO classification and molecular profiling",
+    "explanation": "The update incorporates molecular profiling and the 2021 WHO classification [1].",
+    "difficulty": "easy",
+    "sourceArticle": "EANO recommendations for the diagnosis and treatment of meningiomas",
+    "sourceReference": null,
+    "sourceIndices": [
+      1
+    ]
+  }
+]

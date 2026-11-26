@@ -1,0 +1,25 @@
+{
+  "catalogueId": "2009",
+  "topic": "solid organ transplant induction immunosuppression",
+  "specialty": "Transplantation",
+  "decision": "downloaded open source",
+  "rejected": [
+    "Korean CMV-prevention guidance",
+    "ABO-incompatible single-centre series",
+    "A 2023 single-centre basiliximab/ATG/alemtuzumab algorithm was not used, because this graded chapter is the open guideline."
+  ],
+  "unresolvedReason": null,
+  "source": {
+    "title": "KDIGO clinical practice guideline for the care of kidney transplant recipients: Chapter 1, Induction Therapy",
+    "year": 2009,
+    "pmid": "19845597",
+    "pmcid": null,
+    "doi": "10.1111/j.1600-6143.2009.02834.x",
+    "url": "https://tts.org/kdigo/downloads/kdigo/S1-C01_Induction_Therapy.pdf",
+    "sourceBody": "American Journal of Transplantation",
+    "type": "clinical_practice_guideline",
+    "whyItFits": "The induction chapter of the 2009 KDIGO kidney-transplant guideline is a free four-page PDF. It grades interleukin-2 receptor antagonist versus lymphocyte-depleting antibody induction and states what the small alemtuzumab trials do and do not show. The full compiled guideline had not been available as open text; this chapter was."
+  },
+  "evidenceTextFile": "data/part4-topic-evidence/2009/evidence.txt",
+  "evidenceChars": 17464
+}

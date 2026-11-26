@@ -1,0 +1,21 @@
+{
+  "catalogueId": "1185",
+  "topic": "Dyspnoea and Breathlessness in Advanced Cancer",
+  "specialty": "Oncology",
+  "decision": "downloaded open source",
+  "rejected": [],
+  "unresolvedReason": null,
+  "source": {
+    "title": "Pharmacologic Interventions for Breathlessness in Patients With Advanced Cancer: A Systematic Review and Meta-analysis",
+    "year": 2021,
+    "pmid": "33630086",
+    "pmcid": "PMC7907959",
+    "doi": "10.1001/jamanetworkopen.2020.37632",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7907959/",
+    "sourceBody": "JAMA Network Open",
+    "type": "systematic_review",
+    "whyItFits": "Meta-analysis of drug treatment for breathlessness in advanced cancer, with the opioid and anxiolytic comparisons stated in numbers."
+  },
+  "evidenceTextFile": "data/part4-topic-evidence/1185/evidence.txt",
+  "evidenceChars": 36409
+}

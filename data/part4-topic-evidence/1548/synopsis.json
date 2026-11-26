@@ -1,0 +1,27 @@
+{
+  "takeaway": "Kinases move a phosphate from ATP onto a substrate. About one-third of protein targets in industry research are kinases. Imatinib and dasatinib improved survival in CML and GIST compared with older cytotoxic therapy, but resistance still limits a drug [1].",
+  "clinicalQuestion": "What is a kinase inhibitor, and what did the first successful ones change?",
+  "background": "Deregulated kinases drive proliferation, metastasis, and resistance to apoptosis [1].",
+  "studyDesign": "Narrative review of kinase drug discovery.",
+  "setting": "Oncology drug development.",
+  "population": "Cancers driven by kinase signalling, including CML and GIST.",
+  "intervention": "Small-molecule kinase inhibitors such as imatinib and dasatinib.",
+  "comparator": "Conventional cytotoxic therapy.",
+  "primaryOutcome": "A mechanism-based treatment rather than indiscriminate cytotoxicity.",
+  "mainFindings": "By transferring the gamma-phosphate of ATP onto substrates, kinases regulate cell functions. The human genome encodes about 538 kinases. About one-third of protein targets under pharmaceutical research are kinase-based. Most approved inhibitors target ATP binding. Imatinib and dasatinib produce more favourable outcomes than conventional cytotoxic therapy and increased survival in chronic myeloid leukaemia and gastrointestinal stromal tumour. Whether a compound is useful also depends on genetics, the tumour microenvironment, drug resistance, and pharmacogenomics. EGFR is an example of a kinase that activates tumour signalling and is linked to PTEN loss [1].",
+  "clinicalMeaning": "A kinase inhibitor is chosen because the tumour depends on that kinase, not because it is mild chemotherapy [1].",
+  "limitations": "The review is from 2018, so the count of approved inhibitors is not updated here [1].",
+  "bottomLine": "Teach ATP-competitive inhibition, the CML and GIST precedent, and resistance as expected biology [1].",
+  "practiceImplication": "Ask which kinase is altered before starting the drug, and expect resistance [1].",
+  "safetyOutcomes": [],
+  "trustRating": "MODERATE",
+  "trustRationale": "Open mechanistic review. Approval lists have grown since 2018.",
+  "quizFocusPoints": [
+    "phosphate from ATP",
+    "imatinib in CML and GIST",
+    "resistance"
+  ],
+  "whatNotToOverclaim": [
+    "Do not quote a 2026 approval count from this 2018 paper."
+  ]
+}

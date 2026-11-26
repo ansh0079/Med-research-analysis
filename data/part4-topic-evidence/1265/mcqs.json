@@ -1,0 +1,107 @@
+[
+  {
+    "type": "multiple_choice",
+    "questionType": "recall",
+    "question": "Standard treatment options named in the review are:",
+    "options": {
+      "A": "Surgery, adjuvant chemotherapy, and radiotherapy",
+      "B": "Hormone therapy for every patient",
+      "C": "Observation",
+      "D": "Radioiodine",
+      "E": "Androgen deprivation as the only treatment"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "Surgery, adjuvant chemotherapy, and radiotherapy",
+    "explanation": "Current treatment options are limited to surgery, adjuvant chemotherapy, and radiotherapy, and some patients are already unresectable [1].",
+    "difficulty": "easy",
+    "sourceArticle": "Review of molecular subtypes and therapeutic strategies in triple-negative breast cancer",
+    "sourceReference": null,
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "clinical_application",
+    "question": "Why is one regimen a poor fit?",
+    "options": {
+      "A": "TNBC is highly heterogeneous, with distinct mutations and pathways",
+      "B": "All triple-negative tumours share one mutation",
+      "C": "They are biologically identical to ER-positive disease",
+      "D": "Histology is uniform and targeted therapy has no rationale",
+      "E": "Immunotherapy has no reported effect"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "TNBC is highly heterogeneous, with distinct mutations and pathways",
+    "explanation": "The review stresses heterogeneity and subtype-based strategies, including DNA repair, androgen receptor, and kinases [1].",
+    "difficulty": "medium",
+    "sourceArticle": "Review of molecular subtypes and therapeutic strategies in triple-negative breast cancer",
+    "sourceReference": null,
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "trial_interpretation",
+    "question": "The early phase 2 trial cited for BRCA-mutant TNBC found:",
+    "options": {
+      "A": "An overall response rate of 80% with single-agent cisplatin",
+      "B": "No responses",
+      "C": "An 80% cure with tamoxifen",
+      "D": "Harm from any platinum",
+      "E": "That BRCA status was irrelevant"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "An overall response rate of 80% with single-agent cisplatin",
+    "explanation": "Patients with BRCA-mutant TNBC showed an overall response rate of 80% with single cisplatin in an early phase 2 trial cited by the review [1].",
+    "difficulty": "hard",
+    "sourceArticle": "Review of molecular subtypes and therapeutic strategies in triple-negative breast cancer",
+    "sourceReference": null,
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "recall",
+    "question": "Immunotherapy in this review:",
+    "options": {
+      "A": "Has been shown to improve overall survival and response",
+      "B": "Has no effect",
+      "C": "Replaces surgery in every patient",
+      "D": "Is useful only in ER-positive disease",
+      "E": "Was not discussed"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "Has been shown to improve overall survival and response",
+    "explanation": "The review says immunotherapy has been demonstrated to improve overall survival and response [1].",
+    "difficulty": "easy",
+    "sourceArticle": "Review of molecular subtypes and therapeutic strategies in triple-negative breast cancer",
+    "sourceReference": null,
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "pitfall",
+    "question": "How should the 80% cisplatin figure be used?",
+    "options": {
+      "A": "As a cited early-trial signal of platinum sensitivity, not as proof of a modern single-agent standard",
+      "B": "As the mandatory first-line regimen for all TNBC",
+      "C": "As a screening test",
+      "D": "As a survival rate at 10 years",
+      "E": "As a reason to skip BRCA testing"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "As a cited early-trial signal of platinum sensitivity, not as proof of a modern single-agent standard",
+    "explanation": "The review cites an early phase 2 response rate. That is evidence of sensitivity in BRCA-mutant disease, and the review's own framing is subtype-directed therapy rather than one standard dose [1].",
+    "difficulty": "medium",
+    "sourceArticle": "Review of molecular subtypes and therapeutic strategies in triple-negative breast cancer",
+    "sourceReference": null,
+    "sourceIndices": [
+      1
+    ]
+  }
+]

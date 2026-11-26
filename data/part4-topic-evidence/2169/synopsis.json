@@ -1,0 +1,27 @@
+{
+  "takeaway": "Curative treatment of localised rectal cancer sequences chemotherapy, radiation, and resection. Transanal excision is only for selected T1 N0 tumours. Restaging after neoadjuvant therapy looks for metastases and for the few patients who might avoid resection [1].",
+  "clinicalQuestion": "Who can have local excision, and what is the point of restaging after neoadjuvant therapy?",
+  "background": "NCCN rectal cancer, version 2.2018. Recommendations are category 2A unless noted, and the panel prefers a clinical trial when one is available [1].",
+  "studyDesign": "NCCN clinical practice guideline.",
+  "setting": "Curative-intent treatment of localised rectal cancer.",
+  "population": "Patients with rectal cancer.",
+  "intervention": "Sequenced chemotherapy, radiation, and surgery, including total mesorectal excision.",
+  "comparator": "Local excision used beyond early T1 N0 disease.",
+  "primaryOutcome": "Selection for organ-preserving excision versus radical resection.",
+  "mainFindings": "Management of localised disease carefully sequences multimodality therapy, usually chemotherapy, radiation, and surgical resection. Radical options include low anterior resection, proctectomy with total mesorectal excision and coloanal anastomosis, and abdominoperineal resection. Transanal local excision is appropriate only for selected T1 N0 cancers: small tumours under 3 cm that are well to moderately differentiated. Restaging after neoadjuvant treatment looks for distant metastases that would change the plan, plans the operation, and, increasingly, asks whether additional therapy or resection can be avoided in select patients [1].",
+  "clinicalMeaning": "A T2 or node-positive tumour is not a local-excision case. After neoadjuvant therapy, restage before committing to the operation [1].",
+  "limitations": "The watch-and-wait criteria beyond this restaging sentence were not fully extracted and are not turned into a checklist [1].",
+  "bottomLine": "TME is the radical operation. Local excision is for selected T1 N0 tumours under 3 cm. Restage after neoadjuvant treatment [1].",
+  "practiceImplication": "Offer trial enrolment, which the panel endorses over routine therapy especially in advanced disease [1].",
+  "safetyOutcomes": [],
+  "trustRating": "HIGH",
+  "trustRationale": "NCCN guideline with explicit limits on local excision.",
+  "quizFocusPoints": [
+    "T1 N0 under 3 cm",
+    "TME operations",
+    "restage after neoadjuvant therapy"
+  ],
+  "whatNotToOverclaim": [
+    "Do not convert the mention of avoiding resection into an unstated watch-and-wait protocol."
+  ]
+}

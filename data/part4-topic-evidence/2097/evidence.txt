@@ -1,0 +1,348 @@
+
+## Abstract
+## Importance
+After a transient ischemic attack (TIA) or minor stroke, the long-term risk of stroke is not well-known.
+## Objective
+To determine the annual incidence rates and cumulative incidences of stroke up to 10 years after TIA or minor stroke.
+## Data Sources
+MEDLINE, Embase, and Web of Science were searched from inception through June 26, 2024.
+## Study Selection
+Prospective or retrospective cohort studies reporting stroke risk during a minimum follow-up of 1 year in patients with TIA or minor stroke.
+## Data Extraction and Synthesis
+Two reviewers independently performed data extraction and assessed study quality. Unpublished aggregate-level data on number of events and person-years during discrete follow-up intervals were obtained directly from the authors of the included studies to calculate incidence rates in individual studies. Data across studies were pooled using random-effects meta-analysis.
+## Main Outcomes and Measures
+The primary outcome was any stroke. Study-level characteristics were investigated as potential sources of variability in stroke rates across studies.
+## Results
+The analysis involved 171 068 patients (median age, 69 years [IQR, 65-71]; median proportion of male patients, 57% [IQR, 52%-60%]) from 38 included studies. The pooled rate of stroke per 100 person-years was 5.94 events (95% CI, 5.18-6.76; 38 studies; I 2  = 97%) in the first year, 1.80 events (95% CI, 1.58-2.04; 25 studies; I 2  = 90%) annually in the second through fifth years, and 1.72 events (95% CI, 1.31-2.18; 12 studies; I 2  = 84%) annually in the sixth through tenth years. The 5- and 10-year cumulative incidence of stroke was 12.5% (95% CI, 11.0%-14.1%) and 19.8% (95% CI, 16.7%-23.1%), respectively. Stroke rates were higher in studies conducted in North America (rate ratio [RR], 1.43 [95% CI, 1.36-1.50]) and Asia (RR, 1.62 [95% CI, 1.52-1.73]), compared with Europe, in cohorts recruited in or after 2007 (RR, 1.42 [95% CI, 1.23-1.64]), and in studies that used active vs passive outcome ascertainment methods (RR, 1.11 [95% CI, 1.07-1.17]). Studies focusing solely on patients with TIA (RR, 0.68 [95% CI, 0.65-0.71) or first-ever index events (RR, 0.45 [95% CI, 0.42-0.49]) had lower stroke rates than studies with an unselected patient population.
+## Conclusions and Relevance
+Patients who have had a TIA or minor stroke are at a persistently high risk of subsequent stroke. Findings from this study underscore the need for improving long-term stroke prevention measures in this patient group.
+This systematic review and meta-analysis aims to determine the annual incidence rates and cumulative incidences of stroke up to 10 years after a transient ischemic attack or minor stroke.
+## Introduction
+A transient ischemic attack (TIA) or minor stroke is a critical warning event that provides an opportunity to prevent a more severe stroke. 1 Research and clinical practice have primarily focused on secondary stroke prevention in the first 90 days after a TIA or minor stroke 2 , 3 , 4 , 5 because the risk of a subsequent stroke is high during this period, with estimates reaching 17.3% after a TIA 6 and 10.6% after a minor stroke. 7 Modern secondary prevention strategies, including prompt diagnostic evaluation, early initiation of dual antiplatelet therapy for 21 to 90 days, and management of vascular risk factors, have been effective in reducing stroke risk in the short-term. 8 , 9 , 10 , 11 However, the long-term prognosis of these patients is not well-defined.
+Recent landmark observational studies 12 , 13 , 14 have indicated that the risk of a subsequent stroke in patients with TIA or minor stroke continues to increase after the first year, although the reported estimates for long-term stroke risk vary substantially. Retrospective analyses of population-based cohorts with first-ever TIA from the Danish Stroke Registry 12 and the Framingham Heart Study 13 found 5-year stroke risks of 6.1% and 16.1%, respectively. The international TIAregistry.org prospective registry 14 reported a 5-year stroke risk of 9.6% in patients with TIA or minor stroke who were evaluated in specialized stroke centers. Nonetheless, estimates from these individual studies may be unreliable due to passive surveillance methods, 12 lack precision due to small sample size, 13 or have limited generalizability due to the specialized nature of the clinical setting. 14 Additionally, these studies only reported cumulative risks and did not assess any changes in the annual stroke rates over time after the index event.
+Accurate estimation of the long-term risk of subsequent stroke and understanding its time course are essential for patient counseling, risk stratification, and determining the need for and approach to extended treatment and surveillance. This information is also important for informing the design of future trials on the long-term effects of antithrombotic therapy and other secondary stroke prevention strategies. 15 Therefore, the Prognosis After Transient Ischemic Attack or Minor Stroke (PERSIST) collaboration was established to conduct a systematic review and meta-analysis with the objective of determining the annual incidence rates and cumulative incidences of stroke up to 10 years after a TIA or minor stroke.
+## Methods
+This systematic review and meta-analysis did not require approval by an ethics review board or patient consent because it is based on a compilation of aggregate-level data from published studies. This study was registered in PROSPERO: International Prospective Register of Systematic Reviews ( CRD42023476551 ) and is reported in accordance with the Preferred Reporting Items for Systematic Reviews and Meta-Analyses (PRISMA) statement. 16 
+## Eligibility Criteria
+We included prospective or retrospective cohort studies that reported any subsequent stroke events in patients with TIA or minor stroke over a follow-up period of at least 1 year. The definition of TIA or minor stroke events was based on criteria used in the individual studies. For the definition of TIA, we considered both the time-based and tissue-based definitions. The time-based definition of TIA is symptoms lasting less than 24 hours, while the tissue-based definition requires symptoms lasting less than 24 hours and the absence of new visible infarction on imaging. 17 For the definition of minor ischemic stroke, we considered a National Institutes of Health Stroke Scale score of up to 5. When multiple articles reported on the same patient cohort, we prioritized the publication with the longest follow-up duration.
+## Search Strategy and Study Selection
+In collaboration with a research librarian (D.L.L.), we conducted a systematic search of MEDLINE, Embase, and Web of Science from inception to June 26, 2024, with no restrictions on language or publication date. The search strategy included key words and database-specific subject headings related to transient ischemic attack, stroke, study design, and prognostic research. Reference lists of included studies were manually searched for additional eligible studies. The complete electronic search strategy is provided in the eAppendix in Supplement 1 . Using the Covidence systematic review software (Veritas Health Innovation), 2 reviewers (F.K., V.Y., or R.L.) independently screened, in duplicate, the titles and abstracts of all identified references and assessed the full texts for potential inclusion of eligible studies. Any disagreements were resolved through discussion and consensus.
+## Data Extraction
+Two reviewers (F.K., V.Y., or R.L.) independently extracted the following information from each included study, with clarifications requested from the study’s authors when necessary: country, data source for cohort identification, setting, cohort recruitment period, patient population and sample size, TIA definition, maximum follow-up duration, proportion of patients discharged with antithrombotic medication, and outcome ascertainment method. Studies that collected outcomes through in-person visits, telephone interviews, or screening of medical records from both in-hospital (eg, emergency department logs) and out-of-hospital facilities (eg, physician offices) were classified as using an active outcome ascertainment method. 18 Studies that identified subsequent stroke events using administrative data, such as hospital discharge codes based on the International Classification of Diseases , were classified as using a passive outcome ascertainment method. 18 
+Because no study publication contained sufficiently detailed information required for our analyses (see the Data Synthesis and Analysis section), we contacted the corresponding author of each potentially eligible study to request unpublished, aggregate-level data on the number of events (including any stroke, ischemic stroke, hemorrhagic stroke, fatal stroke, and all-cause mortality) and person-years of follow-up for patients with TIA or minor stroke. We asked for these data in discrete 1-year intervals of follow-up, up to a maximum of 10 years as applicable in each study. We specified excluding patients who did not meet our eligibility criteria (eg, those with a baseline National Institutes of Health Stroke Scale score >5) and appropriately censoring deaths, patients lost to follow-up, and those withdrawn from the study, while accounting for the exact time to event in the calculation of person-years. Studies that were unable to provide the required information after our communication with the corresponding author were excluded.
+## Risk of Bias Assessment
+At least 2 reviewers (F.K., V.Y., or R.L.) independently assessed the risk of bias in the included studies for the primary outcome of any stroke. Clarifications were requested from study authors when necessary, and any disagreements were resolved through discussion and consensus. We used a modified version of the Newcastle-Ottawa Scale 19 with 3 selection and 3 outcome criteria. These criteria included evaluating the representativeness of the studied cohort, confirming the use of active case ascertainment methods, ensuring objective or unbiased adjudication of the primary outcome, and verifying the adequacy of follow-up duration and completeness. Comparability criteria were considered irrelevant for this review. Following the quality assessment standards of previous meta-analyses, 20 , 21 studies scoring 4 points or more on the modified Newcastle-Ottawa Scale were classified as having low risk of bias.
+## Outcomes
+The primary outcome was any stroke as defined by the individual studies. Data were collected for the following secondary outcomes: ischemic stroke, hemorrhagic stroke, fatal stroke, disability (modified Rankin Scale score >1), 22 myocardial infarction, and all-cause mortality.
+## Data Synthesis and Analysis
+We calculated the incidence rate of outcomes per 100 person-years in each study using unpublished data on the number of events and person-years of follow-up obtained directly from the authors of the included studies. To assess changes in the annual risk of stroke over time since the index event, we categorized the incidence rate into 3 follow-up intervals: year 1, years 2 through 5, and years 6 through 10. A random-effects model, utilizing the DerSimonian-Laird method, was used to combine data from all studies and derive pooled estimates of the incidence rates, with each study cohort weighted based on its inverse variance of the rate. 23 A random-effects model was chosen a priori for all analyses because of anticipated between-study variation in design, setting, location, and population characteristics.
+We used the pooled incidence rate of outcomes calculated during the 3 follow-up intervals to estimate the cumulative incidence of outcomes. Following the life-table interval approach described by Szklo and Nieto, 24 and used in our previous systematic reviews and meta-analyses, 21 , 22 we first determined the probability of survival within each follow-up interval. This survival probability was conditioned on being at risk at the beginning of each interval and was calculated using, as the denominator, person-years adjusted for losses during each interval. That is, the denominator for calculating the survival probability in the second interval (years 2-5) only included patients who survived the first interval (year 1) and remained at risk at the beginning of the second interval. Similarly, the survival probability for the third interval (years 6-10) was calculated among only those who survived both the first and second follow-up intervals and remained at risk at the beginning of the third interval. For example, if the incidence rate of the outcome per 100 person-years was 5 events in year 1, 2 events in years 2 through 5, and 1 event in years 6 through 10, then the 10-year cumulative probability of survival was obtained by multiplying the conditional survival probabilities over all intervals: (95.0% year 1 ) × ([98.0%] 4 years 2-5 ) × ([99.0%] 5 years 6-10 ) = 83.3%. The 10-year cumulative probability of the outcome was then estimated as the complement of this joint probability of survival: 100% − 83.3% = 16.7%.
+To determine the 95% confidence interval for the cumulative incidence, we used the lower and upper limits of the incidence rates in the calculation described above. 20 , 21 
+Finally, we computed the case-fatality rate of stroke by dividing the total number of fatal stroke events by the total number of stroke events.
+Statistical heterogeneity across the studies was assessed using the Cochran Q test (χ 2 test for homogeneity) and visual inspection of the forest plots. The I 2 statistic was used to determine the proportion of variation across studies due to heterogeneity rather than chance. 25 
+All meta-analyses were performed using StatsDirect Version 3.3.5. To visually depict the development of annual risks over time, we generated time-risk curves using the pooled incidence rates and the corresponding cumulative incidences of any stroke calculated at each year. We assumed that any missing data were missing at random and performed analyses on all available data.
+## Subgroup and Sensitivity Analyses
+To explore the factors that might contribute to the expected variability in stroke risks across studies, we conducted prespecified subgroup analyses based on the following study characteristics: location (Europe, North America, Asia), cohort identification (prospective cohort or registry, administrative database), setting (hospital based, population based), patient population (TIA or minor stroke, TIA only, first-ever index event), and outcome ascertainment (active, passive). We also analyzed stroke rates based on patient recruitment period (before 2007, in or after 2007) to consider the widespread use of aggressive stroke prevention strategies over the past 2 decades. We selected 2007 a priori as the dividing point due to landmark studies on urgent management of TIA published that year. 8 , 9 , 10 To include all studies, we focused our subgroup analyses on the primary outcome of any stroke within the first year of follow-up and computed the rate ratio (RR) to statistically compare stroke rates between subgroups.
+To examine potential bias in the pooled rates of stroke at later follow-up intervals (eg, years 6-10) caused by higher or lower stroke rates in studies with varying durations of follow-up, we performed a sensitivity analysis limited to studies with a complete 10-year follow-up period.
+## Results
+The systematic literature search identified 23 548 records. After full-text review, 62 studies (supplemented with 3 additional studies identified through manually searching the reference lists of included studies) were considered potentially eligible for inclusion in the meta-analysis (eFigure 1 in Supplement 1 ). After contacting the corresponding authors of all 65 potentially eligible studies, unpublished aggregate-level data required for our analyses were obtained from 38 studies, 9 , 12 , 13 , 14 , 26 , 27 , 28 , 29 , 30 , 31 , 32 , 33 , 34 , 35 , 36 , 37 , 38 , 39 , 40 , 41 , 42 , 43 , 44 , 45 , 46 , 47 , 48 , 49 , 50 , 51 , 52 , 53 , 54 , 55 , 56 , 57 , 58 , 59 while the remaining 27 studies were excluded because essential information among patients with TIA or minor stroke was unavailable (eFigure 1 in Supplement 1 ). Publication information and reasons for exclusion of the 27 studies are detailed in eTable 1 in Supplement 1 . The majority of the excluded studies were conducted in Europe (n = 16), based on prospectively enrolled cohorts (n = 18), hospital based (n = 18), analyzed a cohort recruited before 2007 (n = 16), and used active outcome ascertainment methods (n = 16). Detailed characteristics of the excluded studies, including the reported number of patients with TIA or minor stroke and estimates for stroke risk, are provided in eTable 2 in Supplement 1 .
+## Characteristics of Included Studies
+Table 1 provides a summary of the characteristics of the 38 included studies. Detailed study characteristics can be found in eTable 3 in Supplement 1 . The studies were conducted in various regions, including 22 in Europe, 9 , 12 , 26 , 27 , 30 , 31 , 35 , 37 , 38 , 39 , 40 , 41 , 45 , 47 , 48 , 50 , 51 , 54 , 56 , 57 , 58 , 59 7 in Asia, 29 , 32 , 33 , 43 , 46 , 49 , 55 5 in North America, 13 , 28 , 34 , 42 , 52 1 in Australia, 44 and 3 across multiple continents. 14 , 36 , 53 Among the included studies, 34 were based on prospectively enrolled cohorts of patients with TIA or minor stroke, 9 , 12 , 13 , 14 , 26 , 27 , 28 , 29 , 30 , 31 , 32 , 33 , 34 , 36 , 38 , 39 , 40 , 41 , 42 , 43 , 44 , 45 , 46 , 47 , 48 , 49 , 51 , 53 , 54 , 55 , 56 , 57 , 58 , 59 while 4 studies identified the cohort through administrative databases. 35 , 37 , 50 , 52 Of the cohorts, 30 were hospital based, 9 , 14 , 26 , 27 , 28 , 29 , 30 , 31 , 32 , 33 , 35 , 36 , 37 , 38 , 39 , 40 , 41 , 43 , 45 , 46 , 47 , 48 , 49 , 50 , 51 , 52 , 53 , 54 , 56 , 58 , 59 and 8 were population based. 12 , 13 , 34 , 37 , 42 , 44 , 55 , 57 In 27 studies, the cohort analyzed was recruited in or after 2007. 12 , 14 , 27 , 28 , 30 , 31 , 32 , 33 , 36 , 37 , 39 , 41 , 42 , 43 , 44 , 46 , 47 , 49 , 50 , 52 , 53 , 54 , 55 , 56 , 58 , 59 
+## Table 1. Summary of Characteristics of the 38 Included Studies.
+Characteristic a 
+No. of studies (%) 
+Location 
+Europe 
+22 (58) 
+Asia 
+7 (18) 
+North America 
+5 (13) 
+Multicontinental 
+3 (8) 
+Australia 
+1 (3) 
+Data source for cohort identification 
+Prospective cohort study or registry 
+34 (89) 
+Administrative data 
+4 (11) 
+Setting 
+Hospital based 
+30 (79) 
+Population based 
+8 (21) 
+Cohort recruitment period 
+Before 2007 
+3 (8) 
+In or after 2007 
+27 (71) 
+Overlapping before and after 2007 
+8 (21) 
+Study population (n = 171 068) b 
+No. of study participants, median (IQR) b 
+964 (429-1972) 
+Age, median (IQR), y b 
+69 (65-71) 
+Sex, median (IQR), % b 
+Male 
+57 (52-60) 
+Female 
+43 (40-48) 
+Postdischarge antithrombotic therapy, median (IQR), % b 
+95 (89-98) 
+TIA or minor stroke [No. of participants] c 
+17 (45) [94 538] 
+TIA only [No. of participants] 
+20 (53) [76 132] 
+Minor stroke only [No. of participants] 
+1 (3) [398] 
+First-ever index event [No. of participants] 
+6 (16) [25 531] 
+Patient follow-up >85% d 
+29 (76) 
+TIA definition e 
+Time based 
+26 (68) 
+Tissue based 
+8 (21) 
+Unavailable or not applicable 
+4 (16) 
+Maximum follow-up duration f 
+Beyond 1 y 
+24 (63) 
+Beyond 5 y 
+12 (32) 
+Up to 10 y 
+10 (26) 
+Method of outcome ascertainment g 
+Active 
+32 (84) 
+Passive 
+6 (16) 
+Overall risk of bias h 
+Low 
+36 (95) 
+High 
+2 (5) 
+Open in a new tab 
+Abbreviation: TIA, transient ischemic attack.
+a 
+Detailed study characteristics can be found in eTable 2 in Supplement 1 .
+b 
+As applicable to the target population studied in this systematic review and meta-analysis (TIA or minor stroke).
+c 
+The definition of TIA or minor stroke events was based on criteria used in the individual studies. For the definition of TIA, both the time-based and tissue-based definitions were considered. For the definition of minor ischemic stroke, a National Institutes of Health Stroke Scale score of up to 5 was considered.
+d 
+As considered adequate and unlikely to introduce bias according to the Newcastle-Ottawa Scale for quality assessment of cohort studies.
+e 
+The time-based definition of TIA is symptoms lasting less than 24 hours, while the tissue-based definition requires symptoms lasting less than 24 hours and the absence of new visible infarction on imaging.
+f 
+As applicable to the intervals of follow-up investigated in this systematic review and meta-analysis (year 1, years 2-5, years 6-10).
+g 
+Studies were classified as using an active outcome ascertainment method if they collected outcomes through in-person visits, telephone interviews, or screening of medical records from both in-hospital (eg, emergency department logs) and out-of-hospital facilities (eg, physician offices). Studies that identified subsequent stroke events using administrative data, such as hospital discharge codes based on the International Classification of Diseases , were classified as using a passive outcome ascertainment method.
+h 
+The component Newcastle-Ottawa Scale scores for all studies are presented in eTable 4 in Supplement 1 .
+The analysis included a total of 171 068 patients with a median age of 69 years (IQR, 65-71) across the 38 included studies. The median percentage of male patients was 57% (IQR, 52%-60%), and the median proportion of patients discharged with antithrombotic medication was 95% (IQR, 89%-98%). The patient population consisted of TIA or minor stroke in 17 studies, 14 , 26 , 28 , 32 , 40 , 42 , 43 , 44 , 46 , 49 , 51 , 55 , 56 , 57 , 58 , 59 TIA only in 20 studies, 12 , 13 , 27 , 29 , 30 , 31 , 33 , 34 , 35 , 36 , 37 , 38 , 39 , 41 , 45 , 47 , 48 , 50 , 52 , 54 and minor stroke only in 1 study. 53 Six studies focused on patients with a first-ever TIA or minor stroke. 12 , 13 , 47 , 51 , 56 , 59 Among the studies with available information on TIA definition, 26 studies 7 , 12 , 13 , 14 , 26 , 27 , 28 , 29 , 30 , 35 , 38 , 39 , 40 , 41 , 43 , 44 , 45 , 47 , 48 , 51 , 52 , 54 , 57 , 59 used the time-based definition and 8 used the tissue-based definition. 32 , 40 , 46 , 49 , 50 , 54 , 55 , 56 
+There were 24 studies that reported the primary outcome of stroke beyond 1 year of follow-up, 12 studies that reported stroke beyond 5 years of follow-up, and 10 studies 13 , 26 , 37 , 38 , 40 , 48 , 51 , 56 , 57 , 59 that reported stroke up to 10 years of follow-up ( Table 1 ; eTable 3 in Supplement 1 ). Thirty-two studies 9 , 13 , 14 , 26 , 27 , 28 , 29 , 30 , 31 , 32 , 33 , 36 , 38 , 39 , 40 , 41 , 43 , 44 , 45 , 46 , 47 , 48 , 49 , 50 , 51 , 53 , 54 , 55 , 56 , 57 , 58 , 59 were classified as having used an active outcome ascertainment method and 6 studies 12 , 34 , 35 , 37 , 42 , 52 were classified as having used a passive outcome ascertainment method ( Table 1 ; eTable 3 in Supplement 1 ).
+Based on the modified Newcastle-Ottawa Scale, the overall risk of bias was adjudicated as low for 36 of 38 included studies ( Table 1 ). The component Newcastle-Ottawa Scale scores for all studies are presented in eTable 4 in Supplement 1 .
+## Long-Term Risk of Outcomes After TIA or Minor Stroke
+Table 2 presents the pooled number of events, person-years of follow-up, and the corresponding incidence rates per 100 person-years for all outcomes. Forest plots showing the calculated rates for the primary outcome of any stroke in individual studies during the 3 follow-up intervals can be found in eFigures 2 to 4 in Supplement 1 .
+## Table 2. Incidence of Outcomes After Transient Ischemic Attack or Minor Stroke.
+Outcomes 
+Follow-up interval 
+Study cohorts (n = 38) 
+Events/person-years 
+Rate per 100 person-years (95% CI) 
+I 2 , % 
+Primary outcome 
+Any stroke 
+Year 1 
+38 
+9464/155 009 
+5.94 (5.18-6.76) 
+97 
+Day 0-90 
+32 
+2932/18 268 
+16.09 (13.86-18.46) 
+93 
+Day 91-365 
+32 
+1817/67 600 
+3.04 (2.59-3.53) 
+90 
+Years 2-5 
+25 
+2870/186 191 
+1.80 (1.58-2.04) 
+90 
+Years 6-10 
+12 
+465/30 282 
+1.72 (1.31-2.18) 
+84 
+10-y Cumulative incidence, % (95% CI) 
+19.8 (16.7-23.1) 
+Components of primary outcome 
+Ischemic stroke 
+Year 1 
+31 
+8045/131 614 
+5.89 (5.23-6.60) 
+95 
+Years 2-5 
+21 
+1970/136 894 
+1.55 (1.35-1.75) 
+82 
+Years 6-10 
+11 
+386/29 339 
+1.45 (1.08-1.87) 
+82 
+10-y Cumulative incidence, % (95% CI) 
+17.8 (15.0-20.8) 
+Hemorrhagic stroke 
+Year 1 
+30 
+599/122 491 
+0.45 (0.37-0.54) 
+60 
+Years 2-5 
+20 
+283/136 680 
+0.25 (0.19-0.32) 
+71 
+Years 6-10 
+11 
+56/29 339 
+0.27 (0.13-0.44) 
+78 
+10-y Cumulative incidence, % (95% CI) 
+2.8 (1.8-4.0) 
+Additional secondary outcomes 
+Fatal stroke a 
+Year 1 
+17 
+139/29 777 
+0.48 (0.34-0.64) 
+62 
+Years 2-5 
+10 
+100/33 330 
+0.34 (0.22-0.48) 
+69 
+Years 6-10 
+5 
+30/11 479 
+0.28 (0.10-0.55) 
+67 
+10-y Cumulative incidence, % (95% CI) 
+3.2 (1.7-5.2) 
+Disability b 
+Year 1 
+7 
+3503/20 753 
+10.82 (3.63-21.21) 
+100 
+Years 2-5 
+2 
+253/4365 
+5.82 (5.14-6.53) 
+0 
+Years 6-10 
+1 
+25/636 
+3.93 (2.54-5.80) 
+93 
+10-y Cumulative incidence, % (95% CI) 
+42.6 (31.4-55.4) 
+Myocardial infarction 
+Year 1 
+20 
+644/51 562 
+1.08 (0.74-1.48) 
+93 
+Years 2-5 
+13 
+626/77 980 
+0.65 (0.42-0.95) 
+93 
+Years 6-10 
+7 
+98/13 091 
+0.48 (0.17-0.95) 
+86 
+10-y Cumulative incidence, % (95% CI) 
+5.9 (3.2-9.6) 
+All-cause mortality 
+Year 1 
+35 
+10 372/136 139 
+3.07 (2.07-4.26) 
+97 
+Years 2-5 
+23 
+6356/125 501 
+3.48 (2.71-4.34) 
+98 
+Years 6-10 
+10 
+1041/16 514 
+5.06 (3.11-7.45) 
+97 
+10-y Cumulative incidence, % (95% CI) 
+35.1 (25.1-45.6) 
+Open in a new tab 
+a 
+Definition of fatal stroke varied between studies and included both deaths directly from stroke and those presumed to be secondary to stroke.
+b 
+Disability was defined as a modified Rankin Scale score >1 among patients without subsequent stroke.
+## Risk of Subsequent Stroke
+The pooled rate of stroke per 100 person-years was 5.94 events (95% CI, 5.18-6.76; I 2  = 97%) in the first year, 1.80 events (95% CI, 1.58-2.04; I 2  = 90%) annually in the second through fifth years, and 1.72 events (95% CI, 1.31-2.18; I 2  = 84%) annually in the sixth through tenth years ( Table 2 and Figure 1 ). Based on an analysis of 32 included studies with data available for the first 90 days and 91 through 365 days separately, 2932 of 4749 subsequent stroke events (61.7%) in the first year occurred within the initial 90 days. The pooled rate of stroke per 100 person-years was 16.09 events (95% CI, 13.86-18.46; I 2  = 93%) in the first 90 days and 3.04 events (95% CI, 2.59-3.53 ; I 2  = 90%) between 91 and 365 days ( Table 2 ). Among the 10 included studies with a maximum follow-up duration of 10 years, 1707 of 3390 subsequent stroke events (50.4%) occurred after the first year. The 5- and 10-year cumulative incidences of stroke were 12.5% (95% CI, 11.0%-14.1%; Figure 1 ; eTable 5 in Supplement 1 ) and 19.8% (95% CI, 16.7%-23.1%; Table 2 and Figure 1 ), respectively. Pooled rates of ischemic, hemorrhagic, and fatal stroke per 100 person-years were 5.89 events (95% CI, 5.23-6.60; I 2  = 95%), 0.45 events (95% CI, 0.37-0.54; I 2  = 60%), and 0.48 events (95% CI, 0.34-0.64; I 2  = 62%), respectively, in the first year, with 10-year cumulative incidences of 17.8% (95% CI, 15.0%-20.8%), 2.8% (95% CI, 1.8%-4.0%), and 3.2% (95% CI, 1.7%-5.2%), respectively ( Table 2 ). Based on an analysis of 17 included studies with data available on both fatal stroke (n = 269) and any stroke (n = 2737), the pooled case-fatality rate of subsequent stroke was 10.4% (95% CI, 7.3%-14.0%; I 2  = 85%; eFigure 5 in Supplement 1 ).
+## Figure 1. Ten-Year Cumulative Incidence and Incidence Rate of Any Stroke After Transient Ischemic Attack or Minor Stroke.
+Open in a new tab 
+The shaded areas indicate 95% CIs.
+## Risk of Disability
+Seven studies reported on disability, defined as a modified Rankin Scale score greater than 1, among patients without subsequent stroke. The pooled rate of disability was 10.82 (95% CI, 3.63-21.21; I 2  = 100%) per 100 person-years in the first year, with a cumulative incidence of 42.6% (95% CI, 31.4%-55.4%) at 10 years ( Table 2 ).
+## Risk of Myocardial Infarction
+There were 20 studies that reported on myocardial infarction. The pooled rate of myocardial infarction per 100 person-years was 1.08 events (95% CI, 0.74-1.48; I 2  = 93%) in the first year, with a cumulative incidence of 5.9% (95% CI, 3.2%-9.6%) at 10 years ( Table 2 ).
+## Risk of All-Cause Mortality
+Data on all-cause mortality were available from 35 studies. The pooled rate of all-cause mortality per 100 person-years was 3.07 deaths (95% CI, 2.07-4.26; I 2  = 97%) in the first year, with a cumulative incidence of 35.1% (95% CI, 25.1%-45.6%) at 10 years ( Table 2 ). Based on an analysis of 17 included studies with data available on both fatal stroke (n = 269) and all-cause mortality (n = 2551), the pooled proportion of all-cause mortality events attributable to fatal stroke was 12.6% (95% CI, 8.9%-16.9%; I 2  = 85%).
+## Subgroup and Sensitivity Analyses
+Figure 2 displays the rates of stroke events per 100 person-years within the first year after TIA or minor stroke, stratified by study characteristics. Compared with the stroke rate of 4.74 events (95% CI, 4.56-4.93) reported in studies conducted in Europe, studies conducted in North America (rate, 6.78 events [95% CI, 6.59-6.96]; RR, 1.43 [95% CI, 1.36-1.50]) and Asia (rate, 7.70 events [95% CI, 7.32-8.09]; RR, 1.62 [95% CI, 1.52-1.73]) reported higher rates of stroke. Higher stroke rates were also reported in cohorts recruited in or after 2007 as compared with those recruited before 2007 (6.26 events [95% CI, 6.12-6.40] vs 4.40 events [95% CI, 3.80-5.06]; RR, 1.42 [95% CI, 1.23-1.64]), and studies using active vs passive outcome ascertainment methods (6.61 events [95% CI, 6.36-6.87] vs 5.93 events [95% CI, 5.79-6.07]; RR, 1.11 [95% CI, 1.07- 1.17]). Of the 27 studies that analyzed a cohort recruited in or after 2007, 23 used active outcome ascertainment methods. Among the 12 studies that were conducted in either North America or Asia, 9 were part of the subgroup of studies that analyzed cohorts recruited after 2007. Compared with the stroke rate of 7.13 events (95% CI, 6.95-7.31) reported among studies that included an unselected population of patients with TIA or minor stroke, studies focusing solely on patients with TIA (rate, 4.89 events [95% CI, 4.73-5.06]; RR, 0.68 [95% CI, 0.65-0.71]) or those with first-ever index events (rate, 3.25 events [95% CI, 3.02-3.49]; RR, 0.45 [95% CI, 0.42-0.49) reported lower rates of stroke. No differences in stroke rates were found based on the study’s method of cohort identification or setting.
+## Figure 2. Incidence Rate of Any Stroke Within the First Year by Study Characteristics.
+Open in a new tab 
+a The definition of transient ischemic attack (TIA) or minor stroke events was based on criteria used in the individual studies. For the definition of TIA, both the time-based and tissue-based definitions were considered. For the definition of minor ischemic stroke, a National Institutes of Health Stroke Scale score of up to 5 was considered. Studies with overlapping recruitment period cutoffs (eg, 2002-2010) were excluded from the analysis.
+b Studies were classified as using an active outcome ascertainment method if they collected outcomes through in-person visits, telephone interviews, or screening of medical records from both in-hospital (eg, emergency department logs) and out-of-hospital (eg, physician offices) facilities. Studies that identified subsequent stroke events using administrative data, such as hospital discharge codes based on the International Classification of Diseases , were classified as using a passive outcome ascertainment method.
+In a sensitivity analysis limited to studies with a complete 10-year follow-up period, the pooled rates of stroke within all follow-up intervals were consistent with the primary analysis (eTable 6 in Supplement 1 ).
+## Discussion
+This systematic review and meta-analysis found that approximately 1 in 5 patients is at risk of having another stroke within 10 years of experiencing a TIA or minor stroke, and 10% of all subsequent stroke events are likely to be fatal. The annual risk of stroke decreased from 5.9% in the first year to an average of 1.8% per year thereafter ( Figure 1 ). The cumulative risk of stroke continued to rise over time, increasing by 2.1 times the 1-year risk at 5 years and 3.3 times the 1-year risk at 10 years ( Figure 1 ). Notably, half of all subsequent stroke events occurred after the first year, underscoring that the elevated risk of stroke in this patient population persists for more than 1 year after presentation. This risk of subsequent stroke events is high but is not readily apparent in routine clinical practice due to its gradual onset over time. Given that many secondary prevention clinics only monitor patients for the first 90 days, with long-term preventive care often transitioning to primary care physicians and internists, the current findings emphasize the importance of ongoing vigilant monitoring and risk reduction strategies beyond the initial high-risk period.
+This study has several strengths. Unlike traditional meta-analyses that rely solely on published data, the current analysis was based on unpublished aggregate-level data from a large number of studies with an overall low risk of bias. The inclusion of unpublished data allowed novel insights into the natural progression of TIA or minor stroke events, including risk estimates for patient-relevant outcomes such as disability. This approach also allowed standardization of follow-up durations across study cohorts and use of exact person-time at risk during discrete intervals to assess changes in stroke risk over time after the index event—a limitation of recent landmark studies on this topic. 12 , 13 , 14 Moreover, compared with estimates from individual study cohorts, the increased sample size and number of events in this meta-analysis of 38 unique cohorts provide more precise estimates of the long-term risk of outcomes that should enhance confidence in counseling patients of their prognosis. In addition, because of a comprehensive systematic search, these pooled estimates were based on studies from diverse geographic regions (20 countries across 4 continents), improving the generalizability of the current findings to a wider range of patients and clinical settings.
+Several other findings from this study are relevant and warrant discussion. First, the prespecified subgroup analyses revealed that the expected variability in stroke rates was attributed to differences in study location, recruitment period, methodology, and population characteristics. Remarkably, the incidence of stroke after TIA or minor stroke was higher in study populations recruited in or after 2007 ( Figure 2 ). This observation may be attributed to diagnostic bias from increased use of magnetic resonance imaging and greater stroke awareness, leading to better-defined index events and identification of higher-risk individuals. 60 Indeed, nearly half of all clinically diagnosed TIA or minor stroke cases can be stroke mimics, and excluding these low-risk alternate diagnoses results in an increased risk of subsequent stroke in this patient group. 36 Furthermore, the use of active surveillance monitoring methods in cohorts recruited after 2007 may have contributed to the identification of more subsequent stroke events. In the current analysis, 23 of the 27 studies that analyzed cohorts recruited in or after 2007 used active outcome ascertainment methods, and studies using these methods reported higher rates of stroke ( Figure 2 ). Additionally, it was found that studies conducted in North America and Asia reported higher stroke rates than those in Europe. This difference could be attributed to differences in methodology or various other factors such as ethnocultural influences, environmental conditions, dietary habits, and societal trends such as increased obesity and urbanization leading to higher exposure to air pollution. 61 , 62 Interestingly, 9 of the 12 studies conducted in North America or Asia analyzed a cohort recruited in or after 2007. The higher stroke rates observed in the study populations recruited in or after 2007 may be due to a combination of factors related to study location and methodology. Nonetheless, the novel finding that the risk of subsequent stroke after a TIA or minor stroke appears to have increased in the modern era deserves attention and further research.
+The current study also found that studies focusing solely on patients with TIA or those with first-ever index events reported considerably lower rates of subsequent stroke as compared with studies that included an unselected population of patients with TIA or minor stroke ( Figure 2 ). These findings highlight an important epidemiological point: the long-term risk of subsequent stroke is influenced by the baseline risk of stroke in the population being studied. For example, patients with proven ischemia using the modern tissue-based definition of TIA are, by definition, at higher risk of subsequent stroke. 63 Likewise, patients with a history of stroke or TIA are a higher-risk population. 64 While these patient characteristics have been established as strong predictors of early stroke risk, 63 , 64 their long-term prognostic significance is not well-understood. To better inform appropriate patient selection for long-term secondary prevention, it is crucial to identify both traditional and nontraditional prognostic factors associated with the long-term risk of stroke in this patient group. 2 
+Second, many patients delay seeking medical attention immediately after experiencing a TIA or minor stroke, leading to delayed diagnosis when they eventually consult a health care professional for other reasons, sometimes months or even years later. In addition, most patients with TIA or minor stroke do not have another stroke for many years after the initial event. For these patients, determining the need and duration of long-term secondary prevention with antithrombotic medication involves weighing the risk of subsequent stroke against the risk of bleeding at the later time point. The current analysis of the time course of stroke events showed that the annual rate of subsequent stroke fell rapidly and remained constant after the first year. It is unclear whether the observed constant rate was due to continuous use of a single antiplatelet medication or the natural progression of the disease without treatment. Given that up to 50% of patients may discontinue long-term medication, the observed rate likely represents a mix of treated and untreated natural history. Although the annual rate of subsequent stroke after the first year is low (<2% per year), the cumulative long-term risk is significant, prompting the need to evaluate the overall benefit of long-term antiplatelet therapy.
+Third, this analysis revealed that among patients without a subsequent stroke during follow-up, nearly 1 in 3 had some neurological disability at 5 years, increasing to 2 in every 5 at 10 years. While subsequent stroke can contribute to disability in this patient group, 65 this study confirmed that it is not the only cause. A recent analysis of TIAregistry.org identified preexisting comorbidities, such as diabetes, congestive heart failure, and valvular heart disease, as independent predictors of 5-year disability in patients without subsequent stroke. 66 
+Fourth, the risk of mortality in patients with TIA or minor stroke was high, with one-third likely to die from any cause within 10 years. Unlike the time course of subsequent stroke events, the annual mortality rate gradually increased over time ( Table 2 ). Crucially, nearly 90% of all-cause deaths occurred for causes other than fatal stroke. This further highlights the significance of effectively managing comorbid illnesses associated with stroke to decrease the considerable long-term mortality burden in this population.
+## Limitations
+There are a few limitations of this study that are worth noting. First, the reported rates of stroke across studies were variable, with a high degree of detected heterogeneity ( I 2  > 80%; Table 2 ). However, true heterogeneity is expected in prevalence and incidence estimates due to differences in time and location of the included studies. 67 , 68 Hence, the random-effects meta-analysis model was used, accounting for any unexplained within-study and between-study heterogeneity. Moreover, the I 2 statistic was developed in the context of comparative data, which behave differently than proportions. In meta-analyses of proportions, the I 2 statistic tends to be larger due to the nature of proportional data, where little variance is observed even in studies with small sample size. 67 , 68 
+Second, the pooled estimates may not reflect more recent recommendations on the use of dual antiplatelet therapy (DAPT). It is important to note that the benefit of DAPT predominantly occurs within the first 21 days. 69 Therefore, these estimates beyond 1 year of follow-up are unlikely to have been impacted by long-term use of DAPT. Third, the pooled risk of stroke in the current analysis may be underestimated due to potential missed early recurrent strokes and incomplete ascertainment in the epidemiological studies analyzed.
+Fourth, the pooled incidences for the outcome of overall disability are imprecise due to limited data available from a small number of studies. Fifth, the long-term risk of bleeding events in this patient population that is required to balance the benefits and harms of long-term secondary prevention with antithrombotic medication was not quantified. However, this could be a focus of future research. Sixth, owing to constraints regarding time, resource use, and access to raw individual-level data, an individual patient data meta-analysis was not performed, which would have allowed to compute direct estimates of the cumulative incidence over time, and adjust estimates by various risk factors, including the underlying causes of TIA or minor stroke and potential interactions between risk factors.
+## Conclusions
+Patients who have had a TIA or minor stroke are at a persistently high risk of experiencing a subsequent stroke. TIA or minor stroke events also portend a significant risk of long-term disability and death. Findings from this study underscore the need for improving long-term stroke prevention measures in this patient population.
+Supplement 1. eAppendix. Electronic Search Strategy
+eTable 1. Studies Excluded From Meta-Analysis
+eTable 2. Characteristics of Studies Included in Meta-Analysis
+eTable 3. Characteristics of Studies Included in Meta-Analysis
+eTable 3. Risk of Bias Assessment Using Modified Newcastle-Ottawa Scale
+eTable 5. Five-Year Cumulative Incidence of Outcomes After Transient Ischemic Attack or Minor Stroke
+eTable 6. Incidence of Any Stroke Among Studies with a Complete 10-Year Follow-Up Period
+eFigure 1. Flow Diagram of Study Identification and Selection
+eFigure 2. Incidence Rate of Any Stroke in Year 1
+eFigure 3. Incidence Rate of Any Stroke in Years 2 to 5
+eFigure 4. Incidence Rate of Any Stroke in Years 6 to 10
+eFigure 5. Case-Fatality Rate of Stroke
+jama-e252033-s001.pdf (404.8KB, pdf) 
+Supplement 2. Data Sharing Statement
+jama-e252033-s002.pdf (13KB, pdf) 

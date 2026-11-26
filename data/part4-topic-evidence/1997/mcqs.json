@@ -1,0 +1,107 @@
+[
+  {
+    "type": "multiple_choice",
+    "questionType": "guideline",
+    "question": "An adult with septic shock is still hypoperfused on arrival. Which initial fluid suggestion does the 2021 Surviving Sepsis guideline give?",
+    "options": {
+      "A": "At least 30 mL/kg IV crystalloid within 3 hours",
+      "B": "10 mL/kg colloid over 24 hours",
+      "C": "No fluid until a central venous pressure is measured",
+      "D": "1 litre of 5% dextrose",
+      "E": "Albumin as the only initial fluid"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "At least 30 mL/kg IV crystalloid within 3 hours",
+    "explanation": "For sepsis-induced hypoperfusion or septic shock the guideline suggests at least 30 mL/kg of IV crystalloid within the first 3 hours. The recommendation is weak, with low-quality evidence [1].",
+    "difficulty": "easy",
+    "sourceArticle": "Surviving Sepsis Campaign: International Guidelines for Management of Sepsis and Septic Shock 2021",
+    "sourceReference": "PMID 34599691",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "guideline",
+    "question": "How does the guideline grade that 30 mL/kg suggestion?",
+    "options": {
+      "A": "Strong recommendation, high-quality evidence",
+      "B": "Strong recommendation, moderate-quality evidence",
+      "C": "Weak recommendation, low-quality evidence",
+      "D": "Ungraded best practice only",
+      "E": "Strong recommendation against any crystalloid"
+    },
+    "correctAnswer": "C",
+    "correctAnswerText": "Weak recommendation, low-quality evidence",
+    "explanation": "The panel labels the initial 30 mL/kg crystalloid volume a weak recommendation based on low-quality evidence, noting the lack of prospective trials comparing initial volumes [1].",
+    "difficulty": "medium",
+    "sourceArticle": "Surviving Sepsis Campaign: International Guidelines for Management of Sepsis and Septic Shock 2021",
+    "sourceReference": "PMID 34599691",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "guideline",
+    "question": "Which resuscitation fluid does the guideline suggest in preference to normal saline?",
+    "options": {
+      "A": "Hydroxyethyl starch",
+      "B": "Balanced crystalloid",
+      "C": "Hypertonic 3% saline",
+      "D": "Dextrose 5%",
+      "E": "Packed red cells"
+    },
+    "correctAnswer": "B",
+    "correctAnswerText": "Balanced crystalloid",
+    "explanation": "For adults with sepsis or septic shock the guideline suggests balanced crystalloids instead of normal saline. That suggestion is also weak, with low-quality evidence [1].",
+    "difficulty": "medium",
+    "sourceArticle": "Surviving Sepsis Campaign: International Guidelines for Management of Sepsis and Septic Shock 2021",
+    "sourceReference": "PMID 34599691",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "clinical_application",
+    "question": "After the first bolus, the team wants to give more fluid. What does the guideline suggest using to guide that decision?",
+    "options": {
+      "A": "Dynamic measures rather than examination or static parameters alone",
+      "B": "A single lactate value only",
+      "C": "Urine colour",
+      "D": "The initial 30 mL/kg repeated every hour for 24 hours",
+      "E": "Central venous pressure of 15 mmHg as a mandatory target"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "Dynamic measures rather than examination or static parameters alone",
+    "explanation": "The guideline suggests dynamic measures to guide fluid resuscitation over physical examination or static parameters [1].",
+    "difficulty": "medium",
+    "sourceArticle": "Surviving Sepsis Campaign: International Guidelines for Management of Sepsis and Septic Shock 2021",
+    "sourceReference": "PMID 34599691",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "pitfall",
+    "question": "A stored 2012 'Surviving Sepsis' file in the app is actually a paper on glucose in meningococcal shock. Which document should be used for current fluid advice?",
+    "options": {
+      "A": "The 2021 Surviving Sepsis Campaign guideline",
+      "B": "A pancreatitis fluid trial",
+      "C": "The 2012 mislabelled file",
+      "D": "A head-injury transfusion protocol",
+      "E": "An analgesia ladder review"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "The 2021 Surviving Sepsis Campaign guideline",
+    "explanation": "Current fluid choice, the 30 mL/kg suggestion, and dynamic reassessment are stated in the 2021 guideline (PMID 34599691), which is the document stored for this topic [1].",
+    "difficulty": "hard",
+    "sourceArticle": "Surviving Sepsis Campaign: International Guidelines for Management of Sepsis and Septic Shock 2021",
+    "sourceReference": "PMID 34599691",
+    "sourceIndices": [
+      1
+    ]
+  }
+]

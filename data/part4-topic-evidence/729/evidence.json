@@ -1,0 +1,21 @@
+{
+  "catalogueId": "729",
+  "topic": "Testicular Germ Cell Tumours",
+  "specialty": "Oncology",
+  "decision": "downloaded open source",
+  "rejected": [],
+  "unresolvedReason": null,
+  "source": {
+    "title": "EAU Guidelines on Testicular Cancer, limited update April 2024",
+    "year": 2024,
+    "pmid": null,
+    "pmcid": null,
+    "doi": null,
+    "url": "https://uroweb.org/guidelines/testicular-cancer",
+    "sourceBody": "European Association of Urology",
+    "type": "clinical_practice_guideline",
+    "whyItFits": "The 2024 EAU testicular-cancer guideline covers markers, orchidectomy, stage I non-seminoma, and adjuvant BEP."
+  },
+  "evidenceTextFile": "data/part4-topic-evidence/729/evidence.txt",
+  "evidenceChars": 197814
+}

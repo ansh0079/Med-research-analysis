@@ -1,0 +1,23 @@
+{
+  "catalogueId": "2034",
+  "topic": "thyroid nodules",
+  "specialty": "Endocrinology",
+  "decision": "downloaded open source",
+  "rejected": [
+    "The in-app ATA entry was title-only. A Raman spectroscopy review is not a management guideline."
+  ],
+  "unresolvedReason": null,
+  "source": {
+    "title": "2015 American Thyroid Association Management Guidelines for Adult Patients with Thyroid Nodules and Differentiated Thyroid Cancer",
+    "year": 2016,
+    "pmid": "26462967",
+    "pmcid": "PMC4739132",
+    "doi": "10.1089/thy.2015.0020",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4739132/",
+    "sourceBody": "Thyroid",
+    "type": "clinical_practice_guideline",
+    "whyItFits": "The ATA guideline is the standard source for which thyroid nodules need fine-needle aspiration."
+  },
+  "evidenceTextFile": "data/part4-topic-evidence/2034/evidence.txt",
+  "evidenceChars": 540699
+}

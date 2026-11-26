@@ -1,0 +1,107 @@
+[
+  {
+    "type": "multiple_choice",
+    "questionType": "recall",
+    "question": "How does FDA define overall survival?",
+    "options": {
+      "A": "Time from randomisation to death from any cause, in the intent-to-treat population",
+      "B": "Time to tumour growth of 20%",
+      "C": "Time to the first scan",
+      "D": "Deaths from the cancer only, in responders",
+      "E": "Symptom scores"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "Time from randomisation to death from any cause, in the intent-to-treat population",
+    "explanation": "Overall survival is the time from randomisation until death from any cause, measured in the intent-to-treat population [1].",
+    "difficulty": "easy",
+    "sourceArticle": "Clinical Trial Endpoints for the Approval of Cancer Drugs and Biologics: Guidance for Industry",
+    "sourceReference": null,
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "guideline",
+    "question": "Why is overall survival usually preferred when it can be assessed?",
+    "options": {
+      "A": "It is precise, dated by death, and measurement bias is not a factor",
+      "B": "It is the fastest endpoint",
+      "C": "It needs no randomisation",
+      "D": "It ignores toxicity",
+      "E": "It can be taken from historical controls reliably"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "It is precise, dated by death, and measurement bias is not a factor",
+    "explanation": "FDA calls it the most reliable cancer endpoint: precise, documented by the date of death, and not subject to measurement bias [1].",
+    "difficulty": "medium",
+    "sourceArticle": "Clinical Trial Endpoints for the Approval of Cancer Drugs and Biologics: Guidance for Industry",
+    "sourceReference": null,
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "pitfall",
+    "question": "Why are external controls seldom reliable for overall survival?",
+    "options": {
+      "A": "Differences can come from patient selection, imaging, or supportive care rather than the drug",
+      "B": "Randomisation increases those biases",
+      "C": "Survival cannot be dated",
+      "D": "External controls are the preferred design",
+      "E": "FDA forbids randomised trials"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "Differences can come from patient selection, imaging, or supportive care rather than the drug",
+    "explanation": "Apparent differences versus external controls can arise from selection, improved imaging, or improved supportive care. Randomised studies minimise those differences [1].",
+    "difficulty": "medium",
+    "sourceArticle": "Clinical Trial Endpoints for the Approval of Cancer Drugs and Biologics: Guidance for Industry",
+    "sourceReference": null,
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "guideline",
+    "question": "Accelerated approval may be based on:",
+    "options": {
+      "A": "A surrogate reasonably likely to predict clinical benefit",
+      "B": "Overall survival only",
+      "C": "A surrogate known to be unrelated to benefit",
+      "D": "A single-patient outcome",
+      "E": "Blood pressure in every cancer"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "A surrogate reasonably likely to predict clinical benefit",
+    "explanation": "FDA may approve on a surrogate reasonably likely to predict clinical benefit, a lower bar than the surrogates used for traditional approval [1].",
+    "difficulty": "medium",
+    "sourceArticle": "Clinical Trial Endpoints for the Approval of Cancer Drugs and Biologics: Guidance for Industry",
+    "sourceReference": null,
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "recall",
+    "question": "What condition is attached to accelerated approval?",
+    "options": {
+      "A": "The manufacturer must study and verify the actual clinical benefit",
+      "B": "No further study is allowed",
+      "C": "The drug is withdrawn the day it is approved",
+      "D": "Only animal studies are required",
+      "E": "The surrogate becomes overall survival automatically"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "The manufacturer must study and verify the actual clinical benefit",
+    "explanation": "Approval under these regulations is conditional on clinical studies that verify and describe the actual clinical benefit [1].",
+    "difficulty": "easy",
+    "sourceArticle": "Clinical Trial Endpoints for the Approval of Cancer Drugs and Biologics: Guidance for Industry",
+    "sourceReference": null,
+    "sourceIndices": [
+      1
+    ]
+  }
+]

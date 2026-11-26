@@ -1,0 +1,24 @@
+{
+  "catalogueId": "211",
+  "topic": "Salivary Gland and Rare Head and Neck Tumours",
+  "specialty": "Oncology",
+  "decision": "downloaded open source",
+  "rejected": [
+    "ESR acute head-and-neck infection recommendations",
+    "ASCO salivary-gland guideline, which is not open full text"
+  ],
+  "unresolvedReason": null,
+  "source": {
+    "title": "Salivary gland cancer: ESMO–European Reference Network on Rare Adult Solid Cancers (EURACAN) Clinical Practice Guideline for diagnosis, treatment and follow-up",
+    "year": 2022,
+    "pmid": "36567082",
+    "pmcid": "PMC9808465",
+    "doi": "10.1016/j.esmoop.2022.100602",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9808465/",
+    "sourceBody": "ESMO Open",
+    "type": "clinical_practice_guideline",
+    "whyItFits": "The 2022 ESMO–EURACAN guideline is open on PMC and covers diagnosis, staging, surgery, and radiotherapy for salivary-gland carcinoma. The ASCO guideline is not open."
+  },
+  "evidenceTextFile": "data/part4-topic-evidence/211/evidence.txt",
+  "evidenceChars": 84267
+}

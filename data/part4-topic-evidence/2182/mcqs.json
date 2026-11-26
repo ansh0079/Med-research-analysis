@@ -1,0 +1,107 @@
+[
+  {
+    "type": "multiple_choice",
+    "questionType": "guideline",
+    "question": "Laboratory tumour lysis in the Cairo-Bishop definition used here requires:",
+    "options": {
+      "A": "Two or more metabolic abnormalities, from 3 days before to 7 days after chemotherapy, or a 25% change from baseline",
+      "B": "A single mild abnormality at any time",
+      "C": "Only a high creatinine",
+      "D": "A fever",
+      "E": "A positive blood culture"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "Two or more metabolic abnormalities, from 3 days before to 7 days after chemotherapy, or a 25% change from baseline",
+    "explanation": "Laboratory TLS is two or more of the named abnormalities in that time window, or a 25% change from baseline [1].",
+    "difficulty": "medium",
+    "sourceArticle": "Tumor Lysis Syndrome in Patients with Hematological Malignancies",
+    "sourceReference": "PMID 29230244",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "recall",
+    "question": "Clinical tumour lysis adds which finding to the laboratory definition?",
+    "options": {
+      "A": "Creatinine over 1.5 times the upper limit, arrhythmia or sudden death, or seizure",
+      "B": "Alopecia",
+      "C": "A normal ECG and normal kidneys",
+      "D": "Isolated anaemia",
+      "E": "A low white-cell count only"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "Creatinine over 1.5 times the upper limit, arrhythmia or sudden death, or seizure",
+    "explanation": "Clinical TLS is laboratory TLS plus creatinine more than 1.5 times the upper limit of normal, cardiac arrhythmia or sudden death, or seizure [1].",
+    "difficulty": "medium",
+    "sourceArticle": "Tumor Lysis Syndrome in Patients with Hematological Malignancies",
+    "sourceReference": "PMID 29230244",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "guideline",
+    "question": "Low-risk prophylaxis is:",
+    "options": {
+      "A": "Hydration and allopurinol",
+      "B": "Rasburicase for every low-risk patient",
+      "C": "No fluid",
+      "D": "Allopurinol without fluid",
+      "E": "Dialysis before chemotherapy in every patient"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "Hydration and allopurinol",
+    "explanation": "Patients at low risk should receive hydration and allopurinol [1].",
+    "difficulty": "easy",
+    "sourceArticle": "Tumor Lysis Syndrome in Patients with Hematological Malignancies",
+    "sourceReference": "PMID 29230244",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "pitfall",
+    "question": "High-risk prophylaxis, and the drug to avoid combining, is:",
+    "options": {
+      "A": "Hydration and inpatient rasburicase, without concomitant allopurinol",
+      "B": "Oral allopurinol only",
+      "C": "Rasburicase plus allopurinol from the first dose",
+      "D": "Observation",
+      "E": "Bicarbonate as the only measure"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "Hydration and inpatient rasburicase, without concomitant allopurinol",
+    "explanation": "High-risk patients receive hydration and rasburicase in hospital. Concomitant allopurinol should not be given, because of xanthine accumulation and lack of substrate for rasburicase [1].",
+    "difficulty": "hard",
+    "sourceArticle": "Tumor Lysis Syndrome in Patients with Hematological Malignancies",
+    "sourceReference": "PMID 29230244",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "clinical_application",
+    "question": "When are the clinical signs most often seen?",
+    "options": {
+      "A": "24 to 48 hours after chemotherapy starts",
+      "B": "Six months later",
+      "C": "Only before any cancer exists",
+      "D": "They never follow treatment",
+      "E": "Only during surgery"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "24 to 48 hours after chemotherapy starts",
+    "explanation": "Although signs can appear within hours, they are more common 24 to 48 hours after chemotherapy starts. Spontaneous lysis, before treatment, also occurs [1].",
+    "difficulty": "easy",
+    "sourceArticle": "Tumor Lysis Syndrome in Patients with Hematological Malignancies",
+    "sourceReference": "PMID 29230244",
+    "sourceIndices": [
+      1
+    ]
+  }
+]

@@ -1,0 +1,27 @@
+{
+  "takeaway": "Measure AFP, β-hCG, and LDH before and after orchidectomy. For stage I non-seminoma, surveillance is the path; one cycle of BEP is the strong adjuvant alternative when surveillance will not be followed [1].",
+  "clinicalQuestion": "Which markers are required, and when is adjuvant BEP used in stage I non-seminoma?",
+  "background": "EAU testicular cancer guideline, limited update April 2024 [1].",
+  "studyDesign": "Evidence-based guideline.",
+  "setting": "Urologic oncology.",
+  "population": "Patients with testicular germ-cell tumours.",
+  "intervention": "Orchidectomy, serial tumour markers, and risk-adapted adjuvant bleomycin, etoposide, and cisplatin.",
+  "comparator": "Surveillance for clinical stage I non-seminoma.",
+  "primaryOutcome": "Correct staging and a surveillance-first plan, with chemotherapy if surveillance is not realistic.",
+  "mainFindings": "AFP, β-hCG, and LDH should be measured before and after orchidectomy and throughout follow-up. They are used for staging, risk stratification, monitoring treatment, and detecting relapse. Stage IS means that after orchidectomy the markers rise, stay elevated, or fail to fall as their half-lives predict, implying subclinical metastases; a contralateral tumour should also be excluded. For clinical stage I non-seminoma, one course of cisplatin, etoposide, and bleomycin is a strong adjuvant alternative if the patient will not undergo or comply with surveillance. Abdominal contrast CT has a median sensitivity of 67% and specificity of 95% for staging. Pain, scrotal or abdominal, can delay the diagnosis of a usually painless mass [1].",
+  "clinicalMeaning": "A falling marker that is still too high for its half-life is stage IS, not stage I. Adjuvant BEP is for the patient who will not be surveyed, not the default [1].",
+  "limitations": "Radiotherapy doses for stage II seminoma appear in a figure with extraction artefacts, so they are not used as questions [1].",
+  "bottomLine": "Three markers around orchidectomy. Surveillance for stage I non-seminoma, or one cycle of BEP if surveillance will not happen [1].",
+  "practiceImplication": "Do not rely on abdominal CT alone: sensitivity is only 67% [1].",
+  "safetyOutcomes": [],
+  "trustRating": "HIGH",
+  "trustRationale": "Current EAU guideline with a strong recommendation on adjuvant BEP.",
+  "quizFocusPoints": [
+    "AFP, hCG, LDH",
+    "stage IS half-life",
+    "one cycle of BEP if no surveillance"
+  ],
+  "whatNotToOverclaim": [
+    "Do not teach two cycles of BEP as the 2024 strong recommendation; the sentence read is one course."
+  ]
+}

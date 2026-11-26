@@ -1,0 +1,21 @@
+{
+  "catalogueId": "89",
+  "topic": "Malignant Pericardial Tamponade",
+  "specialty": "Oncology",
+  "decision": "downloaded open source",
+  "rejected": [],
+  "unresolvedReason": null,
+  "source": {
+    "title": "2015 ESC Guidelines for the diagnosis and management of pericardial diseases",
+    "year": 2015,
+    "pmid": "26320112",
+    "pmcid": null,
+    "doi": "10.1093/eurheartj/ehv318",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7539677/",
+    "sourceBody": "European Heart Journal",
+    "type": "clinical_practice_guideline",
+    "whyItFits": "The ESC pericardial guideline states how often a malignant effusion is actually non-malignant, and how a neoplastic effusion without tamponade is treated."
+  },
+  "evidenceTextFile": "data/part4-topic-evidence/89/evidence.txt",
+  "evidenceChars": 224554
+}

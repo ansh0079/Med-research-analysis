@@ -1,0 +1,107 @@
+[
+  {
+    "type": "multiple_choice",
+    "questionType": "recall",
+    "question": "Which three parts define an antibody-drug conjugate in this review?",
+    "options": {
+      "A": "Antibody, linker, and cytotoxic payload",
+      "B": "Two oral cytotoxics and a steroid",
+      "C": "A radioisotope only",
+      "D": "A bispecific T-cell engager without a payload",
+      "E": "A kinase inhibitor and a tablet coating"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "Antibody, linker, and cytotoxic payload",
+    "explanation": "The review describes ADCs as antibodies carrying a cytotoxic payload via a linker. IgG is the usual antibody backbone [1].",
+    "difficulty": "easy",
+    "sourceArticle": "Unlocking the potential of antibody-drug conjugates for cancer therapy",
+    "sourceReference": "PMID 33558752",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "recall",
+    "question": "Brentuximab vedotin was approved in 2011 for which target and diseases?",
+    "options": {
+      "A": "CD30, in relapsed/refractory classical Hodgkin lymphoma and systemic ALCL",
+      "B": "HER2 breast cancer only",
+      "C": "CD19 acute leukaemia only",
+      "D": "BCMA myeloma",
+      "E": "PD-1 lung cancer"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "CD30, in relapsed/refractory classical Hodgkin lymphoma and systemic ALCL",
+    "explanation": "Brentuximab vedotin is the CD30-targeted ADC approved in 2011 for relapsed/refractory classical Hodgkin lymphoma and systemic anaplastic large-cell lymphoma [1].",
+    "difficulty": "medium",
+    "sourceArticle": "Unlocking the potential of antibody-drug conjugates for cancer therapy",
+    "sourceReference": "PMID 33558752",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "recall",
+    "question": "What was T-DM1 approved for in 2013?",
+    "options": {
+      "A": "HER2-positive, trastuzumab-resistant metastatic breast cancer",
+      "B": "CD30 Hodgkin lymphoma",
+      "C": "First-line colon cancer",
+      "D": "Prostate cancer",
+      "E": "Adjuvant melanoma"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "HER2-positive, trastuzumab-resistant metastatic breast cancer",
+    "explanation": "Ado-trastuzumab emtansine is the HER2-targeted ADC approved in 2013 for trastuzumab-resistant metastatic breast cancer [1].",
+    "difficulty": "medium",
+    "sourceArticle": "Unlocking the potential of antibody-drug conjugates for cancer therapy",
+    "sourceReference": "PMID 33558752",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "recall",
+    "question": "Why has IgG3 generally been avoided as the ADC backbone?",
+    "options": {
+      "A": "Relatively short circulating half-life",
+      "B": "It cannot bind any antigen",
+      "C": "It is not an immunoglobulin",
+      "D": "It has no constant region",
+      "E": "Regulators banned all IgG"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "Relatively short circulating half-life",
+    "explanation": "The review says IgG3 antibodies have generally been avoided because of their relatively short circulating half-lives [1].",
+    "difficulty": "hard",
+    "sourceArticle": "Unlocking the potential of antibody-drug conjugates for cancer therapy",
+    "sourceReference": "PMID 33558752",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "pitfall",
+    "question": "What limitation of cleavable linkers does the review state?",
+    "options": {
+      "A": "They can degrade in plasma over time",
+      "B": "They never release the payload",
+      "C": "They make the antibody oral",
+      "D": "They remove the need for an antigen",
+      "E": "They prevent any adverse effect"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "They can degrade in plasma over time",
+    "explanation": "In real-world use, cleavable linkers have varying stability and can degrade in plasma [1].",
+    "difficulty": "medium",
+    "sourceArticle": "Unlocking the potential of antibody-drug conjugates for cancer therapy",
+    "sourceReference": "PMID 33558752",
+    "sourceIndices": [
+      1
+    ]
+  }
+]

@@ -1,0 +1,23 @@
+{
+  "catalogueId": "1997",
+  "topic": "sepsis fluid resuscitation",
+  "specialty": null,
+  "decision": "downloaded open source",
+  "rejected": [
+    "In-app text labelled as the 2012 Surviving Sepsis guideline is a different paper about glucose in children with meningococcal disease."
+  ],
+  "unresolvedReason": null,
+  "source": {
+    "title": "Surviving Sepsis Campaign: International Guidelines for Management of Sepsis and Septic Shock 2021",
+    "year": 2021,
+    "pmid": "34599691",
+    "pmcid": "PMC8486643",
+    "doi": "10.1007/s00134-021-06506-y",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8486643/",
+    "sourceBody": "Intensive Care Medicine",
+    "type": "clinical_practice_guideline",
+    "whyItFits": "The 2021 guideline states what fluid to give, how much in the first hours, and how to judge further fluid in sepsis and septic shock."
+  },
+  "evidenceTextFile": "data/part4-topic-evidence/1997/evidence.txt",
+  "evidenceChars": 210633
+}

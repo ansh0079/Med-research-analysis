@@ -1,0 +1,107 @@
+[
+  {
+    "type": "multiple_choice",
+    "questionType": "guideline",
+    "question": "When is a pretreatment biopsy not required?",
+    "options": {
+      "A": "Never; fine-needle aspiration is mandatory",
+      "B": "When a thymic tumour is highly probable and upfront complete resection is achievable [IV, E]",
+      "C": "In every anterior mediastinal mass",
+      "D": "Only after chemotherapy",
+      "E": "When PET is positive"
+    },
+    "correctAnswer": "B",
+    "correctAnswerText": "When a thymic tumour is highly probable and upfront complete resection is achievable [IV, E]",
+    "explanation": "Biopsy is not required if suspicion is high and upfront resection is achievable [IV, E]. In other situations a biopsy is required [IV, A]. Fine-needle aspiration is not recommended [IV, D] [1].",
+    "difficulty": "medium",
+    "sourceArticle": "SEOM-GECP-GETTHI clinical guidelines for the treatment of patients with thymic epithelial tumours (2021)",
+    "sourceReference": "PMID 35122634",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "recall",
+    "question": "What is the relationship between thymoma and myasthenia gravis?",
+    "options": {
+      "A": "Every patient with thymoma has myasthenia",
+      "B": "Antibody titre is the marker used to follow the tumour",
+      "C": "Myasthenia occurs only with thymic carcinoma",
+      "D": "Up to 30% of patients with thymoma have or develop myasthenia; 10–20% of patients with myasthenia have a thymoma",
+      "E": "Myasthenia excludes thymoma"
+    },
+    "correctAnswer": "D",
+    "correctAnswerText": "Up to 30% of patients with thymoma have or develop myasthenia; 10–20% of patients with myasthenia have a thymoma",
+    "explanation": "Up to 30% of patients with thymoma present with or later develop myasthenia gravis, whereas 10–20% of patients with myasthenia have a thymoma. Acetylcholine-receptor antibodies remain positive and are not monitored as a tumour marker [1].",
+    "difficulty": "medium",
+    "sourceArticle": "SEOM-GECP-GETTHI clinical guidelines for the treatment of patients with thymic epithelial tumours (2021)",
+    "sourceReference": "PMID 35122634",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "guideline",
+    "question": "Standard surgery for a resectable tumour is:",
+    "options": {
+      "A": "Neck dissection",
+      "B": "Observation until stage IVB",
+      "C": "Median sternotomy and, preferably, complete thymectomy including residual thymus and perithymic fat",
+      "D": "Core biopsy and chemotherapy without an operation",
+      "E": "Wedge resection of the lung only"
+    },
+    "correctAnswer": "C",
+    "correctAnswerText": "Median sternotomy and, preferably, complete thymectomy including residual thymus and perithymic fat",
+    "explanation": "If complete resection is achievable, surgery is the mainstay [IV, A]. Median sternotomy is the standard approach [IV, A]. Complete thymectomy is preferred [IV, B] [1].",
+    "difficulty": "easy",
+    "sourceArticle": "SEOM-GECP-GETTHI clinical guidelines for the treatment of patients with thymic epithelial tumours (2021)",
+    "sourceReference": "PMID 35122634",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "guideline",
+    "question": "Adjuvant chemotherapy after resection of a thymoma is:",
+    "options": {
+      "A": "Required for every stage I tumour",
+      "B": "Given instead of radiotherapy for an R2 resection",
+      "C": "The same recommendation as for every thymic carcinoma",
+      "D": "Standard second-line immunotherapy",
+      "E": "Not indicated [III, E]"
+    },
+    "correctAnswer": "E",
+    "correctAnswerText": "Not indicated [III, E]",
+    "explanation": "There is no indication for adjuvant chemotherapy after R0 or R1 resection of thymoma [III, E]. Postoperative radiotherapy is a separate decision [1].",
+    "difficulty": "medium",
+    "sourceArticle": "SEOM-GECP-GETTHI clinical guidelines for the treatment of patients with thymic epithelial tumours (2021)",
+    "sourceReference": "PMID 35122634",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "guideline",
+    "question": "Postoperative radiotherapy is recommended for:",
+    "options": {
+      "A": "Stage III disease, thymic carcinoma, and R1 or R2 resection, at 45–50 Gy after complete resection and 56 Gy after R1",
+      "B": "Stage I thymoma after R0 resection as a routine",
+      "C": "Every patient, at 70 Gy",
+      "D": "Only brain metastases",
+      "E": "It is never used"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "Stage III disease, thymic carcinoma, and R1 or R2 resection, at 45–50 Gy after complete resection and 56 Gy after R1",
+    "explanation": "Postoperative radiotherapy is recommended for stage III, thymic carcinoma, and R1 or R2 resection [IV, B]. The dose is 45–50 Gy after complete resection and 56 Gy after R1 [1].",
+    "difficulty": "hard",
+    "sourceArticle": "SEOM-GECP-GETTHI clinical guidelines for the treatment of patients with thymic epithelial tumours (2021)",
+    "sourceReference": "PMID 35122634",
+    "sourceIndices": [
+      1
+    ]
+  }
+]

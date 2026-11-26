@@ -1,0 +1,107 @@
+[
+  {
+    "type": "multiple_choice",
+    "questionType": "guideline",
+    "question": "Where does organ-sparing surgery sit in this guideline?",
+    "options": {
+      "A": "In the local treatment of the primary tumour, with a section on recurrence after it",
+      "B": "It is prohibited",
+      "C": "Only for groin nodes",
+      "D": "Only for metastatic lung disease",
+      "E": "It replaces pathology"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "In the local treatment of the primary tumour, with a section on recurrence after it",
+    "explanation": "The contents include local treatment and local recurrence after organ-sparing surgery [1].",
+    "difficulty": "easy",
+    "sourceArticle": "EAU-ASCO Collaborative Guidelines on Penile Cancer, update March 2023",
+    "sourceReference": null,
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "guideline",
+    "question": "Radical inguinal lymph-node dissection is the operation discussed for:",
+    "options": {
+      "A": "cN1–N2 disease",
+      "B": "Every clinically node-negative penis",
+      "C": "A primary tumour under 1 mm with no other indication",
+      "D": "Distant liver metastases as the sole treatment",
+      "E": "Carcinoma in situ only"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "cN1–N2 disease",
+    "explanation": "The regional-node section covers cN1–N2 disease and radical inguinal lymph-node dissection [1].",
+    "difficulty": "medium",
+    "sourceArticle": "EAU-ASCO Collaborative Guidelines on Penile Cancer, update March 2023",
+    "sourceReference": null,
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "recall",
+    "question": "Which quality metrics does the node-dissection section include?",
+    "options": {
+      "A": "Lymph-node yield and the timing of surgery",
+      "B": "Only the patient's age",
+      "C": "Serum PSA",
+      "D": "Bone density",
+      "E": "None"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "Lymph-node yield and the timing of surgery",
+    "explanation": "Quality metrics listed include lymph-node yield and density, and the timing of surgery [1].",
+    "difficulty": "medium",
+    "sourceArticle": "EAU-ASCO Collaborative Guidelines on Penile Cancer, update March 2023",
+    "sourceReference": null,
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "recall",
+    "question": "HPV in this guideline is:",
+    "options": {
+      "A": "A pathologic factor with its own section",
+      "B": "Irrelevant to penile cancer",
+      "C": "The only indication for chemotherapy",
+      "D": "A reason to skip biopsy",
+      "E": "Diagnostic of prostate cancer"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "A pathologic factor with its own section",
+    "explanation": "The contents include a section on penile cancer and HPV [1].",
+    "difficulty": "easy",
+    "sourceArticle": "EAU-ASCO Collaborative Guidelines on Penile Cancer, update March 2023",
+    "sourceReference": null,
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "pitfall",
+    "question": "A guideline recommendation in this document:",
+    "options": {
+      "A": "Focuses decisions and does not replace expertise or the patient's values",
+      "B": "Must be followed even against the patient's goals",
+      "C": "Is a legal order",
+      "D": "Applies only to surgeons in Europe",
+      "E": "Replaces staging"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "Focuses decisions and does not replace expertise or the patient's values",
+    "explanation": "The preface says recommendations do not necessarily produce the best outcome for a given patient and do not replace expertise; they focus decisions that include the patient's values [1].",
+    "difficulty": "easy",
+    "sourceArticle": "EAU-ASCO Collaborative Guidelines on Penile Cancer, update March 2023",
+    "sourceReference": null,
+    "sourceIndices": [
+      1
+    ]
+  }
+]

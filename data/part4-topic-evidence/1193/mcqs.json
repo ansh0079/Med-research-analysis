@@ -1,0 +1,107 @@
+[
+  {
+    "type": "multiple_choice",
+    "questionType": "trial_interpretation",
+    "question": "What 3-year overall survival did HPV-positive oropharyngeal cancer have?",
+    "options": {
+      "A": "82.4%, versus 57.1% if HPV-negative",
+      "B": "57.1%, versus 82.4% if HPV-negative",
+      "C": "Identical survival",
+      "D": "30% in both groups",
+      "E": "Survival was not reported by HPV"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "82.4%, versus 57.1% if HPV-negative",
+    "explanation": "Three-year overall survival was 82.4% (95% CI 77.2 to 87.6) for HPV-positive tumours and 57.1% (48.1 to 66.1) for HPV-negative tumours [1].",
+    "difficulty": "medium",
+    "sourceArticle": "Human Papillomavirus and Survival of Patients with Oropharyngeal Cancer",
+    "sourceReference": "PMID 20530316",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "trial_interpretation",
+    "question": "After adjustment, the hazard ratio for death with HPV-positive disease was:",
+    "options": {
+      "A": "0.42 (95% CI 0.27 to 0.66)",
+      "B": "1.42",
+      "C": "0.90 for the fractionation comparison, which is a different result",
+      "D": "2.5",
+      "E": "Not calculated"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "0.42 (95% CI 0.27 to 0.66)",
+    "explanation": "Adjusted for age, race, stage, tobacco, and treatment assignment, the hazard ratio was 0.42 (95% CI 0.27 to 0.66), a 58% reduction in the risk of death [1].",
+    "difficulty": "hard",
+    "sourceArticle": "Human Papillomavirus and Survival of Patients with Oropharyngeal Cancer",
+    "sourceReference": "PMID 20530316",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "recall",
+    "question": "What share of the oropharyngeal cancers were HPV-positive?",
+    "options": {
+      "A": "63.8% (206 of 323)",
+      "B": "10%",
+      "C": "95%",
+      "D": "None",
+      "E": "Only the HPV-negative cases were tested"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "63.8% (206 of 323)",
+    "explanation": "63.8% of patients with oropharyngeal cancer (206 of 323) had HPV-positive tumours [1].",
+    "difficulty": "easy",
+    "sourceArticle": "Human Papillomavirus and Survival of Patients with Oropharyngeal Cancer",
+    "sourceReference": "PMID 20530316",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "trial_interpretation",
+    "question": "How did accelerated-fractionation radiotherapy compare with standard fractionation for 3-year survival?",
+    "options": {
+      "A": "No significant difference (70.3% vs 64.3%; P = 0.18)",
+      "B": "Accelerated fractionation doubled survival",
+      "C": "Standard fractionation was superior with P < 0.001",
+      "D": "Radiotherapy was not given",
+      "E": "The trial had no fractionation comparison"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "No significant difference (70.3% vs 64.3%; P = 0.18)",
+    "explanation": "Three-year overall survival was 70.3% versus 64.3% (P = 0.18; hazard ratio 0.90; 95% CI 0.72 to 1.13) [1].",
+    "difficulty": "medium",
+    "sourceArticle": "Human Papillomavirus and Survival of Patients with Oropharyngeal Cancer",
+    "sourceReference": "PMID 20530316",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "clinical_application",
+    "question": "Which other exposure independently worsened survival?",
+    "options": {
+      "A": "Each additional pack-year of tobacco",
+      "B": "HPV-16 itself, which worsened survival",
+      "C": "Female sex only",
+      "D": "Use of cisplatin, which was not given",
+      "E": "Accelerated fractionation"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "Each additional pack-year of tobacco",
+    "explanation": "The risk of death increased significantly with each additional pack-year of tobacco smoking. HPV status remained prognostic after adjustment for tobacco [1].",
+    "difficulty": "medium",
+    "sourceArticle": "Human Papillomavirus and Survival of Patients with Oropharyngeal Cancer",
+    "sourceReference": "PMID 20530316",
+    "sourceIndices": [
+      1
+    ]
+  }
+]

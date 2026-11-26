@@ -1,0 +1,23 @@
+{
+  "catalogueId": "2046",
+  "topic": "tranexamic acid postpartum haemorrhage timing",
+  "specialty": null,
+  "decision": "downloaded open source",
+  "rejected": [
+    "A prevention meta-analysis in women at high risk is not the timing-of-treatment trial."
+  ],
+  "unresolvedReason": null,
+  "source": {
+    "title": "Effect of early tranexamic acid administration on mortality, hysterectomy, and other morbidities in women with post-partum haemorrhage (WOMAN): an international, randomised, double-blind, placebo-controlled trial",
+    "year": 2017,
+    "pmid": "28456509",
+    "pmcid": "PMC5446563",
+    "doi": "10.1016/S0140-6736(17)30638-4",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5446563/",
+    "sourceBody": "Lancet",
+    "type": "randomized_controlled_trial",
+    "whyItFits": "The WOMAN trial tests tranexamic acid as treatment of postpartum haemorrhage and shows that the mortality benefit is concentrated when it is given within 3 hours."
+  },
+  "evidenceTextFile": "data/part4-topic-evidence/2046/evidence.txt",
+  "evidenceChars": 69826
+}

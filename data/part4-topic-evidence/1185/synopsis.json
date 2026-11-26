@@ -1,0 +1,30 @@
+{
+  "takeaway": "In this review, opioids were not more effective than placebo for breathlessness (SMD −0.14; 95% CI −0.47 to 0.18), and anxiolytics were not more effective than placebo either [1].",
+  "clinicalQuestion": "Do opioids or anxiolytics improve breathlessness in advanced cancer?",
+  "background": "Oncology guidelines have endorsed opioids and anxiolytics, often from older data and from studies that excluded cancer [1].",
+  "studyDesign": "Systematic review and meta-analysis.",
+  "setting": "Studies of adults with advanced cancer, searched through 31 May 2020.",
+  "population": "1424 patients in 19 studies (17 randomised trials and 2 retrospective studies). Lung cancer was the most common cancer reported [1].",
+  "intervention": "Pharmacologic treatments, principally opioids and anxiolytics.",
+  "comparator": "Placebo, or another dose or route of opioid.",
+  "primaryOutcome": "Breathlessness, with anxiety, exercise capacity, and quality of life also examined.",
+  "mainFindings": "Opioids were not associated with more effectiveness than placebo for breathlessness (SMD −0.14; 95% CI −0.47 to 0.18) or exercise capacity (SMD 0.06; 95% CI −0.43 to 0.55); strength of evidence moderate. Most opioid studies examined exertional breathlessness. Dose or route did not differ (SMD 0.15; 95% CI −0.22 to 0.52; low strength of evidence). Anxiolytics were not more effective than placebo for breathlessness or anxiety (mean difference −0.52; 95% CI −1.045 to 0.005; low strength of evidence). Dropout from adverse events in these short studies was 3.2% to 16%. The authors say drugs may be considered in selected patients, alongside harms and the evidence that nonpharmacologic interventions are associated with improved breathlessness [1].",
+  "clinicalMeaning": "A routine opioid or benzodiazepine for cancer breathlessness is not supported by this evidence. Selection and harms still matter, and non-drug measures are the interventions this review points to [1].",
+  "limitations": "Studies were short, often of exertional breathlessness, and many estimates have low strength of evidence. This is not a licence to withhold a carefully chosen opioid from a distressed dying patient; it is a statement of the trial evidence [1].",
+  "bottomLine": "Do not teach that opioids outperform placebo for breathlessness in advanced cancer. This meta-analysis did not find that [1].",
+  "practiceImplication": "Discuss a fan or other non-drug measure, and if a drug is used, do it for a selected patient with an explicit look at harm [1].",
+  "safetyOutcomes": [
+    "Some harms versus usual care were seen; dropout attributed to adverse events was 3.2–16%."
+  ],
+  "trustRating": "MODERATE",
+  "trustRationale": "Prespecified meta-analysis, limited by short trials and low strength of evidence for several comparisons.",
+  "quizFocusPoints": [
+    "opioid SMD −0.14",
+    "anxiolytics not better than placebo",
+    "nonpharmacologic association"
+  ],
+  "whatNotToOverclaim": [
+    "Do not quote a fan effect size from this pharmacologic paper; it is not reported here.",
+    "Do not convert the null finding into a prohibition in the last hours of life."
+  ]
+}

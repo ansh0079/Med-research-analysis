@@ -1,0 +1,21 @@
+{
+  "catalogueId": "365",
+  "topic": "Penile Cancer and Rare GU Tumours",
+  "specialty": "Oncology",
+  "decision": "downloaded open source",
+  "rejected": [],
+  "unresolvedReason": null,
+  "source": {
+    "title": "EAU-ASCO Collaborative Guidelines on Penile Cancer, update March 2023",
+    "year": 2023,
+    "pmid": null,
+    "pmcid": null,
+    "doi": null,
+    "url": "https://uroweb.org/guidelines/penile-cancer",
+    "sourceBody": "European Association of Urology and ASCO",
+    "type": "clinical_practice_guideline",
+    "whyItFits": "The 2023 collaborative guideline is the open management document for penile cancer, including organ-sparing local treatment and inguinal nodes."
+  },
+  "evidenceTextFile": "data/part4-topic-evidence/365/evidence.txt",
+  "evidenceChars": 248138
+}

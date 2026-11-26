@@ -1,0 +1,21 @@
+{
+  "catalogueId": "2169",
+  "topic": "Rectal cancer: total mesorectal excision (TME) and neoadjuvant therapy",
+  "specialty": "Oncology",
+  "decision": "downloaded open source",
+  "rejected": [],
+  "unresolvedReason": null,
+  "source": {
+    "title": "Rectal Cancer, Version 2.2018, NCCN Clinical Practice Guidelines in Oncology",
+    "year": 2018,
+    "pmid": "30006429",
+    "pmcid": "PMC10203817",
+    "doi": "10.6004/jnccn.2018.0061",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10203817/",
+    "sourceBody": "JNCCN",
+    "type": "clinical_practice_guideline",
+    "whyItFits": "NCCN rectal-cancer guidance on local excision, TME surgery, and restaging after neoadjuvant treatment."
+  },
+  "evidenceTextFile": "data/part4-topic-evidence/2169/evidence.txt",
+  "evidenceChars": 76862
+}

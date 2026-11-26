@@ -1,0 +1,107 @@
+[
+  {
+    "type": "multiple_choice",
+    "questionType": "guideline",
+    "question": "A man with AF has a CHA2DS2-VASc score of 3. Which recommendation applies?",
+    "options": {
+      "A": "Anticoagulation is recommended (Class 1) because estimated risk is in the at least 2% per year range",
+      "B": "Anticoagulation is contraindicated",
+      "C": "Aspirin alone is the Class 1 therapy",
+      "D": "No therapy until a score of 6",
+      "E": "Anticoagulation only if he is in persistent AF"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "Anticoagulation is recommended (Class 1) because estimated risk is in the at least 2% per year range",
+    "explanation": "Class 1, level A: anticoagulation is recommended when annual thromboembolic risk is at least 2%, exemplified by CHA2DS2-VASc of at least 2 in men and at least 3 in women [1].",
+    "difficulty": "medium",
+    "sourceArticle": "2023 ACC/AHA/ACCP/HRS Guideline for the Diagnosis and Management of Atrial Fibrillation",
+    "sourceReference": "PMID 38033089",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "guideline",
+    "question": "A woman with AF has a CHA2DS2-VASc score of 2. How does the guideline classify anticoagulation?",
+    "options": {
+      "A": "Class 1, mandatory",
+      "B": "Class 2a, reasonable, because this maps to at least 1% but under 2% per year",
+      "C": "Class 3, harm",
+      "D": "Not mentioned",
+      "E": "Only if she is over 90"
+    },
+    "correctAnswer": "B",
+    "correctAnswerText": "Class 2a, reasonable, because this maps to at least 1% but under 2% per year",
+    "explanation": "A score of 2 in women is the example given for annual risk of at least 1% but under 2%, where anticoagulation is reasonable (Class 2a, level A). The Class 1 threshold for women is 3 or higher [1].",
+    "difficulty": "hard",
+    "sourceArticle": "2023 ACC/AHA/ACCP/HRS Guideline for the Diagnosis and Management of Atrial Fibrillation",
+    "sourceReference": "PMID 38033089",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "recall",
+    "question": "What annual risk threshold does the guideline use for a Class 1 anticoagulation recommendation?",
+    "options": {
+      "A": "At least 0.5% per year",
+      "B": "At least 2% per year",
+      "C": "At least 10% per year",
+      "D": "Any detectable risk",
+      "E": "Only after a previous bleed"
+    },
+    "correctAnswer": "B",
+    "correctAnswerText": "At least 2% per year",
+    "explanation": "Anticoagulation is recommended when estimated annual thromboembolic risk is at least 2% per year [1].",
+    "difficulty": "easy",
+    "sourceArticle": "2023 ACC/AHA/ACCP/HRS Guideline for the Diagnosis and Management of Atrial Fibrillation",
+    "sourceReference": "PMID 38033089",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "recall",
+    "question": "Which pair matches the Class 1 CHA2DS2-VASc example?",
+    "options": {
+      "A": "At least 2 in men and at least 3 in women",
+      "B": "At least 1 in both sexes",
+      "C": "At least 0 in men and 1 in women",
+      "D": "At least 4 in men and 2 in women",
+      "E": "Score is not used"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "At least 2 in men and at least 3 in women",
+    "explanation": "The Class 1 example is CHA2DS2-VASc of at least 2 in men and at least 3 in women [1].",
+    "difficulty": "medium",
+    "sourceArticle": "2023 ACC/AHA/ACCP/HRS Guideline for the Diagnosis and Management of Atrial Fibrillation",
+    "sourceReference": "PMID 38033089",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "pitfall",
+    "question": "Why is a consensus paper on AF burden not the source used here?",
+    "options": {
+      "A": "Stroke-prevention thresholds are stated in the 2023 AF guideline",
+      "B": "AF burden papers are randomised trials of anticoagulation",
+      "C": "The guideline has no stroke section",
+      "D": "CHA2DS2-VASc was retired in 2023",
+      "E": "Anticoagulation is never recommended"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "Stroke-prevention thresholds are stated in the 2023 AF guideline",
+    "explanation": "The 2023 guideline gives the Class 1 and Class 2a anticoagulation recommendations tied to annual risk and CHA2DS2-VASc. A burden consensus does not set those thresholds [1].",
+    "difficulty": "medium",
+    "sourceArticle": "2023 ACC/AHA/ACCP/HRS Guideline for the Diagnosis and Management of Atrial Fibrillation",
+    "sourceReference": "PMID 38033089",
+    "sourceIndices": [
+      1
+    ]
+  }
+]

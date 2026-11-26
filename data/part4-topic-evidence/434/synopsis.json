@@ -1,0 +1,29 @@
+{
+  "takeaway": "Pancreatic adenocarcinoma often presents late, with five-year survival of 2–9% in this review. CA19-9 is not a screening test. Adjuvant gemcitabine and, for fit patients with metastatic disease, FOLFIRINOX improve outcomes against older comparators [1].",
+  "clinicalQuestion": "What is the prognosis of pancreatic adenocarcinoma, and which chemotherapy results does this review cite?",
+  "background": "The review describes a rising incidence and a cancer often found when it is already advanced [1].",
+  "studyDesign": "Narrative review of risk, diagnosis, treatment, and outcomes.",
+  "setting": "Pancreatic adenocarcinoma across resectable and metastatic disease.",
+  "population": "Patients with pancreatic adenocarcinoma.",
+  "intervention": "Surgery when resectable, adjuvant gemcitabine, and FOLFIRINOX for metastatic disease in the cited trials.",
+  "comparator": "Surgery alone in CONKO-001; gemcitabine alone in the Conroy trial.",
+  "primaryOutcome": "Survival.",
+  "mainFindings": "Five-year survival is given as 2–9%, the worst among cancer sites in the review, and the disease is predicted to become the second leading cause of cancer death in some regions. After successful resection, five-year survival is quoted as 27%. CA19-9 has too low a positive predictive value for screening asymptomatic people and is used to monitor response and recurrence. CONKO-001 compared adjuvant gemcitabine after complete resection with surgery alone: median disease-free survival 13.4 versus 6.7 months, five-year survival 20.7% versus 10.4%, and ten-year survival 12.2% versus 7.7%. In metastatic disease, Conroy and colleagues randomised 171 patients per arm to FOLFIRINOX or gemcitabine. Median overall survival was 11.1 months (95% CI 9.0–13.2) versus 6.8 months (5.5–7.6), hazard ratio 0.57 (95% CI 0.45–0.73; P < 0.001), with more adverse effects on FOLFIRINOX [1].",
+  "clinicalMeaning": "Do not screen with CA19-9. Offer adjuvant gemcitabine rather than surgery alone, and reserve FOLFIRINOX for patients who can tolerate it [1].",
+  "limitations": "The review's trial summaries are secondary citations. Regimens newer than the review are not added [1].",
+  "bottomLine": "Survival is poor. Gemcitabine after resection and FOLFIRINOX in metastatic disease are the gains this review documents [1].",
+  "practiceImplication": "Quote 11.1 versus 6.8 months only for the metastatic FOLFIRINOX comparison, and mention the extra toxicity [1].",
+  "safetyOutcomes": [
+    "FOLFIRINOX caused more adverse effects than gemcitabine in the cited trial."
+  ],
+  "trustRating": "MODERATE",
+  "trustRationale": "Narrative review that reports named trial results; it is not itself the trial publication.",
+  "quizFocusPoints": [
+    "CA19-9 not for screening",
+    "CONKO-001 DFS 13.4 vs 6.7",
+    "FOLFIRINOX OS 11.1 vs 6.8"
+  ],
+  "whatNotToOverclaim": [
+    "Do not apply the metastatic FOLFIRINOX result to adjuvant treatment."
+  ]
+}

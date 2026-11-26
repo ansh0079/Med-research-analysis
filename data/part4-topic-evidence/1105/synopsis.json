@@ -1,0 +1,27 @@
+{
+  "takeaway": "Clear-cell carcinoma is 75–80% of renal cell carcinoma and is driven by VHL loss. Many are found incidentally. Masses under 4 cm treated by partial nephrectomy have cancer-specific survival above 94% at five years. Metastatic combinations of immunotherapy, with or without a tyrosine-kinase inhibitor, produce responses of 42–71% [1].",
+  "clinicalQuestion": "How is localised renal cell carcinoma treated, and what do modern metastatic combinations achieve?",
+  "background": "Rose and Kim's 2024 JAMA review [1].",
+  "studyDesign": "Narrative clinical review.",
+  "setting": "Diagnosis and treatment of renal cell carcinoma.",
+  "population": "Patients with localised or metastatic renal cell carcinoma.",
+  "intervention": "Partial nephrectomy for small masses; immune checkpoint combinations for advanced disease.",
+  "comparator": "Active surveillance or ablation for selected small masses.",
+  "primaryOutcome": "Cancer-specific survival for small tumours and response and survival for metastatic disease.",
+  "mainFindings": "Clear-cell disease is 75–80% and is characterised by inactivation of VHL. Between 37% and 61% are diagnosed incidentally. Management of small masses can include ablation, radiation, or active surveillance, especially under 2 cm. For masses under 4 cm, partial nephrectomy can give a five-year cancer-specific survival above 94%. For advanced or metastatic disease, immune checkpoint inhibitor combinations, or those inhibitors plus tyrosine-kinase inhibitors, are associated with tumour response of 42–71% and median overall survival of 46–56 months. Tyrosine-kinase inhibitors block VEGF-receptor signalling. Checkpoint antibodies block PD-1 on T cells from binding PD-L1 or PD-L2 on the tumour [1].",
+  "clinicalMeaning": "A small incidental mass is not an automatic radical nephrectomy. Metastatic treatment is now an immunotherapy combination, not cytokine therapy [1].",
+  "limitations": "The response range pools combinations. It is not one drug's label [1].",
+  "bottomLine": "VHL and clear-cell histology, partial nephrectomy for the small mass, and checkpoint combinations for metastases [1].",
+  "practiceImplication": "Offer surveillance a hearing when the mass is under 2 cm [1].",
+  "safetyOutcomes": [],
+  "trustRating": "MODERATE",
+  "trustRationale": "Current JAMA review summarising ranges rather than one trial.",
+  "quizFocusPoints": [
+    "75–80% clear cell",
+    "partial nephrectomy >94%",
+    "response 42–71%"
+  ],
+  "whatNotToOverclaim": [
+    "Do not assign the 46–56 month survival to a named regimen this review pools."
+  ]
+}

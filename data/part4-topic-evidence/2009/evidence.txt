@@ -1,0 +1,348 @@
+Chapter 1
+Chapter 1: Induction Therapy
+1.1: We recommend starting a combination of im-
+munosuppressive medications before, or at the
+time of, kidney transplantation. (1A)
+1.2: We recommend including induction therapy with
+a biologic agent as part of the initial immunosup-
+pressive regimen in KTRs. (1A)
+1.2.1: We recommend that an IL2-RA be the ﬁrst-
+line induction therapy. (1B)
+1.2.2: We suggest using a lymphocyte-depleting
+agent, rather than an IL2-RA, for KTRs at
+high immunologic risk. (2B)
+IL2-RA, interleukin 2 receptor antagonist; KTRs, kidney
+transplant recipients.
+Background
+Except perhaps for transplantation between identical
+twins, all kidney transplant recipients (KTRs) need im-
+munosuppressive medications to prevent rejection. Induc-
+tion therapy is treatment with a biologic agent, either
+a lymphocyte-depleting agent or an interleukin 2 recep-
+tor antagonist (IL2-RA), begun before, at the time of, or
+immediately after transplantation. The purpose of induc-
+tion therapy is to deplete or modulate T-cell responses
+at the time of antigen presentation. Induction therapy is
+intended to improve the efﬁcacy of immunosuppression
+by reducing acute rejection, or by allowing a reduction
+of other components of the regimen, such as calcineurin
+inhibitors (CNIs) or corticosteroids. Available lymphocyte-
+depleting agents include antithymocyte globulin (ATG), an-
+tilymphocyte globulin (ALG) and monomurab-CD3. Basilix-
+imab and daclizumab, the two IL2-RAs that are currently
+available in many parts of the world, bind the CD25 anti-
+gen (interleukin-2 [IL2] receptor a-chain) at the surface of
+activated T-lymphocytes and thereby competitively inhibit
+IL2-mediated lymphocyte activation, a crucial phase in cel-
+lular immune response of allograft rejection.
+Rationale
+• There is high-quality evidence that the beneﬁts of IL2-
+RA vs. no IL2-RA (or placebo) outweigh harm in a
+broad range of KTRs with variable immunological risk
+and concomitant immunosuppressive medication reg-
+imens.
+• There is moderate-quality evidence that a lymphocyte-
+depleting agent vs. no lymphocyte-depleting agent (or
+placebo) reduces acute rejection and graft failure in
+high-immunological-risk patients.
+• There is moderate-quality evidence across a broad
+range of patients with different immunological risk
+and concomitant immunosuppressive medication reg-
+imens, which shows that (compared to IL2-RA)
+lymphocyte-depleting agents reduce acute rejection,
+but increase the risk of infections and malignancies.
+• Economic evaluations for IL2-RA demonstrate lower
+cost and improved graft survival compared with
+placebo.
+• Although there are sparse data in KTRs <18 years old,
+there is no biologically plausible reason why age is an
+effect modiﬁer of treatment, and the treatment effect
+of IL2-RA appears to be homogenous across a broad
+range of patient groups.
+• Induction therapy with a lymphocyte-depleting anti-
+body reduces the incidence of acute rejection com-
+pared with IL2-RA, but has not been shown to prolong
+graft survival.
+• Induction therapy with a lymphocyte-depleting anti-
+body increases the incidence of serious adverse ef-
+fects.
+• For KTRs ≥18 years old, who are at high risk for
+acute rejection, the beneﬁts of induction therapy with
+a lymphocyte-depleting antibody outweigh the harm.
+In a large number of long-term, randomized controlled tri-
+als (RCTs) in adults, it has been consistently shown that
+induction therapy with either lymphocyte-depleting agents
+or IL2-RA reduces acute rejection in patients treated
+with ‘double therapy’ (calcineurin inhibitor [CNI] and pred-
+nisone), or ‘triple therapy’ (CNI, an antiproliferative agent
+[e.g. mycophenolate or azathioprine], and prednisone).
+Lymphocyte-depleting antibody induction also reduces the
+risk of graft failure while, in more recent studies, IL2-RA
+reduced the risk of death-censored graft failure, but not
+overall graft loss. Oral maintenance therapy may not pro-
+duce immediate effects on the immune response when
+it is most needed, that is at the time of transplantation
+and antigen presentation. Pharmacokinetic and pharmaco-
+dynamic properties of oral maintenance agents may delay
+their full effect on immune cells.
+The efﬁcacy and safety of IL2-RA (compared to placebo
+or no treatment) have been conﬁrmed in the most recent
+Cochrane review of 30 RCTs and 4670 patients followed
+to 3 years (2). In this review, IL2-RA consistently reduced
+the risk of acute rejection (e.g. for biopsy-proven acute
+rejection: 14 RCTs, 3861 patients, relative risk [RR] 0.77,
+S6 American Journal of Transplantation 2009; 9 (Suppl 3): S6–S9
+Chapter 1
+064–0.92) and graft loss (censored for death: 16 RCTs,
+n = 2973 patients, RR = 0.74, 0.55–0.99). IL2-RA did not af-
+fect all-cause mortality (24 RCTs, n = 4468, RR 0.73, 0.50–
+1.07), malignancy (14 RCTs, n = 3363, RR 0.70, 0.38–1.29)
+or cytomegalovirus (CMV) infection (17 RCTs, n = 3767, RR
+0.90, 0.76–1.06), although all point estimates favor IL2-RA
+(all outcomes are at 1 year). The use of IL2-RA has also
+been found to be cost-effective compared to placebo (3).
+The evidence for safety and efﬁcacy of lymphocyte-
+depleting antibodies is more limited than that for IL2-
+RA. A meta-analysis of seven RCTs (N = 794) comparing
+lymphocyte-depleting agents with placebo or no treatment
+reported a reduction in graft failure (RR 0.66, 0.45–0.96) (4).
+In an individual patient meta-analysis of ﬁve of these same
+trials (N = 628), the reduction in graft loss at 2 years was
+greater in patients with high panel-reactive antibody (PRA)
+levels (RR 0.12, 0.03–0.44), compared to the reduction in
+risk for patients without high PRA (RR 0.74, 0.50–1.09) (5).
+Since publication of these meta-analyses, there have been
+other trials comparing lymphocyte-depleting agents with
+placebo or no depleting agent. In a single-center RCT, sen-
+sitized patients were randomized to induction with ATG or
+no induction. Patients treated with ATG had a reduction
+in acute rejection and improvement in graft survival (6). In
+a three-arm RCT, the incidence of biopsy-proven acute re-
+jection at 6 months was highest in deceased-donor KTRs
+receiving tacrolimus, azathioprine and prednisone without
+induction (25.4%, N = 185) compared to a group receiv-
+ing tacrolimus, azathioprine, prednisone and ATG (15.1%,
+N = 184) and a group receiving cyclosporine A (CsA),
+azathioprine, prednisone and ATG (21.2%, N = 186) (7).
+However, CMV infection occurred in 16%, 24% and 28%
+of the patients in these groups, respectively (p = 0.012).
+Similarly, leukopenia, thrombocytopenia, fever and serum
+sickness were all more common in the two groups re-
+ceiving antithymocyte induction (7). There is high-quality
+evidence for a net beneﬁt of IL2-RA compared to placebo
+for some patient outcomes (graft survival) but not all (all-
+cause mortality); and high-quality evidence of a net beneﬁt
+to prevent acute rejection (see Evidence Proﬁle and ac-
+companying evidence in Supporting Tables 1–4 at http://
+www3.interscience.wiley.com/journal/118499698/toc).
+There have been a number of RCTs comparing IL2-RA with
+lymphocyte-depleting agents. Most of these trials have
+been small and of low quality. A meta-analysis of nine
+RCTs (N = 778) found no difference in clinical acute re-
+jection at 6 months (2). There were no differences in graft
+survival or patient survival (2). Since this meta-analysis,
+there have been other RCTs. The largest (N = 278),
+and arguably highest-quality, RCT compared ATG with da-
+clizumab in deceased-donor KTRs selected to be high-risk
+for delayed graft function (DGF) and/or acute rejection (8).
+This RCT found no difference in the primary composite
+end-point, but the ATG induction group had fewer biopsy-
+proven acute rejections and more overall infections com-
+pared to the daclilzumab group (8). In an updated Cochrane
+review, the risk of acute rejection was higher with IL2-RA
+compared with lymphocyte-depleting agents (nine RCTs,
+n = 1166, RR 1.27, 1.00–1.61), but the risk of graft loss (12
+RCTs, n = 1430, RR 1.10, 0.73–1.65), and mortality was
+not signiﬁcantly different (13 RCTs, n = 1670, RR 1.28,
+0.74–2.20). Compared with lymphocyte-depleting agents,
+the risk of CMV infection (13 RCTs, n = 1480, RR 0.69,
+0.49–0.97), and malignancy (six RCTs, n = 840, RR 0.23,
+0.06–0.93) is lower with IL2-RA. Thus, there is moderate-
+quality evidence for trade-offs between IL2-RA and deplet-
+ing antibodies; depleting antibodies are superior to prevent
+acute rejection, but there is uncertainty whether this corre-
+sponds to improved graft outcomes. Depleting antibodies
+are associated with more infections (see Evidence Proﬁle
+and accompanying evidence in Supporting Tables 5–7).
+There have been few head-to-head comparisons of dif-
+ferent lymphocyte-depleting agents. Thus, it is unclear
+whether any one of these agents is superior to any other.
+In meta-analyses, there do not appear to be obvious dif-
+ferences in the effects of different lymphocyte-depleting
+agents on acute rejection or graft survival.
+Alemtuzumab (Campath 1H) is a humanized anti-CD52
+monoclonal antibody that depletes lymphocytes. In the
+United States, it has been approved by the Food and
+Drug Administration (FDA) for use in patients with B-cell
+lymphomas. There have been a few small RCTs exam-
+ining the use of alemtuzumab as an induction agent in
+KTRs. All of these RCTs lack statistical power to exam-
+ine the effects of alemtuzumab on patient survival, graft
+survival or acute rejection. In many of the RCTs, there
+were differences between the comparator groups other
+than alemtuzumab, making it difﬁcult to discern the ef-
+fects of alemtuzumab alone. For example, in a single-center
+RCT, 65 deceased-donor KTRs received alemtuzumab in-
+duction with delayed tacrolimus monotherapy and were
+compared to 66 KTRs treated with no induction, mycophe-
+nolate mofetil (MMF) and corticosteroids. At 12 months,
+the rate of biopsy-proven acute rejection was 20% vs. 32%
+in the two groups, respectively (p = 0.09) (9). In 21 high-
+immunological-risk KTRs randomized to alemtuzumab plus
+tacrolimus vs. four doses of ATG (plus tacrolimus, MMF
+and steroids), there were two vs. three acute rejections,
+respectively (10). Among 20 patients randomized to alem-
+tuzumab plus low-dose CsA vs. 10 patients on CsA plus
+azathioprine and prednisone, there were biopsy-proven
+acute rejections in 25% vs. 20%, respectively (11). Ninety
+deceased-donor KTRs were randomly allocated to ATG,
+alemtuzumab or daclizumab induction, with those receiv-
+ing alemtuzumab also receiving a lower tacrolimus target,
+MMF 500 mg twice daily and no maintenance prednisone,
+while those in the other two groups received MMF 1000
+mg twice daily and prednisone. After 2 years of follow-up,
+acute rejections occurred in 20%, 23% and 23% in the
+three groups, respectively, but there was borderline worse
+death-censored graft survival in the alemtuzumab group
+American Journal of Transplantation 2009; 9 (Suppl 3): S6–S9 S7
+Chapter 1
+(p = 0.05), and more chronic allograft nephropathy (CAN)
+(p = 0.008) (12,13). Altogether, these small studies fail to
+clearly demonstrate that the beneﬁts outweigh the harm
+of alemtuzumab induction in KTRs.
+For KTRs treated with an IL2-RA, the reduction in the inci-
+dence of acute rejection and graft loss, without an increase
+in major adverse effects, makes the balance of beneﬁts
+vs. harm favorable in most patients. However, it is possi-
+ble that in some KTRs at low risk for acute rejection and
+graft loss, the beneﬁts of induction with IL2-RA may be too
+small to outweigh even minor adverse effects (especially
+cost in developing countries) and so, in this setting, not
+administering IL2A is reasonable.
+In contrast to IL2-RA, induction therapy with lymphocyte-
+depleting antibodies increases the incidence of serious ad-
+verse effects. For KTRs treated with lymphocyte-depleting
+antibodies, a reduction in the incidence of acute rejections
+must be balanced against an increase in major infections.
+This balance may favor the use of depleting agents in
+some, but not all, patients. Logic would suggest that the
+chances of a favorable balance between beneﬁts and harm
+could be maximized by limiting the use of lymphocyte-
+depleting agents to patients at increased risk for acute
+rejection.
+In an individual patient, meta-analysis of ﬁve RCTs compar-
+ing lymphocyte-depleting antibody induction with no induc-
+tion (or placebo), the reduction in graft failure was greater
+in patients with a high PRA (5). Unfortunately, there are
+few, if any, studies comparing the relative effectiveness
+of lymphocyte-depleting agents vs. IL2-RA in subgroups
+of patients at increased immunological risk. Nevertheless,
+observational data can be used to quantify the risk for
+acute rejection and graft failure, and thereby deﬁne pa-
+tients who are most likely to beneﬁt from lymphocyte-
+depleting agents compared to an IL2-RA.
+Risk factors for acute rejection include (Table 1):
+• The number of human leukocyte antigen (HLA) mis-
+matches (A)
+• Younger recipient age (B)
+• Older donor age (B)
+• African-American ethnicity (in the United States) (B)
+• PRA >0% (B)
+• Presence of a donor-speciﬁc antibody (B)
+• Blood group incompatibility (B)
+• Delayed onset of graft function (B)
+• Cold ischemia time >24 hours (C)
+where A is the universal agreement, B is the majority
+agreement and C is the single study.
+Retrospective observational studies have identiﬁed a num-
+ber of risk factors for acute rejection after kidney trans-
+plantation (Table 1). Younger recipients are at substantially
+higher risk than older recipients, although there is no clear
+age threshold for the risk of acute rejection. Younger recipi-
+ents may also be better able to tolerate serious adverse ef-
+fects of additional immunosuppressive medication, making
+it compelling to treat younger recipients with lymphocyte-
+depleting antibody than IL2-RA. Kidneys from older donors
+may impart increased risk for acute rejection to the re-
+cipient, but a distinct age threshold has not been clearly
+deﬁned.
+The number of HLA mismatches between the recipient
+and donor is associated with the risk of acute rejection,
+but few studies have agreed on the number or type of
+mismatches (Class 1 [AB] or Class 2 [DR]) that increase
+the risk for acute rejection. In the United States, African-
+American ethnicity has been linked to an increased risk of
+acute rejection. For deceased-donor recipients, the dura-
+tion of cold ischemia, for example longer than 24 hours, has
+been associated with acute rejection. DGF has also been
+associated with acute rejection, although by the time it is
+apparent that graft function is delayed, it is likely too late
+to decide whether or not to use a lymphocyte-depleting
+agent or an IL2-RA. However, induction with a lymphocyte-
+depleting agent could be used when there is an increased
+risk for DGF, such as in cases with expanded criteria do-
+nation or prolonged cold ischemia time. Finally, the pres-
+ence of antibodies to a broad panel of potential recipi-
+ents has been associated with an increased risk of acute
+rejection.
+S8 American Journal of Transplantation 2009; 9 (Suppl 3): S6–S9
+Chapter 1
+Ta b l e 1 : Risk of acute rejection in multivariate analyses
+Patient characteristic Study characteristics
+Country of study United North Portugal Netherlands Norway Norway
+States (14) Spain (15) America (16) (17) (18) (19) UK (20) (21)
+Number analyzed (N) 27 377 3365 2779 children 866 790 739 518 451
+Percent that used living 33% 0% 100% 1.4% 0% 100% 0% 33%
+donors (%)
+Transplant years included 97–99 90, 94, 98 87–97 85–99 83–96 94–04 91–99 94–97
+Acute rejection riska
+Deceased (vs. living donor) ↑↔ NA NA NA ↔
+Younger recipient age ↑ ↑↑↑ ↔ ↑↑↑ ↑↑↑ ↔ ↔
+per <60 y <2years <45 years <50 years
+10 years
+Older donor age ↔↔↑↑↑↑↑↑
+≥60 years ≥65 years per
+10 years
+Recipient female (vs. male) ↑↔ ↔↔↔
+Deceased donor cause of death
+Cerebral vascular death ↑↑↑ NA ↔
+(vs. other cause)
+Trauma (vs. nontrauma) ↔ NA ↔
+Recipient ethnicity US ↑↑ ↑↑↑
+black (vs. white)
+Recipient Hispanic ↓↓ NA NA NA NA NA
+(vs. non-Hispanic)
+Recipient diabetes ↑ ↔b
+(vs. no diabetes)
+HLA mismatches
+Any number of ABDR (vs. 0) ↑↑↑
+Any number of AB (vs. 0) ↑↑↑
+Any number of DR (vs. 0) ↑↑↑ ↑↑↑ ↑↑↑ ↑↑↑ ↑↑↑
+Per each ABDR mismatch ↔
+4–6 ABDR (vs. 3–1) ↔
+Panel reactive antibody status NA ↔
+>0% (vs. 0%) ↑↑↑
+>15% (vs. ≤15%) ↑
+>50% (vs. ≤50%) ↑↑↑
+Cold ischemia time
+>24 h (vs. <24 h) ↑↑ ↑↑↑ NA
+Per hour ↔ NA ↔↔
+DGF (vs. none) ↑↑↑ ↑↑↑ ↑↑↑ ↑↑↑
+CMV disease (vs. none) ↑↑↑c
+CMV infection (vs. none) ↑↑d ↑↑↑e
+Recipient size
+BMI ≥35 kg/m2 ↑↑↑
+Body weight ↔
+Prior transplantation ↔↔↔↔
+BMI, body mass index; CMV, cytomegalovirus; DGF, delayed graft function; HLA, human leukocyte antigen; NA, not applicable, for
+example deceased-donor cause of death or cold ischemia time in studies including only living donors.
+aDeﬁned in multivariate analysis by hazards ratios (Cox analysis) or odds ratios (logistic regression):
+↔ Indicates not signiﬁcantly associated with acute rejection (p < 0.05); may have been eliminated in univariate analysis.
+↑ and ↓ indicate 10–20% more or less risk of acute rejection, respectively.
+↑↑ and ↓↓ indicate 20–30% more or less risk of acute rejection, respectively.
+↑↑↑ and ↓↓↓ indicate >30% more or less risk of acute rejection, respectively.
+bUnclear if tested in multivariable analysis.
+cInfection and clinical symptoms or signs of disease.
+dNot deﬁned.
+eCMV pp65 antigen in leukocytes.
+American Journal of Transplantation 2009; 9 (Suppl 3): S6–S9 S9

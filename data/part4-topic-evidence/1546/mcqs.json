@@ -1,0 +1,107 @@
+[
+  {
+    "type": "multiple_choice",
+    "questionType": "recall",
+    "question": "Traditional first-line chemotherapy for peripheral T-cell lymphoma has been:",
+    "options": {
+      "A": "CHOP: cyclophosphamide, doxorubicin, vincristine, and prednisolone",
+      "B": "ABVD",
+      "C": "R-CHOP for every subtype",
+      "D": "Single-agent rituximab",
+      "E": "Imatinib"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "CHOP: cyclophosphamide, doxorubicin, vincristine, and prednisolone",
+    "explanation": "The review names anthracycline-based regimens such as CHOP as the traditional treatment [1].",
+    "difficulty": "easy",
+    "sourceArticle": "From molecular pathogenesis to novel therapeutic approaches: a review of recent advances in the treatment of peripheral T-cell lymphomas",
+    "sourceReference": "PMID 42642781",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "recall",
+    "question": "Which subtype is the exception to poor outcomes with that chemotherapy?",
+    "options": {
+      "A": "ALK-positive anaplastic large-cell lymphoma",
+      "B": "Hepatosplenic T-cell lymphoma",
+      "C": "Every NK-cell leukaemia",
+      "D": "ALK-negative disease, which does better than ALK-positive",
+      "E": "Follicular lymphoma"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "ALK-positive anaplastic large-cell lymphoma",
+    "explanation": "With the exception of ALK-positive anaplastic large-cell lymphoma, these treatments typically yield poor outcomes [1].",
+    "difficulty": "medium",
+    "sourceArticle": "From molecular pathogenesis to novel therapeutic approaches: a review of recent advances in the treatment of peripheral T-cell lymphomas",
+    "sourceReference": "PMID 42642781",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "guideline",
+    "question": "Brentuximab vedotin plus CHP is a standard of care for:",
+    "options": {
+      "A": "CD30-positive peripheral T-cell lymphomas",
+      "B": "All B-cell lymphomas",
+      "C": "CD30-negative disease only",
+      "D": "Myeloma",
+      "E": "Hodgkin lymphoma only, in this review's PTCL statement"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "CD30-positive peripheral T-cell lymphomas",
+    "explanation": "Brentuximab vedotin plus CHP has become a standard of care for CD30-positive peripheral T-cell lymphomas [1].",
+    "difficulty": "medium",
+    "sourceArticle": "From molecular pathogenesis to novel therapeutic approaches: a review of recent advances in the treatment of peripheral T-cell lymphomas",
+    "sourceReference": "PMID 42642781",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "clinical_application",
+    "question": "How does CHP differ from CHOP in this regimen?",
+    "options": {
+      "A": "Vincristine is omitted",
+      "B": "Doxorubicin is omitted",
+      "C": "Prednisolone is omitted",
+      "D": "Cyclophosphamide is omitted",
+      "E": "An antibody replaces every drug"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "Vincristine is omitted",
+    "explanation": "CHP is cyclophosphamide, doxorubicin, and prednisolone, combined with the anti-CD30 antibody-drug conjugate [1].",
+    "difficulty": "medium",
+    "sourceArticle": "From molecular pathogenesis to novel therapeutic approaches: a review of recent advances in the treatment of peripheral T-cell lymphomas",
+    "sourceReference": "PMID 42642781",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "pitfall",
+    "question": "Outcomes for non-anaplastic subtypes with newer first-line combinations are described as:",
+    "options": {
+      "A": "Still extremely poor",
+      "B": "Equivalent to diffuse large B-cell lymphoma",
+      "C": "Cured in most patients",
+      "D": "Better than ALK-positive ALCL",
+      "E": "No longer a clinical problem"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "Still extremely poor",
+    "explanation": "Despite evolving first-line regimens, outcomes for non-ALCL subtypes remain extremely poor [1].",
+    "difficulty": "easy",
+    "sourceArticle": "From molecular pathogenesis to novel therapeutic approaches: a review of recent advances in the treatment of peripheral T-cell lymphomas",
+    "sourceReference": "PMID 42642781",
+    "sourceIndices": [
+      1
+    ]
+  }
+]

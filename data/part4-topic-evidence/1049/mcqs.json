@@ -1,0 +1,107 @@
+[
+  {
+    "type": "multiple_choice",
+    "questionType": "guideline",
+    "question": "Which drug does EANO call the most important single agent?",
+    "options": {
+      "A": "High-dose intravenous methotrexate",
+      "B": "Rituximab, with conclusive benefit",
+      "C": "Temozolomide alone",
+      "D": "Steroids as definitive therapy",
+      "E": "Intrathecal cytarabine as the only drug"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "High-dose intravenous methotrexate",
+    "explanation": "High-dose intravenous methotrexate is described as the most important and beneficial single agent [1].",
+    "difficulty": "easy",
+    "sourceArticle": "EANO guidelines for primary CNS lymphoma in immunocompetent patients, with a section on immunosuppressed patients",
+    "sourceReference": null,
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "guideline",
+    "question": "What consolidation did this update strengthen?",
+    "options": {
+      "A": "Autologous stem-cell transplant in first-line treatment",
+      "B": "Routine full-dose whole-brain radiotherapy for every patient",
+      "C": "Observation without any induction",
+      "D": "Rituximab maintenance as proven care",
+      "E": "Surgery alone"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "Autologous stem-cell transplant in first-line treatment",
+    "explanation": "A main change is strengthened evidence for consolidation with autologous stem-cell transplant in the first line [1].",
+    "difficulty": "medium",
+    "sourceArticle": "EANO guidelines for primary CNS lymphoma in immunocompetent patients, with a section on immunosuppressed patients",
+    "sourceReference": null,
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "pitfall",
+    "question": "How does the guideline describe rituximab?",
+    "options": {
+      "A": "The data remain inconclusive",
+      "B": "It is mandatory in every regimen",
+      "C": "It replaces methotrexate",
+      "D": "It is contraindicated",
+      "E": "It cures intraocular disease by itself"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "The data remain inconclusive",
+    "explanation": "The update says the role of rituximab still needs clarification and the data remain inconclusive [1].",
+    "difficulty": "medium",
+    "sourceArticle": "EANO guidelines for primary CNS lymphoma in immunocompetent patients, with a section on immunosuppressed patients",
+    "sourceReference": null,
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "guideline",
+    "question": "Reduced-dose whole-brain radiotherapy of 23.4–30 Gy in complete responders is:",
+    "options": {
+      "A": "An option still being tested in randomised trials",
+      "B": "The required standard for every patient",
+      "C": "Abandoned",
+      "D": "Given as a single 30 Gy fraction",
+      "E": "A substitute for methotrexate"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "An option still being tested in randomised trials",
+    "explanation": "Reduced-dose whole-brain radiotherapy, 23.4–30 Gy, in patients in complete response is a therapeutic option currently being investigated in randomised trials [1].",
+    "difficulty": "hard",
+    "sourceArticle": "EANO guidelines for primary CNS lymphoma in immunocompetent patients, with a section on immunosuppressed patients",
+    "sourceReference": null,
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "recall",
+    "question": "Why is the methotrexate dose not quoted as a single number?",
+    "options": {
+      "A": "The guideline says the optimal dose has not been determined",
+      "B": "Methotrexate is not used",
+      "C": "The dose is always 1 gram",
+      "D": "Oral methotrexate is equivalent",
+      "E": "Dose does not affect CNS penetration"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "The guideline says the optimal dose has not been determined",
+    "explanation": "Penetration depends on total dose and infusion rate, and the optimal dose has not been determined [1].",
+    "difficulty": "medium",
+    "sourceArticle": "EANO guidelines for primary CNS lymphoma in immunocompetent patients, with a section on immunosuppressed patients",
+    "sourceReference": null,
+    "sourceIndices": [
+      1
+    ]
+  }
+]

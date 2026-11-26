@@ -1,0 +1,23 @@
+{
+  "catalogueId": "2014",
+  "topic": "stroke prevention in atrial fibrillation",
+  "specialty": null,
+  "decision": "downloaded open source",
+  "rejected": [
+    "The in-app corpus lists the 2023 AF guideline by title only. Full text was downloaded from PMC for this batch."
+  ],
+  "unresolvedReason": null,
+  "source": {
+    "title": "2023 ACC/AHA/ACCP/HRS Guideline for the Diagnosis and Management of Atrial Fibrillation",
+    "year": 2023,
+    "pmid": "38033089",
+    "pmcid": "PMC11095842",
+    "doi": "10.1161/CIR.0000000000001193",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11095842/",
+    "sourceBody": "Circulation",
+    "type": "clinical_practice_guideline",
+    "whyItFits": "Contains the stroke-prevention recommendations that match annual thromboembolic risk and CHA2DS2-VASc to anticoagulation."
+  },
+  "evidenceTextFile": "data/part4-topic-evidence/2014/evidence.txt",
+  "evidenceChars": 498141
+}

@@ -1,0 +1,30 @@
+{
+  "takeaway": "Confirm salivary-gland cancer with cytology or histology. Fine-needle aspiration is the screen, core biopsy is the next step, and MRI is preferred when malignancy is suspected. Surgery with free margins is the treatment, and postoperative radiotherapy is added for T3–T4 disease, higher grade, close or positive margins, or perineural growth [1].",
+  "clinicalQuestion": "How is salivary-gland carcinoma diagnosed and treated?",
+  "background": "Salivary-gland cancers are rare. The ratio of tumours in parotid, submandibular, minor, and sublingual sites is 100:10:10:1, and the proportion that are malignant at those sites is 20%, 50%, 50%, and 80%. Ionising radiation is the only well-established risk factor [1].",
+  "studyDesign": "ESMO–EURACAN clinical practice guideline with graded recommendations.",
+  "setting": "Specialist head and neck units.",
+  "population": "Patients with salivary-gland cancer.",
+  "intervention": "Fine-needle aspiration or core biopsy, MRI, complete surgical excision, and postoperative radiotherapy when indicated.",
+  "comparator": "Open biopsy of a major gland, or routine addition of chemotherapy to postoperative radiotherapy.",
+  "primaryOutcome": "A secure diagnosis and locoregional control.",
+  "mainFindings": "Clinical examination and pathological confirmation are mandatory [IV, A]. Ultrasound-guided fine-needle aspiration distinguishes malignant from benign disease in 90% of cases when an experienced pathologist reads it, and results should be reported with the Milan system [IV, A]. If aspiration is inadequate, core needle biopsy is the next step [III, A]. Open biopsy of a major gland is avoided because it complicates later surgery and risks spillage. When malignancy is suspected, MRI is the preferred imaging modality [IV, A]. FDG-PET-CT is recommended in high-grade disease to look for distant metastases [III, A]. Parotid cancer is treated by complete excision with free margins. Preserve the facial nerve if there is no preoperative paralysis, and sacrifice it if paralysis is already present. Postoperative radiotherapy to the primary site is recommended for T3–T4 disease, high or intermediate grade, close or incomplete margins, and perineural growth. Intensity-modulated or volumetric arc radiotherapy is recommended. In a National Cancer Database analysis cited by the guideline, adding chemotherapy to postoperative radiotherapy for late-stage tumours with adverse features did not improve survival [1].",
+  "clinicalMeaning": "Get a needle diagnosis before sacrificing the facial nerve. Add radiotherapy for the listed adverse features, and do not add chemotherapy on the strength of the database analysis [1].",
+  "limitations": "Dose schedules in the guideline (33 × 2 Gy after incomplete resection and 30 × 2 Gy after a clear resection) come from the cited series, not from a randomised trial [1].",
+  "bottomLine": "Needle first, MRI if malignant, surgery with a plan for the facial nerve, and radiotherapy for high-risk local features [1].",
+  "practiceImplication": "Warn the patient before surgery if imaging or the needle suggests malignancy, because revision surgery after an unexpected malignant diagnosis endangers an already dissected facial nerve [1].",
+  "safetyOutcomes": [
+    "Open biopsy of a major salivary gland risks tumour spillage and a more difficult definitive operation."
+  ],
+  "trustRating": "HIGH",
+  "trustRationale": "Current ESMO–EURACAN guideline. Much of the treatment evidence is retrospective, and the grades say so.",
+  "quizFocusPoints": [
+    "FNA then core biopsy",
+    "MRI if malignancy suspected",
+    "postoperative radiotherapy indications"
+  ],
+  "whatNotToOverclaim": [
+    "Do not say chemotherapy improves survival after resection.",
+    "The ASCO guideline was not the source."
+  ]
+}

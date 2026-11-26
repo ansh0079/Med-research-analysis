@@ -1,0 +1,23 @@
+{
+  "catalogueId": "2120",
+  "topic": "Bispecific Antibodies in Haematological Malignancy",
+  "specialty": "Oncology",
+  "decision": "downloaded open source",
+  "rejected": [
+    "Antibody-engineering reviews that do not address haematologic practice were rejected. A single myeloma trial is narrower than this class review."
+  ],
+  "unresolvedReason": null,
+  "source": {
+    "title": "Safety and efficacy of bispecific antibodies in hematologic neoplasms: a systematic review",
+    "year": 2026,
+    "pmid": "42643454",
+    "pmcid": "PMC13503316",
+    "doi": null,
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC13503316/",
+    "sourceBody": "Systematic review",
+    "type": "systematic_review",
+    "whyItFits": "A systematic review of bispecific antibodies across haematologic neoplasms, including response measures and the characteristic toxicities of CD3 engagers."
+  },
+  "evidenceTextFile": "data/part4-topic-evidence/2120/evidence.txt",
+  "evidenceChars": 60105
+}

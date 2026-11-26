@@ -1,0 +1,26 @@
+{
+  "takeaway": "Stroke risk after TIA or minor stroke is highest in the first 90 days (16.09 per 100 person-years) and the 5-year cumulative incidence is 12.5% [1].",
+  "clinicalQuestion": "What is the long-term risk of stroke after TIA or minor stroke?",
+  "background": "Individual cohorts disagree widely on 5-year risk, from 6.1% to 16.1% in two population studies cited by the review [1].",
+  "studyDesign": "Systematic review and random-effects meta-analysis of cohorts.",
+  "population": "Patients with TIA or minor stroke in cohorts reporting stroke during follow-up.",
+  "intervention": null,
+  "comparator": null,
+  "primaryOutcome": "Stroke incidence by time window and cumulative incidence at 5 and 10 years.",
+  "mainFindings": "Year-1 incidence 5.94 per 100 person-years (95% CI 5.18–6.76); first 90 days 16.09 (13.86–18.46); days 91–365 3.04 (2.59–3.53); years 2–5 1.80 (1.58–2.04) annually; years 6–10 1.72 (1.31–2.18). Cumulative incidence 12.5% (11.0–14.1) at 5 years and 19.8% (16.7–23.1) at 10 years. In 10-year studies, 1707/3390 subsequent strokes (50.4%) occurred after year 1 [1].",
+  "clinicalMeaning": "The preventable hazard is concentrated early, but half of later strokes in the longest cohorts occurred after the first year [1].",
+  "limitations": "I-squared was 84–97%. This is not a treatment trial [1].",
+  "bottomLine": "Counsel a pooled 5-year cumulative stroke risk of 12.5% after TIA or minor stroke, with the steepest rate in the first 90 days [1].",
+  "practiceImplication": "Arrange immediate secondary prevention; do not describe risk as confined to the first year [1].",
+  "safetyOutcomes": [],
+  "trustRating": "MODERATE",
+  "trustRationale": "Broad cohort synthesis with prespecified time splits, limited by high heterogeneity.",
+  "quizFocusPoints": [
+    "90-day rate",
+    "5-year cumulative incidence",
+    "events after year 1"
+  ],
+  "whatNotToOverclaim": [
+    "Do not substitute the TIAregistry.org 9.6% 5-year figure for this pooled estimate."
+  ]
+}

@@ -1,0 +1,107 @@
+[
+  {
+    "type": "multiple_choice",
+    "questionType": "trial_interpretation",
+    "question": "A patient is discharged after a TIA. Which pooled stroke incidence does the 2025 JAMA meta-analysis report for the first 90 days?",
+    "options": {
+      "A": "1.80 events per 100 person-years",
+      "B": "3.04 events per 100 person-years",
+      "C": "5.94 events per 100 person-years",
+      "D": "16.09 events per 100 person-years",
+      "E": "19.8 events per 100 person-years"
+    },
+    "correctAnswer": "D",
+    "correctAnswerText": "16.09 events per 100 person-years",
+    "explanation": "The review reports 16.09 events per 100 person-years (95% CI 13.86–18.46) from day 0 to 90, higher than the year-1 rate of 5.94 and the years 2–5 rate of 1.80. The 19.8% figure is the 10-year cumulative incidence, not a 90-day rate [1].",
+    "difficulty": "medium",
+    "sourceArticle": "Long-Term Risk of Stroke After Transient Ischemic Attack or Minor Stroke: A Systematic Review and Meta-Analysis",
+    "sourceReference": "PMID 40136306",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "trial_interpretation",
+    "question": "What 5-year cumulative stroke incidence does the same meta-analysis report after TIA or minor stroke?",
+    "options": {
+      "A": "6.1%",
+      "B": "9.6%",
+      "C": "12.5%",
+      "D": "16.1%",
+      "E": "19.8%"
+    },
+    "correctAnswer": "C",
+    "correctAnswerText": "12.5%",
+    "explanation": "Pooled 5-year cumulative incidence was 12.5% (95% CI 11.0–14.1). The review cites 6.1% and 16.1% from individual registries and 9.6% from TIAregistry.org, but those are not the pooled result. 19.8% is the 10-year cumulative incidence [1].",
+    "difficulty": "medium",
+    "sourceArticle": "Long-Term Risk of Stroke After Transient Ischemic Attack or Minor Stroke: A Systematic Review and Meta-Analysis",
+    "sourceReference": "PMID 40136306",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "recall",
+    "question": "In the cohorts followed for up to 10 years, where did half of the subsequent strokes occur?",
+    "options": {
+      "A": "Only during the index admission",
+      "B": "Within the first 48 hours",
+      "C": "After the first year",
+      "D": "Only between years 6 and 10",
+      "E": "Only in patients with atrial fibrillation"
+    },
+    "correctAnswer": "C",
+    "correctAnswerText": "After the first year",
+    "explanation": "Among studies with 10-year follow-up, 1707 of 3390 subsequent strokes (50.4%) occurred after the first year. Annual rates fall after year 1 but do not stop [1].",
+    "difficulty": "easy",
+    "sourceArticle": "Long-Term Risk of Stroke After Transient Ischemic Attack or Minor Stroke: A Systematic Review and Meta-Analysis",
+    "sourceReference": "PMID 40136306",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "trial_interpretation",
+    "question": "Which statement matches the review's comparison of early and later rates?",
+    "options": {
+      "A": "The rate from day 91 to 365 is higher than the rate in the first 90 days",
+      "B": "The first-90-day rate is higher than the rate from day 91 to 365",
+      "C": "Years 6–10 have a higher annual rate than year 1",
+      "D": "The annual rate is constant for 10 years",
+      "E": "No strokes were recorded after day 90"
+    },
+    "correctAnswer": "B",
+    "correctAnswerText": "The first-90-day rate is higher than the rate from day 91 to 365",
+    "explanation": "First 90 days: 16.09 per 100 person-years. Days 91–365: 3.04. Year 1 overall is 5.94, and years 6–10 are 1.72 annually [1].",
+    "difficulty": "hard",
+    "sourceArticle": "Long-Term Risk of Stroke After Transient Ischemic Attack or Minor Stroke: A Systematic Review and Meta-Analysis",
+    "sourceReference": "PMID 40136306",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "pitfall",
+    "question": "A student quotes a single specialised-centre registry 5-year risk of 9.6% as if it were this meta-analysis. What should they say instead?",
+    "options": {
+      "A": "The pooled 5-year cumulative incidence is 12.5%",
+      "B": "The pooled 5-year risk is 1.80%",
+      "C": "The review found no strokes after year 1",
+      "D": "The pooled 10-year incidence is 6.1%",
+      "E": "The review included only randomised trials of thrombolysis"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "The pooled 5-year cumulative incidence is 12.5%",
+    "explanation": "The review mentions the TIAregistry.org 9.6% estimate and explains why single studies may be unreliable. Its own pooled 5-year cumulative incidence is 12.5% (95% CI 11.0–14.1) [1].",
+    "difficulty": "hard",
+    "sourceArticle": "Long-Term Risk of Stroke After Transient Ischemic Attack or Minor Stroke: A Systematic Review and Meta-Analysis",
+    "sourceReference": "PMID 40136306",
+    "sourceIndices": [
+      1
+    ]
+  }
+]

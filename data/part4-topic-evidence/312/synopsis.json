@@ -1,0 +1,27 @@
+{
+  "takeaway": "Nasopharyngeal carcinoma is concentrated in Southeast Asia and North Africa. If plasma EBV DNA is not elevated, CSCO recommends image-guided aspiration to prove a metastasis and to look for a second primary [1].",
+  "clinicalQuestion": "How does the CSCO guideline approach diagnosis of nasopharyngeal carcinoma?",
+  "background": "NPC is a malignant epithelial tumour of the nasopharynx. CSCO wrote a multidisciplinary guideline covering screening, diagnosis, staging, and treatment by stage [1].",
+  "studyDesign": "CSCO evidence-based clinical practice guideline.",
+  "setting": "Centres managing nasopharyngeal carcinoma.",
+  "population": "Patients with suspected or confirmed nasopharyngeal carcinoma.",
+  "intervention": "Imaging, nasopharyngeal biopsy, and plasma EBV DNA to direct further sampling.",
+  "comparator": "Treating a neck node without tissue.",
+  "primaryOutcome": "A secure pathologic diagnosis before treatment.",
+  "mainFindings": "NPC has a high incidence in Southeast Asia and North Africa. The guideline's scope is broader than a chemoradiotherapy-only statement: it includes diagnosis, follow-up, and treatment by TNM stage. When findings are not accompanied by elevated plasma EBV DNA, image-guided aspiration biopsy is recommended to obtain pathologic evidence of metastasis and to find or exclude a second primary. Tissue from the nasopharynx is obtained by forceps or puncture under nasopharyngoscopy, and a cervical node can be punctured [1].",
+  "clinicalMeaning": "Do not call a neck node NPC metastasis without tissue, especially when plasma EBV DNA is not elevated [1].",
+  "limitations": "Regimen doses are not taken from table fragments. The teaching point is the diagnostic sequence [1].",
+  "bottomLine": "Biopsy the nasopharynx. If EBV DNA is not raised, still biopsy a suspected distant site and exclude another primary [1].",
+  "practiceImplication": "Use plasma EBV DNA as a clue, not as a substitute for histology [1].",
+  "safetyOutcomes": [],
+  "trustRating": "HIGH",
+  "trustRationale": "National society guideline with a graded diagnostic recommendation.",
+  "quizFocusPoints": [
+    "SE Asia and North Africa",
+    "biopsy if EBV DNA not elevated",
+    "second primary"
+  ],
+  "whatNotToOverclaim": [
+    "Do not invent a cisplatin dose from this summary."
+  ]
+}

@@ -1,0 +1,107 @@
+[
+  {
+    "type": "multiple_choice",
+    "questionType": "recall",
+    "question": "Where does this guideline say nasopharyngeal carcinoma incidence is high?",
+    "options": {
+      "A": "Southeast Asia and North Africa",
+      "B": "Northern Europe only",
+      "C": "Australia only",
+      "D": "It is evenly distributed worldwide with no regional pattern",
+      "E": "Only in children"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "Southeast Asia and North Africa",
+    "explanation": "The guideline describes a high incidence in Southeast Asia and North Africa [1].",
+    "difficulty": "easy",
+    "sourceArticle": "The Chinese Society of Clinical Oncology (CSCO) clinical guidelines for the diagnosis and treatment of nasopharyngeal carcinoma",
+    "sourceReference": "PMID 34699681",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "guideline",
+    "question": "If plasma EBV DNA is not elevated and metastasis is suspected, CSCO recommends:",
+    "options": {
+      "A": "Image-guided aspiration biopsy, and a search for a second primary",
+      "B": "Immediate chemotherapy without tissue",
+      "C": "Observation for a year",
+      "D": "Tonsillectomy alone",
+      "E": "A serum CEA only"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "Image-guided aspiration biopsy, and a search for a second primary",
+    "explanation": "Without elevated plasma EBV DNA, image-guided aspiration is recommended to prove metastasis and to find or exclude a second primary [1].",
+    "difficulty": "medium",
+    "sourceArticle": "The Chinese Society of Clinical Oncology (CSCO) clinical guidelines for the diagnosis and treatment of nasopharyngeal carcinoma",
+    "sourceReference": "PMID 34699681",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "clinical_application",
+    "question": "How is primary tumour tissue obtained?",
+    "options": {
+      "A": "Mass biopsy via nasopharyngoscopy, by forceps or puncture",
+      "B": "Sputum cytology only",
+      "C": "A blood culture",
+      "D": "Bronchoscopy",
+      "E": "No tissue is required"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "Mass biopsy via nasopharyngoscopy, by forceps or puncture",
+    "explanation": "The pathology section lists mass biopsy via nasopharyngoscopy using forceps or puncture, and cervical-node puncture [1].",
+    "difficulty": "medium",
+    "sourceArticle": "The Chinese Society of Clinical Oncology (CSCO) clinical guidelines for the diagnosis and treatment of nasopharyngeal carcinoma",
+    "sourceReference": "PMID 34699681",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "pitfall",
+    "question": "Plasma EBV DNA in this pathway is:",
+    "options": {
+      "A": "A clue that does not replace histology",
+      "B": "Sufficient to start curative treatment alone",
+      "C": "Unrelated to NPC",
+      "D": "A screening test for colon cancer",
+      "E": "Required only after treatment has finished"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "A clue that does not replace histology",
+    "explanation": "The recommendation to biopsy when EBV DNA is not elevated shows that the marker guides sampling and does not replace pathology [1].",
+    "difficulty": "medium",
+    "sourceArticle": "The Chinese Society of Clinical Oncology (CSCO) clinical guidelines for the diagnosis and treatment of nasopharyngeal carcinoma",
+    "sourceReference": "PMID 34699681",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "recall",
+    "question": "How does CSCO describe its scope compared with a chemoradiotherapy-only guideline?",
+    "options": {
+      "A": "It also covers diagnosis, follow-up, and treatment by TNM stage",
+      "B": "It covers only screening",
+      "C": "It excludes stage II–IVA",
+      "D": "It is a surgical atlas",
+      "E": "It replaces pathology with serology"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "It also covers diagnosis, follow-up, and treatment by TNM stage",
+    "explanation": "The text contrasts ASCO chemoradiotherapy advice for stage II–IVA with CSCO's inclusion of diagnosis, follow-up, and stage-specific treatment [1].",
+    "difficulty": "easy",
+    "sourceArticle": "The Chinese Society of Clinical Oncology (CSCO) clinical guidelines for the diagnosis and treatment of nasopharyngeal carcinoma",
+    "sourceReference": "PMID 34699681",
+    "sourceIndices": [
+      1
+    ]
+  }
+]

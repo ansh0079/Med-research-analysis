@@ -1,0 +1,21 @@
+{
+  "catalogueId": "1548",
+  "topic": "Targeted Therapy Principles",
+  "specialty": "Oncology",
+  "decision": "downloaded open source",
+  "rejected": [],
+  "unresolvedReason": null,
+  "source": {
+    "title": "Kinase-targeted cancer therapies: progress, challenges and future directions",
+    "year": 2018,
+    "pmid": "29455673",
+    "pmcid": "PMC5817855",
+    "doi": "10.1186/s12943-018-0804-2",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5817855/",
+    "sourceBody": "Molecular Cancer",
+    "type": "review",
+    "whyItFits": "Explains what a kinase inhibitor is, using imatinib in CML and GIST, and why resistance and the tumour matter."
+  },
+  "evidenceTextFile": "data/part4-topic-evidence/1548/evidence.txt",
+  "evidenceChars": 65190
+}

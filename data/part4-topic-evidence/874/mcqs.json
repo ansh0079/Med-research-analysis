@@ -1,0 +1,107 @@
+[
+  {
+    "type": "multiple_choice",
+    "questionType": "recall",
+    "question": "When does the review say early palliative care begins?",
+    "options": {
+      "A": "At or shortly after the diagnosis of advanced cancer, often within eight weeks",
+      "B": "Only in the last 48 hours",
+      "C": "After hospice enrolment only",
+      "D": "Only when chemotherapy has been stopped forever",
+      "E": "At the time of a screening mammogram"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "At or shortly after the diagnosis of advanced cancer, often within eight weeks",
+    "explanation": "Early palliative care begins at or shortly after the diagnosis of advanced cancer. A consensus definition cited in the review uses eight weeks from that diagnosis [1].",
+    "difficulty": "easy",
+    "sourceArticle": "Early palliative care for adults with advanced cancer",
+    "sourceReference": "PMID 28603881",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "trial_interpretation",
+    "question": "What was the effect on health-related quality of life?",
+    "options": {
+      "A": "A small improvement, SMD 0.27 (95% CI 0.15 to 0.38), low certainty",
+      "B": "A large improvement, SMD 1.5",
+      "C": "A clear worsening",
+      "D": "No data",
+      "E": "Benefit only for depression"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "A small improvement, SMD 0.27 (95% CI 0.15 to 0.38), low certainty",
+    "explanation": "Early palliative care improved quality of life by SMD 0.27 (95% CI 0.15 to 0.38), about 4.59 FACT-G points, with low-certainty evidence [1].",
+    "difficulty": "medium",
+    "sourceArticle": "Early palliative care for adults with advanced cancer",
+    "sourceReference": "PMID 28603881",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "trial_interpretation",
+    "question": "What did the pooled survival analysis show?",
+    "options": {
+      "A": "No demonstrated difference (HR 0.85; 95% CI 0.56 to 1.28; very low certainty)",
+      "B": "A proven doubling of survival",
+      "C": "Harm, with HR 2.0",
+      "D": "Survival was not reported in any study",
+      "E": "Benefit confined to hospice patients"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "No demonstrated difference (HR 0.85; 95% CI 0.56 to 1.28; very low certainty)",
+    "explanation": "The death hazard ratio was 0.85 (95% CI 0.56 to 1.28) from four studies. The interval includes no difference, and certainty was very low [1].",
+    "difficulty": "medium",
+    "sourceArticle": "Early palliative care for adults with advanced cancer",
+    "sourceReference": "PMID 28603881",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "recall",
+    "question": "Which other outcome improved by a small amount?",
+    "options": {
+      "A": "Symptom intensity (SMD −0.23)",
+      "B": "Depression, with a significant SMD of −0.8",
+      "C": "Cure of the cancer",
+      "D": "Place of death, which was significantly changed in every trial",
+      "E": "Response to chemotherapy"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "Symptom intensity (SMD −0.23)",
+    "explanation": "Symptom intensity was lower (SMD −0.23; 95% CI −0.35 to −0.10). Depression was not significantly different [1].",
+    "difficulty": "medium",
+    "sourceArticle": "Early palliative care for adults with advanced cancer",
+    "sourceReference": "PMID 28603881",
+    "sourceIndices": [
+      1
+    ]
+  },
+  {
+    "type": "multiple_choice",
+    "questionType": "clinical_application",
+    "question": "What belongs in the early palliative-care conversation, as the review describes it?",
+    "options": {
+      "A": "Prognosis, advance care planning, and symptom control",
+      "B": "Only a do-not-resuscitate form on the last day",
+      "C": "A promise of longer survival",
+      "D": "Stopping all anticancer drugs immediately",
+      "E": "Genetic testing of the tumour"
+    },
+    "correctAnswer": "A",
+    "correctAnswerText": "Prognosis, advance care planning, and symptom control",
+    "explanation": "The review describes empathetic communication about prognosis, advance care planning, and symptom assessment and control. Temel's protocol specifically included establishing goals of care [1].",
+    "difficulty": "easy",
+    "sourceArticle": "Early palliative care for adults with advanced cancer",
+    "sourceReference": "PMID 28603881",
+    "sourceIndices": [
+      1
+    ]
+  }
+]
