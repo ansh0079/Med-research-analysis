@@ -1,0 +1,21 @@
+{
+  "catalogueId": "1911",
+  "spreadsheetRow": 170,
+  "topic": "methotrexate early rheumatoid arthritis combination therapy TEAR",
+  "specialty": "Rheumatology",
+  "decision": "downloaded_open_source",
+  "source": {
+    "title": "A randomized comparative effectiveness study of oral triple therapy versus etanercept plus methotrexate in early aggressive rheumatoid arthritis: the Treatment of Early Aggressive Rheumatoid Arthritis trial",
+    "year": 2012,
+    "pmid": "22508468",
+    "pmcid": "PMC4036119",
+    "doi": "10.1002/art.34498",
+    "sourceBody": "Arthritis & Rheumatism",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4036119/",
+    "whyItFits": "Open full report of the TEAR trial comparing immediate and step-up methotrexate combination strategies, including etanercept plus methotrexate versus oral triple therapy, in early rheumatoid arthritis."
+  },
+  "whyItFits": "Open full report of the TEAR trial comparing immediate and step-up methotrexate combination strategies, including etanercept plus methotrexate versus oral triple therapy, in early rheumatoid arthritis.",
+  "coverageNote": "Early-RA methotrexate strategies in TEAR: immediate combination, step-up at DAS28-ESR ≥3.2, and the primary equivalence of etanercept-methotrexate versus triple therapy.",
+  "rejectedInAppHints": "No stored TEAR full text was accepted.",
+  "sourceFile": "source.txt"
+}

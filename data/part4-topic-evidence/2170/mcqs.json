@@ -1,0 +1,149 @@
+{
+  "reviewState": "unreviewed",
+  "method": "Hand-written single-best-answer MCQs grounded only in the accepted open full text.",
+  "topic": {
+    "topicKey": "rotator-cuff-tendinopathy-and-adhesive-capsulitis",
+    "topicDisplayName": "Rotator Cuff Tendinopathy and Adhesive Capsulitis",
+    "catalogueId": "2170",
+    "aliases": [],
+    "storedRowCount": 0,
+    "coverageNote": "One review covers both named conditions. It does not give operative indications.",
+    "mcqs": [
+      {
+        "id": "c2170-01",
+        "question": "What does this review call the cornerstone of care for rotator cuff-related shoulder pain?",
+        "options": {
+          "A": "Structured rehabilitation with scapular stabilization, motor control, and progressive cuff and periscapular strengthening",
+          "B": "Immediate subacromial decompression for every partial tear",
+          "C": "Repeated subacromial corticosteroid injections as sole treatment",
+          "D": "Hydrodilatation of the glenohumeral joint",
+          "E": "Prolonged strict immobilization"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "Structured rehabilitation with scapular stabilization, motor control, and progressive cuff and periscapular strengthening",
+        "explanation": "Structured rehabilitation emphasizing scapular stabilization, motor control, and progressive rotator cuff and periscapular strengthening is the cornerstone of care.",
+        "difficulty": "easy",
+        "sourceRefs": [
+          {
+            "sourceBody": "Cureus",
+            "sourceYear": 2025,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12765153/",
+            "pmid": "41492609",
+            "pmcid": "PMC12765153",
+            "doi": "10.7759/cureus.98500",
+            "status": "open_full_text",
+            "excerpt": "Structured rehabilitation emphasizing scapular stabilization, motor control, and progressive rotator cuff/periscapular strengthening is the cornerstone of care"
+          }
+        ]
+      },
+      {
+        "id": "c2170-02",
+        "question": "How does the review describe subacromial corticosteroid injection for rotator cuff-related pain?",
+        "options": {
+          "A": "Short-term relief that can facilitate rehabilitation, with waning benefit and a concern that repeated doses may impair tendon biology",
+          "B": "A disease-modifying injection that heals the tendon",
+          "C": "First-line treatment that replaces exercise",
+          "D": "Indicated only for calcific tendinopathy",
+          "E": "Contraindicated because it has no analgesic effect"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "Short-term relief that can facilitate rehabilitation, with waning benefit and a concern that repeated doses may impair tendon biology",
+        "explanation": "Subacromial corticosteroid injection provides short-term relief, measured in weeks, that can facilitate rehabilitation, but benefits wane and repeated dosing may impair tendon biology.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Cureus",
+            "sourceYear": 2025,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12765153/",
+            "pmid": "41492609",
+            "pmcid": "PMC12765153",
+            "doi": "10.7759/cureus.98500",
+            "status": "open_full_text",
+            "excerpt": "Subacromial corticosteroid injection provides short-term relief (weeks) that can facilitate rehabilitation, but benefits wane, and repeated dosing may impair tendon biology"
+          }
+        ]
+      },
+      {
+        "id": "c2170-03",
+        "question": "What natural history does the review give for adhesive capsulitis?",
+        "options": {
+          "A": "Typically self-limited but prolonged, across freezing, frozen, and thawing phases, with lasting limitation in a subset",
+          "B": "A rapidly destructive arthritis that requires replacement within months",
+          "C": "Identical to rotator cuff tendinopathy and treated only with subacromial injection",
+          "D": "Always permanent without surgery",
+          "E": "A self-limited illness that resolves within a week"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "Typically self-limited but prolonged, across freezing, frozen, and thawing phases, with lasting limitation in a subset",
+        "explanation": "Adhesive capsulitis is typically self-limited but prolonged across freezing-frozen-thawing phases, and a subset may have lasting limitations.",
+        "difficulty": "easy",
+        "sourceRefs": [
+          {
+            "sourceBody": "Cureus",
+            "sourceYear": 2025,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12765153/",
+            "pmid": "41492609",
+            "pmcid": "PMC12765153",
+            "doi": "10.7759/cureus.98500",
+            "status": "open_full_text",
+            "excerpt": "Typically self-limited but prolonged across freezing-frozen-thawing phases; a subset may have lasting limitations"
+          }
+        ]
+      },
+      {
+        "id": "c2170-04",
+        "question": "Which injection strategy does the review say improves short-term pain and function in adhesive capsulitis, especially when paired with therapy?",
+        "options": {
+          "A": "Intra-articular corticosteroid, particularly when given early",
+          "B": "Subacromial corticosteroid alone, without therapy",
+          "C": "Intravenous corticosteroid as the only effective route",
+          "D": "No injection has any short-term effect",
+          "E": "Platelet-rich plasma is required before any steroid"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "Intra-articular corticosteroid, particularly when given early",
+        "explanation": "Intra-articular corticosteroid, especially early, improves short-term pain and function and is most effective when paired with therapy.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Cureus",
+            "sourceYear": 2025,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12765153/",
+            "pmid": "41492609",
+            "pmcid": "PMC12765153",
+            "doi": "10.7759/cureus.98500",
+            "status": "open_full_text",
+            "excerpt": "Intra-articular corticosteroid injection, especially early, improves short-term pain and function and is most effective when paired with therapy"
+          }
+        ]
+      },
+      {
+        "id": "c2170-05",
+        "question": "How does hydrodilatation compare with steroid alone in the analyses this review cites?",
+        "options": {
+          "A": "It offers superior short-term range-of-motion and pain gains versus steroid alone in several analyses",
+          "B": "It is inferior to steroid alone for both pain and motion",
+          "C": "It is used only for rotator cuff calcific tendinopathy",
+          "D": "It replaces supervised stretching",
+          "E": "The review advises against it because it worsens the freezing phase"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "It offers superior short-term range-of-motion and pain gains versus steroid alone in several analyses",
+        "explanation": "Hydrodilatation (capsular distension) offers superior short-term range-of-motion and pain gains versus steroid alone in several analyses.",
+        "difficulty": "hard",
+        "sourceRefs": [
+          {
+            "sourceBody": "Cureus",
+            "sourceYear": 2025,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12765153/",
+            "pmid": "41492609",
+            "pmcid": "PMC12765153",
+            "doi": "10.7759/cureus.98500",
+            "status": "open_full_text",
+            "excerpt": "Hydrodilatation (capsular distension) offers a superior short-term range of motion (ROM)/pain gains versus steroid alone in several analyses"
+          }
+        ]
+      }
+    ]
+  }
+}

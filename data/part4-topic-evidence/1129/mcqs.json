@@ -1,0 +1,149 @@
+{
+  "reviewState": "unreviewed",
+  "method": "Hand-written single-best-answer MCQs grounded only in the accepted open full text.",
+  "topic": {
+    "topicKey": "synovial-fluid-analysis-wbc-thresholds-crystals-viscosity-culture-inte",
+    "topicDisplayName": "Synovial fluid analysis: WBC thresholds, crystals, viscosity, culture interpretation",
+    "catalogueId": "1129",
+    "aliases": [],
+    "storedRowCount": 0,
+    "coverageNote": "WBC thresholds, crystals, Gram stain, and culture are in SANJO. Viscosity is explicitly absent and is not invented.",
+    "mcqs": [
+      {
+        "id": "c1129-01",
+        "question": "Which synovial white-cell thresholds does SANJO use?",
+        "options": {
+          "A": "Above 50,000/µL suggests infection but is not diagnostic; below 25,000/µL lowers probability but does not exclude it",
+          "B": "Above 1,000/µL confirms infection",
+          "C": "Below 50,000/µL excludes infection",
+          "D": "No numeric thresholds are given",
+          "E": "Only the serum white-cell count is used"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "Above 50,000/µL suggests infection but is not diagnostic; below 25,000/µL lowers probability but does not exclude it",
+        "explanation": "Greater than 50,000/µL is suggestive but not sufficient. Less than 25,000/µL decreases post-test probability but cannot exclude septic arthritis.",
+        "difficulty": "easy",
+        "sourceRefs": [
+          {
+            "sourceBody": "EFORT Open Reviews",
+            "sourceYear": 2023,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9901514/",
+            "pmid": "36756304",
+            "pmcid": "PMC9901514",
+            "doi": "10.1302/2058-5241.8.220083",
+            "status": "open_full_text",
+            "excerpt": "A synovial white blood cell count of > 50 000 cells µ L - 1 is suggestive of SANJO, but alone is not sufficient"
+          }
+        ]
+      },
+      {
+        "id": "c1129-02",
+        "question": "Can crystals and infection coexist in the way this guideline warns?",
+        "options": {
+          "A": "Yes. Gout and pseudogout may also raise the synovial white-cell count, so crystals do not exclude infection",
+          "B": "Crystals exclude infection",
+          "C": "Crystals are not looked for",
+          "D": "Only cholesterol crystals matter",
+          "E": "A high white-cell count with crystals is always gout"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "Yes. Gout and pseudogout may also raise the synovial white-cell count, so crystals do not exclude infection",
+        "explanation": "The guideline says gout and pseudogout may also increase white-cell counts, so a crystal diagnosis does not by itself settle the question of infection.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "EFORT Open Reviews",
+            "sourceYear": 2023,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9901514/",
+            "pmid": "36756304",
+            "pmcid": "PMC9901514",
+            "doi": "10.1302/2058-5241.8.220083",
+            "status": "open_full_text",
+            "excerpt": "Gout and pseudogout may also increase levels of white blood cell coun"
+          }
+        ]
+      },
+      {
+        "id": "c1129-03",
+        "question": "What does the guideline say about Gram stain performance?",
+        "options": {
+          "A": "Limited sensitivity, excellent specificity",
+          "B": "Excellent sensitivity, poor specificity",
+          "C": "Both are poor",
+          "D": "It is obsolete",
+          "E": "Sensitivity and specificity were not discussed"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "Limited sensitivity, excellent specificity",
+        "explanation": "Gram stain has limited sensitivity and excellent specificity.",
+        "difficulty": "easy",
+        "sourceRefs": [
+          {
+            "sourceBody": "EFORT Open Reviews",
+            "sourceYear": 2023,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9901514/",
+            "pmid": "36756304",
+            "pmcid": "PMC9901514",
+            "doi": "10.1302/2058-5241.8.220083",
+            "status": "open_full_text",
+            "excerpt": "Performing Gram staining on synovial fluid is recommended despite its limited sensitivity; given its excellent specificity"
+          }
+        ]
+      },
+      {
+        "id": "c1129-04",
+        "question": "Which culture practice is recommended?",
+        "options": {
+          "A": "Blood-culture bottles plus agar and thioglycolate broth, incubated 5–7 days",
+          "B": "A single agar plate read at 12 hours",
+          "C": "Culture of the needle hub only",
+          "D": "Fungal media only",
+          "E": "No culture if crystals are seen"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "Blood-culture bottles plus agar and thioglycolate broth, incubated 5–7 days",
+        "explanation": "Inoculate blood-culture bottles, plate sterile-tube fluid on agar and thioglycolate, and incubate 5–7 days according to local practice.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "EFORT Open Reviews",
+            "sourceYear": 2023,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9901514/",
+            "pmid": "36756304",
+            "pmcid": "PMC9901514",
+            "doi": "10.1302/2058-5241.8.220083",
+            "status": "open_full_text",
+            "excerpt": "inoculate the remaining synovial fluid into blood culture bottles"
+          }
+        ]
+      },
+      {
+        "id": "c1129-05",
+        "question": "Does SANJO give a viscosity threshold?",
+        "options": {
+          "A": "No viscosity criterion is stated; the recommended analyses are culture, cell count, and crystals",
+          "B": "Viscosity below a stated centipoise confirms infection",
+          "C": "String sign length is the primary test",
+          "D": "High viscosity excludes crystals",
+          "E": "Viscosity replaces the white-cell count"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "No viscosity criterion is stated; the recommended analyses are culture, cell count, and crystals",
+        "explanation": "The guideline prioritizes bacterial identification, white-cell count, and crystals. It does not give a viscosity cut-off, so none is taught here.",
+        "difficulty": "easy",
+        "sourceRefs": [
+          {
+            "sourceBody": "EFORT Open Reviews",
+            "sourceYear": 2023,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9901514/",
+            "pmid": "36756304",
+            "pmcid": "PMC9901514",
+            "doi": "10.1302/2058-5241.8.220083",
+            "status": "open_full_text",
+            "excerpt": "white blood cell count including polymorphonuclear (PMN) percentage, and presence of crystals"
+          }
+        ]
+      }
+    ]
+  }
+}

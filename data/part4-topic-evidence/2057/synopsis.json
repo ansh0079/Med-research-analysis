@@ -1,0 +1,23 @@
+{
+  "catalogueId": "2057",
+  "topic": "Urate-lowering therapy: allopurinol, febuxostat, target serum urate, titration",
+  "groundedIn": "https://www.nice.org.uk/guidance/ng219",
+  "synopsis": "NICE NG219, already stored in the app, recommends urate-lowering therapy with a treat-to-target strategy for people with gout who have multiple or troublesome flares, CKD, diuretic therapy, tophi, or chronic gouty arthritis, and discussion of that strategy after a first flare in others. Start at a low dose and use monthly serum urate levels to guide increases, as tolerated, until the target is reached. ULT is usually continued after the target is reached and is typically lifelong. Start ULT at least 2 to 4 weeks after a flare has settled. The target is a serum urate below 360 micromol/litre (6 mg/dl). Consider a target below 300 micromol/litre (5 mg/dl) for tophi, chronic gouty arthritis, or ongoing frequent flares despite a level already below 360. Offer either allopurinol or febuxostat first-line, taking comorbidities and preferences into account. Offer allopurinol first-line when there is major cardiovascular disease, for example previous myocardial infarction, stroke, or unstable angina. If the target is not reached or the first drug is not tolerated, consider switching to the other.",
+  "teachingPoints": [
+    {
+      "claim": "Target serum urate is below 360 micromol/litre (6 mg/dl).",
+      "sourceExcerpt": "Aim for a target serum urate level below 360 micromol/litre (6 mg/dl)."
+    },
+    {
+      "claim": "Allopurinol or febuxostat may be first-line; allopurinol is first-line in major cardiovascular disease.",
+      "sourceExcerpt": "Offer either allopurinol or febuxostat as first-line treatment when starting treat-to-target ULT"
+    },
+    {
+      "claim": "Titrate from a low dose using monthly serum urate levels.",
+      "sourceExcerpt": "Start with a low dose of ULT and use monthly serum urate levels to guide dose increases, as tolerated, until the target serum urate level is reached."
+    }
+  ],
+  "uncertaintiesNotedInSource": [
+    "The stored text is the recommendations chapter, not the evidence reviews that justify each dose step."
+  ]
+}

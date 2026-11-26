@@ -1,0 +1,149 @@
+{
+  "reviewState": "unreviewed",
+  "method": "Hand-written single-best-answer MCQs grounded only in the accepted open full text.",
+  "topic": {
+    "topicKey": "septic-arthritis",
+    "topicDisplayName": "Septic Arthritis",
+    "catalogueId": "772",
+    "aliases": [],
+    "storedRowCount": 0,
+    "coverageNote": "Native-joint septic arthritis guideline. Prosthetic-joint papers were not used.",
+    "mcqs": [
+      {
+        "id": "c772-01",
+        "question": "What is the basis of diagnosis in the SANJO guideline?",
+        "options": {
+          "A": "Aspiration of joint fluid, with bacterial identification the most important analysis",
+          "B": "Serum CRP alone",
+          "C": "MRI before any aspiration",
+          "D": "Blood culture without sampling the joint",
+          "E": "Clinical redness without fluid analysis"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "Aspiration of joint fluid, with bacterial identification the most important analysis",
+        "explanation": "Diagnosis is based mainly on joint-fluid aspiration. The fluid is analyzed for leucocyte count, but bacterial identification is most important.",
+        "difficulty": "easy",
+        "sourceRefs": [
+          {
+            "sourceBody": "EFORT Open Reviews",
+            "sourceYear": 2023,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9901514/",
+            "pmid": "36756304",
+            "pmcid": "PMC9901514",
+            "doi": "10.1302/2058-5241.8.220083",
+            "status": "open_full_text",
+            "excerpt": "The diagnosis of septic arthritis in native joints (SANJO) is mainly based on aspiration of joint fluid, which initially is analysed for synovial leucocyte count, but most important, for bacterial identification."
+          }
+        ]
+      },
+      {
+        "id": "c772-02",
+        "question": "When may empirical antibiotics start before joint-fluid sampling?",
+        "options": {
+          "A": "When the patient has signs of sepsis; otherwise sampling should come first to avoid false-negative cultures",
+          "B": "Always, before any aspiration",
+          "C": "Never, even in septic shock",
+          "D": "Only after 48 hours of observation",
+          "E": "Only if the Gram stain is already negative"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "When the patient has signs of sepsis; otherwise sampling should come first to avoid false-negative cultures",
+        "explanation": "Except for patients with signs of sepsis, empirical antibiotics should await diagnostic sampling so cultures are not falsely negative.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "EFORT Open Reviews",
+            "sourceYear": 2023,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9901514/",
+            "pmid": "36756304",
+            "pmcid": "PMC9901514",
+            "doi": "10.1302/2058-5241.8.220083",
+            "status": "open_full_text",
+            "excerpt": "Except for patients with signs of sepsis, empirical antibiotic treatment should await diagnostic sampling of joint fluid to avoid false negative culture results."
+          }
+        ]
+      },
+      {
+        "id": "c772-03",
+        "question": "Which operation does SANJO recommend, particularly for larger joints?",
+        "options": {
+          "A": "Arthroscopic lavage, with synovectomy depending on stage; open revision if there are adhesions or cartilage or bone damage",
+          "B": "Immediate amputation",
+          "C": "Arthroscopic lavage is discouraged",
+          "D": "Only needle washout, never surgery",
+          "E": "Synovectomy of every small joint of the hand"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "Arthroscopic lavage, with synovectomy depending on stage; open revision if there are adhesions or cartilage or bone damage",
+        "explanation": "Arthroscopic lavage, with synovectomy depending on clinical stage, is recommended particularly in larger joints. Open revision may be considered for adhesions or cartilage or bone damage.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "EFORT Open Reviews",
+            "sourceYear": 2023,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9901514/",
+            "pmid": "36756304",
+            "pmcid": "PMC9901514",
+            "doi": "10.1302/2058-5241.8.220083",
+            "status": "open_full_text",
+            "excerpt": "Arthroscopic lavage (with synovectomy, depending on the clinical stage) is recommended for SANJO particularly in larger joints, although open revision could be considered in cases with synovial membrane adhesions or in the presence of cartilage or bone damage."
+          }
+        ]
+      },
+      {
+        "id": "c772-04",
+        "question": "How should empirical antibiotics be chosen and then adjusted?",
+        "options": {
+          "A": "Choose them for the most likely pathogens, then target them to microbiology results",
+          "B": "Use a fixed two-week oral course regardless of cultures",
+          "C": "Antibiotics are not recommended if lavage is performed",
+          "D": "Vancomycin is mandatory for every native joint",
+          "E": "Stop antibiotics when the white-cell count falls below 50,000 even if cultures are pending"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "Choose them for the most likely pathogens, then target them to microbiology results",
+        "explanation": "Empirical treatment should reflect the most likely pathogens and then be targeted to laboratory results.",
+        "difficulty": "easy",
+        "sourceRefs": [
+          {
+            "sourceBody": "EFORT Open Reviews",
+            "sourceYear": 2023,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9901514/",
+            "pmid": "36756304",
+            "pmcid": "PMC9901514",
+            "doi": "10.1302/2058-5241.8.220083",
+            "status": "open_full_text",
+            "excerpt": "Empirical antibiotic treatment should be selected considering the most likely pathogens and targeted according to the results from microbiology laboratory."
+          }
+        ]
+      },
+      {
+        "id": "c772-05",
+        "question": "When does SANJO say to start mobilizing the joint?",
+        "options": {
+          "A": "As soon as infection is controlled and drains have been removed, to avoid contracture",
+          "B": "On arrival, before antibiotics",
+          "C": "Only after six weeks of splinting",
+          "D": "Mobilization is contraindicated",
+          "E": "After the CRP has been normal for 30 days, regardless of drains"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "As soon as infection is controlled and drains have been removed, to avoid contracture",
+        "explanation": "Joint mobilization to avoid contracture should start as soon as possible once infection is controlled and drains are out.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "EFORT Open Reviews",
+            "sourceYear": 2023,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9901514/",
+            "pmid": "36756304",
+            "pmcid": "PMC9901514",
+            "doi": "10.1302/2058-5241.8.220083",
+            "status": "open_full_text",
+            "excerpt": "Joint mobilization to avoid contracture should be started as soon as possible when infection is under control and after drains have been removed."
+          }
+        ]
+      }
+    ]
+  }
+}

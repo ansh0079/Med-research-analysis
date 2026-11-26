@@ -1,0 +1,21 @@
+{
+  "catalogueId": "2170",
+  "spreadsheetRow": 153,
+  "topic": "Rotator Cuff Tendinopathy and Adhesive Capsulitis",
+  "specialty": "Rheumatology",
+  "decision": "downloaded_open_source",
+  "source": {
+    "title": "Current Non-operative Management of Shoulder Pathologies: A Narrative Review",
+    "year": 2025,
+    "pmid": "41492609",
+    "pmcid": "PMC12765153",
+    "doi": "10.7759/cureus.98500",
+    "sourceBody": "Cureus",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12765153/",
+    "whyItFits": "Open narrative review that treats rotator cuff-related shoulder pain and adhesive capsulitis as separate conditions and states non-operative care for each."
+  },
+  "whyItFits": "Open narrative review that treats rotator cuff-related shoulder pain and adhesive capsulitis as separate conditions and states non-operative care for each.",
+  "coverageNote": "One review covers both named conditions. It does not give operative indications.",
+  "rejectedInAppHints": "GRASP covers rotator cuff disorders only. A frozen-shoulder meta-analysis does not cover rotator cuff tendinopathy. The combined review was used instead.",
+  "sourceFile": "source.txt"
+}

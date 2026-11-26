@@ -1,0 +1,23 @@
+{
+  "catalogueId": "1008",
+  "topic": "RA in pregnancy: disease course, drug safety, biologics, MTX cessation",
+  "groundedIn": "27843367",
+  "synopsis": "Methotrexate is an absolute contraindication in pregnancy (FDA category X) because of spontaneous abortion and embryopathy affecting the heart, central nervous system, and skeleton. The review says case reports of first-trimester low-dose exposure without anomalies do not identify a dose low enough to counsel as safe. Leflunomide is also category X and should be avoided even when pregnancy is only planned for later years because of its long half-life. Sulfasalazine is category B and can be continued. Azathioprine has reassuring pregnancy data but remains category D. For TNF inhibitors, case reports and an FDA-database review linked etanercept or infliximab exposure to congenital anomalies, including a VACTERL pattern: 41 children had 61 anomalies. In a transfer study, certolizumab infants had undetectable drug by the polyethylene-glycol assay, whereas every infliximab-exposed infant had a cord or infant level higher than the mother's, with a median cord-to-maternal ratio of 160%, and infliximab often remained detectable for months.",
+  "teachingPoints": [
+    {
+      "claim": "Methotrexate is category X because of abortion and embryopathy of heart, CNS, and skeleton, with no established safe dose.",
+      "sourceExcerpt": "The absolute contraindication to methotrexate (MTX) (category X) during pregnancy is secondary to the risk of spontaneous abortion and MTX embryopathy characterized by a combination of abnormalities impacting the heart, central nervous system, and skeleton."
+    },
+    {
+      "claim": "Leflunomide is category X and is avoided even years ahead because of a long half-life; sulfasalazine is category B and may be continued.",
+      "sourceExcerpt": "Sulfasalazine is another disease-modifying antirheumatic drug (DMARD) that can be continued during pregnancy with a category B rating. ... leflunomide (LEF) is classified as a category X drug."
+    },
+    {
+      "claim": "Certolizumab was undetectable in infants; infliximab cord levels exceeded maternal levels (median ratio 160%).",
+      "sourceExcerpt": "The infants of women who received certolizumab had the lowest rates with all infants having undetectable concentrations ... the median ratio of cord to mother’s blood being 160%."
+    }
+  ],
+  "uncertaintiesNotedInSource": [
+    "FDA pregnancy categories in this 2016 review predate the later PLLR labeling system; the review's own statements are what the MCQs use."
+  ]
+}

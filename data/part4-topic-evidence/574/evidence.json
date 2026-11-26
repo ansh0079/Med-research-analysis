@@ -1,0 +1,21 @@
+{
+  "catalogueId": "574",
+  "spreadsheetRow": 151,
+  "topic": "Remission maintenance in AAV: azathioprine, rituximab, MAINRITSAN trial",
+  "specialty": "Rheumatology",
+  "decision": "downloaded_open_source",
+  "source": {
+    "title": "Rituximab versus azathioprine for maintenance of remission for patients with ANCA-associated vasculitis and relapsing disease: an international randomised controlled trial",
+    "year": 2023,
+    "pmid": "36958796",
+    "pmcid": "PMC10313987",
+    "doi": "10.1136/ard-2022-223559",
+    "sourceBody": "Annals of the Rheumatic Diseases",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10313987/",
+    "whyItFits": "Open trial paper that states the MAINRITSAN 1 result—rituximab superior to azathioprine after cyclophosphamide induction in newly diagnosed AAV—and distinguishes that population from later relapse trials."
+  },
+  "whyItFits": "Open trial paper that states the MAINRITSAN 1 result—rituximab superior to azathioprine after cyclophosphamide induction in newly diagnosed AAV—and distinguishes that population from later relapse trials.",
+  "coverageNote": "The MAINRITSAN trial report itself was not open. This paper is accepted only for the MAINRITSAN results it explicitly states. RITAZAREM efficacy numbers are not presented as MAINRITSAN results.",
+  "rejectedInAppHints": "A calprotectin post-hoc of MAINRITSAN was rejected as not the maintenance comparison. An airway-remission consensus was off-topic.",
+  "sourceFile": "source.txt"
+}

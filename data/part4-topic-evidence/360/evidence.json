@@ -1,0 +1,21 @@
+{
+  "catalogueId": "360",
+  "spreadsheetRow": 140,
+  "topic": "Osteopetrosis",
+  "specialty": "Rheumatology",
+  "decision": "downloaded_open_source",
+  "source": {
+    "title": "Autosomal dominant osteopetrosis",
+    "year": 2023,
+    "pmid": "36863500",
+    "pmcid": "PMC10042314",
+    "doi": "10.1016/j.bone.2023.116723",
+    "sourceBody": "Bone",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10042314/",
+    "whyItFits": "Open review of autosomal dominant osteopetrosis, the adult form most relevant in rheumatology practice, including phenotype, fracture risk, and how treatment differs from infantile disease."
+  },
+  "whyItFits": "Open review of autosomal dominant osteopetrosis, the adult form most relevant in rheumatology practice, including phenotype, fracture risk, and how treatment differs from infantile disease.",
+  "coverageNote": "The 2017 osteopetrosis working-group consensus was not free full text. This open review covers adult autosomal-dominant disease and states how infantile recessive disease is treated differently.",
+  "rejectedInAppHints": "An osteoporosis pharmacologic guideline was the in-app title hit and was rejected.",
+  "sourceFile": "source.txt"
+}

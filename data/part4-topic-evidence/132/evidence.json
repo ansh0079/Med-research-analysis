@@ -1,0 +1,21 @@
+{
+  "catalogueId": "132",
+  "spreadsheetRow": 172,
+  "topic": "Meniere's disease: intratympanic therapy, low-salt diet, surgical options",
+  "specialty": "Surgery",
+  "decision": "downloaded_open_source",
+  "source": {
+    "title": "Optimal management of Ménière's disease",
+    "year": 2015,
+    "pmid": "25750534",
+    "pmcid": "PMC4348125",
+    "doi": "10.2147/TCRM.S59023",
+    "sourceBody": "Therapeutics and Clinical Risk Management",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4348125/",
+    "whyItFits": "Open review of Ménière disease treatment that discusses dietary sodium restriction, intratympanic steroids, endolymphatic surgery, and destructive procedures including gentamicin."
+  },
+  "whyItFits": "Open review of Ménière disease treatment that discusses dietary sodium restriction, intratympanic steroids, endolymphatic surgery, and destructive procedures including gentamicin.",
+  "coverageNote": "Covers sodium restriction, intratympanic steroid, endolymphatic surgery, and destructive surgery for Ménière disease. A stored BPPV document was not used.",
+  "rejectedInAppHints": "Benign paroxysmal positional vertigo material does not cover Ménière disease.",
+  "sourceFile": "source.txt"
+}

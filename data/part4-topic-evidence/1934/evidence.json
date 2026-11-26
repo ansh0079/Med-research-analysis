@@ -1,0 +1,21 @@
+{
+  "catalogueId": "1934",
+  "spreadsheetRow": 134,
+  "topic": "Neonatal lupus: anti-Ro, anti-La, congenital heart block, counselling",
+  "specialty": "Rheumatology",
+  "decision": "downloaded_open_source",
+  "source": {
+    "title": "A review of neonatal lupus syndrome",
+    "year": 2024,
+    "pmid": "39285783",
+    "pmcid": "PMC11418246",
+    "doi": "10.1097/JCMA.0000000000001117",
+    "sourceBody": "Journal of the Chinese Medical Association",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11418246/",
+    "whyItFits": "Open clinical review of neonatal lupus, anti-Ro/La antibodies, congenital heart block risk and recurrence, fetal echocardiography, and preconception counselling."
+  },
+  "whyItFits": "Open clinical review of neonatal lupus, anti-Ro/La antibodies, congenital heart block risk and recurrence, fetal echocardiography, and preconception counselling.",
+  "coverageNote": "Questions emphasize antibody pattern, preconception drugs, and surveillance. Numeric risks are those stated in the review.",
+  "rejectedInAppHints": "The 2020 ACR reproductive guideline was not the document returned for the remembered PMID and was not used.",
+  "sourceFile": "source.txt"
+}

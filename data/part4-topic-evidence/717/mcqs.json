@@ -1,0 +1,149 @@
+{
+  "reviewState": "unreviewed",
+  "method": "Hand-written single-best-answer MCQs grounded only in the accepted open full text.",
+  "topic": {
+    "topicKey": "neonatal-lupus-and-congenital-heart-block",
+    "topicDisplayName": "Neonatal Lupus and Congenital Heart Block",
+    "catalogueId": "717",
+    "aliases": [],
+    "storedRowCount": 0,
+    "coverageNote": "Same open review is used for catalogue 1934 with different questions. ACR 2020 reproductive-health guideline PMIDs in the spreadsheet did not resolve to that paper in Europe PMC.",
+    "mcqs": [
+      {
+        "id": "c717-01",
+        "question": "In anti-Ro/SSA and/or anti-La/SSB pregnancies with no prior neonatal lupus, about what proportion develop third-degree heart block?",
+        "options": {
+          "A": "About 2%",
+          "B": "About 30%",
+          "C": "About 50%",
+          "D": "It does not occur without a prior affected child",
+          "E": "Only anti-dsDNA pregnancies are at risk"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "About 2%",
+        "explanation": "The review states third-degree block occurs in about 2% of anti-Ro/SSA and/or anti-La/SSB pregnancies without a prior history of neonatal lupus.",
+        "difficulty": "easy",
+        "sourceRefs": [
+          {
+            "sourceBody": "Journal of the Chinese Medical Association",
+            "sourceYear": 2024,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11418246/",
+            "pmid": "39285783",
+            "pmcid": "PMC11418246",
+            "doi": "10.1097/JCMA.0000000000001117",
+            "status": "open_full_text",
+            "excerpt": "Third-degree heart block occurs in about 2% of anti-Ro/SSA and/or anti-La/SSB antibody-associated pregnancies without a prior history of NLS."
+          }
+        ]
+      },
+      {
+        "id": "c717-02",
+        "question": "After a child with cutaneous or cardiac neonatal lupus, what recurrence risk for third-degree block does the review give?",
+        "options": {
+          "A": "Unchanged at about 2%",
+          "B": "About 13% to 18%",
+          "C": "Greater than 75%",
+          "D": "Limited to female fetuses",
+          "E": "Zero if the mother takes aspirin"
+        },
+        "correctAnswer": "B",
+        "correctAnswerText": "About 13% to 18%",
+        "explanation": "After cutaneous or cardiac neonatal lupus, the risk of third-degree block in a subsequent pregnancy is about 13–18%.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Journal of the Chinese Medical Association",
+            "sourceYear": 2024,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11418246/",
+            "pmid": "39285783",
+            "pmcid": "PMC11418246",
+            "doi": "10.1097/JCMA.0000000000001117",
+            "status": "open_full_text",
+            "excerpt": "Following cutaneous or cardiac NLS, the risk of third-degree heart block in a subsequent pregnancy increases significantly and ranges between 13% and 18%."
+          }
+        ]
+      },
+      {
+        "id": "c717-03",
+        "question": "Which statement about complete heart block in neonatal lupus matches the review?",
+        "options": {
+          "A": "It is usually transient and resolves without pacing",
+          "B": "It tends to be permanent and is among the most severe complications",
+          "C": "It occurs only with anti-Sm antibodies",
+          "D": "It is prevented by delivery before 28 weeks in all cases",
+          "E": "It is a postnatal infection, not an antibody-mediated injury"
+        },
+        "correctAnswer": "B",
+        "correctAnswerText": "It tends to be permanent and is among the most severe complications",
+        "explanation": "Third-degree heart block is described as one of the most severe complications and tends to be permanent.",
+        "difficulty": "easy",
+        "sourceRefs": [
+          {
+            "sourceBody": "Journal of the Chinese Medical Association",
+            "sourceYear": 2024,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11418246/",
+            "pmid": "39285783",
+            "pmcid": "PMC11418246",
+            "doi": "10.1097/JCMA.0000000000001117",
+            "status": "open_full_text",
+            "excerpt": "heart block is one of the most severe complications and tends to be permanent."
+          }
+        ]
+      },
+      {
+        "id": "c717-04",
+        "question": "What fetal mortality range does the review associate with neonatal lupus?",
+        "options": {
+          "A": "Less than 1%",
+          "B": "About 15% to 20%",
+          "C": "About 60%",
+          "D": "Mortality is limited to cutaneous disease",
+          "E": "The review states mortality has not been estimated"
+        },
+        "correctAnswer": "B",
+        "correctAnswerText": "About 15% to 20%",
+        "explanation": "Fetal mortality associated with neonatal lupus is given as 15–20%, related to complications such as hydrops and cardiomyopathy.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Journal of the Chinese Medical Association",
+            "sourceYear": 2024,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11418246/",
+            "pmid": "39285783",
+            "pmcid": "PMC11418246",
+            "doi": "10.1097/JCMA.0000000000001117",
+            "status": "open_full_text",
+            "excerpt": "There is significant fetal mortality associated with NLS, ranging from 15% to 20%."
+          }
+        ]
+      },
+      {
+        "id": "c717-05",
+        "question": "What surveillance point does the review make about fetal echocardiography?",
+        "options": {
+          "A": "It can detect first-degree through complete block but cannot predict progression to complete block",
+          "B": "It replaces maternal antibody testing",
+          "C": "It is useful only after birth",
+          "D": "A single scan at 12 weeks excludes later block",
+          "E": "It is contraindicated because of Doppler heating"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "It can detect first-degree through complete block but cannot predict progression to complete block",
+        "explanation": "Fetal echocardiography can detect the range from first-degree to complete heart block, but the review says it cannot predict progression to complete block.",
+        "difficulty": "hard",
+        "sourceRefs": [
+          {
+            "sourceBody": "Journal of the Chinese Medical Association",
+            "sourceYear": 2024,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11418246/",
+            "pmid": "39285783",
+            "pmcid": "PMC11418246",
+            "doi": "10.1097/JCMA.0000000000001117",
+            "status": "open_full_text",
+            "excerpt": "FEC can detect the full range of heart block including first-degree heart block to complete heart block. Although FEC cannot predict the progression to complete heart block, it remains a sensitive tool for early detection of heart block."
+          }
+        ]
+      }
+    ]
+  }
+}

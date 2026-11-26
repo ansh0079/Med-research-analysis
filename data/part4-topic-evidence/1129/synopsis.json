@@ -1,0 +1,10 @@
+{
+  "catalogueId": "1129",
+  "topic": "Synovial fluid analysis: WBC thresholds, crystals, viscosity, culture interpretation",
+  "groundedIn": "36756304",
+  "synopsis": "SANJO diagnosis rests on joint-fluid aspiration. Fluid is analyzed first for a synovial leucocyte count, but bacterial identification is the most important result. Except when the patient is septic, empirical antibiotics should wait until fluid is sampled so cultures are not falsely negative. If fluid is limited, the priority order is bacterial identification, white-cell count with polymorphonuclear percentage, then crystals. A synovial white-cell count above 50,000 per microlitre suggests septic arthritis but is not sufficient alone. A count below 25,000 per microlitre lowers the post-test probability but does not exclude infection. Those cut-offs may not apply in immunosuppressed patients, and gout or pseudogout can also raise the white-cell count. Gram stain is recommended despite limited sensitivity because excellent specificity can give early proof of infection and guide empirical therapy. Remaining fluid should be inoculated into blood-culture bottles, and fluid from a sterile tube plated on agar and enrichment broth; incubation of 5–7 days is recommended. Arthroscopic lavage, with synovectomy depending on stage, is recommended especially in larger joints. Open revision is considered for synovial adhesions or cartilage or bone damage. Antibiotics are then targeted to culture results. Mobilization starts once infection is controlled and drains are out.",
+  "teachingPoints": [],
+  "uncertaintiesNotedInSource": [
+    "Viscosity is not given a threshold in SANJO."
+  ]
+}

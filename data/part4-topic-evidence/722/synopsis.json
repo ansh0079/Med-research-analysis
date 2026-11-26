@@ -1,0 +1,23 @@
+{
+  "catalogueId": "722",
+  "topic": "Osteoarthritis",
+  "groundedIn": "31908149",
+  "synopsis": "The 2019 ACR/Arthritis Foundation guideline strongly recommends exercise for knee, hip, and/or hand osteoarthritis, while noting that the evidence base and the range of exercise options are larger for knee and hip than for hand, and that evidence is insufficient to name a single best exercise prescription. Physical and occupational therapists are described as often essential for starting and maintaining exercise and for self-efficacy training, thermal modalities, and splints or braces. Oral NSAIDs are strongly recommended for knee, hip, and/or hand OA and are called the initial oral medication of choice, preferred over other available oral medications, with short-term efficacy established in many trials. Topical NSAIDs are strongly recommended for knee OA and conditionally recommended for hand OA, and should be considered before oral NSAIDs because local therapy minimizes systemic exposure; frequent hand washing and a lack of direct hand-efficacy evidence explain the weaker hand recommendation.",
+  "teachingPoints": [
+    {
+      "claim": "Exercise is strongly recommended for knee, hip, and hand OA.",
+      "sourceExcerpt": "Exercise is strongly recommended for patients with knee, hip, and/or hand OA."
+    },
+    {
+      "claim": "Oral NSAIDs are strongly recommended and are the initial oral drug of choice.",
+      "sourceExcerpt": "Oral NSAIDs are strongly recommended for patients with knee, hip, and/or hand OA. Oral NSAIDs remain the mainstay of the pharmacologic management of OA"
+    },
+    {
+      "claim": "Topical NSAIDs are strongly recommended for the knee and conditionally recommended for the hand, and should be considered before oral NSAIDs.",
+      "sourceExcerpt": "Topical NSAIDs are strongly recommended for patients with knee OA and conditionally recommended for patients with hand OA."
+    }
+  ],
+  "uncertaintiesNotedInSource": [
+    "The guideline says current evidence is insufficient to recommend a specific exercise dose."
+  ]
+}

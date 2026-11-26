@@ -1,0 +1,21 @@
+{
+  "catalogueId": "1461",
+  "spreadsheetRow": 143,
+  "topic": "Plantar Fasciitis and Calcaneal Spurs",
+  "specialty": "Rheumatology",
+  "decision": "downloaded_open_source",
+  "source": {
+    "title": "Plantar Fasciitis: An Updated Review",
+    "year": 2023,
+    "pmid": "38264606",
+    "pmcid": "PMC10802877",
+    "doi": "10.7759/cureus.46897",
+    "sourceBody": "Cureus",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10802877/",
+    "whyItFits": "Open clinical review of plantar fasciitis covering pain pattern, the windlass test, calcaneal spurs, and ultrasound findings."
+  },
+  "whyItFits": "Open clinical review of plantar fasciitis covering pain pattern, the windlass test, calcaneal spurs, and ultrasound findings.",
+  "coverageNote": "Diagnosis, spur interpretation, and examination are grounded. A specific first-line injection protocol was not quoted because a clear 'first-line' sentence was not used.",
+  "rejectedInAppHints": "In-app partial keyword hits were not a plantar fasciitis guideline.",
+  "sourceFile": "source.txt"
+}

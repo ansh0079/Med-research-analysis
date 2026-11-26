@@ -1,0 +1,21 @@
+{
+  "catalogueId": "536",
+  "spreadsheetRow": 131,
+  "topic": "NSAID gastrointestinal and renal toxicity: COX-2 selectivity, PPI co-prescription, renal monitoring",
+  "specialty": "Rheumatology",
+  "decision": "downloaded_open_source",
+  "source": {
+    "title": "Safe prescribing of non-steroidal anti-inflammatory drugs in patients with osteoarthritis – an expert consensus addressing benefits as well as gastrointestinal and cardiovascular risks",
+    "year": 2015,
+    "pmid": "25857826",
+    "pmcid": "PMC4365808",
+    "doi": "10.1186/s12916-015-0285-8",
+    "sourceBody": "BMC Medicine",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4365808/",
+    "whyItFits": "Open expert consensus on safe NSAID prescribing that addresses COX-2 selectivity, upper-GI risk strategies including gastroprotection and PPI co-prescription, and names the kidney among NSAID adverse-reaction sites."
+  },
+  "whyItFits": "Open expert consensus on safe NSAID prescribing that addresses COX-2 selectivity, upper-GI risk strategies including gastroprotection and PPI co-prescription, and names the kidney among NSAID adverse-reaction sites.",
+  "coverageNote": "Gastrointestinal risk reduction, COX-2 selection, and PPI co-prescription are explicit. Renal toxicity is named, but no monitoring interval is given, so none was invented.",
+  "rejectedInAppHints": "In-app hits were off-target (for example a fruquintinib toxicity meta-analysis). The suggested Lanza ulcer-prevention guideline was not in PMC.",
+  "sourceFile": "source.txt"
+}

@@ -1,0 +1,149 @@
+{
+  "reviewState": "unreviewed",
+  "method": "Hand-written single-best-answer MCQs grounded only in the accepted open full text.",
+  "topic": {
+    "topicKey": "sle-slicc-2012-and-acr-eular-2019-classification-criteria-compared",
+    "topicDisplayName": "SLE: SLICC 2012 and ACR/EULAR 2019 classification criteria compared",
+    "catalogueId": "2007",
+    "aliases": [],
+    "storedRowCount": 0,
+    "coverageNote": "Direct comparison of the 2019 structure with SLICC 2012 and ACR 1997. The SLICC derivation paper alone cannot describe the 2019 criteria.",
+    "mcqs": [
+      {
+        "id": "c2007-01",
+        "question": "What immunologic rule did SLICC 2012 add, as summarized in the 2019 paper?",
+        "options": {
+          "A": "At least one immunologic criterion is required, and histology-compatible nephritis plus ANA or anti-dsDNA is sufficient to classify SLE",
+          "B": "ANA must be negative",
+          "C": "Four clinical criteria and no antibodies",
+          "D": "Anti-Sm is mandatory in every case",
+          "E": "Nephritis excludes classification"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "At least one immunologic criterion is required, and histology-compatible nephritis plus ANA or anti-dsDNA is sufficient to classify SLE",
+        "explanation": "SLICC required at least one immunologic criterion and allowed histology-proven compatible nephritis plus ANA or anti-dsDNA to classify SLE.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Arthritis & Rheumatology",
+            "sourceYear": 2019,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6827566/",
+            "pmid": "31385462",
+            "pmcid": "PMC6827566",
+            "doi": "10.1002/art.40930",
+            "status": "open_full_text",
+            "excerpt": "requiring at least one immunological criterion to be present, and categorized histology-proven nephritis compatible with SLE as sufficient for classification, if anti-nuclear antibodies (ANA) or antibodies to double-stranded DNA (dsDNA) were present."
+          }
+        ]
+      },
+      {
+        "id": "c2007-02",
+        "question": "How did SLICC sensitivity and specificity compare with the 1997 ACR criteria?",
+        "options": {
+          "A": "Higher sensitivity and lower specificity",
+          "B": "Lower sensitivity and higher specificity",
+          "C": "Both sensitivity and specificity were higher",
+          "D": "The sets performed identically",
+          "E": "Specificity was not compared"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "Higher sensitivity and lower specificity",
+        "explanation": "SLICC increased sensitivity and had lower specificity than the 1997 ACR criteria.",
+        "difficulty": "easy",
+        "sourceRefs": [
+          {
+            "sourceBody": "Arthritis & Rheumatology",
+            "sourceYear": 2019,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6827566/",
+            "pmid": "31385462",
+            "pmcid": "PMC6827566",
+            "doi": "10.1002/art.40930",
+            "status": "open_full_text",
+            "excerpt": "While achieving their goal of increasing sensitivity, the SLICC criteria have lower specificity than the 1997 ACR criteria"
+          }
+        ]
+      },
+      {
+        "id": "c2007-03",
+        "question": "Why did the 2019 criteria use a positive ANA as an entry criterion?",
+        "options": {
+          "A": "ANA has high sensitivity and limited specificity, and the structure was thought to reflect SLE pathogenesis",
+          "B": "ANA has perfect specificity",
+          "C": "ANA-negative SLE is the most common subset",
+          "D": "ANA replaces anti-dsDNA",
+          "E": "Entry criteria were rejected"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "ANA has high sensitivity and limited specificity, and the structure was thought to reflect SLE pathogenesis",
+        "explanation": "A positive ANA entry criterion was chosen to reflect pathogenesis and ANA's high sensitivity with limited specificity.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Arthritis & Rheumatology",
+            "sourceYear": 2019,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6827566/",
+            "pmid": "31385462",
+            "pmcid": "PMC6827566",
+            "doi": "10.1002/art.40930",
+            "status": "open_full_text",
+            "excerpt": "Such an approach was thought to reflect underlying SLE pathogenesis, and take into account ANA test characteristics of high sensitivity and limited specificity."
+          }
+        ]
+      },
+      {
+        "id": "c2007-04",
+        "question": "Why were 2019 criteria weighted rather than counted equally?",
+        "options": {
+          "A": "Items are not equally useful; mucosal ulcers and biopsy-proven nephritis were the example given",
+          "B": "Weights were required by regulators and have no clinical meaning",
+          "C": "Every item has the same weight by design",
+          "D": "Only laboratory items are scored",
+          "E": "Weighting was tried and abandoned"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "Items are not equally useful; mucosal ulcers and biopsy-proven nephritis were the example given",
+        "explanation": "Individual criteria were not expected to be equally useful, for example mucosal ulcers versus biopsy-proven lupus nephritis, so weighted criteria were developed.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Arthritis & Rheumatology",
+            "sourceYear": 2019,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6827566/",
+            "pmid": "31385462",
+            "pmcid": "PMC6827566",
+            "doi": "10.1002/art.40930",
+            "status": "open_full_text",
+            "excerpt": "we expected individual criteria would not be of equal utility (weight) for the classification of"
+          }
+        ]
+      },
+      {
+        "id": "c2007-05",
+        "question": "In whom do existing SLE classification criteria perform better, according to this paper?",
+        "options": {
+          "A": "Longstanding disease more than new-onset SLE",
+          "B": "New-onset disease more than longstanding disease",
+          "C": "Children only",
+          "D": "ANA-negative patients only",
+          "E": "Performance does not vary by disease duration"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "Longstanding disease more than new-onset SLE",
+        "explanation": "Existing criteria perform better in longstanding disease than in new-onset SLE, which is why the 2019 project enriched samples for early disease.",
+        "difficulty": "hard",
+        "sourceRefs": [
+          {
+            "sourceBody": "Arthritis & Rheumatology",
+            "sourceYear": 2019,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6827566/",
+            "pmid": "31385462",
+            "pmcid": "PMC6827566",
+            "doi": "10.1002/art.40930",
+            "status": "open_full_text",
+            "excerpt": "Existing SLE classification criteria perform better in patients with longstanding disease than in new-onset SLE"
+          }
+        ]
+      }
+    ]
+  }
+}

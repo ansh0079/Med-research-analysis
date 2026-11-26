@@ -1,0 +1,23 @@
+{
+  "catalogueId": "723",
+  "topic": "Osteoarthritis: pathophysiology, risk factors, radiographic grading, pharmacological management",
+  "groundedIn": "33560326",
+  "synopsis": "This JAMA review of hip and knee osteoarthritis separates clinical diagnosis from radiographs and then describes both. Older age and female sex are risk factors for hip and for knee OA. Congenital or acquired anatomic abnormalities, such as hip dysplasia, are additional risk factors for hip OA. African Americans and white people have similar hip-OA prevalence after accounting for race, sex, and body mass index, whereas African Americans, especially women, have a higher prevalence of knee OA. For research grading, Kellgren-Lawrence grade 0 is no pathologic findings, grade 1 questionable osteophytes, grade 2 definite osteophytes, grade 3 definite joint-space narrowing, and grade 4 advanced joint-space narrowing. NSAIDs are called first-line pharmacologic treatment, with a moderate effect versus placebo (standardized mean difference about 0.33). Topical NSAIDs generally have less gastrointestinal toxicity than oral NSAIDs but are less useful for the hip because the joint is recessed. The review also notes that knee OA after an anterior cruciate ligament tear may be mechanistically distinct from obesity-associated OA.",
+  "teachingPoints": [
+    {
+      "claim": "Kellgren-Lawrence grades run from 0 (no findings) to 4 (advanced joint-space narrowing).",
+      "sourceExcerpt": "grade 0 representing no pathologic findings; Grade 1 questionable osteophytes; Grade 2 definite osteophytes; Grade 3, definite joint space narrowing; and Grade 4 advanced joint space narrowing."
+    },
+    {
+      "claim": "Older age and female sex are risk factors for both hip and knee OA; hip dysplasia is a hip-specific anatomic risk.",
+      "sourceExcerpt": "Older age and female sex are risk factors for hip OA as well as knee OA. In addition, congenital and acquired anatomic abnormalities (e.g. hip dysplasia) are risk factors for hip OA."
+    },
+    {
+      "claim": "NSAIDs are first-line drugs; topical NSAIDs have less GI toxicity but are less useful at the hip.",
+      "sourceExcerpt": "Non-steroidal anti-inflammatory drugs (NSAIDs) are first line pharmacologic treatment for OA. ... Topical NSAIDs generally have less gastrointestinal toxicity than oral NSAIDs, but are less useful in hip OA because the joint is recessed."
+    }
+  ],
+  "uncertaintiesNotedInSource": [
+    "The review states OA has more than one phenotype, so a single mechanism does not explain every case."
+  ]
+}

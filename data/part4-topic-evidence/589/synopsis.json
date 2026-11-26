@@ -1,0 +1,23 @@
+{
+  "catalogueId": "589",
+  "topic": "RA treat-to-target strategy: DAS28, SDAI, CDAI remission thresholds",
+  "groundedIn": "25969430",
+  "synopsis": "The 2014 update reviews evidence that aiming at a specific disease-activity target improves outcomes compared with usual care. Studies in early rheumatoid arthritis that targeted remission by DAS or DAS28, a study that targeted low disease activity, and a late-RA cohort treated to DAS28 <2.6 all supported targeted therapy over conventional care. The task force agreed that composite measures should generally be used, in particular CDAI, DAS, DAS28, or SDAI. Participants disagreed about remission definitions: some would not dismiss DAS or DAS28 remission, while others preferred the newer Boolean or SDAI-based ACR/EULAR definition. The text notes that Boolean criteria without CRP, and CDAI remission, were presented for clinical practice as well as trials. This update names those instruments but does not itself print numeric SDAI or CDAI cut-offs in the passages used here; DAS28 <2.6 is the numeric remission target explicitly attached to the late-RA comparison.",
+  "teachingPoints": [
+    {
+      "claim": "Targeted therapy, including a DAS28 <2.6 target in late RA, beat conventional care in the studies reviewed.",
+      "sourceExcerpt": "one comparative cohort study addressed treatment to target of DAS28 <2.6 versus conventional therapy in late RA; all these studies confirmed that a targeted therapy is superior to conventional therapeutic approaches"
+    },
+    {
+      "claim": "CDAI, DAS, DAS28, or SDAI should generally be used.",
+      "sourceExcerpt": "composite measures, in particular Clinical Disease Activity Index (CDAI), DAS, DAS28 or Simplified Disease Activity Index (SDAI), should be generally used to assess disease activity"
+    },
+    {
+      "claim": "Boolean or SDAI remission and DAS28 remission were both defended.",
+      "sourceExcerpt": "several participants felt that ... one should not dismiss DAS and DAS28 remission, while others were of the opinion that the new definition of remission (Boolean or SDAI-based) should be used"
+    }
+  ],
+  "uncertaintiesNotedInSource": [
+    "Numeric SDAI ≤3.3 and CDAI ≤2.8 cut-offs are not printed in the passages used, so they are not asked."
+  ]
+}

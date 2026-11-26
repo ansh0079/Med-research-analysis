@@ -1,0 +1,149 @@
+{
+  "reviewState": "unreviewed",
+  "method": "Hand-written single-best-answer MCQs grounded only in the accepted open full text.",
+  "topic": {
+    "topicKey": "polymyositis-differentiation",
+    "topicDisplayName": "Polymyositis differentiation",
+    "catalogueId": "549",
+    "aliases": [],
+    "storedRowCount": 0,
+    "coverageNote": "Differentiates polymyositis within the inflammatory myopathy subgroups using the 2017 probability model. Polymyalgia rheumatica referral criteria were not used.",
+    "mcqs": [
+      {
+        "id": "c549-01",
+        "question": "Which adult subgroups does the criteria paper name as the most common idiopathic inflammatory myopathies?",
+        "options": {
+          "A": "Dermatomyositis, polymyositis, and inclusion-body myositis",
+          "B": "Polymyalgia rheumatica, giant-cell arteritis, and gout",
+          "C": "Only dermatomyositis",
+          "D": "Fibromyalgia and osteoarthritis",
+          "E": "Anti-synthetase syndrome is the only recognized subgroup"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "Dermatomyositis, polymyositis, and inclusion-body myositis",
+        "explanation": "The most common adult subgroups are dermatomyositis, polymyositis, and inclusion-body myositis; juvenile dermatomyositis is the childhood subgroup named.",
+        "difficulty": "easy",
+        "sourceRefs": [
+          {
+            "sourceBody": "Arthritis & Rheumatology",
+            "sourceYear": 2017,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5846474/",
+            "pmid": "29106061",
+            "pmcid": "PMC5846474",
+            "doi": "10.1002/art.40320",
+            "status": "open_full_text",
+            "excerpt": "The most common subgroups in adults are dermatomyositis (DM), polymyositis (PM), and inclusion body myositis"
+          }
+        ]
+      },
+      {
+        "id": "c549-02",
+        "question": "Which candidate classification structure was kept?",
+        "options": {
+          "A": "The probability-score model, because it discriminated better than an item count or a tree",
+          "B": "A classification tree only",
+          "C": "Bohan and Peter criteria unchanged",
+          "D": "A single mandatory muscle biopsy with no score",
+          "E": "Antibody status alone"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "The probability-score model, because it discriminated better than an item count or a tree",
+        "explanation": "Item-count, probability-score, and tree models were examined. The probability-score model had superior discriminating performance, so the others were set aside.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Arthritis & Rheumatology",
+            "sourceYear": 2017,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5846474/",
+            "pmid": "29106061",
+            "pmcid": "PMC5846474",
+            "doi": "10.1002/art.40320",
+            "status": "open_full_text",
+            "excerpt": "Due to the observed superior discriminating performance of the probability-score model, the other models were set aside."
+          }
+        ]
+      },
+      {
+        "id": "c549-03",
+        "question": "How is the probability of idiopathic inflammatory myopathy calculated when a muscle-biopsy score is included?",
+        "options": {
+          "A": "1 / [1 + exponential(5.33 − score)]",
+          "B": "Score divided by 100",
+          "C": "1 / [1 + exponential(6.49 − score)], which is the formula without biopsy",
+          "D": "A positive ANA alone equals 100%",
+          "E": "The paper does not provide a formula"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "1 / [1 + exponential(5.33 − score)]",
+        "explanation": "With muscle biopsy, probability = 1 / [1 + exponential(5.33 − score)]. Without biopsy the constant is 6.49.",
+        "difficulty": "hard",
+        "sourceRefs": [
+          {
+            "sourceBody": "Arthritis & Rheumatology",
+            "sourceYear": 2017,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5846474/",
+            "pmid": "29106061",
+            "pmcid": "PMC5846474",
+            "doi": "10.1002/art.40320",
+            "status": "open_full_text",
+            "excerpt": "Probability of IIM including muscle biopsy = 1 / [ 1 + exponential ( 5.33 - score ) ] or, Probability of IIM without muscle biopsy = 1 / [ 1 + exponential ( 6.49 - score ) ]"
+          }
+        ]
+      },
+      {
+        "id": "c549-04",
+        "question": "What probability cut-point gave the best sensitivity-specificity balance for the criteria without biopsy?",
+        "options": {
+          "A": "55–60%",
+          "B": "10%",
+          "C": "95–99%",
+          "D": "Any score above zero",
+          "E": "A cut-point was not evaluated"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "55–60%",
+        "explanation": "The best balance between sensitivity and specificity was at a probability of 55–60% for the criteria without muscle biopsy.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Arthritis & Rheumatology",
+            "sourceYear": 2017,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5846474/",
+            "pmid": "29106061",
+            "pmcid": "PMC5846474",
+            "doi": "10.1002/art.40320",
+            "status": "open_full_text",
+            "excerpt": "The best balance between sensitivity and specificity was found for a probability of 55–60% for the criteria n"
+          }
+        ]
+      },
+      {
+        "id": "c549-05",
+        "question": "Why were new criteria needed, according to the introduction?",
+        "options": {
+          "A": "Well-defined patient groups are a prerequisite for trials, and existing diagnostic schemes varied widely",
+          "B": "Polymyositis had been removed as a diagnosis",
+          "C": "Muscle enzymes are no longer measured",
+          "D": "Inclusion-body myositis is the same disease as polymyalgia rheumatica",
+          "E": "Classification is unnecessary if weakness is present"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "Well-defined patient groups are a prerequisite for trials, and existing diagnostic schemes varied widely",
+        "explanation": "The paper says a prerequisite for clinical studies is well-defined patient groups, and a wide variety of diagnostic or classification criteria had been in use.",
+        "difficulty": "easy",
+        "sourceRefs": [
+          {
+            "sourceBody": "Arthritis & Rheumatology",
+            "sourceYear": 2017,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5846474/",
+            "pmid": "29106061",
+            "pmcid": "PMC5846474",
+            "doi": "10.1002/art.40320",
+            "status": "open_full_text",
+            "excerpt": "A prerequisite for clinical trials and other clinical studies is the inclusion of well-defined patient groups. A wide variety of diagnostic or classifi"
+          }
+        ]
+      }
+    ]
+  }
+}

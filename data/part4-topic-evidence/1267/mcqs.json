@@ -1,0 +1,149 @@
+{
+  "reviewState": "unreviewed",
+  "method": "Hand-written single-best-answer MCQs grounded only in the accepted open full text.",
+  "topic": {
+    "topicKey": "trochanteric-bursitis",
+    "topicDisplayName": "Trochanteric Bursitis",
+    "catalogueId": "1267",
+    "aliases": [],
+    "storedRowCount": 0,
+    "coverageNote": "Trochanteric bursitis is handled as part of GTPS, which is the diagnosis the source says should replace isolated-bursitis labelling.",
+    "mcqs": [
+      {
+        "id": "c1267-01",
+        "question": "How does this review define the scope of greater trochanteric pain syndrome?",
+        "options": {
+          "A": "Peritrochanteric disorders including trochanteric bursitis, abductor tendon pathology, and external snapping hip",
+          "B": "Isolated septic arthritis of the hip",
+          "C": "Osteoarthritis of the knee referred to the hip",
+          "D": "Only fracture of the greater trochanter",
+          "E": "Iliopsoas bursitis alone"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "Peritrochanteric disorders including trochanteric bursitis, abductor tendon pathology, and external snapping hip",
+        "explanation": "GTPS describes disorders of the peritrochanteric space, including trochanteric bursitis, abductor tendon pathology, and external coxa saltans.",
+        "difficulty": "easy",
+        "sourceRefs": [
+          {
+            "sourceBody": "SAGE Open Medicine",
+            "sourceYear": 2021,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8182177/",
+            "pmid": "34158938",
+            "pmcid": "PMC8182177",
+            "doi": "10.1177/20503121211022582",
+            "status": "open_full_text",
+            "excerpt": "Greater trochanteric pain syndrome (GTPS) is a general term used to describe disorders of the peritrochanteric space, including trochanteric bursitis, abductor tendon pathology, and external coxa saltans."
+          }
+        ]
+      },
+      {
+        "id": "c1267-02",
+        "question": "What have radiographic and histologic studies shown about isolated trochanteric bursitis?",
+        "options": {
+          "A": "The bursae are rarely affected in isolation; distention is usually associated with tendon pathology",
+          "B": "Every case of lateral hip pain is isolated bursitis",
+          "C": "The bursa is never involved",
+          "D": "Tendon tears exclude bursitis",
+          "E": "Histology shows infection in most bursae"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "The bursae are rarely affected in isolation; distention is usually associated with tendon pathology",
+        "explanation": "The trochanteric bursae are rarely affected in isolation. Bursal distention is most commonly associated with tendon pathology.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "SAGE Open Medicine",
+            "sourceYear": 2021,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8182177/",
+            "pmid": "34158938",
+            "pmcid": "PMC8182177",
+            "doi": "10.1177/20503121211022582",
+            "status": "open_full_text",
+            "excerpt": "the trochanteric bursae are rarely affected in isolation"
+          }
+        ]
+      },
+      {
+        "id": "c1267-03",
+        "question": "In the surgical series summarized here, how common were gluteus medius tendinopathy and bursitis with tendinopathy?",
+        "options": {
+          "A": "Gluteus medius tendinopathy in 62.5%, and trochanteric bursitis with tendinopathy in 8.3%",
+          "B": "Isolated bursitis in 90%",
+          "C": "Tendinopathy in 8.3% and bursitis in 62.5%",
+          "D": "Neither finding occurred",
+          "E": "The series found only fractures"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "Gluteus medius tendinopathy in 62.5%, and trochanteric bursitis with tendinopathy in 8.3%",
+        "explanation": "The review reports gluteus medius tendinopathy in 62.5% and trochanteric bursitis with concomitant tendinopathy in 8.3% of that surgical series.",
+        "difficulty": "hard",
+        "sourceRefs": [
+          {
+            "sourceBody": "SAGE Open Medicine",
+            "sourceYear": 2021,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8182177/",
+            "pmid": "34158938",
+            "pmcid": "PMC8182177",
+            "doi": "10.1177/20503121211022582",
+            "status": "open_full_text",
+            "excerpt": "62.5% had gluteus medius tendinopathy, and 8.3% had trochanteric bursitis with concomitant tendinopathy"
+          }
+        ]
+      },
+      {
+        "id": "c1267-04",
+        "question": "Which conservative treatments does the review say many patients have already failed?",
+        "options": {
+          "A": "Physical therapy, NSAIDs, and corticosteroid injections",
+          "B": "Only antibiotics",
+          "C": "Immediate tendon repair",
+          "D": "Joint replacement",
+          "E": "The review says conservative care is never used"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "Physical therapy, NSAIDs, and corticosteroid injections",
+        "explanation": "Many patients demonstrate symptoms refractory to physical therapy, NSAIDs, and corticosteroid injections.",
+        "difficulty": "easy",
+        "sourceRefs": [
+          {
+            "sourceBody": "SAGE Open Medicine",
+            "sourceYear": 2021,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8182177/",
+            "pmid": "34158938",
+            "pmcid": "PMC8182177",
+            "doi": "10.1177/20503121211022582",
+            "status": "open_full_text",
+            "excerpt": "many demonstrate symptoms refractory to physical therapy, non-steroidal anti-inflammatory drugs (NSAIDs), and corticosteroid injections"
+          }
+        ]
+      },
+      {
+        "id": "c1267-05",
+        "question": "In the 120-patient comparison, what recovery difference did adding a corticosteroid injection make at 3 months?",
+        "options": {
+          "A": "55% strongly or fully recovered with the injection versus 34% with analgesics and physical therapy alone",
+          "B": "34% recovered with the injection versus 55% without it",
+          "C": "No difference at 3 months",
+          "D": "Both groups reached 90%",
+          "E": "The injection group had more pain and no recovery difference"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "55% strongly or fully recovered with the injection versus 34% with analgesics and physical therapy alone",
+        "explanation": "At 3 months, 55% of the corticosteroid-injection group had strongly or fully recovered, compared with 34% of the analgesics and physical therapy group, and the injection group reported greater pain improvement.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "SAGE Open Medicine",
+            "sourceYear": 2021,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8182177/",
+            "pmid": "34158938",
+            "pmcid": "PMC8182177",
+            "doi": "10.1177/20503121211022582",
+            "status": "open_full_text",
+            "excerpt": "55% of the CSI group had strongly or fully recovered at 3 months compared with 34% of the solely analgesics and physical therapy group"
+          }
+        ]
+      }
+    ]
+  }
+}

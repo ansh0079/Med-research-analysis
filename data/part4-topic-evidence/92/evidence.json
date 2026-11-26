@@ -1,0 +1,21 @@
+{
+  "catalogueId": "92",
+  "spreadsheetRow": 167,
+  "topic": "Total joint replacement in OA: indications, outcomes, complications, revision rates",
+  "specialty": "Rheumatology",
+  "decision": "downloaded_open_source",
+  "source": {
+    "title": "Osteoarthritis in over 16s: diagnosis and management (NICE NG226)",
+    "year": 2022,
+    "pmid": null,
+    "pmcid": null,
+    "doi": null,
+    "sourceBody": "NICE",
+    "url": "https://www.nice.org.uk/guidance/ng226",
+    "whyItFits": "Open NICE osteoarthritis guideline whose referral-for-joint-replacement recommendations state when to refer and which factors must not exclude referral."
+  },
+  "whyItFits": "Open NICE osteoarthritis guideline whose referral-for-joint-replacement recommendations state when to refer and which factors must not exclude referral.",
+  "coverageNote": "Indications for referral are grounded in NG226. Numeric outcomes, complication rates, and revision rates are not in this recommendations chapter and are not invented.",
+  "rejectedInAppHints": "NG157 discusses shared decision and perioperative care for people already offered replacement. It was not used as the indication source. No in-app NG226 full text was the accepted document.",
+  "sourceFile": "source.txt"
+}

@@ -1,0 +1,149 @@
+{
+  "reviewState": "unreviewed",
+  "method": "Hand-written single-best-answer MCQs grounded only in the accepted open full text.",
+  "topic": {
+    "topicKey": "pyoderma-gangrenosum",
+    "topicDisplayName": "Pyoderma Gangrenosum",
+    "catalogueId": "1055",
+    "aliases": [],
+    "storedRowCount": 0,
+    "coverageNote": "Diagnosis frameworks and first-line systemic therapy are both in the review. A short 'guide to diagnosis' PMC record contained only an abstract and was not used.",
+    "mcqs": [
+      {
+        "id": "c1055-01",
+        "question": "Which diagnostic aids does the review cite?",
+        "options": {
+          "A": "An international Delphi consensus, and the PARACELSUS score aimed especially at distinguishing venous leg ulcers",
+          "B": "A mandatory skin culture that proves the diagnosis",
+          "C": "Anti-dsDNA as a required criterion",
+          "D": "Only wound size over 10 cm",
+          "E": "No diagnostic discussion is included"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "An international Delphi consensus, and the PARACELSUS score aimed especially at distinguishing venous leg ulcers",
+        "explanation": "Diagnosis is supported by an international expert Delphi consensus, and PARACELSUS was proposed particularly for the differential diagnosis with venous leg ulcers.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "American Journal of Clinical Dermatology",
+            "sourceYear": 2022,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9464730/",
+            "pmid": "35606650",
+            "pmcid": "PMC9464730",
+            "doi": "10.1007/s40257-022-00699-8",
+            "status": "open_full_text",
+            "excerpt": "Another set of criteria, the PARACELSUS score, has been proposed by a German group, particularly for the differential diagnosis with venous leg ulcers"
+          }
+        ]
+      },
+      {
+        "id": "c1055-02",
+        "question": "In STOP GAP, which regimens were compared?",
+        "options": {
+          "A": "Oral prednisolone 0.75 mg/kg/day versus cyclosporine 4 mg/kg/day",
+          "B": "Infliximab versus placebo only",
+          "C": "Topical steroid versus surgery",
+          "D": "Prednisolone 5 mg versus cyclosporine 1 mg/kg",
+          "E": "Adalimumab versus methotrexate"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "Oral prednisolone 0.75 mg/kg/day versus cyclosporine 4 mg/kg/day",
+        "explanation": "Patients received oral prednisolone 0.75 mg/kg/day or cyclosporine 4 mg/kg/day.",
+        "difficulty": "easy",
+        "sourceRefs": [
+          {
+            "sourceBody": "American Journal of Clinical Dermatology",
+            "sourceYear": 2022,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9464730/",
+            "pmid": "35606650",
+            "pmcid": "PMC9464730",
+            "doi": "10.1007/s40257-022-00699-8",
+            "status": "open_full_text",
+            "excerpt": "patients either received oral prednisolone 0.75 mg/kg/day or cyclosporine 4 mg/kg/day."
+          }
+        ]
+      },
+      {
+        "id": "c1055-03",
+        "question": "What was the primary comparative result of STOP GAP as stated here?",
+        "options": {
+          "A": "No difference in speed of healing over 6 weeks or in the other listed clinical outcomes",
+          "B": "Cyclosporine healed ulcers twice as fast",
+          "C": "Prednisolone prevented all recurrences",
+          "D": "Both drugs healed every ulcer by 6 weeks",
+          "E": "The trial was stopped for excess mortality with prednisolone"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "No difference in speed of healing over 6 weeks or in the other listed clinical outcomes",
+        "explanation": "There was no difference in speed of healing over 6 weeks, time to healing, response, inflammation, pain, quality of life, failures, or time to recurrence.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "American Journal of Clinical Dermatology",
+            "sourceYear": 2022,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9464730/",
+            "pmid": "35606650",
+            "pmcid": "PMC9464730",
+            "doi": "10.1007/s40257-022-00699-8",
+            "status": "open_full_text",
+            "excerpt": "There was no difference between the two treatments in terms of speed of healing over 6 weeks, time to healing, treatment response, inflammation resolution, pain, quality of life, treatment failures, and time to recurrence."
+          }
+        ]
+      },
+      {
+        "id": "c1055-04",
+        "question": "What longer-term healing and recurrence figures does the review give for STOP GAP?",
+        "options": {
+          "A": "Almost half unhealed at 6 months, and almost a third recurred, median 582 days in both groups",
+          "B": "All ulcers healed by 6 weeks with no recurrence",
+          "C": "Recurrence only in the cyclosporine arm at 30 days",
+          "D": "Healing in 90% by month 1",
+          "E": "Recurrence was not recorded"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "Almost half unhealed at 6 months, and almost a third recurred, median 582 days in both groups",
+        "explanation": "Almost half on systemic corticosteroid or cyclosporine had unhealed ulcers at 6 months, and almost a third recurred, with median time to recurrence 582 days in both groups.",
+        "difficulty": "hard",
+        "sourceRefs": [
+          {
+            "sourceBody": "American Journal of Clinical Dermatology",
+            "sourceYear": 2022,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9464730/",
+            "pmid": "35606650",
+            "pmcid": "PMC9464730",
+            "doi": "10.1007/s40257-022-00699-8",
+            "status": "open_full_text",
+            "excerpt": "almost half of the enrolled patients receiving systemic CS or cyclosporine did not obtain healing of PG ulcers at 6 months, and almost a third of patients in both treatment groups developed a disease recurrence, with a median time to recurrence of 582 days in both groups."
+          }
+        ]
+      },
+      {
+        "id": "c1055-05",
+        "question": "What pulse-corticosteroid regimen is described?",
+        "options": {
+          "A": "Intravenous methylprednisolone 1000 mg for 3–5 consecutive days, then oral corticosteroid",
+          "B": "Hydrocortisone 10 mg once",
+          "C": "Dexamethasone mouthwash only",
+          "D": "Intramuscular triamcinolone every week for a year",
+          "E": "Pulse steroids are said to be contraindicated"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "Intravenous methylprednisolone 1000 mg for 3–5 consecutive days, then oral corticosteroid",
+        "explanation": "Pulse therapy with 1000 mg intravenous methylprednisolone for 3–5 consecutive days, followed by oral corticosteroid, may act faster and help taper the oral drug.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "American Journal of Clinical Dermatology",
+            "sourceYear": 2022,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9464730/",
+            "pmid": "35606650",
+            "pmcid": "PMC9464730",
+            "doi": "10.1007/s40257-022-00699-8",
+            "status": "open_full_text",
+            "excerpt": "Pulse therapy with 1000 mg of intravenous methylprednisolone for 3–5 consecutive days, followed by oral CS, may have a faster onset of action and may also help taper oral CS"
+          }
+        ]
+      }
+    ]
+  }
+}

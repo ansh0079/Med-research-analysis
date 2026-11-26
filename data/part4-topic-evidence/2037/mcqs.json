@@ -1,0 +1,149 @@
+{
+  "reviewState": "unreviewed",
+  "method": "Hand-written single-best-answer MCQs grounded only in the accepted open full text.",
+  "topic": {
+    "topicKey": "tnf-and-il-17-inhibitors-in-axspa-secukinumab-ixekizumab-comparative-e",
+    "topicDisplayName": "TNF and IL-17 inhibitors in axSpA: secukinumab, ixekizumab, comparative efficacy",
+    "catalogueId": "2037",
+    "aliases": [],
+    "storedRowCount": 0,
+    "coverageNote": "Comparative statements are the review's own summary, not a head-to-head trial. Trial percentages are those the review reports.",
+    "mcqs": [
+      {
+        "id": "c2037-01",
+        "question": "How does this review position TNF inhibitors and IL-17 inhibitors for axial disease?",
+        "options": {
+          "A": "TNF inhibitors are a well-established first-line biologic; IL-17 inhibitors provide comparable efficacy for axial disease",
+          "B": "IL-17 inhibitors replace TNF inhibitors because TNF inhibitors have no axial efficacy",
+          "C": "Neither class is effective for axial disease",
+          "D": "TNF inhibitors are used only for psoriasis and never for the spine",
+          "E": "IL-17 inhibitors are contraindicated in ankylosing spondylitis"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "TNF inhibitors are a well-established first-line biologic; IL-17 inhibitors provide comparable efficacy for axial disease",
+        "explanation": "TNF inhibitors remain a well-established first-line biologic. IL-17 inhibitors provide comparable efficacy for axial disease and are particularly advantageous when psoriasis is significant or tuberculosis risk is increased.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Frontiers in Pharmacology",
+            "sourceYear": 2026,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC13553827/",
+            "pmid": "42719014",
+            "pmcid": "PMC13553827",
+            "doi": "10.3389/fphar.2026.1865621",
+            "status": "open_full_text",
+            "excerpt": "TNF inhibitors remain a well-established first-line biologic option with extensive long-term data and proven efficacy for extra-articular manifestations such as uveitis and IBD. Similarly, IL-17 inhibitors provide comparable efficacy for axial disease"
+          }
+        ]
+      },
+      {
+        "id": "c2037-02",
+        "question": "Which extra-articular manifestations does the review specifically attach to the long-term efficacy of TNF inhibitors?",
+        "options": {
+          "A": "Uveitis and inflammatory bowel disease",
+          "B": "Asthma and eczema",
+          "C": "Gout and pseudogout",
+          "D": "Meniere disease",
+          "E": "None; the review says TNF inhibitors worsen uveitis"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "Uveitis and inflammatory bowel disease",
+        "explanation": "The review cites proven TNF-inhibitor efficacy for extra-articular manifestations such as uveitis and IBD.",
+        "difficulty": "easy",
+        "sourceRefs": [
+          {
+            "sourceBody": "Frontiers in Pharmacology",
+            "sourceYear": 2026,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC13553827/",
+            "pmid": "42719014",
+            "pmcid": "PMC13553827",
+            "doi": "10.3389/fphar.2026.1865621",
+            "status": "open_full_text",
+            "excerpt": "proven efficacy for extra-articular manifestations such as uveitis and IBD"
+          }
+        ]
+      },
+      {
+        "id": "c2037-03",
+        "question": "What week-16 ASAS20 result does the review give for secukinumab in MEASURE 1 and 2?",
+        "options": {
+          "A": "Approximately 60–61% with secukinumab 150 mg and 75 mg versus 29% with placebo",
+          "B": "Approximately 10% with secukinumab versus 80% with placebo",
+          "C": "Secukinumab was inferior to placebo",
+          "D": "ASAS20 was not an endpoint",
+          "E": "100% of placebo patients responded"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "Approximately 60–61% with secukinumab 150 mg and 75 mg versus 29% with placebo",
+        "explanation": "In MEASURE 1 and 2, ASAS20 at week 16 was approximately 60–61% with secukinumab 150 mg and 75 mg versus 29% with placebo. ASAS40 was approximately 28–36% versus 11%.",
+        "difficulty": "hard",
+        "sourceRefs": [
+          {
+            "sourceBody": "Frontiers in Pharmacology",
+            "sourceYear": 2026,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC13553827/",
+            "pmid": "42719014",
+            "pmcid": "PMC13553827",
+            "doi": "10.3389/fphar.2026.1865621",
+            "status": "open_full_text",
+            "excerpt": "ASAS20 response at week 16 was approximately 60%–61% with secukinumab 150 mg and 75 mg compared with 29% with placebo"
+          }
+        ]
+      },
+      {
+        "id": "c2037-04",
+        "question": "What did COAST-X show for ixekizumab in non-radiographic axial spondyloarthritis, as summarized here?",
+        "options": {
+          "A": "ASAS40 of 35–40% at week 16 with 80 mg every 2 or 4 weeks, versus 19% with placebo",
+          "B": "No difference from placebo at week 16",
+          "C": "Ixekizumab is approved only for rheumatoid arthritis",
+          "D": "ASAS40 was 90% with placebo",
+          "E": "The trial used a 10 mg dose"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "ASAS40 of 35–40% at week 16 with 80 mg every 2 or 4 weeks, versus 19% with placebo",
+        "explanation": "Ixekizumab 80 mg every 4 weeks or every 2 weeks yielded ASAS40 rates of 35–40% at week 16 versus 19% on placebo, and the review links this to approval for active non-radiographic axial spondyloarthritis with objective inflammation.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Frontiers in Pharmacology",
+            "sourceYear": 2026,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC13553827/",
+            "pmid": "42719014",
+            "pmcid": "PMC13553827",
+            "doi": "10.3389/fphar.2026.1865621",
+            "status": "open_full_text",
+            "excerpt": "ixekizumab 80 mg every 4 weeks or every 2 weeks yielded ASAS40 response rates of 35%–40% at week 16 compared with 19% on placebo"
+          }
+        ]
+      },
+      {
+        "id": "c2037-05",
+        "question": "Which drug does the review identify as the first IL-17A inhibitor approved for ankylosing spondylitis?",
+        "options": {
+          "A": "Secukinumab",
+          "B": "Ixekizumab",
+          "C": "Adalimumab",
+          "D": "Tofacitinib",
+          "E": "Rituximab"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "Secukinumab",
+        "explanation": "The MEASURE trials established secukinumab as the first IL-17A inhibitor approved for ankylosing spondylitis.",
+        "difficulty": "easy",
+        "sourceRefs": [
+          {
+            "sourceBody": "Frontiers in Pharmacology",
+            "sourceYear": 2026,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC13553827/",
+            "pmid": "42719014",
+            "pmcid": "PMC13553827",
+            "doi": "10.3389/fphar.2026.1865621",
+            "status": "open_full_text",
+            "excerpt": "The MEASURE trials established secukinumab as the first IL-17A inhibitor approved for AS"
+          }
+        ]
+      }
+    ]
+  }
+}

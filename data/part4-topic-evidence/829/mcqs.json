@@ -1,0 +1,149 @@
+{
+  "reviewState": "unreviewed",
+  "method": "Hand-written single-best-answer MCQs grounded only in the accepted open full text.",
+  "topic": {
+    "topicKey": "scleroderma-ild-hrct-patterns-nintedanib-mycophenolate-cyclophosphamid",
+    "topicDisplayName": "Scleroderma ILD: HRCT patterns, nintedanib, mycophenolate, cyclophosphamide",
+    "catalogueId": "829",
+    "aliases": [],
+    "storedRowCount": 0,
+    "coverageNote": "HRCT is the diagnostic standard in the cited consensus. Pattern-subtype frequencies are not invented.",
+    "mcqs": [
+      {
+        "id": "c829-01",
+        "question": "What is the primary diagnostic tool for systemic-sclerosis ILD in the European consensus this paper cites?",
+        "options": {
+          "A": "Chest HRCT, supported by pulmonary function tests",
+          "B": "Chest radiograph alone",
+          "C": "Serum KL-6 without imaging",
+          "D": "Bronchoscopy in every patient before any imaging",
+          "E": "Six-minute-walk distance alone"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "Chest HRCT, supported by pulmonary function tests",
+        "explanation": "Chest HRCT is the primary diagnostic tool, supported by PFTs for screening and diagnosis.",
+        "difficulty": "easy",
+        "sourceRefs": [
+          {
+            "sourceBody": "Respiratory Research",
+            "sourceYear": 2023,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9830797/",
+            "pmid": "36624431",
+            "pmcid": "PMC9830797",
+            "doi": "10.1186/s12931-023-02319-3",
+            "status": "open_full_text",
+            "excerpt": "chest high-resolution computed tomography (HRCT) as the primary diagnostic tool for SSc-ILD, supported by pulmonary function tests (PFTs) for screening and diagnosis"
+          }
+        ]
+      },
+      {
+        "id": "c829-02",
+        "question": "Which lung-function changes suggest progression?",
+        "options": {
+          "A": "Declining FVC and DLCO",
+          "B": "Rising FEV1/FVC only",
+          "C": "A single normal DLCO excludes progression forever",
+          "D": "Peak flow variability",
+          "E": "The paper says PFTs are not useful"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "Declining FVC and DLCO",
+        "explanation": "Declining FVC and DLCO can suggest progression of ILD.",
+        "difficulty": "easy",
+        "sourceRefs": [
+          {
+            "sourceBody": "Respiratory Research",
+            "sourceYear": 2023,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9830797/",
+            "pmid": "36624431",
+            "pmcid": "PMC9830797",
+            "doi": "10.1186/s12931-023-02319-3",
+            "status": "open_full_text",
+            "excerpt": "Declining values for forced vital capacity (FVC) and diffusing capacity of the lungs for carbon monoxide (DL CO ) can suggest progression of ILD"
+          }
+        ]
+      },
+      {
+        "id": "c829-03",
+        "question": "How does mycophenolate compare with cyclophosphamide?",
+        "options": {
+          "A": "Similar efficacy and less toxicity",
+          "B": "Clearly less effective and more toxic",
+          "C": "It has no role",
+          "D": "It is used only after transplant",
+          "E": "It replaces nintedanib because SENSCIS was negative"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "Similar efficacy and less toxicity",
+        "explanation": "Mycophenolate mofetil provides similar efficacy to cyclophosphamide and is associated with less toxicity. EULAR is cited as recommending cyclophosphamide for systemic-sclerosis ILD.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Respiratory Research",
+            "sourceYear": 2023,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9830797/",
+            "pmid": "36624431",
+            "pmcid": "PMC9830797",
+            "doi": "10.1186/s12931-023-02319-3",
+            "status": "open_full_text",
+            "excerpt": "Mycophenolate mofetil (MMF) provides similar efficacy to CYC and is associated with less toxicity"
+          }
+        ]
+      },
+      {
+        "id": "c829-04",
+        "question": "On which trial is nintedanib's approval for systemic-sclerosis ILD based?",
+        "options": {
+          "A": "SENSCIS",
+          "B": "TEAR",
+          "C": "STOP GAP",
+          "D": "ORAL Surveillance",
+          "E": "MAINRITSAN"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "SENSCIS",
+        "explanation": "Nintedanib is approved for systemic-sclerosis ILD based on SENSCIS, and for progressive fibrosing ILDs based on INBUILD.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Respiratory Research",
+            "sourceYear": 2023,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9830797/",
+            "pmid": "36624431",
+            "pmcid": "PMC9830797",
+            "doi": "10.1186/s12931-023-02319-3",
+            "status": "open_full_text",
+            "excerpt": "Nintedanib has been approved for the treatment of SSc-ILD and chronic fibrosing ILDs with a progressive phenotype based on the results of the SENSCIS and INBUILD trials respectively"
+          }
+        ]
+      },
+      {
+        "id": "c829-05",
+        "question": "When may hematopoietic stem-cell transplantation be considered, and what risk does the paper emphasize?",
+        "options": {
+          "A": "Rapidly progressive systemic sclerosis at risk of organ failure, with a high risk of treatment-related side effects and death",
+          "B": "Every patient with stable limited cutaneous disease",
+          "C": "As prophylaxis before any HRCT",
+          "D": "Only after nintedanib has failed for 10 years",
+          "E": "It has no stated risk"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "Rapidly progressive systemic sclerosis at risk of organ failure, with a high risk of treatment-related side effects and death",
+        "explanation": "Transplant may be considered for rapidly progressive disease at risk of organ failure, but patients must be selected carefully because of a high risk of treatment-related side effects and mortality.",
+        "difficulty": "hard",
+        "sourceRefs": [
+          {
+            "sourceBody": "Respiratory Research",
+            "sourceYear": 2023,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9830797/",
+            "pmid": "36624431",
+            "pmcid": "PMC9830797",
+            "doi": "10.1186/s12931-023-02319-3",
+            "status": "open_full_text",
+            "excerpt": "Hematopoietic stem cell transplantation may also be considered in patients with rapidly progressive SSc at risk of organ failure, although careful selection of patients is required due to a high risk of treatment-related side effects and mortality"
+          }
+        ]
+      }
+    ]
+  }
+}

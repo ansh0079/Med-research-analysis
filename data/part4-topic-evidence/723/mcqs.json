@@ -1,0 +1,149 @@
+{
+  "reviewState": "unreviewed",
+  "method": "Hand-written single-best-answer MCQs grounded only in the accepted open full text.",
+  "topic": {
+    "topicKey": "osteoarthritis-pathophysiology-risk-factors-radiographic-grading-pharm",
+    "topicDisplayName": "Osteoarthritis: pathophysiology, risk factors, radiographic grading, pharmacological management",
+    "catalogueId": "723",
+    "aliases": [],
+    "storedRowCount": 0,
+    "coverageNote": "Covers risk factors, Kellgren-Lawrence grading, and drug therapy. It is a review, not a society guideline.",
+    "mcqs": [
+      {
+        "id": "c723-01",
+        "question": "In the Kellgren-Lawrence system as stated in this review, what is grade 2?",
+        "options": {
+          "A": "Definite osteophytes",
+          "B": "No pathologic findings",
+          "C": "Questionable osteophytes only",
+          "D": "Advanced joint-space narrowing",
+          "E": "A normal MRI cartilage score"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "Definite osteophytes",
+        "explanation": "Grade 0 is no pathologic findings, grade 1 questionable osteophytes, grade 2 definite osteophytes, grade 3 definite joint-space narrowing, and grade 4 advanced narrowing.",
+        "difficulty": "easy",
+        "sourceRefs": [
+          {
+            "sourceBody": "JAMA",
+            "sourceYear": 2021,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8225295/",
+            "pmid": "33560326",
+            "pmcid": "PMC8225295",
+            "doi": "10.1001/jama.2020.22171",
+            "status": "open_full_text",
+            "excerpt": "grade 0 representing no pathologic findings; Grade 1 questionable osteophytes; Grade 2 definite osteophytes; Grade 3, definite joint space narrowing; and Grade 4 advanced joint space narrowing."
+          }
+        ]
+      },
+      {
+        "id": "c723-02",
+        "question": "Which risk-factor statement matches the review?",
+        "options": {
+          "A": "Older age and female sex raise risk for both hip and knee OA, and hip dysplasia is a risk factor for hip OA",
+          "B": "Male sex is the dominant risk factor for hip OA",
+          "C": "Knee OA is unrelated to age",
+          "D": "Hip dysplasia protects against hip OA",
+          "E": "Only prior infection causes knee OA"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "Older age and female sex raise risk for both hip and knee OA, and hip dysplasia is a risk factor for hip OA",
+        "explanation": "Older age and female sex are risk factors for hip and knee OA, and congenital or acquired abnormalities such as hip dysplasia are risk factors for hip OA.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "JAMA",
+            "sourceYear": 2021,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8225295/",
+            "pmid": "33560326",
+            "pmcid": "PMC8225295",
+            "doi": "10.1001/jama.2020.22171",
+            "status": "open_full_text",
+            "excerpt": "Older age and female sex are risk factors for hip OA as well as knee OA. In addition, congenital and acquired anatomic abnormalities (e.g. hip dysplasia) are risk factors for hip OA."
+          }
+        ]
+      },
+      {
+        "id": "c723-03",
+        "question": "How does the review describe racial patterns of radiographic OA prevalence?",
+        "options": {
+          "A": "Hip OA prevalence is similar in African Americans and white people after accounting for race, sex, and BMI, while knee OA prevalence is higher in African Americans, especially women",
+          "B": "Hip OA occurs only in one racial group",
+          "C": "Knee OA prevalence is identical in every group",
+          "D": "Race was not discussed",
+          "E": "White men have the highest knee OA prevalence"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "Hip OA prevalence is similar in African Americans and white people after accounting for race, sex, and BMI, while knee OA prevalence is higher in African Americans, especially women",
+        "explanation": "The review states similar hip OA prevalence in African Americans and white people after accounting for race, sex, and BMI, and higher knee OA prevalence in African Americans, especially women.",
+        "difficulty": "hard",
+        "sourceRefs": [
+          {
+            "sourceBody": "JAMA",
+            "sourceYear": 2021,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8225295/",
+            "pmid": "33560326",
+            "pmcid": "PMC8225295",
+            "doi": "10.1001/jama.2020.22171",
+            "status": "open_full_text",
+            "excerpt": "African Americans and whites have similar prevalence of hip OA (accounting for race, sex and body mass index), while African Americans, especially women, have higher prevalence of knee OA."
+          }
+        ]
+      },
+      {
+        "id": "c723-04",
+        "question": "What pharmacologic status do NSAIDs have, and what effect size is cited?",
+        "options": {
+          "A": "First-line drugs, with pain and function standardized mean differences of about 0.33 versus placebo",
+          "B": "Last-line drugs after opioids, with no placebo-controlled data",
+          "C": "Ineffective versus placebo",
+          "D": "Reserved for hand OA only",
+          "E": "Replaced entirely by acetaminophen in every trial"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "First-line drugs, with pain and function standardized mean differences of about 0.33 versus placebo",
+        "explanation": "NSAIDs are first-line pharmacologic treatment and, across placebo-controlled trials, produced standardized mean differences in pain and function of about 0.33, described as a moderate effect.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "JAMA",
+            "sourceYear": 2021,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8225295/",
+            "pmid": "33560326",
+            "pmcid": "PMC8225295",
+            "doi": "10.1001/jama.2020.22171",
+            "status": "open_full_text",
+            "excerpt": "Non-steroidal anti-inflammatory drugs (NSAIDs) are first line pharmacologic treatment for OA. In numerous placebo-controlled trials, NSAIDs have resulted in greater pain relief than placebo, with standardized mean differences in pain and function scores of ~ 0.33 standard deviations, reflecting a moderate effect"
+          }
+        ]
+      },
+      {
+        "id": "c723-05",
+        "question": "Why are topical NSAIDs less useful for hip OA in this review?",
+        "options": {
+          "A": "The hip joint is recessed",
+          "B": "Topical NSAIDs have more gastrointestinal toxicity than oral NSAIDs",
+          "C": "The hip has no capsule",
+          "D": "Topical NSAIDs are contraindicated over any large joint",
+          "E": "Hip OA does not cause pain"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "The hip joint is recessed",
+        "explanation": "Topical NSAIDs generally have less gastrointestinal toxicity than oral NSAIDs but are less useful in hip OA because the joint is recessed.",
+        "difficulty": "easy",
+        "sourceRefs": [
+          {
+            "sourceBody": "JAMA",
+            "sourceYear": 2021,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8225295/",
+            "pmid": "33560326",
+            "pmcid": "PMC8225295",
+            "doi": "10.1001/jama.2020.22171",
+            "status": "open_full_text",
+            "excerpt": "but are less useful in hip OA because the joint is recessed."
+          }
+        ]
+      }
+    ]
+  }
+}

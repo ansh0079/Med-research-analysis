@@ -1,0 +1,23 @@
+{
+  "catalogueId": "1168",
+  "topic": "Cardiac tamponade: Beck's triad, pericardiocentesis, surgical drainage",
+  "groundedIn": "26320112",
+  "synopsis": "The 2015 ESC guideline defines cardiac tamponade as life-threatening slow or rapid compression of the heart by pericardial fluid, pus, blood, clot, or gas from inflammation, trauma, cardiac rupture, or aortic dissection. Clinical signs it lists are tachycardia, hypotension, pulsus paradoxus, raised jugular venous pressure, muffled heart sounds, low electrocardiographic voltage with electrical alternans, and an enlarged cardiac silhouette when fluid accumulates slowly. It does not use the name Beck's triad. Pulsus paradoxus is an inspiratory drop in systolic arterial pressure of more than 10 mmHg during normal breathing. Echocardiography is the single most useful diagnostic tool and is also used to guide pericardiocentesis. Treatment is drainage of the pericardial fluid, preferably by needle pericardiocentesis with echocardiographic or fluoroscopic guidance, without delay in unstable patients. A surgical approach is the alternative, especially for purulent pericarditis or urgent bleeding into the pericardium.",
+  "teachingPoints": [
+    {
+      "claim": "Listed signs include tachycardia, hypotension, pulsus paradoxus, raised JVP, and muffled sounds.",
+      "sourceExcerpt": "Clinical signs in a patient with cardiac tamponade include tachycardia, hypotension, pulsus paradoxus, raised jugular venous pressure, muffled heart sounds"
+    },
+    {
+      "claim": "The guideline text does not name Beck's triad.",
+      "sourceExcerpt": "Clinical signs in a patient with cardiac tamponade include tachycardia, hypotension, pulsus paradoxus, raised jugular venous pressure, muffled heart sounds"
+    },
+    {
+      "claim": "Prefer needle pericardiocentesis; use surgery for pus or bleeding.",
+      "sourceExcerpt": "preferably by needle pericardiocentesis, with the use of echocardiographic or fluoroscopic guidance, and should be performed without delay in unstable patients"
+    }
+  ],
+  "uncertaintiesNotedInSource": [
+    "Beck's triad is not named. The component signs hypotension, raised venous pressure, and muffled sounds are listed together with tachycardia and pulsus paradoxus."
+  ]
+}

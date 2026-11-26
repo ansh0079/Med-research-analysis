@@ -1,0 +1,149 @@
+{
+  "reviewState": "unreviewed",
+  "method": "Hand-written single-best-answer MCQs grounded only in the accepted open full text.",
+  "topic": {
+    "topicKey": "neonatal-lupus-anti-ro-anti-la-congenital-heart-block-counselling",
+    "topicDisplayName": "Neonatal lupus: anti-Ro, anti-La, congenital heart block, counselling",
+    "catalogueId": "1934",
+    "aliases": [],
+    "storedRowCount": 0,
+    "coverageNote": "Questions emphasize antibody pattern, preconception drugs, and surveillance. Numeric risks are those stated in the review.",
+    "mcqs": [
+      {
+        "id": "c1934-01",
+        "question": "Which maternal serologic pattern does the review link to a higher chance of neonatal lupus?",
+        "options": {
+          "A": "Antibodies to both SSA/Ro, especially anti-Ro52, and SSB/La, even without a known systemic autoimmune disease",
+          "B": "Isolated rheumatoid factor",
+          "C": "Anti-Jo-1 only",
+          "D": "ANCA with anti-MPO",
+          "E": "Anti-CCP without any ANA"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "Antibodies to both SSA/Ro, especially anti-Ro52, and SSB/La, even without a known systemic autoimmune disease",
+        "explanation": "Women without a known systemic autoimmune rheumatic disease who have both SSA/Ro (especially anti-Ro52) and SSB/La have an increased risk of a child with neonatal lupus.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Journal of the Chinese Medical Association",
+            "sourceYear": 2024,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11418246/",
+            "pmid": "39285783",
+            "pmcid": "PMC11418246",
+            "doi": "10.1097/JCMA.0000000000001117",
+            "status": "open_full_text",
+            "excerpt": "Women without a SARD but who have antibodies to both SSA/Ro (especially the anti-Ro52 antibody) and SSB/La have an increased risk of giving birth to children with NLS."
+          }
+        ]
+      },
+      {
+        "id": "c1934-02",
+        "question": "Before conception, what treatment state does the review recommend for a woman with known systemic autoimmune disease?",
+        "options": {
+          "A": "Clinical and serological remission on pregnancy-safe drugs such as azathioprine and hydroxychloroquine",
+          "B": "Continue methotrexate through the first trimester",
+          "C": "Stop hydroxychloroquine because it causes heart block",
+          "D": "Start mycophenolate to prevent block",
+          "E": "Antibody testing is deferred until the third trimester"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "Clinical and serological remission on pregnancy-safe drugs such as azathioprine and hydroxychloroquine",
+        "explanation": "The review says patients should be in clinical and serological remission on pregnancy-safe medications such as azathioprine and hydroxychloroquine before conceiving, and that antibody screening should occur before conception.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Journal of the Chinese Medical Association",
+            "sourceYear": 2024,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11418246/",
+            "pmid": "39285783",
+            "pmcid": "PMC11418246",
+            "doi": "10.1097/JCMA.0000000000001117",
+            "status": "open_full_text",
+            "excerpt": "The patients should also be in clinical and serological remission on these pregnancy-safe medications such as azathioprine and hydroxychloroquine (HCQ) before conceiving."
+          }
+        ]
+      },
+      {
+        "id": "c1934-03",
+        "question": "How does a prior affected pregnancy change fetal-echo planning in this review?",
+        "options": {
+          "A": "Surveillance may be as often as weekly",
+          "B": "Echo is no longer needed",
+          "C": "Echo starts only if a rash appears after birth",
+          "D": "One scan after 36 weeks is enough",
+          "E": "Echo is replaced by maternal CRP"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "Surveillance may be as often as weekly",
+        "explanation": "The review says the frequency of fetal echocardiography depends on risk and may be weekly when there is a history of neonatal lupus in a prior pregnancy.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Journal of the Chinese Medical Association",
+            "sourceYear": 2024,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11418246/",
+            "pmid": "39285783",
+            "pmcid": "PMC11418246",
+            "doi": "10.1097/JCMA.0000000000001117",
+            "status": "open_full_text",
+            "excerpt": "depends on risk and may be weekly with a history of NLS in a prior pregnancy."
+          }
+        ]
+      },
+      {
+        "id": "c1934-04",
+        "question": "Which maternal symptoms should prompt evaluation for an evolving systemic autoimmune disease?",
+        "options": {
+          "A": "Sicca symptoms, sun-related rashes, and morning-stiff finger joint pain",
+          "B": "Isolated leg cramps",
+          "C": "Chronic sinusitis only",
+          "D": "Migraine without autoantibodies",
+          "E": "Postpartum hair loss alone"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "Sicca symptoms, sun-related rashes, and morning-stiff finger joint pain",
+        "explanation": "Sicca symptoms, photosensitive rashes, and morning-predominant finger arthralgia should lead to further evaluation for a systemic autoimmune rheumatic disease.",
+        "difficulty": "easy",
+        "sourceRefs": [
+          {
+            "sourceBody": "Journal of the Chinese Medical Association",
+            "sourceYear": 2024,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11418246/",
+            "pmid": "39285783",
+            "pmcid": "PMC11418246",
+            "doi": "10.1097/JCMA.0000000000001117",
+            "status": "open_full_text",
+            "excerpt": "Sicca symptoms, sun-related skin rashes, and joint pain affecting the fingers that may be worse in the morning and associated with stiffness in the mother should lead to further evaluation for the development of SARD."
+          }
+        ]
+      },
+      {
+        "id": "c1934-05",
+        "question": "What does the review say about heart block first appearing after birth?",
+        "options": {
+          "A": "Postpartum neonatal-lupus heart block, or postnatal progression, is a rare distinct subtype that may still need neonatal screening",
+          "B": "Block never develops after delivery",
+          "C": "Postnatal block is always infectious",
+          "D": "Only first-degree block can appear after birth",
+          "E": "Screening the neonate is unnecessary if the fetal echo was normal once"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "Postpartum neonatal-lupus heart block, or postnatal progression, is a rare distinct subtype that may still need neonatal screening",
+        "explanation": "The review notes that screening may be necessary for postpartum heart block or postpartum progression of congenital heart block, described as a rare and distinct subtype.",
+        "difficulty": "hard",
+        "sourceRefs": [
+          {
+            "sourceBody": "Journal of the Chinese Medical Association",
+            "sourceYear": 2024,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11418246/",
+            "pmid": "39285783",
+            "pmcid": "PMC11418246",
+            "doi": "10.1097/JCMA.0000000000001117",
+            "status": "open_full_text",
+            "excerpt": "Screening may also be necessary in the neonate for NLS-related postpartum heart block or postpartum progression of CHB in the neonatal period which is a rare and distinct subtype."
+          }
+        ]
+      }
+    ]
+  }
+}

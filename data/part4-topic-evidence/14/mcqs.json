@@ -1,0 +1,149 @@
+{
+  "reviewState": "unreviewed",
+  "method": "Hand-written single-best-answer MCQs grounded only in the accepted open full text.",
+  "topic": {
+    "topicKey": "sjogren-syndrome-sicca-symptoms-anti-ro-anti-la-malt-lymphoma-risk-sys",
+    "topicDisplayName": "Sjogren syndrome: sicca symptoms, anti-Ro, anti-La, MALT lymphoma risk, systemic features",
+    "catalogueId": "14",
+    "aliases": [],
+    "storedRowCount": 0,
+    "coverageNote": "Covers sicca from glandular hypofunction, anti-Ro, anti-La, systemic disease including ILD, and MALT lymphoma risk.",
+    "mcqs": [
+      {
+        "id": "c14-01",
+        "question": "How does this review characterize Sjögren disease at the outset?",
+        "options": {
+          "A": "A systemic autoimmune disorder with hypofunction of the salivary and lacrimal glands",
+          "B": "A purely local infection of the parotid gland",
+          "C": "A vasculitis that always spares the exocrine glands",
+          "D": "An anti-GBM disease",
+          "E": "A lymphoma that begins in the lung"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "A systemic autoimmune disorder with hypofunction of the salivary and lacrimal glands",
+        "explanation": "Sjögren disease is a systemic autoimmune disorder characterized by hypofunction of the salivary and lacrimal glands.",
+        "difficulty": "easy",
+        "sourceRefs": [
+          {
+            "sourceBody": "Arthritis Research & Therapy",
+            "sourceYear": 2024,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10851604/",
+            "pmid": "38331820",
+            "pmcid": "PMC10851604",
+            "doi": "10.1186/s13075-024-03262-4",
+            "status": "open_full_text",
+            "excerpt": "Sjögren’s disease is a systemic autoimmune disorder characterized by hypofunction of salivary and lacrimal glands"
+          }
+        ]
+      },
+      {
+        "id": "c14-02",
+        "question": "What does the review say about anti-SSA/Ro antibodies?",
+        "options": {
+          "A": "They are present in nearly 75% of patients and play a key role in diagnosis",
+          "B": "They are present in fewer than 5% and exclude the diagnosis",
+          "C": "They are identical to rheumatoid factor",
+          "D": "They are used only to diagnose lymphoma",
+          "E": "They have no diagnostic role"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "They are present in nearly 75% of patients and play a key role in diagnosis",
+        "explanation": "Anti-SSA/Ro antibodies are present in nearly 75% of patients with Sjögren disease and play a key role in diagnosis.",
+        "difficulty": "easy",
+        "sourceRefs": [
+          {
+            "sourceBody": "Arthritis Research & Therapy",
+            "sourceYear": 2024,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10851604/",
+            "pmid": "38331820",
+            "pmcid": "PMC10851604",
+            "doi": "10.1186/s13075-024-03262-4",
+            "status": "open_full_text",
+            "excerpt": "Anti-SSA/Ro antibodies are present in nearly 75% of patients with Sjögren’s disease"
+          }
+        ]
+      },
+      {
+        "id": "c14-03",
+        "question": "Which antibody finding was associated with increased mortality in the studies this review cites, along with older age and male sex?",
+        "options": {
+          "A": "Anti-La/SSB positivity",
+          "B": "Anti-CCP positivity",
+          "C": "ANCA positivity",
+          "D": "A negative ANA",
+          "E": "Anti-Jo-1 positivity"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "Anti-La/SSB positivity",
+        "explanation": "Positivity for anti-La/SSB, older age, and male sex were associated with a significantly increased risk of mortality in the cited data.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Arthritis Research & Therapy",
+            "sourceYear": 2024,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10851604/",
+            "pmid": "38331820",
+            "pmcid": "PMC10851604",
+            "doi": "10.1186/s13075-024-03262-4",
+            "status": "open_full_text",
+            "excerpt": "positivity for anti-La/SSB, older age, and male sex"
+          }
+        ]
+      },
+      {
+        "id": "c14-04",
+        "question": "What lymphoma risk does the review report for primary Sjögren disease?",
+        "options": {
+          "A": "A four- to sevenfold higher risk of non-Hodgkin lymphoma than the general population",
+          "B": "No increase in lymphoma",
+          "C": "A risk confined to Hodgkin lymphoma",
+          "D": "A 50% lifetime risk of carcinoma",
+          "E": "A lower risk than the general population"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "A four- to sevenfold higher risk of non-Hodgkin lymphoma than the general population",
+        "explanation": "Patients with primary Sjögren disease have a four- to sevenfold higher risk of non-Hodgkin lymphoma compared with the general population.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Arthritis Research & Therapy",
+            "sourceYear": 2024,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10851604/",
+            "pmid": "38331820",
+            "pmcid": "PMC10851604",
+            "doi": "10.1186/s13075-024-03262-4",
+            "status": "open_full_text",
+            "excerpt": "four- to sevenfold higher risk of non-Hodgkin’s lymphoma compared with the general population"
+          }
+        ]
+      },
+      {
+        "id": "c14-05",
+        "question": "Among non-Hodgkin lymphomas in primary Sjögren disease, which subtype predominates?",
+        "options": {
+          "A": "MALT lymphoma, accounting for about two-thirds of cases",
+          "B": "Burkitt lymphoma in every case",
+          "C": "Hodgkin lymphoma",
+          "D": "T-cell lymphoma as the majority",
+          "E": "The review says the subtype is never MALT"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "MALT lymphoma, accounting for about two-thirds of cases",
+        "explanation": "Non-Hodgkin lymphoma occurs in about 2–9% of patients with primary disease, and the MALT subtype accounts for approximately two-thirds of cases.",
+        "difficulty": "hard",
+        "sourceRefs": [
+          {
+            "sourceBody": "Arthritis Research & Therapy",
+            "sourceYear": 2024,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10851604/",
+            "pmid": "38331820",
+            "pmcid": "PMC10851604",
+            "doi": "10.1186/s13075-024-03262-4",
+            "status": "open_full_text",
+            "excerpt": "mucosa-associated lymphoid tissue (MALT) subtype accounting for approximately two-thirds of cases"
+          }
+        ]
+      }
+    ]
+  }
+}

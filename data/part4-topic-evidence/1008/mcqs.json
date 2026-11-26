@@ -1,0 +1,149 @@
+{
+  "reviewState": "unreviewed",
+  "method": "Hand-written single-best-answer MCQs grounded only in the accepted open full text.",
+  "topic": {
+    "topicKey": "ra-in-pregnancy-disease-course-drug-safety-biologics-mtx-cessation",
+    "topicDisplayName": "RA in pregnancy: disease course, drug safety, biologics, MTX cessation",
+    "catalogueId": "1008",
+    "aliases": [],
+    "storedRowCount": 0,
+    "coverageNote": "Drug-safety statements are taken from this review. A 2020 ACR reproductive guideline was not the open full text retrieved.",
+    "mcqs": [
+      {
+        "id": "c1008-01",
+        "question": "Why does the review call methotrexate absolutely contraindicated in pregnancy?",
+        "options": {
+          "A": "Category X, with risk of spontaneous abortion and embryopathy affecting heart, central nervous system, and skeleton",
+          "B": "Category B, safe in the second trimester",
+          "C": "It does not cross the placenta",
+          "D": "Risk is limited to maternal hypertension",
+          "E": "It is preferred to sulfasalazine"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "Category X, with risk of spontaneous abortion and embryopathy affecting heart, central nervous system, and skeleton",
+        "explanation": "Methotrexate is category X because of spontaneous abortion and embryopathy of the heart, central nervous system, and skeleton.",
+        "difficulty": "easy",
+        "sourceRefs": [
+          {
+            "sourceBody": "Open Access Rheumatology: Research and Reviews",
+            "sourceYear": 2016,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5098768/",
+            "pmid": "27843367",
+            "pmcid": "PMC5098768",
+            "doi": "10.2147/OARRR.S89324",
+            "status": "open_full_text",
+            "excerpt": "The absolute contraindication to methotrexate (MTX) (category X) during pregnancy is secondary to the risk of spontaneous abortion and MTX embryopathy characterized by a combination of abnormalities impacting the heart, central nervous system, and skeleton."
+          }
+        ]
+      },
+      {
+        "id": "c1008-02",
+        "question": "Can the review identify a methotrexate dose that is safe in the first trimester?",
+        "options": {
+          "A": "No. Case reports of uncomplicated low-dose exposure do not establish a dose low enough to counsel as risk-free",
+          "B": "Yes, 7.5 mg weekly is stated to be safe",
+          "C": "Yes, any dose after week 6",
+          "D": "Only intravenous methotrexate is unsafe",
+          "E": "The review does not discuss dose"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "No. Case reports of uncomplicated low-dose exposure do not establish a dose low enough to counsel as risk-free",
+        "explanation": "There are case reports of first-trimester low-dose exposure without anomalies, but the review says there does not appear to be a low enough dose that exposure can be counselled as posing no risk.",
+        "difficulty": "hard",
+        "sourceRefs": [
+          {
+            "sourceBody": "Open Access Rheumatology: Research and Reviews",
+            "sourceYear": 2016,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5098768/",
+            "pmid": "27843367",
+            "pmcid": "PMC5098768",
+            "doi": "10.2147/OARRR.S89324",
+            "status": "open_full_text",
+            "excerpt": "there does not appear to be a low enough dose that a pregnant patient can be counseled on that the MTX exposure will not pose any risk."
+          }
+        ]
+      },
+      {
+        "id": "c1008-03",
+        "question": "How are leflunomide and sulfasalazine classified for pregnancy in this review?",
+        "options": {
+          "A": "Leflunomide category X and avoided even when pregnancy is years away because of a long half-life; sulfasalazine category B and may be continued",
+          "B": "Both are category X",
+          "C": "Both are category A",
+          "D": "Leflunomide is continued and sulfasalazine is stopped",
+          "E": "Neither drug is discussed"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "Leflunomide category X and avoided even when pregnancy is years away because of a long half-life; sulfasalazine category B and may be continued",
+        "explanation": "Leflunomide is category X and should be avoided even if pregnancy is planned in coming years because of its long half-life. Sulfasalazine is category B and can be continued.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Open Access Rheumatology: Research and Reviews",
+            "sourceYear": 2016,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5098768/",
+            "pmid": "27843367",
+            "pmcid": "PMC5098768",
+            "doi": "10.2147/OARRR.S89324",
+            "status": "open_full_text",
+            "excerpt": "It should be avoided in women who will be pursuing pregnancy even in the upcoming years due to its long half-life."
+          }
+        ]
+      },
+      {
+        "id": "c1008-04",
+        "question": "What congenital-anomaly signal does the review report for etanercept or infliximab?",
+        "options": {
+          "A": "An FDA-database review found 41 children with 61 anomalies, discussed alongside VACTERL case reports",
+          "B": "No anomaly has ever been reported",
+          "C": "Anomalies were limited to certolizumab",
+          "D": "The signal was an excess of neural-tube defects proven in a randomized trial",
+          "E": "TNF inhibitors are category A"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "An FDA-database review found 41 children with 61 anomalies, discussed alongside VACTERL case reports",
+        "explanation": "Exposure has been linked with VACTERL association in case reports and, in an FDA-database review, 41 children had 61 congenital anomalies after etanercept or infliximab exposure.",
+        "difficulty": "hard",
+        "sourceRefs": [
+          {
+            "sourceBody": "Open Access Rheumatology: Research and Reviews",
+            "sourceYear": 2016,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5098768/",
+            "pmid": "27843367",
+            "pmcid": "PMC5098768",
+            "doi": "10.2147/OARRR.S89324",
+            "status": "open_full_text",
+            "excerpt": "There were 41 children with a total of 61 anomalies in the setting of exposure to etanercept or infliximab"
+          }
+        ]
+      },
+      {
+        "id": "c1008-05",
+        "question": "How did infant drug levels differ between certolizumab and infliximab?",
+        "options": {
+          "A": "Certolizumab was undetectable in all infants by the assay used; every infliximab infant had a cord or blood level higher than the mother's, median cord-to-maternal ratio 160%",
+          "B": "Both drugs were absent from cord blood",
+          "C": "Certolizumab levels exceeded maternal levels in every infant",
+          "D": "Infliximab does not cross the placenta",
+          "E": "Levels were not measured"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "Certolizumab was undetectable in all infants by the assay used; every infliximab infant had a cord or blood level higher than the mother's, median cord-to-maternal ratio 160%",
+        "explanation": "Certolizumab infants all had undetectable concentrations. Every infliximab infant had a cord or blood level above the mother's, median cord-to-maternal ratio 160%, and infliximab often stayed detectable for months.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Open Access Rheumatology: Research and Reviews",
+            "sourceYear": 2016,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5098768/",
+            "pmid": "27843367",
+            "pmcid": "PMC5098768",
+            "doi": "10.2147/OARRR.S89324",
+            "status": "open_full_text",
+            "excerpt": "for infliximab, every infant had an infliximab level from cord or blood that was higher than the mother’s concentrations, the median ratio of cord"
+          }
+        ]
+      }
+    ]
+  }
+}

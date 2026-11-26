@@ -1,0 +1,23 @@
+{
+  "catalogueId": "461",
+  "topic": "Scleroderma Renal Crisis",
+  "groundedIn": "35648373",
+  "synopsis": "Scleroderma renal crisis classically presents with accelerated hypertension and acute kidney injury, defined here as a serum creatinine more than 1.5 times baseline. Other causes in the differential include ANCA vasculitis, membranous nephropathy, and thrombotic microangiopathies. Historically, treatment was antihypertensives such as methyldopa or propranolol, dialysis, and sometimes bilateral nephrectomy. Mortality fell after ACE inhibitors were introduced in the 1980s. An ACE inhibitor should be started immediately if renal crisis is suspected. In pregnancy, captopril is the preferred ACE inhibitor because of a lower risk of fetal renal complications; the teratogenic risk is outweighed by the threat to the mother. If an ACE inhibitor is already being taken, the dose is increased. A long-acting agent such as ramipril is most often used and is doubled about every 24 hours, but a short-acting agent such as captopril may suit hemodynamic compromise. Adequate blood-pressure control often takes 3–5 days. Renal function can keep deteriorating after the ACE inhibitor is started and the blood pressure is corrected, and that deterioration should not prompt the drug to be stopped.",
+  "teachingPoints": [
+    {
+      "claim": "Suspect renal crisis with accelerated hypertension and creatinine >1.5× baseline.",
+      "sourceExcerpt": "SRC classically presents with accelerated hypertension and acute kidney injury (AKI) defined as an increase in serum creatinine > 1.5 × baseline."
+    },
+    {
+      "claim": "Start an ACE inhibitor immediately; captopril is preferred in pregnancy and is an option in hemodynamic compromise.",
+      "sourceExcerpt": "An ACEi should be started immediately if SRC suspected. Captopril is the preferred choice due to lower risk of foetal renal complications."
+    },
+    {
+      "claim": "Do not stop the ACE inhibitor because creatinine continues to rise after blood pressure improves.",
+      "sourceExcerpt": "renal function can continue to deteriorate despite initiation of ACEi and correction of blood pressure. This should not promp"
+    }
+  ],
+  "uncertaintiesNotedInSource": [
+    "EU-STAR data cited here showed no other significant mortality change in the post-ACE-inhibitor era beyond the original mortality reduction."
+  ]
+}

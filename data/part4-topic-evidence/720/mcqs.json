@@ -1,0 +1,149 @@
+{
+  "reviewState": "unreviewed",
+  "method": "Hand-written single-best-answer MCQs grounded only in the accepted open full text.",
+  "topic": {
+    "topicKey": "nsaid-therapy-in-axspa-continuous-vs-on-demand-radiographic-progressio",
+    "topicDisplayName": "NSAID therapy in axSpA: continuous vs on-demand, radiographic progression",
+    "catalogueId": "720",
+    "aliases": [],
+    "storedRowCount": 0,
+    "coverageNote": "Covers continuous versus on-demand NSAID use and radiographic progression. The two trials disagree, and that disagreement is preserved rather than resolved by adding numbers that are not in the review.",
+    "mcqs": [
+      {
+        "id": "c720-01",
+        "question": "In the celecoxib trial summarized in this review, which regimen was compared for radiographic progression?",
+        "options": {
+          "A": "Continuous versus on-demand celecoxib in TNF-inhibitor-naive ankylosing spondylitis",
+          "B": "Celecoxib versus adalimumab as first-line therapy",
+          "C": "On-demand ibuprofen versus placebo for 6 weeks",
+          "D": "Continuous naproxen versus secukinumab",
+          "E": "Celecoxib only in patients already receiving a TNF inhibitor"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "Continuous versus on-demand celecoxib in TNF-inhibitor-naive ankylosing spondylitis",
+        "explanation": "TNF-inhibitor-naive patients with ankylosing spondylitis were randomized to continuous versus on-demand celecoxib 100 mg twice daily or higher.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Arthritis & Rheumatology",
+            "sourceYear": 2020,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7113090/",
+            "pmid": "31705611",
+            "pmcid": "PMC7113090",
+            "doi": "10.1002/art.41164",
+            "status": "open_full_text",
+            "excerpt": "In the celecoxib trial, TNFi naïve patients with AS were randomized to continuous use vs. on-demand use of celecoxib 100mg twice daily or higher."
+          }
+        ]
+      },
+      {
+        "id": "c720-02",
+        "question": "What radiographic result did that celecoxib trial report at 2 years?",
+        "options": {
+          "A": "On-demand use slowed syndesmophytes more than continuous use",
+          "B": "Continuous use had less radiographic progression than on-demand use (p=0.002)",
+          "C": "Neither group changed, p=0.90",
+          "D": "Progression was assessed only by MRI bone oedema",
+          "E": "The trial was stopped before any imaging"
+        },
+        "correctAnswer": "B",
+        "correctAnswerText": "Continuous use had less radiographic progression than on-demand use (p=0.002)",
+        "explanation": "After 2 years, continuous celecoxib users had less radiographic progression than the on-demand group (p=0.002).",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Arthritis & Rheumatology",
+            "sourceYear": 2020,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7113090/",
+            "pmid": "31705611",
+            "pmcid": "PMC7113090",
+            "doi": "10.1002/art.41164",
+            "status": "open_full_text",
+            "excerpt": "After 2 years, patients in the continuous use group had less radiographic progression compared to on-demand group (p=0.002)"
+          }
+        ]
+      },
+      {
+        "id": "c720-03",
+        "question": "In the post-hoc analysis of the celecoxib trial, who derived greater slowing of progression from continuous treatment?",
+        "options": {
+          "A": "Patients with normal ESR and CRP",
+          "B": "Patients with elevated ESR or CRP",
+          "C": "Only patients with psoriasis",
+          "D": "Patients taking a TNF inhibitor",
+          "E": "Patients with purely peripheral arthritis"
+        },
+        "correctAnswer": "B",
+        "correctAnswerText": "Patients with elevated ESR or CRP",
+        "explanation": "Post-hoc analysis showed greater slowing of progression with continuous treatment in patients with elevated ESR or CRP.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Arthritis & Rheumatology",
+            "sourceYear": 2020,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7113090/",
+            "pmid": "31705611",
+            "pmcid": "PMC7113090",
+            "doi": "10.1002/art.41164",
+            "status": "open_full_text",
+            "excerpt": "slowing of progression with continuous treatment was greater in patients with elevated inflammatory markers (erythrocyte sedimentation rate or CRP)"
+          }
+        ]
+      },
+      {
+        "id": "c720-04",
+        "question": "How does the review characterize the diclofenac trial relative to the celecoxib trial?",
+        "options": {
+          "A": "It confirmed a larger benefit of continuous NSAIDs",
+          "B": "The two continuous-versus-on-demand trials came to opposite conclusions",
+          "C": "Diclofenac was tested only for pain, not radiographs",
+          "D": "Both trials prohibited on-demand use",
+          "E": "Diclofenac was superior for pain but imaging was not done"
+        },
+        "correctAnswer": "B",
+        "correctAnswerText": "The two continuous-versus-on-demand trials came to opposite conclusions",
+        "explanation": "The review states that the celecoxib and diclofenac continuous-versus-on-demand trials reached opposite conclusions, so a disease-modifying effect is uncertain.",
+        "difficulty": "hard",
+        "sourceRefs": [
+          {
+            "sourceBody": "Arthritis & Rheumatology",
+            "sourceYear": 2020,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7113090/",
+            "pmid": "31705611",
+            "pmcid": "PMC7113090",
+            "doi": "10.1002/art.41164",
+            "status": "open_full_text",
+            "excerpt": "Two randomized trials examined the effects of continuous use versus on-demand use of NSAIDs on disease progression in AS, and came to opposite conclusions"
+          }
+        ]
+      },
+      {
+        "id": "c720-05",
+        "question": "What earlier observation does the review cite before those randomized trials?",
+        "options": {
+          "A": "A retrospective cohort in which continuous phenylbutazone delayed or arrested radiographic progression compared with no or intermittent use",
+          "B": "A trial showing antibiotics halt syndesmophytes",
+          "C": "Proof that physical therapy alone fuses the spine",
+          "D": "A study in which NSAIDs accelerated ankylosis",
+          "E": "No study before 2010 addressed NSAIDs and radiographs"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "A retrospective cohort in which continuous phenylbutazone delayed or arrested radiographic progression compared with no or intermittent use",
+        "explanation": "An early retrospective cohort of 40 patients with ankylosing spondylitis found continuous phenylbutazone delayed or arrested radiographic progression compared with no use or intermittent use.",
+        "difficulty": "hard",
+        "sourceRefs": [
+          {
+            "sourceBody": "Arthritis & Rheumatology",
+            "sourceYear": 2020,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7113090/",
+            "pmid": "31705611",
+            "pmcid": "PMC7113090",
+            "doi": "10.1002/art.41164",
+            "status": "open_full_text",
+            "excerpt": "continuous use of phenylbutazone delayed or arrested radiographic progression, compared to patients who did not use phenylbutazone or used it only intermittently"
+          }
+        ]
+      }
+    ]
+  }
+}

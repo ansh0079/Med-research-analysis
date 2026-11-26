@@ -1,0 +1,149 @@
+{
+  "reviewState": "unreviewed",
+  "method": "Hand-written single-best-answer MCQs grounded only in the accepted open full text.",
+  "topic": {
+    "topicKey": "oral-surveillance-trial-cardiovascular-safety-of-tofacitinib-vs-tnfi-i",
+    "topicDisplayName": "ORAL Surveillance trial: cardiovascular safety of tofacitinib vs TNFi in RA",
+    "catalogueId": "626",
+    "aliases": [],
+    "storedRowCount": 0,
+    "coverageNote": "The NEJM primary paper was not open on PMC. This open paper reports the ORAL Surveillance cardiovascular comparison and is used only for figures it states.",
+    "mcqs": [
+      {
+        "id": "c626-01",
+        "question": "What major-adverse-cardiovascular-event hazard ratio for tofacitinib versus TNF inhibitors does this report give from ORAL Surveillance?",
+        "options": {
+          "A": "1.33 (95% CI 0.91 to 1.94)",
+          "B": "0.50 (95% CI 0.20 to 0.80)",
+          "C": "3.50 (95% CI 2.00 to 5.00)",
+          "D": "1.00 exactly, proving equivalence",
+          "E": "The trial did not estimate a hazard ratio"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "1.33 (95% CI 0.91 to 1.94)",
+        "explanation": "Primary findings indicated an increased MACE risk with tofacitinib versus TNF inhibitors, HR 1.33 (95% CI 0.91 to 1.94).",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Annals of the Rheumatic Diseases",
+            "sourceYear": 2023,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9811099/",
+            "pmid": "36137735",
+            "pmcid": "PMC9811099",
+            "doi": "10.1136/ard-2022-222259",
+            "status": "open_full_text",
+            "excerpt": "increased risk of major adverse cardiovascular events (MACE) with tofacitinib versus tumour necrosis factor inhibitors (TNFi) (hazard ratio=1.33; 95% confidence interval (CI) 0.91 to 1.94)."
+          }
+        ]
+      },
+      {
+        "id": "c626-02",
+        "question": "Why was non-inferiority of tofacitinib versus TNF inhibitors not met?",
+        "options": {
+          "A": "The upper 95% confidence limit exceeded 1.80",
+          "B": "The point estimate was below 1",
+          "C": "TNF inhibitors were not an allowed comparator",
+          "D": "The trial excluded people over 50",
+          "E": "MACE was not an endpoint"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "The upper 95% confidence limit exceeded 1.80",
+        "explanation": "Non-inferiority required the upper 95% confidence limit not to exceed 1.80; it was higher than 1.80, so the criterion was not met.",
+        "difficulty": "hard",
+        "sourceRefs": [
+          {
+            "sourceBody": "Annals of the Rheumatic Diseases",
+            "sourceYear": 2023,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9811099/",
+            "pmid": "36137735",
+            "pmcid": "PMC9811099",
+            "doi": "10.1136/ard-2022-222259",
+            "status": "open_full_text",
+            "excerpt": "The non-inferiority criterion was not met (upper limit of 95% CI was >1.80)."
+          }
+        ]
+      },
+      {
+        "id": "c626-03",
+        "question": "Which incidence rates of MACE per 100 patient-years are reported?",
+        "options": {
+          "A": "0.98 with tofacitinib and 0.73 with TNF inhibitors",
+          "B": "0.10 and 0.10",
+          "C": "5.0 with TNF inhibitors and 0.1 with tofacitinib",
+          "D": "Rates were not calculated",
+          "E": "10 with tofacitinib and 10 with TNF inhibitors"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "0.98 with tofacitinib and 0.73 with TNF inhibitors",
+        "explanation": "Adjudicated MACE incidence was 0.98 per 100 patient-years with tofacitinib and 0.73 with TNF inhibitors.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Annals of the Rheumatic Diseases",
+            "sourceYear": 2023,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9811099/",
+            "pmid": "36137735",
+            "pmcid": "PMC9811099",
+            "doi": "10.1136/ard-2022-222259",
+            "status": "open_full_text",
+            "excerpt": "incidence rate (IR) of 0.98 per 100 patient-years, 95% CI 0.79 to 1.19, versus IR of 0.73 per 100 patient-years, 95% CI 0.52 to 1.01"
+          }
+        ]
+      },
+      {
+        "id": "c626-04",
+        "question": "In which age group was the MACE increase with tofacitinib versus TNF inhibitors more pronounced?",
+        "options": {
+          "A": "Age 65 years or older, compared with under 65",
+          "B": "Age under 40 only",
+          "C": "The increase was confined to teenagers",
+          "D": "Age had no relation to MACE",
+          "E": "Only patients under 50 were enrolled"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "Age 65 years or older, compared with under 65",
+        "explanation": "The increased MACE risk was more pronounced in patients aged 65 or older than in those under 65.",
+        "difficulty": "easy",
+        "sourceRefs": [
+          {
+            "sourceBody": "Annals of the Rheumatic Diseases",
+            "sourceYear": 2023,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9811099/",
+            "pmid": "36137735",
+            "pmcid": "PMC9811099",
+            "doi": "10.1136/ard-2022-222259",
+            "status": "open_full_text",
+            "excerpt": "The increased risk of MACE with tofacitinib versus TNFi was more pronounced in patients aged ≥65 years than in patients aged <65 years."
+          }
+        ]
+      },
+      {
+        "id": "c626-05",
+        "question": "Besides MACE, which other risks does this report say were higher with tofacitinib than with TNF inhibitors in ORAL Surveillance?",
+        "options": {
+          "A": "Malignancies excluding non-melanoma skin cancer, and infections",
+          "B": "Only injection-site reactions from TNF inhibitors",
+          "C": "Neither malignancy nor infection differed in any report",
+          "D": "Only gastrointestinal ulcers",
+          "E": "Fractures were the sole additional endpoint and were lower"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "Malignancies excluding non-melanoma skin cancer, and infections",
+        "explanation": "The report states that risk of malignancies excluding non-melanoma skin cancer, and of infections, was also higher with tofacitinib versus TNF inhibitors.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Annals of the Rheumatic Diseases",
+            "sourceYear": 2023,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9811099/",
+            "pmid": "36137735",
+            "pmcid": "PMC9811099",
+            "doi": "10.1136/ard-2022-222259",
+            "status": "open_full_text",
+            "excerpt": "Risk of malignancies (excluding non-melanoma skin cancer) and infections was also higher with tofacitinib versus TNFi in ORAL Surveillance."
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "catalogueId": "1461",
+  "topic": "Plantar Fasciitis and Calcaneal Spurs",
+  "groundedIn": "38264606",
+  "synopsis": "This review describes plantar fasciitis pain as worst with the first steps out of bed, easing as activity begins, and sometimes worsening again late in the day, with tenderness at the medial calcaneal tubercle. Most cases are unilateral, but up to 30% are bilateral. The windlass test is given a specificity of 100% and a sensitivity of 32%, so it helps confirm rather than exclude the diagnosis. A calcaneal spur is frequently seen on the lateral radiograph and was significantly more prevalent than in controls in one cited study (89% versus 32%), but the causal link is unsettled: people with chronic heel pain are more likely to have a spur, yet the spur remains after symptoms resolve. Ultrasound findings are increased plantar-fascia thickness and a hypoechoic fascia. Plain radiographs are used to rule out other bony lesions rather than to prove that the spur is the pain source.",
+  "teachingPoints": [
+    {
+      "claim": "Windlass testing is specific (100%) but insensitive (32%).",
+      "sourceExcerpt": "The windlass test have high specificity (100%) but low sensitivity (32%) for PF"
+    },
+    {
+      "claim": "A calcaneal spur is more common in plantar fasciitis (89% vs 32% in one study) but remains after pain resolves.",
+      "sourceExcerpt": "the prevalence is significantly higher compared with the control group (89% vs. 32%) ... the spur remains in situ after symptoms resolve."
+    },
+    {
+      "claim": "Ultrasound shows a thickened, hypoechoic plantar fascia.",
+      "sourceExcerpt": "Major sonographic findings included increased plantar fascia thickness and hypoechoic plantar fascia"
+    }
+  ],
+  "uncertaintiesNotedInSource": [
+    "The review says the causal relationship between spur and pain needs further study."
+  ]
+}

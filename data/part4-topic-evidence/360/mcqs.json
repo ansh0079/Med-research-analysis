@@ -1,0 +1,149 @@
+{
+  "reviewState": "unreviewed",
+  "method": "Hand-written single-best-answer MCQs grounded only in the accepted open full text.",
+  "topic": {
+    "topicKey": "osteopetrosis",
+    "topicDisplayName": "Osteopetrosis",
+    "catalogueId": "360",
+    "aliases": [],
+    "storedRowCount": 0,
+    "coverageNote": "The 2017 osteopetrosis working-group consensus was not free full text. This open review covers adult autosomal-dominant disease and states how infantile recessive disease is treated differently.",
+    "mcqs": [
+      {
+        "id": "c360-01",
+        "question": "How does this review contrast fracture risk in the two historical autosomal-dominant phenotypes?",
+        "options": {
+          "A": "ADO1 has no increased fracture or osteomyelitis risk; ADO2 has increased fracture and osteomyelitis risk, particularly of the mandible",
+          "B": "Both phenotypes have identical fracture risk",
+          "C": "Only ADO1 fractures",
+          "D": "Fractures occur only in the skull in ADO2",
+          "E": "Osteomyelitis is limited to the lung"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "ADO1 has no increased fracture or osteomyelitis risk; ADO2 has increased fracture and osteomyelitis risk, particularly of the mandible",
+        "explanation": "ADO1 osteosclerosis is most pronounced at the cranial vault without increased fracture or osteomyelitis risk. ADO2 involves spine and long bones and increases fracture and osteomyelitis risk, particularly of the mandible.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Bone",
+            "sourceYear": 2023,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10042314/",
+            "pmid": "36863500",
+            "pmcid": "PMC10042314",
+            "doi": "10.1016/j.bone.2023.116723",
+            "status": "open_full_text",
+            "excerpt": "ADO1 was characterized by generalized osteosclerosis, most pronounced at the cranial vault, with no increased risk of fracture or osteomyelitis. In contrast, the osteosclerosis of ADO2 is most pronounced in the spine and long bones and is characterized by an increased risk of fracture and osteomyelitis, particularly of the mandible."
+          }
+        ]
+      },
+      {
+        "id": "c360-02",
+        "question": "For which patients does the review call hematopoietic-cell transplantation standard of care?",
+        "options": {
+          "A": "Infants with most forms of autosomal-recessive osteopetrosis",
+          "B": "Every adult with ADO1",
+          "C": "Only patients with osteoarthritis",
+          "D": "No form of osteopetrosis",
+          "E": "Adults with mandibular osteomyelitis alone"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "Infants with most forms of autosomal-recessive osteopetrosis",
+        "explanation": "Hematopoietic-cell transplantation is standard of care for infants with most autosomal-recessive forms. Data in autosomal-dominant disease are described as limited.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Bone",
+            "sourceYear": 2023,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10042314/",
+            "pmid": "36863500",
+            "pmcid": "PMC10042314",
+            "doi": "10.1016/j.bone.2023.116723",
+            "status": "open_full_text",
+            "excerpt": "Hematopoietic cell transplantation (HCT) is standard of care for infants with most forms of autosomal recessive osteopetrosis."
+          }
+        ]
+      },
+      {
+        "id": "c360-03",
+        "question": "What does the review say about interferon gamma-1b in non-infantile autosomal-dominant osteopetrosis?",
+        "options": {
+          "A": "Approval is for severe infantile disease, and too few people with non-infantile ADO were studied to determine efficacy",
+          "B": "It is first-line curative therapy for ADO2",
+          "C": "It is contraindicated in infantile disease",
+          "D": "It replaces the need for genetic testing",
+          "E": "It was studied only in ADO and not in infants"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "Approval is for severe infantile disease, and too few people with non-infantile ADO were studied to determine efficacy",
+        "explanation": "IFN-γ1b was FDA-approved for severe infantile osteopetrosis. Insufficient numbers with non-infantile ADO were included to determine whether treatment is effective in ADO.",
+        "difficulty": "hard",
+        "sourceRefs": [
+          {
+            "sourceBody": "Bone",
+            "sourceYear": 2023,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10042314/",
+            "pmid": "36863500",
+            "pmcid": "PMC10042314",
+            "doi": "10.1016/j.bone.2023.116723",
+            "status": "open_full_text",
+            "excerpt": "FDA approval of IFN-γ1b for the treatment of “severe infantile osteopetrosis”. Insufficient numbers of individuals with non-infantile ADO were included in the studies to determine if this treatment was effective in ADO."
+          }
+        ]
+      },
+      {
+        "id": "c360-04",
+        "question": "Where is the osteosclerosis of ADO1 most pronounced?",
+        "options": {
+          "A": "The cranial vault",
+          "B": "The vertebral endplates only",
+          "C": "The mandible only",
+          "D": "The hands",
+          "E": "It spares the skull"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "The cranial vault",
+        "explanation": "ADO1 osteosclerosis is generalized and most pronounced at the cranial vault.",
+        "difficulty": "easy",
+        "sourceRefs": [
+          {
+            "sourceBody": "Bone",
+            "sourceYear": 2023,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10042314/",
+            "pmid": "36863500",
+            "pmcid": "PMC10042314",
+            "doi": "10.1016/j.bone.2023.116723",
+            "status": "open_full_text",
+            "excerpt": "ADO1 was characterized by generalized osteosclerosis, most pronounced at the cranial vault"
+          }
+        ]
+      },
+      {
+        "id": "c360-05",
+        "question": "What caution about high-dose calcitriol does the review relay from CLCN7 ADO mice?",
+        "options": {
+          "A": "High-dose calcitriol might be detrimental and increase bone mass",
+          "B": "Calcitriol cures CLCN7 disease",
+          "C": "Calcitriol is required before transplant in every adult",
+          "D": "Mice showed complete resolution of sclerosis",
+          "E": "Calcitriol was not discussed"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "High-dose calcitriol might be detrimental and increase bone mass",
+        "explanation": "Studies in ADO mice with CLCN7 mutations have shown that high-dose calcitriol might be detrimental and actually increase bone mass.",
+        "difficulty": "hard",
+        "sourceRefs": [
+          {
+            "sourceBody": "Bone",
+            "sourceYear": 2023,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10042314/",
+            "pmid": "36863500",
+            "pmcid": "PMC10042314",
+            "doi": "10.1016/j.bone.2023.116723",
+            "status": "open_full_text",
+            "excerpt": "studies in ADO mice with CLCN7 mutations have shown that high dose calcitriol might be detrimental and actually increase bone mass."
+          }
+        ]
+      }
+    ]
+  }
+}

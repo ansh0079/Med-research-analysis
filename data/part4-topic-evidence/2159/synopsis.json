@@ -1,0 +1,23 @@
+{
+  "catalogueId": "2159",
+  "topic": "Neuropsychiatric SLE: NPSLE syndromes, attribution, immunosuppression vs anticoagulation",
+  "groundedIn": "38975440",
+  "synopsis": "This systematic review uses the 1999 ACR nomenclature: 19 neuropsychiatric conditions in SLE, classified as central or peripheral, and it also discusses additional manifestations reported in the literature. Antiphospholipid antibodies are highlighted as a biomarker with prognostic meaning. Across many syndromes the most common treatment described is immunosuppression, typically including cyclophosphamide. For cerebral venous sinus thrombosis the review says treatment matches non-SLE cerebral venous thrombosis—heparin followed by a vitamin K antagonist—and that glucocorticoids plus immunosuppressants have shown efficacy in NPSLE. Isolated optic neuritis is often treated with high-dose corticosteroids, starting with three days of intravenous methylprednisolone, with hydroxychloroquine as add-on therapy and aspirin or a vitamin K antagonist when antiphospholipid syndrome is associated. For transverse myelitis, the review reports that methylprednisolone pulses plus cyclophosphamide were not associated with improved neurological outcomes in the studies it examined, and it relays a severity-stratified approach in which poor-prognosis cases (AIS grade A, B, or C) are directed toward rituximab, plasma exchange, or anti-IL-6 therapy.",
+  "teachingPoints": [
+    {
+      "claim": "The 1999 ACR nomenclature lists 19 NPSLE conditions affecting the CNS or PNS.",
+      "sourceExcerpt": "According to the 1999 American College of Rheumatology (ACR) guidelines, there are 19 conditions that can be observed in NPSLE"
+    },
+    {
+      "claim": "Immunosuppression, typically with cyclophosphamide, is described as the most common treatment for most symptoms.",
+      "sourceExcerpt": "The most common treatment option for most symptoms is immunosuppression, typically with cyclophosphamide"
+    },
+    {
+      "claim": "CVST is anticoagulated as in non-SLE disease, with additional glucocorticoids and immunosuppressants considered in NPSLE.",
+      "sourceExcerpt": "Treatment is the same as for non-SLE patients with CVST and includes anticoagulation with heparin followed by vitamin K anticoagulants such as warfarin."
+    }
+  ],
+  "uncertaintiesNotedInSource": [
+    "A formal attribution model is not provided; questions use only treatment distinctions the review states."
+  ]
+}

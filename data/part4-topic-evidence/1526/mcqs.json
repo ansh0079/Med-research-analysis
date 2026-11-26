@@ -1,0 +1,149 @@
+{
+  "reviewState": "unreviewed",
+  "method": "Hand-written single-best-answer MCQs grounded only in the accepted open full text.",
+  "topic": {
+    "topicKey": "spondylolysis-and-spondylolisthesis",
+    "topicDisplayName": "Spondylolysis and Spondylolisthesis",
+    "catalogueId": "1526",
+    "aliases": [],
+    "storedRowCount": 0,
+    "coverageNote": "Open JABFM review of pars defects, isthmic slip, Meyerding grades, and conservative care. Degenerative spondylolisthesis is named in the classification but is not the focus.",
+    "mcqs": [
+      {
+        "id": "c1526-01",
+        "question": "What is spondylolysis, as defined in this review?",
+        "options": {
+          "A": "An anatomic defect of the pars interarticularis, typically from repetitive loading in extension and rotation",
+          "B": "Infection of the vertebral disc",
+          "C": "Forward slip from a degenerative facet joint without a pars defect",
+          "D": "A fracture of the odontoid",
+          "E": "Congenital fusion of the sacrum"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "An anatomic defect of the pars interarticularis, typically from repetitive loading in extension and rotation",
+        "explanation": "Spondylolysis is an anatomic defect of the pars interarticularis, typically a stress reaction and fracture from repetitive lumbar loading in extension and rotation.",
+        "difficulty": "easy",
+        "sourceRefs": [
+          {
+            "sourceBody": "Journal of the American Board of Family Medicine",
+            "sourceYear": 2022,
+            "sourceUrl": "https://www.jabfm.org/content/35/6/1204",
+            "pmid": "36526328",
+            "pmcid": null,
+            "doi": "10.3122/jabfm.2022.220130R1",
+            "status": "open_full_text",
+            "excerpt": "Spondylolysis is the term used to describe an anatomic defect of the pars interarticularis, which typically results from stress reaction and subsequent fracture as a result of repetitive loading of the lumbar spine in extension and rotation"
+          }
+        ]
+      },
+      {
+        "id": "c1526-02",
+        "question": "When does this review use the term isthmic spondylolisthesis?",
+        "options": {
+          "A": "Forward translation of one vertebra on the next when pars defects are bilateral",
+          "B": "Any disc herniation",
+          "C": "A unilateral pars defect with no translation",
+          "D": "Slip caused only by tumor",
+          "E": "Retrolisthesis of the cervical spine"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "Forward translation of one vertebra on the next when pars defects are bilateral",
+        "explanation": "With bilateral pars defects, forward translation of one vertebra on the next caudal segment is isthmic spondylolisthesis. The review treats the two as a continuum.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Journal of the American Board of Family Medicine",
+            "sourceYear": 2022,
+            "sourceUrl": "https://www.jabfm.org/content/35/6/1204",
+            "pmid": "36526328",
+            "pmcid": null,
+            "doi": "10.3122/jabfm.2022.220130R1",
+            "status": "open_full_text",
+            "excerpt": "In the setting of bilateral pars interarticularis defects, forward translation of 1 vertebra relative to the next caudal vertebral segment may occur, which is termed isthmic spondylolisthesis"
+          }
+        ]
+      },
+      {
+        "id": "c1526-03",
+        "question": "How does the Meyerding system grade a slip?",
+        "options": {
+          "A": "Grade I is 0–25%, II 25–50%, III 50–75%, IV 75–100%, and grade V is greater than 100% (spondyloptosis)",
+          "B": "Grades are based only on pain scores",
+          "C": "Grade I is a complete slip off the sacrum",
+          "D": "There are two grades: stable and unstable",
+          "E": "Grade V is 0–25%"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "Grade I is 0–25%, II 25–50%, III 50–75%, IV 75–100%, and grade V is greater than 100% (spondyloptosis)",
+        "explanation": "The article states grade I 0% to 25%, II 25% to 50%, III 50% to 75%, IV 75% to 100%, and grade V greater than 100%, called spondyloptosis.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Journal of the American Board of Family Medicine",
+            "sourceYear": 2022,
+            "sourceUrl": "https://www.jabfm.org/content/35/6/1204",
+            "pmid": "36526328",
+            "pmcid": null,
+            "doi": "10.3122/jabfm.2022.220130R1",
+            "status": "open_full_text",
+            "excerpt": "0% to 25% is Grade I, 25% to 50% is Grade II, 50% to 75% is Grade III, 75% to 100% is Grade IV, and greater than 100% is Grade V, which is referred to as spondyloptosis"
+          }
+        ]
+      },
+      {
+        "id": "c1526-04",
+        "question": "What initial treatment does the review say helps most patients?",
+        "options": {
+          "A": "Activity restriction, physical therapy, and bracing",
+          "B": "Immediate fusion for every pars defect",
+          "C": "Antibiotics",
+          "D": "Strict bed rest for six months without therapy",
+          "E": "Traction as the only conservative method"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "Activity restriction, physical therapy, and bracing",
+        "explanation": "The majority of patients improve with conservative therapy including activity restriction, physical therapy, and bracing. Others need surgery for persistent symptoms.",
+        "difficulty": "easy",
+        "sourceRefs": [
+          {
+            "sourceBody": "Journal of the American Board of Family Medicine",
+            "sourceYear": 2022,
+            "sourceUrl": "https://www.jabfm.org/content/35/6/1204",
+            "pmid": "36526328",
+            "pmcid": null,
+            "doi": "10.3122/jabfm.2022.220130R1",
+            "status": "open_full_text",
+            "excerpt": "the majority of patients improve with conservative therapy including activity restriction, physical therapy and bracing, others require operative intervention due to persistent symptoms"
+          }
+        ]
+      },
+      {
+        "id": "c1526-05",
+        "question": "Which classification does the review cite for broad etiologies that include isthmic, dysplastic, degenerative, post-traumatic, and pathologic slips?",
+        "options": {
+          "A": "Wiltse-Newman",
+          "B": "Meyerding, which is an etiology system",
+          "C": "Kellgren-Lawrence",
+          "D": "SLICC",
+          "E": "DAS28"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "Wiltse-Newman",
+        "explanation": "The Wiltse-Newman classification categorizes spondylolisthesis by etiology, including isthmic, dysplastic, degenerative, post-traumatic, and pathologic. Meyerding grades the amount of slip.",
+        "difficulty": "hard",
+        "sourceRefs": [
+          {
+            "sourceBody": "Journal of the American Board of Family Medicine",
+            "sourceYear": 2022,
+            "sourceUrl": "https://www.jabfm.org/content/35/6/1204",
+            "pmid": "36526328",
+            "pmcid": null,
+            "doi": "10.3122/jabfm.2022.220130R1",
+            "status": "open_full_text",
+            "excerpt": "The Wiltse-Newman classification categorizes spondylolisthesis under broad etiologies which include isthmic, dysplastic, degenerative, post-traumatic and pathologic"
+          }
+        ]
+      }
+    ]
+  }
+}

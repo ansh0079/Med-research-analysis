@@ -1,0 +1,149 @@
+{
+  "reviewState": "unreviewed",
+  "method": "Hand-written single-best-answer MCQs grounded only in the accepted open full text.",
+  "topic": {
+    "topicKey": "remission-maintenance-in-aav-azathioprine-rituximab-mainritsan-trial",
+    "topicDisplayName": "Remission maintenance in AAV: azathioprine, rituximab, MAINRITSAN trial",
+    "catalogueId": "574",
+    "aliases": [],
+    "storedRowCount": 0,
+    "coverageNote": "The MAINRITSAN trial report itself was not open. This paper is accepted only for the MAINRITSAN results it explicitly states. RITAZAREM efficacy numbers are not presented as MAINRITSAN results.",
+    "mcqs": [
+      {
+        "id": "c574-01",
+        "question": "What does this paper state that MAINRITSAN 1 showed?",
+        "options": {
+          "A": "Repeat-dose rituximab was superior to azathioprine for maintenance after cyclophosphamide and glucocorticoid induction in largely newly diagnosed AAV",
+          "B": "Azathioprine was superior to rituximab",
+          "C": "Rituximab and azathioprine were identical in a relapsing-only population",
+          "D": "Cyclophosphamide maintenance beat both",
+          "E": "MAINRITSAN 1 studied infection prophylaxis only"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "Repeat-dose rituximab was superior to azathioprine for maintenance after cyclophosphamide and glucocorticoid induction in largely newly diagnosed AAV",
+        "explanation": "MAINRITSAN 1 showed fixed-interval repeat-dose rituximab was superior to azathioprine after cyclophosphamide and glucocorticoid induction in largely newly diagnosed AAV.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Annals of the Rheumatic Diseases",
+            "sourceYear": 2023,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10313987/",
+            "pmid": "36958796",
+            "pmcid": "PMC10313987",
+            "doi": "10.1136/ard-2022-223559",
+            "status": "open_full_text",
+            "excerpt": "Fixed-interval, repeat dose rituximab was superior to azathioprine as a maintenance strategy in a largely newly diagnosed AAV after induction with cyclophosphamide and glucocorticoid in the MAINRITSAN 1 trial."
+          }
+        ]
+      },
+      {
+        "id": "c574-02",
+        "question": "Which induction regimen does the paper attach to the MAINRITSAN 1 comparison?",
+        "options": {
+          "A": "Cyclophosphamide and glucocorticoid",
+          "B": "Rituximab induction only",
+          "C": "Methotrexate monotherapy",
+          "D": "Plasma exchange without immunosuppression",
+          "E": "Azathioprine induction"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "Cyclophosphamide and glucocorticoid",
+        "explanation": "Superiority of rituximab over azathioprine was after induction with cyclophosphamide and glucocorticoid.",
+        "difficulty": "easy",
+        "sourceRefs": [
+          {
+            "sourceBody": "Annals of the Rheumatic Diseases",
+            "sourceYear": 2023,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10313987/",
+            "pmid": "36958796",
+            "pmcid": "PMC10313987",
+            "doi": "10.1136/ard-2022-223559",
+            "status": "open_full_text",
+            "excerpt": "superior to azathioprine as a maintenance strategy in a largely newly diagnosed AAV after induction with cyclophosphamide and glucocorticoid in the MAINRITSAN 1 trial."
+          }
+        ]
+      },
+      {
+        "id": "c574-03",
+        "question": "What harm of prolonged rituximab does the paper mention immediately after summarizing MAINRITSAN 1?",
+        "options": {
+          "A": "Increased infection and hypogammaglobulinaemia",
+          "B": "Immediate malignancy in every patient",
+          "C": "No safety concern has been described",
+          "D": "Only infusion reactions in the first hour",
+          "E": "Steroid-induced diabetes"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "Increased infection and hypogammaglobulinaemia",
+        "explanation": "Prolonged rituximab in AAV has been associated with increased infection and hypogammaglobulinaemia.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Annals of the Rheumatic Diseases",
+            "sourceYear": 2023,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10313987/",
+            "pmid": "36958796",
+            "pmcid": "PMC10313987",
+            "doi": "10.1136/ard-2022-223559",
+            "status": "open_full_text",
+            "excerpt": "prolonged use of rituximab in AAV has been associated with an increased risk of infection and the development of hypogammaglobulinaemia."
+          }
+        ]
+      },
+      {
+        "id": "c574-04",
+        "question": "How does the paper explain a higher relapse rate in its own trial than in MAINRITSAN 1?",
+        "options": {
+          "A": "Differences in patient populations and trial design; its patients were recruited at relapse",
+          "B": "MAINRITSAN 1 used a placebo that this trial did not",
+          "C": "Azathioprine doses were tenfold higher",
+          "D": "The papers studied different diseases",
+          "E": "Relapse was not an endpoint in either study"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "Differences in patient populations and trial design; its patients were recruited at relapse",
+        "explanation": "The higher relapse rate compared with MAINRITSAN 1 reflected differences in populations and design. This trial recruited patients at relapse, whereas MAINRITSAN 1 was predominantly newly diagnosed disease.",
+        "difficulty": "hard",
+        "sourceRefs": [
+          {
+            "sourceBody": "Annals of the Rheumatic Diseases",
+            "sourceYear": 2023,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10313987/",
+            "pmid": "36958796",
+            "pmcid": "PMC10313987",
+            "doi": "10.1136/ard-2022-223559",
+            "status": "open_full_text",
+            "excerpt": "The higher relapse rate found in this trial compared with the MAINRITSAN 1 trial reflects differences in patient populations and trial design."
+          }
+        ]
+      },
+      {
+        "id": "c574-05",
+        "question": "Which statement about the 'already known' summary is accurate?",
+        "options": {
+          "A": "Rituximab is superior to azathioprine for preventing major relapse after cyclophosphamide induction in AAV",
+          "B": "Azathioprine is the only maintenance drug with relapse data",
+          "C": "Rituximab maintenance failed its primary endpoint in MAINRITSAN",
+          "D": "TNF inhibitors are the maintenance standard",
+          "E": "The summary recommends stopping all immunosuppression at remission"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "Rituximab is superior to azathioprine for preventing major relapse after cyclophosphamide induction in AAV",
+        "explanation": "The paper's 'already known' statement is that rituximab is superior to azathioprine for prevention of major relapse after cyclophosphamide induction in ANCA-associated vasculitis.",
+        "difficulty": "easy",
+        "sourceRefs": [
+          {
+            "sourceBody": "Annals of the Rheumatic Diseases",
+            "sourceYear": 2023,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10313987/",
+            "pmid": "36958796",
+            "pmcid": "PMC10313987",
+            "doi": "10.1136/ard-2022-223559",
+            "status": "open_full_text",
+            "excerpt": "Rituximab is superior to azathioprine for the prevention of major relapse following cyclophosphamide induction therapy in anti-neutrophil cytoplasmic antibody-associated vasculitis (AAV)."
+          }
+        ]
+      }
+    ]
+  }
+}

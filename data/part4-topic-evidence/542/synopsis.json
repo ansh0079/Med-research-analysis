@@ -1,0 +1,23 @@
+{
+  "catalogueId": "542",
+  "topic": "Pulmonary arterial hypertension in connective tissue disease: screening, ERA, PDE5 inhibitors",
+  "groundedIn": "31920409",
+  "synopsis": "This review argues that rheumatologists should screen people with systemic sclerosis for pulmonary arterial hypertension because survival is poor and a French detection program showed better survival when PAH was found by systematic screening rather than after symptoms alone. Exercise echocardiography can show an early rise in pressure from subclinical right-ventricular dysfunction, but the review says data are still limited. Endothelin-receptor antagonists include non-selective bosentan and macitentan and the endothelin-A-selective agent ambrisentan. They may be used alone or in combination in WHO class II and III, and with parenteral therapy in class IV; evidence for ERA monotherapy is described as limited. A pulmonary-hypertension trial that included 44 people with systemic-sclerosis PAH showed stabilization of six-minute-walk distance on subgroup analysis. PDE5 inhibitors listed are oral sildenafil, tadalafil, and vardenafil. The review found no monotherapy studies of tadalafil or vardenafil in systemic-sclerosis PAH. An uncontrolled Indian series of 17 patients reported hemodynamic and six-minute-walk improvement at three months with sildenafil, and a post-hoc SUPER-1 analysis showed improvement in exercise capacity, hemodynamics, and functional class after 12 weeks of sildenafil in connective-tissue-disease PAH.",
+  "teachingPoints": [
+    {
+      "claim": "Systematic screening was associated with better survival than symptom-based diagnosis in a French program.",
+      "sourceExcerpt": "benefit of improved SSc-PAH-related survival when patients were diagnosed during a systematic PAH detection program compared to those diagnosed on symptoms alone."
+    },
+    {
+      "claim": "ERAs include bosentan, macitentan, and ambrisentan; monotherapy evidence is limited.",
+      "sourceExcerpt": "ERAs include nonselective endothelin-A and B receptor antagonists (bosentan and macitentan) and the endothelin-A specific receptor antagonist, ambrisentan."
+    },
+    {
+      "claim": "Sildenafil improved exercise capacity, hemodynamics, and functional class in a SUPER-1 CTD-PAH subgroup.",
+      "sourceExcerpt": "subgroup analysis of double-blind, placebo-controlled SUPER-1 trial showed improvement in exercise capacity, hemodynamics and functional class with 12 weeks of sildenafil use in patients with CTD-PAH"
+    }
+  ],
+  "uncertaintiesNotedInSource": [
+    "Tadalafil and vardenafil monotherapy had not been studied in systemic-sclerosis PAH at the time of this review."
+  ]
+}

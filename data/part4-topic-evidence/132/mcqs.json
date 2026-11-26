@@ -1,0 +1,149 @@
+{
+  "reviewState": "unreviewed",
+  "method": "Hand-written single-best-answer MCQs grounded only in the accepted open full text.",
+  "topic": {
+    "topicKey": "meniere-s-disease-intratympanic-therapy-low-salt-diet-surgical-options",
+    "topicDisplayName": "Meniere's disease: intratympanic therapy, low-salt diet, surgical options",
+    "catalogueId": "132",
+    "aliases": [],
+    "storedRowCount": 0,
+    "coverageNote": "Covers sodium restriction, intratympanic steroid, endolymphatic surgery, and destructive surgery for Ménière disease. A stored BPPV document was not used.",
+    "mcqs": [
+      {
+        "id": "c132-01",
+        "question": "What does this review say about dietary sodium restriction?",
+        "options": {
+          "A": "It has been widely used since 1931, but controlled studies using modern definitions are lacking, and some advocate moderate rather than harsh restriction",
+          "B": "A randomised trial in this paper proves harsh restriction stops all spells",
+          "C": "Sodium restriction is contraindicated",
+          "D": "It was introduced after gentamicin and is first-line destructive therapy",
+          "E": "The review does not discuss diet"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "It has been widely used since 1931, but controlled studies using modern definitions are lacking, and some advocate moderate rather than harsh restriction",
+        "explanation": "Sodium restriction has been widely used since 1931. Reduction of dietary sodium plus diuretics has been reported to slow hearing-loss progression. Some advocate moderate regulation rather than harsh restriction, and controlled studies using modern definitions are lacking.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Therapeutics and Clinical Risk Management",
+            "sourceYear": 2015,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4348125/",
+            "pmid": "25750534",
+            "pmcid": "PMC4348125",
+            "doi": "10.2147/TCRM.S59023",
+            "status": "open_full_text",
+            "excerpt": "Sodium restriction This has been widely used to control symptoms of Ménière’s disease since 1931."
+          }
+        ]
+      },
+      {
+        "id": "c132-02",
+        "question": "Which diuretic combination does the review call the most commonly used medical treatment?",
+        "options": {
+          "A": "Hydrochlorothiazide plus triamterene",
+          "B": "Spironolactone as the only diuretic ever used",
+          "C": "Acetazolamide is the only agent with a licence for Ménière disease",
+          "D": "Loop diuretics are forbidden",
+          "E": "No diuretic is mentioned"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "Hydrochlorothiazide plus triamterene",
+        "explanation": "A combination of hydrochlorothiazide and triamterene is the most commonly used medical treatment. Acetazolamide, furosemide, and spironolactone are also used by some.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Therapeutics and Clinical Risk Management",
+            "sourceYear": 2015,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4348125/",
+            "pmid": "25750534",
+            "pmcid": "PMC4348125",
+            "doi": "10.2147/TCRM.S59023",
+            "status": "open_full_text",
+            "excerpt": "A combination of hydrochlorothiazide and triamterene is the most commonly used medical treatment for Ménière’s disease."
+          }
+        ]
+      },
+      {
+        "id": "c132-03",
+        "question": "What effect does the review attribute to intratympanic steroids?",
+        "options": {
+          "A": "A calming effect, with fewer and less severe spells for up to 2 years",
+          "B": "Immediate recovery of hearing to normal in all patients",
+          "C": "They are useful in migraine but not in Ménière disease",
+          "D": "They ablate vestibular function like gentamicin",
+          "E": "They are given only intravenously"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "A calming effect, with fewer and less severe spells for up to 2 years",
+        "explanation": "Intratympanic steroids have been noted to have a calming effect on Ménière ears. The number and severity of spells seem to decrease for up to 2 years.",
+        "difficulty": "easy",
+        "sourceRefs": [
+          {
+            "sourceBody": "Therapeutics and Clinical Risk Management",
+            "sourceYear": 2015,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4348125/",
+            "pmid": "25750534",
+            "pmcid": "PMC4348125",
+            "doi": "10.2147/TCRM.S59023",
+            "status": "open_full_text",
+            "excerpt": "Intratympanic steroids have been noted to have a calming effect on Ménière’s ears. 24 The number and severity of spells seem to decrease for up to 2 years after use."
+          }
+        ]
+      },
+      {
+        "id": "c132-04",
+        "question": "What vertigo-control result does the review cite for endolymphatic shunts and sac procedures?",
+        "options": {
+          "A": "Improvement in about two-thirds, similar to improvement in nonsurgical cases over time",
+          "B": "Cure of hearing loss in 90%",
+          "C": "Worse vertigo than the natural history in every series",
+          "D": "These operations are no longer described",
+          "E": "Benefit only in bilateral disease"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "Improvement in about two-thirds, similar to improvement in nonsurgical cases over time",
+        "explanation": "Endolymphatic shunts, cochleosacculotomy, and sac decompression have been used for decades. Vertigo control improved in about two-thirds, similar to nonsurgical cases over time.",
+        "difficulty": "hard",
+        "sourceRefs": [
+          {
+            "sourceBody": "Therapeutics and Clinical Risk Management",
+            "sourceYear": 2015,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4348125/",
+            "pmid": "25750534",
+            "pmcid": "PMC4348125",
+            "doi": "10.2147/TCRM.S59023",
+            "status": "open_full_text",
+            "excerpt": "Improvement in vertigo control has been achieved in about two-thirds of treated patients. 29 This is similar to the improvement seen in nonsurgically treated cases over time."
+          }
+        ]
+      },
+      {
+        "id": "c132-05",
+        "question": "Which destructive options does the review name when the aim is to disconnect a failing labyrinth, and when are they usually avoided?",
+        "options": {
+          "A": "Gentamicin ablation, vestibular neurectomy, and labyrinthectomy; usually avoided when disease is bilateral",
+          "B": "Endolymphatic shunt as the only destructive operation",
+          "C": "Intratympanic steroid, which destroys hearing",
+          "D": "Sodium restriction is the destructive step",
+          "E": "They are preferred in bilateral disease"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "Gentamicin ablation, vestibular neurectomy, and labyrinthectomy; usually avoided when disease is bilateral",
+        "explanation": "The favoured destructive means named are gentamicin ablation, vestibular neurectomy, and labyrinthectomy. Destructive procedures are not usually used in bilateral cases.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Therapeutics and Clinical Risk Management",
+            "sourceYear": 2015,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4348125/",
+            "pmid": "25750534",
+            "pmcid": "PMC4348125",
+            "doi": "10.2147/TCRM.S59023",
+            "status": "open_full_text",
+            "excerpt": "the favored means are destructive: gentamicin ablation, vestibular neurectomy, and labyrinthectomy. The rationale for these treatments is to functionally disconnect the labyrinth"
+          }
+        ]
+      }
+    ]
+  }
+}

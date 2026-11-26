@@ -1,0 +1,149 @@
+{
+  "reviewState": "unreviewed",
+  "method": "Hand-written single-best-answer MCQs grounded only in the accepted open full text.",
+  "topic": {
+    "topicKey": "scleroderma-renal-crisis",
+    "topicDisplayName": "Scleroderma Renal Crisis",
+    "catalogueId": "461",
+    "aliases": [],
+    "storedRowCount": 0,
+    "coverageNote": "Same open update is used for catalogue 1510. UKSSG 2015 was not the open full text retrieved.",
+    "mcqs": [
+      {
+        "id": "c461-01",
+        "question": "What classical presentation defines scleroderma renal crisis in this update?",
+        "options": {
+          "A": "Accelerated hypertension and creatinine rising to more than 1.5 times baseline",
+          "B": "Isolated microscopic hematuria with normal blood pressure",
+          "C": "Nephrotic syndrome without hypertension",
+          "D": "Chronic kidney disease developing over years without a blood-pressure change",
+          "E": "Pulmonary hemorrhage as the required feature"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "Accelerated hypertension and creatinine rising to more than 1.5 times baseline",
+        "explanation": "Renal crisis classically presents with accelerated hypertension and AKI defined as serum creatinine more than 1.5 times baseline.",
+        "difficulty": "easy",
+        "sourceRefs": [
+          {
+            "sourceBody": "Rheumatology International",
+            "sourceYear": 2023,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10167155/",
+            "pmid": "35648373",
+            "pmcid": "PMC10167155",
+            "doi": "10.1007/s00296-022-05149-6",
+            "status": "open_full_text",
+            "excerpt": "SRC classically presents with accelerated hypertension and acute kidney injury (AKI) defined as an increase in serum creatinine > 1.5 × baseline."
+          }
+        ]
+      },
+      {
+        "id": "c461-02",
+        "question": "Which other renal diseases does the update say belong in the differential?",
+        "options": {
+          "A": "ANCA-associated vasculitis, membranous nephropathy, and thrombotic microangiopathies",
+          "B": "Only diabetic nephropathy",
+          "C": "IgA nephropathy is the only mimic",
+          "D": "No differential is needed once hypertension is present",
+          "E": "Multiple myeloma only"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "ANCA-associated vasculitis, membranous nephropathy, and thrombotic microangiopathies",
+        "explanation": "ANCA vasculitis, membranous nephritis, and thrombotic microangiopathies such as TTP or DIC are listed among causes to consider.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Rheumatology International",
+            "sourceYear": 2023,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10167155/",
+            "pmid": "35648373",
+            "pmcid": "PMC10167155",
+            "doi": "10.1007/s00296-022-05149-6",
+            "status": "open_full_text",
+            "excerpt": "other causes to consider include anti-neutrophil cytoplasmic antibody (ANCA)–associated vasculitis, membranous nephritis, other primary causes of thrombotic microangiopathies"
+          }
+        ]
+      },
+      {
+        "id": "c461-03",
+        "question": "What historical change does the update credit with reducing mortality?",
+        "options": {
+          "A": "Introduction of ACE inhibitors in the 1980s",
+          "B": "Routine bilateral nephrectomy",
+          "C": "High-dose propranolol alone",
+          "D": "Nintedanib",
+          "E": "Plasma exchange for every patient"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "Introduction of ACE inhibitors in the 1980s",
+        "explanation": "Mortality fell significantly after ACE inhibitors were introduced in the 1980s. Earlier treatment had been antihypertensives such as methyldopa or propranolol, dialysis, and sometimes bilateral nephrectomy.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "Rheumatology International",
+            "sourceYear": 2023,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10167155/",
+            "pmid": "35648373",
+            "pmcid": "PMC10167155",
+            "doi": "10.1007/s00296-022-05149-6",
+            "status": "open_full_text",
+            "excerpt": "Mortality significantly reduced with the introduction of ACEi in the 1980s"
+          }
+        ]
+      },
+      {
+        "id": "c461-04",
+        "question": "How quickly should an ACE inhibitor be started once renal crisis is suspected?",
+        "options": {
+          "A": "Immediately",
+          "B": "After a week of observation",
+          "C": "Only if creatinine doubles again",
+          "D": "After renal biopsy results return",
+          "E": "ACE inhibitors are contraindicated"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "Immediately",
+        "explanation": "An ACE inhibitor should be started immediately if scleroderma renal crisis is suspected.",
+        "difficulty": "easy",
+        "sourceRefs": [
+          {
+            "sourceBody": "Rheumatology International",
+            "sourceYear": 2023,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10167155/",
+            "pmid": "35648373",
+            "pmcid": "PMC10167155",
+            "doi": "10.1007/s00296-022-05149-6",
+            "status": "open_full_text",
+            "excerpt": "An ACEi should be started immediately if SRC suspected"
+          }
+        ]
+      },
+      {
+        "id": "c461-05",
+        "question": "If creatinine keeps rising after blood pressure is controlled on an ACE inhibitor, what should be done?",
+        "options": {
+          "A": "The rise should not prompt stopping the ACE inhibitor",
+          "B": "Stop the ACE inhibitor the same day",
+          "C": "Switch immediately to a calcium-channel blocker and never restart an ACE inhibitor",
+          "D": "The rise proves the diagnosis was wrong",
+          "E": "Add an ARB and stop the ACE inhibitor"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "The rise should not prompt stopping the ACE inhibitor",
+        "explanation": "Renal function can continue to deteriorate despite the ACE inhibitor and blood-pressure correction, and that should not prompt the drug to be stopped.",
+        "difficulty": "hard",
+        "sourceRefs": [
+          {
+            "sourceBody": "Rheumatology International",
+            "sourceYear": 2023,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10167155/",
+            "pmid": "35648373",
+            "pmcid": "PMC10167155",
+            "doi": "10.1007/s00296-022-05149-6",
+            "status": "open_full_text",
+            "excerpt": "renal function can continue to deteriorate despite initiation of ACEi and correction of blood pressure. This should not promp"
+          }
+        ]
+      }
+    ]
+  }
+}

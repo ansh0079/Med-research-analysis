@@ -1,0 +1,149 @@
+{
+  "reviewState": "unreviewed",
+  "method": "Hand-written single-best-answer MCQs grounded only in the accepted open full text.",
+  "topic": {
+    "topicKey": "tnf-receptor-associated-periodic-syndrome",
+    "topicDisplayName": "TNF Receptor-Associated Periodic Syndrome",
+    "catalogueId": "2038",
+    "aliases": [],
+    "storedRowCount": 0,
+    "coverageNote": "Genetics, attack phenotype, amyloidosis, etanercept, and IL-1 are all in this review.",
+    "mcqs": [
+      {
+        "id": "c2038-01",
+        "question": "Which gene is mutated in TRAPS?",
+        "options": {
+          "A": "TNFRSF1A, encoding TNF receptor 1, with dominant inheritance",
+          "B": "MEFV, with recessive inheritance",
+          "C": "NLRP3 only",
+          "D": "HLA-B27",
+          "E": "CFTR"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "TNFRSF1A, encoding TNF receptor 1, with dominant inheritance",
+        "explanation": "TRAPS is caused by pathogenic variants in TNFRSF1A on chromosome 12, encoding TNF receptor 1, and the pattern is consistent with dominant inheritance.",
+        "difficulty": "easy",
+        "sourceRefs": [
+          {
+            "sourceBody": "International Journal of Molecular Sciences",
+            "sourceYear": 2020,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7246474/",
+            "pmid": "32380704",
+            "pmcid": "PMC7246474",
+            "doi": "10.3390/ijms21093263",
+            "status": "open_full_text",
+            "excerpt": "pathogenic variants in the TNF receptor superfamily member 1A (TNFRSF1A ) gene on chromosome 12, which encodes the TNF (tumor necrosis factor) Receptor 1"
+          }
+        ]
+      },
+      {
+        "id": "c2038-02",
+        "question": "Which clinical picture does the review give for a typical attack?",
+        "options": {
+          "A": "Fever sometimes lasting weeks, with abdominal pain, myalgia, arthralgia, migratory erythematous rash, and eye inflammation",
+          "B": "Brief 2-hour fevers without rash or pain",
+          "C": "Isolated urticaria without fever",
+          "D": "Chronic destructive arthritis as the only feature",
+          "E": "Meningitis in every attack"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "Fever sometimes lasting weeks, with abdominal pain, myalgia, arthralgia, migratory erythematous rash, and eye inflammation",
+        "explanation": "The disease is characterized by recurrent fever attacks, sometimes lasting weeks, with severe abdominal pain, myalgia, arthralgia, migratory erythematous rash, and eye inflammation. The CNS is typically spared.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "International Journal of Molecular Sciences",
+            "sourceYear": 2020,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7246474/",
+            "pmid": "32380704",
+            "pmcid": "PMC7246474",
+            "doi": "10.3390/ijms21093263",
+            "status": "open_full_text",
+            "excerpt": "The disease is characterized by recurrent fever attacks, sometimes lasting for weeks, accompanied by severe abdominal pain, myalgia, arthralgia, migratory erythematous rash, and eye inflammation, but typically the central nervous system (CNS) is spared"
+          }
+        ]
+      },
+      {
+        "id": "c2038-03",
+        "question": "Why does the review say high serum amyloid A matters?",
+        "options": {
+          "A": "It predisposes to AA amyloidosis, historically a severe source of morbidity and mortality",
+          "B": "It excludes the diagnosis",
+          "C": "It is the treatment target for etanercept dosing only",
+          "D": "It causes the rash directly and has no renal consequence",
+          "E": "SAA is low during attacks"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "It predisposes to AA amyloidosis, historically a severe source of morbidity and mortality",
+        "explanation": "Some patients have extremely high serum amyloid A, predisposing them to AA amyloidosis, which was a severe consequence before molecular characterization.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "International Journal of Molecular Sciences",
+            "sourceYear": 2020,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7246474/",
+            "pmid": "32380704",
+            "pmcid": "PMC7246474",
+            "doi": "10.3390/ijms21093263",
+            "status": "open_full_text",
+            "excerpt": "some can have extremely high levels of serum amyloid A (SAA) predisposing them to AA amyloidosis"
+          }
+        ]
+      },
+      {
+        "id": "c2038-04",
+        "question": "What does the review say about etanercept in TRAPS?",
+        "options": {
+          "A": "It was only partially beneficial at suppressing symptoms",
+          "B": "It is curative in nearly all patients",
+          "C": "It is contraindicated because it worsens amyloidosis in every series",
+          "D": "It was never tried",
+          "E": "It replaces the need for any genetic test"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "It was only partially beneficial at suppressing symptoms",
+        "explanation": "Etanercept was only partially beneficial in suppressing TRAPS symptoms, which the authors take as evidence that the shedding hypothesis is only one mechanism.",
+        "difficulty": "medium",
+        "sourceRefs": [
+          {
+            "sourceBody": "International Journal of Molecular Sciences",
+            "sourceYear": 2020,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7246474/",
+            "pmid": "32380704",
+            "pmcid": "PMC7246474",
+            "doi": "10.3390/ijms21093263",
+            "status": "open_full_text",
+            "excerpt": "Etanercept was only partially beneficial in suppressing TRAPS symptoms"
+          }
+        ]
+      },
+      {
+        "id": "c2038-05",
+        "question": "Which cytokine does the review say plays an essential pathogenic role, based on normalization of gene expression after canakinumab?",
+        "options": {
+          "A": "IL-1β",
+          "B": "IL-17A",
+          "C": "Interferon-gamma as the only driver",
+          "D": "IL-6, with no IL-1 signal",
+          "E": "VEGF"
+        },
+        "correctAnswer": "A",
+        "correctAnswerText": "IL-1β",
+        "explanation": "Fifteen days after canakinumab, elevated TNFRSF1A, IL-1β, MAPK14, and NFKB1 expression normalized. The authors conclude that IL-1β plays an essential role in TRAPS pathogenesis.",
+        "difficulty": "hard",
+        "sourceRefs": [
+          {
+            "sourceBody": "International Journal of Molecular Sciences",
+            "sourceYear": 2020,
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7246474/",
+            "pmid": "32380704",
+            "pmcid": "PMC7246474",
+            "doi": "10.3390/ijms21093263",
+            "status": "open_full_text",
+            "excerpt": "This suggests that IL-1β plays an essential role in the TRAPS pathogenesis"
+          }
+        ]
+      }
+    ]
+  }
+}

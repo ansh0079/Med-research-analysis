@@ -1,0 +1,21 @@
+{
+  "catalogueId": "1267",
+  "spreadsheetRow": 168,
+  "topic": "Trochanteric Bursitis",
+  "specialty": "Rheumatology",
+  "decision": "downloaded_open_source",
+  "source": {
+    "title": "Greater trochanteric pain syndrome: Evaluation and management of a wide spectrum of pathology",
+    "year": 2021,
+    "pmid": "34158938",
+    "pmcid": "PMC8182177",
+    "doi": "10.1177/20503121211022582",
+    "sourceBody": "SAGE Open Medicine",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8182177/",
+    "whyItFits": "Open review that places trochanteric bursitis inside greater trochanteric pain syndrome and states that isolated bursitis is uncommon, with conservative care and corticosteroid injection results."
+  },
+  "whyItFits": "Open review that places trochanteric bursitis inside greater trochanteric pain syndrome and states that isolated bursitis is uncommon, with conservative care and corticosteroid injection results.",
+  "coverageNote": "Trochanteric bursitis is handled as part of GTPS, which is the diagnosis the source says should replace isolated-bursitis labelling.",
+  "rejectedInAppHints": "No stored document distinguished bursitis from abductor tendinopathy.",
+  "sourceFile": "source.txt"
+}

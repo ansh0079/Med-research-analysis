@@ -1,0 +1,23 @@
+{
+  "catalogueId": "1911",
+  "topic": "methotrexate early rheumatoid arthritis combination therapy TEAR",
+  "groundedIn": "22508468",
+  "synopsis": "TEAR enrolled adults with rheumatoid arthritis of less than 3 years who met 1987 ACR criteria and had active disease. Everyone received oral methotrexate, escalated to 20 mg per week by week 12 unless disease was already quiet at a lower dose. The four arms were immediate etanercept plus methotrexate, immediate triple therapy with methotrexate, sulfasalazine, and hydroxychloroquine, or methotrexate alone with step-up at week 24 to etanercept or to sulfasalazine plus hydroxychloroquine if DAS28-ESR was still at least 3.2. The trial is described as the only randomized double-blind comparison of oral triple therapy with etanercept plus methotrexate. The primary outcome showed no difference between those two approaches. Twenty-eight percent of participants had an excellent response to methotrexate monotherapy and reached low disease activity by 6 months. At week 102, the only significant treatment difference reported was ACR70, 18.2% with etanercept versus 11.3% with triple therapy (p=0.02). Modified HAQ improved similarly across groups.",
+  "teachingPoints": [
+    {
+      "claim": "Step-up occurred if DAS28-ESR was at least 3.2 at week 24.",
+      "sourceExcerpt": "initial MTX, with step-up treatment adding ETN if DAS28-ESR was ≥ 3.2 at week 24"
+    },
+    {
+      "claim": "Primary outcome: no difference between etanercept plus methotrexate and oral triple therapy.",
+      "sourceExcerpt": "The primary outcome revealed no differences between the two treatment approaches."
+    },
+    {
+      "claim": "Week-102 ACR70 was 18.2% with etanercept versus 11.3% with triple therapy.",
+      "sourceExcerpt": "The only significant treatment difference at week 102 was between the ETN and triple therapy groups for ACR70 (18.2% vs. 11.3%, p=0.02)."
+    }
+  ],
+  "uncertaintiesNotedInSource": [
+    "The paper reports one significant ACR70 difference at week 102 alongside a primary outcome of no difference between strategies."
+  ]
+}

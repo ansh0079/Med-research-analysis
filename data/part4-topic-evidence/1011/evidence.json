@@ -1,0 +1,21 @@
+{
+  "catalogueId": "1011",
+  "spreadsheetRow": 152,
+  "topic": "Rituximab in rheumatic disease: dosing, pre-treatment screening, hypogammaglobulinaemia",
+  "specialty": "Rheumatology",
+  "decision": "downloaded_open_source",
+  "source": {
+    "title": "Rituximab for Rheumatoid Arthritis",
+    "year": 2015,
+    "pmid": "27747531",
+    "pmcid": "PMC4883263",
+    "doi": "10.1007/s40744-015-0016-9",
+    "sourceBody": "Rheumatology and Therapy",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4883263/",
+    "whyItFits": "Open review of rituximab in rheumatoid arthritis covering repeated-course hypogammaglobulinemia, immunoglobulin monitoring, and hepatitis B screening."
+  },
+  "whyItFits": "Open review of rituximab in rheumatoid arthritis covering repeated-course hypogammaglobulinemia, immunoglobulin monitoring, and hepatitis B screening.",
+  "coverageNote": "Screening and hypogammaglobulinemia are explicit. A separate hypogammaglobulinemia cohort used a 2×1 g then 1 g every 6 months schedule; that dosing schedule is not imported into this paper's MCQs.",
+  "rejectedInAppHints": "High SARS-CoV-2 mortality on rituximab was not the dosing and screening review requested.",
+  "sourceFile": "source.txt"
+}
