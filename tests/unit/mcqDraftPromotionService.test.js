@@ -60,12 +60,40 @@ const liveObject = (sqlite, topic = 'heart failure') => {
     return row ? { ...row, payload: JSON.parse(row.object_payload) } : null;
 };
 
-test('unreviewed drafts are never promoted', async () => {
+test('unreviewed drafts are not promoted when unreviewed promotion is switched off', async () => {
     const { db, sqlite, addDraft } = makeDb();
     try {
         addDraft(draftPayload());
-        const result = await promotePendingTopics(db);
+        const result = await promotePendingTopics(db, { includeUnreviewed: false });
         expect(result.topics).toBe(0);
+        expect(liveObject(sqlite)).toBeNull();
+    } finally { sqlite.close(); }
+});
+
+test('unreviewed drafts that pass the quote check are served labelled needs_review, and approval flips the label', async () => {
+    const { db, sqlite, addDraft } = makeDb();
+    try {
+        const id = addDraft(draftPayload());
+        const result = await promotePendingTopics(db);
+        expect(result.topics).toBe(1);
+        expect(result.promoted).toBe(1);
+        let live = liveObject(sqlite);
+        expect(live.review_state).toBe('verified');
+        expect(live.payload.mcqs[0].reviewStatus).toBe('needs_review');
+        expect(live.payload.coverageNote).toMatch(/not yet been checked by a clinician/);
+        await reviewMcqDraft(db, { draftId: id, decision: 'approved', notes: 'ok', userId: 'u1' });
+        await promoteTopic(db, { normalizedTopic: 'heart failure' });
+        live = liveObject(sqlite);
+        expect(live.payload.mcqs[0].reviewStatus).toBe('reviewed');
+    } finally { sqlite.close(); }
+});
+
+test('an unreviewed draft whose quote is not in stored text is sent back and never served', async () => {
+    const { db, sqlite, addDraft } = makeDb();
+    try {
+        addDraft(draftPayload('This sentence does not appear anywhere in the stored guideline text at all.'));
+        const result = await promotePendingTopics(db);
+        expect(result.sentBack).toBe(1);
         expect(liveObject(sqlite)).toBeNull();
     } finally { sqlite.close(); }
 });

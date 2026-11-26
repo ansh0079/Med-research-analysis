@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import type { AgentGuidance } from '@types';
 
 import { TopicBriefStatusBands } from './TopicBriefStatusBands';
@@ -56,5 +56,19 @@ describe('TopicBriefStatusBands mentor status', () => {
     renderBands(guidance('ai_generated', 2));
     expect(screen.getByText('AI generated')).toBeInTheDocument();
     expect(screen.queryByText('Limited evidence')).not.toBeInTheDocument();
+  });
+
+  it('shows a Needs review button on evidence_verified pages that opens an explanation', () => {
+    renderBands(guidance('evidence_verified', 4));
+    const button = screen.getByRole('button', { name: /needs review/i });
+    expect(button).toHaveAttribute('aria-expanded', 'false');
+    fireEvent.click(button);
+    expect(button).toHaveAttribute('aria-expanded', 'true');
+    expect(screen.getByRole('region', { name: /review status/i })).toHaveTextContent(/clinician has not yet checked/i);
+  });
+
+  it('does not show Needs review on pages that are not evidence_verified', () => {
+    renderBands(guidance('human_edited', 4));
+    expect(screen.queryByRole('button', { name: /needs review/i })).not.toBeInTheDocument();
   });
 });

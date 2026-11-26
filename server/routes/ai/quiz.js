@@ -231,6 +231,7 @@ function registerQuizRoutes(app, {
                         outlineNodeId: q.outlineNodeId || `pool:${stableHash}`,
                         outlineLabel: q.outlineLabel || q.question.slice(0, 120),
                         claimKey,
+                        reviewStatus: q.reviewStatus || null,
                         sourceArticleUid: q.sourceArticleUid || q.articleUid || null,
                         sourceArticleTitle: q.sourceArticleTitle || q.sourceArticle || null,
                     });

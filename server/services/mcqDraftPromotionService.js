@@ -18,6 +18,13 @@
 const { verifyExactAnchors, normalizeText } = require('./evidenceLockedMcqDraftService');
 
 const DECISIONS = ['approved', 'rejected', 'needs_changes'];
+
+/**
+ * Beta policy: unreviewed drafts that pass the exact-quote check are served to learners, each marked
+ * reviewStatus 'needs_review' so the quiz shows a "Needs review" label. Approval flips the label to 'reviewed'.
+ * Set MCQ_PROMOTE_UNREVIEWED=off to serve approved drafts only.
+ */
+const promoteUnreviewedByDefault = () => String(process.env.MCQ_PROMOTE_UNREVIEWED || 'on').toLowerCase() !== 'off';
 const normalizeTopic = (value) => String(value || '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim().replace(/\s+/g, ' ');
 const topicSlug = (value) => normalizeTopic(value).replace(/ /g, '-').slice(0, 200);
 const objectKeyFor = (normalizedTopic) => `verified-mcq:${topicSlug(normalizedTopic)}`;
@@ -95,6 +102,8 @@ function toServedQuestion(draft, documents) {
         sourceRefs,
         evidenceAnchors: anchors,
         draftKey: draft.draftKey,
+        // 'needs_review' until a clinician approves the draft; the learner UI labels it accordingly.
+        reviewStatus: draft.reviewState === 'approved' ? 'reviewed' : 'needs_review',
         reviewedBy: draft.reviewedBy,
         reviewedAt: draft.reviewedAt,
     };
@@ -104,11 +113,12 @@ function toServedQuestion(draft, documents) {
  * Rebuild the live verified_topic_mcq object for one topic from its approved drafts.
  * @returns {{objectKey:string, promoted:number, sentBack:Array<{id:number, errors:string[]}>}}
  */
-async function promoteTopic(db, { normalizedTopic, now = new Date().toISOString(), apply = true }) {
+async function promoteTopic(db, { normalizedTopic, now = new Date().toISOString(), apply = true, includeUnreviewed = promoteUnreviewedByDefault() }) {
     const key = normalizeTopic(normalizedTopic);
     if (!key) throw new Error('Invalid topic');
+    const states = includeUnreviewed ? "('approved', 'unreviewed')" : "('approved')";
     const rows = await db.all(
-        "SELECT * FROM evidence_locked_mcq_drafts WHERE normalized_topic = ? AND review_state = 'approved' ORDER BY id",
+        `SELECT * FROM evidence_locked_mcq_drafts WHERE normalized_topic = ? AND review_state IN ${states} ORDER BY id`,
         [key],
     );
     const objectKey = objectKeyFor(key);
@@ -137,7 +147,9 @@ async function promoteTopic(db, { normalizedTopic, now = new Date().toISOString(
     const payload = {
         topicKey: topicSlug(key),
         topicDisplayName: displayName,
-        coverageNote: 'Clinician-approved questions; every answer and explanation is anchored to an exact quote from stored full text.',
+        coverageNote: questions.some((q) => q.reviewStatus === 'needs_review')
+            ? 'Every answer and explanation is anchored to an exact quote from stored full text. Questions marked needs_review have not yet been checked by a clinician.'
+            : 'Clinician-approved questions; every answer and explanation is anchored to an exact quote from stored full text.',
         source: 'evidence_locked_mcq_drafts',
         promotedAt: now,
         mcqs: questions,
@@ -195,17 +207,17 @@ async function reviewMcqDraft(db, { draftId, decision, notes = '', userId = null
 }
 
 /** Promote every topic that has approved drafts not yet copied into a live object. */
-async function promotePendingTopics(db, { now = new Date().toISOString(), apply = true, topic = '' } = {}) {
+async function promotePendingTopics(db, { now = new Date().toISOString(), apply = true, topic = '', includeUnreviewed = promoteUnreviewedByDefault() } = {}) {
     const params = [];
     let filter = '';
     if (topic) { filter = 'AND normalized_topic = ?'; params.push(normalizeTopic(topic)); }
     const topics = await db.all(
         `SELECT DISTINCT normalized_topic FROM evidence_locked_mcq_drafts
-         WHERE review_state = 'approved' AND promoted_at IS NULL ${filter} ORDER BY normalized_topic`,
+         WHERE review_state IN ${includeUnreviewed ? "('approved', 'unreviewed')" : "('approved')"} AND promoted_at IS NULL ${filter} ORDER BY normalized_topic`,
         params,
     );
     const results = [];
-    for (const row of topics) results.push(await promoteTopic(db, { normalizedTopic: row.normalized_topic, now, apply }));
+    for (const row of topics) results.push(await promoteTopic(db, { normalizedTopic: row.normalized_topic, now, apply, includeUnreviewed }));
     return {
         topics: results.length,
         promoted: results.reduce((n, r) => n + r.promoted, 0),

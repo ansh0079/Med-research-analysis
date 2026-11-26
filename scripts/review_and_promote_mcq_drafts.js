@@ -7,7 +7,8 @@
  *     node scripts/review_and_promote_mcq_drafts.js --export drafts.csv [--state unreviewed] [--topic "..."]
  *   Apply a clinician's decisions (CSV with columns draft_id, decision, notes; decision = approved | rejected | needs_changes):
  *     node scripts/review_and_promote_mcq_drafts.js --decisions reviewed.csv --reviewer "Dr Name" [--apply]
- *   Promote approved drafts into the live verified_topic_mcq objects:
+ *   Promote drafts into the live verified_topic_mcq objects (approved ones, plus unreviewed ones labelled needs_review
+ *   unless MCQ_PROMOTE_UNREVIEWED=off):
  *     node scripts/review_and_promote_mcq_drafts.js --promote [--topic "..."] [--apply]
  *
  * Every step but --export is a dry run unless --apply is given.

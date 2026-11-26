@@ -180,6 +180,8 @@ export interface QuizQuestion {
   outlineNodeId?: string | null;
   /** Anchors quiz to a row from ai_generation_claims (provenance mode). */
   claimKey?: string | null;
+  /** 'needs_review' while a clinician has not approved the question; the quiz shows a "Needs review" label. */
+  reviewStatus?: 'needs_review' | 'reviewed' | null;
   /** personalization_decisions.id for quiz_claim_selection bandit arm. */
   claimDecisionId?: number | null;
   /** Bandit arm id (usually claimKey) when claim selection bandit ran. */

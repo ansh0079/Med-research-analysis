@@ -1,4 +1,5 @@
 import React from 'react';
+import { NeedsReviewButton } from '@components/ui/NeedsReviewButton';
 import type { AgentGuidance, ProactiveEvidenceAlert, TopicEvidenceMemory } from '@types';
 
 interface Props {
@@ -116,7 +117,13 @@ export const TopicBriefStatusBands: React.FC<Props> = ({
             Limited evidence
           </span>
         )}
-        <span className={`ml-auto rounded-full px-2 py-0.5 font-bold uppercase tracking-wider ${
+        {agentGuidance.status === 'evidence_verified' && (
+          <NeedsReviewButton
+            className="ml-auto"
+            explanation="Every teaching point on this page is anchored to an exact quote from a stored guideline or review, but a clinician has not yet checked the page as a whole. Check the linked sources before relying on it."
+          />
+        )}
+        <span className={`${agentGuidance.status === 'evidence_verified' ? '' : 'ml-auto '}rounded-full px-2 py-0.5 font-bold uppercase tracking-wider ${
           agentGuidance.status === 'evidence_verified'
             ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300'
             : agentGuidance.status === 'human_edited'
