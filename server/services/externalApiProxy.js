@@ -468,6 +468,13 @@ function buildProxyService({ serverConfig, fetchImpl, cache = null, telemetry = 
   }
 
   async function geminiGenerate(prompt, { model = 'gemini-2.5-flash-lite', temperature = 0.7, maxOutputTokens, timeoutMs = DEFAULT_TIMEOUTS.gemini, jsonMode = false, useAiStudio = false } = {}) {
+    // Test/CI default: avoid live Gemini calls unless explicitly enabled.
+    const mockMode = String(process.env.LLM_MOCK_MODE || '').toLowerCase() === 'true'
+      || ((process.env.NODE_ENV === 'test' || String(process.env.CI || '').toLowerCase() === 'true')
+        && String(process.env.LLM_LIVE_CALLS_ENABLED || '').toLowerCase() !== 'true');
+    if (mockMode) {
+      return jsonMode ? '{}' : 'OK';
+    }
     if (!keys.gemini) throw new Error('Gemini API key not configured');
     const modelName = model.includes('gemini') ? model : 'gemini-2.5-flash-lite';
 
@@ -520,51 +527,69 @@ function buildProxyService({ serverConfig, fetchImpl, cache = null, telemetry = 
     if (!/pro/i.test(modelName)) {
       requestBody.generationConfig.thinkingConfig = { thinkingBudget: 0 };
     }
-    const res = await f(url, {
-      method: 'POST',
-      timeout: timeoutMs,
-      headers,
-      body: JSON.stringify(requestBody),
-    });
-    if (!res.ok) {
-      const data = await res.json().catch(() => ({}));
-      throw new Error(`Gemini ${res.status} — ${data.error?.message || 'unknown'}`);
-    }
-    const data = await res.json();
-    reportProviderUsage({
-      inputTokens: data.usageMetadata?.promptTokenCount,
-      outputTokens: data.usageMetadata?.candidatesTokenCount,
-      thoughtsTokens: data.usageMetadata?.thoughtsTokenCount,
-    });
-    if (data.promptFeedback?.blockReason) {
-      // Also deterministic -- resending identical content is blocked identically.
-      const err = new Error(`Content blocked: ${data.promptFeedback.blockReason}`);
-      err.deterministic = true;
-      throw err;
-    }
-    // Gemini 2.5 models return "thinking" parts (thought: true) before the actual response.
-    // Filter them out so we only return the actual answer text.
-    const candidate = data.candidates?.[0];
-    const parts = candidate?.content?.parts || [];
-    const text = parts.filter(p => !p.thought).map(p => p.text || '').join('');
+    const doCall = async () => {
+      const res = await f(url, {
+        method: 'POST',
+        timeout: timeoutMs,
+        headers,
+        body: JSON.stringify(requestBody),
+      });
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(`Gemini ${res.status} — ${data.error?.message || 'unknown'}`);
+      }
+      const data = await res.json();
+      reportProviderUsage({
+        inputTokens: data.usageMetadata?.promptTokenCount,
+        outputTokens: data.usageMetadata?.candidatesTokenCount,
+        thoughtsTokens: data.usageMetadata?.thoughtsTokenCount,
+      });
+      if (data.promptFeedback?.blockReason) {
+        // Also deterministic -- resending identical content is blocked identically.
+        const err = new Error(`Content blocked: ${data.promptFeedback.blockReason}`);
+        err.deterministic = true;
+        throw err;
+      }
+      // Gemini 2.5 models return "thinking" parts (thought: true) before the actual response.
+      // Filter them out so we only return the actual answer text.
+      const candidate = data.candidates?.[0];
+      const parts = candidate?.content?.parts || [];
+      const text = parts.filter(p => !p.thought).map(p => p.text || '').join('');
 
-    // A response cut off at the token ceiling used to be returned as if complete,
-    // so callers reported it as "unparseable JSON" and the real cause stayed
-    // hidden. Fail loudly instead -- the provider fallback can then try the next
-    // candidate rather than retrying the same truncation.
-    if (candidate?.finishReason && candidate.finishReason !== 'STOP') {
-      const err = new Error(
-        `Gemini stopped early (finishReason: ${candidate.finishReason}); `
-        + `returned ${text.length} chars against maxOutputTokens ${generationConfig.maxOutputTokens}`,
-      );
-      // Deterministic: the same prompt against the same budget fails the same
-      // way every time, so this says nothing about provider health. Without the
-      // flag it counted toward the shared circuit breaker and a single oversized
-      // prompt could open it, failing unrelated Gemini calls for 30s.
-      err.deterministic = true;
-      throw err;
+      // A response cut off at the token ceiling used to be returned as if complete,
+      // so callers reported it as "unparseable JSON" and the real cause stayed
+      // hidden. Fail loudly instead -- the provider fallback can then try the next
+      // candidate rather than retrying the same truncation.
+      if (candidate?.finishReason && candidate.finishReason !== 'STOP') {
+        const err = new Error(
+          `Gemini stopped early (finishReason: ${candidate.finishReason}); `
+          + `returned ${text.length} chars against maxOutputTokens ${generationConfig.maxOutputTokens}`,
+        );
+        // Deterministic: the same prompt against the same budget fails the same
+        // way every time, so this says nothing about provider health. Without the
+        // flag it counted toward the shared circuit breaker and a single oversized
+        // prompt could open it, failing unrelated Gemini calls for 30s.
+        err.deterministic = true;
+        throw err;
+      }
+      return text || 'No response';
+    };
+
+    // Prompt-response cache (JSON-mode and opt-in global), shared via Redis when available.
+    const cacheTtl = Math.max(60, Number(process.env.LLM_RESPONSE_CACHE_TTL_SECONDS || 6 * 60 * 60) || 0);
+    const shouldCache = jsonMode || String(process.env.LLM_RESPONSE_CACHE_ALL || '').toLowerCase() === 'true';
+    if (shouldCache) {
+      const cacheParts = {
+        provider: 'gemini',
+        model: modelName,
+        jsonMode: Boolean(jsonMode),
+        temperature: Number(temperature) || 0,
+        max: Number(generationConfig.maxOutputTokens) || 0,
+        prompt: stableHash(prompt),
+      };
+      return withSourceCache('gemini-resp', cacheParts, cacheTtl, doCall);
     }
-    return text || 'No response';
+    return doCall();
   }
 
 
